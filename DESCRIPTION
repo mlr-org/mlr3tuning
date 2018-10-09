@@ -1,0 +1,42 @@
+Package: mlr3tuning
+Title: Tuning Methods for mlr3
+Version: 0.1.0-9000
+Authors@R:
+    c(person(given = "Jakob",
+             family = "Richter",
+             role = c("cre", "aut"),
+             email = "jakob1richter@gmail.com"),
+      person(given = "Bernd",
+             family = "Bischl",
+             role = "aut",
+             email = "bernd_bischl@gmx.de"),
+      person(given = "Michel",
+             family = "Lang",
+             role = "aut",
+             email = "michellang@gmail.com",
+             comment = c(ORCID = "0000-0001-9754-0393")),)
+Description: Implements methods for hyperparameter tuning in mlr3.
+License: MIT + file LICENSE
+Depends:
+    R (>= 3.1.0)
+Imports:
+    mlr3,
+    checkmate (>= 1.8.9),
+    paradox,
+    R6
+Suggests:
+    knitr,
+    testthat
+VignetteBuilder:
+    knitr
+Remotes:
+    mllg/checkmate,
+    mlr-org/paradox,
+    mlr-org/mlr3
+ByteCompile: true
+Encoding: UTF-8
+LazyData: true
+NeedsCompilation: no
+Roxygen: list(markdown = TRUE)
+URL: https://github.com/mlr-org/mlr3tuning
+BugReports: https://github.com/mlr-org/mlr3tuning/issues
