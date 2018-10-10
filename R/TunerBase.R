@@ -20,25 +20,30 @@
 #'
 #' @name TunerBase
 #' @keywords internal
-#' @family TunerBase
+#' @family Tuner
 NULL
 
 #' @export
 TunerBase = R6Class("TunerBase",
   public = list(
 
-    tuner_settings = NULL,
-    tune_terminators = NULL,
+    id = NULL,
+    settings = NULL,
+    terminators = NULL,
     fitness_function_class = NULL,
-    tune_state = NULL,
+    state = NULL,
+    fitness_function = NULL
   
-    initialize = function(id, tuner_settings, tune_terminators, fitness_function_class) {
-    
+    initialize = function(id, settings, terminators, fitness_function_class = NULL) {
+      self$id = assert_character(id)
+      self$settings = assert_list(settings)
+      self$terminators = assert_list(terminators, types = "TerminatorBase")
+      self$fitness_function_class = assert_class(fitness_function_class, "FitnessFunction") %??% FitnessFunction
     },
 
     tune = function(task, learner) {
       stop("tune() not implemented for TunerBase.")
-    }
+    },
     
   ),
   active = list(),
