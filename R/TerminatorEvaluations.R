@@ -32,10 +32,18 @@ TerminatorEvaluations = R6Class("TerminatorEvaluations",
       super$initialize(id = id, settings = list(max_evaluations = assert_int(max_evaluations, lower = 1)))
     },
 
-    update = function(fitness_functions) {
+    update_start = function(fitness_function) {
       if (is.null(self$state)) {
-        self$state = list(evals = 0, terminated = FALSE)
+        self$terminated = FALSE
+        self$state = list(evals = 0)
       }
+      evals = nrow(fitness_functions$experiment_store)
+      self$terminated = (evals >= self$settings$max_evaluations)
+      self$state = list(evals = evals)
+      invisible(self$terminated)
+    },
+
+    update_end = function(fitness_function) {
       evals = nrow(fitness_functions$experiment_store)
       self$terminated = (evals >= self$settings$max_evaluations)
       self$state = list(evals = evals)
@@ -48,7 +56,7 @@ TerminatorEvaluations = R6Class("TerminatorEvaluations",
         sprintf("Budget of %i evaluations exhausted with %i evaluations.", self$settings$max_evaluations, self$state$evals)
       } else {
         sprintf("Budget of %i evaluations not exhausted with %i evaluations.", self$settings$max_evaluations, self$state$evals)
-      },
+      }
     }
   ),
   private = list()

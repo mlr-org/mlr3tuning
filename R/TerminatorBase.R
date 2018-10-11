@@ -52,14 +52,19 @@ TerminatorBase = R6Class("TerminatorBase",
       self$settings = assert_list(settings)
     },
 
-    update = function() {
-      stop("update() not implemented for TerminatorBase.")
+    update_start = function(fitness_function) {
+      stop("update_start() not implemented for TerminatorBase.")
+    },
+
+    update_end = function(fitness_function) {
+      stop("update_end() not implemented for TerminatorBase.")
     },
     
   ),
   active = list(
     message = function() {
       stop("message not implemented for TerminatorBase.")
-    }),
+    }
+  ),
   private = list()
 )
