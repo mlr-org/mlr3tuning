@@ -1,5 +1,5 @@
 Package: mlr3tuning
-Title: Tuning Methods for mlr3
+Title: Tuning for mlr3
 Version: 0.1.0-9000
 Authors@R:
     c(person(given = "Jakob",
@@ -21,7 +21,7 @@ Depends:
     R (>= 3.1.0)
 Imports:
     mlr3,
-    checkmate (>= 1.8.9),
+    checkmate,
     paradox,
     R6
 Suggests:
@@ -30,7 +30,6 @@ Suggests:
 VignetteBuilder:
     knitr
 Remotes:
-    mllg/checkmate,
     mlr-org/paradox,
     mlr-org/mlr3
 ByteCompile: true
