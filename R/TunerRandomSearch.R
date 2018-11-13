@@ -30,9 +30,6 @@
 #' param_set = ParamSet$new(params = list(ParamReal$new("cp", lower = 0.001, upper = 0.1)))
 #'
 #' ff = FitnessFunction$new(task, learner, resampling, measures, param_set, terminator)
-#' ff$ctrl$verbose = FALSE
-#' ff$ctrl$store_model = FALSE
-#' ff$ctrl$store_prediction = FALSE
 #'
 #' rs = TunerRandomSearch$new("rs", ff)
 #' rs$tune(ps)

@@ -35,6 +35,7 @@
 #' `$message` a meaningful message (as string) describing the state of the Terminator.
 #'
 #' @name TerminatorBase
+#' @aliases Terminator
 #' @keywords internal
 #' @family Terminator
 NULL

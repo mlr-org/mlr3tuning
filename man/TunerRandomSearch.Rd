@@ -27,6 +27,19 @@ The id of the Tuner.
 \code{$new()} creates a new object of class \link{TunerRandomSearch}.
 }
 
+\examples{
+task = mlr3::mlr_tasks$get("iris")
+learner = mlr3::mlr_learners$get("classif.rpart")
+resampling = mlr3::mlr_resamplings$get("cv")
+measures = mlr3::mlr_measures$mget("mmce")
+terminator = TerminatorEvaluations$new("term-evals", 10)
+param_set = ParamSet$new(params = list(ParamReal$new("cp", lower = 0.001, upper = 0.1)))
+
+ff = FitnessFunction$new(task, learner, resampling, measures, param_set, terminator)
+
+rs = TunerRandomSearch$new("rs", ff)
+rs$tune(ps)
+}
 \seealso{
 Other Tuner: \code{\link{TunerBase}}
 }

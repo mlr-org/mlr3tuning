@@ -2,6 +2,7 @@
 % Please edit documentation in R/TerminatorBase.R
 \name{TerminatorBase}
 \alias{TerminatorBase}
+\alias{Terminator}
 \title{TerminatorBase}
 \description{
 TerminatorBase.

@@ -20,6 +20,12 @@
 #'   The Resampling method that is used to obtain the y value.
 #' * `measure` (`Measure`):
 #'   Optional, can override the Measure in the Task
+#' * `param_set` ([paradox::ParamSet]):
+#'   Parameter Set.
+#' * `terminator` (`Terminator`):
+#'   A [Terminator] which controls the termination of the tuning.
+#' * `tune_control` (`list()`):
+#'   See [tune_control()].
 #'
 #' @section Details:
 #' `$new()` creates a new object of class [FitnessFunction].
@@ -46,7 +52,7 @@ FitnessFunction = R6Class("FitnessFunction",
 
     experiments = NULL,
 
-    initialize = function(task, learner, resampling, measures = NULL, param_set, terminator, ctrl = mlr3::mlr_control()) {
+    initialize = function(task, learner, resampling, measures = NULL, param_set, terminator, ctrl = tune_control()) {
       self$task = mlr3::assert_task(task)
       self$learner = mlr3::assert_learner(learner, task = task)
       self$resampling = mlr3::assert_resampling(resampling)
@@ -74,7 +80,7 @@ FitnessFunction = R6Class("FitnessFunction",
       })
 
       self$terminator$update_start(self)
-      bmr = benchmark(tasks = list(self$task), learners = learners, resamplings = list(self$resampling), measures = self$measures, ctrl = self$ctrl)
+      bmr = mlr3::benchmark(tasks = list(self$task), learners = learners, resamplings = list(self$resampling), measures = self$measures, ctrl = self$ctrl)
       self$terminator$update_end(self)
 
       if (nrow(self$experiments) == 0L) {

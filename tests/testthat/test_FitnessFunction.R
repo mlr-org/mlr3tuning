@@ -15,7 +15,8 @@ test_that("Construction", {
     resampling = resampling,
     measures = measures,
     param_set = param_set,
-    terminator = terminator
+    terminator = terminator,
+    ctrl = tune_control(store_prediction = TRUE) # for the exceptions
   )
 
   expect_r6(ff, "FitnessFunction")
