@@ -7,7 +7,7 @@
 TunerBase.
 }
 \section{Usage}{
-\preformatted{l = TunerBase(id)
+\preformatted{tuner = TunerBase(id)
 # public members
 # public methods
 # active bindings

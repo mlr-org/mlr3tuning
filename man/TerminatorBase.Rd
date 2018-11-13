@@ -28,18 +28,19 @@ The settings for this Terminator.
 
 \code{$new()} creates a new object of class \link{TerminatorBase}.
 
-\code{$update()} is called in each tuning iteration before the evaluation.
+\code{$update_start()} is called in each tuning iteration before the evaluation.
+
+\code{$update_end()} is called in each tuning iteration after the evaluation.
 
 \code{$state} (\code{list}):
-Custom state of the Terminator.
-Individual for each subclass.
-Gets updated with each call of \code{update()}.
+Arbitrary state of the Terminator. Gets updated with each call of \code{update_start()} and
+\code{update_end()}.
 
 \code{$terminated} (\code{logical(1)}):
-Updated by each call of \code{update()}.
 Is the termination criterion met?
+Updated by each call of \code{update_start()}/\code{update_end()}.
 
-\code{$message} a meaningfull chararacter string describing the state of the Terminator.
+\code{$message} a meaningful message (as string) describing the state of the Terminator.
 }
 
 \seealso{

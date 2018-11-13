@@ -20,15 +20,13 @@
 #'   The Resampling method that is used to obtain the y value.
 #' * `measure` (`Measure`):
 #'   Optional, can override the Measure in the Task
-#' * `param_set` (`ParamSet`):
-#'   Optional, can override the ParamSet of the Learner.
 #'
 #' @section Details:
 #' `$new()` creates a new object of class [FitnessFunction].
 #'
 #' `$eval(x)` (`numeric(length(self$measures))`) evaluates the parameter setting `x` (`list`) for the given learner and resampling.
 #'
-#' `$eval_vectorized(xs)` (`matrix(length(xs), length(self$measures))`) performs resampling for mulitple parameter settings `xs` (list of lists).
+#' `$eval_vectorized(xs)` (`matrix(length(xs), length(self$measures))`) performs resampling for multiple parameter settings `xs` (list of lists).
 #'
 #' @name FitnessFunction
 #' @keywords internal
@@ -42,18 +40,18 @@ FitnessFunction = R6Class("FitnessFunction",
     learner = NULL,
     resampling = NULL,
     measures = NULL,
-    param_set = NULL,
     terminator = NULL,
+    ctrl = NULL,
 
-    experiment_store = NULL,
+    experiments = NULL,
 
-    initialize = function(task, learner, resampling, measures = NULL, param_set, terminator) {
+    initialize = function(task, learner, resampling, measures = NULL, terminator, ctrl = mlr_control()) {
       self$task = mlr3::assert_task(task)
       self$learner = mlr3::assert_learner(learner, task = task)
       self$resampling = mlr3::assert_resampling(resampling)
       self$measures = mlr3::assert_measures(measures %??% task$measures, task = task, learner = learner)
-      self$param_set = assert_class(param_set, "ParamSet")
       self$terminator = assert_class(terminator$clone(), "TerminatorBase")
+      self$ctrl = assert_list(ctrl, names = "unique")
     },
 
     eval = function(x) {
@@ -62,35 +60,49 @@ FitnessFunction = R6Class("FitnessFunction",
     },
 
     eval_vectorized = function(xs) {
-      self$terminator$update_start(self)
       if (self$terminator$terminated) {
         stop(paste("Terminator: ", self$terminator$message))
       }
+
       learners = lapply(xs, function(x) {
         learner = self$learner$clone()
-        learner$par_vals = mlr3::insert(learner$par_vals, x)
+        learner$param_vals = insert.list(learner$param_vals, x)
         return(learner)
       })
-      res = benchmark(tasks = list(self$task), learners = learners, resamplings = list(self$resampling), measures = self$measures)
-      if (is.null(self$experiment_store)) {
-        self$experiment_store = res$data
-      } else {
-        self$experiment_store = rbind(self$experiment_store, res$data)
-      }
+
+      self$terminator$update_start(self)
+      bmr = benchmark(tasks = list(self$task), learners = learners, resamplings = list(self$resampling), measures = self$measures)
       self$terminator$update_end(self)
-      t(vapply(res$aggregated, identity, numeric(length(self$measures))))
+
+      if (is.null(self$experiments)) {
+        self$experiments = bmr$data
+      } else {
+        self$experiments = rbind(self$experiments, bmr$data)
+      }
+
+      as.matrix(bmr$aggregated[, ids(self$measures), with = FALSE])
     },
 
     get_best = function() {
-      bmr = mlr3:::BenchmarkResult$new(self$experiment_store)
+      if (is.null(self$experiments))
+        stop("No experiments conducted")
+      bmr = mlr3::BenchmarkResult$new(self$experiments)
       m = self$measures[[1L]]
-      perfs = bmr$performance[, list(y = mean(get(m$id))), by = "hash"]
+      perfs = bmr$aggregated
+
+
       if (m$minimize) {
-        hash = perfs$hash[which.min(perfs$y)]
+        hash = perfs$hash[which.min(perfs[[m$id]])]
       } else {
-        hash = perfs$hash[which.max(perfs$y)]
+        hash = perfs$hash[which.max(perfs[[m$id]])]
       }
       bmr$resample_result(hash)
+    }
+  ),
+
+  active = list(
+    param_set = function() {
+      self$learner$param_set
     }
   )
 )

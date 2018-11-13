@@ -7,7 +7,7 @@
 TunerRandomSearch
 }
 \section{Usage}{
-\preformatted{l = TunerRandomSearch(id)
+\preformatted{tuner = TunerRandomSearch(id)
 # public members
 # public methods
 # active bindings

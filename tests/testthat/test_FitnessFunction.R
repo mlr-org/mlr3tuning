@@ -3,7 +3,8 @@ context("FitnessFunction")
 test_that("Construction", {
   task = mlr3::mlr_tasks$get("iris")
   learner = mlr3::mlr_learners$get("classif.rpart")
-  resampling = mlr3::mlr_resamplings$get("cv")
+  learner$param_vals = list(minsplit = 3)
+  resampling = mlr3::mlr_resamplings$get("holdout")
   measures = mlr3::mlr_measures$mget("mmce")
   terminator = TerminatorIterations$new("t3", 3)
 
@@ -12,8 +13,21 @@ test_that("Construction", {
     learner = learner,
     resampling = resampling,
     measures = measures,
-    param_set = ParamSet$new(),
     terminator = terminator
   )
 
+  expect_r6(ff, "FitnessFunction")
+  expect_r6(ff$param_set, "ParamSet")
+
+  expect_number(ff$eval(list(cp = 0.01)), lower = 0, upper = 1)
+  expect_data_table(ff$experiments, nrow = 1L)
+  expect_equal(ff$experiments$learner[[1L]]$param_vals$cp, 0.01)
+  expect_equal(ff$experiments$learner[[1L]]$param_vals$minsplit, 3)
+
+  expect_number(ff$eval(list(cp = 0.1)), lower = 0, upper = 1)
+  expect_data_table(ff$experiments, nrow = 2L)
+  expect_equal(ff$experiments$learner[[2L]]$param_vals$cp, 0.1)
+  expect_equal(ff$experiments$learner[[2L]]$param_vals$minsplit, 3)
+
+  expect_resample_result(ff$get_best())
 })

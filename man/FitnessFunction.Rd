@@ -7,7 +7,7 @@
 FitnessFunction.
 }
 \section{Usage}{
-\preformatted{l = FitnessFunction(id)
+\preformatted{ff = FitnessFunction(id)
 # public members
 # public methods
 # active bindings
@@ -25,8 +25,6 @@ The Learner that we want to evaluate.
 The Resampling method that is used to obtain the y value.
 \item \code{measure} (\code{Measure}):
 Optional, can override the Measure in the Task
-\item \code{param_set} (\code{ParamSet}):
-Optional, can override the ParamSet of the Learner.
 }
 }
 
@@ -36,7 +34,7 @@ Optional, can override the ParamSet of the Learner.
 
 \code{$eval(x)} (\code{numeric(length(self$measures))}) evaluates the parameter setting \code{x} (\code{list}) for the given learner and resampling.
 
-\code{$eval_vectorized(xs)} (\code{matrix(length(xs), length(self$measures))}) performs resampling for mulitple parameter settings \code{xs} (list of lists).
+\code{$eval_vectorized(xs)} (\code{matrix(length(xs), length(self$measures))}) performs resampling for multiple parameter settings \code{xs} (list of lists).
 }
 
 \concept{FitnessFunction}
