@@ -29,31 +29,26 @@ TerminatorIterations = R6Class("TerminatorIterations",
   public = list(
 
     initialize = function(id, max_iterations) {
-      super$initialize(id = id, settings = list(max_iterations = assert_int(max_iterations, lower = 1)))
+      super$initialize(id = id, settings = list(max_iterations = assert_int(max_iterations, lower = 1L, coerce = TRUE)))
+      self$terminated = FALSE
+      self$state = list(iters = 0L)
     },
 
     update_start = function(fitness_function) {
-      if (is.null(self$state)) {
-        self$terminated = FALSE
-        self$state = list(iters = 0)
-      }
       invisible(self$terminated)
     },
 
     update_end = function(fitness_function) {
-      self$state$iters = self$state$iters + 1
+      self$state$iters = self$state$iters + 1L
       self$terminated = (self$state$iters >= self$settings$max_iterations)
       invisible(self$terminated)
     }
   ),
+
   active = list(
     message = function() {
-      if (self$terminated) {
-        sprintf("Budget of %i iteratons exhausted with %i iteratons", self$settings$max_iterations, self$state$evals)
-      } else {
-        sprintf("Budget of %i iteratons not exhausted with %i iteratons", self$settings$max_iterations, self$state$evals)
-      }
+      sprintf("Iteration %i/%i (%s)", self$state$iters, self$settings$max_iterations,
+        if (self$terminated) "exhausted" else "not exhausted")
     }
-  ),
-  private = list()
+  )
 )

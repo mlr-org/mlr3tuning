@@ -5,7 +5,7 @@
 #'
 #' @section Usage:
 #' ```
-#' l = TunerRandomSearch(id)
+#' tuner = TunerRandomSearch(id)
 #' # public members
 #' # public methods
 #' # active bindings
@@ -27,7 +27,7 @@ NULL
 TunerRandomSearch = R6Class("TunerRandomSearch",
   inherit = TunerBase,
   public = list(
-  
+
     initialize = function(id, terminator, fitness_function_class = NULL, batch_n = 100) {
       super$initialize(id = id, settings = list(batch_n = batch_n), terminator = terminator, fitness_function_class = fitness_function_class)
       #FIXME: Allow initialization with concrete fitness_function?
@@ -39,10 +39,8 @@ TunerRandomSearch = R6Class("TunerRandomSearch",
       if ("TerminatorEvaluations" %in% class(self$terminator)) {
         self$settings$batch_n = self$fitness_function$terminator$settings$max_evaluations
       }
-      terminated = FALSE
-      while (!terminated) {
-        self$tune_step()  
-        terminated = self$fitness_function$terminator$terminated
+      while (!self$fitness_function$terminator$terminated) {
+        self$tune_step()
       }
     },
 
@@ -52,7 +50,7 @@ TunerRandomSearch = R6Class("TunerRandomSearch",
       y = self$fitness_function$eval_vectorized(xs)
       invisible(y)
     }
-    
+
   ),
   active = list(),
   private = list()

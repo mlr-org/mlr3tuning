@@ -5,7 +5,7 @@
 #'
 #' @section Usage:
 #' ```
-#' l = TunerBase(id)
+#' tuner = TunerBase(id)
 #' # public members
 #' # public methods
 #' # active bindings
@@ -39,10 +39,10 @@ TunerBase = R6Class("TunerBase",
     fitness_function = NULL,
 
     initialize = function(id, settings, terminator, fitness_function_class = NULL) {
-      self$id = assert_character(id)
+      self$id = assert_string(id)
       self$settings = assert_list(settings)
       self$terminator = assert_r6(terminator, "TerminatorBase")
-      self$fitness_function_class = assert_class(fitness_function_class, "R6ClassGenerator") %??% FitnessFunction
+      self$fitness_function_class = assert_class(fitness_function_class, "R6ClassGenerator", null.ok = TRUE) %??% FitnessFunction
     },
 
     tune = function(task, learner, param_set) {

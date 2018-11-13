@@ -20,18 +20,19 @@
 #' @section Details:
 #' `$new()` creates a new object of class [TerminatorBase].
 #'
-#' `$update()` is called in each tuning iteration before the evaluation.
+#' `$update_start()` is called in each tuning iteration before the evaluation.
+#'
+#' `$update_end()` is called in each tuning iteration after the evaluation.
 #'
 #' `$state` (`list`):
-#'   Custom state of the Terminator.
-#'   Individual for each subclass.
-#'   Gets updated with each call of `update()`.
+#'   Arbitrary state of the Terminator. Gets updated with each call of `update_start()` and
+#'   `update_end()`.
 #'
 #' `$terminated` (`logical(1)`):
-#'   Updated by each call of `update()`.
 #'   Is the termination criterion met?
+#'   Updated by each call of `update_start()`/`update_end()`.
 #'
-#' `$message` a meaningfull chararacter string describing the state of the Terminator.
+#' `$message` a meaningful message (as string) describing the state of the Terminator.
 #'
 #' @name TerminatorBase
 #' @keywords internal
@@ -53,17 +54,17 @@ TerminatorBase = R6Class("TerminatorBase",
     },
 
     update_start = function(fitness_function) {
-      stop("update_start() not implemented for TerminatorBase.")
+      stop("$update_start() not implemented for TerminatorBase.")
     },
 
     update_end = function(fitness_function) {
-      stop("update_end() not implemented for TerminatorBase.")
+      stop("$update_end() not implemented for TerminatorBase.")
     }
   ),
+
   active = list(
     message = function() {
-      stop("message not implemented for TerminatorBase.")
+      stop("$message not implemented for TerminatorBase.")
     }
-  ),
-  private = list()
+  )
 )
