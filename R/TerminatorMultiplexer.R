@@ -65,6 +65,9 @@ TerminatorMultiplexer = R6Class("TerminatorMultiplexer",
   ),
 
   active = list(
+    remaining = function() {
+      as.integer(max(min(vapply(self$terminators, function(t) t$remaining, NA_real_)), 0))
+    },
     message = function() {
       paste0(vapply(self$terminators, function(x) x$message, NA_character_), collapse = "\n")
     }

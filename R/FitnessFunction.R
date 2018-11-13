@@ -40,18 +40,21 @@ FitnessFunction = R6Class("FitnessFunction",
     learner = NULL,
     resampling = NULL,
     measures = NULL,
+    param_set = NULL,
     terminator = NULL,
     ctrl = NULL,
 
     experiments = NULL,
 
-    initialize = function(task, learner, resampling, measures = NULL, terminator, ctrl = mlr3::mlr_control()) {
+    initialize = function(task, learner, resampling, measures = NULL, param_set, terminator, ctrl = mlr3::mlr_control()) {
       self$task = mlr3::assert_task(task)
       self$learner = mlr3::assert_learner(learner, task = task)
       self$resampling = mlr3::assert_resampling(resampling)
       self$measures = mlr3::assert_measures(measures %??% task$measures, task = task, learner = learner)
+      self$param_set = assert_class(param_set, "ParamSet")
       self$terminator = assert_class(terminator$clone(), "TerminatorBase")
       self$ctrl = assert_list(ctrl, names = "unique")
+      self$experiments = data.table()
     },
 
     eval = function(x) {
@@ -71,10 +74,10 @@ FitnessFunction = R6Class("FitnessFunction",
       })
 
       self$terminator$update_start(self)
-      bmr = benchmark(tasks = list(self$task), learners = learners, resamplings = list(self$resampling), measures = self$measures)
+      bmr = benchmark(tasks = list(self$task), learners = learners, resamplings = list(self$resampling), measures = self$measures, ctrl = self$ctrl)
       self$terminator$update_end(self)
 
-      if (is.null(self$experiments)) {
+      if (nrow(self$experiments) == 0L) {
         self$experiments = bmr$data
       } else {
         self$experiments = rbind(self$experiments, bmr$data)
@@ -84,7 +87,7 @@ FitnessFunction = R6Class("FitnessFunction",
     },
 
     get_best = function() {
-      if (is.null(self$experiments))
+      if (nrow(self$experiments) == 0L)
         stop("No experiments conducted")
       bmr = mlr3::BenchmarkResult$new(self$experiments)
       m = self$measures[[1L]]
@@ -97,12 +100,6 @@ FitnessFunction = R6Class("FitnessFunction",
         hash = perfs$hash[which.max(perfs[[m$id]])]
       }
       bmr$resample_result(hash)
-    }
-  ),
-
-  active = list(
-    param_set = function() {
-      self$learner$param_set
     }
   )
 )

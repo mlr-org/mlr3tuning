@@ -48,6 +48,10 @@ TerminatorEvaluations = R6Class("TerminatorEvaluations",
   ),
 
   active = list(
+    remaining = function() {
+      max(self$settings$max_evaluations - self$state$evals, 0L)
+    },
+
     message = function() {
       sprintf("Iteration %i/%i (%s)", self$state$evals, self$settings$max_evaluations,
         if (self$terminated) "exhausted" else "not exhausted")

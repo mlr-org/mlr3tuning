@@ -6,6 +6,7 @@ test_that("Construction", {
   learner$param_vals = list(minsplit = 3)
   resampling = mlr3::mlr_resamplings$get("holdout")
   measures = mlr3::mlr_measures$mget("mmce")
+  param_set = ParamSet$new(params = list(ParamReal$new("cp", lower = 0.001, upper = 0.1)))
   terminator = TerminatorIterations$new("t3", 3)
 
   ff = FitnessFunction$new(
@@ -13,6 +14,7 @@ test_that("Construction", {
     learner = learner,
     resampling = resampling,
     measures = measures,
+    param_set = param_set,
     terminator = terminator
   )
 
