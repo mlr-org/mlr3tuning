@@ -36,8 +36,8 @@ TunerBase = R6Class("TunerBase",
     terminators = NULL,
     fitness_function_class = NULL,
     state = NULL,
-    fitness_function = NULL
-  
+    fitness_function = NULL,
+
     initialize = function(id, settings, terminator, fitness_function_class = NULL) {
       self$id = assert_character(id)
       self$settings = assert_list(settings)
@@ -56,7 +56,7 @@ TunerBase = R6Class("TunerBase",
     tune_result = function() {
       self$fitness_function$get_best()
     }
-    
+
   ),
   active = list(),
   private = list()

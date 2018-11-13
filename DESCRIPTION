@@ -14,7 +14,7 @@ Authors@R:
              family = "Lang",
              role = "aut",
              email = "michellang@gmail.com",
-             comment = c(ORCID = "0000-0001-9754-0393")),)
+             comment = c(ORCID = "0000-0001-9754-0393")))
 Description: Implements methods for hyperparameter tuning in mlr3.
 License: MIT + file LICENSE
 Depends:
@@ -39,3 +39,4 @@ NeedsCompilation: no
 Roxygen: list(markdown = TRUE)
 URL: https://github.com/mlr-org/mlr3tuning
 BugReports: https://github.com/mlr-org/mlr3tuning/issues
+RoxygenNote: 6.1.1

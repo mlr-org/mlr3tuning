@@ -19,20 +19,20 @@
 #'
 #' @section Details:
 #' `$new()` creates a new object of class [TerminatorBase].
-#' 
+#'
 #' `$update()` is called in each tuning iteration before the evaluation.
-#' 
+#'
 #' `$state` (`list`):
 #'   Custom state of the Terminator.
 #'   Individual for each subclass.
 #'   Gets updated with each call of `update()`.
-#' 
+#'
 #' `$terminated` (`logical(1)`):
 #'   Updated by each call of `update()`.
 #'   Is the termination criterion met?
-#' 
+#'
 #' `$message` a meaningfull chararacter string describing the state of the Terminator.
-#'   
+#'
 #' @name TerminatorBase
 #' @keywords internal
 #' @family Terminator
@@ -46,7 +46,7 @@ TerminatorBase = R6Class("TerminatorBase",
     settings = NULL,
     state = NULL,
     terminated = NULL,
-  
+
     initialize = function(id, settings) {
       self$id = assert_string(id)
       self$settings = assert_list(settings)
@@ -58,8 +58,7 @@ TerminatorBase = R6Class("TerminatorBase",
 
     update_end = function(fitness_function) {
       stop("update_end() not implemented for TerminatorBase.")
-    },
-    
+    }
   ),
   active = list(
     message = function() {

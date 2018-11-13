@@ -20,20 +20,20 @@
 #'
 #' @section Details:
 #' `$new()` creates a new object of class [TerminatorMultiplexer].
-#' 
+#'
 #' `$update()` is called in each tuning iteration before the evaluation.
-#' 
+#'
 #' `$state` (`list`):
 #'   Custom state of the Terminator.
 #'   Individual for each subclass.
 #'   Gets updated with each call of `update()`.
-#' 
+#'
 #' `$terminated` (`logical(1)`):
 #'   Updated by each call of `update()`.
 #'   Is the termination criterion met?
-#' 
+#'
 #' `$message` a meaningfull chararacter string describing the state of the Terminator.
-#'   
+#'
 #' @name TerminatorMultiplexer
 #' @keywords internal
 #' @family Terminator
@@ -42,9 +42,9 @@ NULL
 #' @export
 TerminatorMultiplexer = R6Class("TerminatorMultiplexer",
   inherit = TerminatorBase,
-  terminators = NULL,
 
   public = list(
+    terminators = NULL,
     initialize = function(id, terminators) {
       self$terminators = assert_list(terminators, types = "TerminatorBase")
       supper$initialize(id = id, settings = list())
@@ -73,7 +73,7 @@ TerminatorMultiplexer = R6Class("TerminatorMultiplexer",
         invisible(self$terminated)
       }
     }
-    
+
   ),
   active = list(
     message = function() {
