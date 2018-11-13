@@ -11,7 +11,7 @@ test_that("API", {
   ti$update_end()
   expect_identical(ti$state$iters, 1L)
   expect_false(ti$terminated)
-  expect_string(ti$message, "1/2")
+  expect_string(ti$message, fixed = "1/2")
 
   ti$update_start()
   expect_identical(ti$state$iters, 1L)
@@ -19,5 +19,5 @@ test_that("API", {
   expect_identical(ti$state$iters, 2L)
   expect_true(ti$terminated)
 
-  expect_string(ti$message, "2/2")
+  expect_string(ti$message, fixed = "2/2")
 })

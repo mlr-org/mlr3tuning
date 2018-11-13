@@ -29,35 +29,28 @@ TerminatorEvaluations = R6Class("TerminatorEvaluations",
   public = list(
 
     initialize = function(id, max_evaluations) {
-      super$initialize(id = id, settings = list(max_evaluations = assert_int(max_evaluations, lower = 1)))
+      super$initialize(id = id, settings = list(max_evaluations = assert_int(max_evaluations, lower = 1L, coerce = TRUE)))
+      self$terminated = FALSE
+      self$state = list(evals = 0L)
     },
 
-    update_start = function(fitness_function) {
-      if (is.null(self$state)) {
-        self$terminated = FALSE
-        self$state = list(evals = 0)
-      }
-      evals = nrow(fitness_functions$experiment_store)
-      self$terminated = (evals >= self$settings$max_evaluations)
-      self$state = list(evals = evals)
-      invisible(self$terminated)
+    update_start = function(ff) {
+      self$state$evals = nrow(ff$experiments)
+      self$terminated = (self$state$evals >= self$settings$max_evaluations)
+      invisible(self)
     },
 
-    update_end = function(fitness_function) {
-      evals = nrow(fitness_functions$experiment_store)
-      self$terminated = (evals >= self$settings$max_evaluations)
-      self$state = list(evals = evals)
-      invisible(self$terminated)
+    update_end = function(ff) {
+      self$state$evals = nrow(ff$experiments)
+      self$terminated = (self$state$evals >= self$settings$max_evaluations)
+      invisible(self)
     }
   ),
+
   active = list(
     message = function() {
-      if (self$terminated) {
-        sprintf("Budget of %i evaluations exhausted with %i evaluations.", self$settings$max_evaluations, self$state$evals)
-      } else {
-        sprintf("Budget of %i evaluations not exhausted with %i evaluations.", self$settings$max_evaluations, self$state$evals)
-      }
+      sprintf("Iteration %i/%i (%s)", self$state$evals, self$settings$max_evaluations,
+        if (self$terminated) "exhausted" else "not exhausted")
     }
-  ),
-  private = list()
+  )
 )

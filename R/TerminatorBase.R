@@ -44,9 +44,9 @@ TerminatorBase = R6Class("TerminatorBase",
   public = list(
 
     id = NULL,
+    terminated = NULL,
     settings = NULL,
     state = NULL,
-    terminated = NULL,
 
     initialize = function(id, settings) {
       self$id = assert_string(id)

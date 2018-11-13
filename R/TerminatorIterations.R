@@ -34,14 +34,14 @@ TerminatorIterations = R6Class("TerminatorIterations",
       self$state = list(iters = 0L)
     },
 
-    update_start = function(fitness_function) {
-      invisible(self$terminated)
+    update_start = function(ff) {
+      invisible(self)
     },
 
-    update_end = function(fitness_function) {
+    update_end = function(ff) {
       self$state$iters = self$state$iters + 1L
-      self$terminated = (self$state$iters >= self$settings$max_iterations)
-      invisible(self$terminated)
+      self$terminated = self$state$iters >= self$settings$max_iterations
+      invisible(self)
     }
   ),
 

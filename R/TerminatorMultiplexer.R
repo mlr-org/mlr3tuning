@@ -47,45 +47,26 @@ TerminatorMultiplexer = R6Class("TerminatorMultiplexer",
     terminators = NULL,
     initialize = function(id, terminators) {
       self$terminators = assert_list(terminators, types = "TerminatorBase")
-      supper$initialize(id = id, settings = list())
+      self$terminated = FALSE
+      super$initialize(id = id, settings = list())
     },
 
-    update_start = function(fitness_function) {
-      if (is.null(self$state)) {
-        self$terminated = FALSE
-        self$state = list(terminated.inds = NULL)
-      }
-      for (i in seq_along(terminators)) {
-        terminator = self$terminators[[i]]
-        terminator$update_start(fitness_function)
-        self$state$terminated.inds = c(self$state$terminated.inds, i)
-        self$terminated = self$terminated || terminator$terminated
-        invisible(self$terminated)
-      }
+    update_start = function(ff) {
+      lapply(self$terminators, function(t) t$update_start(ff))
+      self$terminated = self$terminated | any(vapply(self$terminators, function(t) t$terminated, NA))
+      invisible(self)
     },
 
-    update_end = function(fitness_function) {
-      for (i in seq_along(terminators)) {
-        terminator = self$terminators[[i]]
-        terminator$update_end(fitness_function)
-        self$state$terminated.inds = c(self$state$terminated.inds, i)
-        self$terminated = self$terminated || terminator$terminated
-        invisible(self$terminated)
-      }
+    update_end = function(ff) {
+      lapply(self$terminators, function(t) t$update_end(ff))
+      self$terminated = self$terminated | any(vapply(self$terminators, function(t) t$terminated, NA))
+      invisible(self)
     }
-
   ),
+
   active = list(
     message = function() {
-      if (self$terminated) {
-        msgs = vapply(self$state$terminated.inds, function(i) {
-          paste0(self$terminators[[i]]$id, ": ", self$terminators[[i]]$terminated, character(1L))
-        })
-        paste0("Terminated: ", msgs, collapse = ", ")
-      } else {
-        "No Terminator terminated."
-      }
+      paste0(vapply(self$terminators, function(x) x$message, NA_character_), collapse = "\n")
     }
-  ),
-  private = list()
+  )
 )

@@ -45,7 +45,7 @@ FitnessFunction = R6Class("FitnessFunction",
 
     experiments = NULL,
 
-    initialize = function(task, learner, resampling, measures = NULL, terminator, ctrl = mlr_control()) {
+    initialize = function(task, learner, resampling, measures = NULL, terminator, ctrl = mlr3::mlr_control()) {
       self$task = mlr3::assert_task(task)
       self$learner = mlr3::assert_learner(learner, task = task)
       self$resampling = mlr3::assert_resampling(resampling)
