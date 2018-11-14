@@ -16,6 +16,9 @@ Store the predictions of the individual experiments.}
 
 \item{verbose}{[logical(1)]:\cr
 Output additional information.}
+
+\item{...}{[any]:\cr
+Additional arguments passed down to \code{\link[mlr3:mlr_control]{mlr3::mlr_control()}}.}
 }
 \value{
 [list()] with options passed down to \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.

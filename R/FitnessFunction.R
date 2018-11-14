@@ -89,7 +89,7 @@ FitnessFunction = R6Class("FitnessFunction",
         self$experiments = rbind(self$experiments, bmr$data)
       }
 
-      as.matrix(bmr$aggregated[, ids(self$measures), with = FALSE])
+      as.matrix(bmr$aggregated[, mlr3::ids(self$measures), with = FALSE])
     },
 
     get_best = function() {

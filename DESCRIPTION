@@ -22,10 +22,12 @@ Depends:
 Imports:
     mlr3,
     checkmate,
+    data.table,
     paradox,
     R6
 Suggests:
     knitr,
+    rpart,
     testthat
 VignetteBuilder:
     knitr
