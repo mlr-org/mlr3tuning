@@ -63,8 +63,7 @@ FitnessFunction = R6Class("FitnessFunction",
     },
 
     eval = function(x) {
-      res = self$eval_vectorized(list(x))
-      res[1L, , drop = TRUE]
+      self$eval_vectorized(list(x))
     },
 
     eval_vectorized = function(xs) {
@@ -87,8 +86,7 @@ FitnessFunction = R6Class("FitnessFunction",
         self$experiments = rbind(self$experiments, bmr$data)
       }
       self$terminator$update_end(self)
-
-      as.matrix(bmr$aggregated[, mlr3::ids(self$measures), with = FALSE])
+      invisible(self)
     },
 
     get_best = function() {
