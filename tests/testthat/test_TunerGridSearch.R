@@ -14,16 +14,16 @@ test_that("TunerGridSearch",  {
   )))
 
   ff = FitnessFunction$new(task, learner, resampling, measures, param_set, terminator)
-  rs = TunerGridSearch$new(ff)
+  gs = TunerGridSearch$new(ff)
 
-  exps = rs$ff$experiments
-  expect_r6(rs, "TunerGridSearch")
+  result = gs$tune()$tune_result()
+  exps = gs$ff$experiments
+  expect_r6(gs, "TunerGridSearch")
   expect_data_table(exps, nrow = 2*5)
-  expect_equal(rs$settings$resolution, 5)
-  result = rs$tune()$tune_result()
+  expect_equal(gs$settings$resolution, 5)
+  result = gs$tune()$tune_result()
   expect_list(result)
   expect_number(result$performance, lower = measures$mmce$range[1], upper = measures$mmce$range[2])
   expect_list(result$param_vals, len = 2)
   expect_equal(result$param_vals$minsplit, 3)
-  expect_equal(nrow(ff$experiments), 5)
 })
