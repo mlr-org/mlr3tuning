@@ -2,10 +2,9 @@ context("TerminatorMultiplexer")
 
 test_that("API", {
   ff = list(experiments = data.table())
-  ti = TerminatorIterations$new("iter-terminator", 2)
-  te = TerminatorEvaluations$new("iter-terminator", 2)
-  tm = TerminatorMultiplexer$new("multi-terminator", list(ti, te))
-  expect_list(tm$settings, len = 0L)
+  ti = TerminatorIterations$new(2)
+  te = TerminatorEvaluations$new(2)
+  tm = TerminatorMultiplexer$new(list(ti, te))
   expect_equal(tm$remaining, 2)
 
   tm$update_start(ff)
@@ -23,5 +22,5 @@ test_that("API", {
   expect_true(tm$terminated)
   expect_equal(tm$remaining, 0L)
 
-  expect_string(tm$message, fixed = "(exhausted)")
+  expect_string(format(tm), fixed = "0 remaining")
 })

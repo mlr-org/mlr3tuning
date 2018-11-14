@@ -7,30 +7,32 @@
 TerminatorIterations.
 }
 \section{Usage}{
-\preformatted{l = Terminator(id)
-# public members
-# public methods
-# active bindings
+\preformatted{t = TerminatorIterations$new(max_iterations)
 }
+
+See \link{Terminator} for a description of the interface.
 }
 
 \section{Arguments}{
 
 \itemize{
-\item \code{id} (\code{character(1)}):
-The name of the Terminator.
+\item \code{max_iterations} [`integer(1)]:\cr
+Maximum number of iterations.
 }
 }
 
 \section{Details}{
 
 \code{$new()} creates a new object of class \link{TerminatorIterations}.
+The interface is described in \link{Terminator}.
 }
 
+\examples{
+t = TerminatorIterations$new(3)
+}
 \seealso{
-Other Terminator: \code{\link{TerminatorBase}},
-  \code{\link{TerminatorEvaluations}},
-  \code{\link{TerminatorMultiplexer}}
+Other Terminator: \code{\link{TerminatorEvaluations}},
+  \code{\link{TerminatorMultiplexer}},
+  \code{\link{Terminator}}
 }
 \concept{Terminator}
-\keyword{internal}

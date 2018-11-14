@@ -5,31 +5,31 @@
 #'
 #' @section Usage:
 #' ```
-#' l = Terminator(id)
-#' # public members
-#' # public methods
-#' # active bindings
+#' t = TerminatorIterations$new(max_iterations)
 #' ```
+#' See [Terminator] for a description of the interface.
 #'
 #' @section Arguments:
-#' * `id` (`character(1)`):
-#'   The name of the Terminator.
+#' * `max_iterations` \[`integer(1)\]:\cr
+#'   Maximum number of iterations.
 #'
 #' @section Details:
 #' `$new()` creates a new object of class [TerminatorIterations].
+#' The interface is described in [Terminator].
 #'
 #' @name TerminatorIterations
-#' @keywords internal
 #' @family Terminator
+#' @examples
+#' t = TerminatorIterations$new(3)
 NULL
 
 #' @export
 TerminatorIterations = R6Class("TerminatorIterations",
-  inherit = TerminatorBase,
+  inherit = Terminator,
   public = list(
 
-    initialize = function(id, max_iterations) {
-      super$initialize(id = id, settings = list(max_iterations = assert_int(max_iterations, lower = 1L, coerce = TRUE)))
+    initialize = function(max_iterations) {
+      super$initialize(settings = list(max_iterations = assert_int(max_iterations, lower = 1L, coerce = TRUE)))
       self$terminated = FALSE
       self$state = list(iters = 0L)
     },
@@ -42,16 +42,14 @@ TerminatorIterations = R6Class("TerminatorIterations",
       self$state$iters = self$state$iters + 1L
       self$terminated = self$state$iters >= self$settings$max_iterations
       invisible(self)
-    }
+    },
+
+    format = function() sprintf("TerminatorIterations with %i remaining iterations", self$remaining)
   ),
 
   active = list(
     remaining = function() {
       max(self$settings$max_iterations - self$state$iters, 0L)
-    },
-    message = function() {
-      sprintf("Iteration %i/%i (%s)", self$state$iters, self$settings$max_iterations,
-        if (self$terminated) "exhausted" else "not exhausted")
     }
   )
 )

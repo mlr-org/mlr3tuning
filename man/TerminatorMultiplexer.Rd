@@ -8,45 +8,35 @@ TerminatorMultiplexer takes multiple Terminators and will lead to termination as
 In the future more advanced termination rules can be implemented using this Multiplexer.
 }
 \section{Usage}{
-\preformatted{l = Terminator(id)
-# public members
-# public methods
-# active bindings
+\preformatted{t = TerminatorMultiplexer$new(terminators)
 }
+
+See \link{Terminator} for a description of the interface.
 }
 
 \section{Arguments}{
 
 \itemize{
-\item \code{id} (\code{character(1)}):
-The name of the Terminator.
-\item \code{settings} (\code{list}):
-The settings for this Terminator.
+\item \code{terminators} (\code{list}):
+List of objects of class \link{Terminator}.
 }
 }
 
 \section{Details}{
 
 \code{$new()} creates a new object of class \link{TerminatorMultiplexer}.
-
-\code{$update()} is called in each tuning iteration before the evaluation.
-
-\code{$state} (\code{list}):
-Custom state of the Terminator.
-Individual for each subclass.
-Gets updated with each call of \code{update()}.
-
-\code{$terminated} (\code{logical(1)}):
-Updated by each call of \code{update()}.
-Is the termination criterion met?
-
-\code{$message} a meaningfull chararacter string describing the state of the Terminator.
 }
 
+\examples{
+t = TerminatorMultiplexer$new(list(
+   TerminatorIterations$new(3),
+   TerminatorEvaluations$new(10)
+))
+print(t)
+}
 \seealso{
-Other Terminator: \code{\link{TerminatorBase}},
-  \code{\link{TerminatorEvaluations}},
-  \code{\link{TerminatorIterations}}
+Other Terminator: \code{\link{TerminatorEvaluations}},
+  \code{\link{TerminatorIterations}},
+  \code{\link{Terminator}}
 }
 \concept{Terminator}
-\keyword{internal}

@@ -4,7 +4,8 @@
 \alias{FitnessFunction}
 \title{FitnessFunction}
 \description{
-FitnessFunction.
+Implements a fitness function for \pkg{mlr3}.
+Input are hyperparameters, output is the predictive performance.
 }
 \section{Usage}{
 \preformatted{ff = FitnessFunction(id)

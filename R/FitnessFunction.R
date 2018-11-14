@@ -1,7 +1,8 @@
 #' @title FitnessFunction
 #'
 #' @description
-#' FitnessFunction.
+#' Implements a fitness function for \pkg{mlr3}.
+#' Input are hyperparameters, output is the predictive performance.
 #'
 #' @section Usage:
 #' ```
@@ -58,7 +59,7 @@ FitnessFunction = R6Class("FitnessFunction",
       self$resampling = mlr3::assert_resampling(resampling)
       self$measures = mlr3::assert_measures(measures %??% task$measures, task = task, learner = learner)
       self$param_set = assert_class(param_set, "ParamSet")
-      self$terminator = assert_class(terminator$clone(), "TerminatorBase")
+      self$terminator = assert_class(terminator$clone(), "Terminator")
       self$ctrl = assert_list(ctrl, names = "unique")
       self$experiments = data.table()
     },
