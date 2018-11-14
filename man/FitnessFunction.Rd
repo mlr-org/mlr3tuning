@@ -37,11 +37,11 @@ See \code{\link[=tune_control]{tune_control()}}.
 
 \section{Details}{
 
-\code{$new()} creates a new object of class \link{FitnessFunction}.
-
-\code{$eval(x)} (\code{numeric(length(self$measures))}) evaluates the parameter setting \code{x} (\code{list}) for the given learner and resampling.
-
-\code{$eval_vectorized(xs)} (\code{matrix(length(xs), length(self$measures))}) performs resampling for multiple parameter settings \code{xs} (list of lists).
+\itemize{
+\item \code{$new()} creates a new object of class \link{FitnessFunction}.
+\item \code{$eval(x)} (\code{numeric(length(self$measures))}) evaluates the parameter setting \code{x} (\code{list}) for the given learner and resampling.
+\item \code{$eval_vectorized(xs)} (\code{matrix(length(xs), length(self$measures))}) performs resampling for multiple parameter settings \code{xs} (list of lists).
+}
 }
 
 \concept{FitnessFunction}

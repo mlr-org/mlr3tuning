@@ -29,11 +29,9 @@
 #'   See [tune_control()].
 #'
 #' @section Details:
-#' `$new()` creates a new object of class [FitnessFunction].
-#'
-#' `$eval(x)` (`numeric(length(self$measures))`) evaluates the parameter setting `x` (`list`) for the given learner and resampling.
-#'
-#' `$eval_vectorized(xs)` (`matrix(length(xs), length(self$measures))`) performs resampling for multiple parameter settings `xs` (list of lists).
+#' * `$new()` creates a new object of class [FitnessFunction].
+#' * `$eval(x)` (`numeric(length(self$measures))`) evaluates the parameter setting `x` (`list`) for the given learner and resampling.
+#' * `$eval_vectorized(xs)` (`matrix(length(xs), length(self$measures))`) performs resampling for multiple parameter settings `xs` (list of lists).
 #'
 #' @name FitnessFunction
 #' @keywords internal
@@ -99,14 +97,13 @@ FitnessFunction = R6Class("FitnessFunction",
       bmr = mlr3::BenchmarkResult$new(self$experiments)
       m = self$measures[[1L]]
       perfs = bmr$aggregated
-
-
-      if (m$minimize) {
-        hash = perfs$hash[which.min(perfs[[m$id]])]
-      } else {
-        hash = perfs$hash[which.max(perfs[[m$id]])]
-      }
-      bmr$resample_result(hash)
+      bmr$resample_result(perfs$hash[which_best(m, perfs[[m$id]])])
     }
   )
 )
+
+which_best = function(measure, x) {
+  best = if (measure$minimize) min(x) else max(x)
+  i = which(x == best)
+  i[sample.int(length(i), 1L)]
+}
