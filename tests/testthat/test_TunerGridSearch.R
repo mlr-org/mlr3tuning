@@ -1,7 +1,7 @@
-context("TunerRandomSearch")
+context("TunerGridSearch")
 
 
-test_that("TunerRandomSearch",  {
+test_that("TunerGridSearch",  {
   task = mlr3::mlr_tasks$get("iris")
   learner = mlr3::mlr_learners$get("classif.rpart")
   learner$param_vals = list(minsplit = 3)
@@ -14,9 +14,10 @@ test_that("TunerRandomSearch",  {
   )))
 
   ff = FitnessFunction$new(task, learner, resampling, measures, param_set, terminator)
-  rs = TunerRandomSearch$new(ff)
+  rs = TunerGridSearch$new(ff)
 
-  expect_r6(rs, "TunerRandomSearch")
+  expect_r6(rs, "TunerGridSearch")
+  expect_equal(rs$settings$resolution, 5)
   result = rs$tune()$tune_result()
   expect_list(result)
   expect_number(result$performance, lower = measures$mmce$range[1], upper = measures$mmce$range[2])
