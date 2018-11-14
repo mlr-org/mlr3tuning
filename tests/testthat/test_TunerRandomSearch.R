@@ -24,5 +24,4 @@ test_that("TunerRandomSearch",  {
   expect_number(result$performance, lower = measures$mmce$range[1], upper = measures$mmce$range[2])
   expect_list(result$param_vals, len = 2)
   expect_equal(result$param_vals$minsplit, 3)
-  expect_equal(nrow(ff$experiments), 5)
 })
