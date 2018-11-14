@@ -42,9 +42,7 @@ TerminatorEvaluations = R6Class("TerminatorEvaluations",
     },
 
     update_end = function(ff) {
-      self$state$evals = nrow(ff$experiments)
-      self$terminated = (self$state$evals >= self$settings$max_evaluations)
-      invisible(self)
+      self$update_start(ff)
     },
 
     format = function() sprintf("TerminatorEvaluations with %i remaining evaluations", self$remaining)

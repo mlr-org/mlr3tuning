@@ -80,13 +80,13 @@ FitnessFunction = R6Class("FitnessFunction",
 
       self$terminator$update_start(self)
       bmr = mlr3::benchmark(tasks = list(self$task), learners = learners, resamplings = list(self$resampling), measures = self$measures, ctrl = self$ctrl)
-      self$terminator$update_end(self)
 
       if (nrow(self$experiments) == 0L) {
         self$experiments = bmr$data
       } else {
         self$experiments = rbind(self$experiments, bmr$data)
       }
+      self$terminator$update_end(self)
 
       as.matrix(bmr$aggregated[, mlr3::ids(self$measures), with = FALSE])
     },
