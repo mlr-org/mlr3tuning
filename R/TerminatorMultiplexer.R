@@ -29,6 +29,7 @@
 NULL
 
 #' @export
+#' @include Terminator.R
 TerminatorMultiplexer = R6Class("TerminatorMultiplexer",
   inherit = Terminator,
 

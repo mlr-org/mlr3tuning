@@ -14,12 +14,10 @@ test_that("TunerRandomSearch",  {
   )))
 
   ff = FitnessFunction$new(task, learner, resampling, measures, param_set, terminator)
-  ff$ctrl$verbose = FALSE
-
-  rs = TunerRandomSearch$new("rs", ff)
+  rs = TunerRandomSearch$new(ff)
 
   expect_r6(rs, "TunerRandomSearch")
-  result = rs$tune(ps)
+  result = rs$tune()$tune_result()
   expect_list(result)
   expect_number(result$performance, lower = measures$mmce$range[1], upper = measures$mmce$range[2])
   expect_list(result$param_vals, len = 2)

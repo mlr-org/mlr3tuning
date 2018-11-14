@@ -7,11 +7,10 @@
 TunerRandomSearch
 }
 \section{Usage}{
-\preformatted{tuner = TunerRandomSearch(id)
-# public members
-# public methods
-# active bindings
+\preformatted{tuner = TunerRandomSearch$new(ff, batch_size = 100L)
 }
+
+See \link{Tuner} for a description of the interface.
 }
 
 \section{Arguments}{
@@ -19,12 +18,16 @@ TunerRandomSearch
 \itemize{
 \item \code{id} (\code{character(1)}):
 The id of the Tuner.
+\item \code{batch_size} (\code{integer(1)}):
+Maximum number of configurations to try in a batch.
+Each batch is possibly executed in parallel via \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
 }
 }
 
 \section{Details}{
 
 \code{$new()} creates a new object of class \link{TunerRandomSearch}.
+The interface is described in \link{Tuner}.
 }
 
 \examples{
@@ -32,16 +35,16 @@ task = mlr3::mlr_tasks$get("iris")
 learner = mlr3::mlr_learners$get("classif.rpart")
 resampling = mlr3::mlr_resamplings$get("cv")
 measures = mlr3::mlr_measures$mget("mmce")
-terminator = TerminatorEvaluations$new("term-evals", 10)
+terminator = TerminatorEvaluations$new(10)
 param_set = paradox::ParamSet$new(params = list(paradox::ParamReal$new("cp", lower = 0.001, upper = 0.1)))
 
 ff = FitnessFunction$new(task, learner, resampling, measures, param_set, terminator)
 
-rs = TunerRandomSearch$new("rs", ff)
-rs$tune(ps)
+rs = TunerRandomSearch$new(ff)
+rs$tune()$tune_result()
 }
 \seealso{
-Other Tuner: \code{\link{TunerBase}}
+Other Tuner: \code{\link{Tuner}}
 }
 \concept{Tuner}
 \keyword{internal}

@@ -42,3 +42,14 @@ Roxygen: list(markdown = TRUE)
 URL: https://github.com/mlr-org/mlr3tuning
 BugReports: https://github.com/mlr-org/mlr3tuning/issues
 RoxygenNote: 6.1.1
+Collate: 
+    'FitnessFunction.R'
+    'Terminator.R'
+    'TerminatorEvaluations.R'
+    'TerminatorIterations.R'
+    'TerminatorMultiplexer.R'
+    'Tuner.R'
+    'TunerRandomSearch.R'
+    'helper.R'
+    'tune_control.R'
+    'zzz.R'

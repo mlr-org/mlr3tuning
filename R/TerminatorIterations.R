@@ -24,6 +24,7 @@
 NULL
 
 #' @export
+#' @include Terminator.R
 TerminatorIterations = R6Class("TerminatorIterations",
   inherit = Terminator,
   public = list(
