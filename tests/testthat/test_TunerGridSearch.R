@@ -20,6 +20,7 @@ test_that("TunerGridSearch",  {
   exps = gs$ff$experiments
   expect_r6(gs, "TunerGridSearch")
   expect_data_table(exps, nrow = 2*5)
+  expect_equal(exps[, uniqueN(hash)], 5)
   expect_equal(gs$settings$resolution, 5)
   result = gs$tune()$tune_result()
   expect_list(result)

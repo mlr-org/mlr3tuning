@@ -15,7 +15,7 @@ test_that("API", {
   expect_identical(tm$terminators[[1]]$state$iters, 1L)
   expect_identical(tm$terminators[[2]]$state$evals, 0L)
 
-  ff$experiments = data.table(a = 1:3)
+  ff$experiments = data.table(hash = 1:3)
 
   tm$update_start(ff)
   tm$update_end(ff)
