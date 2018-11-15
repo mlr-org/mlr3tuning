@@ -22,12 +22,12 @@ test_that("Construction", {
   expect_r6(ff, "FitnessFunction")
   expect_r6(ff$param_set, "ParamSet")
 
-  expect_number(ff$eval(list(cp = 0.01)), lower = 0, upper = 1)
+  expect_r6(ff$eval(list(cp = 0.01)), "FitnessFunction")
   expect_data_table(ff$experiments, nrow = 1L)
   expect_equal(ff$experiments$learner[[1L]]$param_vals$cp, 0.01)
   expect_equal(ff$experiments$learner[[1L]]$param_vals$minsplit, 3)
 
-  expect_number(ff$eval(list(cp = 0.1)), lower = 0, upper = 1)
+  expect_r6(ff$eval(list(cp = 0.1)), "FitnessFunction")
   expect_data_table(ff$experiments, nrow = 2L)
   expect_equal(ff$experiments$learner[[2L]]$param_vals$cp, 0.1)
   expect_equal(ff$experiments$learner[[2L]]$param_vals$minsplit, 3)
