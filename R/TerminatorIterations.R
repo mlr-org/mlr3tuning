@@ -40,7 +40,8 @@ TerminatorIterations = R6Class("TerminatorIterations",
     },
 
     update_end = function(ff) {
-      self$state$iters = self$state$iters + 1L
+      dob = NULL
+      self$state$iters = if (nrow(ff$experiments) == 0L) 0L else ff$experiments[, max(dob)]
       self$terminated = self$state$iters >= self$settings$max_iterations
       invisible(self)
     },

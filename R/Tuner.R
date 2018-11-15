@@ -35,7 +35,7 @@
 NULL
 
 #' @export
-Tuner = R6Class("TunerBase",
+Tuner = R6Class("Tuner",
   public = list(
     id = NULL,
     ff = NULL,
