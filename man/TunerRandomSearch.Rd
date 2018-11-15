@@ -36,7 +36,11 @@ learner = mlr3::mlr_learners$get("classif.rpart")
 resampling = mlr3::mlr_resamplings$get("cv")
 measures = mlr3::mlr_measures$mget("mmce")
 terminator = TerminatorEvaluations$new(10)
-param_set = paradox::ParamSet$new(params = list(paradox::ParamReal$new("cp", lower = 0.001, upper = 0.1)))
+param_set = paradox::ParamSet$new(
+  params = list(
+   paradox::ParamReal$new("cp", lower = 0.001, upper = 0.1)
+  )
+)
 
 ff = FitnessFunction$new(task, learner, resampling, measures, param_set, terminator)
 
