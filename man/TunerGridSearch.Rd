@@ -7,7 +7,7 @@
 TunerGridSearch
 }
 \section{Usage}{
-\preformatted{tuner = TunerGridSearch$new(ff, resolution)
+\preformatted{tuner = TunerGridSearch$new(ff, terminator, resolution)
 }
 
 See \link{Tuner} for a description of the interface.
@@ -18,6 +18,9 @@ See \link{Tuner} for a description of the interface.
 \itemize{
 \item \code{id} (\code{character(1)}):
 The id of the Tuner.
+\item \code{terminator} (\link{Terminator}):
+Terminator to control the termination.
+Will be triggered by the hooks of the \link{FitnessFunction}.
 \item \code{resolution} (\code{integer(1)}):
 Resolution of the grid.
 If none is specified we will try to calculate the resolution form the Terminator.
@@ -35,16 +38,15 @@ task = mlr3::mlr_tasks$get("iris")
 learner = mlr3::mlr_learners$get("classif.rpart")
 resampling = mlr3::mlr_resamplings$get("cv")
 measures = mlr3::mlr_measures$mget("mmce")
-terminator = TerminatorEvaluations$new(10)
 param_set = paradox::ParamSet$new(
   params = list(
     paradox::ParamReal$new("cp", lower = 0.001, upper = 0.1)
   )
 )
+ff = FitnessFunction$new(task, learner, resampling, measures, param_set)
 
-ff = FitnessFunction$new(task, learner, resampling, measures, param_set, terminator)
-
-rs = TunerGridSearch$new(ff)
+terminator = TerminatorEvaluations$new(10)
+rs = TunerGridSearch$new(ff, terminator)
 rs$tune()$tune_result()
 }
 \seealso{

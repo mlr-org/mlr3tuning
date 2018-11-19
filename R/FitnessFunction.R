@@ -23,8 +23,6 @@
 #'   Optional, can override the Measure in the Task
 #' * `param_set` ([paradox::ParamSet]):
 #'   Parameter Set.
-#' * `terminator` (`Terminator`):
-#'   A [Terminator] which controls the termination of the tuning.
 #' * `tune_control` (`list()`):
 #'   See [tune_control()].
 #'
@@ -46,20 +44,19 @@ FitnessFunction = R6Class("FitnessFunction",
     resampling = NULL,
     measures = NULL,
     param_set = NULL,
-    terminator = NULL,
     ctrl = NULL,
-
+    hooks = NULL,
     experiments = NULL,
 
-    initialize = function(task, learner, resampling, measures = NULL, param_set, terminator, ctrl = tune_control()) {
+    initialize = function(task, learner, resampling, measures = NULL, param_set, ctrl = tune_control()) {
       self$task = mlr3::assert_task(task)
       self$learner = mlr3::assert_learner(learner, task = task)
       self$resampling = mlr3::assert_resampling(resampling)
       self$measures = mlr3::assert_measures(measures %??% task$measures, task = task, learner = learner)
       self$param_set = assert_class(param_set, "ParamSet")
-      self$terminator = assert_class(terminator$clone(), "Terminator")
       self$ctrl = assert_list(ctrl, names = "unique")
       self$experiments = data.table()
+      self$hooks = list(update_start = list(), update_end = list())
     },
 
     rbind = function(experiments) {
@@ -77,20 +74,16 @@ FitnessFunction = R6Class("FitnessFunction",
     },
 
     eval_vectorized = function(xs) {
-      if (self$terminator$terminated) {
-        stop(paste("Terminator: ", self$terminator$message))
-      }
-
       learners = lapply(xs, function(x) {
         learner = self$learner$clone()
         learner$param_vals = insert.list(learner$param_vals, x)
         return(learner)
       })
 
-      self$terminator$update_start(self)
+      self$run_hooks("update_start")
       bmr = mlr3::benchmark(tasks = list(self$task), learners = learners, resamplings = list(self$resampling), measures = self$measures, ctrl = self$ctrl)
       self$rbind(bmr$data)
-      self$terminator$update_end(self)
+      self$run_hooks("update_end")
       invisible(self)
     },
 
@@ -101,6 +94,12 @@ FitnessFunction = R6Class("FitnessFunction",
       m = self$measures[[1L]]
       perfs = bmr$aggregated
       bmr$resample_result(perfs$hash[which_best(m, perfs[[m$id]])])
+    },
+
+    run_hooks = function(id) {
+      funs = self$hooks[[id]]
+      for (fun in funs)
+        do.call(fun, list(ff = self))
     }
   )
 )

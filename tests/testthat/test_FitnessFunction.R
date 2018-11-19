@@ -7,7 +7,6 @@ test_that("Construction", {
   resampling = mlr3::mlr_resamplings$get("holdout")
   measures = mlr3::mlr_measures$mget("mmce")
   param_set = paradox::ParamSet$new(params = list(paradox::ParamReal$new("cp", lower = 0.001, upper = 0.1)))
-  terminator = TerminatorIterations$new(3)
 
   ff = FitnessFunction$new(
     task = task,
@@ -15,7 +14,6 @@ test_that("Construction", {
     resampling = resampling,
     measures = measures,
     param_set = param_set,
-    terminator = terminator,
     ctrl = tune_control(store_prediction = TRUE) # for the exceptions
   )
 
