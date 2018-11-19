@@ -8,13 +8,14 @@ test_that("TunerGridSearch",  {
   resampling = mlr3::mlr_resamplings$get("cv")
   resampling$param_vals = list(folds = 2)
   measures = mlr3::mlr_measures$mget("mmce")
+
   terminator = TerminatorEvaluations$new(5)
   param_set = paradox::ParamSet$new(params = list(
       paradox::ParamReal$new("cp", lower = 0.001, upper = 0.1
   )))
 
-  ff = FitnessFunction$new(task, learner, resampling, measures, param_set, terminator)
-  gs = TunerGridSearch$new(ff)
+  ff = FitnessFunction$new(task, learner, resampling, measures, param_set)
+  gs = TunerGridSearch$new(ff, terminator = terminator)
 
   result = gs$tune()$tune_result()
   exps = gs$ff$experiments

@@ -18,6 +18,8 @@
 #' @section Arguments:
 #' * `id` (`character(1)`):
 #'   The id of the Tuner.
+#' * `ff` ([FitnessFunction]).
+#' * `terminator` ([Terminator]).
 #' * `settings` (`list`):
 #'   The settings for the Tuner.
 #'
@@ -25,6 +27,7 @@
 #' * `$new()` creates a new object of class [Tuner].
 #' * `id` stores an identifier for this [Tuner].
 #' * `ff` stores the [FitnessFunction] to optimize.
+#' * `terminator` stores the [Terminator].
 #' * `settings` is a list of hyperparamter settings for this [Tuner].
 #' * `tune()` performs the tuning, until the budget of the [Terminator] in the [FitnessFunction] is exhausted.
 #' * `tune_result()` returns a list with 2 elements:
@@ -39,16 +42,21 @@ Tuner = R6Class("Tuner",
   public = list(
     id = NULL,
     ff = NULL,
+    terminator = NULL,
     settings = NULL,
 
-    initialize = function(id, ff, settings) {
+    initialize = function(id, ff, terminator, settings = list()) {
       self$id = assert_string(id)
-      self$ff = assert_class(ff, "FitnessFunction")
-      self$settings = assert_list(settings)
+      self$ff = assert_r6(ff, "FitnessFunction")
+      self$terminator = assert_r6(terminator, "Terminator")
+      self$settings = assert_list(settings, names = "unique")
+
+      ff$hooks$update_start = c(ff$hooks$update_start, list(terminator$update_start))
+      ff$hooks$update_end = c(ff$hooks$update_end, list(terminator$update_end))
     },
 
     tune = function() {
-      while (!self$ff$terminator$terminated) {
+      while (!self$terminator$terminated) {
         private$tune_step()
       }
       invisible(self)

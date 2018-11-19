@@ -12,8 +12,8 @@ test_that("TunerRandomSearch",  {
       paradox::ParamReal$new("cp", lower = 0.001, upper = 0.1
   )))
 
-  ff = FitnessFunction$new(task, learner, resampling, measures, param_set, terminator)
-  rs = TunerRandomSearch$new(ff)
+  ff = FitnessFunction$new(task, learner, resampling, measures, param_set)
+  rs = TunerRandomSearch$new(ff, terminator)
 
   result = rs$tune()$tune_result()
   exps = rs$ff$experiments
