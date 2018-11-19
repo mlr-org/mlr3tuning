@@ -7,7 +7,7 @@
 TunerRandomSearch
 }
 \section{Usage}{
-\preformatted{tuner = TunerRandomSearch$new(ff, batch_size = 100L)
+\preformatted{tuner = TunerRandomSearch$new(ff, terminator, batch_size = 100L)
 }
 
 See \link{Tuner} for a description of the interface.
@@ -18,6 +18,9 @@ See \link{Tuner} for a description of the interface.
 \itemize{
 \item \code{id} (\code{character(1)}):
 The id of the Tuner.
+\item \code{terminator} (\link{Terminator}):
+Terminator to control the termination.
+Will be triggered by the hooks of the \link{FitnessFunction}.
 \item \code{batch_size} (\code{integer(1)}):
 Maximum number of configurations to try in a batch.
 Each batch is possibly executed in parallel via \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
@@ -35,16 +38,15 @@ task = mlr3::mlr_tasks$get("iris")
 learner = mlr3::mlr_learners$get("classif.rpart")
 resampling = mlr3::mlr_resamplings$get("cv")
 measures = mlr3::mlr_measures$mget("mmce")
-terminator = TerminatorEvaluations$new(10)
 param_set = paradox::ParamSet$new(
   params = list(
    paradox::ParamReal$new("cp", lower = 0.001, upper = 0.1)
   )
 )
+ff = FitnessFunction$new(task, learner, resampling, measures, param_set)
 
-ff = FitnessFunction$new(task, learner, resampling, measures, param_set, terminator)
-
-rs = TunerRandomSearch$new(ff)
+terminator = TerminatorEvaluations$new(10)
+rs = TunerRandomSearch$new(ff, terminator)
 rs$tune()$tune_result()
 }
 \seealso{
