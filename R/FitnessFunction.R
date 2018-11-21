@@ -76,7 +76,7 @@ FitnessFunction = R6Class("FitnessFunction",
     eval_vectorized = function(xs) {
       learners = lapply(xs, function(x) {
         learner = self$learner$clone()
-        learner$param_vals = insert.list(learner$param_vals, x)
+        learner$param_vals = insert_named(learner$param_vals, x)
         return(learner)
       })
 
@@ -106,6 +106,5 @@ FitnessFunction = R6Class("FitnessFunction",
 
 which_best = function(measure, x) {
   best = if (measure$minimize) min(x) else max(x)
-  i = which(x == best)
-  i[sample.int(length(i), 1L)]
+  i = shuffle(which(x == best), 1L)
 }

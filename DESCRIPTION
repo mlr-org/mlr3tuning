@@ -21,6 +21,7 @@ Depends:
     R (>= 3.1.0)
 Imports:
     mlr3,
+    mlr3misc,
     checkmate,
     data.table,
     paradox,
@@ -33,6 +34,7 @@ VignetteBuilder:
     knitr
 Remotes:
     mlr-org/paradox,
+    mlr-org/mlr3misc,
     mlr-org/mlr3
 ByteCompile: true
 Encoding: UTF-8
@@ -42,7 +44,7 @@ Roxygen: list(markdown = TRUE)
 URL: https://github.com/mlr-org/mlr3tuning
 BugReports: https://github.com/mlr-org/mlr3tuning/issues
 RoxygenNote: 6.1.1
-Collate: 
+Collate:
     'FitnessFunction.R'
     'Terminator.R'
     'TerminatorEvaluations.R'
@@ -51,6 +53,5 @@ Collate:
     'Tuner.R'
     'TunerGridSearch.R'
     'TunerRandomSearch.R'
-    'helper.R'
     'tune_control.R'
     'zzz.R'
