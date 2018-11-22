@@ -103,7 +103,5 @@ FitnessFunction = R6Class("FitnessFunction",
 )
 
 which_best = function(measure, x) {
-  best = if (measure$minimize) min(x) else max(x)
-  i = which(x == best)
-  i[sample.int(length(i), 1L)]
+  best = if (measure$minimize) which_min(x) else which_max(x)
 }
