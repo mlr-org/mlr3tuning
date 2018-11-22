@@ -43,24 +43,24 @@ TerminatorMultiplexer = R6Class("TerminatorMultiplexer",
 
     update_start = function(ff) {
       lapply(self$terminators, function(t) t$update_start(ff))
-      self$terminated = self$terminated | any(vapply(self$terminators, function(t) t$terminated, NA))
+      self$terminated = self$terminated | any(map_lgl(self$terminators, "terminated"))
       invisible(self)
     },
 
     update_end = function(ff) {
       lapply(self$terminators, function(t) t$update_end(ff))
-      self$terminated = self$terminated | any(vapply(self$terminators, function(t) t$terminated, NA))
+      self$terminated = self$terminated | any(map_lgl(self$terminators, "terminated"))
       invisible(self)
     },
 
     format = function() {
-      paste0(vapply(self$terminators, format, NA_character_), collapse = "\n")
+      paste0(map_chr(self$terminators, format), collapse = "\n")
     }
   ),
 
   active = list(
     remaining = function() {
-      as.integer(max(min(vapply(self$terminators, function(t) t$remaining, NA_real_)), 0))
+      as.integer(max(min(map_dbl(self$terminators, "remaining")), 0))
     }
   )
 )

@@ -28,8 +28,6 @@ The Resampling method that is used to obtain the y value.
 Optional, can override the Measure in the Task
 \item \code{param_set} (\link[paradox:ParamSet]{paradox::ParamSet}):
 Parameter Set.
-\item \code{terminator} (\code{Terminator}):
-A \link{Terminator} which controls the termination of the tuning.
 \item \code{tune_control} (\code{list()}):
 See \code{\link[=tune_control]{tune_control()}}.
 }

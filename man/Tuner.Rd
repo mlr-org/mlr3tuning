@@ -23,6 +23,8 @@ tuner$tune_result()
 \itemize{
 \item \code{id} (\code{character(1)}):
 The id of the Tuner.
+\item \code{ff} (\link{FitnessFunction}).
+\item \code{terminator} (\link{Terminator}).
 \item \code{settings} (\code{list}):
 The settings for the Tuner.
 }
@@ -34,6 +36,7 @@ The settings for the Tuner.
 \item \code{$new()} creates a new object of class \link{Tuner}.
 \item \code{id} stores an identifier for this \link{Tuner}.
 \item \code{ff} stores the \link{FitnessFunction} to optimize.
+\item \code{terminator} stores the \link{Terminator}.
 \item \code{settings} is a list of hyperparamter settings for this \link{Tuner}.
 \item \code{tune()} performs the tuning, until the budget of the \link{Terminator} in the \link{FitnessFunction} is exhausted.
 \item \code{tune_result()} returns a list with 2 elements:
@@ -45,6 +48,7 @@ The settings for the Tuner.
 }
 
 \seealso{
-Other Tuner: \code{\link{TunerRandomSearch}}
+Other Tuner: \code{\link{TunerGridSearch}},
+  \code{\link{TunerRandomSearch}}
 }
 \concept{Tuner}
