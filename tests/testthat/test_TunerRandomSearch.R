@@ -16,9 +16,9 @@ test_that("TunerRandomSearch",  {
   rs = TunerRandomSearch$new(ff, terminator)
 
   result = rs$tune()$tune_result()
-  exps = rs$ff$experiments
+  bmr = rs$ff$bmr
   expect_r6(rs, "TunerRandomSearch")
-  expect_data_table(exps, nrow = 2*5)
+  expect_data_table(bmr$data, nrow = 2*5)
   expect_list(result)
   expect_number(result$performance, lower = measures$mmce$range[1], upper = measures$mmce$range[2])
   expect_list(result$param_vals, len = 2)

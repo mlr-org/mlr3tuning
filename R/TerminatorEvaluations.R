@@ -37,7 +37,7 @@ TerminatorEvaluations = R6Class("TerminatorEvaluations",
 
     update_start = function(ff) {
       hash = NULL
-      self$state$evals = if (nrow(ff$experiments) == 0L) 0L else uniqueN(ff$experiments, by = "hash")
+      self$state$evals = if (is.null(ff$bmr) || nrow(ff$bmr$data) == 0L) 0L else uniqueN(ff$bmr$data, by = "hash")
       self$terminated = (self$state$evals >= self$settings$max_evaluations)
       invisible(self)
     },

@@ -6,7 +6,7 @@ test_that("API", {
   tm = TerminatorMultiplexer$new(list(ti, te))
   expect_equal(tm$remaining, 2)
 
-  ff = list(experiments = data.table())
+  ff = list(bmr = list(data = data.table()))
   tm$update_start(ff)
   tm$update_end(ff)
   expect_false(tm$terminated)
@@ -15,14 +15,14 @@ test_that("API", {
   expect_identical(tm$terminators[[1]]$state$iters, 0L)
   expect_identical(tm$terminators[[2]]$state$evals, 0L)
 
-  ff$experiments = data.table(hash = 1L, dob = 1L)
+  ff$bmr$data = data.table(hash = 1L, dob = 1L)
   tm$update_start(ff)
   tm$update_end(ff)
   expect_identical(tm$terminators[[1]]$state$iters, 1L)
   expect_identical(tm$terminators[[2]]$state$evals, 1L)
   expect_false(tm$terminated)
 
-  ff$experiments = data.table(hash = 1L, dob = 2L)
+  ff$bmr$data = data.table(hash = 1L, dob = 2L)
   tm$update_start(ff)
   tm$update_end(ff)
   expect_true(tm$terminated)

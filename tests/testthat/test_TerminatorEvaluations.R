@@ -5,7 +5,7 @@ test_that("API", {
   expect_identical(te$settings$max_evaluations, 2L)
   expect_identical(te$state$evals, 0L)
 
-  ff = list(experiments = data.table())
+  ff = list(bmr = list(data = data.table()))
 
   te$update_start(ff)
   expect_identical(te$state$evals, 0L)
@@ -14,7 +14,7 @@ test_that("API", {
   expect_false(te$terminated)
   expect_string(format(te), fixed = "2 remaining")
 
-  ff = list(experiments = data.table(hash = c(1,1)))
+  ff = list(bmr = list(data = data.table(hash = c(1,1))))
 
   te$update_start(ff)
   expect_identical(te$state$evals, 1L)

@@ -46,7 +46,7 @@ FitnessFunction = R6Class("FitnessFunction",
     param_set = NULL,
     ctrl = NULL,
     hooks = NULL,
-    experiments = NULL,
+    bmr = NULL,
 
     initialize = function(task, learner, resampling, measures = NULL, param_set, ctrl = tune_control()) {
       self$task = mlr3::assert_task(task)
@@ -55,18 +55,7 @@ FitnessFunction = R6Class("FitnessFunction",
       self$measures = mlr3::assert_measures(measures %??% task$measures, task = task, learner = learner)
       self$param_set = assert_class(param_set, "ParamSet")
       self$ctrl = assert_list(ctrl, names = "unique")
-      self$experiments = data.table()
       self$hooks = list(update_start = list(), update_end = list())
-    },
-
-    rbind = function(experiments) {
-      if (nrow(self$experiments) == 0L) {
-        experiments$dob = 1L
-        self$experiments = experiments
-      } else {
-        experiments$dob = self$experiments[, max(dob)] + 1L
-        self$experiments = rbind(self$experiments, experiments)
-      }
     },
 
     eval = function(x) {
@@ -82,18 +71,13 @@ FitnessFunction = R6Class("FitnessFunction",
 
       self$run_hooks("update_start")
       bmr = mlr3::benchmark(tasks = list(self$task), learners = learners, resamplings = list(self$resampling), measures = self$measures, ctrl = self$ctrl)
-      self$rbind(bmr$data)
+      self$bmr = if (is.null(self$bmr)) bmr else self$bmr$combine(bmr)
       self$run_hooks("update_end")
       invisible(self)
     },
 
     get_best = function() {
-      if (nrow(self$experiments) == 0L)
-        stop("No experiments conducted")
-      bmr = mlr3::BenchmarkResult$new(self$experiments)
-      m = self$measures[[1L]]
-      perfs = bmr$aggregated
-      bmr$resample_result(perfs$hash[which_best(m, perfs[[m$id]])])
+      self$bmr$get_best(self$measures[[1L]])
     },
 
     run_hooks = function(id) {
@@ -103,7 +87,3 @@ FitnessFunction = R6Class("FitnessFunction",
     }
   )
 )
-
-which_best = function(measure, x) {
-  if (measure$minimize) which_min(x) else which_max(x)
-}

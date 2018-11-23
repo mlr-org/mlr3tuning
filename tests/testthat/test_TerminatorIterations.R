@@ -7,7 +7,7 @@ test_that("API", {
   expect_identical(ti$state$iters, 0L)
   expect_string(format(ti), fixed = "2 remaining")
 
-  ff = list(experiments = data.table())
+  ff = list(bmr = list(data = data.table()))
   ti$update_start(ff)
   expect_identical(ti$state$iters, 0L)
   ti$update_end(ff)
@@ -15,12 +15,12 @@ test_that("API", {
   expect_false(ti$terminated)
   expect_string(format(ti), fixed = "2 remaining")
 
-  ff = list(experiments = data.table(dob = 1L))
+  ff = list(bmr = list(data = data.table(dob = 1L)))
   ti$update_start(ff)
   ti$update_end(ff)
   expect_identical(ti$state$iters, 1L)
 
-  ff = list(experiments = data.table(dob = 2L))
+  ff = list(bmr = list(data = data.table(dob = 2L)))
   ti$update_start(ff)
   ti$update_end(ff)
   expect_true(ti$terminated)
