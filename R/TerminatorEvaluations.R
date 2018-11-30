@@ -10,7 +10,7 @@
 #' See [Terminator] for a description of the interface.
 #'
 #' @section Arguments:
-#' * `max_evaluations` \[`integer(1)\]:\cr
+#' * `max_evaluations` (`integer(1)):\cr
 #'   Maximum number of function evaluations.
 #'
 #' @section Details:

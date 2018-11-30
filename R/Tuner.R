@@ -16,11 +16,11 @@
 #' ```
 #'
 #' @section Arguments:
-#' * `id` (`character(1)`):
+#' * `id` (`character(1)`):\cr
 #'   The id of the Tuner.
 #' * `ff` ([FitnessFunction]).
 #' * `terminator` ([Terminator]).
-#' * `settings` (`list`):
+#' * `settings` (`list`):\cr
 #'   The settings for the Tuner.
 #'
 #' @section Details:
