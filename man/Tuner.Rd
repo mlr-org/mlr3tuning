@@ -21,11 +21,11 @@ tuner$tune_result()
 \section{Arguments}{
 
 \itemize{
-\item \code{id} (\code{character(1)}):
+\item \code{id} (\code{character(1)}):\cr
 The id of the Tuner.
 \item \code{ff} (\link{FitnessFunction}).
 \item \code{terminator} (\link{Terminator}).
-\item \code{settings} (\code{list}):
+\item \code{settings} (\code{list}):\cr
 The settings for the Tuner.
 }
 }

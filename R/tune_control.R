@@ -9,7 +9,7 @@
 #'   Store the predictions of the individual experiments.
 #' @param verbose (`logical(1)`):\cr
 #'   Output additional information.
-#' @param ...:\cr
+#' @param ... :\cr
 #'   Additional arguments passed down to [mlr3::mlr_control()].
 #'
 #' @return (list()) with options passed down to [mlr3::benchmark()].

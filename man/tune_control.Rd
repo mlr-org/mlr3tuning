@@ -8,20 +8,20 @@ tune_control(store_model = FALSE, store_prediction = FALSE,
   verbose = FALSE, ...)
 }
 \arguments{
-\item{store_model}{[logical(1)]:\cr
+\item{store_model}{(\code{logical(1)}):\cr
 Store the models of the individual experiments.}
 
-\item{store_prediction}{[logical(1)]:\cr
+\item{store_prediction}{(\code{logical(1)}):\cr
 Store the predictions of the individual experiments.}
 
-\item{verbose}{[logical(1)]:\cr
+\item{verbose}{(\code{logical(1)}):\cr
 Output additional information.}
 
-\item{...}{[any]:\cr
+\item{...}{:\cr
 Additional arguments passed down to \code{\link[mlr3:mlr_control]{mlr3::mlr_control()}}.}
 }
 \value{
-[list()] with options passed down to \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
+(list()) with options passed down to \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
 }
 \description{
 This function is a wrapper around \code{\link[mlr3:mlr_control]{mlr3::mlr_control()}} with defaults better suited for tuning.

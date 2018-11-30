@@ -16,7 +16,7 @@ See \link{Terminator} for a description of the interface.
 \section{Arguments}{
 
 \itemize{
-\item \code{max_iterations} [`integer(1)]:\cr
+\item \code{max_iterations} (`integer(1)):\cr
 Maximum number of iterations.
 }
 }
