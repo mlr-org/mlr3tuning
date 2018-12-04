@@ -33,7 +33,7 @@
 #' measures = mlr3::mlr_measures$mget("mmce")
 #' param_set = paradox::ParamSet$new(
 #'   params = list(
-#'     paradox::ParamReal$new("cp", lower = 0.001, upper = 0.1)
+#'     paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)
 #'   )
 #' )
 #' ff = FitnessFunction$new(task, learner, resampling, measures, param_set)
@@ -64,7 +64,7 @@ TunerGridSearch = R6Class("TunerGridSearch",
       # note: generate_grid_design offers param_resolutions, so theoretically we could allow different resolutions per parameter
       xs = self$ff$param_set$generate_grid_design(resolution = self$settings$resolution)
       xs = self$ff$param_set$transform(xs)
-      self$ff$eval_vectorized(.mapply(list, xs, list()))
+      self$ff$eval_vectorized(pmap(xs, list))
     }
   )
 )

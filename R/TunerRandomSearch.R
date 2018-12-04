@@ -33,7 +33,7 @@
 #' measures = mlr3::mlr_measures$mget("mmce")
 #' param_set = paradox::ParamSet$new(
 #'   params = list(
-#'    paradox::ParamReal$new("cp", lower = 0.001, upper = 0.1)
+#'    paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)
 #'   )
 #' )
 #' ff = FitnessFunction$new(task, learner, resampling, measures, param_set)

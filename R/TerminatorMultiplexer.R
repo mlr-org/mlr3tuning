@@ -43,13 +43,13 @@ TerminatorMultiplexer = R6Class("TerminatorMultiplexer",
 
     update_start = function(ff) {
       lapply(self$terminators, function(t) t$update_start(ff))
-      self$terminated = self$terminated | any(map_lgl(self$terminators, "terminated"))
+      self$terminated = self$terminated | some(self$terminators, "terminated")
       invisible(self)
     },
 
     update_end = function(ff) {
       lapply(self$terminators, function(t) t$update_end(ff))
-      self$terminated = self$terminated | any(map_lgl(self$terminators, "terminated"))
+      self$terminated = self$terminated | some(self$terminators, "terminated")
       invisible(self)
     },
 

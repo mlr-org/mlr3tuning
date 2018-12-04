@@ -11,7 +11,7 @@ test_that("TunerGridSearch",  {
 
   terminator = TerminatorEvaluations$new(5)
   param_set = paradox::ParamSet$new(params = list(
-      paradox::ParamReal$new("cp", lower = 0.001, upper = 0.1
+      paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1
   )))
 
   ff = FitnessFunction$new(task, learner, resampling, measures, param_set)
