@@ -39,8 +39,8 @@
 #' ff = FitnessFunction$new(task, learner, resampling, measures, param_set)
 #'
 #' terminator = TerminatorEvaluations$new(10)
-#' rs = TunerGridSearch$new(ff, terminator)
-#' rs$tune()$tune_result()
+#' gs = TunerGridSearch$new(ff, terminator)
+#' gs$tune()$tune_result()
 NULL
 
 #' @export
@@ -62,7 +62,7 @@ TunerGridSearch = R6Class("TunerGridSearch",
   private = list(
     tune_step = function() {
       # note: generate_grid_design offers param_resolutions, so theoretically we could allow different resolutions per parameter
-      xs = self$ff$param_set$generate_grid_design(resolution = self$settings$resolution)
+      xs = generate_design_grid(self$ff$param_set, resolution = self$settings$resolution)
       xs = self$ff$param_set$transform(xs)
       self$ff$eval_vectorized(pmap(xs, list))
     }
