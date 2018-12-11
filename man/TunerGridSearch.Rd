@@ -46,8 +46,8 @@ param_set = paradox::ParamSet$new(
 ff = FitnessFunction$new(task, learner, resampling, measures, param_set)
 
 terminator = TerminatorEvaluations$new(10)
-rs = TunerGridSearch$new(ff, terminator)
-rs$tune()$tune_result()
+gs = TunerGridSearch$new(ff, terminator)
+gs$tune()$tune_result()
 }
 \seealso{
 Other Tuner: \code{\link{TunerRandomSearch}},
