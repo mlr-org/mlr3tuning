@@ -64,8 +64,9 @@ TunerGridSearch = R6Class("TunerGridSearch",
       # note: generate_grid_design offers param_resolutions, so theoretically we could allow different resolutions per parameter
       ps = self$ff$param_set
       xs = generate_design_grid(ps, resolution = self$settings$resolution)
-      xs = self$ff$param_set$transform(xs)
-      self$ff$eval_vectorized(transpose(xs))
+      xs = transpose(xs)
+      xs = map(xs, self$ff$param_set$transform)
+      self$ff$eval_vectorized(xs)
     }
   )
 )
