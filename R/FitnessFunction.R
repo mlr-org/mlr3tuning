@@ -52,7 +52,7 @@ FitnessFunction = R6Class("FitnessFunction",
       self$task = mlr3::assert_task(task)
       self$learner = mlr3::assert_learner(learner, task = task)
       self$resampling = mlr3::assert_resampling(resampling)
-      self$measures = mlr3::assert_measures(measures %??% task$measures, task = task, learner = learner)
+      self$measures = mlr3::assert_measures(measures %??% task$measures, task = task)
       self$param_set = assert_class(param_set, "ParamSet")
       self$ctrl = assert_list(ctrl, names = "unique")
       self$hooks = list(update_start = list(), update_end = list())

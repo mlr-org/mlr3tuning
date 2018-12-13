@@ -4,8 +4,7 @@
 \alias{tune_control}
 \title{Execution control object for tuning}
 \usage{
-tune_control(store_model = FALSE, store_prediction = FALSE,
-  verbose = FALSE, ...)
+tune_control(store_model = FALSE, store_prediction = FALSE, ...)
 }
 \arguments{
 \item{store_model}{(\code{logical(1)}):\cr
@@ -13,9 +12,6 @@ Store the models of the individual experiments.}
 
 \item{store_prediction}{(\code{logical(1)}):\cr
 Store the predictions of the individual experiments.}
-
-\item{verbose}{(\code{logical(1)}):\cr
-Output additional information.}
 
 \item{...}{:\cr
 Additional arguments passed down to \code{\link[mlr3:mlr_control]{mlr3::mlr_control()}}.}
