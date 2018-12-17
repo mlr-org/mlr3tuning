@@ -2,12 +2,13 @@
 % Please edit documentation in R/TerminatorIterations.R
 \name{TerminatorIterations}
 \alias{TerminatorIterations}
-\title{TerminatorIterations}
+\title{TerminatorIterations Class}
 \description{
-TerminatorIterations.
+Class to terminate the tuning depending on the number of iterations.
 }
 \section{Usage}{
-\preformatted{t = TerminatorIterations$new(max_iterations)
+\preformatted{# Constructor
+t = TerminatorIterations$new(max_iterations)
 }
 
 See \link{Terminator} for a description of the interface.
@@ -16,7 +17,7 @@ See \link{Terminator} for a description of the interface.
 \section{Arguments}{
 
 \itemize{
-\item \code{max_iterations} (`integer(1)):\cr
+\item \code{max_iterations} (`integer(1)):
 Maximum number of iterations.
 }
 }

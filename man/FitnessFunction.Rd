@@ -72,7 +72,7 @@ Identifier of a hook.
 \item \code{$bmr} (\code{mlr3::BenchmarkResult}) object that contains all tuning results as \code{BenchmarkResult} object (see \code{?BenchmarkResult}).
 \item \code{$eval(x)} evaluates the parameter setting \code{params} (\code{list}) for the given learner and resampling.
 \item \code{$eval_vectorized(xs)} performs resampling for multiple parameter settings \code{xs} (list of lists).
-\item \code{$get_best()} get best parameter configuration from the \code{BenchmarkResult} object.
+\item \code{$get_best()}  get best parameter configuration from the \code{BenchmarkResult} object.
 \item \code{$run_hooks()} run a function that runs on the whole \code{FitnessFunction} object.
 }
 }
@@ -83,7 +83,8 @@ task = mlr3::mlr_tasks$get("iris")
 learner = mlr3::mlr_learners$get("classif.rpart")
 resampling = mlr3::mlr_resamplings$get("holdout")
 measures = mlr3::mlr_measures$mget("mmce")
-param_set = paradox::ParamSet$new(params = list(paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
+param_set = paradox::ParamSet$new(params = list(
+  paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 
 ff = FitnessFunction$new(
   task = task,

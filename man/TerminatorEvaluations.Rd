@@ -2,12 +2,13 @@
 % Please edit documentation in R/TerminatorEvaluations.R
 \name{TerminatorEvaluations}
 \alias{TerminatorEvaluations}
-\title{TerminatorEvaluations}
+\title{TerminatorEvaluations Class}
 \description{
-TerminatorEvaluations.
+Class to terminate the tuning depending on the number of evaluations.
 }
 \section{Usage}{
-\preformatted{t = TerminatorEvaluations$new(max_evaluations)
+\preformatted{# Constructor
+t = TerminatorEvaluations$new(max_evaluations)
 }
 
 See \link{Terminator} for a description of the interface.
@@ -16,7 +17,7 @@ See \link{Terminator} for a description of the interface.
 \section{Arguments}{
 
 \itemize{
-\item \code{max_evaluations} (`integer(1)):\cr
+\item \code{max_evaluations} (\code{integer(1)}):
 Maximum number of function evaluations.
 }
 }
@@ -24,6 +25,7 @@ Maximum number of function evaluations.
 \section{Details}{
 
 \code{$new()} creates a new object of class \link{TerminatorEvaluations}.
+
 The interface is described in \link{Terminator}.
 }
 

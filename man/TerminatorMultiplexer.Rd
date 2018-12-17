@@ -2,9 +2,9 @@
 % Please edit documentation in R/TerminatorMultiplexer.R
 \name{TerminatorMultiplexer}
 \alias{TerminatorMultiplexer}
-\title{TerminatorMultiplexer}
+\title{TerminatorMultiplexer Class}
 \description{
-TerminatorMultiplexer takes multiple Terminators and will lead to termination as soon as one Terminator signals a termination.
+TerminatorMultiplexer takes multiple \code{Terminator}s and will lead to termination as soon as one Terminator signals a termination.
 In the future more advanced termination rules can be implemented using this Multiplexer.
 }
 \section{Usage}{
@@ -25,6 +25,8 @@ List of objects of class \link{Terminator}.
 \section{Details}{
 
 \code{$new()} creates a new object of class \link{TerminatorMultiplexer}.
+
+The interface is described in \link{Terminator}.
 }
 
 \examples{

@@ -2,19 +2,24 @@
 % Please edit documentation in R/Terminator.R
 \name{Terminator}
 \alias{Terminator}
-\title{Terminator Base Class}
+\title{Abstract Terminator Class}
 \description{
-Base class for termination criteria.
+Abstract \code{Terminator} class that implements the main functionality each terminator must have. A terminator is
+an object that says when to stop the tuning.
 }
 \section{Usage}{
-\preformatted{t = Terminator$new(settings)
+\preformatted{# Construction
+t = Terminator$new(settings)
+
 # public members
 t$terminated
 t$settings
 t$state
+
 # public methods
 t$update_start(ff)
 t$update_end(ff)
+
 # active bindings
 t$remaining
 }
@@ -23,8 +28,10 @@ t$remaining
 \section{Arguments}{
 
 \itemize{
-\item \code{settings} (\code{list}):
+\item \code{settings} (\code{list()}):
 The settings for Terminator as named list.
+\item \code{ff} (\code{FitnessFunction}):
+\code{FitnessFunction} object used to determine when to stop the tuning.
 }
 }
 
@@ -32,13 +39,12 @@ The settings for Terminator as named list.
 
 \itemize{
 \item \code{$new()} creates a new object of class \link{Terminator}.
+\item \code{$terminated} (\code{logical(1)}) is the termination criterion met? Updated by each call of \code{update_start()}/\code{update_end()}.
+\item \code{$settings} (\code{list()}) settings that are set by the child classes to define stopping criteria.
+\item \code{$state} (\code{list()}) arbitrary state of the Terminator. Gets updated with each call of \code{update_start()} and \code{update_end()}.
 \item \code{$update_start()} is called in each tuning iteration before the evaluation.
 \item \code{$update_end()} is called in each tuning iteration after the evaluation.
-\item \code{$state} (\code{list}):
-Arbitrary state of the Terminator. Gets updated with each call of \code{update_start()} and \code{update_end()}.
-\item \code{$terminated} (\code{logical(1)}):
-Is the termination criterion met?
-Updated by each call of \code{update_start()}/\code{update_end()}.
+\item \code{$remaining} returns a list of remaining resources till the tuning is finished.
 }
 }
 
