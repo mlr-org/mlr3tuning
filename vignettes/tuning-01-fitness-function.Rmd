@@ -55,9 +55,22 @@ At this point there are no results since have not computed anything jet:
 ff$bmr
 ```
 
-
+However, the defined parameter space that is used for later search strategies is stored within the public member `param_set`:
+```{r}
+ff$param_set
+```
 
 ## Evaluate a Parameter Configuration
 
-The results of any computation are stored as `mlr3::BenchmarkResult`
+With the `$eval()` member function we can evaluate a single parameter configuration given as names list:
+```{r}
+ff$eval(list(cp = 0.05, minsplit = 5))
+```
+
+The results of any computation are stored as `mlr3::BenchmarkResult`:
+```{r}
+ff$bmr
+ff$bmr$data
+ff$bmr$data$learner
+```
 
