@@ -1,0 +1,69 @@
+---
+title: "Introduction to Fitness Functions"
+author: "Daniel Schalk"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to Fitness Functions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+library(mlr3tuning)
+knitr::opts_knit$set(
+  datatable.print.keys = FALSE,
+  datatable.print.class = TRUE
+)
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+set.seed(123)
+```
+
+`ml3tuning` is an extension of `mlr3` that includes tuning.
+
+## Define Required Objects 
+
+
+
+```{r}
+mlr_tasks
+# list keys
+mlr_tasks$keys()
+# get a quick overview
+as.data.frame(mlr_tasks)
+```
+
+Here, we will stick to the popular [iris data set](https://en.wikipedia.org/wiki/Iris_flower_data_set):
+
+```{r}
+task = mlr_tasks$get("iris")
+print(task)
+```
+
+Several task properties and characteristics can be queried using the task's methods (see `mlr3::Task`).
+Most of them should be self-explanatory.
+
+```{r}
+task$nrow
+task$ncol
+task$target_names
+task$class_n
+task$class_names
+task$feature_names
+task$formula
+task$head(n = 3)
+```
+
+In `mlr3`, each row has a unique identifier (row name) which can be either `integer` or `character.`
+These can be used to select specific rows.
+
+```{r}
+# iris uses integer row_ids
+task$row_ids
+# filter rows 1, 51, and 101
+task$data(rows = c(1, 51, 101))
+# filter rows 1, 51, and 101 and only select column "Species"
+task$data(rows = c(1, 51, 101), cols = "Species")
+```

@@ -1,8 +1,12 @@
 #' @title FitnessFunction Class
 #'
 #' @description
-#' Implements a fitness function for \pkg{mlr3}.
-#' Input are hyperparameters, output is the predictive performance.
+#' Implements a fitness function for \pkg{mlr3} as `R6` class `FitnessFunction`. An object of that class
+#' contains all relevant informations that are necessary to conduct tuning (`Task`, `Learner`, `Resampling`, `Measure`s,
+#' `ParamSet`). 
+#' After defining a fitness function, we can use it to predict the generalization error of a specific learner configuration
+#' defined by it's hyperparameter (using `$eval()`). 
+#' The `FitnessFunction` class is the basis for further tuning strategies, i.e., grid or random search. 
 #'
 #' @section Usage:
 #' ```
@@ -21,32 +25,51 @@
 #' ff$bmr
 #' 
 #' # Public methods
-#' ff$eval()
-#' ff$eval_vectorized()
+#' ff$eval(params)
+#' ff$eval_vectorized(param_vals)
 #' ff$get_best()
 #' ff$run_hooks(id)
 #' ```
 #'
 #' @section Arguments:
-#' * `learner` (`Learner`):
-#'   The Learner that we want to evaluate.
-#' * `resampling` (`Resampling`):
-#'   The Resampling method that is used to obtain the y value.
-#' * `measure` (`Measure`):
-#'   Optional, can override the Measure in the Task
+#' * `task` (`mlr3::Task`):
+#'   The task that we want to evaluate.
+#' * `learner` (`mlr3::Learner`):
+#'   The learner that we want to evaluate.
+#' * `resampling` (`mlr3::Resampling`):
+#'   The Resampling method that is used to evaluate the learner.
+#' * `measures` (`mlr3::Measure`):
+#'   Optional, can override the Measure of the Task
 #' * `param_set` ([paradox::ParamSet]):
-#'   Parameter Set.
-#' * `tune_control` (`list()`):
+#'   Parameter set to define the hyperparameter space.
+#' * `ctrl` (`list()`):
 #'   See [tune_control()].
+#' * `params` (`list()`):
+#'   A specific parameter configuration given as names list.
+#' * `param_vals` (`list()`):
+#'   Collection of multiple parameter values gained that is, for example, gained from a tuning strategy like grid search (see `?paradox::generate_design_grid`).
+#' * `id` (`character(1)`):
+#'   Identifier of a hook.
 #'
 #' @section Details:
 #' * `$new()` creates a new object of class [FitnessFunction].
-#' * `$eval(x)` (`numeric(length(self$measures))`) evaluates the parameter setting `x` (`list`) for the given learner and resampling.
-#' * `$eval_vectorized(xs)` (`matrix(length(xs), length(self$measures))`) performs resampling for multiple parameter settings `xs` (list of lists).
+#' * `$task` (`mlr3::Task`) the task for which the tuning should be conducted.
+#' * `$learner` (`mlr3::Learner`) the algorithm for which the tuning should be conducted.
+#' * `$resampling` (`mlr3::Resampling`) strategy to evaluate a parameter setting
+#' * `$measures` (`list(Measure)`) list of `mlr3::Measure` objects that are used for evaluation.
+#' * `$param_set` (`paradox::ParamSet`) parameter space given to the `Tuner` object to generate parameter values.
+#' * `$ctrl` (`list()`) execution control object for tuning (see `?tune_control`).
+#' * `$hooks` (`list()`) list of functions that could be executed with `run_hooks()`.
+#' * `$bmr` (`mlr3::BenchmarkResult`) object that contains all tuning results as `BenchmarkResult` object (see `?BenchmarkResult`).
+#' * `$eval(params)` evaluates the parameter setting `params` (`list`) for the given learner and resampling.
+#' * `$eval_vectorized(param_vals)` performs resampling for multiple parameter settings `param_vals` (list of lists).
+#' * `$get_best()` performs resampling for multiple parameter settings `param_vals` (list of lists).
+#' * `$run_hooks()` performs resampling for multiple parameter settings `param_vals` (list of lists).
 #'
 #' @name FitnessFunction
 #' @keywords internal
 #' @family FitnessFunction
+#' @examples
 NULL
 
 #' @export
@@ -57,8 +80,8 @@ FitnessFunction = R6Class("FitnessFunction",
     resampling = NULL,
     measures = NULL,
     param_set = NULL,
-    ctrl = NULL,
-    hooks = NULL,
+    ctrl = NULL,  # private?
+    hooks = NULL, # private?
     bmr = NULL,
 
     initialize = function(task, learner, resampling, measures = NULL, param_set, ctrl = tune_control()) {
@@ -71,14 +94,14 @@ FitnessFunction = R6Class("FitnessFunction",
       self$hooks = list(update_start = list(), update_end = list())
     },
 
-    eval = function(x) {
-      self$eval_vectorized(list(x))
+    eval = function(params) {
+      self$eval_vectorized(list(params))
     },
 
-    eval_vectorized = function(xs) {
-      learners = lapply(xs, function(x) {
+    eval_vectorized = function(param_vals) {
+      learners = lapply(param_vals, function(params) {
         learner = self$learner$clone()
-        learner$param_vals = insert_named(learner$param_vals, x)
+        learner$param_vals = insert_named(learner$param_vals, params)
         return(learner)
       })
 
