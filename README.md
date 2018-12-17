@@ -5,6 +5,5 @@
 [![CRAN](https://www.r-pkg.org/badges/version/mlr3tuning)](https://cran.r-project.org/package=mlr3tuning)
 [![Coverage Status](https://coveralls.io/repos/github/schalkdaniel/mlr3tuning/badge.svg?branch=master)](https://coveralls.io/github/schalkdaniel/mlr3tuning?branch=master)
 
-
 Extends the [mlr3](https://mlr3.mlr-org.com) package with tuning.
 
