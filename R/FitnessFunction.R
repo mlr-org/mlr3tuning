@@ -63,7 +63,7 @@
 #' * `$bmr` (`mlr3::BenchmarkResult`) object that contains all tuning results as `BenchmarkResult` object (see `?BenchmarkResult`).
 #' * `$eval(x)` evaluates the parameter setting `params` (`list`) for the given learner and resampling.
 #' * `$eval_vectorized(xs)` performs resampling for multiple parameter settings `xs` (list of lists).
-#' * `$get_best()` get best parameter configuration from the `BenchmarkResult` object.
+#' * `$get_best()`  get best parameter configuration from the `BenchmarkResult` object.
 #' * `$run_hooks()` run a function that runs on the whole `FitnessFunction` object.
 #'
 #' @name FitnessFunction
@@ -75,7 +75,8 @@
 #' learner = mlr3::mlr_learners$get("classif.rpart")
 #' resampling = mlr3::mlr_resamplings$get("holdout")
 #' measures = mlr3::mlr_measures$mget("mmce")
-#' param_set = paradox::ParamSet$new(params = list(paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
+#' param_set = paradox::ParamSet$new(params = list(
+#'   paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 #' 
 #' ff = FitnessFunction$new(
 #'   task = task,
