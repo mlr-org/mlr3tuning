@@ -1,16 +1,17 @@
-#' @title TerminatorIterations
+#' @title TerminatorIterations Class
 #'
 #' @description
-#' TerminatorIterations.
+#' Class to terminate the tuning depending on the number of iterations.
 #'
 #' @section Usage:
 #' ```
+#' # Constructor
 #' t = TerminatorIterations$new(max_iterations)
 #' ```
 #' See [Terminator] for a description of the interface.
 #'
 #' @section Arguments:
-#' * `max_iterations` (`integer(1)):\cr
+#' * `max_iterations` (`integer(1)):
 #'   Maximum number of iterations.
 #'
 #' @section Details:

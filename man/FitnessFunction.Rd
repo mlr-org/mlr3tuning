@@ -2,34 +2,59 @@
 % Please edit documentation in R/FitnessFunction.R
 \name{FitnessFunction}
 \alias{FitnessFunction}
-\title{FitnessFunction}
+\title{FitnessFunction Class}
 \description{
-Implements a fitness function for \pkg{mlr3}.
-Input are hyperparameters, output is the predictive performance.
+Implements a fitness function for \pkg{mlr3} as \code{R6} class \code{FitnessFunction}. An object of that class
+contains all relevant informations that are necessary to conduct tuning (\code{mlr3::Task}, \code{mlr3::Learner}, \code{mlr3::Resampling}, \code{mlr3::Measure}s,
+\code{paradox::ParamSet}).
+After defining a fitness function, we can use it to predict the generalization error of a specific learner configuration
+defined by it's hyperparameter (using \code{$eval()}).
+The \code{FitnessFunction} class is the basis for further tuning strategies, i.e., grid or random search.
 }
 \section{Usage}{
-\preformatted{ff = FitnessFunction(id)
-# public members
-# public methods
-# active bindings
+\preformatted{# Construction
+ff = FitnessFunction$new(task, learner, resampling, measures = NULL, param_set, 
+  ctrl = tune_control())
+
+# Public members
+ff$task
+ff$learner
+ff$resampling
+ff$measures
+ff$param_set
+ff$ctrl
+ff$hooks
+ff$bmr
+
+# Public methods
+ff$eval(x)
+ff$eval_vectorized(xs)
+ff$get_best()
+ff$run_hooks(id)
 }
 }
 
 \section{Arguments}{
 
 \itemize{
-\item \code{id} (\code{character(1)}):
-The id of the FitnessFunction.
-\item \code{learner} (\code{Learner}):
-The Learner that we want to evaluate.
-\item \code{resampling} (\code{Resampling}):
-The Resampling method that is used to obtain the y value.
-\item \code{measure} (\code{Measure}):
-Optional, can override the Measure in the Task
+\item \code{task} (\code{mlr3::Task}):
+The task that we want to evaluate.
+\item \code{learner} (\code{mlr3::Learner}):
+The learner that we want to evaluate.
+\item \code{resampling} (\code{mlr3::Resampling}):
+The Resampling method that is used to evaluate the learner.
+\item \code{measures} (\code{mlr3::Measure}):
+Optional, can override the Measure of the Task
 \item \code{param_set} (\link[paradox:ParamSet]{paradox::ParamSet}):
-Parameter Set.
-\item \code{tune_control} (\code{list()}):
+Parameter set to define the hyperparameter space.
+\item \code{ctrl} (\code{list()}):
 See \code{\link[=tune_control]{tune_control()}}.
+\item \code{x} (\code{list()}):
+A specific parameter configuration given as names list (e.g. for rpart \code{list(cp = 0.05, minsplit = 4)}).
+\item \code{xs} (\code{list()}):
+Collection of multiple parameter values gained that is, for example, gained from a tuning strategy like grid search (see \code{?paradox::generate_design_grid}).
+\item \code{id} (\code{character(1)}):
+Identifier of a hook.
 }
 }
 
@@ -37,10 +62,41 @@ See \code{\link[=tune_control]{tune_control()}}.
 
 \itemize{
 \item \code{$new()} creates a new object of class \link{FitnessFunction}.
-\item \code{$eval(x)} (\code{numeric(length(self$measures))}) evaluates the parameter setting \code{x} (\code{list}) for the given learner and resampling.
-\item \code{$eval_vectorized(xs)} (\code{matrix(length(xs), length(self$measures))}) performs resampling for multiple parameter settings \code{xs} (list of lists).
+\item \code{$task} (\code{mlr3::Task}) the task for which the tuning should be conducted.
+\item \code{$learner} (\code{mlr3::Learner}) the algorithm for which the tuning should be conducted.
+\item \code{$resampling} (\code{mlr3::Resampling}) strategy to evaluate a parameter setting
+\item \code{$measures} (\code{list(Measure)}) list of \code{mlr3::Measure} objects that are used for evaluation.
+\item \code{$param_set} (\code{paradox::ParamSet}) parameter space given to the \code{Tuner} object to generate parameter values.
+\item \code{$ctrl} (\code{list()}) execution control object for tuning (see \code{?tune_control}).
+\item \code{$hooks} (\code{list()}) list of functions that could be executed with \code{run_hooks()}.
+\item \code{$bmr} (\code{mlr3::BenchmarkResult}) object that contains all tuning results as \code{BenchmarkResult} object (see \code{?BenchmarkResult}).
+\item \code{$eval(x)} evaluates the parameter setting \code{params} (\code{list}) for the given learner and resampling.
+\item \code{$eval_vectorized(xs)} performs resampling for multiple parameter settings \code{xs} (list of lists).
+\item \code{$get_best()}  get best parameter configuration from the \code{BenchmarkResult} object.
+\item \code{$run_hooks()} run a function that runs on the whole \code{FitnessFunction} object.
 }
 }
 
+\examples{
+# Object required to define the fitness function:
+task = mlr3::mlr_tasks$get("iris")
+learner = mlr3::mlr_learners$get("classif.rpart")
+resampling = mlr3::mlr_resamplings$get("holdout")
+measures = mlr3::mlr_measures$mget("mmce")
+param_set = paradox::ParamSet$new(params = list(
+  paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
+
+ff = FitnessFunction$new(
+  task = task,
+  learner = learner,
+  resampling = resampling,
+  measures = measures,
+  param_set = param_set
+)
+
+ff$eval(list(cp = 0.05, minsplit = 5))
+ff$eval(list(cp = 0.01, minsplit = 3))
+ff$get_best()
+}
 \concept{FitnessFunction}
 \keyword{internal}

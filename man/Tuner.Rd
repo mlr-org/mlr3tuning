@@ -2,12 +2,13 @@
 % Please edit documentation in R/Tuner.R
 \name{Tuner}
 \alias{Tuner}
-\title{Tuner Base Class}
+\title{Abstract Tuner Class}
 \description{
 TunerBase.
 }
 \section{Usage}{
 \preformatted{tuner = Tuner$new(id)
+
 # public members
 tuner$id
 tuner$ff

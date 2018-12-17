@@ -1,20 +1,22 @@
-#' @title TerminatorEvaluations
+#' @title TerminatorEvaluations Class
 #'
 #' @description
-#' TerminatorEvaluations.
+#' Class to terminate the tuning depending on the number of evaluations.
 #'
 #' @section Usage:
 #' ```
+#' # Constructor
 #' t = TerminatorEvaluations$new(max_evaluations)
 #' ```
 #' See [Terminator] for a description of the interface.
 #'
 #' @section Arguments:
-#' * `max_evaluations` (`integer(1)):\cr
+#' * `max_evaluations` (`integer(1)`):
 #'   Maximum number of function evaluations.
 #'
 #' @section Details:
 #' `$new()` creates a new object of class [TerminatorEvaluations].
+#' 
 #' The interface is described in [Terminator].
 #'
 #' @name TerminatorEvaluations

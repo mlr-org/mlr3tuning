@@ -1,8 +1,12 @@
 #' @title FitnessFunction Class
 #'
 #' @description
-#' Implements a fitness function for \pkg{mlr3}.
-#' Input are hyperparameters, output is the predictive performance.
+#' Implements a fitness function for \pkg{mlr3} as `R6` class `FitnessFunction`. An object of that class
+#' contains all relevant informations that are necessary to conduct tuning (`mlr3::Task`, `mlr3::Learner`, `mlr3::Resampling`, `mlr3::Measure`s,
+#' `paradox::ParamSet`). 
+#' After defining a fitness function, we can use it to predict the generalization error of a specific learner configuration
+#' defined by it's hyperparameter (using `$eval()`). 
+#' The `FitnessFunction` class is the basis for further tuning strategies, i.e., grid or random search. 
 #'
 #' @section Usage:
 #' ```
@@ -21,32 +25,70 @@
 #' ff$bmr
 #' 
 #' # Public methods
-#' ff$eval()
-#' ff$eval_vectorized()
+#' ff$eval(x)
+#' ff$eval_vectorized(xs)
 #' ff$get_best()
 #' ff$run_hooks(id)
 #' ```
 #'
 #' @section Arguments:
-#' * `learner` (`Learner`):
-#'   The Learner that we want to evaluate.
-#' * `resampling` (`Resampling`):
-#'   The Resampling method that is used to obtain the y value.
-#' * `measure` (`Measure`):
-#'   Optional, can override the Measure in the Task
+#' * `task` (`mlr3::Task`):
+#'   The task that we want to evaluate.
+#' * `learner` (`mlr3::Learner`):
+#'   The learner that we want to evaluate.
+#' * `resampling` (`mlr3::Resampling`):
+#'   The Resampling method that is used to evaluate the learner.
+#' * `measures` (`mlr3::Measure`):
+#'   Optional, can override the Measure of the Task
 #' * `param_set` ([paradox::ParamSet]):
-#'   Parameter Set.
-#' * `tune_control` (`list()`):
+#'   Parameter set to define the hyperparameter space.
+#' * `ctrl` (`list()`):
 #'   See [tune_control()].
+#' * `x` (`list()`):
+#'   A specific parameter configuration given as names list (e.g. for rpart `list(cp = 0.05, minsplit = 4)`).
+#' * `xs` (`list()`):
+#'   Collection of multiple parameter values gained that is, for example, gained from a tuning strategy like grid search (see `?paradox::generate_design_grid`).
+#' * `id` (`character(1)`):
+#'   Identifier of a hook.
 #'
 #' @section Details:
 #' * `$new()` creates a new object of class [FitnessFunction].
-#' * `$eval(x)` (`numeric(length(self$measures))`) evaluates the parameter setting `x` (`list`) for the given learner and resampling.
-#' * `$eval_vectorized(xs)` (`matrix(length(xs), length(self$measures))`) performs resampling for multiple parameter settings `xs` (list of lists).
+#' * `$task` (`mlr3::Task`) the task for which the tuning should be conducted.
+#' * `$learner` (`mlr3::Learner`) the algorithm for which the tuning should be conducted.
+#' * `$resampling` (`mlr3::Resampling`) strategy to evaluate a parameter setting
+#' * `$measures` (`list(Measure)`) list of `mlr3::Measure` objects that are used for evaluation.
+#' * `$param_set` (`paradox::ParamSet`) parameter space given to the `Tuner` object to generate parameter values.
+#' * `$ctrl` (`list()`) execution control object for tuning (see `?tune_control`).
+#' * `$hooks` (`list()`) list of functions that could be executed with `run_hooks()`.
+#' * `$bmr` (`mlr3::BenchmarkResult`) object that contains all tuning results as `BenchmarkResult` object (see `?BenchmarkResult`).
+#' * `$eval(x)` evaluates the parameter setting `params` (`list`) for the given learner and resampling.
+#' * `$eval_vectorized(xs)` performs resampling for multiple parameter settings `xs` (list of lists).
+#' * `$get_best()`  get best parameter configuration from the `BenchmarkResult` object.
+#' * `$run_hooks()` run a function that runs on the whole `FitnessFunction` object.
 #'
 #' @name FitnessFunction
 #' @keywords internal
 #' @family FitnessFunction
+#' @examples
+#' # Object required to define the fitness function:
+#' task = mlr3::mlr_tasks$get("iris")
+#' learner = mlr3::mlr_learners$get("classif.rpart")
+#' resampling = mlr3::mlr_resamplings$get("holdout")
+#' measures = mlr3::mlr_measures$mget("mmce")
+#' param_set = paradox::ParamSet$new(params = list(
+#'   paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
+#' 
+#' ff = FitnessFunction$new(
+#'   task = task,
+#'   learner = learner,
+#'   resampling = resampling,
+#'   measures = measures,
+#'   param_set = param_set
+#' )
+#' 
+#' ff$eval(list(cp = 0.05, minsplit = 5))
+#' ff$eval(list(cp = 0.01, minsplit = 3))
+#' ff$get_best()
 NULL
 
 #' @export
