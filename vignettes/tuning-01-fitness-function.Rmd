@@ -21,49 +21,43 @@ knitr::opts_chunk$set(
 set.seed(123)
 ```
 
-`ml3tuning` is an extension of `mlr3` that includes tuning.
+`mlr3tuning` is an extension of `mlr3` that includes tuning.
 
-## Define Required Objects 
+## Basis of Tuning 
 
-
-
-```{r}
-mlr_tasks
-# list keys
-mlr_tasks$keys()
-# get a quick overview
-as.data.frame(mlr_tasks)
-```
-
-Here, we will stick to the popular [iris data set](https://en.wikipedia.org/wiki/Iris_flower_data_set):
+Before we can tune hyperparameters, it is necessary to define the learner, task, how to evaluate a hyperparameter setting, and the hyperparameter space.
+Here, we will stick to the popular [iris data set](https://en.wikipedia.org/wiki/Iris_flower_data_set) and a decision tree from `rpart`:
 
 ```{r}
-task = mlr_tasks$get("iris")
-print(task)
+task = mlr3::mlr_tasks$get("iris")
+learner = mlr3::mlr_learners$get("classif.rpart")
+resampling = mlr3::mlr_resamplings$get("holdout")
+measures = mlr3::mlr_measures$mget("mmce")
+param_set = paradox::ParamSet$new(params = list(paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 ```
 
-Several task properties and characteristics can be queried using the task's methods (see `mlr3::Task`).
-Most of them should be self-explanatory.
+## Define Fitness Function
+
+With that basis we can define a fitness function:
 
 ```{r}
-task$nrow
-task$ncol
-task$target_names
-task$class_n
-task$class_names
-task$feature_names
-task$formula
-task$head(n = 3)
+ff = FitnessFunction$new(
+  task = task,
+  learner = learner,
+  resampling = resampling,
+  measures = measures,
+  param_set = param_set
+)
 ```
 
-In `mlr3`, each row has a unique identifier (row name) which can be either `integer` or `character.`
-These can be used to select specific rows.
-
+At this point there are no results since have not computed anything jet:
 ```{r}
-# iris uses integer row_ids
-task$row_ids
-# filter rows 1, 51, and 101
-task$data(rows = c(1, 51, 101))
-# filter rows 1, 51, and 101 and only select column "Species"
-task$data(rows = c(1, 51, 101), cols = "Species")
+ff$bmr
 ```
+
+
+
+## Evaluate a Parameter Configuration
+
+The results of any computation are stored as `mlr3::BenchmarkResult`
+

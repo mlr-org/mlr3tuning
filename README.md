@@ -17,8 +17,10 @@ devtools::install_github("mlr-org/mlr3tuning")
 
 ### Fitness Functions
 
-An object of the class `FitnessFunction` contains all relevant informations that are necessary to conduct tuning (`Task`, `Learner`, `Resampling`, `Measure`s, `paradox::ParamSet`). After defining a fitness function, we can use it to predict the generalization error of a specific learner configuration
-defined by it's hyperparameter (using `$eval()`). The `FitnessFunction` class is the basis for further tuning strategies, i.e., grid or random search. 
+An object of the class `FitnessFunction` contains all relevant informations that are necessary to conduct tuning (`mlr3::Task`, `mlr3::Learner`,`mlr3::Resampling`, `mlr3::Measure`s, `paradox::ParamSet`). After defining a fitness function, we can use it to predict the generalization error of a specific learner configuration
+defined by it's hyperparameter (using `$eval()`). The `FitnessFunction` class is the basis for further tuning strategies, i.e., grid or random search.
+
+See vignette `FitnessFunction` 
 
 ### Terminator
 

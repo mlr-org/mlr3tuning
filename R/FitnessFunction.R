@@ -2,8 +2,8 @@
 #'
 #' @description
 #' Implements a fitness function for \pkg{mlr3} as `R6` class `FitnessFunction`. An object of that class
-#' contains all relevant informations that are necessary to conduct tuning (`Task`, `Learner`, `Resampling`, `Measure`s,
-#' `ParamSet`). 
+#' contains all relevant informations that are necessary to conduct tuning (`mlr3::Task`, `mlr3::Learner`, `mlr3::Resampling`, `mlr3::Measure`s,
+#' `paradox::ParamSet`). 
 #' After defining a fitness function, we can use it to predict the generalization error of a specific learner configuration
 #' defined by it's hyperparameter (using `$eval()`). 
 #' The `FitnessFunction` class is the basis for further tuning strategies, i.e., grid or random search. 

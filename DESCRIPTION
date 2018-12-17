@@ -29,6 +29,7 @@ Imports:
     logger
 Suggests:
     knitr,
+    rmarkdown,
     rpart,
     testthat
 VignetteBuilder:
