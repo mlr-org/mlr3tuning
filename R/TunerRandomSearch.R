@@ -57,11 +57,11 @@ TunerRandomSearch = R6Class("TunerRandomSearch",
   private = list(
     tune_step = function() {
       n = min(self$settings$batch_size, self$terminator$remaining)
-      param_set = self$ff$param_set
-      param_vals = generate_design_random(param_set, n)
-      param_vals = transpose(param_vals)
-      param_vals = map(param_vals, self$ff$param_set$transform)
-      self$ff$eval_vectorized(param_vals)
+      ps = self$ff$param_set
+      xs = generate_design_random(ps, n)
+      xs = transpose(param_vals)
+      xs = map(xs, self$ff$param_set$transform)
+      self$ff$eval_vectorized(xs)
     }
   )
 )
