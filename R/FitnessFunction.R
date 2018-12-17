@@ -1,4 +1,4 @@
-#' @title FitnessFunction
+#' @title FitnessFunction Class
 #'
 #' @description
 #' Implements a fitness function for \pkg{mlr3}.
@@ -6,15 +6,28 @@
 #'
 #' @section Usage:
 #' ```
-#' ff = FitnessFunction(id)
-#' # public members
-#' # public methods
-#' # active bindings
+#' # Construction
+#' ff = FitnessFunction$new(task, learner, resampling, measures = NULL, param_set, 
+#'   ctrl = tune_control())
+#'
+#' # Public members
+#' ff$task
+#' ff$learner
+#' ff$resampling
+#' ff$measures
+#' ff$param_set
+#' ff$ctrl
+#' ff$hooks
+#' ff$bmr
+#' 
+#' # Public methods
+#' ff$eval()
+#' ff$eval_vectorized()
+#' ff$get_best()
+#' ff$run_hooks(id)
 #' ```
 #'
 #' @section Arguments:
-#' * `id` (`character(1)`):
-#'   The id of the FitnessFunction.
 #' * `learner` (`Learner`):
 #'   The Learner that we want to evaluate.
 #' * `resampling` (`Resampling`):

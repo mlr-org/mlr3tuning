@@ -7,3 +7,21 @@
 
 Extends the [mlr3](https://mlr3.mlr-org.com) package with tuning.
 
+## Installation
+
+```r
+devtools::install_github("mlr-org/mlr3tuning")
+```
+
+## Usage
+
+### Fitness Functions
+
+
+
+### Terminator
+
+### Tuner
+
+## Vignettes
+
