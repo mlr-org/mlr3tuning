@@ -4,7 +4,7 @@
 \alias{TunerRandomSearch}
 \title{TunerRandomSearch}
 \description{
-TunerRandomSearch
+Tuner child class to conduct random search.
 }
 \section{Usage}{
 \preformatted{tuner = TunerRandomSearch$new(ff, terminator, batch_size = 100L)

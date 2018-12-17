@@ -1,7 +1,7 @@
 #' @title TunerGridSearch
 #'
 #' @description
-#' TunerGridSearch
+#' Tuner child class to conduct grid search.
 #'
 #' @section Usage:
 #' ```

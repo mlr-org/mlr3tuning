@@ -4,7 +4,7 @@
 \alias{TunerGridSearch}
 \title{TunerGridSearch}
 \description{
-TunerGridSearch
+Tuner child class to conduct grid search.
 }
 \section{Usage}{
 \preformatted{tuner = TunerGridSearch$new(ff, terminator, resolution)

@@ -1,7 +1,7 @@
 #' @title TunerRandomSearch
 #'
 #' @description
-#' TunerRandomSearch
+#' Tuner child class to conduct random search.
 #'
 #' @section Usage:
 #' ```
