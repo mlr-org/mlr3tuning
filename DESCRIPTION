@@ -36,7 +36,7 @@ VignetteBuilder:
 Remotes:
     mlr-org/paradox,
     mlr-org/mlr3misc,
-    mlr-org/mlr3
+    mlr-org/mlr3,
     daroczig/logger
 ByteCompile: true
 Encoding: UTF-8
