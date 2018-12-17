@@ -5,14 +5,18 @@
 #'
 #' @section Usage:
 #' ```
+#' # Construction
 #' t = Terminator$new(settings)
+#' 
 #' # public members
 #' t$terminated
 #' t$settings
 #' t$state
+#' 
 #' # public methods
 #' t$update_start(ff)
 #' t$update_end(ff)
+#' 
 #' # active bindings
 #' t$remaining
 #' ```

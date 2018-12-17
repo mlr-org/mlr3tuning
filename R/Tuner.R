@@ -1,4 +1,4 @@
-#' @title Tuner Base Class
+#' @title Abstract Tuner Class
 #'
 #' @description
 #' TunerBase.
@@ -6,6 +6,7 @@
 #' @section Usage:
 #' ```
 #' tuner = Tuner$new(id)
+#' 
 #' # public members
 #' tuner$id
 #' tuner$ff
