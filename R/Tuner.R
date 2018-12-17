@@ -1,16 +1,21 @@
 #' @title Abstract Tuner Class
 #'
 #' @description
-#' TunerBase.
+#' Abstract `Tuner` class that implements the main functionality each tuner must have. A tuner is 
+#' an object that describes the tuning strategy how to search the hyperparameter space given within
+#' the `[FitnessFunction]` object. 
 #'
 #' @section Usage:
 #' ```
-#' tuner = Tuner$new(id)
+#' # Construction
+#' tuner = Tuner$new(id, ff, terminator, settings = list())
 #' 
 #' # public members
 #' tuner$id
 #' tuner$ff
+#' tuner$terminator
 #' tuner$settings
+#' 
 #' # public methods
 #' tuner$tune()
 #' tuner$tune_result()
@@ -19,18 +24,18 @@
 #' @section Arguments:
 #' * `id` (`character(1)`):\cr
 #'   The id of the Tuner.
-#' * `ff` ([FitnessFunction]).
-#' * `terminator` ([Terminator]).
+#' * `ff` (`[FitnessFunction]`).
+#' * `terminator` (`[Terminator]`).
 #' * `settings` (`list`):\cr
 #'   The settings for the Tuner.
 #'
 #' @section Details:
-#' * `$new()` creates a new object of class [Tuner].
-#' * `id` stores an identifier for this [Tuner].
+#' * `$new()` creates a new object of class `[Tuner]`.
+#' * `id` stores an identifier for this `[Tuner]`.
 #' * `ff` stores the [FitnessFunction] to optimize.
-#' * `terminator` stores the [Terminator].
-#' * `settings` is a list of hyperparamter settings for this [Tuner].
-#' * `tune()` performs the tuning, until the budget of the [Terminator] in the [FitnessFunction] is exhausted.
+#' * `terminator` stores the `[Terminator]`.
+#' * `settings` is a list of hyperparamter settings for this `[Tuner]`.
+#' * `tune()` performs the tuning, until the budget of the `[Terminator]` in the `[FitnessFunction]` is exhausted.
 #' * `tune_result()` returns a list with 2 elements:
 #'     - `performance` (`numeric()`) with the best performance.
 #'     - `param_vals` (`numeric()`) with corresponding hyperparameters.

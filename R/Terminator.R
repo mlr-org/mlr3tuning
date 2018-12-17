@@ -2,7 +2,7 @@
 #'
 #' @description
 #' Abstract `Terminator` class that implements the main functionality each terminator must have. A terminator is 
-#' an object that says when to stop the tuning. 
+#' an object that says when to stop the tuning.
 #'
 #' @section Usage:
 #' ```

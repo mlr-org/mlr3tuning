@@ -22,7 +22,8 @@ defined by it's hyperparameter (using `$eval()`). The `FitnessFunction` class is
 
 See vignette `tuning-01-fitness-function`. 
 
-### Terminator
-
 ### Tuner
 
+A tuner is an object that describes the tuning strategy how to search the hyperparameter space given within the `[FitnessFunction]` object. 
+
+See vignette `tuning-02-tuner`.
