@@ -25,8 +25,8 @@
 #' ff$bmr
 #' 
 #' # Public methods
-#' ff$eval(params)
-#' ff$eval_vectorized(param_vals)
+#' ff$eval(x)
+#' ff$eval_vectorized(xs)
 #' ff$get_best()
 #' ff$run_hooks(id)
 #' ```
@@ -44,9 +44,9 @@
 #'   Parameter set to define the hyperparameter space.
 #' * `ctrl` (`list()`):
 #'   See [tune_control()].
-#' * `params` (`list()`):
-#'   A specific parameter configuration given as names list.
-#' * `param_vals` (`list()`):
+#' * `x` (`list()`):
+#'   A specific parameter configuration given as names list (e.g. for rpart `list(cp = 0.05, minsplit = 4)`).
+#' * `xs` (`list()`):
 #'   Collection of multiple parameter values gained that is, for example, gained from a tuning strategy like grid search (see `?paradox::generate_design_grid`).
 #' * `id` (`character(1)`):
 #'   Identifier of a hook.
@@ -61,15 +61,33 @@
 #' * `$ctrl` (`list()`) execution control object for tuning (see `?tune_control`).
 #' * `$hooks` (`list()`) list of functions that could be executed with `run_hooks()`.
 #' * `$bmr` (`mlr3::BenchmarkResult`) object that contains all tuning results as `BenchmarkResult` object (see `?BenchmarkResult`).
-#' * `$eval(params)` evaluates the parameter setting `params` (`list`) for the given learner and resampling.
-#' * `$eval_vectorized(param_vals)` performs resampling for multiple parameter settings `param_vals` (list of lists).
-#' * `$get_best()` performs resampling for multiple parameter settings `param_vals` (list of lists).
-#' * `$run_hooks()` performs resampling for multiple parameter settings `param_vals` (list of lists).
+#' * `$eval(x)` evaluates the parameter setting `params` (`list`) for the given learner and resampling.
+#' * `$eval_vectorized(xs)` performs resampling for multiple parameter settings `xs` (list of lists).
+#' * `$get_best()` get best parameter configuration from the `BenchmarkResult` object.
+#' * `$run_hooks()` run a function that runs on the whole `FitnessFunction` object.
 #'
 #' @name FitnessFunction
 #' @keywords internal
 #' @family FitnessFunction
 #' @examples
+#' # Object required to define the fitness function:
+#' task = mlr3::mlr_tasks$get("iris")
+#' learner = mlr3::mlr_learners$get("classif.rpart")
+#' resampling = mlr3::mlr_resamplings$get("holdout")
+#' measures = mlr3::mlr_measures$mget("mmce")
+#' param_set = paradox::ParamSet$new(params = list(paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
+#' 
+#' ff = FitnessFunction$new(
+#'   task = task,
+#'   learner = learner,
+#'   resampling = resampling,
+#'   measures = measures,
+#'   param_set = param_set
+#' )
+#' 
+#' ff$eval(list(cp = 0.05, minsplit = 5))
+#' ff$eval(list(cp = 0.01, minsplit = 3))
+#' ff$get_best()
 NULL
 
 #' @export
@@ -80,8 +98,8 @@ FitnessFunction = R6Class("FitnessFunction",
     resampling = NULL,
     measures = NULL,
     param_set = NULL,
-    ctrl = NULL,  # private?
-    hooks = NULL, # private?
+    ctrl = NULL,
+    hooks = NULL,
     bmr = NULL,
 
     initialize = function(task, learner, resampling, measures = NULL, param_set, ctrl = tune_control()) {
@@ -94,14 +112,14 @@ FitnessFunction = R6Class("FitnessFunction",
       self$hooks = list(update_start = list(), update_end = list())
     },
 
-    eval = function(params) {
-      self$eval_vectorized(list(params))
+    eval = function(x) {
+      self$eval_vectorized(list(x))
     },
 
-    eval_vectorized = function(param_vals) {
-      learners = lapply(param_vals, function(params) {
+    eval_vectorized = function(xs) {
+      learners = lapply(xs, function(x) {
         learner = self$learner$clone()
-        learner$param_vals = insert_named(learner$param_vals, params)
+        learner$param_vals = insert_named(learner$param_vals, x)
         return(learner)
       })
 
