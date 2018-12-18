@@ -26,7 +26,7 @@
 #' 
 #' # Public methods
 #' ff$eval(x)
-#' ff$eval_vectorized(xs)
+#' ff$eval_vectorized(xts)
 #' ff$get_best()
 #' ff$run_hooks(id)
 #' ```
@@ -44,10 +44,10 @@
 #'   Parameter set to define the hyperparameter space.
 #' * `ctrl` (`list()`):
 #'   See [tune_control()].
-#' * `x` (`list()`):
-#'   A specific parameter configuration given as names list (e.g. for rpart `list(cp = 0.05, minsplit = 4)`).
-#' * `xs` (`list()`):
-#'   Collection of multiple parameter values gained that is, for example, gained from a tuning strategy like grid search (see `?paradox::generate_design_grid`).
+#' * `xt` (`list()`):
+#'   A specific (transformed) parameter configuration given as named list (e.g. for rpart `list(cp = 0.05, minsplit = 4)`).
+#' * `xts` (`list()`):
+#'   Collection of multiple (transformed) parameter values gained that is, for example, gained from a tuning strategy like grid search (see `?paradox::generate_design_grid`).
 #' * `id` (`character(1)`):
 #'   Identifier of a hook.
 #'
@@ -61,8 +61,8 @@
 #' * `$ctrl` (`list()`) execution control object for tuning (see `?tune_control`).
 #' * `$hooks` (`list()`) list of functions that could be executed with `run_hooks()`.
 #' * `$bmr` (`mlr3::BenchmarkResult`) object that contains all tuning results as `BenchmarkResult` object (see `?BenchmarkResult`).
-#' * `$eval(x)` evaluates the parameter setting `params` (`list`) for the given learner and resampling.
-#' * `$eval_vectorized(xs)` performs resampling for multiple parameter settings `xs` (list of lists).
+#' * `$eval(xt)` evaluates the (transformed) parameter setting `xt` (`list`) for the given learner and resampling.
+#' * `$eval_vectorized(xts)` performs resampling for multiple (transformed) parameter settings `xts` (list of lists).
 #' * `$get_best()`  get best parameter configuration from the `BenchmarkResult` object.
 #' * `$run_hooks()` run a function that runs on the whole `FitnessFunction` object.
 #'
@@ -113,20 +113,27 @@ FitnessFunction = R6Class("FitnessFunction",
       self$hooks = list(update_start = list(), update_end = list())
     },
 
-    eval = function(x) {
-      self$eval_vectorized(list(x))
+    eval = function(xt) {
+      self$eval_vectorized(list(xt))
     },
 
-    eval_vectorized = function(xs) {
-      learners = lapply(xs, function(x) {
+    eval_vectorized = function(xts) {
+      learners = lapply(xts, function(xt) {
         learner = self$learner$clone()
-        learner$param_vals = insert_named(learner$param_vals, x)
+        learner$param_vals = insert_named(learner$param_vals, xt)
         return(learner)
       })
 
       self$run_hooks("update_start")
       bmr = mlr3::benchmark(tasks = list(self$task), learners = learners, resamplings = list(self$resampling), measures = self$measures, ctrl = self$ctrl)
-      self$bmr = if (is.null(self$bmr)) bmr else self$bmr$combine(bmr)
+      
+      if (is.null(self$bmr)) {
+        bmr$data$dob = 1L
+        self$bmr = bmr
+      } else {
+        bmr$data$dob = max(self$bmr$data$dob) + 1L
+        self$bmr$combine(bmr)
+      }
       self$run_hooks("update_end")
       invisible(self)
     },

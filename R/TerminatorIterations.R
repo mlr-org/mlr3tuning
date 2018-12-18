@@ -42,7 +42,7 @@ TerminatorIterations = R6Class("TerminatorIterations",
 
     update_end = function(ff) {
       dob = NULL
-      self$state$iters = if (nrow(ff$bmr$data) == 0L) 0L else ff$bmr$data[, max(dob)]
+      self$state$iters = if (nrow(ff$bmr$data) == 0) 0L else ff$bmr$data[, max(dob)]
       self$terminated = self$state$iters >= self$settings$max_iterations
       invisible(self)
     },
