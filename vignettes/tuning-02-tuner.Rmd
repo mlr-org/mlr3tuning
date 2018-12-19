@@ -39,8 +39,16 @@ ff = FitnessFunction$new(task, learner, resampling, measures, param_set)
 
 ## Define a Terminator
 
+## Evaluations
+
 ```{r}
-terminator = TerminatorEvaluations$new(5)
+terminator_eval = TerminatorEvaluations$new(5)
+```
+
+## Iterations
+
+```{r}
+terminator_eval = TerminatorEvaluations$new(5)
 ```
 
 ## Basic Search Strategies
@@ -48,17 +56,19 @@ terminator = TerminatorEvaluations$new(5)
 ### Conduct Random Search
 
 ```{r}
-rs = TunerRandomSearch$new(ff, terminator)
+rs = TunerRandomSearch$new(ff, terminator_eval)
 rs$tune()
 rs$tune_result()
 ```
 
 ### Conduct Grid Search
 
+After using the `terminator_eval` we cannot use the same object to run another tuning. If we want to use the same object it is necessary to call `$clone()` of the terminator.
+
 ```{r}
-# gs = TunerGridSearch$new(ff, terminator)
-# gs$tune()
-# gs$tune_result()
+gs = TunerGridSearch$new(ff, terminator_eval$clone())
+gs$tune()
+gs$tune_result()
 ```
 
 ## Train Final Model

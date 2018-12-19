@@ -4,7 +4,11 @@
 \alias{TerminatorIterations}
 \title{TerminatorIterations Class}
 \description{
-Class to terminate the tuning depending on the number of iterations.
+Class to terminate the tuning depending on the number of iterations. A iteration is
+defined by the tuning step of a \link{Tuner}. For example, the tuning step of grid search
+defines the grid and evaluates each grid point. Therefore, it doesn't make sense to use
+the \link{TerminatorIterations} class with grid search since each point is evaluated multiple
+times.
 }
 \section{Usage}{
 \preformatted{# Constructor

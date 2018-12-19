@@ -28,7 +28,7 @@ ff$bmr
 
 # Public methods
 ff$eval(x)
-ff$eval_vectorized(xs)
+ff$eval_vectorized(xts)
 ff$get_best()
 ff$run_hooks(id)
 }
@@ -49,10 +49,10 @@ Optional, can override the Measure of the Task
 Parameter set to define the hyperparameter space.
 \item \code{ctrl} (\code{list()}):
 See \code{\link[=tune_control]{tune_control()}}.
-\item \code{x} (\code{list()}):
-A specific parameter configuration given as names list (e.g. for rpart \code{list(cp = 0.05, minsplit = 4)}).
-\item \code{xs} (\code{list()}):
-Collection of multiple parameter values gained that is, for example, gained from a tuning strategy like grid search (see \code{?paradox::generate_design_grid}).
+\item \code{xt} (\code{list()}):
+A specific (transformed) parameter configuration given as named list (e.g. for rpart \code{list(cp = 0.05, minsplit = 4)}).
+\item \code{xts} (\code{list()}):
+Collection of multiple (transformed) parameter values gained that is, for example, gained from a tuning strategy like grid search (see \code{?paradox::generate_design_grid}).
 \item \code{id} (\code{character(1)}):
 Identifier of a hook.
 }
@@ -70,8 +70,8 @@ Identifier of a hook.
 \item \code{$ctrl} (\code{list()}) execution control object for tuning (see \code{?tune_control}).
 \item \code{$hooks} (\code{list()}) list of functions that could be executed with \code{run_hooks()}.
 \item \code{$bmr} (\code{mlr3::BenchmarkResult}) object that contains all tuning results as \code{BenchmarkResult} object (see \code{?BenchmarkResult}).
-\item \code{$eval(x)} evaluates the parameter setting \code{params} (\code{list}) for the given learner and resampling.
-\item \code{$eval_vectorized(xs)} performs resampling for multiple parameter settings \code{xs} (list of lists).
+\item \code{$eval(xt)} evaluates the (transformed) parameter setting \code{xt} (\code{list}) for the given learner and resampling.
+\item \code{$eval_vectorized(xts)} performs resampling for multiple (transformed) parameter settings \code{xts} (list of lists).
 \item \code{$get_best()}  get best parameter configuration from the \code{BenchmarkResult} object.
 \item \code{$run_hooks()} run a function that runs on the whole \code{FitnessFunction} object.
 }

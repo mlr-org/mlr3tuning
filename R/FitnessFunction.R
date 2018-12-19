@@ -118,9 +118,10 @@ FitnessFunction = R6Class("FitnessFunction",
     },
 
     eval_vectorized = function(xts) {
-      learners = lapply(xts, function(xt) {
+      learners = imap(xts, function(xt, i) {
         learner = self$learner$clone()
         learner$param_vals = insert_named(learner$param_vals, xt)
+        learner$id = paste0(learner$id, i)
         return(learner)
       })
 

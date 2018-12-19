@@ -4,7 +4,8 @@
 \alias{TerminatorEvaluations}
 \title{TerminatorEvaluations Class}
 \description{
-Class to terminate the tuning depending on the number of evaluations.
+Class to terminate the tuning depending on the number of evaluations. An evaluation
+is defined by one resampling of a parameter value.
 }
 \section{Usage}{
 \preformatted{# Constructor
