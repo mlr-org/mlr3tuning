@@ -66,9 +66,9 @@ rs$tune_result()
 After using the `terminator_eval` we cannot use the same object to run another tuning. If we want to use the same object it is necessary to call `$clone()` of the terminator.
 
 ```{r}
-gs = TunerGridSearch$new(ff, terminator_eval$clone())
-gs$tune()
-gs$tune_result()
+# gs = TunerGridSearch$new(ff, terminator_eval$clone())
+# gs$tune()
+# gs$tune_result()
 ```
 
 ## Train Final Model
