@@ -1,0 +1,75 @@
+---
+title: "Introduction to Tuner"
+author: "Daniel Schalk"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to Tuner}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+library(mlr3tuning)
+knitr::opts_knit$set(
+  datatable.print.keys = FALSE,
+  datatable.print.class = TRUE
+)
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+set.seed(123)
+```
+
+`mlr3tuning` is an extension of `mlr3` that includes tuning.
+
+## Basis of Tuning 
+
+As mentioned in the `tuning-01-fitness-function` vignette, we have to define a `[FitnessFunction]` object to define the hyperparameter space as well as the evaluation technique that is used to estimate the generalization error:
+
+```{r}
+task = mlr3::mlr_tasks$get("spam")
+learner = mlr3::mlr_learners$get("classif.rpart")
+learner$predict_type = "prob"
+resampling = mlr3::mlr_resamplings$get("holdout")
+measures = mlr3::mlr_measures$mget(c("auc", "mmce"))
+param_set = paradox::ParamSet$new(
+  params = list(
+    paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1),
+    paradox::ParamInt$new("minsplit", lower = 2, upper = 5)
+  ),
+)
+
+ff = FitnessFunction$new(task, learner, resampling, measures, param_set)
+```
+
+## Define Objective
+
+
+- Return negative performance measure in case of optimization (like the AUC)
+
+
+```{r}
+mlr3GenSA = function (x, ff) {
+  x = mlr3misc::set_names(x, nm = ff$param_set$ids)
+  ff$eval(x)
+  performance = unlist(ff$bmr$data[.N]$performance)[[1]]
+  if (! ff$measures[[1]]$minimize) return (-performance)
+  return (performance)
+}
+```
+
+This function does:
+
+-   Runs the fitness function `ff` for the parameter value `x`
+-   Evaluates the learner using the given `resampling` object and adds the resampling result to the benchmark result object of the fitness function 
+
+```{r}
+mlr3GenSA(c(cp = 0.05, minsplit = 5), ff)
+ff$bmr$aggregated
+
+mlr3GenSA(c(cp = 0.2, minsplit = 3), ff)
+ff$bmr$aggregated
+``` 
+
+
