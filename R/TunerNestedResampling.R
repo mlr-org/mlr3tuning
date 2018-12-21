@@ -24,8 +24,6 @@ TunerNestedResampling = R6Class("TunerNestedResampling",
 
   private = list(
     tune_step = function() {
-      browser()
-      
       # Deep copy is necessary to correctly copy the terminator of the inner tuningQ
       tuner_temp = self$inner_tuner$clone(deep = TRUE)
 
