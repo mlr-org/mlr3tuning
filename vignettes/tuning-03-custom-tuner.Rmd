@@ -50,7 +50,7 @@ ff = FitnessFunction$new(task, learner, resampling, measures, param_set)
 
 
 ```{r}
-mlr3GenSA = function (x, ff) {
+blackBoxFun = function (x, ff) {
   x = mlr3misc::set_names(x, nm = ff$param_set$ids)
   ff$eval(x)
   performance = unlist(ff$bmr$data[.N]$performance)[[1]]
@@ -65,11 +65,35 @@ This function does:
 -   Evaluates the learner using the given `resampling` object and adds the resampling result to the benchmark result object of the fitness function 
 
 ```{r}
-mlr3GenSA(c(cp = 0.05, minsplit = 5), ff)
+blackBoxFun(c(cp = 0.05, minsplit = 5), ff)
 ff$bmr$aggregated
 
-mlr3GenSA(c(cp = 0.2, minsplit = 3), ff)
+blackBoxFun(c(cp = 0.2, minsplit = 3), ff)
 ff$bmr$aggregated
 ``` 
 
+
+## Call the Optimizer
+
+```{r}
+library(GenSA)
+GenSA(fn = blackBoxFun, lower = param_set$lowers, upper = param_set$uppers, ff = ff)
+```
+
+## Add Terminator
+
+### Iterations
+
+```{r}
+GenSA(fn = blackBoxFun, lower = param_set$lowers, upper = param_set$uppers, 
+  control = list(maxit = 120L, verbose = TRUE), ff = ff)
+```
+
+
+### Evaluations
+
+```{r}
+GenSA(fn = blackBoxFun, lower = param_set$lowers, upper = param_set$uppers,
+  control = list(max.call = 120L, verbose = TRUE), ff = ff)
+```
 
