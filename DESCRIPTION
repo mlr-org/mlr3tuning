@@ -31,7 +31,8 @@ Suggests:
     knitr,
     rmarkdown,
     rpart,
-    testthat
+    testthat,
+    kernlab
 VignetteBuilder:
     knitr
 Remotes:
