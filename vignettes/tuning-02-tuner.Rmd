@@ -25,7 +25,7 @@ set.seed(123)
 
 ## Basis of Tuning 
 
-As mentioned in the `tuning-01-fitness-function` vignette, we have to define a `[FitnessFunction]` object to define the hyperparameter space as well as the evaluation technique that is used to estimate the generalization error:
+As mentioned in the `tuning-01-fitness-function` vignette, we have to initialize a `FitnessFunction` object to define the hyperparameter space as well as the evaluation technique that is used to estimate the generalization error:
 
 ```{r}
 task = mlr3::mlr_tasks$get("iris")
@@ -53,29 +53,16 @@ terminator_eval = TerminatorEvaluations$new(5)
 
 ## Basic Search Strategies
 
-### Conduct Random Search
+Available search strategies:
+
+-   Grid Search
+-   Random Search
 
 ```{r}
 rs = TunerRandomSearch$new(ff, terminator_eval)
 rs$tune()
+```
+
+```{r}
 rs$tune_result()
-```
-
-### Conduct Grid Search
-
-After using the `terminator_eval` we cannot use the same object to run another tuning. If we want to use the same object it is necessary to call `$clone()` of the terminator.
-
-```{r}
-# gs = TunerGridSearch$new(ff, terminator_eval$clone())
-# gs$tune()
-# gs$tune_result()
-```
-
-## Train Final Model
-
-On basis of the random search results we want to train a final model using the complete dataset:
-
-```{r}
-rs_result = rs$tune_result()
-
 ```

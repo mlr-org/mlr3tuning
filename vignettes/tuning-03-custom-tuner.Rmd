@@ -92,7 +92,7 @@ The number of evaluations of the fitness function can be controlled by `max.call
 
 ```{r}
 res = GenSA(fn = blackBoxFun, lower = param_set$lowers, upper = param_set$uppers,
-  control = list(max.call = 120L), ff = ff)
+  control = list(max.call = 60L), ff = ff)
 ```
 
 ```{r}

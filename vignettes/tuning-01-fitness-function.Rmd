@@ -25,13 +25,12 @@ set.seed(123)
 
 ## Basis of Tuning 
 
-Before we can tune hyperparameters, it is necessary to define the learner, task, how to evaluate a hyperparameter setting, and the hyperparameter space.
-Here, we will stick to the popular [iris data set](https://en.wikipedia.org/wiki/Iris_flower_data_set) and a decision tree from `rpart`:
+Before we are able to tune hyperparameters, it is necessary to define the learner, task, how to evaluate a hyperparameter setting, and the hyperparameter space. Here, we will use the [iris data set](https://en.wikipedia.org/wiki/Iris_flower_data_set) and a decision tree from `rpart`:
 
 ```{r}
 task = mlr3::mlr_tasks$get("iris")
 learner = mlr3::mlr_learners$get("classif.rpart")
-resampling = mlr3::mlr_resamplings$get("holdout")
+resampling = mlr3::mlr_resamplings$get("cv")
 measures = mlr3::mlr_measures$mget("mmce")
 param_set = paradox::ParamSet$new(params = list(paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 ```
@@ -60,16 +59,28 @@ However, the defined parameter space that is used for later search strategies is
 ff$param_set
 ```
 
-## Evaluate a Parameter Configuration
+## Evaluate Parameter Configurations
 
-With the `$eval()` member function we can evaluate a single parameter configuration given as names list:
+With the `$eval()` member function we can evaluate a single parameter configuration given as named list or vector:
 ```{r}
-ff$eval(list(cp = 0.05, minsplit = 5))
+ff$eval(c(cp = 0.05, minsplit = 5))
 ```
 
-The results of any computation are stored as `mlr3::BenchmarkResult`:
+Since we have defined 10 fold cross validation as resampling stragety the model is trained and evaluated 10 times. All evaluation results are stored as `mlr3::BenchmarkResult`:
 ```{r}
 ff$bmr
 ff$bmr$data
-ff$bmr$data$learner
 ```
+
+With `ff$bmr$aggregated` we get a summary per resampling:
+```{r}
+ff$bmr$aggregated
+```
+
+If we use another parameter configuration we, again, observe that the results are automatically inserted into the benchmark result:
+```{r}
+ff$eval(c(cp = 0.05, minsplit = 2))
+ff$bmr$aggregated
+```
+
+Note that `$eval()` is the basis of the tuning. The member function evaluates a black box function defined by the model and evaluates the parameter setting using the given resampling strategy combined by the fitness function. 
