@@ -10,8 +10,8 @@
 #' See [Tuner] for a description of the interface.
 #'
 #' @section Arguments:
-#' * `id` (`character(1)`):
-#'   The id of the Tuner.
+#' * `ff` ([FitnessFunction]):
+#'   Black box function used for the tuning.
 #' * `terminator` ([Terminator]):
 #'   Terminator to control the termination.
 #'   Will be triggered by the hooks of the [FitnessFunction].

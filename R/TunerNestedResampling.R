@@ -1,3 +1,49 @@
+#' @title TunerNestedResampling
+#'
+#' @description
+#' Tuner child class to conduct grid search.
+#'
+#' @section Usage:
+#' ```
+#' tuner = TunerNestedResampling$new(inner_tuner, outer_resampling)
+#' ```
+#' See [Tuner] for a description of the interface.
+#'
+#' @section Arguments:
+#' * `inner_tuner` ([Tuner]):
+#'   Tuner that is executed on each iteration of the outer resampling.
+#' * `outer_resampling` ([Resampling]):
+#'   Resampling object that controls the outer tuning.
+#'
+#' @section Details:
+#' `$new()` creates a new object of class [TunerNestedResampling].
+#' The interface is described in [Tuner].
+#'
+#' @name TunerNestedResampling
+#' @keywords internal
+#' @family Tuner
+#' @examples
+#' task = mlr3::mlr_tasks$get("iris")
+#' learner = mlr3::mlr_learners$get("classif.rpart")
+#' resampling = mlr3::mlr_resamplings$get("holdout")
+#' measures = mlr3::mlr_measures$mget("mmce")
+#' param_set = paradox::ParamSet$new(
+#'   params = list(paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
+#' 
+#' ff = FitnessFunction$new(task, learner, resampling, measures, param_set)
+#' 
+#' terminator = TerminatorEvaluations$new(5)
+#' rs = TunerRandomSearch$new(ff, terminator_eval)
+#' 
+#' outer = mlr3::mlr_resamplings$get("cv")
+#' 
+#' nested = TunerNestedResampling$new(rs, outer)
+#' nested$tune()
+#' nested$ff$bmr$data
+NULL
+
+#' @export
+#' @include Tuner.R
 TunerNestedResampling = R6Class("TunerNestedResampling",
   inherit = Tuner,
   public = list(
@@ -47,14 +93,12 @@ TunerNestedResampling = R6Class("TunerNestedResampling",
       self$ff$resampling = resampling_temp
       self$ff$eval(tuner_temp$tune_result()$param_vals)
 
-      # FIXME: include tuner_temp to the data of the benchmark result of the Fitness Function of self:
-
-      # if (nrow(self$ff$bmr$data) == 1) {
-      #   self$ff$bmr$data$inner_tuner = tuner_temp
-      # } else {
-      #   self$ff$bmr$data$inner_tuner[iter] = tuner_temp
-      # }
+      # TODO: Check how the tuner is copied and if the complete functionality is available:
+      if (nrow(self$ff$bmr$data) == 1) {
+        self$ff$bmr$data = cbind(self$ff$bmr$data, data.table(inner_tuner = list(tuner_temp)))
+      } else {
+        self$ff$bmr$data$inner_tuner[iter] = list(tuner_temp)
+      }
     }
   )
 )
-
