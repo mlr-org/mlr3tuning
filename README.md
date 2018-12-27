@@ -32,4 +32,4 @@ devtools::install_github("mlr-org/mlr3tuning")
 
 -   Introduction to Fitness Functions: `tuning-01-fitness-function`
 -   Introduction to Tuner: `tuning-02-tuner`
--   
+-   Defining Custom Tuner: `tuning-03-custom-tuner`
