@@ -32,6 +32,7 @@ Suggests:
     rmarkdown,
     rpart,
     testthat,
+    GenSA,
     kernlab
 VignetteBuilder:
     knitr
