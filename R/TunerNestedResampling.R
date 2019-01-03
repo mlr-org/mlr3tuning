@@ -80,7 +80,7 @@ TunerNestedResampling = R6Class("TunerNestedResampling",
         mlr3misc::stopf("Tuning was not conducted yet.")
         # logger::log_error("Tuning wasn't conducted yet.", namespace = "mlr3")
 
-      perfs = mlr3misc::transpose(nested$ff$bmr$data$performance)
+      perfs = mlr3misc::transpose(self$ff$bmr$data$performance)
       perfs_means = lapply(perfs, function (p) mean(unlist(p)))
       return (perfs_means)
     }
