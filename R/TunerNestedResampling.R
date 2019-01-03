@@ -5,7 +5,11 @@
 #'
 #' @section Usage:
 #' ```
+#' # Construction
 #' tuner = TunerNestedResampling$new(inner_tuner, outer_resampling)
+#' 
+#' # public methods
+#' tuner$performance()
 #' ```
 #' See [Tuner] for a description of the interface.
 #'
@@ -16,9 +20,11 @@
 #'   Resampling object that controls the outer tuning.
 #'
 #' @section Details:
-#' `$new()` creates a new object of class [TunerNestedResampling].
-#' The interface is described in [Tuner].
+#' * `$new()` creates a new object of class [TunerNestedResampling].
+#' * `$performance()` returns the estimated generalization error of the defined measures.
 #'
+#' The interface is described in [Tuner].
+#' 
 #' @name TunerNestedResampling
 #' @keywords internal
 #' @family Tuner
@@ -66,6 +72,16 @@ TunerNestedResampling = R6Class("TunerNestedResampling",
       # Necessary to get correct reference of the terminator for the outer resampling.
       self$ff$hooks$update_start = list(self$terminator$update_start)
       self$ff$hooks$update_end = list(self$terminator$update_end)
+    },
+
+    performance = function () {
+      if (is.null(self$ff$bmr))
+        mlr3misc::stopf("Tuning was not conducted yet.")
+        # logger::log_error("Tuning wasn't conducted yet.", namespace = "mlr3")
+
+      perfs = mlr3misc::transpose(nested$ff$bmr$data$performance)
+      perfs_means = lapply(perfs, function (p) mean(unlist(p)))
+      return (perfs_means)
     }
   ),
 
@@ -84,13 +100,12 @@ TunerNestedResampling = R6Class("TunerNestedResampling",
       # +1 because the terminator starts counting with 0
       iter = self$terminator$state$iters + 1L
       train_set_temp = self$outer_resampling$train_set(iter)
+      test_set_temp = self$outer_resampling$test_set(iter)
       tuner_temp$ff$task$filter(train_set_temp)
       tuner_temp$tune()
 
-      # FIXME: ResamplingCustom does not work at the moment see https://github.com/mlr-org/mlr3/issues/108
-      # resampling_temp = ResamplingCustom$new()
-      # resampling_temp$instantiate(self$ff$task, train_sets = list(train_set_temp))
-      resampling_temp = mlr3::ResamplingHoldout$new()
+      resampling_temp = mlr3::ResamplingCustom$new()
+      resampling_temp$instantiate(self$ff$task, train_sets = list(train_set_temp), test_sets = list(test_set_temp))
       self$ff$resampling = resampling_temp
       self$ff$eval(tuner_temp$tune_result()$param_vals)
 

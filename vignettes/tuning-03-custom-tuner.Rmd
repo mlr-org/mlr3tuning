@@ -9,6 +9,7 @@ vignette: >
 ---
 
 ```{r setup, include = FALSE}
+library(GenSA)
 library(mlr3tuning)
 knitr::opts_knit$set(
   datatable.print.keys = FALSE,
@@ -80,11 +81,11 @@ ff$bmr$aggregated
 
 ## Call the Optimizer
 
-```{r}
+```{r, eval=FALSE}
 library(GenSA)
-res = GenSA(fn = blackBoxFun, lower = param_set$lower, upper = param_set$upper, ff = ff, 
-  control = list(max.call = 60L))
+res = GenSA(fn = blackBoxFun, lower = param_set$lower, upper = param_set$upper, ff = ff)
 ```
+
 
 ## Terminator of Custom Tuner
 
@@ -93,7 +94,7 @@ To define a custom tuner class we also have to think about how the terminator ar
 The number of evaluations of the fitness function can be controlled by `max.call`. However, by setting `max.call` we don't get the real number of evaluations since `GenSA` finishes one iteration first and then stops. Therefore, it might happen that we specify 120 evaluation as maximum, but the algorithm calls the fitness function 126 times.
 
 ```{r}
-res = GenSA(fn = blackBoxFun, lower = param_set$lowers, upper = param_set$uppers,
+res = GenSA(fn = blackBoxFun, lower = param_set$lower, upper = param_set$upper,
   control = list(max.call = 60L), ff = ff)
 ```
 
@@ -101,36 +102,6 @@ res = GenSA(fn = blackBoxFun, lower = param_set$lowers, upper = param_set$uppers
 res$counts
 ```
 
-<!-- ### Iterations
-
-In `GenSA` we can control the number of iterations by setting the `maxit` argument:
-
-```{r}
-res = GenSA(fn = blackBoxFun, lower = param_set$lowers, upper = param_set$uppers, 
-  control = list(maxit = 120L, verbose = TRUE), ff = ff)
-```
-
-To access the real number of iterations we have to take a look at the `nb.steps` column of the trace matrix:
-
-```{r}
-head(res$trace.mat)
-```
-
-We use the maximum of `nb.steps` as terminator for the iterations. 
-
-
-### Evaluations
-
-The number of evaluations of the fitness function can be controlled by `max.call`. However, by setting `max.call` we don't get the real number of evaluations since `GenSA` finishes one iteration first and then stops. Therefore, it might happen that we specify 120 evaluation as maximum, but the algorithm calls the fitness function 126 times.
-
-```{r}
-res = GenSA(fn = blackBoxFun, lower = param_set$lowers, upper = param_set$uppers,
-  control = list(max.call = 120L, verbose = TRUE), ff = ff)
-```
-
-```{r}
-res$counts
-``` -->
 
 ## Write New Class
 

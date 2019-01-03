@@ -7,7 +7,11 @@
 Tuner child class to conduct grid search.
 }
 \section{Usage}{
-\preformatted{tuner = TunerNestedResampling$new(inner_tuner, outer_resampling)
+\preformatted{# Construction
+tuner = TunerNestedResampling$new(inner_tuner, outer_resampling)
+
+# public methods
+tuner$performance()
 }
 
 See \link{Tuner} for a description of the interface.
@@ -25,7 +29,11 @@ Resampling object that controls the outer tuning.
 
 \section{Details}{
 
-\code{$new()} creates a new object of class \link{TunerNestedResampling}.
+\itemize{
+\item \code{$new()} creates a new object of class \link{TunerNestedResampling}.
+\item \code{$performance()} returns the estimated generalization error of the defined measures.
+}
+
 The interface is described in \link{Tuner}.
 }
 
