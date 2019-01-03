@@ -21,7 +21,7 @@ test_that("TunerNestedResampling",  {
   )))
 
   terminator = TerminatorEvaluations$new(inner_evals)
-  ff = FitnessFunction$new(task, learner, resampling, measures, param_set)
+  ff = FitnessFunction$new(task, learner, resampling, param_set)
   inner_tuner = TunerRandomSearch$new(ff, terminator)
   outer = mlr3::mlr_resamplings$get("cv")
   outer$param_vals = list(folds = outer_folds)

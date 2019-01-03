@@ -6,13 +6,13 @@ test_that("Construction", {
   learner$param_vals = list(minsplit = 3)
   resampling = mlr3::mlr_resamplings$get("holdout")
   measures = mlr3::mlr_measures$mget("mmce")
+  task$measures = measures
   param_set = paradox::ParamSet$new(params = list(paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 
   ff = FitnessFunction$new(
     task = task,
     learner = learner,
     resampling = resampling,
-    measures = measures,
     param_set = param_set,
     ctrl = tune_control(store_prediction = TRUE) # for the exceptions
   )

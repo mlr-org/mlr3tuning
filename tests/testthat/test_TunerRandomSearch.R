@@ -19,7 +19,7 @@ test_that("TunerRandomSearch",  {
   )))
 
   terminator = TerminatorEvaluations$new(5)
-  ff = FitnessFunction$new(task, learner, resampling, measures, param_set)
+  ff = FitnessFunction$new(task, learner, resampling, param_set)
   rs = TunerRandomSearch$new(ff, terminator)
 
   result = rs$tune()$tune_result()

@@ -35,6 +35,7 @@ learner = mlr3::mlr_learners$get("classif.rpart")
 learner$predict_type = "prob"
 resampling = mlr3::mlr_resamplings$get("holdout")
 measures = mlr3::mlr_measures$mget(c("auc", "mmce"))
+task$measures = measures
 param_set = paradox::ParamSet$new(
   params = list(
     paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)
@@ -42,7 +43,7 @@ param_set = paradox::ParamSet$new(
   )
 )
 
-ff = FitnessFunction$new(task, learner, resampling, measures, param_set)
+ff = FitnessFunction$new(task, learner, resampling, param_set)
 ```
 
 ## Define Objective
@@ -52,10 +53,10 @@ ff = FitnessFunction$new(task, learner, resampling, measures, param_set)
 
 ```{r}
 blackBoxFun = function (x, ff) {
-  x = mlr3misc::set_names(x, nm = ff$param_set$ids)
+  x = mlr3misc::set_names(x, nm = ff$param_set$ids())
   ff$eval(x)
   performance = unlist(ff$bmr$data[.N]$performance)[[1]]
-  if (! ff$measures[[1]]$minimize) 
+  if (! ff$task$measures[[1]]$minimize) 
     return (-performance)
   return (performance)
 }
@@ -81,7 +82,8 @@ ff$bmr$aggregated
 
 ```{r}
 library(GenSA)
-res = GenSA(fn = blackBoxFun, lower = param_set$lowers, upper = param_set$uppers, ff = ff)
+res = GenSA(fn = blackBoxFun, lower = param_set$lower, upper = param_set$upper, ff = ff, 
+  control = list(max.call = 60L))
 ```
 
 ## Terminator of Custom Tuner
@@ -172,7 +174,7 @@ TunerGenSA = R6Class("TunerGenSA",
   public = list(
     GenSA_res = NULL,
     initialize = function(ff, evals, ...) {
-      if (any(param_set$storage_types != "numeric")) {
+      if (any(param_set$storage_type != "numeric")) {
         logger::log_error("Parameter types needs to be numeric", namespace = "mlr3")
       }
       checkmate::assert_integerish(evals, lower = 1L)
@@ -183,14 +185,14 @@ TunerGenSA = R6Class("TunerGenSA",
   private = list(
     tune_step = function() {
       blackBoxFun = function (x, ff) {
-        x = mlr3misc::set_names(x, nm = ff$param_set$ids)
+        x = mlr3misc::set_names(x, nm = ff$param_set$ids())
         ff$eval(x)
         performance = unlist(ff$bmr$data[.N]$performance)[[1]]
-        if (! ff$measures[[1]]$minimize)
+        if (! ff$task$measures[[1]]$minimize)
           return (-performance)
         return (performance)
       }
-      self$GenSA_res = GenSA(fn = blackBoxFun, lower = self$ff$param_set$lowers, upper = self$ff$param_set$uppers,
+      self$GenSA_res = GenSA(fn = blackBoxFun, lower = self$ff$param_set$lower, upper = self$ff$param_set$upper,
         control = self$settings, ff = self$ff)
     }
   )
@@ -214,7 +216,7 @@ param_set = paradox::ParamSet$new(
   )
 )
 
-ff = FitnessFunction$new(task, learner, resampling, measures, param_set)
+ff = FitnessFunction$new(task, learner, resampling, param_set)
 tuner = TunerGenSA$new(ff, 60L)
 tuner$tune()
 

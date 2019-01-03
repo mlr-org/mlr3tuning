@@ -31,12 +31,13 @@
 #' learner = mlr3::mlr_learners$get("classif.rpart")
 #' resampling = mlr3::mlr_resamplings$get("cv")
 #' measures = mlr3::mlr_measures$mget("mmce")
+#' task$measures = measures
 #' param_set = paradox::ParamSet$new(
 #'   params = list(
 #'    paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)
 #'   )
 #' )
-#' ff = FitnessFunction$new(task, learner, resampling, measures, param_set)
+#' ff = FitnessFunction$new(task, learner, resampling, param_set)
 #'
 #' terminator = TerminatorEvaluations$new(10)
 #' rs = TunerRandomSearch$new(ff, terminator)
@@ -62,7 +63,7 @@ TunerRandomSearch = R6Class("TunerRandomSearch",
       
       if (nrow(xts) > uniqueN(xts))
         logger::log_warn("Duplicated parameter values detected.", namespace = "mlr3")
-      
+
       if (self$ff$param_set$has_trafo)
         xts = self$ff$param_set$trafo(xts)
       

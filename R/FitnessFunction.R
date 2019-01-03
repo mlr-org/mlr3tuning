@@ -11,14 +11,13 @@
 #' @section Usage:
 #' ```
 #' # Construction
-#' ff = FitnessFunction$new(task, learner, resampling, measures = NULL, param_set, 
+#' ff = FitnessFunction$new(task, learner, resampling, param_set, 
 #'   ctrl = tune_control())
 #'
 #' # Public members
 #' ff$task
 #' ff$learner
 #' ff$resampling
-#' ff$measures
 #' ff$param_set
 #' ff$ctrl
 #' ff$hooks
@@ -38,8 +37,6 @@
 #'   The learner that we want to evaluate.
 #' * `resampling` (`mlr3::Resampling`):
 #'   The Resampling method that is used to evaluate the learner.
-#' * `measures` (`mlr3::Measure`):
-#'   Optional, can override the Measure of the Task
 #' * `param_set` ([paradox::ParamSet]):
 #'   Parameter set to define the hyperparameter space.
 #' * `ctrl` (`list()`):
@@ -56,7 +53,6 @@
 #' * `$task` (`mlr3::Task`) the task for which the tuning should be conducted.
 #' * `$learner` (`mlr3::Learner`) the algorithm for which the tuning should be conducted.
 #' * `$resampling` (`mlr3::Resampling`) strategy to evaluate a parameter setting
-#' * `$measures` (`list(Measure)`) list of `mlr3::Measure` objects that are used for evaluation.
 #' * `$param_set` (`paradox::ParamSet`) parameter space given to the `Tuner` object to generate parameter values.
 #' * `$ctrl` (`list()`) execution control object for tuning (see `?tune_control`).
 #' * `$hooks` (`list()`) list of functions that could be executed with `run_hooks()`.
@@ -75,6 +71,7 @@
 #' learner = mlr3::mlr_learners$get("classif.rpart")
 #' resampling = mlr3::mlr_resamplings$get("holdout")
 #' measures = mlr3::mlr_measures$mget("mmce")
+#' task$measuers = measures
 #' param_set = paradox::ParamSet$new(params = list(
 #'   paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 #' 
@@ -82,7 +79,6 @@
 #'   task = task,
 #'   learner = learner,
 #'   resampling = resampling,
-#'   measures = measures,
 #'   param_set = param_set
 #' )
 #' 
@@ -97,17 +93,15 @@ FitnessFunction = R6Class("FitnessFunction",
     task = NULL,
     learner = NULL,
     resampling = NULL,
-    measures = NULL,
     param_set = NULL,
     ctrl = NULL,
     hooks = NULL,
     bmr = NULL,
 
-    initialize = function(task, learner, resampling, measures = NULL, param_set, ctrl = tune_control()) {
+    initialize = function(task, learner, resampling, param_set, ctrl = tune_control()) {
       self$task = mlr3::assert_task(task)
       self$learner = mlr3::assert_learner(learner, task = task)
       self$resampling = mlr3::assert_resampling(resampling)
-      self$measures = mlr3::assert_measures(measures %??% task$measures, task = task)
       self$param_set = assert_class(param_set, "ParamSet")
       self$ctrl = assert_list(ctrl, names = "unique")
       self$hooks = list(update_start = list(), update_end = list())
@@ -147,7 +141,7 @@ FitnessFunction = R6Class("FitnessFunction",
     },
 
     get_best = function() {
-      self$bmr$get_best(self$measures[[1L]])
+      self$bmr$get_best(self$task$measures[[1L]])
     },
 
     run_hooks = function(id) {

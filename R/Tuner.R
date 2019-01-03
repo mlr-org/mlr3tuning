@@ -69,7 +69,7 @@ Tuner = R6Class("Tuner",
     },
 
     tune_result = function() {
-      measure = self$ff$measures[[1L]]
+      measure = self$ff$task$measures[[1L]]
       rr = self$ff$bmr$get_best(measure)
       list(performance = rr$aggregated, param_vals = rr$learner$param_vals)
     }

@@ -13,14 +13,13 @@ The \code{FitnessFunction} class is the basis for further tuning strategies, i.e
 }
 \section{Usage}{
 \preformatted{# Construction
-ff = FitnessFunction$new(task, learner, resampling, measures = NULL, param_set, 
+ff = FitnessFunction$new(task, learner, resampling, param_set, 
   ctrl = tune_control())
 
 # Public members
 ff$task
 ff$learner
 ff$resampling
-ff$measures
 ff$param_set
 ff$ctrl
 ff$hooks
@@ -43,8 +42,6 @@ The task that we want to evaluate.
 The learner that we want to evaluate.
 \item \code{resampling} (\code{mlr3::Resampling}):
 The Resampling method that is used to evaluate the learner.
-\item \code{measures} (\code{mlr3::Measure}):
-Optional, can override the Measure of the Task
 \item \code{param_set} (\link[paradox:ParamSet]{paradox::ParamSet}):
 Parameter set to define the hyperparameter space.
 \item \code{ctrl} (\code{list()}):
@@ -65,7 +62,6 @@ Identifier of a hook.
 \item \code{$task} (\code{mlr3::Task}) the task for which the tuning should be conducted.
 \item \code{$learner} (\code{mlr3::Learner}) the algorithm for which the tuning should be conducted.
 \item \code{$resampling} (\code{mlr3::Resampling}) strategy to evaluate a parameter setting
-\item \code{$measures} (\code{list(Measure)}) list of \code{mlr3::Measure} objects that are used for evaluation.
 \item \code{$param_set} (\code{paradox::ParamSet}) parameter space given to the \code{Tuner} object to generate parameter values.
 \item \code{$ctrl} (\code{list()}) execution control object for tuning (see \code{?tune_control}).
 \item \code{$hooks} (\code{list()}) list of functions that could be executed with \code{run_hooks()}.
@@ -83,6 +79,7 @@ task = mlr3::mlr_tasks$get("iris")
 learner = mlr3::mlr_learners$get("classif.rpart")
 resampling = mlr3::mlr_resamplings$get("holdout")
 measures = mlr3::mlr_measures$mget("mmce")
+task$measuers = measures
 param_set = paradox::ParamSet$new(params = list(
   paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 
@@ -90,7 +87,6 @@ ff = FitnessFunction$new(
   task = task,
   learner = learner,
   resampling = resampling,
-  measures = measures,
   param_set = param_set
 )
 

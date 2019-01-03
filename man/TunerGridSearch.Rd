@@ -16,8 +16,8 @@ See \link{Tuner} for a description of the interface.
 \section{Arguments}{
 
 \itemize{
-\item \code{id} (\code{character(1)}):
-The id of the Tuner.
+\item \code{ff} (\link{FitnessFunction}):
+Black box function used for the tuning.
 \item \code{terminator} (\link{Terminator}):
 Terminator to control the termination.
 Will be triggered by the hooks of the \link{FitnessFunction}.
@@ -38,20 +38,21 @@ task = mlr3::mlr_tasks$get("iris")
 learner = mlr3::mlr_learners$get("classif.rpart")
 resampling = mlr3::mlr_resamplings$get("cv")
 measures = mlr3::mlr_measures$mget("mmce")
+task$measures = measures
 param_set = paradox::ParamSet$new(
   params = list(
     paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)
   )
 )
-ff = FitnessFunction$new(task, learner, resampling, measures, param_set)
+ff = FitnessFunction$new(task, learner, resampling, param_set)
 
 terminator = TerminatorEvaluations$new(10)
 gs = TunerGridSearch$new(ff, terminator)
 gs$tune()$tune_result()
 }
 \seealso{
-Other Tuner: \code{\link{TunerRandomSearch}},
-  \code{\link{Tuner}}
+Other Tuner: \code{\link{TunerNestedResampling}},
+  \code{\link{TunerRandomSearch}}, \code{\link{Tuner}}
 }
 \concept{Tuner}
 \keyword{internal}

@@ -27,10 +27,11 @@
 #' learner = mlr3::mlr_learners$get("classif.rpart")
 #' resampling = mlr3::mlr_resamplings$get("holdout")
 #' measures = mlr3::mlr_measures$mget("mmce")
+#' task$measures = measures
 #' param_set = paradox::ParamSet$new(
 #'   params = list(paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 #' 
-#' ff = FitnessFunction$new(task, learner, resampling, measures, param_set)
+#' ff = FitnessFunction$new(task, learner, resampling, param_set)
 #' 
 #' terminator = TerminatorEvaluations$new(5)
 #' rs = TunerRandomSearch$new(ff, terminator_eval)
