@@ -60,6 +60,8 @@ TunerNestedResampling = R6Class("TunerNestedResampling",
 
     initialize = function(inner_tuner, outer_resampling) {
       self$inner_tuner = checkmate::assert_r6(inner_tuner, "Tuner")
+      if (inherits(inner_tuner, "TunerNestedResampling"))
+        mlr3misc::stopf("Stacking of nested resampling tuner is not supported.")
 
       self$outer_resampling = checkmate::assert_r6(outer_resampling, "Resampling")
       self$outer_resampling$instantiate(inner_tuner$ff$task)
@@ -67,7 +69,6 @@ TunerNestedResampling = R6Class("TunerNestedResampling",
       self$terminator = TerminatorIterations$new(outer_resampling$iters)
       
       self$ff = inner_tuner$ff$clone()
-      self$ff$resampling$instantiate(self$ff$task)
 
       # Necessary to get correct reference of the terminator for the outer resampling.
       self$ff$hooks$update_start = list(self$terminator$update_start)

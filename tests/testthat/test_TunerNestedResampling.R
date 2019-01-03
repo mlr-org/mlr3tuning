@@ -42,6 +42,8 @@ test_that("TunerNestedResampling",  {
     expect_data_table(tuner$ff$bmr$aggregated, nrow = inner_evals)
   })
   expect_equal(names(p), p_measures)
+
+  expect_error(TunerNestedResampling$new(nested, outer))
   # expect_list(result)
   # expect_number(result$performance, lower = measures$mmce$range[1], upper = measures$mmce$range[2])
   # expect_list(result$param_vals, len = 2)
