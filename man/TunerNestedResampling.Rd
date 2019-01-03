@@ -49,7 +49,7 @@ param_set = paradox::ParamSet$new(
 ff = FitnessFunction$new(task, learner, resampling, param_set)
 
 terminator = TerminatorEvaluations$new(5)
-rs = TunerRandomSearch$new(ff, terminator_eval)
+rs = TunerRandomSearch$new(ff, terminator)
 
 outer = mlr3::mlr_resamplings$get("cv")
 
