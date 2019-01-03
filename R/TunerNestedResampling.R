@@ -89,7 +89,7 @@ TunerNestedResampling = R6Class("TunerNestedResampling",
       # FIXME: ResamplingCustom does not work at the moment see https://github.com/mlr-org/mlr3/issues/108
       # resampling_temp = ResamplingCustom$new()
       # resampling_temp$instantiate(self$ff$task, train_sets = list(train_set_temp))
-      resampling_temp = ResamplingHoldout$new()
+      resampling_temp = mlr3::ResamplingHoldout$new()
       self$ff$resampling = resampling_temp
       self$ff$eval(tuner_temp$tune_result()$param_vals)
 

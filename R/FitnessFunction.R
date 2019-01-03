@@ -126,7 +126,14 @@ FitnessFunction = R6Class("FitnessFunction",
       })
 
       self$run_hooks("update_start")
-      bmr = mlr3::benchmark(tasks = list(self$task), learners = learners, resamplings = list(self$resampling), measures = self$measures, ctrl = self$ctrl)
+      # bmr = mlr3::benchmark(design = mlr3::expand_grid(task = list(self$task), learner = learners, 
+      #   resampling =  list(self$resampling), measures = self$measures), ctrl = self$ctrl)
+
+      # bmr = mlr3::benchmark(design = data.table::data.table(task = list(self$task), learner = learners, 
+      #   resampling = list(self$resampling), measures = self$measures), ctrl = self$ctrl)
+      
+      bmr = mlr3::benchmark(design = data.table::data.table(task = list(self$task), learner = learners, 
+        resampling = list(self$resampling)), ctrl = self$ctrl)
       
       if (is.null(self$bmr)) {
         bmr$data$dob = 1L
