@@ -44,8 +44,14 @@ test_that("TunerNestedResampling",  {
   expect_equal(names(p), p_measures)
 
   expect_error(TunerNestedResampling$new(nested, outer))
-  # expect_list(result)
-  # expect_number(result$performance, lower = measures$mmce$range[1], upper = measures$mmce$range[2])
-  # expect_list(result$param_vals, len = 2)
-  # expect_equal(result$param_vals$minsplit, 3)
+
+  row_ids_inner = lapply(bmr$data$inner_tuner, function (it) {
+    it$ff$task$row_ids[[1]]
+  })
+  row_ids_all = task$row_ids[[1]]
+  
+  expect_equal(sort(unique(unlist(row_ids_inner))), sort(row_ids_all))
+  nuisance = lapply(row_ids_inner, function (ids) {
+    expect_true(any(! row_ids_all %in% ids))
+  })
 })
