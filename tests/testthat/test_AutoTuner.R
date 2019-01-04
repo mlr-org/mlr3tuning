@@ -1,6 +1,6 @@
-context("TunerNestedResampling")
+context("AutoTuner")
 
-test_that("TunerNestedResampling",  {
+test_that("AutoTuner",  {
   outer_folds = 3L
   inner_folds = 4L
   inner_evals = 5L

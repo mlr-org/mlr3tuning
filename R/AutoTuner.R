@@ -54,7 +54,6 @@
 NULL
 
 #' @export
-#' @include Learner.R
 AutoTuner = R6Class("AutoTuner", inherit = Learner,
   public = list(
     learner = NULL,
@@ -86,22 +85,26 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
     },
 
     train = function (task) {
-      task = mlr3::assert_task(task)
-      self$learner = mlr3::assert_learner(learner = learner, task = task)
+      if (private$.is_trained) {
+        logger::log_warn("Learner is already trained.", namespace = "mlr3")
+      else {
+        task = mlr3::assert_task(task)
+        self$learner = mlr3::assert_learner(learner = learner, task = task)
 
-      private$.tuner_settings$terminator = private$.terminator$clone()
-      private$.tuner_settings$ff = FitnessFunction$new(task = task, learner = self$learner, resampling = private$.ff_args$resampling,
-        param_set = private$.ff_args$param_set, ctrl = private$.ff_args$ctrl)
+        private$.tuner_settings$terminator = private$.terminator$clone()
+        private$.tuner_settings$ff = FitnessFunction$new(task = task, learner = self$learner, resampling = private$.ff_args$resampling,
+          param_set = private$.ff_args$param_set, ctrl = private$.ff_args$ctrl)
 
-      private$.tuner = do.call(private$.tuner$new, private$.tuner_settings)
-      private$.tuner$tune()
+        private$.tuner = do.call(private$.tuner$new, private$.tuner_settings)
+        private$.tuner$tune()
 
-      self$learner$param_vals = private$.tuner$tune_result()$param_vals
-      self$learner$train(task)
+        self$learner$param_vals = private$.tuner$tune_result()$param_vals
+        self$learner$train(task)
       
-      private$.is_instantiated = TRUE
+        private$.is_trained = TRUE
 
-      return (invisible(self))
+        return (invisible(self))
+      }
     },
 
     predict = function (task) {
@@ -114,12 +117,12 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
     .terminator = NULL,
     .tuner = NULL,
     .tuner_settings = NULL,
-    .is_instantiated = FALSE
+    .is_trained = FALSE
   ),
 
   active = list(
     tuner = function () {
-      if (private$.is_instantiated) {
+      if (private$.is_trained) {
         return (private$.tuner)
       } else {
         return (NULL)

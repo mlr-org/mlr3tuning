@@ -52,7 +52,7 @@ rs$tune()$tune_result()
 }
 \seealso{
 Other Tuner: \code{\link{TunerGridSearch}},
-  \code{\link{TunerNestedResampling}}, \code{\link{Tuner}}
+  \code{\link{Tuner}}
 }
 \concept{Tuner}
 \keyword{internal}
