@@ -4,7 +4,7 @@
 \alias{AutoTuner}
 \title{AutoTuner}
 \description{
-The \link{AuotTuner} conducts tuning and sets the learners parameter configuration to the best parameters obtained by the tuning.
+The \link{AutoTuner} conducts tuning and sets the learners parameter configuration to the best parameters obtained by the tuning.
 
 Additionally, this class can be used to do nested resampling by passing an \link{AutoTuner} object to resample.
 }

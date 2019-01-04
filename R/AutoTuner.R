@@ -1,7 +1,7 @@
 #' @title AutoTuner
 #'
 #' @description
-#' The [AuotTuner] conducts tuning and sets the learners parameter configuration to the best parameters obtained by the tuning. 
+#' The [AutoTuner] conducts tuning and sets the learners parameter configuration to the best parameters obtained by the tuning. 
 #' 
 #' Additionally, this class can be used to do nested resampling by passing an [AutoTuner] object to resample.
 #'
