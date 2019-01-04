@@ -54,7 +54,7 @@
 NULL
 
 #' @export
-AutoTuner = R6Class("AutoTuner", inherit = Learner,
+AutoTuner = R6Class("AutoTuner", inherit = mlr3::Learner,
   public = list(
     learner = NULL,
 
@@ -87,7 +87,7 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
     train = function (task) {
       if (private$.is_trained) {
         logger::log_warn("Learner is already trained.", namespace = "mlr3")
-      else {
+      } else {
         task = mlr3::assert_task(task)
         self$learner = mlr3::assert_learner(learner = learner, task = task)
 

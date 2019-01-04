@@ -19,31 +19,24 @@ test_that("AutoTuner",  {
 
   param_set = paradox::ParamSet$new(params = list(
     paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1
-      )))
+  )))
 
   terminator = TerminatorEvaluations$new(inner_evals)
 
-  at = AutoTuner$new(learner, resampling, param_set, terminator, tuner = TunerGridSearch, 
-    tuner_settings = list(resolution = 10L))
+  at = AutoTuner$new(learner, resampling, param_set, terminator, tuner = TunerRandomSearch, 
+    tuner_settings = list(batch_size = 10L))  
 
   # Nested Resampling:
   outer_resampling = mlr3::mlr_resamplings$get("cv")
   outer_resampling$param_vals = list(folds = outer_folds)
-  r = resample(task, at, outer_resampling)
-
-  at$tuner
-  at$train(task)
-  at$tuner
-  at$predict(task)
-
-  expect_equal(at$learner$param_vals, at$tuner$tune_result()$param_vals)
-
+  r = mlr3::resample(task, at, outer_resampling)
+  
   # Nested Resampling:
   checkmate::expect_data_table(r$data, nrow = outer_folds)
-  lapply(r$data$learner, function (autotuner) {
+  nuisance = lapply(r$data$learner, function (autotuner) {
     checkmate::expect_data_table(autotuner$tuner$ff$bmr$data, nrow = inner_evals * inner_folds)
     checkmate::expect_data_table(autotuner$tuner$ff$bmr$aggregated, nrow = inner_evals)
-    expect_equal(names(autotuner$tune_result()$performance), p_measures)
+    expect_equal(names(autotuner$tuner$tune_result()$performance), p_measures)
   })
 
   row_ids_inner = lapply(r$data$learner, function (it) {
@@ -55,4 +48,17 @@ test_that("AutoTuner",  {
   nuisance = lapply(row_ids_inner, function (ids) {
     expect_true(any(! row_ids_all %in% ids))
   })
+
+
+  at2 = AutoTuner$new(learner, resampling, param_set, terminator, tuner = TunerRandomSearch, 
+    tuner_settings = list(batch_size = 10L))
+
+  expect_null(at2$tuner)
+
+  at2$train(task)
+
+  checkmate::expect_r6(at2$tuner, "Tuner")
+  checkmate::expect_r6(at2$predict(task), "Prediction")
+
+  expect_equal(at2$learner$param_vals, at2$tuner$tune_result()$param_vals)
 })
