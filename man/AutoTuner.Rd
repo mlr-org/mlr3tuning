@@ -4,7 +4,9 @@
 \alias{AutoTuner}
 \title{AutoTuner}
 \description{
-Tuner child class to conduct grid search.
+The \link{AuotTuner} conducts tuning and sets the learners parameter configuration to the best parameters obtained by the tuning.
+
+Additionally, this class can be used to do nested resampling by passing an \link{AutoTuner} object to resample.
 }
 \section{Usage}{
 \preformatted{# Construction
@@ -38,6 +40,9 @@ List with tuner settings (e.g. see \code{?TunerGridSearch})
 
 \section{Details}{
 
+\itemize{
+\item With \code{at$learner} the raw learner with the best parameter configuration can be accessed.
+}
 
 The interface is described in \link{Learner}.
 }
