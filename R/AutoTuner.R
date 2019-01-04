@@ -1,7 +1,9 @@
 #' @title AutoTuner
 #'
 #' @description
-#' Tuner child class to conduct grid search.
+#' The [AuotTuner] conducts tuning and sets the learners parameter configuration to the best parameters obtained by the tuning. 
+#' 
+#' Additionally, this class can be used to do nested resampling by passing an [AutoTuner] object to resample.
 #'
 #' @section Usage:
 #' ```
@@ -29,6 +31,7 @@
 #'   List with tuner settings (e.g. see `?TunerGridSearch`)
 #'
 #' @section Details:
+#' * With `at$learner` the raw learner with the best parameter configuration can be accessed. 
 #'
 #' The interface is described in [Learner].
 #' 
