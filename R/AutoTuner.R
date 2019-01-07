@@ -23,7 +23,7 @@
 #'   Resampling strategy for the tuning.
 #' * `param_set` ([paradox::ParamSet]) \cr
 #'   Parameter set for the tuning.
-#' * `terminator` ([Terminator]) \cr 
+#' * `terminator` ([Terminator]) \cr
 #'   Terminator used to stop the tuning.
 #' * `tuner` (Tuner Class Generator) \cr
 #'   Uninitialized tuner factory, e.g. TunerGridSearch.
