@@ -9,7 +9,7 @@ test_that("AutoTuner",  {
 
   task = mlr3::mlr_tasks$get("iris")
 
-  learner2 = mlr3::mlr_learners$get("classif.rpart")
+  learner = mlr3::mlr_learners$get("classif.rpart")
 
   resampling = mlr3::mlr_resamplings$get("cv")
   resampling$param_vals = list(folds = inner_folds)
@@ -23,12 +23,13 @@ test_that("AutoTuner",  {
 
   terminator = TerminatorEvaluations$new(inner_evals)
 
-  at = AutoTuner$new(learner2, resampling, param_set, terminator, tuner = TunerRandomSearch, 
+  at = AutoTuner$new(learner, resampling, param_set, terminator, tuner = TunerRandomSearch, 
     tuner_settings = list(batch_size = 10L))  
 
   # Nested Resampling:
   outer_resampling = mlr3::mlr_resamplings$get("cv")
   outer_resampling$param_vals = list(folds = outer_folds)
+  browser()
   r = mlr3::resample(task, at, outer_resampling)
   
   # Nested Resampling:

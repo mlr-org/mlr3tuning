@@ -64,9 +64,8 @@ AutoTuner = R6Class("AutoTuner", inherit = mlr3::Learner,
     initialize = function (learner, resampling, param_set, terminator, tuner, tuner_settings, ctrl = tune_control(), id = "autotuner") {
       self$learner = mlr3::assert_learner(learner = learner)
 
-      # Shit!!!!
       private$.terminator = checkmate::assert_r6(terminator, "Terminator")
-      private$.tuner_settings = tuner_settings
+      private$.tuner_settings = checkmate::assert_list(tuner_settings)
       private$.ff_args$resampling = mlr3::assert_resampling(resampling)
       private$.ff_args$param_set = checkmate::assert_class(param_set, "ParamSet")
       private$.ff_args$ctrl = checkmate::assert_list(ctrl, names = "unique")
