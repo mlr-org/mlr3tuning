@@ -37,7 +37,7 @@ Suggests:
 VignetteBuilder:
     knitr
 Remotes:
-    mlr-org/paradox@58c89a427de004b828f105b674ef39de92be7285,
+    mlr-org/paradox,
     mlr-org/mlr3misc,
     mlr-org/mlr3,
     daroczig/logger
