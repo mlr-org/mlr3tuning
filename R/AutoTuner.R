@@ -92,7 +92,7 @@ AutoTuner = R6Class("AutoTuner", inherit = mlr3::Learner,
         logger::log_warn("Learner is already trained.", namespace = "mlr3")
       } else {
         task = mlr3::assert_task(task)
-        self$learner = mlr3::assert_learner(learner = learner, task = task)
+        self$learner = mlr3::assert_learner(learner = self$learner, task = task)
 
         private$.tuner_settings$terminator = private$.terminator$clone()
         private$.tuner_settings$ff = FitnessFunction$new(task = task, learner = self$learner, resampling = private$.ff_args$resampling,
