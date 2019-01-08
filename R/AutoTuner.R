@@ -1,16 +1,16 @@
 #' @title AutoTuner
 #'
 #' @description
-#' The [AutoTuner] conducts tuning and sets the learners parameter configuration to the best parameters obtained by the tuning. 
-#' 
+#' The [AutoTuner] conducts tuning and sets the learners parameter configuration to the best parameters obtained by the tuning.
+#'
 #' Additionally, this class can be used to do nested resampling by passing an [AutoTuner] object to resample.
 #'
 #' @section Usage:
 #' ```
 #' # Construction
-#' at = AutoTuner$new(learner, resampling, param_set, terminator, 
+#' at = AutoTuner$new(learner, resampling, param_set, terminator,
 #'   tuner, tuner_settings, ctrl = tune_control(), id = "autotuner")
-#' 
+#'
 #' # public fields
 #' at$learner
 #' ```
@@ -31,10 +31,10 @@
 #'   List with tuner settings (e.g. see `?TunerGridSearch`)
 #'
 #' @section Details:
-#' * With `at$learner` the raw learner with the best parameter configuration can be accessed. 
+#' * With `at$learner` the raw learner with the best parameter configuration can be accessed.
 #'
 #' The interface is described in [Learner].
-#' 
+#'
 #' @name AutoTuner
 #' @keywords internal
 #' @family Learner
@@ -46,12 +46,12 @@
 #' task$measures = measures
 #' param_set = paradox::ParamSet$new(
 #'   params = list(paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
-#' 
+#'
 #' terminator = TerminatorEvaluations$new(5)
-#' 
-#' at = AutoTuner$new(learner, resampling, param_set, terminator, tuner = TunerGridSearch, 
+#'
+#' at = AutoTuner$new(learner, resampling, param_set, terminator, tuner = TunerGridSearch,
 #'   tuner_settings = list(resolution = 10L))
-#' 
+#'
 #' at$train(task)
 #' at$learner
 NULL
@@ -102,7 +102,7 @@ AutoTuner = R6Class("AutoTuner", inherit = mlr3::Learner,
 
         self$learner$param_vals = private$.tuner$tune_result()$param_vals
         self$learner$train(task)
-      
+
         private$.is_trained = TRUE
 
         return (invisible(self))
