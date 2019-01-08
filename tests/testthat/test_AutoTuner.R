@@ -24,12 +24,11 @@ test_that("AutoTuner",  {
   terminator = TerminatorEvaluations$new(inner_evals)
 
   at = AutoTuner$new(learner, resampling, param_set, terminator, tuner = TunerRandomSearch, 
-    tuner_settings = list(batch_size = 10L))  
+    tuner_settings = list(batch_size = 10L))
 
   # Nested Resampling:
   outer_resampling = mlr3::mlr_resamplings$get("cv")
   outer_resampling$param_vals = list(folds = outer_folds)
-  browser()
   r = mlr3::resample(task, at, outer_resampling)
   
   # Nested Resampling:
