@@ -23,7 +23,7 @@ set.seed(123)
 
 `mlr3tuning` is an extension of `mlr3` that includes tuning.
 
-## Basis of Tuning 
+## Basis of Tuning
 
 As mentioned in the `tuning-01-fitness-function` vignette, we have to initialize a `FitnessFunction` object to define the hyperparameter space as well as the evaluation technique that is used to estimate the generalization error:
 
@@ -49,7 +49,7 @@ terminator_eval = TerminatorEvaluations$new(5)
 ## Iterations
 
 ```{r}
-terminator_eval = TerminatorEvaluations$new(5)
+terminator_iters = TerminatorIterations$new(5)
 ```
 
 ## Basic Search Strategies

@@ -55,7 +55,6 @@ The settings for the Tuner.
 
 \seealso{
 Other Tuner: \code{\link{TunerGridSearch}},
-  \code{\link{TunerNestedResampling}},
   \code{\link{TunerRandomSearch}}
 }
 \concept{Tuner}

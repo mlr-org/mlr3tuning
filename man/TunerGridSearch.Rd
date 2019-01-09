@@ -51,8 +51,8 @@ gs = TunerGridSearch$new(ff, terminator)
 gs$tune()$tune_result()
 }
 \seealso{
-Other Tuner: \code{\link{TunerNestedResampling}},
-  \code{\link{TunerRandomSearch}}, \code{\link{Tuner}}
+Other Tuner: \code{\link{TunerRandomSearch}},
+  \code{\link{Tuner}}
 }
 \concept{Tuner}
 \keyword{internal}
