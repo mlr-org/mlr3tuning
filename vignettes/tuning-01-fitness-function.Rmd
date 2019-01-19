@@ -16,7 +16,8 @@ knitr::opts_knit$set(
 )
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  eval = FALSE
 )
 set.seed(123)
 ```

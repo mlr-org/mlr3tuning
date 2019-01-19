@@ -12,6 +12,11 @@
 #' See [Terminator] for a description of the interface.
 #'
 #' @section Arguments:
+#' * `max_time` (integer(1)):
+#'   Maximal amount of time measures in `units`.
+#' * `units` (character(1)):
+#'   Unit used for measuring time. Possible choices are "secs", "mins", "hours", "days", and "weeks" that
+#'   are directly passed to `difftime()`.
 #'
 #' @section Details:
 #' `$new()` creates a new object of class [TerminatorRuntime].
@@ -21,7 +26,7 @@
 #' @name TerminatorRuntime
 #' @family Terminator
 #' @examples
-#' t = TerminatorRuntime$new(3, "minutes")
+#' t = TerminatorRuntime$new(3, "mins")
 NULL
 
 #' @export
