@@ -1,0 +1,59 @@
+#' @title TerminatorRuntime Class
+#'
+#' @description
+#' Class to terminate the tuning after some time. Note that the runtime is checked after each step
+#' and therefore it could happen that the final runtime is longer than the specified one.
+#'
+#' @section Usage:
+#' ```
+#' # Constructor
+#' t = TerminatorRuntime$new(max_time, time_unit)
+#' ```
+#' See [Terminator] for a description of the interface.
+#'
+#' @section Arguments:
+#'
+#' @section Details:
+#' `$new()` creates a new object of class [TerminatorRuntime].
+#' 
+#' The interface is described in [Terminator].
+#'
+#' @name TerminatorRuntime
+#' @family Terminator
+#' @examples
+#' t = TerminatorRuntime$new(3, "minutes")
+NULL
+
+#' @export
+#' @include Terminator.R
+TerminatorRuntime = R6Class("TerminatorRuntime",
+  inherit = Terminator,
+  public = list(
+
+    initialize = function(max_time, units = "minutes") {
+      super$initialize(settings = list(max_time = checkmate::assert_count(max_time, positive = TRUE),
+        units = checkmate::assert_choice(units, choices = c("secs", "mins", "hours", "days", "weeks"))))
+      self$terminated = FALSE
+      self$state = list(time_start = NULL, time_end = NULL, time_remaining = max_time)
+    },
+
+    update_start = function(ff) {
+      self$state$time_start = Sys.time()
+      invisible(self)
+    },
+
+    update_end = function(ff) {
+      self$state$time_end = Sys.time()
+      dtime = difftime(time1 = self$state$time_end, time2 = self$state$time_start, units = self$settings$units)
+      self$state$time_remaining = self$state$time_remaining - dtime
+      self$terminated = self$state$time_remaining < 0
+      invisible(self)
+    },
+
+    format = function() sprintf("TerminatorRuntime with %f remaining %s.", self$remaining, self$settings$units)
+  ),
+
+  active = list(
+    remaining = function() self$state$time_remaining
+  )
+)
