@@ -107,14 +107,15 @@ FitnessFunction = R6Class("FitnessFunction",
       self$hooks = list(update_start = list(), update_end = list())
     },
 
-    eval = function(xt) {
-      self$eval_design(paradox::Design$new(self$param_set, ))
+    eval = function(dt) {
+      self$eval_design(paradox::Design$new(self$param_set, dt))
     },
 
     eval_design = function(design) {
 
-      if (self$ff$param_set$has_trafo) 
-        design = self$ff$param_set$trafo(design)
+      # Not that pretty but enables the use of transpose from Design:
+      if (self$param_set$has_trafo) 
+        design$data = self$param_set$trafo(design$data)
 
       learners = imap(design$transpose(), function(xt, i) {
         learner = self$learner$clone()

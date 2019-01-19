@@ -58,17 +58,13 @@ TunerRandomSearch = R6Class("TunerRandomSearch",
   private = list(
     tune_step = function() {
       n = min(self$settings$batch_size, self$terminator$remaining)
-      ps = self$ff$param_set
-      xts = generate_design_random(ps, n)
+      design = generate_design_random(self$ff$param_set, n)
       
-      if (nrow(xts) > uniqueN(xts))
+      # Should be handled by paradox!
+      if (nrow(design$data) > data.table::uniqueN(design$data))
         logger::log_warn("Duplicated parameter values detected.", namespace = "mlr3")
-
-      if (self$ff$param_set$has_trafo)
-        xts = self$ff$param_set$trafo(xts)
-      
-      xts = transpose(xts)
-      self$ff$eval_vectorized(xts)
+     
+      self$ff$eval_design(design)
     }
   )
 )
