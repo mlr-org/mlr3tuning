@@ -19,6 +19,9 @@
 #' # public methods
 #' tuner$tune()
 #' tuner$tune_result()
+#' 
+#' # active bindings
+#' tuner$aggregated
 #' ```
 #'
 #' @section Arguments:
@@ -72,27 +75,26 @@ Tuner = R6Class("Tuner",
       measure = self$ff$task$measures[[1L]]
       rr = self$ff$bmr$get_best(measure)
       list(performance = rr$aggregated, param_vals = rr$learner$param_vals)
-    }
-  ),
+    },
 
-  active = list(
-    aggregated = function (rhs) {
-      if (missing(rhs)) {
-        if (! is.null(self$ff$bmr)) {
-          dt = self$ff$bmr$aggregated
+    aggregate = function(unnest = TRUE) {
+      if (! is.null(self$ff$bmr)) {
+        dt = self$ff$bmr$aggregated
           
-          # Get unique hashes with corresponding params:
-          dt_pars = self$ff$bmr$data[, c("hash", "pars")]
-          dt_pars = dt_pars[, .SD[1], "hash"]
+        # Get unique hashes with corresponding params:
+        dt_pars = self$ff$bmr$data[, c("hash", "pars")]
+        dt_pars = dt_pars[, .SD[1], "hash"]
           
-          # Merge params to aggregated:
-          dt[dt_pars, on = "hash", pars := i.pars]
-          return(mlr3misc::unnest(dt, "pars"))
-        } else {
-          mlr3misc::stopf("No tuning conducted yet.")
-        }
+        # Merge params to aggregated:
+        dt[dt_pars, on = "hash", pars := i.pars]
+        if (unnest)
+          dt = mlr3misc::unnest(dt, "pars")
+
+        # [] forces the data table to get printed. This is suppressed by the first call of dt after
+        # using := within []
+        return(dt[])
       } else {
-        mlr3misc::stopf("Cannot set aggregated manually.")
+        mlr3misc::stopf("No tuning conducted yet.")
       }
     }
   )
