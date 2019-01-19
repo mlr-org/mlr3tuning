@@ -56,7 +56,7 @@ TunerGridSearch = R6Class("TunerGridSearch",
         if (is.null(remaining)) {
           stop("Specify resolution or use a terminator that defines maximal number of evaluations (e.g. TerminatorEvaluations).")
         }
-        assert_int(remaining, lower = 1L)
+        assert_count(remaining, positive = TRUE, coerce = TRUE)
         resolution = floor(remaining / ff$param_set$length)
       }
       resolution = assert_int(resolution, lower = 1L, coerce = TRUE)
