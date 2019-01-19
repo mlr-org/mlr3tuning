@@ -108,11 +108,15 @@ FitnessFunction = R6Class("FitnessFunction",
     },
 
     eval = function(xt) {
-      self$eval_vectorized(list(xt))
+      self$eval_design(paradox::Design$new(self$param_set, ))
     },
 
-    eval_vectorized = function(xts) {
-      learners = imap(xts, function(xt, i) {
+    eval_design = function(design) {
+
+      if (self$ff$param_set$has_trafo) 
+        design = self$ff$param_set$trafo(design)
+
+      learners = imap(design$transpose(), function(xt, i) {
         learner = self$learner$clone()
         learner$param_vals = insert_named(learner$param_vals, xt)
         learner$id = paste0(learner$id, i)

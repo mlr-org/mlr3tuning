@@ -64,13 +64,13 @@ TunerGridSearch = R6Class("TunerGridSearch",
     tune_step = function() {
       # note: generate_grid_design offers param_resolutions, so theoretically we could allow different resolutions per parameter
       ps = self$ff$param_set
-      xts = paradox::generate_design_grid(ps, resolution = self$settings$resolution)
+      design = paradox::generate_design_grid(ps, resolution = self$settings$resolution)
       
       if (self$ff$param_set$has_trafo) 
-        xts = self$ff$param_set$trafo(xts)
+        design = self$ff$param_set$trafo(design)
       
-      xts = mlr3misc::transpose(xts)
-      self$ff$eval_vectorized(xts)
+      # design = mlr3misc::transpose(design)
+      self$ff$eval_design(design)
     }
   )
 )

@@ -10,7 +10,7 @@ test_that("TunerGridSearch",  {
   resampling = mlr3::mlr_resamplings$get("cv")
   resampling$param_vals = list(folds = 2)
   
-  measures = mlr3::mlr_measures$mget("mmce")
+  measures = mlr3::mlr_measures$mget("classif.mmce")
   task$measures = measures
 
   terminator = TerminatorEvaluations$new(5)
