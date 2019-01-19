@@ -73,5 +73,27 @@ Tuner = R6Class("Tuner",
       rr = self$ff$bmr$get_best(measure)
       list(performance = rr$aggregated, param_vals = rr$learner$param_vals)
     }
+  ),
+
+  active = list(
+    aggregated = function (rhs) {
+      if (missing(rhs)) {
+        if (! is.null(self$ff$bmr)) {
+          dt = self$ff$bmr$aggregated
+          
+          # Get unique hashes with corresponding params:
+          dt_pars = self$ff$bmr$data[, c("hash", "pars")]
+          dt_pars = dt_pars[, .SD[1], "hash"]
+          
+          # Merge params to aggregated:
+          dt[dt_pars, on = "hash", pars := i.pars]
+          return(mlr3misc::unnest(dt, "pars"))
+        } else {
+          mlr3misc::stopf("No tuning conducted yet.")
+        }
+      } else {
+        mlr3misc::stopf("Cannot set aggregated manually.")
+      }
+    }
   )
 )
