@@ -52,11 +52,5 @@ TerminatorIterations = R6Class("TerminatorIterations",
     },
 
     format = function() sprintf("TerminatorIterations with %i remaining iterations", self$remaining)
-  ),
-
-  active = list(
-    remaining = function() {
-      max(self$settings$max_iterations - self$state$iters, 0L)
-    }
   )
 )

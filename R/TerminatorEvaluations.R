@@ -49,11 +49,5 @@ TerminatorEvaluations = R6Class("TerminatorEvaluations",
     },
 
     format = function() sprintf("TerminatorEvaluations with %i remaining evaluations", max(self$settings$max_evaluations - self$state$evals, 0L))
-  ),
-
-  active = list(
-    remaining = function() {
-      max(self$settings$max_evaluations - self$state$evals, 0L)
-    }
   )
 )

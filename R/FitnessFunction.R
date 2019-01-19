@@ -73,7 +73,8 @@
 #' measures = mlr3::mlr_measures$mget("classif.mmce")
 #' task$measures = measures
 #' param_set = paradox::ParamSet$new(params = list(
-#'   paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
+#'   paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1),
+#'   paradox::ParamInt$new("minsplit", lower = 1, upper = 10)))
 #' 
 #' ff = FitnessFunction$new(
 #'   task = task,
@@ -82,8 +83,8 @@
 #'   param_set = param_set
 #' )
 #' 
-#' ff$eval(data.table(cp = 0.05, minsplit = 5))
-#' ff$eval(data.table(cp = 0.01, minsplit = 3))
+#' ff$eval(data.frame(cp = 0.05, minsplit = 5))
+#' ff$eval(data.frame(cp = 0.01, minsplit = 3))
 #' ff$get_best()
 NULL
 
@@ -108,6 +109,7 @@ FitnessFunction = R6Class("FitnessFunction",
     },
 
     eval = function(dt) {
+      dt = data.table::as.data.table(dt)
       checkmate::assert_data_table(dt, any.missing = FALSE, min.rows = 1, min.cols = 1)
       self$eval_design(paradox::Design$new(self$param_set, dt))
     },

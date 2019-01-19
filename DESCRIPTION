@@ -59,5 +59,6 @@ Collate:
     'Tuner.R'
     'TunerGridSearch.R'
     'TunerRandomSearch.R'
+    'helper.R'
     'tune_control.R'
     'zzz.R'

@@ -14,11 +14,13 @@ test_that("TunerGridSearch",  {
   task$measures = measures
 
   terminator = TerminatorEvaluations$new(5)
+  terminator_false = TerminatorRuntime$new(2, "mins")
   param_set = paradox::ParamSet$new(params = list(
       paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1
   )))
 
   ff = FitnessFunction$new(task, learner, resampling, param_set)
+  expect_error(TunerGridSearch$new(ff, terminator = terminator_false))
   gs = TunerGridSearch$new(ff, terminator = terminator)
 
   result = gs$tune()$tune_result()

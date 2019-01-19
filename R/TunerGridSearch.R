@@ -30,6 +30,7 @@
 #' task = mlr3::mlr_tasks$get("iris")
 #' learner = mlr3::mlr_learners$get("classif.rpart")
 #' resampling = mlr3::mlr_resamplings$get("cv")
+#' resampling$param_vals$folds = 2
 #' measures = mlr3::mlr_measures$mget("classif.mmce")
 #' task$measures = measures
 #' param_set = paradox::ParamSet$new(
@@ -51,7 +52,10 @@ TunerGridSearch = R6Class("TunerGridSearch",
   public = list(
     initialize = function(ff, terminator, resolution = NULL) {
       if (is.null(resolution)) {
-        remaining = terminator$remaining
+        remaining = terminator$settings$max_evaluations
+        if (is.null(remaining)) {
+          stop("Specify resolution or use a terminator that defines maximal number of evaluations (e.g. TerminatorEvaluations).")
+        }
         assert_int(remaining, lower = 1L)
         resolution = floor(remaining / ff$param_set$length)
       }
@@ -62,6 +66,7 @@ TunerGridSearch = R6Class("TunerGridSearch",
 
   private = list(
     tune_step = function() {
+      
       # note: generate_grid_design offers param_resolutions, so theoretically we could allow different resolutions per parameter
       design = paradox::generate_design_grid(self$ff$param_set, resolution = self$settings$resolution)
       self$ff$eval_design(design)

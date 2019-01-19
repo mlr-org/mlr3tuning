@@ -2,7 +2,8 @@
 #'
 #' @description
 #' Class to terminate the tuning after some time. Note that the runtime is checked after each step
-#' and therefore it could happen that the final runtime is longer than the specified one.
+#' and therefore it could happen that the final runtime is longer than the specified one. Time is measured
+#' for everything that happens between update_start and update_end. 
 #'
 #' @section Usage:
 #' ```
@@ -56,9 +57,5 @@ TerminatorRuntime = R6Class("TerminatorRuntime",
     },
 
     format = function() sprintf("TerminatorRuntime with %f remaining %s.", self$state$time_remaining, self$settings$units)
-  ),
-
-  active = list(
-    remaining = function() self$state$time_remaining
   )
 )

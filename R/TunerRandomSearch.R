@@ -30,6 +30,7 @@
 #' task = mlr3::mlr_tasks$get("iris")
 #' learner = mlr3::mlr_learners$get("classif.rpart")
 #' resampling = mlr3::mlr_resamplings$get("cv")
+#' resampling$param_vals$folds = 2
 #' measures = mlr3::mlr_measures$mget("classif.mmce")
 #' task$measures = measures
 #' param_set = paradox::ParamSet$new(
@@ -57,8 +58,7 @@ TunerRandomSearch = R6Class("TunerRandomSearch",
 
   private = list(
     tune_step = function() {
-      n = min(self$settings$batch_size, self$terminator$remaining)
-      design = generate_design_random(self$ff$param_set, n)
+      design = generate_design_random(self$ff$param_set, extract_min_evals(self$terminator, self$settings$batch_size))
       
       # Should be handled by paradox!
       if (nrow(design$data) > data.table::uniqueN(design$data))

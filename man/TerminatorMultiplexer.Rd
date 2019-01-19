@@ -31,7 +31,7 @@ The interface is described in \link{Terminator}.
 
 \examples{
 t = TerminatorMultiplexer$new(list(
-   TerminatorIterations$new(3),
+   TerminatorRuntime$new(3, "mins"),
    TerminatorEvaluations$new(10)
 ))
 print(t)
