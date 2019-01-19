@@ -65,7 +65,7 @@ Tuner = R6Class("Tuner",
     },
 
     tune = function() {
-      while (!self$terminator$terminated) {
+      while (! self$terminator$terminated) {
         private$tune_step()
       }
       invisible(self)

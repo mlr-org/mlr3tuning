@@ -11,7 +11,7 @@ test_that("TunerRandomSearch",  {
   resampling = mlr3::mlr_resamplings$get("cv")
   resampling$param_vals = list(folds = n_folds)
 
-  measures = mlr3::mlr_measures$mget(c("mmce", "time_train", "time_both"))
+  measures = mlr3::mlr_measures$mget(c("classif.mmce", "time_train", "time_both"))
   task$measures = measures
 
   param_set = paradox::ParamSet$new(params = list(
@@ -27,7 +27,7 @@ test_that("TunerRandomSearch",  {
   expect_r6(rs, "TunerRandomSearch")
   expect_data_table(bmr$data, nrow = n_folds*5)
   expect_list(result)
-  expect_number(result$performance["mmce"], lower = measures$mmce$range[1], upper = measures$mmce$range[2])
+  expect_number(result$performance["mmce"], lower = measures$classif.mmce$range[1], upper = measures$classif.mmce$range[2])
   expect_list(result$param_vals, len = 2)
   expect_equal(result$param_vals$minsplit, 3)
 })

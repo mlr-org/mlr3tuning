@@ -33,14 +33,13 @@ TerminatorEvaluations = R6Class("TerminatorEvaluations",
   public = list(
 
     initialize = function(max_evaluations) {
-      super$initialize(settings = list(max_evaluations = assert_int(max_evaluations, lower = 1L, coerce = TRUE)))
+      super$initialize(settings = list(max_evaluations = assert_count(max_evaluations, positive = TRUE, coerce = TRUE)))
       self$terminated = FALSE
       self$state = list(evals = 0L)
     },
 
     update_start = function(ff) {
-      hash = NULL
-      self$state$evals = if (is.null(ff$bmr) || nrow(ff$bmr$data) == 0L) 0L else uniqueN(ff$bmr$data, by = "hash")
+      self$state$evals = if (is.null(ff$bmr)) 0L else nrow(ff$bmr$aggregated)
       self$terminated = (self$state$evals >= self$settings$max_evaluations)
       invisible(self)
     },
@@ -49,7 +48,7 @@ TerminatorEvaluations = R6Class("TerminatorEvaluations",
       self$update_start(ff)
     },
 
-    format = function() sprintf("TerminatorEvaluations with %i remaining evaluations", self$remaining)
+    format = function() sprintf("TerminatorEvaluations with %i remaining evaluations", max(self$settings$max_evaluations - self$state$evals, 0L))
   ),
 
   active = list(

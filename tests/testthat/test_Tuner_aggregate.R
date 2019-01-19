@@ -24,8 +24,8 @@ test_that("API",  {
   rs = TunerRandomSearch$new(ff, terminator)
 
   expect_error(rs$aggregate())
-  expect_error({ rs$aggregated = NULL })
   rs$tune()
-  expect_data_table(rs$aggregated, nrows = n_evals)
-  expect_true("cp" %in% names(rs$aggregated))
+  expect_data_table(rs$aggregate(), nrows = n_evals)
+  expect_true("cp" %in% names(rs$aggregate()))
+  expect_true("pars" %in% names(rs$aggregate(FALSE)))
 })

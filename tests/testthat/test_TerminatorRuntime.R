@@ -4,12 +4,12 @@ test_that("API", {
   expect_error(TerminatorRuntime$new(2, "seconds"))
   te = TerminatorRuntime$new(2, "secs")
 
-  expect_identical(te$settings$max_time, 2)
+  expect_identical(te$settings$max_time, 2L)
   expect_identical(te$settings$units, "secs")
 
   expect_identical(te$state$time_start, NULL)
   expect_identical(te$state$time_end, NULL)
-  expect_identical(te$state$time_remaining, 2)
+  expect_identical(te$state$time_remaining, 2L)
   
   expect_false(te$terminated)
 

@@ -31,10 +31,10 @@ TerminatorRuntime = R6Class("TerminatorRuntime",
   public = list(
 
     initialize = function(max_time, units = "minutes") {
-      super$initialize(settings = list(max_time = checkmate::assert_count(max_time, positive = TRUE),
+      super$initialize(settings = list(max_time = checkmate::assert_count(max_time, positive = TRUE, coerce = TRUE),
         units = checkmate::assert_choice(units, choices = c("secs", "mins", "hours", "days", "weeks"))))
       self$terminated = FALSE
-      self$state = list(time_start = NULL, time_end = NULL, time_remaining = max_time)
+      self$state = list(time_start = NULL, time_end = NULL, time_remaining = self$settings$max_time)
     },
 
     update_start = function(ff) {
@@ -50,7 +50,7 @@ TerminatorRuntime = R6Class("TerminatorRuntime",
       invisible(self)
     },
 
-    format = function() sprintf("TerminatorRuntime with %f remaining %s.", self$remaining, self$settings$units)
+    format = function() sprintf("TerminatorRuntime with %f remaining %s.", self$state$time_remaining, self$settings$units)
   ),
 
   active = list(

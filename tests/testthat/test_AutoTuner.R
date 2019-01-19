@@ -2,8 +2,8 @@ context("AutoTuner")
 
 test_that("AutoTuner",  {
   outer_folds = 3L
-  inner_folds = 4L
-  inner_evals = 5L
+  inner_folds = 2L
+  inner_evals = 3L
 
   p_measures = c("classif.mmce", "time_train", "time_both")
 
@@ -36,7 +36,8 @@ test_that("AutoTuner",  {
   nuisance = lapply(r$data$learner, function (autotuner) {
     checkmate::expect_data_table(autotuner$tuner$ff$bmr$data, nrow = inner_evals * inner_folds)
     checkmate::expect_data_table(autotuner$tuner$ff$bmr$aggregated, nrow = inner_evals)
-    expect_equal(names(autotuner$tuner$tune_result()$performance), p_measures)
+    expect_equal(names(autotuner$tuner$tune_result()$performance), c("mmce", p_measures[-1]))
+    autotuner$tuner$tune_result()$performance
   })
 
   row_ids_inner = lapply(r$data$learner, function (it) {

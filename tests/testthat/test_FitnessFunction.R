@@ -21,15 +21,15 @@ test_that("Construction", {
   expect_r6(ff$param_set, "ParamSet")
   expect_null(ff$bmr)
 
-  expect_r6(ff$eval(list(cp = 0.01)), "FitnessFunction")
-  expect_data_table(ff$bmr$data, nrow = 1L)
+  expect_r6(ff$eval(data.table(cp = c(0.01, 0.02))), "FitnessFunction")
+  expect_data_table(ff$bmr$data, nrow = 2L)
   expect_equal(ff$bmr$data$learner[[1L]]$param_vals$cp, 0.01)
   expect_equal(ff$bmr$data$learner[[1L]]$param_vals$minsplit, 3)
 
-  expect_r6(ff$eval(list(cp = 0.1)), "FitnessFunction")
-  expect_data_table(ff$bmr$data, nrow = 2L)
-  expect_equal(ff$bmr$data$learner[[2L]]$param_vals$cp, 0.1)
-  expect_equal(ff$bmr$data$learner[[2L]]$param_vals$minsplit, 3)
+  expect_r6(ff$eval(data.table(cp = 0.1)), "FitnessFunction")
+  expect_data_table(ff$bmr$data, nrow = 3L)
+  expect_equal(ff$bmr$data$learner[[3L]]$param_vals$cp, 0.1)
+  expect_equal(ff$bmr$data$learner[[3L]]$param_vals$minsplit, 3)
 
   expect_resample_result(ff$get_best())
 })

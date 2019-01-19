@@ -108,10 +108,12 @@ FitnessFunction = R6Class("FitnessFunction",
     },
 
     eval = function(dt) {
+      checkmate::assert_data_table(dt, any.missing = FALSE, min.rows = 1, min.cols = 1)
       self$eval_design(paradox::Design$new(self$param_set, dt))
     },
 
     eval_design = function(design) {
+      checkmate::expect_r6(design, "Design")
 
       # Not that pretty but enables the use of transpose from Design:
       if (self$param_set$has_trafo) 
@@ -129,9 +131,16 @@ FitnessFunction = R6Class("FitnessFunction",
       bmr = mlr3::benchmark(design = data.table::data.table(task = list(self$task), learner = learners, 
         resampling = list(self$resampling)), ctrl = self$ctrl)
 
-      # add params to benchmark result data:
-      bmr$data$pars = mlr3misc::map(bmr$data$learner, function (l) l$param_vals)
-      
+      # add params to benchmark result data. if statement ensures that map with just one learner returns 
+      # the same as map with more than one learner: 
+      bmr$data$pars = mlr3misc::map(bmr$data$learner, function (l) {
+        if (nrow(bmr$data) == 1) {
+          list(l$param_vals)
+        } else {
+          l$param_vals
+        }
+      })
+
       if (is.null(self$bmr)) {
         bmr$data$dob = 1L
         self$bmr = bmr
