@@ -23,14 +23,14 @@ test_that("AutoTuner",  {
 
   terminator = TerminatorEvaluations$new(inner_evals)
 
-  at = AutoTuner$new(learner, resampling, param_set, terminator, tuner = TunerRandomSearch, 
+  at = AutoTuner$new(learner, resampling, param_set, terminator, tuner = TunerRandomSearch,
     tuner_settings = list(batch_size = 10L))
 
   # Nested Resampling:
   outer_resampling = mlr3::mlr_resamplings$get("cv")
   outer_resampling$param_vals = list(folds = outer_folds)
   r = mlr3::resample(task, at, outer_resampling)
-  
+
   # Nested Resampling:
   checkmate::expect_data_table(r$data, nrow = outer_folds)
   nuisance = lapply(r$data$learner, function (autotuner) {
@@ -41,17 +41,20 @@ test_that("AutoTuner",  {
   })
 
   row_ids_inner = lapply(r$data$learner, function (it) {
-    it$tuner$ff$task$row_ids[[1]]
+    it$tuner$ff$task$row_ids
   })
-  row_ids_all = task$row_ids[[1]]
-  
+  row_ids_all = task$row_ids
+
+  # Check if all sub tasks combined equals the full task:
   expect_equal(sort(unique(unlist(row_ids_inner))), sort(row_ids_all))
+
+  # Check if each sub task of the inner tuner is a subset of the full task:
   nuisance = lapply(row_ids_inner, function (ids) {
     expect_true(any(! row_ids_all %in% ids))
   })
 
 
-  at2 = AutoTuner$new(learner, resampling, param_set, terminator, tuner = TunerRandomSearch, 
+  at2 = AutoTuner$new(learner, resampling, param_set, terminator, tuner = TunerRandomSearch,
     tuner_settings = list(batch_size = 10L))
 
   expect_null(at2$tuner)

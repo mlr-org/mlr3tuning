@@ -58,12 +58,16 @@ TunerRandomSearch = R6Class("TunerRandomSearch",
 
   private = list(
     tune_step = function() {
-      design = generate_design_random(self$ff$param_set, extract_min_evals(self$terminator, self$settings$batch_size))
-      
+
+      n_evals = self$terminator$settings$max_evaluations
+      n_evals = if (is.null(n_evals)) n_batch else min(self$settings$batch_size, n_evals)
+
+      design = generate_design_random(self$ff$param_set, n_evals)
+
       # Should be handled by paradox!
       if (nrow(design$data) > data.table::uniqueN(design$data))
         logger::log_warn("Duplicated parameter values detected.", namespace = "mlr3")
-     
+
       self$ff$eval_design(design)
     }
   )

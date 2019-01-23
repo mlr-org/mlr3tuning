@@ -1,9 +1,9 @@
 ---
-title: "Introduction to Tuner"
+title: "Tuning Hyperparameters"
 author: "Daniel Schalk"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Introduction to Tuner}
+  %\VignetteIndexEntry{mlr3tuning}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -23,41 +23,190 @@ set.seed(123)
 
 `mlr3tuning` is an extension of `mlr3` that includes tuning.
 
-## Basis of Tuning
 
-As mentioned in the `tuning-01-fitness-function` vignette, we have to initialize a `FitnessFunction` object to define the hyperparameter space as well as the evaluation technique that is used to estimate the generalization error:
+
+
+Many machine learning algorithms have hyperparameters that need to be set. If selected by the user they can be specified as explained on the tutorial page on learners – simply pass them to makeLearner(). Often suitable parameter values are not obvious and it is preferable to tune the hyperparameters, that is automatically identify values that lead to the best performance.
+
+In order to tune a machine learning algorithm, you have to specify:
+
+- the learner;
+- the search space;
+- an evaluation method, i.e., a resampling strategy and a performance measure;
+- the terminator which controls how long the tuning should run;
+- the optimization algorithm (aka tuning method).
+
+Note that the first three points defines the [FitnessFunction] which is already covered in detail in [defining and using fitness functions]().
+
+In this tutorial, we show how to specify the fitness function and terminator, how to conduct the tuning and how to access the tuning result, and how to visualize the hyperparameter tuning effects through several examples.
+
+Throughout this section we consider classification examples. For the other types of learning problems, you can follow the same process analogously.
+
+We use the iris classification task (`mlr_tasks$get("iris")`) for illustration and tune the hyperparameters of a CART (function `rpart::rpart()`). The following examples tune the complexity parameter `cp`.
+
+## Specifying the fitness function
+
+### Specify the task
+
+In our case we want to conduct tuning on the iris task. We can get pre-defined task (as the iris task) by using the [mlr3::DictionaryTask] object `mlr_tasks`:
 
 ```{r}
-task = mlr3::mlr_tasks$get("iris")
-learner = mlr3::mlr_learners$get("classif.rpart")
-resampling = mlr3::mlr_resamplings$get("holdout")
-measures = mlr3::mlr_measures$mget("classif.mmce")
-task$measures = measures
-param_set = paradox::ParamSet$new(params = list(paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
+task = mlr_tasks$get("iris")
+```
 
+### Define the learner
+
+As for the task we access the learner through the [mlr3::DictionaryLearner] object `mlr_learners`. Since the most learner are able to handle regression as well as classification it is necessary to specify what task we want to tackle:
+```{r}
+# The task type:
+task$task_type
+
+# Specifying the learner:
+learner = mlr_learners$get("classif.rpart")
+```
+
+### Specifying the performance measure
+
+In `mlr3` the performance measure is directly assign to the task. We can get a list of all available measures by printing the [mlr3::DictionaryMeasure] object `mlr_measures`:
+```{r}
+mlr_measures
+```
+
+As for the learner, we have to name the task type as prefix, which is `r task$task_type`, and then the measure name. For the mmce in classification this is the `classif.mmce`. Additionally, we are interested in the runtime of a training that can be accessed by the `time_train` measure. Note that we can assign multiple measures to a task. Getting a list of measures can be achieved by calling `mget()`:
+```{r}
+task$measures = mlr_measures$mget(c("classif.mmce", "time_train"))
+```
+
+### Choose the resampling strategy
+
+An example of an evaluation method could be 3-fold CV:
+```{r}
+resampling = mlr_resamplings$get("cv")
+resampling$param_vals = list(folds = 3)
+```
+
+The evaluation method is already covered in detail in [evaluation of learning methods and resampling]().
+
+### Define the search space
+
+We first must define a space to search when tuning our learner. For example, maybe we want to tune several specific values of a hyperparameter or perhaps we want to define a space from $10^{−10}$ to $10^{10}$ and let the optimization algorithm decide which points to choose.
+
+In order to define a search space, we use the [paradox::ParamSet] class, which describes the parameter space we wish to search. For detailed informations see the [paradox vignette]().
+
+In our case we have to define the `cp` parameter as the type double:
+```{r}
+param_set = ParamSet$new(params = list(
+  ParamDbl$new("cp", lower = 0.01, upper = 0.3)
+))
+param_set
+```
+
+### Collecting everything to the fitness function
+
+```{r}
 ff = FitnessFunction$new(task, learner, resampling, param_set)
 ```
 
-## Define a Terminator
+For details about the fitness function see [defining and using fitness functions]().
 
-## Evaluations
+## Defining a terminator
 
+Another part of tuning is to determine when we like to stop. For that case, `mlr3tuning` uses the [Terminator] class. The terminator is responsible to check if the tuning should be stopped or not by getting active before and after a tuning step.
+
+In this section we introduce three terminator:
+
+- [TerminatorEvaluations]
+- [TerminatorRuntime]
+- [TerminatorMultiplexer]
+
+### Evaluation terminator
+
+This terminator stops after a certain amount of evaluations of the fitness function. One evaluation here is one resampling of a parameter combination, and therefore, one evaluation could include multiple trainings of the learner. In our case, with the 3-fold CV, in each evaluation we fit 3 models on each fold.
+
+With the [TerminatorEvaluations] class we can specify how often we want to evaluate the learner. In our case want to have maximal 50 evaluations:
 ```{r}
-terminator_eval = TerminatorEvaluations$new(5)
+te = TerminatorEvaluations$new(max_evaluations = 50)
+te
 ```
 
-## Basic Search Strategies
+### Runtime terminator
 
-Available search strategies:
-
--   Grid Search
--   Random Search
-
+In addition to define the maximal amount of evaluations we can also specify how long we want to conduct tuning. This can be achieved by using [TerminatorRuntime] class. With that class it is possible to stop the tuning after some time. The time can be measured on different stages of time units (seconds, minutes, hours, days, or weeks). In our case, we want to stop after 5 seconds:
 ```{r}
-rs = TunerRandomSearch$new(ff, terminator_eval)
-rs$tune()
+tr = TerminatorRuntime$new(max_time = 5, units = "secs")
+tr
 ```
 
+### Terminator multiplexer
+
+But finally, we have to decide which terminator to choose. `mlr3tuning` offers another terminator class called [TerminatorMultiplexer]. With this class we can combine different terminator and stop when the first terminator wants to stop tuning:
 ```{r}
-rs$tune_result()
+tm = TerminatorMultiplexer$new(list(te, tr))
+tm
 ```
+
+## Specifying the optimization algorithm
+
+Now that we have specified the fitness function and the terminator (that are directly passed to the tuner), we need to choose an optimization algorithm for our parameters that are evaluated by the fitness function.
+
+A grid search is one of the standard – albeit slow – ways to choose an appropriate set of parameters from a given search space.
+
+In our case of numeric parameters above, since we have only specified the upper and lower bounds for the search space, grid search will create a grid using equally-sized steps. By default, grid search will span the space in 10 equal-sized steps. The number of steps can be changed with the resolution argument. Here we change to 15 equal-sized steps in the space:
+```{r}
+# pass the fitness function (ff) and terminator (tm) to the tuner:
+tuner_gs = TunerGridSearch$new(ff, tm, resolution = 15)
+```
+Note that if we have defined the maximal number of evaluation, `mlr3tuning` then automatically adjusts the resolution to not overshoot the terminators stopping criteria.
+
+Since grid search is normally too slow in practice, we’ll also examine random search. In the our case, random search will randomly choose from values between $0.01$ and $0.3$. Perhaps in this case we would want to increase the amount of iterations to ensure we adequately cover the space. The `batch_size` argument controls how much parameter values are evaluated in one step. Therefore, `mlr3tuning`, again, adjusts if the maximal number of evaluations is greater than that value.
+
+Note that this does not apply to the runtime terminator since the terminators are executed before and after a tuning step. If one tuning step evaluates $100$ parameter values at once, we have to wait until these values are evaluated, even if this takes longer then, lets say, 5 seconds. Therefore, it beneficial to choose the `batch_size` not too big:
+```{r}
+# pass the fitness function (ff) and terminator (tm) to the tuner:
+tuner_rs = TunerRandomSearch$new(ff, tm, batch_size = 5)
+```
+
+## Performing the tuning
+
+Now that we have specified a search space and the optimization algorithm, it’s time to perform the tuning. Finally, by combining all the previous pieces, we can tune the CART parameters by calling the `tune()` member of the tuner:
+
+```{r}
+tuner_rs$tune()
+```
+
+`tune()` simply performs a benchmark on the parameter values generated by the tuner and writes them into a [mlr3::BenchmarkResult] object which is located within the fitness function.
+```{r}
+ff$bmr
+```
+
+After the tuning is done, we can take a look at the terminator to see what criteria was used to stop the tuning:
+```{r}
+tm
+```
+
+
+## Accessing the tuning result
+
+`tune_result()` returns the parameter setting with the best mean performance. As no performance measure was specified, by default the error rate (mmce) is used:
+```{r}
+tuner_rs$tune_result()
+```
+
+Note that each measure "knows" if it is minimized or maximized during tuning:
+```{r}
+task$measures$classif.mmce$minimize
+```
+
+We can get a complete overview about the performed evaluations by calling the member function `aggregate()`:
+```{r}
+dt_tune = tuner_rs$aggregate()
+head(dt_tune)
+```
+
+## Further comments
+
+- Tuning works for all other tasks like regression, survival analysis and so on in a completely similar fashion.
+
+- In longer running tuning experiments it is very annoying if the computation stops due to numerical or other errors. Have a look at `fallback` learner.
+
+- As we continually optimize over the same data during tuning, the estimated performance value might be optimistically biased. A clean approach to ensure unbiased performance estimation is nested resampling, where we embed the whole model selection process into an outer resampling loop.
