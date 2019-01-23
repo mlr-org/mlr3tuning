@@ -10,7 +10,7 @@ Additionally, this class can be used to do nested resampling by passing an \link
 }
 \section{Usage}{
 \preformatted{# Construction
-at = AutoTuner$new(learner, resampling, param_set, terminator, 
+at = AutoTuner$new(learner, resampling, param_set, terminator,
   tuner, tuner_settings, ctrl = tune_control(), id = "autotuner")
 
 # public fields
@@ -51,14 +51,14 @@ The interface is described in \link{Learner}.
 task = mlr3::mlr_tasks$get("iris")
 learner = mlr3::mlr_learners$get("classif.rpart")
 resampling = mlr3::mlr_resamplings$get("holdout")
-measures = mlr3::mlr_measures$mget("mmce")
+measures = mlr3::mlr_measures$mget("classif.mmce")
 task$measures = measures
 param_set = paradox::ParamSet$new(
   params = list(paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 
 terminator = TerminatorEvaluations$new(5)
 
-at = AutoTuner$new(learner, resampling, param_set, terminator, tuner = TunerGridSearch, 
+at = AutoTuner$new(learner, resampling, param_set, terminator, tuner = TunerGridSearch,
   tuner_settings = list(resolution = 10L))
 
 at$train(task)

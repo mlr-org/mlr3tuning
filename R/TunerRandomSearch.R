@@ -30,7 +30,7 @@
 #' task = mlr3::mlr_tasks$get("iris")
 #' learner = mlr3::mlr_learners$get("classif.rpart")
 #' resampling = mlr3::mlr_resamplings$get("cv")
-#' measures = mlr3::mlr_measures$mget("mmce")
+#' measures = mlr3::mlr_measures$mget("classif.mmce")
 #' task$measures = measures
 #' param_set = paradox::ParamSet$new(
 #'   params = list(
@@ -60,16 +60,15 @@ TunerRandomSearch = R6Class("TunerRandomSearch",
       n = min(self$settings$batch_size, self$terminator$remaining)
       ps = self$ff$param_set
       xts = generate_design_random(ps, n)
-      
-      if (nrow(xts) > uniqueN(xts))
+
+      if (nrow(xts$data) > uniqueN(xts$data))
         logger::log_warn("Duplicated parameter values detected.", namespace = "mlr3")
 
       if (self$ff$param_set$has_trafo)
         xts = self$ff$param_set$trafo(xts)
-      
-      xts = transpose(xts)
+
+      xts = transpose(xts$data)
       self$ff$eval_vectorized(xts)
     }
   )
 )
-

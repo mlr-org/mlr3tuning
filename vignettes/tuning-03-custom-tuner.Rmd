@@ -26,7 +26,7 @@ set.seed(123)
 
 -   Goal: Define custom class with a custom tuner
 
-## Basis of Tuning 
+## Basis of Tuning
 
 As mentioned in the `tuning-01-fitness-function` vignette, we have to define a `[FitnessFunction]` object to define the hyperparameter space as well as the evaluation technique that is used to estimate the generalization error:
 
@@ -35,7 +35,7 @@ task = mlr3::mlr_tasks$get("spam")
 learner = mlr3::mlr_learners$get("classif.rpart")
 learner$predict_type = "prob"
 resampling = mlr3::mlr_resamplings$get("holdout")
-measures = mlr3::mlr_measures$mget(c("auc", "mmce"))
+measures = mlr3::mlr_measures$mget(c("classif.auc", "classif.mmce"))
 task$measures = measures
 param_set = paradox::ParamSet$new(
   params = list(
@@ -57,7 +57,7 @@ blackBoxFun = function (x, ff) {
   x = mlr3misc::set_names(x, nm = ff$param_set$ids())
   ff$eval(x)
   performance = unlist(ff$bmr$data[.N]$performance)[[1]]
-  if (! ff$task$measures[[1]]$minimize) 
+  if (! ff$task$measures[[1]]$minimize)
     return (-performance)
   return (performance)
 }
@@ -76,7 +76,7 @@ ff$bmr$aggregated
 # blackBoxFun(c(cp = 0.2, minsplit = 3), ff)
 blackBoxFun(c(cp = 0.2), ff)
 ff$bmr$aggregated
-``` 
+```
 
 
 ## Call the Optimizer
@@ -113,7 +113,7 @@ Basically, each tuner consists of the constructor (the `$new()` initialization) 
 library(R6)
 ```
 
-For our custom tuner the class skeleton looks like this: 
+For our custom tuner the class skeleton looks like this:
 
 ```{r, eval=FALSE}
 TunerGridSearch = R6Class("TunerGenSA",
@@ -134,10 +134,10 @@ Finally, we have to define the two functions:
 -   Checks: for GenSA everything needs to be a double or integer
 
 `$tune_step()`:
--   bla 
+-   bla
 
 To keep it simple we are just using the evaluation terminator here
-    
+
 
 ```{r}
 TunerGenSA = R6Class("TunerGenSA",
@@ -149,7 +149,7 @@ TunerGenSA = R6Class("TunerGenSA",
         logger::log_error("Parameter types needs to be numeric", namespace = "mlr3")
       }
       checkmate::assert_integerish(evals, lower = 1L)
-      super$initialize(id = "GenSA", ff = ff, terminator = TerminatorEvaluations$new(evals), 
+      super$initialize(id = "GenSA", ff = ff, terminator = TerminatorEvaluations$new(evals),
         settings = list(max.call = evals, ...))
     }
   ),
@@ -179,7 +179,7 @@ task = mlr3::mlr_tasks$get("spam")
 learner = mlr3::mlr_learners$get("classif.rpart")
 learner$predict_type = "prob"
 resampling = mlr3::mlr_resamplings$get("holdout")
-measures = mlr3::mlr_measures$mget(c("auc", "mmce"))
+measures = mlr3::mlr_measures$mget(c("classif.auc", "classif.mmce"))
 param_set = paradox::ParamSet$new(
   params = list(
     paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)

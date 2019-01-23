@@ -30,7 +30,7 @@
 #' task = mlr3::mlr_tasks$get("iris")
 #' learner = mlr3::mlr_learners$get("classif.rpart")
 #' resampling = mlr3::mlr_resamplings$get("cv")
-#' measures = mlr3::mlr_measures$mget("mmce")
+#' measures = mlr3::mlr_measures$mget("classif.mmce")
 #' task$measures = measures
 #' param_set = paradox::ParamSet$new(
 #'   params = list(
@@ -65,13 +65,12 @@ TunerGridSearch = R6Class("TunerGridSearch",
       # note: generate_grid_design offers param_resolutions, so theoretically we could allow different resolutions per parameter
       ps = self$ff$param_set
       xts = paradox::generate_design_grid(ps, resolution = self$settings$resolution)
-      
-      if (self$ff$param_set$has_trafo) 
+
+      if (self$ff$param_set$has_trafo)
         xts = self$ff$param_set$trafo(xts)
-      
-      xts = mlr3misc::transpose(xts)
+
+      xts = mlr3misc::transpose(xts$data)
       self$ff$eval_vectorized(xts)
     }
   )
 )
-
