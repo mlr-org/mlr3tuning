@@ -69,7 +69,7 @@ TunerGridSearch = R6Class("TunerGridSearch",
       if (self$ff$param_set$has_trafo)
         xts = self$ff$param_set$trafo(xts)
 
-      xts = mlr3misc::transpose(xts$data)
+      xts = transpose(xts$data)
       self$ff$eval_vectorized(xts)
     }
   )
