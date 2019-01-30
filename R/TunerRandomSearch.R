@@ -68,7 +68,7 @@ TunerRandomSearch = R6Class("TunerRandomSearch",
       if (nrow(design$data) > data.table::uniqueN(design$data))
         logger::log_warn("Duplicated parameter values detected.", namespace = "mlr3")
 
-      self$ff$eval_design(design)
+      private$eval_design_terminator(design)
     }
   )
 )

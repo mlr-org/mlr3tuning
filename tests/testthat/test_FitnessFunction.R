@@ -33,3 +33,27 @@ test_that("Construction", {
 
   expect_resample_result(ff$get_best())
 })
+
+
+test_that("Construction", {
+  task = mlr3::mlr_tasks$get("iris")
+  learner = mlr3::mlr_learners$get("classif.rpart")
+  learner$param_vals = list(minsplit = 3)
+  resampling = mlr3::mlr_resamplings$get("holdout")
+  measures = mlr3::mlr_measures$mget("classif.mmce")
+  task$measures = measures
+  param_set = paradox::ParamSet$new(params = list(paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
+
+  ff = FitnessFunction$new(
+    task = task,
+    learner = learner,
+    resampling = resampling,
+    param_set = param_set,
+    ctrl = tune_control(store_prediction = TRUE) # for the exceptions
+  )
+
+  expect_error(ff$add_hook(hook = mean))
+  expect_silent(ff$add_hook(hook = function (ff) { "hook" }))
+  expect_equal(ff$run_hooks(), list("hook"))
+
+})

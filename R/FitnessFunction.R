@@ -105,11 +105,10 @@ FitnessFunction = R6Class("FitnessFunction",
       self$resampling = mlr3::assert_resampling(resampling)
       self$param_set = checkmate::assert_class(param_set, "ParamSet")
       self$ctrl = checkmate::assert_list(ctrl, names = "unique")
-      self$hooks = list(update_start = list(), update_end = list())
+      # self$hooks = list(update_start = list(), update_end = list())
     },
 
     eval = function(dt) {
-      dt = data.table::as.data.table(dt)
       checkmate::assert_data_table(dt, any.missing = FALSE, min.rows = 1, min.cols = 1)
       self$eval_design(paradox::Design$new(self$param_set, dt))
     },
@@ -123,14 +122,14 @@ FitnessFunction = R6Class("FitnessFunction",
 
       n_evals = if (is.null(self$bmr)) 0 else nrow(self$bmr$aggregated)
 
-      learners = imap(design$transpose(), function(xt, i) {
+      learners = mlr3misc::imap(design$transpose(), function(xt, i) {
         learner = self$learner$clone()
         learner$param_vals = insert_named(learner$param_vals, xt)
         learner$id = paste0(learner$id, n_evals + i)
         return(learner)
       })
 
-      self$run_hooks("update_start")
+      # self$run_hooks("update_start")
 
       bmr = mlr3::benchmark(design = data.table::data.table(task = list(self$task), learner = learners,
         resampling = list(self$resampling)), ctrl = self$ctrl)
@@ -152,7 +151,8 @@ FitnessFunction = R6Class("FitnessFunction",
         bmr$data$dob = max(self$bmr$data$dob) + 1L
         self$bmr$combine(bmr)
       }
-      self$run_hooks("update_end")
+      # self$run_hooks("update_end")
+      self$run_hooks()
       invisible(self)
     },
 
@@ -160,10 +160,18 @@ FitnessFunction = R6Class("FitnessFunction",
       self$bmr$get_best(self$task$measures[[1L]])
     },
 
-    run_hooks = function(id) {
-      funs = self$hooks[[id]]
-      for (fun in funs)
-        do.call(fun, list(ff = self))
+    add_hook = function (hook) {
+      checkmate::assert_function(hook, args = "ff", nargs = 1)
+      self$hooks = append(self$hooks, hook)
+    },
+
+    run_hooks = function() {
+      lapply(self$hooks, function (hook) {
+        do.call(hook, list(ff = self))
+      })
+      # funs = self$hooks[[id]]
+      # for (fun in funs)
+      #   do.call(fun, list(ff = self))
     }
   )
 )

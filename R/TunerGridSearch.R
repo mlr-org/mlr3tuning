@@ -66,10 +66,9 @@ TunerGridSearch = R6Class("TunerGridSearch",
 
   private = list(
     tune_step = function() {
-      
       # note: generate_grid_design offers param_resolutions, so theoretically we could allow different resolutions per parameter
       design = paradox::generate_design_grid(self$ff$param_set, resolution = self$settings$resolution)
-      self$ff$eval_design(design)
+      private$eval_design_terminator(design)
     }
   )
 )

@@ -57,6 +57,7 @@ Collate:
     'TerminatorMultiplexer.R'
     'TerminatorRuntime.R'
     'Tuner.R'
+    'TunerGenSA.R'
     'TunerGridSearch.R'
     'TunerRandomSearch.R'
     'tune_control.R'
