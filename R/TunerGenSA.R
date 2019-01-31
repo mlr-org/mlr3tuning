@@ -51,9 +51,14 @@ TunerGenSA = R6Class("TunerGenSA",
   public = list(
     initialize = function(ff, terminator, ...) {
       if (any(ff$param_set$storage_type != "numeric")) {
-        logger::log_error("Parameter types needs to be numeric", namespace = "mlr3")
+        err_msg = "Parameter types needs to be numeric"
+        logger::log_error(err_msg, namespace = "mlr3")
+        conditions::value_error(err_msg)
       }
-      super$initialize(id = "GenSA", ff = ff, terminator = terminator, settings = list(...))
+
+      # Default settings:
+      settings = list(smooth = FALSE, acceptance.param = -15, simple.function = FALSE, temperature = 250)
+      super$initialize(id = "GenSA", ff = ff, terminator = terminator, settings = mlr3misc::insert_named(settings, list(...)))
     }
   ),
   private = list(
@@ -71,7 +76,7 @@ TunerGenSA = R6Class("TunerGenSA",
           return(-performance)
         return(performance)
       }
-      nuisance = GenSA(fn = objective, lower = self$ff$param_set$lower, upper = self$ff$param_set$upper,
+      nuisance = GenSA::GenSA(fn = objective, lower = self$ff$param_set$lower, upper = self$ff$param_set$upper,
         control = self$settings, ff = self$ff)
     }
   )

@@ -9,7 +9,9 @@ vignette: >
 ---
 
 ```{r setup, include = FALSE}
+library(mlr3)
 library(mlr3tuning)
+library(paradox)
 knitr::opts_knit$set(
   datatable.print.keys = FALSE,
   datatable.print.class = TRUE
