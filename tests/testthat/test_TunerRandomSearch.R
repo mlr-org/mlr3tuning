@@ -4,10 +4,10 @@ test_that("TunerRandomSearch",  {
   n_folds = 4
 
   task = mlr3::mlr_tasks$get("iris")
-  
+
   learner = mlr3::mlr_learners$get("classif.rpart")
   learner$param_vals = list(minsplit = 3)
-  
+
   resampling = mlr3::mlr_resamplings$get("cv")
   resampling$param_vals = list(folds = n_folds)
 

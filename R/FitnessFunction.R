@@ -83,8 +83,8 @@
 #'   param_set = param_set
 #' )
 #'
-#' ff$eval(data.frame(cp = 0.05, minsplit = 5))
-#' ff$eval(data.frame(cp = 0.01, minsplit = 3))
+#' ff$eval(data.table(cp = 0.05, minsplit = 5))
+#' ff$eval(data.table(cp = 0.01, minsplit = 3))
 #' ff$get_best()
 NULL
 
@@ -128,7 +128,6 @@ FitnessFunction = R6Class("FitnessFunction",
         learner$id = paste0(learner$id, n_evals + i)
         return(learner)
       })
-
       # self$run_hooks("update_start")
 
       bmr = mlr3::benchmark(design = data.table::data.table(task = list(self$task), learner = learners,
@@ -143,7 +142,6 @@ FitnessFunction = R6Class("FitnessFunction",
           l$param_vals
         }
       })
-
       if (is.null(self$bmr)) {
         bmr$data$dob = 1L
         self$bmr = bmr

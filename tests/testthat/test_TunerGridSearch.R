@@ -6,10 +6,10 @@ test_that("TunerGridSearch",  {
 
   learner = mlr3::mlr_learners$get("classif.rpart")
   learner$param_vals = list(minsplit = 3)
-  
+
   resampling = mlr3::mlr_resamplings$get("cv")
   resampling$param_vals = list(folds = 2)
-  
+
   measures = mlr3::mlr_measures$mget("classif.mmce")
   task$measures = measures
 

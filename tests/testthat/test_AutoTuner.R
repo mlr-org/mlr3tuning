@@ -44,7 +44,7 @@ test_that("AutoTuner",  {
     it$tuner$ff$task$row_ids
   })
   row_ids_all = task$row_ids
-
+  
   # Check if all sub tasks combined equals the full task:
   expect_equal(sort(unique(unlist(row_ids_inner))), sort(row_ids_all))
 

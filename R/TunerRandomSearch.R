@@ -58,7 +58,6 @@ TunerRandomSearch = R6Class("TunerRandomSearch",
 
   private = list(
     tune_step = function() {
-
       n_evals = self$terminator$settings$max_evaluations
       n_evals = if (is.null(n_evals)) n_batch else min(self$settings$batch_size, n_evals)
 
@@ -72,4 +71,3 @@ TunerRandomSearch = R6Class("TunerRandomSearch",
     }
   )
 )
-
