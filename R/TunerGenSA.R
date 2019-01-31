@@ -68,7 +68,7 @@ TunerGenSA = R6Class("TunerGenSA",
         param_value = mlr3misc::set_names(list(x), nm = ff$param_set$ids())
         dt_param_value = do.call(data.table::data.table, param_value)
 
-        private$eval_design_terminator(paradox::Design$new(ff$param_set, dt_param_value))
+        private$eval_design_terminator(paradox::Design$new(ff$param_set, dt_param_value, remove_dupl = TRUE))
 
         # Get estimated generalization error. Use the negation if the measures needs to be minimized:
         performance = unlist(ff$bmr$data[.N]$performance)[[1]]

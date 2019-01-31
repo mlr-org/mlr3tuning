@@ -83,8 +83,8 @@
 #'   param_set = param_set
 #' )
 #'
-#' ff$eval(data.table(cp = 0.05, minsplit = 5))
-#' ff$eval(data.table(cp = 0.01, minsplit = 3))
+#' ff$eval(data.table::data.table(cp = 0.05, minsplit = 5))
+#' ff$eval(data.table::data.table(cp = 0.01, minsplit = 3))
 #' ff$get_best()
 NULL
 
@@ -110,7 +110,7 @@ FitnessFunction = R6Class("FitnessFunction",
 
     eval = function(dt) {
       checkmate::assert_data_table(dt, any.missing = FALSE, min.rows = 1, min.cols = 1)
-      self$eval_design(paradox::Design$new(self$param_set, dt))
+      self$eval_design(paradox::Design$new(self$param_set, dt, remove_dupl = FALSE))
     },
 
     eval_design = function(design) {
