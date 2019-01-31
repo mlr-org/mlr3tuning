@@ -52,8 +52,8 @@ rs = TunerRandomSearch$new(ff, terminator)
 rs$tune()$tune_result()
 }
 \seealso{
-Other Tuner: \code{\link{TunerGridSearch}},
-  \code{\link{Tuner}}
+Other Tuner: \code{\link{TunerGenSA}},
+  \code{\link{TunerGridSearch}}, \code{\link{Tuner}}
 }
 \concept{Tuner}
 \keyword{internal}

@@ -57,7 +57,8 @@ The settings for the Tuner.
 }
 
 \seealso{
-Other Tuner: \code{\link{TunerGridSearch}},
+Other Tuner: \code{\link{TunerGenSA}},
+  \code{\link{TunerGridSearch}},
   \code{\link{TunerRandomSearch}}
 }
 \concept{Tuner}

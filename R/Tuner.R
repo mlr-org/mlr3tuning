@@ -59,21 +59,12 @@ Tuner = R6Class("Tuner",
       self$ff = assert_r6(ff, "FitnessFunction")
       self$terminator = assert_r6(terminator, "Terminator")
       self$settings = assert_list(settings, names = "unique")
-
-      # ff$hooks$update_start = c(ff$hooks$update_start, list(terminator$update_start))
-      # ff$hooks$update_end = c(ff$hooks$update_end, list(terminator$update_end))
     },
 
     tune = function() {
       while (! self$terminator$terminated) {
         # Catch exception when terminator is terminated:
-        terminated = try(private$tune_step(), silent = TRUE)
-
-        # If error comes from something different than the terminator forward it:
-        if (inherits(terminated, "try-error")) {
-          if (attr(terminated, "condition")$message != "__terminated")
-            stop(terminated)
-        }
+        tryCatch(private$tune_step(), .terminated_message = function (cond) { })
       }
       invisible(self)
     },
@@ -111,11 +102,12 @@ Tuner = R6Class("Tuner",
       self$ff$eval_design(design)
       self$terminator$update_end(self$ff)
 
-      # Train as long as terminator is not terminated, if he is terminated throw exception.
-      # The exception should be automatically catched since the while loop checks for itself
+      # Train as long as terminator is not terminated, if he is terminated throw condition of
+      # class ".terminated_message" that is caught by tryCatch.
+      # The exception should be automatically caught since the while loop checks for itself
       # if the terminator is terminated.
       if (self$terminator$terminated)
-        stop("__terminated")
+        stop(conditions::condition_message(".terminated", "Termination criteria is reached"))
     }
   )
 )

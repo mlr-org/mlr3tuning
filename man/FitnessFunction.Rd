@@ -13,7 +13,7 @@ The \code{FitnessFunction} class is the basis for further tuning strategies, i.e
 }
 \section{Usage}{
 \preformatted{# Construction
-ff = FitnessFunction$new(task, learner, resampling, param_set, 
+ff = FitnessFunction$new(task, learner, resampling, param_set,
   ctrl = tune_control())
 
 # Public members

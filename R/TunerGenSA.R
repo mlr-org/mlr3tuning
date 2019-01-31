@@ -1,3 +1,51 @@
+#' @title TunerGenSA
+#'
+#' @description
+#' Tuner child class to conduct generalized simulated annealing (GenSA) as tuning technique.
+#'
+#' @section Usage:
+#' ```
+#' tuner = TunerGenSA$new(ff, terminator, ...)
+#' ```
+#' See [Tuner] for a description of the interface.
+#'
+#' @section Arguments:
+#' * `ff` ([FitnessFunction]):
+#'   Black box function used for the tuning.
+#' * `terminator` ([Terminator]):
+#'   Terminator to control the termination.
+#'   Will be triggered by the hooks of the [FitnessFunction].
+#' * `...`:
+#'   Additional arguments passed to the call of [GenSA::GenSA].
+#'
+#' @section Details:
+#' `$new()` creates a new object of class [TunerGenSA].
+#' The interface is described in [Tuner].
+#'
+#' @name TunerGenSA
+#' @keywords internal
+#' @family Tuner
+#' @examples
+#' task = mlr3::mlr_tasks$get("iris")
+#' learner = mlr3::mlr_learners$get("classif.rpart")
+#' resampling = mlr3::mlr_resamplings$get("cv")
+#' resampling$param_vals$folds = 2
+#' measures = mlr3::mlr_measures$mget("classif.mmce")
+#' task$measures = measures
+#' param_set = paradox::ParamSet$new(
+#'   params = list(
+#'    paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)
+#'   )
+#' )
+#' ff = FitnessFunction$new(task, learner, resampling, param_set)
+#'
+#' terminator = TerminatorEvaluations$new(10)
+#' rs = TunerGenSA$new(ff, terminator)
+#' rs$tune()$tune_result()
+NULL
+
+#' @export
+#' @include Tuner.R
 TunerGenSA = R6Class("TunerGenSA",
   inherit = Tuner,
   public = list(
