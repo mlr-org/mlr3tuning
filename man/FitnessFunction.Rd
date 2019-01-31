@@ -91,8 +91,8 @@ ff = FitnessFunction$new(
   param_set = param_set
 )
 
-ff$eval(data.frame(cp = 0.05, minsplit = 5))
-ff$eval(data.frame(cp = 0.01, minsplit = 3))
+ff$eval(data.table(cp = 0.05, minsplit = 5))
+ff$eval(data.table(cp = 0.01, minsplit = 3))
 ff$get_best()
 }
 \concept{FitnessFunction}

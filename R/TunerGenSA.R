@@ -65,6 +65,7 @@ TunerGenSA = R6Class("TunerGenSA",
 
         private$eval_design_terminator(paradox::Design$new(ff$param_set, dt_param_value))
 
+        # Get estimated generalization error. Use the negation if the measures needs to be minimized:
         performance = unlist(ff$bmr$data[.N]$performance)[[1]]
         if (! ff$task$measures[[1]]$minimize)
           return(-performance)
