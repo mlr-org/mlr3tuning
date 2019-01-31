@@ -23,7 +23,7 @@
 #' @family Terminator
 #' @examples
 #' t = TerminatorMultiplexer$new(list(
-#'    TerminatorIterations$new(3),
+#'    TerminatorRuntime$new(3, "mins"),
 #'    TerminatorEvaluations$new(10)
 #' ))
 #' print(t)
@@ -39,29 +39,23 @@ TerminatorMultiplexer = R6Class("TerminatorMultiplexer",
     initialize = function(terminators) {
       self$terminators = assert_list(terminators, types = "Terminator")
       self$terminated = FALSE
-      super$initialize(settings = list())
+      super$initialize(settings = do.call("c", lapply(self$terminators, function (t) t$settings)))
     },
 
     update_start = function(ff) {
       lapply(self$terminators, function(t) t$update_start(ff))
-      self$terminated = self$terminated | some(self$terminators, "terminated")
+      self$terminated = self$terminated || some(self$terminators, "terminated")
       invisible(self)
     },
 
     update_end = function(ff) {
       lapply(self$terminators, function(t) t$update_end(ff))
-      self$terminated = self$terminated | some(self$terminators, "terminated")
+      self$terminated = self$terminated || some(self$terminators, "terminated")
       invisible(self)
     },
 
     format = function() {
       paste0(map_chr(self$terminators, format), collapse = "\n")
-    }
-  ),
-
-  active = list(
-    remaining = function() {
-      as.integer(max(min(map_dbl(self$terminators, "remaining")), 0))
     }
   )
 )

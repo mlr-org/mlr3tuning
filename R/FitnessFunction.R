@@ -73,7 +73,8 @@
 #' measures = mlr3::mlr_measures$mget("classif.mmce")
 #' task$measures = measures
 #' param_set = paradox::ParamSet$new(params = list(
-#'   paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
+#'   paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1),
+#'   paradox::ParamInt$new("minsplit", lower = 1, upper = 10)))
 #'
 #' ff = FitnessFunction$new(
 #'   task = task,
@@ -82,8 +83,8 @@
 #'   param_set = param_set
 #' )
 #'
-#' ff$eval(list(cp = 0.05, minsplit = 5))
-#' ff$eval(list(cp = 0.01, minsplit = 3))
+#' ff$eval(data.table::data.table(cp = 0.05, minsplit = 5))
+#' ff$eval(data.table::data.table(cp = 0.01, minsplit = 3))
 #' ff$get_best()
 NULL
 
@@ -104,31 +105,43 @@ FitnessFunction = R6Class("FitnessFunction",
       self$resampling = mlr3::assert_resampling(resampling)
       self$param_set = checkmate::assert_class(param_set, "ParamSet")
       self$ctrl = checkmate::assert_list(ctrl, names = "unique")
-      self$hooks = list(update_start = list(), update_end = list())
+      # self$hooks = list(update_start = list(), update_end = list())
     },
 
-    eval = function(xt) {
-      self$eval_vectorized(list(xt))
+    eval = function(dt) {
+      checkmate::assert_data_table(dt, any.missing = FALSE, min.rows = 1, min.cols = 1)
+      self$eval_design(paradox::Design$new(self$param_set, dt, remove_dupl = FALSE))
     },
 
-    eval_vectorized = function(xts) {
-      learners = imap(xts, function(xt, i) {
+    eval_design = function(design) {
+      checkmate::expect_r6(design, "Design")
+
+      # Not that pretty but enables the use of transpose from Design:
+      if (self$param_set$has_trafo)
+        design$data = self$param_set$trafo(design$data)
+
+      n_evals = if (is.null(self$bmr)) 0 else nrow(self$bmr$aggregated)
+
+      learners = mlr3misc::imap(design$transpose(), function(xt, i) {
         learner = self$learner$clone()
         learner$param_vals = insert_named(learner$param_vals, xt)
-        learner$id = paste0(learner$id, i)
+        learner$id = paste0(learner$id, n_evals + i)
         return(learner)
       })
-
-      self$run_hooks("update_start")
-      # bmr = mlr3::benchmark(design = mlr3::expand_grid(task = list(self$task), learner = learners,
-      #   resampling =  list(self$resampling), measures = self$measures), ctrl = self$ctrl)
-
-      # bmr = mlr3::benchmark(design = data.table::data.table(task = list(self$task), learner = learners,
-      #   resampling = list(self$resampling), measures = self$measures), ctrl = self$ctrl)
+      # self$run_hooks("update_start")
 
       bmr = mlr3::benchmark(design = data.table::data.table(task = list(self$task), learner = learners,
         resampling = list(self$resampling)), ctrl = self$ctrl)
 
+      # add params to benchmark result data. if statement ensures that map with just one learner returns
+      # the same as map with more than one learner:
+      bmr$data$pars = mlr3misc::map(bmr$data$learner, function (l) {
+        if (nrow(bmr$data) == 1) {
+          list(l$param_vals)
+        } else {
+          l$param_vals
+        }
+      })
       if (is.null(self$bmr)) {
         bmr$data$dob = 1L
         self$bmr = bmr
@@ -136,7 +149,8 @@ FitnessFunction = R6Class("FitnessFunction",
         bmr$data$dob = max(self$bmr$data$dob) + 1L
         self$bmr$combine(bmr)
       }
-      self$run_hooks("update_end")
+      # self$run_hooks("update_end")
+      self$run_hooks()
       invisible(self)
     },
 
@@ -144,10 +158,18 @@ FitnessFunction = R6Class("FitnessFunction",
       self$bmr$get_best(self$task$measures[[1L]])
     },
 
-    run_hooks = function(id) {
-      funs = self$hooks[[id]]
-      for (fun in funs)
-        do.call(fun, list(ff = self))
+    add_hook = function (hook) {
+      checkmate::assert_function(hook, args = "ff", nargs = 1)
+      self$hooks = append(self$hooks, hook)
+    },
+
+    run_hooks = function() {
+      lapply(self$hooks, function (hook) {
+        do.call(hook, list(ff = self))
+      })
+      # funs = self$hooks[[id]]
+      # for (fun in funs)
+      #   do.call(fun, list(ff = self))
     }
   )
 )

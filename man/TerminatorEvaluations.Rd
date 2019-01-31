@@ -36,6 +36,6 @@ t = TerminatorEvaluations$new(3)
 \seealso{
 Other Terminator: \code{\link{TerminatorIterations}},
   \code{\link{TerminatorMultiplexer}},
-  \code{\link{Terminator}}
+  \code{\link{TerminatorRuntime}}, \code{\link{Terminator}}
 }
 \concept{Terminator}

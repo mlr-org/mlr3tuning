@@ -2,8 +2,8 @@ context("AutoTuner")
 
 test_that("AutoTuner",  {
   outer_folds = 3L
-  inner_folds = 4L
-  inner_evals = 5L
+  inner_folds = 2L
+  inner_evals = 3L
 
   p_measures = c("classif.mmce", "time_train", "time_both")
 
@@ -36,7 +36,8 @@ test_that("AutoTuner",  {
   nuisance = lapply(r$data$learner, function (autotuner) {
     checkmate::expect_data_table(autotuner$tuner$ff$bmr$data, nrow = inner_evals * inner_folds)
     checkmate::expect_data_table(autotuner$tuner$ff$bmr$aggregated, nrow = inner_evals)
-    expect_equal(names(autotuner$tuner$tune_result()$performance), unname(map_chr(measures, "id")))
+    expect_equal(names(autotuner$tuner$tune_result()$performance), p_measures)
+    autotuner$tuner$tune_result()$performance
   })
 
   row_ids_inner = lapply(r$data$learner, function (it) {
@@ -44,7 +45,10 @@ test_that("AutoTuner",  {
   })
   row_ids_all = task$row_ids
 
+  # Check if all sub tasks combined equals the full task:
   expect_equal(sort(unique(unlist(row_ids_inner))), sort(row_ids_all))
+
+  # Check if each sub task of the inner tuner is a subset of the full task:
   nuisance = lapply(row_ids_inner, function (ids) {
     expect_true(any(! row_ids_all %in% ids))
   })

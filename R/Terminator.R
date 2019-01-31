@@ -51,9 +51,5 @@ Terminator = R6Class("Terminator",
     initialize = function(settings) { self$settings = assert_list(settings, names = "unique") },
     update_start = function(ff) { stop("$update_start() not implemented for Terminator") },
     update_end = function(ff) { stop("$update_end() not implemented for Terminator") }
-  ),
-
-  active = list(
-    remaining = function() { NA_integer_ }
   )
 )

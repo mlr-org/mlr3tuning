@@ -37,6 +37,7 @@ The interface is described in \link{Tuner}.
 task = mlr3::mlr_tasks$get("iris")
 learner = mlr3::mlr_learners$get("classif.rpart")
 resampling = mlr3::mlr_resamplings$get("cv")
+resampling$param_vals$folds = 2
 measures = mlr3::mlr_measures$mget("classif.mmce")
 task$measures = measures
 param_set = paradox::ParamSet$new(
@@ -51,8 +52,8 @@ rs = TunerRandomSearch$new(ff, terminator)
 rs$tune()$tune_result()
 }
 \seealso{
-Other Tuner: \code{\link{TunerGridSearch}},
-  \code{\link{Tuner}}
+Other Tuner: \code{\link{TunerGenSA}},
+  \code{\link{TunerGridSearch}}, \code{\link{Tuner}}
 }
 \concept{Tuner}
 \keyword{internal}

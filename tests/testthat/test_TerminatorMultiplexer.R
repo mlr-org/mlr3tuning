@@ -1,32 +1,39 @@
 context("TerminatorMultiplexer")
 
 test_that("API", {
-  ti = TerminatorIterations$new(2)
-  te = TerminatorEvaluations$new(2)
-  tm = TerminatorMultiplexer$new(list(ti, te))
-  expect_equal(tm$remaining, 2)
+  ti = TerminatorEvaluations$new(2)
+  tr = TerminatorRuntime$new(1, "secs")
+  tm = TerminatorMultiplexer$new(list(ti, tr))
 
-  ff = list(bmr = list(data = data.table()))
+  expect_equal(tm$settings$max_evaluations, ti$settings$max_evaluations)
+  expect_equal(tm$settings$max_time, tr$settings$max_time)
+  expect_equal(tm$settings$units, tr$settings$units)
+
+  bmr = mlr3::benchmark(mlr3::expand_grid(
+    tasks = mlr3::mlr_tasks$mget("iris"),
+    learners = mlr3::mlr_learners$mget(c("classif.rpart")),
+    resamplings = mlr3::mlr_resamplings$mget("cv")
+  ))
+  ff = list(bmr = bmr)
+
   tm$update_start(ff)
+  Sys.sleep(0.1)
   tm$update_end(ff)
   expect_false(tm$terminated)
-  expect_equal(tm$remaining, 2L)
+  expect_false(ti$terminated)
+  expect_false(tr$terminated)  
 
-  expect_identical(tm$terminators[[1]]$state$iters, 0L)
-  expect_identical(tm$terminators[[2]]$state$evals, 0L)
-
-  ff$bmr$data = data.table(hash = 1L, dob = 1L)
   tm$update_start(ff)
-  tm$update_end(ff)
-  expect_identical(tm$terminators[[1]]$state$iters, 1L)
-  expect_identical(tm$terminators[[2]]$state$evals, 1L)
-  expect_false(tm$terminated)
-
-  ff$bmr$data = data.table(hash = 1L, dob = 2L)
-  tm$update_start(ff)
+  Sys.sleep(1)
   tm$update_end(ff)
   expect_true(tm$terminated)
-  expect_equal(tm$remaining, 0L)
+  expect_false(ti$terminated)
+  expect_true(tr$terminated)
 
-  expect_string(format(tm), fixed = "0 remaining")
+  expect_equal(tm$terminators[[1]]$state$evals, 1L)
+  expect_equal(tm$terminators[[2]]$settings$max_time, 1L)
+  expect_equal(tm$terminators[[2]]$settings$units, "secs")
+
+  expect_string(format(tm), fixed = "1 remaining")
+  expect_string(format(tm), fixed = "with -")
 })

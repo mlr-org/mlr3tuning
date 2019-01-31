@@ -30,6 +30,7 @@
 #' task = mlr3::mlr_tasks$get("iris")
 #' learner = mlr3::mlr_learners$get("classif.rpart")
 #' resampling = mlr3::mlr_resamplings$get("cv")
+#' resampling$param_vals$folds = 2
 #' measures = mlr3::mlr_measures$mget("classif.mmce")
 #' task$measures = measures
 #' param_set = paradox::ParamSet$new(
@@ -51,8 +52,11 @@ TunerGridSearch = R6Class("TunerGridSearch",
   public = list(
     initialize = function(ff, terminator, resolution = NULL) {
       if (is.null(resolution)) {
-        remaining = terminator$remaining
-        assert_int(remaining, lower = 1L)
+        remaining = terminator$settings$max_evaluations
+        if (is.null(remaining)) {
+          stop("Specify resolution or use a terminator that defines maximal number of evaluations (e.g. TerminatorEvaluations).")
+        }
+        assert_count(remaining, positive = TRUE, coerce = TRUE)
         resolution = floor(remaining / ff$param_set$length)
       }
       resolution = assert_int(resolution, lower = 1L, coerce = TRUE)
@@ -63,14 +67,8 @@ TunerGridSearch = R6Class("TunerGridSearch",
   private = list(
     tune_step = function() {
       # note: generate_grid_design offers param_resolutions, so theoretically we could allow different resolutions per parameter
-      ps = self$ff$param_set
-      xts = paradox::generate_design_grid(ps, resolution = self$settings$resolution)
-
-      if (self$ff$param_set$has_trafo)
-        xts = self$ff$param_set$trafo(xts)
-
-      xts = transpose(xts$data)
-      self$ff$eval_vectorized(xts)
+      design = paradox::generate_design_grid(self$ff$param_set, resolution = self$settings$resolution)
+      private$eval_design_terminator(design)
     }
   )
 )

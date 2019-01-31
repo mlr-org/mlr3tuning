@@ -26,7 +26,8 @@ Imports:
     data.table,
     paradox,
     R6,
-    logger
+    logger,
+    conditions
 Suggests:
     knitr,
     rmarkdown,
@@ -55,7 +56,9 @@ Collate:
     'TerminatorEvaluations.R'
     'TerminatorIterations.R'
     'TerminatorMultiplexer.R'
+    'TerminatorRuntime.R'
     'Tuner.R'
+    'TunerGenSA.R'
     'TunerGridSearch.R'
     'TunerRandomSearch.R'
     'tune_control.R'

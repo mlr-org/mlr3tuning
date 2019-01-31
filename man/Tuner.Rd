@@ -21,6 +21,9 @@ tuner$settings
 # public methods
 tuner$tune()
 tuner$tune_result()
+
+# active bindings
+tuner$aggregated
 }
 }
 
@@ -54,7 +57,8 @@ The settings for the Tuner.
 }
 
 \seealso{
-Other Tuner: \code{\link{TunerGridSearch}},
+Other Tuner: \code{\link{TunerGenSA}},
+  \code{\link{TunerGridSearch}},
   \code{\link{TunerRandomSearch}}
 }
 \concept{Tuner}

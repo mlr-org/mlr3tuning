@@ -1,24 +1,27 @@
 #' @title Abstract Tuner Class
 #'
 #' @description
-#' Abstract `Tuner` class that implements the main functionality each tuner must have. A tuner is 
+#' Abstract `Tuner` class that implements the main functionality each tuner must have. A tuner is
 #' an object that describes the tuning strategy how to search the hyperparameter space given within
-#' the `[FitnessFunction]` object. 
+#' the `[FitnessFunction]` object.
 #'
 #' @section Usage:
 #' ```
 #' # Construction
 #' tuner = Tuner$new(id, ff, terminator, settings = list())
-#' 
+#'
 #' # public members
 #' tuner$id
 #' tuner$ff
 #' tuner$terminator
 #' tuner$settings
-#' 
+#'
 #' # public methods
 #' tuner$tune()
 #' tuner$tune_result()
+#'
+#' # active bindings
+#' tuner$aggregated
 #' ```
 #'
 #' @section Arguments:
@@ -56,14 +59,12 @@ Tuner = R6Class("Tuner",
       self$ff = assert_r6(ff, "FitnessFunction")
       self$terminator = assert_r6(terminator, "Terminator")
       self$settings = assert_list(settings, names = "unique")
-
-      ff$hooks$update_start = c(ff$hooks$update_start, list(terminator$update_start))
-      ff$hooks$update_end = c(ff$hooks$update_end, list(terminator$update_end))
     },
 
     tune = function() {
-      while (!self$terminator$terminated) {
-        private$tune_step()
+      while (! self$terminator$terminated) {
+        # Catch exception when terminator is terminated:
+        tryCatch(private$tune_step(), .terminated_message = function (cond) { })
       }
       invisible(self)
     },
@@ -72,6 +73,41 @@ Tuner = R6Class("Tuner",
       measure = self$ff$task$measures[[1L]]
       rr = self$ff$bmr$get_best(measure)
       list(performance = rr$aggregated, param_vals = rr$learner$param_vals)
+    },
+
+    aggregate = function(unnest = TRUE) {
+      if (!is.null(self$ff$bmr)) {
+        dt = self$ff$bmr$aggregated
+
+        # Get unique hashes with corresponding params:
+        dt_pars = self$ff$bmr$data[, c("hash", "pars")]
+        dt_pars = dt_pars[, .SD[1], "hash"]
+
+        # Merge params to aggregated:
+        dt[dt_pars, on = "hash", pars := i.pars]
+        if (unnest)
+          dt = mlr3misc::unnest(dt, "pars")
+
+        # [] forces the data table to get printed. This is suppressed by the first call of dt after
+        # using := within []
+        return(dt[])
+      } else {
+        mlr3misc::stopf("No tuning conducted yet.")
+      }
+    }
+  ),
+  private = list(
+    eval_design_terminator = function (design) {
+      self$terminator$update_start(self$ff)
+      self$ff$eval_design(design)
+      self$terminator$update_end(self$ff)
+
+      # Train as long as terminator is not terminated, if he is terminated throw condition of
+      # class ".terminated_message" that is caught by tryCatch.
+      # The exception should be automatically caught since the while loop checks for itself
+      # if the terminator is terminated.
+      if (self$terminator$terminated)
+        stop(conditions::condition_message(".terminated", "Termination criteria is reached"))
     }
   )
 )

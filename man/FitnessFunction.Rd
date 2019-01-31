@@ -81,7 +81,8 @@ resampling = mlr3::mlr_resamplings$get("holdout")
 measures = mlr3::mlr_measures$mget("classif.mmce")
 task$measures = measures
 param_set = paradox::ParamSet$new(params = list(
-  paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
+  paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1),
+  paradox::ParamInt$new("minsplit", lower = 1, upper = 10)))
 
 ff = FitnessFunction$new(
   task = task,
@@ -90,8 +91,8 @@ ff = FitnessFunction$new(
   param_set = param_set
 )
 
-ff$eval(list(cp = 0.05, minsplit = 5))
-ff$eval(list(cp = 0.01, minsplit = 3))
+ff$eval(data.table::data.table(cp = 0.05, minsplit = 5))
+ff$eval(data.table::data.table(cp = 0.01, minsplit = 3))
 ff$get_best()
 }
 \concept{FitnessFunction}

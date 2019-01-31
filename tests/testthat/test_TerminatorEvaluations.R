@@ -5,16 +5,12 @@ test_that("API", {
   expect_identical(te$settings$max_evaluations, 2L)
   expect_identical(te$state$evals, 0L)
 
-  ff = list(bmr = list(data = data.table()))
-
-  te$update_start(ff)
-  expect_identical(te$state$evals, 0L)
-  te$update_end(ff)
-  expect_identical(te$state$evals, 0L)
-  expect_false(te$terminated)
-  expect_string(format(te), fixed = "2 remaining")
-
-  ff = list(bmr = list(data = data.table(hash = c(1,1))))
+  bmr = mlr3::benchmark(mlr3::expand_grid(
+    tasks = mlr3::mlr_tasks$mget("iris"),
+    learners = mlr3::mlr_learners$mget(c("classif.rpart")),
+    resamplings = mlr3::mlr_resamplings$mget("cv")
+  ))
+  ff = list(bmr = bmr)
 
   te$update_start(ff)
   expect_identical(te$state$evals, 1L)
@@ -23,6 +19,17 @@ test_that("API", {
   expect_false(te$terminated)
   expect_string(format(te), fixed = "1 remaining")
 
-  ff = list(experiments = data.table(hash = 1:2))
-  expect_string(format(te), "0 remaining")
+  bmr = mlr3::benchmark(mlr3::expand_grid(
+    tasks = mlr3::mlr_tasks$mget("iris"),
+    learners = mlr3::mlr_learners$mget(c("classif.featureless", "classif.rpart")),
+    resamplings = mlr3::mlr_resamplings$mget("cv")
+  ))
+  ff = list(bmr = bmr)
+
+  te$update_start(ff)
+  expect_identical(te$state$evals, 2L)
+  te$update_end(ff)
+  expect_identical(te$state$evals, 2L)
+  expect_true(te$terminated)
+  expect_string(format(te), fixed = "0 remaining")
 })
