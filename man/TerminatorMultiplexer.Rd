@@ -39,6 +39,7 @@ print(t)
 \seealso{
 Other Terminator: \code{\link{TerminatorEvaluations}},
   \code{\link{TerminatorIterations}},
+  \code{\link{TerminatorPerformance}},
   \code{\link{TerminatorRuntime}}, \code{\link{Terminator}}
 }
 \concept{Terminator}
