@@ -16,7 +16,7 @@
 #'   Terminator to control the termination.
 #'   Will be triggered by the hooks of the [FitnessFunction].
 #' * `...`:
-#'   Additional arguments passed to the call of [GenSA::GenSA].
+#'   Additional arguments passed to [GenSA::GenSA].
 #'
 #' @section Details:
 #' `$new()` creates a new object of class [TunerGenSA].
