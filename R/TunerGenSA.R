@@ -64,8 +64,10 @@ TunerGenSA = R6Class("TunerGenSA",
   private = list(
     tune_step = function() {
       objective = function (x, ff) {
-        # Generate design from new proposed parameter value:
-        param_value = mlr3misc::set_names(list(x), nm = ff$param_set$ids())
+        param_value = lapply(x, function (param) param)
+
+        # x sometimes comes without names, set them manually:
+        names(param_value) = self$ff$param_set$ids()
         dt_param_value = do.call(data.table::data.table, param_value)
 
         private$eval_design_terminator(paradox::Design$new(ff$param_set, dt_param_value, remove_dupl = TRUE))
