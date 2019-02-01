@@ -22,7 +22,7 @@ Black box function used for the tuning.
 Terminator to control the termination.
 Will be triggered by the hooks of the \link{FitnessFunction}.
 \item \code{...}:
-Additional arguments passed to the call of \link[GenSA:GenSA]{GenSA::GenSA}.
+Additional arguments passed to \link[GenSA:GenSA]{GenSA::GenSA}.
 }
 }
 

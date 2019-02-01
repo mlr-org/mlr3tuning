@@ -21,9 +21,7 @@ tuner$settings
 # public methods
 tuner$tune()
 tuner$tune_result()
-
-# active bindings
-tuner$aggregated
+tuner$aggregated(unnest)
 }
 }
 
@@ -36,6 +34,8 @@ The id of the Tuner.
 \item \code{terminator} (\code{[Terminator]}).
 \item \code{settings} (\code{list}):\cr
 The settings for the Tuner.
+\item \code{unnest} (\code{logical(1)}):\cr
+If TRUE returns each parameter as a column of the data table. Otherwise the column includes a list of the parameter.
 }
 }
 

@@ -199,9 +199,9 @@ Note that each measure "knows" if it is minimized or maximized during tuning:
 task$measures$classif.mmce$minimize
 ```
 
-We can get a complete overview about the performed evaluations by calling the member function `aggregate()`:
+We can get a complete overview about the performed evaluations by calling the member function `aggregated()`:
 ```{r}
-dt_tune = tuner_rs$aggregate()
+dt_tune = tuner_rs$aggregated()
 head(dt_tune)
 ```
 
