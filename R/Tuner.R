@@ -19,9 +19,7 @@
 #' # public methods
 #' tuner$tune()
 #' tuner$tune_result()
-#'
-#' # active bindings
-#' tuner$aggregated
+#' tuner$aggregated(unnest)
 #' ```
 #'
 #' @section Arguments:
@@ -31,6 +29,8 @@
 #' * `terminator` (`[Terminator]`).
 #' * `settings` (`list`):\cr
 #'   The settings for the Tuner.
+#' * `unnest` (`logical(1)`):\cr
+#'   If TRUE returns each parameter as a column of the data table. Otherwise the column includes a list of the parameter.
 #'
 #' @section Details:
 #' * `$new()` creates a new object of class `[Tuner]`.
@@ -75,16 +75,10 @@ Tuner = R6Class("Tuner",
       list(performance = rr$aggregated, param_vals = rr$learner$param_vals)
     },
 
-    aggregate = function(unnest = TRUE) {
+    aggregated = function(unnest = TRUE) {
       if (!is.null(self$ff$bmr)) {
-        dt = self$ff$bmr$aggregated
-
-        # Get unique hashes with corresponding params:
-        dt_pars = self$ff$bmr$data[, c("hash", "pars")]
-        dt_pars = dt_pars[, .SD[1], "hash"]
-
-        # Merge params to aggregated:
-        dt[dt_pars, on = "hash", pars := i.pars]
+        dt = self$ff$bmr$aggregated()
+        dt$pars = mlr3misc::map(dt[["learner"]], function (l) l$param_vals)
         if (unnest)
           dt = mlr3misc::unnest(dt, "pars")
 

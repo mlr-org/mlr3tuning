@@ -17,7 +17,7 @@
 #'
 #' @section Details:
 #' `$new()` creates a new object of class [TerminatorEvaluations].
-#' 
+#'
 #' The interface is described in [Terminator].
 #'
 #' @name TerminatorEvaluations
@@ -39,7 +39,7 @@ TerminatorEvaluations = R6Class("TerminatorEvaluations",
     },
 
     update_start = function(ff) {
-      self$state$evals = if (is.null(ff$bmr)) 0L else nrow(ff$bmr$aggregated)
+      self$state$evals = if (is.null(ff$bmr)) 0L else nrow(ff$bmr$aggregated())
       self$terminated = (self$state$evals >= self$settings$max_evaluations)
       invisible(self)
     },

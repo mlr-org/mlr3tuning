@@ -72,11 +72,11 @@ This function ..
 ```{r}
 # blackBoxFun(c(cp = 0.05, minsplit = 5), ff)
 blackBoxFun(c(cp = 0.05), ff)
-ff$bmr$aggregated
+ff$bmr$aggregated()
 
 # blackBoxFun(c(cp = 0.2, minsplit = 3), ff)
 blackBoxFun(c(cp = 0.2), ff)
-ff$bmr$aggregated
+ff$bmr$aggregated()
 ```
 
 
@@ -192,7 +192,7 @@ ff = FitnessFunction$new(task, learner, resampling, param_set)
 tuner = TunerGenSA$new(ff, 60L)
 tuner$tune()
 
-tuner$ff$bmr$aggregated
+tuner$ff$bmr$aggregated()
 tuner$tune_result()
 str(tuner$GenSA_res)
 ```

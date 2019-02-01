@@ -120,7 +120,7 @@ FitnessFunction = R6Class("FitnessFunction",
       if (self$param_set$has_trafo)
         design$data = self$param_set$trafo(design$data)
 
-      n_evals = if (is.null(self$bmr)) 0 else nrow(self$bmr$aggregated)
+      n_evals = if (is.null(self$bmr)) 0 else nrow(self$bmr$aggregated())
 
       learners = mlr3misc::imap(design$transpose(), function(xt, i) {
         learner = self$learner$clone()

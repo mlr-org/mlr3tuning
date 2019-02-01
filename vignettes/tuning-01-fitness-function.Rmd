@@ -75,13 +75,13 @@ ff$bmr$data
 
 With `ff$bmr$aggregated` we get a summary per resampling:
 ```{r}
-ff$bmr$aggregated
+ff$bmr$aggregated()
 ```
 
 If we use another parameter configuration we, again, observe that the results are automatically inserted into the benchmark result:
 ```{r}
 ff$eval(c(cp = 0.05, minsplit = 2))
-ff$bmr$aggregated
+ff$bmr$aggregated()
 ```
 
 Note that `$eval()` is the basis of the tuning. The member function evaluates a black box function defined by the model and evaluates the parameter setting using the given resampling strategy combined by the fitness function.

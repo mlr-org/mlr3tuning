@@ -5,10 +5,10 @@ test_that("API",  {
   n_evals = 5
 
   task = mlr3::mlr_tasks$get("iris")
-  
+
   learner = mlr3::mlr_learners$get("classif.rpart")
   learner$param_vals = list(minsplit = 3)
-  
+
   resampling = mlr3::mlr_resamplings$get("cv")
   resampling$param_vals = list(folds = n_folds)
 
@@ -23,9 +23,9 @@ test_that("API",  {
   ff = FitnessFunction$new(task, learner, resampling, param_set)
   rs = TunerRandomSearch$new(ff, terminator)
 
-  expect_error(rs$aggregate())
+  expect_error(rs$aggregated())
   rs$tune()
-  expect_data_table(rs$aggregate(), nrows = n_evals)
-  expect_true("cp" %in% names(rs$aggregate()))
-  expect_true("pars" %in% names(rs$aggregate(FALSE)))
+  expect_data_table(rs$aggregated(), nrows = n_evals)
+  expect_true("cp" %in% names(rs$aggregated()))
+  expect_true("pars" %in% names(rs$aggregated(FALSE)))
 })

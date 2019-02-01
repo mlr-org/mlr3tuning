@@ -35,7 +35,7 @@ test_that("AutoTuner",  {
   checkmate::expect_data_table(r$data, nrow = outer_folds)
   nuisance = lapply(r$data$learner, function (autotuner) {
     checkmate::expect_data_table(autotuner$tuner$ff$bmr$data, nrow = inner_evals * inner_folds)
-    checkmate::expect_data_table(autotuner$tuner$ff$bmr$aggregated, nrow = inner_evals)
+    checkmate::expect_data_table(autotuner$tuner$ff$bmr$aggregated(), nrow = inner_evals)
     expect_equal(names(autotuner$tuner$tune_result()$performance), p_measures)
     autotuner$tuner$tune_result()$performance
   })
