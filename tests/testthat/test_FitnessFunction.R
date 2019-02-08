@@ -3,7 +3,7 @@ context("FitnessFunction")
 test_that("Construction", {
   task = mlr3::mlr_tasks$get("iris")
   learner = mlr3::mlr_learners$get("classif.rpart")
-  learner$param_vals = list(minsplit = 3)
+  learner$param_set$values = list(minsplit = 3)
   resampling = mlr3::mlr_resamplings$get("holdout")
   measures = mlr3::mlr_measures$mget("classif.mmce")
   task$measures = measures
@@ -23,13 +23,13 @@ test_that("Construction", {
 
   expect_r6(ff$eval(data.table::data.table(cp = c(0.01, 0.02))), "FitnessFunction")
   expect_data_table(ff$bmr$data, nrow = 2L)
-  expect_equal(ff$bmr$data$learner[[1L]]$param_vals$cp, 0.01)
-  expect_equal(ff$bmr$data$learner[[1L]]$param_vals$minsplit, 3)
+  expect_equal(ff$bmr$data$learner[[1L]]$param_set$values$cp, 0.01)
+  expect_equal(ff$bmr$data$learner[[1L]]$param_set$values$minsplit, 3)
 
   expect_r6(ff$eval(data.table(cp = 0.1)), "FitnessFunction")
   expect_data_table(ff$bmr$data, nrow = 3L)
-  expect_equal(ff$bmr$data$learner[[3L]]$param_vals$cp, 0.1)
-  expect_equal(ff$bmr$data$learner[[3L]]$param_vals$minsplit, 3)
+  expect_equal(ff$bmr$data$learner[[3L]]$param_set$values$cp, 0.1)
+  expect_equal(ff$bmr$data$learner[[3L]]$param_set$values$minsplit, 3)
 
   expect_resample_result(ff$get_best())
 })
@@ -38,7 +38,7 @@ test_that("Construction", {
 test_that("Construction", {
   task = mlr3::mlr_tasks$get("iris")
   learner = mlr3::mlr_learners$get("classif.rpart")
-  learner$param_vals = list(minsplit = 3)
+  learner$param_set$values = list(minsplit = 3)
   resampling = mlr3::mlr_resamplings$get("holdout")
   measures = mlr3::mlr_measures$mget("classif.mmce")
   task$measures = measures

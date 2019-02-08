@@ -12,7 +12,7 @@ test_that("AutoTuner",  {
   learner = mlr3::mlr_learners$get("classif.rpart")
 
   resampling = mlr3::mlr_resamplings$get("cv")
-  resampling$param_vals = list(folds = inner_folds)
+  resampling$param_set$values = list(folds = inner_folds)
 
   measures = mlr3::mlr_measures$mget(p_measures)
   task$measures = measures
@@ -28,7 +28,7 @@ test_that("AutoTuner",  {
 
   # Nested Resampling:
   outer_resampling = mlr3::mlr_resamplings$get("cv")
-  outer_resampling$param_vals = list(folds = outer_folds)
+  outer_resampling$param_set$values = list(folds = outer_folds)
   r = mlr3::resample(task, at, outer_resampling)
 
   # Nested Resampling:
@@ -64,5 +64,5 @@ test_that("AutoTuner",  {
   checkmate::expect_r6(at2$tuner, "Tuner")
   checkmate::expect_r6(at2$predict(task), "Prediction")
 
-  expect_equal(at2$learner$param_vals, at2$tuner$tune_result()$param_vals)
+  expect_equal(at2$learner$param_set$values, at2$tuner$tune_result()$param_set$values)
 })

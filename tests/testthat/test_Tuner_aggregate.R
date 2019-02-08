@@ -7,10 +7,10 @@ test_that("API",  {
   task = mlr3::mlr_tasks$get("iris")
 
   learner = mlr3::mlr_learners$get("classif.rpart")
-  learner$param_vals = list(minsplit = 3)
+  learner$param_set$values = list(minsplit = 3)
 
   resampling = mlr3::mlr_resamplings$get("cv")
-  resampling$param_vals = list(folds = n_folds)
+  resampling$param_set$values = list(folds = n_folds)
 
   measures = mlr3::mlr_measures$mget(c("classif.mmce", "time_train", "time_both"))
   task$measures = measures

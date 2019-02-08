@@ -41,7 +41,7 @@
 #' * `tune()` performs the tuning, until the budget of the `[Terminator]` in the `[FitnessFunction]` is exhausted.
 #' * `tune_result()` returns a list with 2 elements:
 #'     - `performance` (`numeric()`) with the best performance.
-#'     - `param_vals` (`numeric()`) with corresponding hyperparameters.
+#'     - `param_set$values` (`numeric()`) with corresponding hyperparameters.
 #' @name Tuner
 #' @family Tuner
 NULL
@@ -72,13 +72,13 @@ Tuner = R6Class("Tuner",
     tune_result = function() {
       measure = self$ff$task$measures[[1L]]
       rr = self$ff$bmr$get_best(measure)
-      list(performance = rr$aggregated, param_vals = rr$learner$param_vals)
+      list(performance = rr$aggregated, values = rr$learner$param_set$values)
     },
 
     aggregated = function(unnest = TRUE) {
       if (!is.null(self$ff$bmr)) {
         dt = self$ff$bmr$aggregated()
-        dt$pars = mlr3misc::map(dt[["learner"]], function (l) l$param_vals)
+        dt$pars = mlr3misc::map(dt[["learner"]], function (l) l$param_set$values)
         if (unnest)
           dt = mlr3misc::unnest(dt, "pars")
 

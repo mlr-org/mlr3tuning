@@ -100,7 +100,7 @@ AutoTuner = R6Class("AutoTuner", inherit = mlr3::Learner,
         private$.tuner = do.call(private$.tuner$new, private$.tuner_settings)
         private$.tuner$tune()
 
-        self$learner$param_vals = private$.tuner$tune_result()$param_vals
+        self$learner$param_set$values = private$.tuner$tune_result()$param_set$values
         self$learner$train(task)
 
         private$.is_trained = TRUE

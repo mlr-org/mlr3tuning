@@ -5,10 +5,10 @@ test_that("TunerGridSearch",  {
   task = mlr3::mlr_tasks$get("iris")
 
   learner = mlr3::mlr_learners$get("classif.rpart")
-  learner$param_vals = list(minsplit = 3)
+  learner$param_set$values = list(minsplit = 3)
 
   resampling = mlr3::mlr_resamplings$get("cv")
-  resampling$param_vals = list(folds = 2)
+  resampling$param_set$values = list(folds = 2)
 
   measures = mlr3::mlr_measures$mget("classif.mmce")
   task$measures = measures
@@ -32,6 +32,6 @@ test_that("TunerGridSearch",  {
   result = gs$tune()$tune_result()
   expect_list(result)
   expect_number(result$performance["classif.mmce"], lower = measures$classif.mmce$range[1], upper = measures$classif.mmce$range[2])
-  expect_list(result$param_vals, len = 2)
-  expect_equal(result$param_vals$minsplit, 3)
+  expect_list(result$values, len = 2)
+  expect_equal(result$values$minsplit, 3)
 })

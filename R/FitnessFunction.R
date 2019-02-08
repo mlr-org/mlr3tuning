@@ -124,7 +124,7 @@ FitnessFunction = R6Class("FitnessFunction",
 
       learners = mlr3misc::imap(design$transpose(), function(xt, i) {
         learner = self$learner$clone()
-        learner$param_vals = insert_named(learner$param_vals, xt)
+        learner$param_set$values = insert_named(learner$param_set$values, xt)
         learner$id = paste0(learner$id, n_evals + i)
         return(learner)
       })
@@ -137,9 +137,9 @@ FitnessFunction = R6Class("FitnessFunction",
       # the same as map with more than one learner:
       bmr$data$pars = mlr3misc::map(bmr$data$learner, function (l) {
         if (nrow(bmr$data) == 1) {
-          list(l$param_vals)
+          list(l$param_set$values)
         } else {
-          l$param_vals
+          l$param_set$values
         }
       })
       if (is.null(self$bmr)) {
