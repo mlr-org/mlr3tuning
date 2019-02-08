@@ -105,7 +105,6 @@ FitnessFunction = R6Class("FitnessFunction",
       self$resampling = mlr3::assert_resampling(resampling)
       self$param_set = checkmate::assert_class(param_set, "ParamSet")
       self$ctrl = checkmate::assert_list(ctrl, names = "unique")
-      # self$hooks = list(update_start = list(), update_end = list())
     },
 
     eval = function(dt) {
@@ -123,7 +122,7 @@ FitnessFunction = R6Class("FitnessFunction",
       n_evals = if (is.null(self$bmr)) 0 else nrow(self$bmr$aggregated())
 
       learners = mlr3misc::imap(design$transpose(), function(xt, i) {
-        learner = self$learner$clone()
+        learner = self$learner$clone(deep = TRUE)
         learner$param_set$values = insert_named(learner$param_set$values, xt)
         learner$id = paste0(learner$id, n_evals + i)
         return(learner)

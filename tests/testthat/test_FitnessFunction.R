@@ -25,6 +25,7 @@ test_that("Construction", {
   expect_data_table(ff$bmr$data, nrow = 2L)
   expect_equal(ff$bmr$data$learner[[1L]]$param_set$values$cp, 0.01)
   expect_equal(ff$bmr$data$learner[[1L]]$param_set$values$minsplit, 3)
+  expect_equal(ff$bmr$data$learner[[2L]]$param_set$values$cp, 0.02)
 
   expect_r6(ff$eval(data.table(cp = 0.1)), "FitnessFunction")
   expect_data_table(ff$bmr$data, nrow = 3L)
