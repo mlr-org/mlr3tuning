@@ -31,7 +31,10 @@ test_that("AutoTuner",  {
   outer_resampling$param_set$values = list(folds = outer_folds)
   r = mlr3::resample(task, at, outer_resampling)
 
-  mlr3misc::map(r$data$learner, "tuner")
+  lapply(mlr3misc::map(r$data$learner, "tuner"), function (tuner) {
+    checkmate::expect_r6(tuner, "Tuner")
+  })
+  expect_null(at$tuner)
 
   # Nested Resampling:
   checkmate::expect_data_table(r$data, nrow = outer_folds)
