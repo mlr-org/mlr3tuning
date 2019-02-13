@@ -38,13 +38,13 @@ test_that("TunerGridSearch",  {
 
 test_that("Design resolution of grid search is correct", {
   ff = FitnessFunction$new(
-    mlr_tasks$get("iris"),
-    learner = mlr_learners$get("classif.rpart"),
-    mlr_resamplings$get("holdout"),
-    ParamSet$new(list(
-      ParamDbl$new("cp", 0, 1),
-      ParamInt$new("minsplit", 1, 20),
-      ParamInt$new("maxcompete", 0, 20))))
+    task = mlr3::mlr_tasks$get("iris"),
+    learner = mlr3::mlr_learners$get("classif.rpart"),
+    mlr3::mlr_resamplings$get("holdout"),
+    paradox::ParamSet$new(list(
+      paradox::ParamDbl$new("cp", 0, 1),
+      paradox::ParamInt$new("minsplit", 1, 20),
+      paradox::ParamInt$new("maxcompete", 0, 20))))
 
 
   expect_output({ tune = TunerGridSearch$new(ff, TerminatorEvaluations$new(30))$tune() })
