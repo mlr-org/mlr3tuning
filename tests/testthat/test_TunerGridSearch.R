@@ -35,3 +35,23 @@ test_that("TunerGridSearch",  {
   expect_list(result$values, len = 2)
   expect_equal(result$values$minsplit, 3)
 })
+
+test_that("Design resolution of grid search is correct", {
+  ff = FitnessFunction$new(
+    mlr_tasks$get("iris"),
+    learner = mlr_learners$get("classif.rpart"),
+    mlr_resamplings$get("holdout"),
+    ParamSet$new(list(
+      ParamDbl$new("cp", 0, 1),
+      ParamInt$new("minsplit", 1, 20),
+      ParamInt$new("maxcompete", 0, 20))))
+
+
+  expect_output({ tune = TunerGridSearch$new(ff, TerminatorEvaluations$new(30))$tune() })
+  r = tune$aggregated(FALSE)
+  param_data = mlr3misc::unnest(r[,"pars"], "pars")
+
+  design = paradox::generate_design_grid(ff$param_set, resolution = 3)
+
+  expect_equal(param_data, design$data)
+})

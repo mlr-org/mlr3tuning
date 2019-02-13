@@ -68,6 +68,15 @@ TunerGridSearch = R6Class("TunerGridSearch",
     tune_step = function() {
       # note: generate_grid_design offers param_resolutions, so theoretically we could allow different resolutions per parameter
       design = paradox::generate_design_grid(self$ff$param_set, resolution = self$settings$resolution)
+
+      if (inherits(self$terminator, "TerminatorEvaluations")) {
+        if (nrow(design$data) < self$terminator$settings$max_evaluations) {
+          self$terminator$settings$max_evaluations = nrow(design$data)
+          msg_warn = paste0("Set number of maximal evaluations to ", nrow(design$data),
+            " to avoid multiple computation of the same grid.")
+          logger::log_warn(msg_warn, namespace = "mlr3")
+        }
+      }
       private$eval_design_terminator(design)
     }
   )
