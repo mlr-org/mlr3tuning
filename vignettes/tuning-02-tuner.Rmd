@@ -84,7 +84,7 @@ task$measures = mlr_measures$mget(c("classif.mmce", "time_train"))
 An example of an evaluation method could be 3-fold CV:
 ```{r}
 resampling = mlr_resamplings$get("cv")
-resampling$param_vals = list(folds = 3)
+resampling$param_set$values = list(folds = 3)
 ```
 
 The evaluation method is already covered in detail in [evaluation of learning methods and resampling]().

@@ -51,7 +51,7 @@ If TRUE returns each parameter as a column of the data table. Otherwise the colu
 \item \code{tune_result()} returns a list with 2 elements:
 \itemize{
 \item \code{performance} (\code{numeric()}) with the best performance.
-\item \code{param_vals} (\code{numeric()}) with corresponding hyperparameters.
+\item \code{param_set$values} (\code{numeric()}) with corresponding hyperparameters.
 }
 }
 }

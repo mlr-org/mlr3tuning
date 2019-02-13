@@ -104,6 +104,7 @@ AutoTuner = R6Class("AutoTuner", inherit = mlr3::Learner,
         self$learner$train(task)
 
         private$.is_trained = TRUE
+        self$model = self$learner$model
 
         return (invisible(self))
       }
@@ -123,12 +124,12 @@ AutoTuner = R6Class("AutoTuner", inherit = mlr3::Learner,
   ),
 
   active = list(
-    tuner = function () {
-      if (private$.is_trained) {
-        return (private$.tuner)
-      } else {
-        return (NULL)
-      }
+    tuner = function (rhs) {
+
+      if (! missing(rhs)) stop("tuner is read only")
+      if (private$.is_trained) return(private$.tuner)
+
+      return (NULL)
     }
   )
 )
