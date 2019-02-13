@@ -18,15 +18,15 @@ devtools::install_github("mlr-org/mlr3tuning")
 
 -   Random Search: `TunerRandomSearch`
 -   Grid Search: `TunerGridSearch`
+-   Generalized Simulated Annealing: `TunerGenSA`
 
 ### Implemented Stopping Criteria
 
--   Iterations: `TerminatorIterations`
--   Evaluations: `TerminatorEvaluations`
+-   After a pre-defined number of evaluations: `TerminatorEvaluations`
+-   After a defined runtime has expired: `TerminatorRuntime`
+-   After a threshold of a performance measure is exceeded: `TerminatorPerformance`
 
 
 ## Vignettes
 
--   Introduction to Fitness Functions: `tuning-01-fitness-function`
 -   Introduction to Tuner: `tuning-02-tuner`
--   Defining Custom Tuner: `tuning-03-custom-tuner`
