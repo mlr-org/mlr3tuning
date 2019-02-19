@@ -66,6 +66,7 @@ Tuner = R6Class("Tuner",
         # Catch exception when terminator is terminated:
         tryCatch(private$tune_step(), .terminated_message = function (cond) { })
       }
+      return(invisible(self))
     },
 
     tune_result = function() {
