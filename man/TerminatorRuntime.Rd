@@ -39,7 +39,6 @@ t = TerminatorRuntime$new(3, "mins")
 }
 \seealso{
 Other Terminator: \code{\link{TerminatorEvaluations}},
-  \code{\link{TerminatorIterations}},
   \code{\link{TerminatorMultiplexer}},
   \code{\link{TerminatorPerformance}},
   \code{\link{Terminator}}

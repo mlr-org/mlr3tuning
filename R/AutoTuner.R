@@ -108,6 +108,7 @@ AutoTuner = R6Class("AutoTuner", inherit = mlr3::Learner,
         self$learner$train(task)
 
         private$.is_trained = TRUE
+        self$model = self$learner$model
 
         return(invisible(self))
       }

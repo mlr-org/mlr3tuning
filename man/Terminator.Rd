@@ -50,7 +50,6 @@ The settings for Terminator as named list.
 
 \seealso{
 Other Terminator: \code{\link{TerminatorEvaluations}},
-  \code{\link{TerminatorIterations}},
   \code{\link{TerminatorMultiplexer}},
   \code{\link{TerminatorPerformance}},
   \code{\link{TerminatorRuntime}}

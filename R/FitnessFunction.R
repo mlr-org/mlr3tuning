@@ -164,6 +164,7 @@ FitnessFunction = R6Class("FitnessFunction",
       lapply(self$hooks, function (hook) {
         do.call(hook, list(ff = self))
       })
+<<<<<<< HEAD
     },
     deep_clone = function (name, value) {
       if (R6::is.R6(value)) {
@@ -171,6 +172,8 @@ FitnessFunction = R6Class("FitnessFunction",
       } else {
         value
       }
+=======
+>>>>>>> 8f006e4728164759589773204de73b17e06fb946
     }
   )
 )

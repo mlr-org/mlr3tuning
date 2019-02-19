@@ -54,7 +54,6 @@ Collate:
     'FitnessFunction.R'
     'Terminator.R'
     'TerminatorEvaluations.R'
-    'TerminatorIterations.R'
     'TerminatorMultiplexer.R'
     'TerminatorPerformance.R'
     'TerminatorRuntime.R'

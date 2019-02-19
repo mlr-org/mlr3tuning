@@ -34,8 +34,7 @@ The interface is described in \link{Terminator}.
 t = TerminatorEvaluations$new(3)
 }
 \seealso{
-Other Terminator: \code{\link{TerminatorIterations}},
-  \code{\link{TerminatorMultiplexer}},
+Other Terminator: \code{\link{TerminatorMultiplexer}},
   \code{\link{TerminatorPerformance}},
   \code{\link{TerminatorRuntime}}, \code{\link{Terminator}}
 }
