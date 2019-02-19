@@ -1,0 +1,67 @@
+benchmark                 package:mlr3                 R Documentation
+
+_B_e_n_c_h_m_a_r_k _M_u_l_t_i_p_l_e _L_e_a_r_n_e_r_s _o_n _M_u_l_t_i_p_l_e _T_a_s_k_s
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     Runs a benchmark of the cross-product of learners, tasks, and
+     resampling strategies (possibly in parallel).
+
+     Resamplings which are not already instantiated will be
+     instantiated automatically. Note that these auto-instantiated
+     resamplings will not be synchronized per task, i.e. learners will
+     see different splits of the same task.
+
+     To generate exhaustive designs and automatically instantiate
+     resampling strategies per task, see 'expand_grid()'.
+
+_U_s_a_g_e:
+
+     benchmark(design, ctrl = list())
+     
+_A_r_g_u_m_e_n_t_s:
+
+  design: ('data.frame()'): Data frame (or 'data.table()') with three
+          columns: "task", "learner", and "resampling". Each row
+          defines a set of resampled experiments by providing a Task,
+          Learner and Resampling strategy. The helper function
+          'expand_grid()' can assist in generating an exhaustive design
+          (see examples).
+
+    ctrl: (named 'list' as returned by 'mlr_control()'): Object to
+          control experiment execution. See 'mlr_control()'.
+
+_V_a_l_u_e:
+
+     BenchmarkResult.
+
+_E_x_a_m_p_l_e_s:
+
+     tasks = mlr_tasks$mget(c("iris", "sonar"))
+     learners = mlr_learners$mget(c("classif.featureless", "classif.rpart"))
+     resamplings = mlr_resamplings$mget("holdout")
+     
+     design = expand_grid(tasks, learners, resamplings)
+     print(design)
+     
+     set.seed(123)
+     bmr = benchmark(design)
+     
+     # performance for all conducted experiments
+     head(as.data.table(bmr))
+     
+     # aggregated performance values
+     bmr$aggregated(objects = FALSE)
+     
+     # Overview of of resamplings that were conducted internally
+     rrs = bmr$resample_results
+     print(rrs)
+     
+     # Extract first ResampleResult
+     rr = bmr$resample_result(hash = rrs$hash[1])
+     print(rr)
+     
+     # Extract predictions of first experiment of this resampling
+     head(as.data.table(rr$experiment(1)$prediction))
+     
+

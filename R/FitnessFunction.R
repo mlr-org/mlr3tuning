@@ -127,7 +127,6 @@ FitnessFunction = R6Class("FitnessFunction",
         learner$id = paste0(learner$id, n_evals + i)
         return(learner)
       })
-      # self$run_hooks("update_start")
 
       bmr = mlr3::benchmark(design = data.table::data.table(task = list(self$task), learner = learners,
         resampling = list(self$resampling)), ctrl = self$ctrl)
@@ -148,7 +147,6 @@ FitnessFunction = R6Class("FitnessFunction",
         bmr$data$dob = max(self$bmr$data$dob) + 1L
         self$bmr$combine(bmr)
       }
-      # self$run_hooks("update_end")
       self$run_hooks()
       invisible(self)
     },
@@ -166,9 +164,13 @@ FitnessFunction = R6Class("FitnessFunction",
       lapply(self$hooks, function (hook) {
         do.call(hook, list(ff = self))
       })
-      # funs = self$hooks[[id]]
-      # for (fun in funs)
-      #   do.call(fun, list(ff = self))
+    },
+    deep_clone = function (name, value) {
+      if (R6::is.R6(value)) {
+        value$clone(deep = TRUE)
+      } else {
+        value
+      }
     }
   )
 )

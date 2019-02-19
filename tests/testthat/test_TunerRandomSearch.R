@@ -21,13 +21,16 @@ test_that("TunerRandomSearch",  {
   terminator = TerminatorEvaluations$new(5)
   ff = FitnessFunction$new(task, learner, resampling, param_set)
   rs = TunerRandomSearch$new(ff, terminator)
+  rs1 = TunerRandomSearch$new(ff, terminator, 2L)
 
-  result = rs$tune()$tune_result()
-  bmr = rs$ff$bmr
-  expect_r6(rs, "TunerRandomSearch")
-  expect_data_table(bmr$data, nrow = n_folds*5)
-  expect_list(result)
-  expect_number(result$performance["classif.mmce"], lower = measures$classif.mmce$range[1], upper = measures$classif.mmce$range[2])
-  expect_list(result$values, len = 2)
-  expect_equal(result$values$minsplit, 3)
+  # lapply(list(rs, rs1), function (rs) {
+    result = rs$tune()$tune_result()
+    bmr = rs$ff$bmr
+    expect_r6(rs, "TunerRandomSearch")
+    expect_data_table(bmr$data, nrow = n_folds*5)
+    expect_list(result)
+    expect_number(result$performance["classif.mmce"], lower = measures$classif.mmce$range[1], upper = measures$classif.mmce$range[2])
+    expect_list(result$values, len = 2)
+    expect_equal(result$values$minsplit, 3)
+  # })
 })

@@ -66,7 +66,6 @@ Tuner = R6Class("Tuner",
         # Catch exception when terminator is terminated:
         tryCatch(private$tune_step(), .terminated_message = function (cond) { })
       }
-      invisible(self)
     },
 
     tune_result = function() {
@@ -102,6 +101,14 @@ Tuner = R6Class("Tuner",
       # if the terminator is terminated.
       if (self$terminator$terminated)
         stop(conditions::condition_message(".terminated", "Termination criteria is reached"))
+    },
+    deep_clone = function (name, value) {
+
+      if (R6::is.R6(value)) {
+        value$clone(deep = TRUE)
+      } else {
+        value
+      }
     }
   )
 )
