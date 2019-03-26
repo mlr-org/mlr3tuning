@@ -64,7 +64,7 @@ Tuner = R6Class("Tuner",
     tune = function() {
       while (! self$terminator$terminated) {
         # Catch exception when terminator is terminated:
-        tryCatch(private$tune_step(), .terminated_message = function (cond) { })
+        tryCatch(private$tune_step(), terminated_message = function (cond) { })
       }
       return(invisible(self))
     },
@@ -97,11 +97,11 @@ Tuner = R6Class("Tuner",
       self$terminator$update_end(self$ff)
 
       # Train as long as terminator is not terminated, if he is terminated throw condition of
-      # class ".terminated_message" that is caught by tryCatch.
+      # class "terminated_message" that is caught by tryCatch.
       # The exception should be automatically caught since the while loop checks for itself
       # if the terminator is terminated.
       if (self$terminator$terminated)
-        stop(conditions::condition_message(".terminated", "Termination criteria is reached"))
+        stop(messageCondition("Termination criteria is reached", class = "terminated_message"))
     },
     deep_clone = function (name, value) {
 

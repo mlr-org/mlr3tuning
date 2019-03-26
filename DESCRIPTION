@@ -26,8 +26,7 @@ Imports:
     data.table,
     paradox,
     R6,
-    logger,
-    conditions
+    logger
 Suggests:
     knitr,
     rmarkdown,
