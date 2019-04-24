@@ -5,7 +5,7 @@ test_that("AutoTuner",  {
   inner_folds = 2L
   inner_evals = 3L
 
-  p_measures = c("classif.mmce", "time_train", "time_both")
+  p_measures = c("classif.ce", "time_train", "time_both")
 
   task = mlr3::mlr_tasks$get("iris")
 

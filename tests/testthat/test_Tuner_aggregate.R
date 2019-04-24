@@ -12,7 +12,7 @@ test_that("API",  {
   resampling = mlr3::mlr_resamplings$get("cv")
   resampling$param_set$values = list(folds = n_folds)
 
-  measures = mlr3::mlr_measures$mget(c("classif.mmce", "time_train", "time_both"))
+  measures = mlr3::mlr_measures$mget(c("classif.ce", "time_train", "time_both"))
   task$measures = measures
 
   param_set = paradox::ParamSet$new(params = list(

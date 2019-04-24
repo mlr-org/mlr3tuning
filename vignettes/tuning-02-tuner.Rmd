@@ -74,9 +74,9 @@ In `mlr3` the performance measure is directly assign to the task. We can get a l
 mlr_measures
 ```
 
-As for the learner, we have to name the task type as prefix, which is `r task$task_type`, and then the measure name. For the mmce in classification this is the `classif.mmce`. Additionally, we are interested in the runtime of a training that can be accessed by the `time_train` measure. Note that we can assign multiple measures to a task. Getting a list of measures can be achieved by calling `mget()`:
+As for the learner, we have to name the task type as prefix, which is `r task$task_type`, and then the measure name. For the ce in classification this is the `classif.ce`. Additionally, we are interested in the runtime of a training that can be accessed by the `time_train` measure. Note that we can assign multiple measures to a task. Getting a list of measures can be achieved by calling `mget()`:
 ```{r}
-task$measures = mlr_measures$mget(c("classif.mmce", "time_train"))
+task$measures = mlr_measures$mget(c("classif.ce", "time_train"))
 ```
 
 ### Choose the resampling strategy
@@ -189,14 +189,14 @@ tm
 
 ## Accessing the tuning result
 
-`tune_result()` returns the parameter setting with the best mean performance. As no performance measure was specified, by default the error rate (mmce) is used:
+`tune_result()` returns the parameter setting with the best mean performance. As no performance measure was specified, by default the classification error (ce) is used:
 ```{r}
 tuner_rs$tune_result()
 ```
 
 Note that each measure "knows" if it is minimized or maximized during tuning:
 ```{r}
-task$measures$classif.mmce$minimize
+task$measures$classif.ce$minimize
 ```
 
 We can get a complete overview about the performed evaluations by calling the member function `aggregated()`:

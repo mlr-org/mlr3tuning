@@ -13,7 +13,7 @@ test_that("TunerGenSA",  {
   resampling = mlr3::mlr_resamplings$get("cv")
   resampling$param_set$values = list(folds = n_folds)
 
-  measures = mlr3::mlr_measures$mget("classif.mmce")
+  measures = mlr3::mlr_measures$mget("classif.ce")
   task$measures = measures
 
   terminator = TerminatorEvaluations$new(n_evals)
@@ -32,7 +32,7 @@ test_that("TunerGenSA",  {
   expect_equal(bmr$data[, uniqueN(hash)], n_evals)
   result = gs$tune()$tune_result()
   expect_list(result)
-  expect_number(result$performance["classif.mmce"], lower = measures$classif.mmce$range[1], upper = measures$classif.mmce$range[2])
+  expect_number(result$performance["classif.ce"], lower = measures$classif.ce$range[1], upper = measures$classif.ce$range[2])
   expect_list(result$values, len = 2)
   expect_equal(result$values$minsplit, 3)
 })
