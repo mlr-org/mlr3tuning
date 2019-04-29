@@ -32,8 +32,7 @@ Suggests:
     rmarkdown,
     rpart,
     testthat,
-    GenSA,
-    kernlab
+    GenSA
 VignetteBuilder:
     knitr
 Remotes:
