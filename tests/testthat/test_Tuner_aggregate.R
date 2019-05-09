@@ -1,6 +1,6 @@
 context("aggregated of Tuner")
 
-test_that("API",  {
+test_that("API", {
   n_folds = 4
   n_evals = 5
 
@@ -16,7 +16,7 @@ test_that("API",  {
   task$measures = measures
 
   param_set = paradox::ParamSet$new(params = list(
-      paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1
+    paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1
   )))
 
   terminator = TerminatorEvaluations$new(n_evals)

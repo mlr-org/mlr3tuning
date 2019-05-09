@@ -54,7 +54,8 @@ test_that("Construction", {
   )
 
   expect_error(ff$add_hook(hook = mean))
-  expect_silent(ff$add_hook(hook = function (ff) { "hook" }))
+  expect_silent(ff$add_hook(hook = function(ff) {
+    "hook"
+  }))
   expect_equal(ff$run_hooks(), list("hook"))
-
 })

@@ -62,9 +62,10 @@ Tuner = R6Class("Tuner",
     },
 
     tune = function() {
-      while (! self$terminator$terminated) {
+      while (!self$terminator$terminated) {
         # Catch exception when terminator is terminated:
-        tryCatch(private$tune_step(), terminated_message = function (cond) { })
+        tryCatch(private$tune_step(), terminated_message = function(cond) {
+        })
       }
       return(invisible(self))
     },
@@ -78,9 +79,10 @@ Tuner = R6Class("Tuner",
     aggregated = function(unnest = TRUE) {
       if (!is.null(self$ff$bmr)) {
         dt = self$ff$bmr$aggregated()
-        dt$pars = mlr3misc::map(dt[["learner"]], function (l) l$param_set$values)
-        if (unnest)
+        dt$pars = mlr3misc::map(dt[["learner"]], function(l) l$param_set$values)
+        if (unnest) {
           dt = mlr3misc::unnest(dt, "pars")
+        }
 
         # [] forces the data table to get printed. This is suppressed by the first call of dt after
         # using := within []
@@ -88,10 +90,9 @@ Tuner = R6Class("Tuner",
       } else {
         mlr3misc::stopf("No tuning conducted yet.")
       }
-    }
-  ),
+    }),
   private = list(
-    eval_design_terminator = function (design) {
+    eval_design_terminator = function(design) {
       self$terminator$update_start(self$ff)
       self$ff$eval_design(design)
       self$terminator$update_end(self$ff)
@@ -100,16 +101,15 @@ Tuner = R6Class("Tuner",
       # class "terminated_message" that is caught by tryCatch.
       # The exception should be automatically caught since the while loop checks for itself
       # if the terminator is terminated.
-      if (self$terminator$terminated)
+      if (self$terminator$terminated) {
         stop(messageCondition("Termination criteria is reached", class = "terminated_message"))
+      }
     },
-    deep_clone = function (name, value) {
-
+    deep_clone = function(name, value) {
       if (R6::is.R6(value)) {
         value$clone(deep = TRUE)
       } else {
         value
       }
-    }
-  )
+    })
 )

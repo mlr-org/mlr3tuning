@@ -1,6 +1,6 @@
 context("TunerRandomSearch")
 
-test_that("TunerRandomSearch",  {
+test_that("TunerRandomSearch", {
   n_folds = 4
 
   task = mlr3::mlr_tasks$get("iris")
@@ -15,7 +15,7 @@ test_that("TunerRandomSearch",  {
   task$measures = measures
 
   param_set = paradox::ParamSet$new(params = list(
-      paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1
+    paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1
   )))
 
   terminator = TerminatorEvaluations$new(5)
@@ -24,13 +24,13 @@ test_that("TunerRandomSearch",  {
   rs1 = TunerRandomSearch$new(ff, terminator, 2L)
 
   # lapply(list(rs, rs1), function (rs) {
-    result = rs$tune()$tune_result()
-    bmr = rs$ff$bmr
-    expect_r6(rs, "TunerRandomSearch")
-    expect_data_table(bmr$data, nrow = n_folds*5)
-    expect_list(result)
-    expect_number(result$performance["classif.ce"], lower = measures$classif.ce$range[1], upper = measures$classif.ce$range[2])
-    expect_list(result$values, len = 2)
-    expect_equal(result$values$minsplit, 3)
+  result = rs$tune()$tune_result()
+  bmr = rs$ff$bmr
+  expect_r6(rs, "TunerRandomSearch")
+  expect_data_table(bmr$data, nrow = n_folds * 5)
+  expect_list(result)
+  expect_number(result$performance["classif.ce"], lower = measures$classif.ce$range[1], upper = measures$classif.ce$range[2])
+  expect_list(result$values, len = 2)
+  expect_equal(result$values$minsplit, 3)
   # })
 })

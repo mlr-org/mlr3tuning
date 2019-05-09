@@ -18,13 +18,13 @@
 #' `$new()` creates a new object of class [TerminatorMultiplexer].
 #'
 #' The interface is described in [Terminator].
-#' 
+#'
 #' @name TerminatorMultiplexer
 #' @family Terminator
 #' @examples
 #' t = TerminatorMultiplexer$new(list(
-#'    TerminatorRuntime$new(3, "mins"),
-#'    TerminatorEvaluations$new(10)
+#'   TerminatorRuntime$new(3, "mins"),
+#'   TerminatorEvaluations$new(10)
 #' ))
 #' print(t)
 NULL
@@ -39,7 +39,7 @@ TerminatorMultiplexer = R6Class("TerminatorMultiplexer",
     initialize = function(terminators) {
       self$terminators = assert_list(terminators, types = "Terminator")
       self$terminated = FALSE
-      super$initialize(settings = do.call("c", lapply(self$terminators, function (t) t$settings)))
+      super$initialize(settings = do.call("c", lapply(self$terminators, function(t) t$settings)))
     },
 
     update_start = function(ff) {
@@ -56,6 +56,5 @@ TerminatorMultiplexer = R6Class("TerminatorMultiplexer",
 
     format = function() {
       paste0(map_chr(self$terminators, format), collapse = "\n")
-    }
-  )
+    })
 )

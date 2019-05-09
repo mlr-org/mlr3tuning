@@ -113,11 +113,13 @@ FitnessFunction = R6Class("FitnessFunction",
     },
 
     eval_design = function(design) {
+
       checkmate::expect_r6(design, "Design")
 
       # Not that pretty but enables the use of transpose from Design:
-      if (self$param_set$has_trafo)
+      if (self$param_set$has_trafo) {
         design$data = self$param_set$trafo(design$data)
+      }
 
       n_evals = if (is.null(self$bmr)) 0 else nrow(self$bmr$aggregated())
 
@@ -133,7 +135,7 @@ FitnessFunction = R6Class("FitnessFunction",
 
       # add params to benchmark result data. if statement ensures that map with just one learner returns
       # the same as map with more than one learner:
-      bmr$data$pars = mlr3misc::map(bmr$data$learner, function (l) {
+      bmr$data$pars = mlr3misc::map(bmr$data$learner, function(l) {
         if (nrow(bmr$data) == 1) {
           list(l$param_set$values)
         } else {
@@ -155,22 +157,21 @@ FitnessFunction = R6Class("FitnessFunction",
       self$bmr$get_best(self$task$measures[[1L]])
     },
 
-    add_hook = function (hook) {
+    add_hook = function(hook) {
       checkmate::assert_function(hook, args = "ff", nargs = 1)
       self$hooks = append(self$hooks, hook)
     },
 
     run_hooks = function() {
-      lapply(self$hooks, function (hook) {
+      lapply(self$hooks, function(hook) {
         do.call(hook, list(ff = self))
       })
     },
-    deep_clone = function (name, value) {
+    deep_clone = function(name, value) {
       if (R6::is.R6(value)) {
         value$clone(deep = TRUE)
       } else {
         value
       }
-    }
-  )
+    })
 )

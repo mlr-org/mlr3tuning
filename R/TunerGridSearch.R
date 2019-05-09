@@ -57,12 +57,11 @@ TunerGridSearch = R6Class("TunerGridSearch",
           stop("Specify resolution or use a terminator that defines maximal number of evaluations (e.g. TerminatorEvaluations).")
         }
         assert_count(remaining, positive = TRUE, coerce = TRUE)
-        resolution = floor(remaining^(1/ff$param_set$length))
+        resolution = floor(remaining^(1 / ff$param_set$length))
       }
       resolution = assert_int(resolution, lower = 1L, coerce = TRUE)
       super$initialize(id = "grid_search", ff = ff, terminator = terminator, settings = list(resolution = resolution))
-    }
-  ),
+    }),
 
   private = list(
     tune_step = function() {
@@ -78,6 +77,5 @@ TunerGridSearch = R6Class("TunerGridSearch",
         }
       }
       private$eval_design_terminator(design)
-    }
-  )
+    })
 )

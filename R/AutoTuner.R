@@ -61,7 +61,8 @@ AutoTuner = R6Class("AutoTuner", inherit = mlr3::Learner,
   public = list(
     learner = NULL,
 
-    initialize = function (learner, resampling, param_set, terminator, tuner, tuner_settings, ctrl = tune_control(), id = "autotuner") {
+    initialize = function(learner, resampling, param_set, terminator, tuner, tuner_settings, ctrl = tune_control(), id = "autotuner") {
+
       self$learner = mlr3::assert_learner(learner = learner)
 
       private$.terminator = checkmate::assert_r6(terminator, "Terminator")
@@ -71,8 +72,9 @@ AutoTuner = R6Class("AutoTuner", inherit = mlr3::Learner,
       private$.ff_args$ctrl = checkmate::assert_list(ctrl, names = "unique")
 
       # TODO: Check for factory
-      if (! inherits(tuner, "R6ClassGenerator") && grepl(pattern = "Tuner", x = tuner$classname))
+      if (!inherits(tuner, "R6ClassGenerator") && grepl(pattern = "Tuner", x = tuner$classname)) {
         mlr3misc::stopf("Tuner must be a R6 class generator that creates tuner (e.g. TunerGridSearch).")
+      }
       private$.tuner = tuner
 
       super$initialize(
@@ -86,7 +88,7 @@ AutoTuner = R6Class("AutoTuner", inherit = mlr3::Learner,
       )
     },
 
-    train = function (task) {
+    train = function(task) {
       if (private$.is_trained) {
         logger::log_warn("Learner is already trained.", namespace = "mlr3")
       } else {
@@ -114,10 +116,9 @@ AutoTuner = R6Class("AutoTuner", inherit = mlr3::Learner,
       }
     },
 
-    predict = function (task) {
+    predict = function(task) {
       return(self$learner$predict(task))
-    }
-  ),
+    }),
 
   private = list(
     .ff_args = NULL,
@@ -126,23 +127,19 @@ AutoTuner = R6Class("AutoTuner", inherit = mlr3::Learner,
     .tuner_settings = NULL,
     .is_trained = FALSE,
 
-    deep_clone = function (name, value) {
-
+    deep_clone = function(name, value) {
       if (R6::is.R6(value)) {
         return(value$clone(deep = TRUE))
       } else {
         return(value)
       }
-    }
-  ),
+    }),
 
   active = list(
-    tuner = function (rhs) {
-
-      if (! missing(rhs)) stop("tuner is read only")
+    tuner = function(rhs) {
+      if (!missing(rhs)) stop("tuner is read only")
       if (private$.is_trained) return(private$.tuner)
 
       return(NULL)
-    }
-  )
+    })
 )

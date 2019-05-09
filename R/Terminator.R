@@ -1,23 +1,23 @@
 #' @title Abstract Terminator Class
 #'
 #' @description
-#' Abstract `Terminator` class that implements the main functionality each terminator must have. A terminator is 
+#' Abstract `Terminator` class that implements the main functionality each terminator must have. A terminator is
 #' an object that says when to stop the tuning.
 #'
 #' @section Usage:
 #' ```
 #' # Construction
 #' t = Terminator$new(settings)
-#' 
+#'
 #' # public members
 #' t$terminated
 #' t$settings
 #' t$state
-#' 
+#'
 #' # public methods
 #' t$update_start(ff)
 #' t$update_end(ff)
-#' 
+#'
 #' # active bindings
 #' t$remaining
 #' ```
@@ -48,8 +48,13 @@ Terminator = R6Class("Terminator",
     settings = NULL,
     state = NULL,
 
-    initialize = function(settings) { self$settings = assert_list(settings, names = "unique") },
-    update_start = function(ff) { stop("$update_start() not implemented for Terminator") },
-    update_end = function(ff) { stop("$update_end() not implemented for Terminator") }
-  )
+    initialize = function(settings) {
+      self$settings = assert_list(settings, names = "unique")
+    },
+    update_start = function(ff) {
+      stop("$update_start() not implemented for Terminator")
+    },
+    update_end = function(ff) {
+      stop("$update_end() not implemented for Terminator")
+    })
 )

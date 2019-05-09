@@ -35,7 +35,7 @@
 #' task$measures = measures
 #' param_set = paradox::ParamSet$new(
 #'   params = list(
-#'    paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)
+#'     paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)
 #'   )
 #' )
 #' ff = FitnessFunction$new(task, learner, resampling, param_set)
@@ -53,8 +53,7 @@ TunerRandomSearch = R6Class("TunerRandomSearch",
     initialize = function(ff, terminator, batch_size = 100L) {
       batch_size = assert_count(batch_size, coerce = TRUE)
       super$initialize(id = "random_search", ff = ff, terminator = terminator, settings = list(batch_size = batch_size))
-    }
-  ),
+    }),
 
   private = list(
     tune_step = function() {
@@ -64,10 +63,10 @@ TunerRandomSearch = R6Class("TunerRandomSearch",
       design = generate_design_random(self$ff$param_set, n_evals)
 
       # Should be handled by paradox!
-      if (nrow(design$data) > data.table::uniqueN(design$data))
+      if (nrow(design$data) > data.table::uniqueN(design$data)) {
         logger::log_warn("Duplicated parameter values detected.", namespace = "mlr3")
+      }
 
       private$eval_design_terminator(design)
-    }
-  )
+    })
 )

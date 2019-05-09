@@ -1,7 +1,7 @@
 context("TerminatorPerformance")
 
 
-test_that("TerminatorPerformance",  {
+test_that("TerminatorPerformance", {
   task = mlr3::mlr_tasks$get("iris")
   learner = mlr3::mlr_learners$get("classif.rpart")
   resampling = mlr3::mlr_resamplings$get("cv")
@@ -15,10 +15,18 @@ test_that("TerminatorPerformance",  {
   )
 
   ff = FitnessFunction$new(task, learner, resampling, param_set)
-  expect_error({ terminator = TerminatorPerformance$new(list(classif.ce = 0.1, false.measure = 0.9), ff) })
-  expect_error({ terminator = TerminatorPerformance$new(list(classif.ce = 0.1, classif.acc = 2), ff) })
-  expect_error({ terminator = TerminatorPerformance$new(list(0.1, 0.9), ff) })
-  expect_silent({ terminator = TerminatorPerformance$new(list(classif.ce = 0.1, classif.acc = 0.9), ff) })
+  expect_error({
+    terminator = TerminatorPerformance$new(list(classif.ce = 0.1, false.measure = 0.9), ff)
+  })
+  expect_error({
+    terminator = TerminatorPerformance$new(list(classif.ce = 0.1, classif.acc = 2), ff)
+  })
+  expect_error({
+    terminator = TerminatorPerformance$new(list(0.1, 0.9), ff)
+  })
+  expect_silent({
+    terminator = TerminatorPerformance$new(list(classif.ce = 0.1, classif.acc = 0.9), ff)
+  })
 
   gs = TunerGenSA$new(ff, terminator)
   gs$tune()

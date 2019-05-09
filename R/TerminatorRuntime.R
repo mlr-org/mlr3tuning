@@ -3,7 +3,7 @@
 #' @description
 #' Class to terminate the tuning after some time. Note that the runtime is checked after each step
 #' and therefore it could happen that the final runtime is longer than the specified one. Time is measured
-#' for everything that happens between update_start and update_end. 
+#' for everything that happens between update_start and update_end.
 #'
 #' @section Usage:
 #' ```
@@ -21,7 +21,7 @@
 #'
 #' @section Details:
 #' `$new()` creates a new object of class [TerminatorRuntime].
-#' 
+#'
 #' The interface is described in [Terminator].
 #'
 #' @name TerminatorRuntime

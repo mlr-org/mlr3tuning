@@ -21,7 +21,7 @@ test_that("API", {
   tm$update_end(ff)
   expect_false(tm$terminated)
   expect_false(ti$terminated)
-  expect_false(tr$terminated)  
+  expect_false(tr$terminated)
 
   tm$update_start(ff)
   Sys.sleep(1)

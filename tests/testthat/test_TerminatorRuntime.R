@@ -10,7 +10,7 @@ test_that("API", {
   expect_identical(te$state$time_start, NULL)
   expect_identical(te$state$time_end, NULL)
   expect_identical(te$state$time_remaining, 1L)
-  
+
   expect_false(te$terminated)
 
   ff = list(bmr = list(data = data.table()))

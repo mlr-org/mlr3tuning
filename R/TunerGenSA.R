@@ -34,7 +34,7 @@
 #' task$measures = measures
 #' param_set = paradox::ParamSet$new(
 #'   params = list(
-#'    paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)
+#'     paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)
 #'   )
 #' )
 #' ff = FitnessFunction$new(task, learner, resampling, param_set)
@@ -59,12 +59,12 @@ TunerGenSA = R6Class("TunerGenSA",
       # Default settings:
       settings = list(smooth = FALSE, acceptance.param = -15, simple.function = FALSE, temperature = 250)
       super$initialize(id = "GenSA", ff = ff, terminator = terminator, settings = mlr3misc::insert_named(settings, list(...)))
-    }
-  ),
+    }),
   private = list(
     tune_step = function() {
-      objective = function (x, ff) {
-        param_value = lapply(x, function (param) param)
+      objective = function(x, ff) {
+
+        param_value = lapply(x, function(param) param)
 
         # x sometimes comes without names, set them manually:
         names(param_value) = self$ff$param_set$ids()
@@ -74,13 +74,12 @@ TunerGenSA = R6Class("TunerGenSA",
 
         # Get estimated generalization error. Use the negation if the measures needs to be minimized:
         performance = unlist(ff$bmr$data[.N]$performance)[[1]]
-        if (! ff$task$measures[[1]]$minimize)
+        if (!ff$task$measures[[1]]$minimize) {
           return(-performance)
+        }
         return(performance)
       }
       nuisance = GenSA::GenSA(fn = objective, lower = self$ff$param_set$lower, upper = self$ff$param_set$upper,
         control = self$settings, ff = self$ff)
-    }
-  )
+    })
 )
-

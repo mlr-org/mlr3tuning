@@ -1,7 +1,7 @@
 context("TunerGridSearch")
 
 
-test_that("TunerGridSearch",  {
+test_that("TunerGridSearch", {
   task = mlr3::mlr_tasks$get("iris")
 
   learner = mlr3::mlr_learners$get("classif.rpart")
@@ -16,7 +16,7 @@ test_that("TunerGridSearch",  {
   terminator = TerminatorEvaluations$new(5)
   terminator_false = TerminatorRuntime$new(2, "mins")
   param_set = paradox::ParamSet$new(params = list(
-      paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1
+    paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1
   )))
 
   ff = FitnessFunction$new(task, learner, resampling, param_set)
@@ -26,7 +26,7 @@ test_that("TunerGridSearch",  {
   result = gs$tune()$tune_result()
   bmr = gs$ff$bmr
   expect_r6(gs, "TunerGridSearch")
-  expect_data_table(bmr$data, nrow = 2*5)
+  expect_data_table(bmr$data, nrow = 2 * 5)
   expect_equal(bmr$data[, uniqueN(hash)], 5)
   expect_equal(gs$settings$resolution, 5)
   result = gs$tune()$tune_result()
@@ -47,9 +47,11 @@ test_that("Design resolution of grid search is correct", {
       paradox::ParamInt$new("maxcompete", 0, 20))))
 
 
-  expect_output({ tune = TunerGridSearch$new(ff, TerminatorEvaluations$new(30))$tune() })
+  expect_output({
+    tune = TunerGridSearch$new(ff, TerminatorEvaluations$new(30))$tune()
+  })
   r = tune$aggregated(FALSE)
-  param_data = mlr3misc::unnest(r[,"pars"], "pars")
+  param_data = mlr3misc::unnest(r[, "pars"], "pars")
 
   design = paradox::generate_design_grid(ff$param_set, resolution = 3)
 

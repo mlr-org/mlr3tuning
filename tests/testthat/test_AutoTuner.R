@@ -1,6 +1,6 @@
 context("AutoTuner")
 
-test_that("AutoTuner",  {
+test_that("AutoTuner", {
   outer_folds = 3L
   inner_folds = 2L
   inner_evals = 3L
@@ -32,21 +32,21 @@ test_that("AutoTuner",  {
   r = mlr3::resample(task, at, outer_resampling)
 
   expect_null(at$tuner)
-  lapply(mlr3misc::map(r$data$learner, "tuner"), function (tuner) checkmate::expect_r6(tuner, "Tuner"))
+  lapply(mlr3misc::map(r$data$learner, "tuner"), function(tuner) checkmate::expect_r6(tuner, "Tuner"))
 
   at$train(task)
   checkmate::expect_r6(at$tuner, "Tuner")
 
   # Nested Resampling:
   checkmate::expect_data_table(r$data, nrow = outer_folds)
-  nuisance = lapply(r$data$learner, function (autotuner) {
+  nuisance = lapply(r$data$learner, function(autotuner) {
     checkmate::expect_data_table(autotuner$tuner$ff$bmr$data, nrow = inner_evals * inner_folds)
     checkmate::expect_data_table(autotuner$tuner$ff$bmr$aggregated(), nrow = inner_evals)
     expect_equal(names(autotuner$tuner$tune_result()$performance), p_measures)
     autotuner$tuner$tune_result()$performance
   })
 
-  row_ids_inner = lapply(r$data$learner, function (it) {
+  row_ids_inner = lapply(r$data$learner, function(it) {
     it$tuner$ff$task$row_ids
   })
   row_ids_all = task$row_ids
@@ -55,8 +55,8 @@ test_that("AutoTuner",  {
   expect_equal(sort(unique(unlist(row_ids_inner))), sort(row_ids_all))
 
   # Check if each sub task of the inner tuner is a subset of the full task:
-  nuisance = lapply(row_ids_inner, function (ids) {
-    expect_true(any(! row_ids_all %in% ids))
+  nuisance = lapply(row_ids_inner, function(ids) {
+    expect_true(any(!row_ids_all %in% ids))
   })
 
 
