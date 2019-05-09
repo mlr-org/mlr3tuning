@@ -41,7 +41,7 @@ measures = mlr3::mlr_measures$mget("classif.ce")
 task$measures = measures
 param_set = paradox::ParamSet$new(
   params = list(
-   paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)
+    paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)
   )
 )
 ff = FitnessFunction$new(task, learner, resampling, param_set)
