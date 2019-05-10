@@ -166,7 +166,7 @@ The interface is described in <a href='Tuner.html'>Tuner</a>.</p>
 <span class='no'>task</span>$<span class='no'>measures</span> <span class='kw'>=</span> <span class='no'>measures</span>
 <span class='no'>param_set</span> <span class='kw'>=</span> <span class='kw pkg'>paradox</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/paradox/topics/ParamSet'>ParamSet</a></span>$<span class='fu'>new</span>(
   <span class='kw'>params</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(
-   <span class='kw pkg'>paradox</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/paradox/topics/Param'>ParamDbl</a></span>$<span class='fu'>new</span>(<span class='st'>"cp"</span>, <span class='kw'>lower</span> <span class='kw'>=</span> <span class='fl'>0.001</span>, <span class='kw'>upper</span> <span class='kw'>=</span> <span class='fl'>0.1</span>)
+    <span class='kw pkg'>paradox</span><span class='kw ns'>::</span><span class='no'><a href='https://www.rdocumentation.org/packages/paradox/topics/Param'>ParamDbl</a></span>$<span class='fu'>new</span>(<span class='st'>"cp"</span>, <span class='kw'>lower</span> <span class='kw'>=</span> <span class='fl'>0.001</span>, <span class='kw'>upper</span> <span class='kw'>=</span> <span class='fl'>0.1</span>)
   )
 )
 <span class='no'>ff</span> <span class='kw'>=</span> <span class='no'>FitnessFunction</span>$<span class='fu'>new</span>(<span class='no'>task</span>, <span class='no'>learner</span>, <span class='no'>resampling</span>, <span class='no'>param_set</span>)
