@@ -64,8 +64,7 @@ Tuner = R6Class("Tuner",
     tune = function() {
       while (!self$terminator$terminated) {
         # Catch exception when terminator is terminated:
-        tryCatch(private$tune_step(), terminated_message = function(cond) {
-        })
+        tryCatch(private$tune_step(), terminated_message = function(cond) { })
       }
       return(invisible(self))
     },
@@ -90,7 +89,8 @@ Tuner = R6Class("Tuner",
       } else {
         mlr3misc::stopf("No tuning conducted yet.")
       }
-    }),
+    }
+  ),
   private = list(
     eval_design_terminator = function(design) {
       self$terminator$update_start(self$ff)
@@ -111,5 +111,6 @@ Tuner = R6Class("Tuner",
       } else {
         value
       }
-    })
+    }
+  )
 )

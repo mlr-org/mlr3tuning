@@ -53,7 +53,8 @@ TunerRandomSearch = R6Class("TunerRandomSearch",
     initialize = function(ff, terminator, batch_size = 100L) {
       batch_size = assert_count(batch_size, coerce = TRUE)
       super$initialize(id = "random_search", ff = ff, terminator = terminator, settings = list(batch_size = batch_size))
-    }),
+    }
+  ),
 
   private = list(
     tune_step = function() {
@@ -68,5 +69,6 @@ TunerRandomSearch = R6Class("TunerRandomSearch",
       }
 
       private$eval_design_terminator(design)
-    })
+    }
+  )
 )

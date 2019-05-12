@@ -56,5 +56,6 @@ Terminator = R6Class("Terminator",
     },
     update_end = function(ff) {
       stop("$update_end() not implemented for Terminator")
-    })
+    }
+  )
 )

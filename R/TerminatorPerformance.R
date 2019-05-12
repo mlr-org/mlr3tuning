@@ -83,5 +83,6 @@ TerminatorPerformance = R6Class("TerminatorPerformance",
     format = function() {
       state = paste(paste0(names(self$settings$thresh), " = ", round(unlist(self$state$msrs_best), 4)), collapse = ", ")
       sprintf("TerminatorPerformance with current values %s.", state)
-    })
+    }
+  )
 )

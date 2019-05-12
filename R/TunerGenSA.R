@@ -59,7 +59,8 @@ TunerGenSA = R6Class("TunerGenSA",
       # Default settings:
       settings = list(smooth = FALSE, acceptance.param = -15, simple.function = FALSE, temperature = 250)
       super$initialize(id = "GenSA", ff = ff, terminator = terminator, settings = mlr3misc::insert_named(settings, list(...)))
-    }),
+    }
+  ),
   private = list(
     tune_step = function() {
       objective = function(x, ff) {
@@ -81,5 +82,6 @@ TunerGenSA = R6Class("TunerGenSA",
       }
       nuisance = GenSA::GenSA(fn = objective, lower = self$ff$param_set$lower, upper = self$ff$param_set$upper,
         control = self$settings, ff = self$ff)
-    })
+    }
+  )
 )

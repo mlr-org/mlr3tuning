@@ -118,7 +118,8 @@ AutoTuner = R6Class("AutoTuner", inherit = mlr3::Learner,
 
     predict = function(task) {
       return(self$learner$predict(task))
-    }),
+    }
+  ),
 
   private = list(
     .ff_args = NULL,
@@ -133,7 +134,8 @@ AutoTuner = R6Class("AutoTuner", inherit = mlr3::Learner,
       } else {
         return(value)
       }
-    }),
+    }
+  ),
 
   active = list(
     tuner = function(rhs) {
@@ -141,5 +143,6 @@ AutoTuner = R6Class("AutoTuner", inherit = mlr3::Learner,
       if (private$.is_trained) return(private$.tuner)
 
       return(NULL)
-    })
+    }
+  )
 )

@@ -173,5 +173,6 @@ FitnessFunction = R6Class("FitnessFunction",
       } else {
         value
       }
-    })
+    }
+  )
 )

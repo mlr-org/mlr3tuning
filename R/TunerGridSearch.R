@@ -61,7 +61,8 @@ TunerGridSearch = R6Class("TunerGridSearch",
       }
       resolution = assert_int(resolution, lower = 1L, coerce = TRUE)
       super$initialize(id = "grid_search", ff = ff, terminator = terminator, settings = list(resolution = resolution))
-    }),
+    }
+  ),
 
   private = list(
     tune_step = function() {
@@ -77,5 +78,6 @@ TunerGridSearch = R6Class("TunerGridSearch",
         }
       }
       private$eval_design_terminator(design)
-    })
+    }
+  )
 )

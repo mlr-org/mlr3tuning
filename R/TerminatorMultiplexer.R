@@ -56,5 +56,6 @@ TerminatorMultiplexer = R6Class("TerminatorMultiplexer",
 
     format = function() {
       paste0(map_chr(self$terminators, format), collapse = "\n")
-    })
+    }
+  )
 )
