@@ -21,7 +21,7 @@ Useful links:
 
 Authors:
 \itemize{
-  \item Bernd Bischl \email{bernd_bischl@gmx.de}
+  \item Bernd Bischl \email{bernd_bischl@gmx.net}
   \item Michel Lang \email{michellang@gmail.com} (0000-0001-9754-0393)
 }
 
