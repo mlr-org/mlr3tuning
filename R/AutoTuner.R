@@ -116,7 +116,7 @@ AutoTuner = R6Class("AutoTuner", inherit = mlr3::Learner,
     },
 
     predict = function(task) {
-      return(self$learner$predict(task))
+      self$learner$predict(task)
     }
   ),
 
