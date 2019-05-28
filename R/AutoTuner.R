@@ -90,7 +90,7 @@ AutoTuner = R6Class("AutoTuner", inherit = mlr3::Learner,
 
     train = function(task) {
       if (private$.is_trained) {
-        logger::log_warn("Learner is already trained.", namespace = "mlr3")
+        lg$warn("Learner is already trained.", namespace = "mlr3")
       } else {
         self$learner = mlr3::assert_learner(learner = self$learner, task = task)
 

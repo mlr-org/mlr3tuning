@@ -20,19 +20,19 @@ License: MIT + file LICENSE
 Depends:
     R (>= 3.1.0)
 Imports:
-    mlr3,
-    mlr3misc,
+    R6,
     checkmate,
     data.table,
-    paradox,
-    R6,
-    logger
+    lgr,
+    mlr3,
+    mlr3misc,
+    paradox
 Suggests:
+    GenSA,
     knitr,
     rmarkdown,
     rpart,
-    testthat,
-    GenSA
+    testthat
 VignetteBuilder:
     knitr
 Remotes:

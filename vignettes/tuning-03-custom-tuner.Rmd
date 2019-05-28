@@ -147,7 +147,7 @@ TunerGenSA = R6Class("TunerGenSA",
     GenSA_res = NULL,
     initialize = function(ff, evals, ...) {
       if (any(param_set$storage_type != "numeric")) {
-        logger::log_error("Parameter types needs to be numeric", namespace = "mlr3")
+        stop("Parameter types needs to be numeric")
       }
       checkmate::assert_integerish(evals, lower = 1L)
       super$initialize(id = "GenSA", ff = ff, terminator = TerminatorEvaluations$new(evals),

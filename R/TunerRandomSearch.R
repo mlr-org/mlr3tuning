@@ -65,7 +65,7 @@ TunerRandomSearch = R6Class("TunerRandomSearch",
 
       # Should be handled by paradox!
       if (nrow(design$data) > data.table::uniqueN(design$data)) {
-        logger::log_warn("Duplicated parameter values detected.", namespace = "mlr3")
+        lg$warn("Duplicated parameter values detected")
       }
 
       private$eval_design_terminator(design)

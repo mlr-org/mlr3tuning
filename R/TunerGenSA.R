@@ -52,7 +52,7 @@ TunerGenSA = R6Class("TunerGenSA",
     initialize = function(ff, terminator, ...) {
       if (any(ff$param_set$storage_type != "numeric")) {
         err_msg = "Parameter types needs to be numeric"
-        logger::log_error(err_msg, namespace = "mlr3")
+        lg$error(err_msg)
         stopf(err_msg)
       }
 
