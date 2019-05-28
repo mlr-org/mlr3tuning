@@ -55,5 +55,5 @@ test_that("Design resolution of grid search is correct", {
 
   design = paradox::generate_design_grid(ff$param_set, resolution = 3)
 
-  expect_equal(param_data, design$data)
+  expect_equal(remove_named(param_data, "xval"), design$data)
 })

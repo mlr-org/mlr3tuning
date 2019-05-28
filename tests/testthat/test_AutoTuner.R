@@ -68,7 +68,7 @@ test_that("AutoTuner", {
   at2$train(task)
 
   checkmate::expect_r6(at2$tuner, "Tuner")
-  checkmate::expect_r6(at2$predict(task), "Prediction")
+  checkmate::expect_list(at2$predict(task))
 
   expect_equal(at2$learner$param_set$values, at2$tuner$tune_result()$values)
 })

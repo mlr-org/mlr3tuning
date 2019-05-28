@@ -33,6 +33,6 @@ test_that("TunerGenSA", {
   result = gs$tune()$tune_result()
   expect_list(result)
   expect_number(result$performance["classif.ce"], lower = measures$classif.ce$range[1], upper = measures$classif.ce$range[2])
-  expect_list(result$values, len = 2)
+  expect_list(result$values, len = 3)
   expect_equal(result$values$minsplit, 3)
 })
