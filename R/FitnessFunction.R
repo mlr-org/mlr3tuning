@@ -123,7 +123,7 @@ FitnessFunction = R6Class("FitnessFunction",
 
       n_evals = if (is.null(self$bmr)) 0 else nrow(self$bmr$aggregated())
 
-      learners = mlr3misc::imap(design$transpose(), function(xt, i) {
+      learners = imap(design$transpose(), function(xt, i) {
         learner = self$learner$clone(deep = TRUE)
         learner$param_set$values = insert_named(learner$param_set$values, xt)
         learner$id = paste0(learner$id, n_evals + i)
@@ -135,7 +135,7 @@ FitnessFunction = R6Class("FitnessFunction",
 
       # add params to benchmark result data. if statement ensures that map with just one learner returns
       # the same as map with more than one learner:
-      bmr$data$pars = mlr3misc::map(bmr$data$learner, function(l) {
+      bmr$data$pars = map(bmr$data$learner, function(l) {
         if (nrow(bmr$data) == 1) {
           list(l$param_set$values)
         } else {

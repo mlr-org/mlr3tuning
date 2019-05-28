@@ -73,7 +73,7 @@ AutoTuner = R6Class("AutoTuner", inherit = mlr3::Learner,
 
       # TODO: Check for factory
       if (!inherits(tuner, "R6ClassGenerator") && grepl(pattern = "Tuner", x = tuner$classname)) {
-        mlr3misc::stopf("Tuner must be a R6 class generator that creates tuner (e.g. TunerGridSearch).")
+        stopf("Tuner must be a R6 class generator that creates tuner (e.g. TunerGridSearch).")
       }
       private$.tuner = tuner
 

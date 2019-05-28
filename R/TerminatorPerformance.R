@@ -41,9 +41,9 @@ TerminatorPerformance = R6Class("TerminatorPerformance",
 
     initialize = function(thresh, ff, all_reached = FALSE) {
       checkmate::assert_r6(ff, "FitnessFunction")
-      checkmate::assert_names(names(thresh), subset.of = names(mlr3misc::map(ff$task$measures, "id")))
+      checkmate::assert_names(names(thresh), subset.of = names(map(ff$task$measures, "id")))
       checkmate::assert_logical(all_reached, len = 1)
-      mlr3misc::imap(thresh, function(th, i) {
+      imap(thresh, function(th, i) {
         checkmate::assert_double(th, len = 1, lower = ff$task$measures[[i]]$range[1], upper = ff$task$measures[[i]]$range[2])
       })
       super$initialize(settings = list(thresh = thresh, all_reached = all_reached))
@@ -58,7 +58,7 @@ TerminatorPerformance = R6Class("TerminatorPerformance",
 
     update_end = function(ff) {
       aggr = ff$bmr$aggregated()
-      thresh_reached = mlr3misc::imap(self$settings$thresh, function(th, i) {
+      thresh_reached = imap(self$settings$thresh, function(th, i) {
         perfs = aggr[[i]]
         if (ff$task$measures[[i]]$minimize) {
           self$state$msrs_best[i] = min(perfs)

@@ -78,16 +78,16 @@ Tuner = R6Class("Tuner",
     aggregated = function(unnest = TRUE) {
       if (!is.null(self$ff$bmr)) {
         dt = self$ff$bmr$aggregated()
-        dt$pars = mlr3misc::map(dt[["learner"]], function(l) l$param_set$values)
+        dt$pars = map(dt[["learner"]], function(l) l$param_set$values)
         if (unnest) {
-          dt = mlr3misc::unnest(dt, "pars")
+          dt = unnest(dt, "pars")
         }
 
         # [] forces the data table to get printed. This is suppressed by the first call of dt after
         # using := within []
         return(dt[])
       } else {
-        mlr3misc::stopf("No tuning conducted yet.")
+        stopf("No tuning conducted yet.")
       }
     }
   ),

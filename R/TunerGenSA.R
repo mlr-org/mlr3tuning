@@ -58,7 +58,7 @@ TunerGenSA = R6Class("TunerGenSA",
 
       # Default settings:
       settings = list(smooth = FALSE, acceptance.param = -15, simple.function = FALSE, temperature = 250)
-      super$initialize(id = "GenSA", ff = ff, terminator = terminator, settings = mlr3misc::insert_named(settings, list(...)))
+      super$initialize(id = "GenSA", ff = ff, terminator = terminator, settings = insert_named(settings, list(...)))
     }
   ),
   private = list(

@@ -32,7 +32,7 @@ test_that("AutoTuner", {
   r = mlr3::resample(task, at, outer_resampling)
 
   expect_null(at$tuner)
-  lapply(mlr3misc::map(r$data$learner, "tuner"), function(tuner) checkmate::expect_r6(tuner, "Tuner"))
+  lapply(map(r$data$learner, "tuner"), function(tuner) checkmate::expect_r6(tuner, "Tuner"))
 
   at$train(task)
   checkmate::expect_r6(at$tuner, "Tuner")
@@ -59,6 +59,13 @@ test_that("AutoTuner", {
     expect_true(any(!row_ids_all %in% ids))
   })
 
+
+  if (getRversion() >= "3.6.0") {
+    rngkind = RNGkind()
+    on.exit(do.call(RNGkind, as.list(rngkind)))
+    suppressWarnings(RNGversion("3.5.0"))
+  }
+  set.seed(1)
 
   at2 = AutoTuner$new(learner, resampling, param_set, terminator, tuner = TunerRandomSearch,
     tuner_settings = list(batch_size = 10L))

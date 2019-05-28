@@ -51,7 +51,7 @@ test_that("Design resolution of grid search is correct", {
     tune = TunerGridSearch$new(ff, TerminatorEvaluations$new(30))$tune()
   })
   r = tune$aggregated(FALSE)
-  param_data = mlr3misc::unnest(r[, "pars"], "pars")
+  param_data = unnest(r[, "pars"], "pars")
 
   design = paradox::generate_design_grid(ff$param_set, resolution = 3)
 
