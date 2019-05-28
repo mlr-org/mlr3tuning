@@ -52,7 +52,7 @@ test_that("AutoTuner", {
   row_ids_all = task$row_ids
 
   # Check if all sub tasks combined equals the full task:
-  expect_equal(sort(unique(unlist(row_ids_inner))), sort(row_ids_all))
+  expect_set_equal(unlist(row_ids_inner), row_ids_all)
 
   # Check if each sub task of the inner tuner is a subset of the full task:
   nuisance = lapply(row_ids_inner, function(ids) {
