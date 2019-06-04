@@ -154,7 +154,7 @@ FitnessFunction = R6Class("FitnessFunction",
     },
 
     get_best = function() {
-      self$bmr$get_best(self$task$measures[[1L]])
+      self$bmr$get_best(self$task$measures[[1L]]$id)
     },
 
     add_hook = function(hook) {
