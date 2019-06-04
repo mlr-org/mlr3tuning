@@ -78,7 +78,7 @@ Tuner = R6Class("Tuner",
     aggregated = function(unnest = TRUE) {
       if (!is.null(self$ff$bmr)) {
         dt = self$ff$bmr$aggregated()
-        dt$pars = map(dt[["learner"]], function(l) l$param_set$values)
+        dt$pars = list(map(dt[["learner"]], function(l) l$param_set$values)) #as recommended in https://github.com/Rdatatable/data.table/issues/3626
         if (unnest) {
           dt = unnest(dt, "pars")
         }
