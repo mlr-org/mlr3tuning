@@ -114,7 +114,7 @@ FitnessFunction = R6Class("FitnessFunction",
 
     eval_design = function(design) {
 
-      checkmate::expect_r6(design, "Design")
+      checkmate::assert_r6(design, "Design")
 
       # Not that pretty but enables the use of transpose from Design:
       if (self$param_set$has_trafo) {
