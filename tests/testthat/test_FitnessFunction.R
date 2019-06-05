@@ -1,4 +1,4 @@
-context("FitnessFunction")
+context("PerformanceEvaluator")
 
 test_that("Construction", {
   task = mlr3::mlr_tasks$get("iris")
@@ -9,7 +9,7 @@ test_that("Construction", {
   task$measures = measures
   param_set = paradox::ParamSet$new(params = list(paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 
-  ff = FitnessFunction$new(
+  pe = PerformanceEvaluator$new(
     task = task,
     learner = learner,
     resampling = resampling,
@@ -17,22 +17,22 @@ test_that("Construction", {
     ctrl = tune_control(store_prediction = TRUE) # for the exceptions
   )
 
-  expect_r6(ff, "FitnessFunction")
-  expect_r6(ff$param_set, "ParamSet")
-  expect_null(ff$bmr)
+  expect_r6(pe, "PerformanceEvaluator")
+  expect_r6(pe$param_set, "ParamSet")
+  expect_null(pe$bmr)
 
-  expect_r6(ff$eval(data.table::data.table(cp = c(0.01, 0.02))), "FitnessFunction")
-  expect_data_table(ff$bmr$data, nrow = 2L)
-  expect_equal(ff$bmr$data$learner[[1L]]$param_set$values$cp, 0.01)
-  expect_equal(ff$bmr$data$learner[[1L]]$param_set$values$minsplit, 3)
-  expect_equal(ff$bmr$data$learner[[2L]]$param_set$values$cp, 0.02)
+  expect_r6(pe$eval(data.table::data.table(cp = c(0.01, 0.02))), "PerformanceEvaluator")
+  expect_data_table(pe$bmr$data, nrow = 2L)
+  expect_equal(pe$bmr$data$learner[[1L]]$param_set$values$cp, 0.01)
+  expect_equal(pe$bmr$data$learner[[1L]]$param_set$values$minsplit, 3)
+  expect_equal(pe$bmr$data$learner[[2L]]$param_set$values$cp, 0.02)
 
-  expect_r6(ff$eval(data.table(cp = 0.1)), "FitnessFunction")
-  expect_data_table(ff$bmr$data, nrow = 3L)
-  expect_equal(ff$bmr$data$learner[[3L]]$param_set$values$cp, 0.1)
-  expect_equal(ff$bmr$data$learner[[3L]]$param_set$values$minsplit, 3)
+  expect_r6(pe$eval(data.table(cp = 0.1)), "PerformanceEvaluator")
+  expect_data_table(pe$bmr$data, nrow = 3L)
+  expect_equal(pe$bmr$data$learner[[3L]]$param_set$values$cp, 0.1)
+  expect_equal(pe$bmr$data$learner[[3L]]$param_set$values$minsplit, 3)
 
-  expect_resample_result(ff$get_best())
+  expect_resample_result(pe$get_best())
 })
 
 
@@ -45,7 +45,7 @@ test_that("Construction", {
   task$measures = measures
   param_set = paradox::ParamSet$new(params = list(paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 
-  ff = FitnessFunction$new(
+  pe = PerformanceEvaluator$new(
     task = task,
     learner = learner,
     resampling = resampling,
@@ -53,9 +53,9 @@ test_that("Construction", {
     ctrl = tune_control(store_prediction = TRUE) # for the exceptions
   )
 
-  expect_error(ff$add_hook(hook = mean))
-  expect_silent(ff$add_hook(hook = function(ff) {
+  expect_error(pe$add_hook(hook = mean))
+  expect_silent(pe$add_hook(hook = function(pe) {
     "hook"
   }))
-  expect_equal(ff$run_hooks(), list("hook"))
+  expect_equal(pe$run_hooks(), list("hook"))
 })

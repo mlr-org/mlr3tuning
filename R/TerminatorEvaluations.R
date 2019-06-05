@@ -38,14 +38,14 @@ TerminatorEvaluations = R6Class("TerminatorEvaluations",
       self$state = list(evals = 0L)
     },
 
-    update_start = function(ff) {
-      self$state$evals = if (is.null(ff$bmr)) 0L else nrow(ff$bmr$aggregated())
+    update_start = function(pe) {
+      self$state$evals = if (is.null(pe$bmr)) 0L else nrow(pe$bmr$aggregated())
       self$terminated = (self$state$evals >= self$settings$max_evaluations)
       invisible(self)
     },
 
-    update_end = function(ff) {
-      self$update_start(ff)
+    update_end = function(pe) {
+      self$update_start(pe)
     },
 
     format = function() sprintf("TerminatorEvaluations with %i remaining evaluations", max(self$settings$max_evaluations - self$state$evals, 0L))

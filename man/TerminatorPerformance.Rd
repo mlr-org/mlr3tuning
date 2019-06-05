@@ -10,7 +10,7 @@ for everything that happens between update_start and update_end.
 }
 \section{Usage}{
 \preformatted{# Constructor
-t = TerminatorPerformance$new(thresh, ff, all_reached = FALSE)
+t = TerminatorPerformance$new(thresh, pe, all_reached = FALSE)
 }
 
 See \link{Terminator} for a description of the interface.
@@ -21,8 +21,8 @@ See \link{Terminator} for a description of the interface.
 \itemize{
 \item \code{thresh} (named list):\cr
 Thresholds that needs to be reached.
-\item \code{ff} (\link{FitnessFunction}):\cr
-Fitness function used for the tuning. This is required to check whether the defined thresholds makes sense or not.
+\item \code{pe} (\link{PerformanceEvaluator}):\cr
+Performance evaluator used for the tuning. This is required to check whether the defined thresholds makes sense or not.
 \item \code{all_reached} (logical(1)):\cr
 Stop whether all thresholds are reached (default = FALSE).
 }
@@ -37,7 +37,7 @@ The interface is described in \link{Terminator}.
 
 \examples{
 \donttest{
-t = TerminatorPerformance$new(0.5, ff)
+t = TerminatorPerformance$new(0.5, pe)
 }
 }
 \seealso{

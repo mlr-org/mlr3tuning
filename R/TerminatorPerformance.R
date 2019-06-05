@@ -8,15 +8,15 @@
 #' @section Usage:
 #' ```
 #' # Constructor
-#' t = TerminatorPerformance$new(thresh, ff, all_reached = FALSE)
+#' t = TerminatorPerformance$new(thresh, pe, all_reached = FALSE)
 #' ```
 #' See [Terminator] for a description of the interface.
 #'
 #' @section Arguments:
 #' * `thresh` (named list):\cr
 #'   Thresholds that needs to be reached.
-#' * `ff` ([FitnessFunction]):\cr
-#'   Fitness function used for the tuning. This is required to check whether the defined thresholds makes sense or not.
+#' * `pe` ([PerformanceEvaluator]):\cr
+#'   Performance evaluator used for the tuning. This is required to check whether the defined thresholds makes sense or not.
 #' * `all_reached` (logical(1)):\cr
 #'   Stop whether all thresholds are reached (default = FALSE).
 #'
@@ -29,7 +29,7 @@
 #' @family Terminator
 #' @examples
 #' \donttest{
-#' t = TerminatorPerformance$new(0.5, ff)
+#' t = TerminatorPerformance$new(0.5, pe)
 #' }
 NULL
 
@@ -39,12 +39,12 @@ TerminatorPerformance = R6Class("TerminatorPerformance",
   inherit = Terminator,
   public = list(
 
-    initialize = function(thresh, ff, all_reached = FALSE) {
-      checkmate::assert_r6(ff, "FitnessFunction")
-      checkmate::assert_names(names(thresh), subset.of = names(map(ff$task$measures, "id")))
+    initialize = function(thresh, pe, all_reached = FALSE) {
+      checkmate::assert_r6(pe, "PerformanceEvaluator")
+      checkmate::assert_names(names(thresh), subset.of = names(map(pe$task$measures, "id")))
       checkmate::assert_logical(all_reached, len = 1)
       imap(thresh, function(th, i) {
-        checkmate::assert_double(th, len = 1, lower = ff$task$measures[[i]]$range[1], upper = ff$task$measures[[i]]$range[2])
+        checkmate::assert_double(th, len = 1, lower = pe$task$measures[[i]]$range[1], upper = pe$task$measures[[i]]$range[2])
       })
       super$initialize(settings = list(thresh = thresh, all_reached = all_reached))
 
@@ -52,15 +52,15 @@ TerminatorPerformance = R6Class("TerminatorPerformance",
       self$state = list(msrs_best = list())
     },
 
-    update_start = function(ff) {
+    update_start = function(pe) {
       invisible(self)
     },
 
-    update_end = function(ff) {
-      aggr = ff$bmr$aggregated()
+    update_end = function(pe) {
+      aggr = pe$bmr$aggregated()
       thresh_reached = imap(self$settings$thresh, function(th, i) {
         perfs = aggr[[i]]
-        if (ff$task$measures[[i]]$minimize) {
+        if (pe$task$measures[[i]]$minimize) {
           self$state$msrs_best[i] = min(perfs)
           return(min(perfs) <= th)
         } else {

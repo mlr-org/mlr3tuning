@@ -3,16 +3,16 @@
 #' @description
 #' Abstract `Tuner` class that implements the main functionality each tuner must have. A tuner is
 #' an object that describes the tuning strategy how to search the hyperparameter space given within
-#' the `[FitnessFunction]` object.
+#' the `[PerformanceEvaluator]` object.
 #'
 #' @section Usage:
 #' ```
 #' # Construction
-#' tuner = Tuner$new(id, ff, terminator, settings = list())
+#' tuner = Tuner$new(id, pe, terminator, settings = list())
 #'
 #' # public members
 #' tuner$id
-#' tuner$ff
+#' tuner$pe
 #' tuner$terminator
 #' tuner$settings
 #'
@@ -25,7 +25,7 @@
 #' @section Arguments:
 #' * `id` (`character(1)`):\cr
 #'   The id of the Tuner.
-#' * `ff` (`[FitnessFunction]`).
+#' * `pe` (`[PerformanceEvaluator]`).
 #' * `terminator` (`[Terminator]`).
 #' * `settings` (`list`):\cr
 #'   The settings for the Tuner.
@@ -35,10 +35,10 @@
 #' @section Details:
 #' * `$new()` creates a new object of class `[Tuner]`.
 #' * `id` stores an identifier for this `[Tuner]`.
-#' * `ff` stores the [FitnessFunction] to optimize.
+#' * `pe` stores the [PerformanceEvaluator] to optimize.
 #' * `terminator` stores the `[Terminator]`.
 #' * `settings` is a list of hyperparamter settings for this `[Tuner]`.
-#' * `tune()` performs the tuning, until the budget of the `[Terminator]` in the `[FitnessFunction]` is exhausted.
+#' * `tune()` performs the tuning, until the budget of the `[Terminator]` in the `[PerformanceEvaluator]` is exhausted.
 #' * `tune_result()` returns a list with 2 elements:
 #'     - `performance` (`numeric()`) with the best performance.
 #'     - `param_set$values` (`numeric()`) with corresponding hyperparameters.
@@ -50,13 +50,13 @@ NULL
 Tuner = R6Class("Tuner",
   public = list(
     id = NULL,
-    ff = NULL,
+    pe = NULL,
     terminator = NULL,
     settings = NULL,
 
-    initialize = function(id, ff, terminator, settings = list()) {
+    initialize = function(id, pe, terminator, settings = list()) {
       self$id = assert_string(id)
-      self$ff = assert_r6(ff, "FitnessFunction")
+      self$pe = assert_r6(pe, "PerformanceEvaluator")
       self$terminator = assert_r6(terminator, "Terminator")
       self$settings = assert_list(settings, names = "unique")
     },
@@ -70,14 +70,14 @@ Tuner = R6Class("Tuner",
     },
 
     tune_result = function() {
-      measure = self$ff$task$measures[[1L]]
-      rr = self$ff$bmr$get_best(id = measure$id)
+      measure = self$pe$task$measures[[1L]]
+      rr = self$pe$bmr$get_best(id = measure$id)
       list(performance = rr$aggregated, values = rr$learner$param_set$values)
     },
 
     aggregated = function(unnest = TRUE) {
-      if (!is.null(self$ff$bmr)) {
-        dt = self$ff$bmr$aggregated()
+      if (!is.null(self$pe$bmr)) {
+        dt = self$pe$bmr$aggregated()
         dt$pars = list(map(dt[["learner"]], function(l) l$param_set$values)) #as recommended in https://github.com/Rdatatable/data.table/issues/3626
         if (unnest) {
           dt = unnest(dt, "pars")
@@ -93,9 +93,9 @@ Tuner = R6Class("Tuner",
   ),
   private = list(
     eval_design_terminator = function(design) {
-      self$terminator$update_start(self$ff)
-      self$ff$eval_design(design)
-      self$terminator$update_end(self$ff)
+      self$terminator$update_start(self$pe)
+      self$pe$eval_design(design)
+      self$terminator$update_end(self$pe)
 
       # Train as long as terminator is not terminated, if he is terminated throw condition of
       # class "terminated_message" that is caught by tryCatch.

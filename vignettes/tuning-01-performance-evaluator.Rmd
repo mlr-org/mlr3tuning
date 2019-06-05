@@ -1,9 +1,9 @@
 ---
-title: "Introduction to Fitness Functions"
+title: "Introduction to Performance Evaluators"
 author: "Daniel Schalk"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Introduction to Fitness Functions}
+  %\VignetteIndexEntry{Introduction to Performance Evaluators}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -37,12 +37,12 @@ task$measures = measures
 param_set = paradox::ParamSet$new(params = list(paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 ```
 
-## Define Fitness Function
+## Define Performance Evaluator
 
-With that basis we can define a fitness function:
+With that basis we can define a performance evaluator:
 
 ```{r}
-ff = FitnessFunction$new(
+pe = PerformanceEvaluator$new(
   task = task,
   learner = learner,
   resampling = resampling,
@@ -52,36 +52,36 @@ ff = FitnessFunction$new(
 
 At this point there are no results since have not computed anything jet:
 ```{r}
-ff$bmr
+pe$bmr
 ```
 
 However, the defined parameter space that is used for later search strategies is stored within the public member `param_set`:
 ```{r}
-ff$param_set
+pe$param_set
 ```
 
 ## Evaluate Parameter Configurations
 
 With the `$eval()` member function we can evaluate a single parameter configuration given as named list or vector:
 ```{r}
-ff$eval(c(cp = 0.05, minsplit = 5))
+pe$eval(c(cp = 0.05, minsplit = 5))
 ```
 
 Since we have defined 10 fold cross validation as resampling stragety the model is trained and evaluated 10 times. All evaluation results are stored as `mlr3::BenchmarkResult`:
 ```{r}
-ff$bmr
-ff$bmr$data
+pe$bmr
+pe$bmr$data
 ```
 
-With `ff$bmr$aggregated` we get a summary per resampling:
+With `pe$bmr$aggregated` we get a summary per resampling:
 ```{r}
-ff$bmr$aggregated()
+pe$bmr$aggregated()
 ```
 
 If we use another parameter configuration we, again, observe that the results are automatically inserted into the benchmark result:
 ```{r}
-ff$eval(c(cp = 0.05, minsplit = 2))
-ff$bmr$aggregated()
+pe$eval(c(cp = 0.05, minsplit = 2))
+pe$bmr$aggregated()
 ```
 
-Note that `$eval()` is the basis of the tuning. The member function evaluates a black box function defined by the model and evaluates the parameter setting using the given resampling strategy combined by the fitness function.
+Note that `$eval()` is the basis of the tuning. The member function evaluates a black box function defined by the model and evaluates the parameter setting using the given resampling strategy combined by the performance evaluator.

@@ -21,12 +21,12 @@ test_that("TunerGenSA", {
     paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1
   )))
 
-  ff = FitnessFunction$new(task, learner, resampling, param_set)
-  gs = TunerGenSA$new(ff, terminator = terminator, temperature = 200)
+  pe = PerformanceEvaluator$new(task, learner, resampling, param_set)
+  gs = TunerGenSA$new(pe, terminator = terminator, temperature = 200)
   expect_equal(gs$settings$temperature, 200)
 
   result = gs$tune()$tune_result()
-  bmr = gs$ff$bmr
+  bmr = gs$pe$bmr
   expect_r6(gs, "TunerGenSA")
   expect_data_table(bmr$data, nrow = n_folds * n_evals)
   expect_equal(bmr$data[, uniqueN(hash)], n_evals)

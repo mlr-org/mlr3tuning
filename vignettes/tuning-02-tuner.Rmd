@@ -38,15 +38,15 @@ In order to tune a machine learning algorithm, you have to specify:
 - the terminator which controls how long the tuning should run;
 - the optimization algorithm (aka tuning method).
 
-Note that the first three points defines the [FitnessFunction] which is already covered in detail in [defining and using fitness functions]().
+Note that the first three points defines the [PerformanceEvaluator] which is already covered in detail in [defining and using performance evaluators]().
 
-In this tutorial, we show how to specify the fitness function and terminator, how to conduct the tuning and how to access the tuning result, and how to visualize the hyperparameter tuning effects through several examples.
+In this tutorial, we show how to specify the performance evaluator and terminator, how to conduct the tuning and how to access the tuning result, and how to visualize the hyperparameter tuning effects through several examples.
 
 Throughout this section we consider classification examples. For the other types of learning problems, you can follow the same process analogously.
 
 We use the iris classification task (`mlr_tasks$get("iris")`) for illustration and tune the hyperparameters of a CART (function `rpart::rpart()`). The following examples tune the complexity parameter `cp`.
 
-## Specifying the fitness function
+## Specifying the performance evaluator
 
 ### Specify the task
 
@@ -103,13 +103,13 @@ param_set = ParamSet$new(params = list(
 param_set
 ```
 
-### Collecting everything to the fitness function
+### Collecting everything to the performance evaluator
 
 ```{r}
-ff = FitnessFunction$new(task, learner, resampling, param_set)
+pe = PerformanceEvaluator$new(task, learner, resampling, param_set)
 ```
 
-For details about the fitness function see [defining and using fitness functions]().
+For details about the performance evaluator see [defining and using performance evaluators]().
 
 ## Defining a terminator
 
@@ -123,7 +123,7 @@ In this section we introduce three terminator:
 
 ### Evaluation terminator
 
-This terminator stops after a certain amount of evaluations of the fitness function. One evaluation here is one resampling of a parameter combination, and therefore, one evaluation could include multiple trainings of the learner. In our case, with the 3-fold CV, in each evaluation we fit 3 models on each fold.
+This terminator stops after a certain amount of evaluations of the performance evaluator. One evaluation here is one resampling of a parameter combination, and therefore, one evaluation could include multiple trainings of the learner. In our case, with the 3-fold CV, in each evaluation we fit 3 models on each fold.
 
 With the [TerminatorEvaluations] class we can specify how often we want to evaluate the learner. In our case want to have maximal 50 evaluations:
 ```{r}
@@ -149,14 +149,14 @@ tm
 
 ## Specifying the optimization algorithm
 
-Now that we have specified the fitness function and the terminator (that are directly passed to the tuner), we need to choose an optimization algorithm for our parameters that are evaluated by the fitness function.
+Now that we have specified the performance evaluator and the terminator (that are directly passed to the tuner), we need to choose an optimization algorithm for our parameters that are evaluated by the performance evaluator.
 
 A grid search is one of the standard – albeit slow – ways to choose an appropriate set of parameters from a given search space.
 
 In our case of numeric parameters above, since we have only specified the upper and lower bounds for the search space, grid search will create a grid using equally-sized steps. By default, grid search will span the space in 10 equal-sized steps. The number of steps can be changed with the resolution argument. Here we change to 15 equal-sized steps in the space:
 ```{r}
-# pass the fitness function (ff) and terminator (tm) to the tuner:
-tuner_gs = TunerGridSearch$new(ff, tm, resolution = 15)
+# pass the performance evaluator (pe) and terminator (tm) to the tuner:
+tuner_gs = TunerGridSearch$new(pe, tm, resolution = 15)
 ```
 Note that if we have defined the maximal number of evaluation, `mlr3tuning` then automatically adjusts the resolution to not overshoot the terminators stopping criteria.
 
@@ -164,8 +164,8 @@ Since grid search is normally too slow in practice, we’ll also examine random 
 
 Note that this does not apply to the runtime terminator since the terminators are executed before and after a tuning step. If one tuning step evaluates $100$ parameter values at once, we have to wait until these values are evaluated, even if this takes longer then, lets say, 5 seconds. Therefore, it beneficial to choose the `batch_size` not too big:
 ```{r}
-# pass the fitness function (ff) and terminator (tm) to the tuner:
-tuner_rs = TunerRandomSearch$new(ff, tm, batch_size = 5)
+# pass the performance evaluator (pe) and terminator (tm) to the tuner:
+tuner_rs = TunerRandomSearch$new(pe, tm, batch_size = 5)
 ```
 
 ## Performing the tuning
@@ -176,9 +176,9 @@ Now that we have specified a search space and the optimization algorithm, it’s
 tuner_rs$tune()
 ```
 
-`tune()` simply performs a benchmark on the parameter values generated by the tuner and writes them into a [mlr3::BenchmarkResult] object which is located within the fitness function.
+`tune()` simply performs a benchmark on the parameter values generated by the tuner and writes them into a [mlr3::BenchmarkResult] object which is located within the performance evaluator.
 ```{r}
-ff$bmr
+pe$bmr
 ```
 
 After the tuning is done, we can take a look at the terminator to see what criteria was used to stop the tuning:

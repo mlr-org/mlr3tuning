@@ -1,33 +1,33 @@
-#' @title FitnessFunction Class
+#' @title PerformanceEvaluator Class
 #'
 #' @description
-#' Implements a fitness function for \pkg{mlr3} as `R6` class `FitnessFunction`. An object of that class
+#' Implements a performance evaluator for \pkg{mlr3} as `R6` class `PerformanceEvaluator`. An object of that class
 #' contains all relevant informations that are necessary to conduct tuning (`mlr3::Task`, `mlr3::Learner`, `mlr3::Resampling`, `mlr3::Measure`s,
 #' `paradox::ParamSet`).
-#' After defining a fitness function, we can use it to predict the generalization error of a specific learner configuration
+#' After defining a performance evaluator, we can use it to predict the generalization error of a specific learner configuration
 #' defined by it's hyperparameter (using `$eval()`).
-#' The `FitnessFunction` class is the basis for further tuning strategies, i.e., grid or random search.
+#' The `PerformanceEvaluator` class is the basis for further tuning strategies, i.e., grid or random search.
 #'
 #' @section Usage:
 #' ```
 #' # Construction
-#' ff = FitnessFunction$new(task, learner, resampling, param_set,
+#' pe = PerformanceEvaluator$new(task, learner, resampling, param_set,
 #'   ctrl = tune_control())
 #'
 #' # Public members
-#' ff$task
-#' ff$learner
-#' ff$resampling
-#' ff$param_set
-#' ff$ctrl
-#' ff$hooks
-#' ff$bmr
+#' pe$task
+#' pe$learner
+#' pe$resampling
+#' pe$param_set
+#' pe$ctrl
+#' pe$hooks
+#' pe$bmr
 #'
 #' # Public methods
-#' ff$eval(x)
-#' ff$eval_vectorized(xts)
-#' ff$get_best()
-#' ff$run_hooks(id)
+#' pe$eval(x)
+#' pe$eval_vectorized(xts)
+#' pe$get_best()
+#' pe$run_hooks(id)
 #' ```
 #'
 #' @section Arguments:
@@ -49,7 +49,7 @@
 #'   Identifier of a hook.
 #'
 #' @section Details:
-#' * `$new()` creates a new object of class [FitnessFunction].
+#' * `$new()` creates a new object of class [PerformanceEvaluator].
 #' * `$task` (`mlr3::Task`) the task for which the tuning should be conducted.
 #' * `$learner` (`mlr3::Learner`) the algorithm for which the tuning should be conducted.
 #' * `$resampling` (`mlr3::Resampling`) strategy to evaluate a parameter setting
@@ -60,13 +60,13 @@
 #' * `$eval(xt)` evaluates the (transformed) parameter setting `xt` (`list`) for the given learner and resampling.
 #' * `$eval_vectorized(xts)` performs resampling for multiple (transformed) parameter settings `xts` (list of lists).
 #' * `$get_best()`  get best parameter configuration from the `BenchmarkResult` object.
-#' * `$run_hooks()` run a function that runs on the whole `FitnessFunction` object.
+#' * `$run_hooks()` run a function that runs on the whole `PerformanceEvaluator` object.
 #'
-#' @name FitnessFunction
+#' @name PerformanceEvaluator
 #' @keywords internal
-#' @family FitnessFunction
+#' @family PerformanceEvaluator
 #' @examples
-#' # Object required to define the fitness function:
+#' # Object required to define the performance evaluator:
 #' task = mlr3::mlr_tasks$get("iris")
 #' learner = mlr3::mlr_learners$get("classif.rpart")
 #' resampling = mlr3::mlr_resamplings$get("holdout")
@@ -76,20 +76,20 @@
 #'   paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1),
 #'   paradox::ParamInt$new("minsplit", lower = 1, upper = 10)))
 #'
-#' ff = FitnessFunction$new(
+#' pe = PerformanceEvaluator$new(
 #'   task = task,
 #'   learner = learner,
 #'   resampling = resampling,
 #'   param_set = param_set
 #' )
 #'
-#' ff$eval(data.table::data.table(cp = 0.05, minsplit = 5))
-#' ff$eval(data.table::data.table(cp = 0.01, minsplit = 3))
-#' ff$get_best()
+#' pe$eval(data.table::data.table(cp = 0.05, minsplit = 5))
+#' pe$eval(data.table::data.table(cp = 0.01, minsplit = 3))
+#' pe$get_best()
 NULL
 
 #' @export
-FitnessFunction = R6Class("FitnessFunction",
+PerformanceEvaluator = R6Class("PerformanceEvaluator",
   public = list(
     task = NULL,
     learner = NULL,
@@ -158,13 +158,13 @@ FitnessFunction = R6Class("FitnessFunction",
     },
 
     add_hook = function(hook) {
-      checkmate::assert_function(hook, args = "ff", nargs = 1)
+      checkmate::assert_function(hook, args = "pe", nargs = 1)
       self$hooks = append(self$hooks, hook)
     },
 
     run_hooks = function() {
       lapply(self$hooks, function(hook) {
-        do.call(hook, list(ff = self))
+        do.call(hook, list(pe = self))
       })
     },
     deep_clone = function(name, value) {

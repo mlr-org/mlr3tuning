@@ -19,13 +19,13 @@ test_that("TunerRandomSearch", {
   )))
 
   terminator = TerminatorEvaluations$new(5)
-  ff = FitnessFunction$new(task, learner, resampling, param_set)
-  rs = TunerRandomSearch$new(ff, terminator)
-  rs1 = TunerRandomSearch$new(ff, terminator, 2L)
+  pe = PerformanceEvaluator$new(task, learner, resampling, param_set)
+  rs = TunerRandomSearch$new(pe, terminator)
+  rs1 = TunerRandomSearch$new(pe, terminator, 2L)
 
   # lapply(list(rs, rs1), function (rs) {
   result = rs$tune()$tune_result()
-  bmr = rs$ff$bmr
+  bmr = rs$pe$bmr
   expect_r6(rs, "TunerRandomSearch")
   expect_data_table(bmr$data, nrow = n_folds * 5)
   expect_list(result)

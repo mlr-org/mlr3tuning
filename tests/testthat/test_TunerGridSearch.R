@@ -19,12 +19,12 @@ test_that("TunerGridSearch", {
     paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1
   )))
 
-  ff = FitnessFunction$new(task, learner, resampling, param_set)
-  expect_error(TunerGridSearch$new(ff, terminator = terminator_false))
-  gs = TunerGridSearch$new(ff, terminator = terminator)
+  pe = PerformanceEvaluator$new(task, learner, resampling, param_set)
+  expect_error(TunerGridSearch$new(pe, terminator = terminator_false))
+  gs = TunerGridSearch$new(pe, terminator = terminator)
 
   result = gs$tune()$tune_result()
-  bmr = gs$ff$bmr
+  bmr = gs$pe$bmr
   expect_r6(gs, "TunerGridSearch")
   expect_data_table(bmr$data, nrow = 2 * 5)
   expect_equal(bmr$data[, uniqueN(hash)], 5)
@@ -37,7 +37,7 @@ test_that("TunerGridSearch", {
 })
 
 test_that("Design resolution of grid search is correct", {
-  ff = FitnessFunction$new(
+  pe = PerformanceEvaluator$new(
     task = mlr3::mlr_tasks$get("iris"),
     learner = mlr3::mlr_learners$get("classif.rpart"),
     mlr3::mlr_resamplings$get("holdout"),
@@ -48,12 +48,12 @@ test_that("Design resolution of grid search is correct", {
 
 
   expect_output({
-    tune = TunerGridSearch$new(ff, TerminatorEvaluations$new(30))$tune()
+    tune = TunerGridSearch$new(pe, TerminatorEvaluations$new(30))$tune()
   })
   r = tune$aggregated(FALSE)
   param_data = unnest(r[, "pars"], "pars")
 
-  design = paradox::generate_design_grid(ff$param_set, resolution = 3)
+  design = paradox::generate_design_grid(pe$param_set, resolution = 3)
 
   expect_equal(remove_named(param_data, "xval"), design$data)
 })

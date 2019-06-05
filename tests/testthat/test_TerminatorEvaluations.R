@@ -10,11 +10,11 @@ test_that("API", {
     learners = mlr3::mlr_learners$mget(c("classif.rpart")),
     resamplings = mlr3::mlr_resamplings$mget("cv")
   ))
-  ff = list(bmr = bmr)
+  pe = list(bmr = bmr)
 
-  te$update_start(ff)
+  te$update_start(pe)
   expect_identical(te$state$evals, 1L)
-  te$update_end(ff)
+  te$update_end(pe)
   expect_identical(te$state$evals, 1L)
   expect_false(te$terminated)
   expect_string(format(te), fixed = "1 remaining")
@@ -24,11 +24,11 @@ test_that("API", {
     learners = mlr3::mlr_learners$mget(c("classif.featureless", "classif.rpart")),
     resamplings = mlr3::mlr_resamplings$mget("cv")
   ))
-  ff = list(bmr = bmr)
+  pe = list(bmr = bmr)
 
-  te$update_start(ff)
+  te$update_start(pe)
   expect_identical(te$state$evals, 2L)
-  te$update_end(ff)
+  te$update_end(pe)
   expect_identical(te$state$evals, 2L)
   expect_true(te$terminated)
   expect_string(format(te), fixed = "0 remaining")

@@ -7,7 +7,7 @@
 Tuner child class to conduct generalized simulated annealing (GenSA) as tuning technique.
 }
 \section{Usage}{
-\preformatted{tuner = TunerGenSA$new(ff, terminator, ...)
+\preformatted{tuner = TunerGenSA$new(pe, terminator, ...)
 }
 
 See \link{Tuner} for a description of the interface.
@@ -16,11 +16,11 @@ See \link{Tuner} for a description of the interface.
 \section{Arguments}{
 
 \itemize{
-\item \code{ff} (\link{FitnessFunction}):
+\item \code{pe} (\link{PerformanceEvaluator}):
 Black box function used for the tuning.
 \item \code{terminator} (\link{Terminator}):
 Terminator to control the termination.
-Will be triggered by the hooks of the \link{FitnessFunction}.
+Will be triggered by the hooks of the \link{PerformanceEvaluator}.
 \item \code{...}:
 Additional arguments passed to \link[GenSA:GenSA]{GenSA::GenSA}.
 }
@@ -44,10 +44,10 @@ param_set = paradox::ParamSet$new(
     paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)
   )
 )
-ff = FitnessFunction$new(task, learner, resampling, param_set)
+pe = PerformanceEvaluator$new(task, learner, resampling, param_set)
 
 terminator = TerminatorEvaluations$new(10)
-rs = TunerGenSA$new(ff, terminator)
+rs = TunerGenSA$new(pe, terminator)
 rs$tune()$tune_result()
 }
 \seealso{

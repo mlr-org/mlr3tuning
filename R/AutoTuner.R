@@ -95,7 +95,7 @@ AutoTuner = R6Class("AutoTuner", inherit = mlr3::Learner,
         self$learner = mlr3::assert_learner(learner = self$learner, task = task)
 
         private$.tuner_settings$terminator = private$.terminator$clone()
-        private$.tuner_settings$ff = FitnessFunction$new(
+        private$.tuner_settings$pe = PerformanceEvaluator$new(
           task = mlr3::assert_task(task)$clone(deep = TRUE),
           learner = self$learner$clone(deep = TRUE),
           resampling = private$.ff_args$resampling$clone(deep = TRUE),

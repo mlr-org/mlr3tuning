@@ -6,15 +6,15 @@
 \description{
 Abstract \code{Tuner} class that implements the main functionality each tuner must have. A tuner is
 an object that describes the tuning strategy how to search the hyperparameter space given within
-the \code{[FitnessFunction]} object.
+the \code{[PerformanceEvaluator]} object.
 }
 \section{Usage}{
 \preformatted{# Construction
-tuner = Tuner$new(id, ff, terminator, settings = list())
+tuner = Tuner$new(id, pe, terminator, settings = list())
 
 # public members
 tuner$id
-tuner$ff
+tuner$pe
 tuner$terminator
 tuner$settings
 
@@ -30,7 +30,7 @@ tuner$aggregated(unnest)
 \itemize{
 \item \code{id} (\code{character(1)}):\cr
 The id of the Tuner.
-\item \code{ff} (\code{[FitnessFunction]}).
+\item \code{pe} (\code{[PerformanceEvaluator]}).
 \item \code{terminator} (\code{[Terminator]}).
 \item \code{settings} (\code{list}):\cr
 The settings for the Tuner.
@@ -44,10 +44,10 @@ If TRUE returns each parameter as a column of the data table. Otherwise the colu
 \itemize{
 \item \code{$new()} creates a new object of class \code{[Tuner]}.
 \item \code{id} stores an identifier for this \code{[Tuner]}.
-\item \code{ff} stores the \link{FitnessFunction} to optimize.
+\item \code{pe} stores the \link{PerformanceEvaluator} to optimize.
 \item \code{terminator} stores the \code{[Terminator]}.
 \item \code{settings} is a list of hyperparamter settings for this \code{[Tuner]}.
-\item \code{tune()} performs the tuning, until the budget of the \code{[Terminator]} in the \code{[FitnessFunction]} is exhausted.
+\item \code{tune()} performs the tuning, until the budget of the \code{[Terminator]} in the \code{[PerformanceEvaluator]} is exhausted.
 \item \code{tune_result()} returns a list with 2 elements:
 \itemize{
 \item \code{performance} (\code{numeric()}) with the best performance.

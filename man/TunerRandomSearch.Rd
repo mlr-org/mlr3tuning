@@ -7,7 +7,7 @@
 Tuner child class to conduct random search.
 }
 \section{Usage}{
-\preformatted{tuner = TunerRandomSearch$new(ff, terminator, batch_size = 100L)
+\preformatted{tuner = TunerRandomSearch$new(pe, terminator, batch_size = 100L)
 }
 
 See \link{Tuner} for a description of the interface.
@@ -16,11 +16,11 @@ See \link{Tuner} for a description of the interface.
 \section{Arguments}{
 
 \itemize{
-\item \code{ff} (\link{FitnessFunction}):
+\item \code{pe} (\link{PerformanceEvaluator}):
 Black box function used for the tuning.
 \item \code{terminator} (\link{Terminator}):
 Terminator to control the termination.
-Will be triggered by the hooks of the \link{FitnessFunction}.
+Will be triggered by the hooks of the \link{PerformanceEvaluator}.
 \item \code{batch_size} (\code{integer(1)}):
 Maximum number of configurations to try in a batch.
 Each batch is possibly executed in parallel via \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
@@ -45,10 +45,10 @@ param_set = paradox::ParamSet$new(
     paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)
   )
 )
-ff = FitnessFunction$new(task, learner, resampling, param_set)
+pe = PerformanceEvaluator$new(task, learner, resampling, param_set)
 
 terminator = TerminatorEvaluations$new(10)
-rs = TunerRandomSearch$new(ff, terminator)
+rs = TunerRandomSearch$new(pe, terminator)
 rs$tune()$tune_result()
 }
 \seealso{

@@ -5,16 +5,16 @@
 #'
 #' @section Usage:
 #' ```
-#' tuner = TunerGenSA$new(ff, terminator, ...)
+#' tuner = TunerGenSA$new(pe, terminator, ...)
 #' ```
 #' See [Tuner] for a description of the interface.
 #'
 #' @section Arguments:
-#' * `ff` ([FitnessFunction]):
+#' * `pe` ([PerformanceEvaluator]):
 #'   Black box function used for the tuning.
 #' * `terminator` ([Terminator]):
 #'   Terminator to control the termination.
-#'   Will be triggered by the hooks of the [FitnessFunction].
+#'   Will be triggered by the hooks of the [PerformanceEvaluator].
 #' * `...`:
 #'   Additional arguments passed to [GenSA::GenSA].
 #'
@@ -37,10 +37,10 @@
 #'     paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)
 #'   )
 #' )
-#' ff = FitnessFunction$new(task, learner, resampling, param_set)
+#' pe = PerformanceEvaluator$new(task, learner, resampling, param_set)
 #'
 #' terminator = TerminatorEvaluations$new(10)
-#' rs = TunerGenSA$new(ff, terminator)
+#' rs = TunerGenSA$new(pe, terminator)
 #' rs$tune()$tune_result()
 NULL
 
@@ -49,8 +49,8 @@ NULL
 TunerGenSA = R6Class("TunerGenSA",
   inherit = Tuner,
   public = list(
-    initialize = function(ff, terminator, ...) {
-      if (any(ff$param_set$storage_type != "numeric")) {
+    initialize = function(pe, terminator, ...) {
+      if (any(pe$param_set$storage_type != "numeric")) {
         err_msg = "Parameter types needs to be numeric"
         lg$error(err_msg)
         stopf(err_msg)
@@ -58,30 +58,30 @@ TunerGenSA = R6Class("TunerGenSA",
 
       # Default settings:
       settings = list(smooth = FALSE, acceptance.param = -15, simple.function = FALSE, temperature = 250)
-      super$initialize(id = "GenSA", ff = ff, terminator = terminator, settings = insert_named(settings, list(...)))
+      super$initialize(id = "GenSA", pe = pe, terminator = terminator, settings = insert_named(settings, list(...)))
     }
   ),
   private = list(
     tune_step = function() {
-      objective = function(x, ff) {
+      objective = function(x, pe) {
 
         param_value = lapply(x, function(param) param)
 
         # x sometimes comes without names, set them manually:
-        names(param_value) = self$ff$param_set$ids()
+        names(param_value) = self$pe$param_set$ids()
         dt_param_value = do.call(data.table::data.table, param_value)
 
-        private$eval_design_terminator(paradox::Design$new(ff$param_set, dt_param_value, remove_dupl = TRUE))
+        private$eval_design_terminator(paradox::Design$new(pe$param_set, dt_param_value, remove_dupl = TRUE))
 
         # Get estimated generalization error. Use the negation if the measures needs to be minimized:
-        performance = unlist(ff$bmr$data[.N]$performance)[[1]]
-        if (!ff$task$measures[[1]]$minimize) {
+        performance = unlist(pe$bmr$data[.N]$performance)[[1]]
+        if (!pe$task$measures[[1]]$minimize) {
           return(-performance)
         }
         return(performance)
       }
-      nuisance = GenSA::GenSA(fn = objective, lower = self$ff$param_set$lower, upper = self$ff$param_set$upper,
-        control = self$settings, ff = self$ff)
+      nuisance = GenSA::GenSA(fn = objective, lower = self$pe$param_set$lower, upper = self$pe$param_set$upper,
+        control = self$settings, pe = self$pe)
     }
   )
 )

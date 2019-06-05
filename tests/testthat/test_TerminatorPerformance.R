@@ -14,24 +14,24 @@ test_that("TerminatorPerformance", {
     )
   )
 
-  ff = FitnessFunction$new(task, learner, resampling, param_set)
+  pe = PerformanceEvaluator$new(task, learner, resampling, param_set)
   expect_error({
-    terminator = TerminatorPerformance$new(list(classif.ce = 0.1, false.measure = 0.9), ff)
+    terminator = TerminatorPerformance$new(list(classif.ce = 0.1, false.measure = 0.9), pe)
   })
   expect_error({
-    terminator = TerminatorPerformance$new(list(classif.ce = 0.1, classif.acc = 2), ff)
+    terminator = TerminatorPerformance$new(list(classif.ce = 0.1, classif.acc = 2), pe)
   })
   expect_error({
-    terminator = TerminatorPerformance$new(list(0.1, 0.9), ff)
+    terminator = TerminatorPerformance$new(list(0.1, 0.9), pe)
   })
   expect_silent({
-    terminator = TerminatorPerformance$new(list(classif.ce = 0.1, classif.acc = 0.9), ff)
+    terminator = TerminatorPerformance$new(list(classif.ce = 0.1, classif.acc = 0.9), pe)
   })
 
-  gs = TunerGenSA$new(ff, terminator)
+  gs = TunerGenSA$new(pe, terminator)
   gs$tune()
 
-  agg = ff$bmr$aggregated()
+  agg = pe$bmr$aggregated()
   expect_equal(terminator$state$msrs_best$classif.ce, min(agg$classif.ce))
   expect_equal(terminator$state$msrs_best$classif.acc, max(agg$classif.acc))
 })

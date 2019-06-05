@@ -16,12 +16,12 @@ param_set = paradox::ParamSet$new(params = list(
   paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1
 )))
 
-ff = FitnessFunction$new(task, learner, resampling, param_set)
+pe = PerformanceEvaluator$new(task, learner, resampling, param_set)
 
 test_that("API", {
   for (n_evals in c(1,5)) {
     terminator = TerminatorEvaluations$new(n_evals)
-    rs = TunerRandomSearch$new(ff$clone(), terminator)
+    rs = TunerRandomSearch$new(pe$clone(), terminator)
     expect_error(rs$aggregated())
     rs$tune()
     expect_data_table(rs$aggregated(), nrows = n_evals)

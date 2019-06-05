@@ -14,18 +14,18 @@ test_that("API", {
     learners = mlr3::mlr_learners$mget(c("classif.rpart")),
     resamplings = mlr3::mlr_resamplings$mget("cv")
   ))
-  ff = list(bmr = bmr)
+  pe = list(bmr = bmr)
 
-  tm$update_start(ff)
+  tm$update_start(pe)
   Sys.sleep(0.1)
-  tm$update_end(ff)
+  tm$update_end(pe)
   expect_false(tm$terminated)
   expect_false(ti$terminated)
   expect_false(tr$terminated)
 
-  tm$update_start(ff)
+  tm$update_start(pe)
   Sys.sleep(1)
-  tm$update_end(ff)
+  tm$update_end(pe)
   expect_true(tm$terminated)
   expect_false(ti$terminated)
   expect_true(tr$terminated)

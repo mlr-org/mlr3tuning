@@ -17,8 +17,8 @@ t$settings
 t$state
 
 # public methods
-t$update_start(ff)
-t$update_end(ff)
+t$update_start(pe)
+t$update_end(pe)
 
 # active bindings
 t$remaining
@@ -30,8 +30,8 @@ t$remaining
 \itemize{
 \item \code{settings} (\code{list()}):
 The settings for Terminator as named list.
-\item \code{ff} (\code{FitnessFunction}):
-\code{FitnessFunction} object used to determine when to stop the tuning.
+\item \code{pe} (\code{PerformanceEvaluator}):
+\code{PerformanceEvaluator} object used to determine when to stop the tuning.
 }
 }
 

@@ -49,7 +49,7 @@ BugReports: https://github.com/mlr-org/mlr3tuning/issues
 RoxygenNote: 6.1.1
 Collate:
     'AutoTuner.R'
-    'FitnessFunction.R'
+    'PerformanceEvaluator.R'
     'Terminator.R'
     'TerminatorEvaluations.R'
     'TerminatorMultiplexer.R'

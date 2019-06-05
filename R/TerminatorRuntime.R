@@ -43,12 +43,12 @@ TerminatorRuntime = R6Class("TerminatorRuntime",
       self$state = list(time_start = NULL, time_end = NULL, time_remaining = self$settings$max_time)
     },
 
-    update_start = function(ff) {
+    update_start = function(pe) {
       self$state$time_start = Sys.time()
       invisible(self)
     },
 
-    update_end = function(ff) {
+    update_end = function(pe) {
       self$state$time_end = Sys.time()
       dtime = difftime(time1 = self$state$time_end, time2 = self$state$time_start, units = self$settings$units)
       self$state$time_remaining = self$state$time_remaining - dtime

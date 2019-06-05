@@ -13,19 +13,19 @@ test_that("API", {
 
   expect_false(te$terminated)
 
-  ff = list(bmr = list(data = data.table()))
+  pe = list(bmr = list(data = data.table()))
 
-  te$update_start(ff)
+  te$update_start(pe)
   Sys.sleep(0.1)
-  te$update_end(ff)
+  te$update_end(pe)
 
   expect_true(te$state$time_start < te$state$time_end)
   expect_true(te$state$time_remaining < 1)
   expect_false(te$terminated)
 
-  te$update_start(ff)
+  te$update_start(pe)
   Sys.sleep(1)
-  te$update_end(ff)
+  te$update_end(pe)
 
   expect_true(te$state$time_start < te$state$time_end)
   expect_true(te$state$time_remaining < 0)

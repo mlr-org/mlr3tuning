@@ -15,8 +15,8 @@
 #' t$state
 #'
 #' # public methods
-#' t$update_start(ff)
-#' t$update_end(ff)
+#' t$update_start(pe)
+#' t$update_end(pe)
 #'
 #' # active bindings
 #' t$remaining
@@ -25,8 +25,8 @@
 #' @section Arguments:
 #' * `settings` (`list()`):
 #'   The settings for Terminator as named list.
-#' * `ff` (`FitnessFunction`):
-#'   `FitnessFunction` object used to determine when to stop the tuning.
+#' * `pe` (`PerformanceEvaluator`):
+#'   `PerformanceEvaluator` object used to determine when to stop the tuning.
 #'
 #' @section Details:
 #' * `$new()` creates a new object of class [Terminator].
@@ -51,10 +51,10 @@ Terminator = R6Class("Terminator",
     initialize = function(settings) {
       self$settings = assert_list(settings, names = "unique")
     },
-    update_start = function(ff) {
+    update_start = function(pe) {
       stop("$update_start() not implemented for Terminator")
     },
-    update_end = function(ff) {
+    update_end = function(pe) {
       stop("$update_end() not implemented for Terminator")
     }
   )
