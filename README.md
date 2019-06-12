@@ -35,4 +35,4 @@ For tuning, the following sections exist:
 
 - [Overview of tuning in _mlr3_](https://mlr3book.mlr-org.com/tuning.html)
 - [Tuning in nested resampling](https://mlr3book.mlr-org.com/nested-resampling.html#execution)
-- [Adding a new tuner to mlr3](https://mlr3book.mlr-org.com/learners-1.html)
+- [Adding a new tuner to mlr3](https://mlr3book.mlr-org.com/ext-tuner.html)
