@@ -2,16 +2,16 @@
 % Please edit documentation in R/tune_control.R
 \name{tune_control}
 \alias{tune_control}
-\title{Execution control object for tuning}
+\title{Execution Control Object for Tuning}
 \usage{
-tune_control(store_model = FALSE, store_prediction = FALSE, ...)
+tune_control(store_prediction = FALSE, store_tuning = FALSE, ...)
 }
 \arguments{
-\item{store_model}{(\code{logical(1)}):\cr
-Store the models of the individual experiments.}
-
 \item{store_prediction}{(\code{logical(1)}):\cr
 Store the predictions of the individual experiments.}
+
+\item{store_tuning}{(\code{logical(1)}):\cr
+Store internal tuning steps, e.g. the optimization path of the tuner.}
 
 \item{...}{:\cr
 Additional arguments passed down to \code{\link[mlr3:mlr_control]{mlr3::mlr_control()}}.}
@@ -20,5 +20,5 @@ Additional arguments passed down to \code{\link[mlr3:mlr_control]{mlr3::mlr_cont
 (list()) with options passed down to \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
 }
 \description{
-This function is a wrapper around \code{\link[mlr3:mlr_control]{mlr3::mlr_control()}} with defaults better suited for tuning.
+This function is an extension of \code{\link[mlr3:mlr_control]{mlr3::mlr_control()}}.
 }

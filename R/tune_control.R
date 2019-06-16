@@ -1,17 +1,20 @@
-#' @title Execution control object for tuning
+#' @title Execution Control Object for Tuning
 #'
 #' @description
-#' This function is a wrapper around [mlr3::mlr_control()] with defaults better suited for tuning.
+#' This function is an extension of [mlr3::mlr_control()].
 #'
-#' @param store_model (`logical(1)`):\cr
-#'   Store the models of the individual experiments.
 #' @param store_prediction (`logical(1)`):\cr
 #'   Store the predictions of the individual experiments.
+#' @param store_tuning (`logical(1)`):\cr
+#'   Store internal tuning steps, e.g. the optimization path of the tuner.
 #' @param ... :\cr
 #'   Additional arguments passed down to [mlr3::mlr_control()].
 #'
 #' @return (list()) with options passed down to [mlr3::benchmark()].
 #' @export
-tune_control = function(store_model = FALSE, store_prediction = FALSE, ...) {
-  mlr3::mlr_control(store_model = store_model, store_prediction = store_prediction, ...)
+tune_control = function(store_prediction = FALSE, store_tuning = FALSE, ...) {
+  insert_named(
+    mlr3::mlr_control(store_prediction = store_prediction, ...),
+    list(store_tuning = assert_flag(store_tuning))
+  )
 }
