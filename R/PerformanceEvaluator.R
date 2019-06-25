@@ -130,8 +130,8 @@ PerformanceEvaluator = R6Class("PerformanceEvaluator",
         return(learner)
       })
 
-      bmr = mlr3::benchmark(design = data.table::data.table(task = list(self$task), learner = learners,
-        resampling = list(self$resampling)), ctrl = self$ctrl)
+      bmr = mlr3::benchmark(mlr3::expand_grid(tasks = list(self$task), learners = learners,
+        resamplings = list(self$resampling)), ctrl = self$ctrl)
 
       # add params to benchmark result data. if statement ensures that map with just one learner returns
       # the same as map with more than one learner:
