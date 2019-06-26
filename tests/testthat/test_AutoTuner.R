@@ -60,22 +60,22 @@ test_that("AutoTuner", {
   })
 
 
-  if (getRversion() >= "3.6.0") {
-    rngkind = RNGkind()
-    on.exit(do.call(RNGkind, as.list(rngkind)))
-    suppressWarnings(RNGversion("3.5.0"))
-  }
-  set.seed(1)
+  # check that hyperpars are properly set for the returned learner
+  set.seed(3)
+  task = mlr3::mlr_tasks$get("pima")
 
   at2 = AutoTuner$new(learner, resampling, param_set, terminator, tuner = TunerRandomSearch,
     tuner_settings = list(batch_size = 10L))
 
   expect_null(at2$tuner)
-
   at2$train(task)
 
+  # ensure that we have different scores
   checkmate::expect_r6(at2$tuner, "Tuner")
-  checkmate::expect_list(at2$predict(task))
+  expect_equal(anyDuplicated(at2$tuner$aggregated()$classif.ce), 0L)
 
+  expect_prediction(at2$predict(task))
+
+  expect_equal(at2$tuner$aggregated()[which.min(classif.ce), cp], at2$learner$param_set$values$cp)
   expect_equal(at2$learner$param_set$values, at2$tuner$tune_result()$values)
 })
