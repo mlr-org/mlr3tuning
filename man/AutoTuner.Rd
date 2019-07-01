@@ -52,13 +52,12 @@ task = mlr3::mlr_tasks$get("iris")
 learner = mlr3::mlr_learners$get("classif.rpart")
 resampling = mlr3::mlr_resamplings$get("holdout")
 measures = mlr3::mlr_measures$mget("classif.ce")
-task$measures = measures
 param_set = paradox::ParamSet$new(
   params = list(paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 
 terminator = TerminatorEvaluations$new(5)
 
-at = AutoTuner$new(learner, resampling, param_set, terminator, tuner = TunerGridSearch,
+at = AutoTuner$new(learner, resampling, measures, param_set, terminator, tuner = TunerGridSearch,
   tuner_settings = list(resolution = 10L))
 
 at$train(task)

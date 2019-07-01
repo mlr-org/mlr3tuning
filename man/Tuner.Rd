@@ -21,7 +21,7 @@ tuner$settings
 # public methods
 tuner$tune()
 tuner$tune_result()
-tuner$aggregated(unnest)
+tuner$aggregate(unnest)
 }
 }
 

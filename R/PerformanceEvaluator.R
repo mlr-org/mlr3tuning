@@ -11,13 +11,14 @@
 #' @section Usage:
 #' ```
 #' # Construction
-#' pe = PerformanceEvaluator$new(task, learner, resampling, param_set,
+#' pe = PerformanceEvaluator$new(task, learner, resampling, measures, param_set,
 #'   ctrl = tune_control())
 #'
 #' # Public members
 #' pe$task
 #' pe$learner
 #' pe$resampling
+#' pe$measures
 #' pe$param_set
 #' pe$ctrl
 #' pe$hooks
@@ -26,7 +27,7 @@
 #' # Public methods
 #' pe$eval(x)
 #' pe$eval_vectorized(xts)
-#' pe$get_best()
+#' pe$best()
 #' pe$run_hooks(id)
 #' ```
 #'
@@ -35,8 +36,10 @@
 #'   The task that we want to evaluate.
 #' * `learner` (`mlr3::Learner`):
 #'   The learner that we want to evaluate.
-#' * `resampling` (`mlr3::Resampling`):
+#' * `resampling` ([mlr3::Resampling]):
 #'   The Resampling method that is used to evaluate the learner.
+#' * `measures` (list of [mlr3::Measure]).
+#'   List of performance measures. The first measure is used for tuning.
 #' * `param_set` ([paradox::ParamSet]):
 #'   Parameter set to define the hyperparameter space.
 #' * `ctrl` (`list()`):
@@ -53,13 +56,14 @@
 #' * `$task` (`mlr3::Task`) the task for which the tuning should be conducted.
 #' * `$learner` (`mlr3::Learner`) the algorithm for which the tuning should be conducted.
 #' * `$resampling` (`mlr3::Resampling`) strategy to evaluate a parameter setting
+#' * `$measures` (`mlr3::Measures`) used for performance assessment.
 #' * `$param_set` (`paradox::ParamSet`) parameter space given to the `Tuner` object to generate parameter values.
 #' * `$ctrl` (`list()`) execution control object for tuning (see `?tune_control`).
 #' * `$hooks` (`list()`) list of functions that could be executed with `run_hooks()`.
 #' * `$bmr` (`mlr3::BenchmarkResult`) object that contains all tuning results as `BenchmarkResult` object (see `?BenchmarkResult`).
 #' * `$eval(xt)` evaluates the (transformed) parameter setting `xt` (`list`) for the given learner and resampling.
 #' * `$eval_vectorized(xts)` performs resampling for multiple (transformed) parameter settings `xts` (list of lists).
-#' * `$get_best()`  get best parameter configuration from the `BenchmarkResult` object.
+#' * `$best()`  get best parameter configuration from the `BenchmarkResult` object.
 #' * `$run_hooks()` run a function that runs on the whole `PerformanceEvaluator` object.
 #'
 #' @name PerformanceEvaluator
@@ -71,7 +75,6 @@
 #' learner = mlr3::mlr_learners$get("classif.rpart")
 #' resampling = mlr3::mlr_resamplings$get("holdout")
 #' measures = mlr3::mlr_measures$mget("classif.ce")
-#' task$measures = measures
 #' param_set = paradox::ParamSet$new(params = list(
 #'   paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1),
 #'   paradox::ParamInt$new("minsplit", lower = 1, upper = 10)))
@@ -80,12 +83,13 @@
 #'   task = task,
 #'   learner = learner,
 #'   resampling = resampling,
+#'   measures = measures,
 #'   param_set = param_set
 #' )
 #'
 #' pe$eval(data.table::data.table(cp = 0.05, minsplit = 5))
 #' pe$eval(data.table::data.table(cp = 0.01, minsplit = 3))
-#' pe$get_best()
+#' pe$best()
 NULL
 
 #' @export
@@ -94,15 +98,17 @@ PerformanceEvaluator = R6Class("PerformanceEvaluator",
     task = NULL,
     learner = NULL,
     resampling = NULL,
+    measures = NULL,
     param_set = NULL,
     ctrl = NULL,
     hooks = NULL,
     bmr = NULL,
 
-    initialize = function(task, learner, resampling, param_set, ctrl = tune_control()) {
+    initialize = function(task, learner, resampling, measures, param_set, ctrl = tune_control()) {
       self$task = mlr3::assert_task(task)
       self$learner = mlr3::assert_learner(learner, task = task)
       self$resampling = mlr3::assert_resampling(resampling)
+      self$measures = mlr3::assert_measures(measures)
       self$param_set = checkmate::assert_class(param_set, "ParamSet")
       self$ctrl = checkmate::assert_list(ctrl, names = "unique")
     },
@@ -121,7 +127,7 @@ PerformanceEvaluator = R6Class("PerformanceEvaluator",
         design$data = self$param_set$trafo(design$data)
       }
 
-      n_evals = if (is.null(self$bmr)) 0 else nrow(self$bmr$aggregated())
+      n_evals = if (is.null(self$bmr)) 0L else self$bmr$data[, data.table::uniqueN(get("hash"))]
 
       learners = imap(design$transpose(), function(xt, i) {
         learner = self$learner$clone(deep = TRUE)
@@ -153,8 +159,8 @@ PerformanceEvaluator = R6Class("PerformanceEvaluator",
       invisible(self)
     },
 
-    get_best = function() {
-      self$bmr$get_best(self$task$measures[[1L]]$id)
+    best = function() {
+      self$bmr$best(self$measures[[1L]])
     },
 
     add_hook = function(hook) {

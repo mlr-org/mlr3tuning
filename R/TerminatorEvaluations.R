@@ -39,7 +39,7 @@ TerminatorEvaluations = R6Class("TerminatorEvaluations",
     },
 
     update_start = function(pe) {
-      self$state$evals = if (is.null(pe$bmr)) 0L else nrow(pe$bmr$aggregated())
+      self$state$evals = if (is.null(pe$bmr)) 0L else pe$bmr$data[, data.table::uniqueN(get("hash"))]
       self$terminated = (self$state$evals >= self$settings$max_evaluations)
       invisible(self)
     },

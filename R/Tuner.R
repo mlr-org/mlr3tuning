@@ -19,7 +19,7 @@
 #' # public methods
 #' tuner$tune()
 #' tuner$tune_result()
-#' tuner$aggregated(unnest)
+#' tuner$aggregate(unnest)
 #' ```
 #'
 #' @section Arguments:
@@ -70,25 +70,21 @@ Tuner = R6Class("Tuner",
     },
 
     tune_result = function() {
-      measure = self$pe$task$measures[[1L]]
-      rr = self$pe$bmr$get_best(id = measure$id)
-      list(performance = rr$aggregated, values = rr$learner$param_set$values)
+      measures = self$pe$measures
+      rr = self$pe$bmr$best(measures[[1L]])
+      list(performance = rr$aggregate(measures), values = rr$learners[[1L]]$param_set$values)
     },
 
-    aggregated = function(unnest = TRUE) {
-      if (!is.null(self$pe$bmr)) {
-        dt = self$pe$bmr$aggregated()
-        dt$pars = list(map(dt[["learner"]], function(l) l$param_set$values)) #as recommended in https://github.com/Rdatatable/data.table/issues/3626
-        if (unnest) {
-          dt = unnest(dt, "pars")
-        }
-
-        # [] forces the data table to get printed. This is suppressed by the first call of dt after
-        # using := within []
-        return(dt[])
-      } else {
+    aggregate = function(unnest = TRUE) {
+      if (is.null(self$pe$bmr)) {
         stopf("No tuning conducted yet.")
       }
+      dt = self$pe$bmr$aggregate(params = TRUE)
+      if (unnest) {
+        dt = mlr3misc::unnest(dt, "params")
+      }
+
+      return(dt)
     }
   ),
   private = list(

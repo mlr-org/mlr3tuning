@@ -32,13 +32,12 @@
 #' resampling = mlr3::mlr_resamplings$get("cv")
 #' resampling$param_set$values$folds = 2
 #' measures = mlr3::mlr_measures$mget("classif.ce")
-#' task$measures = measures
 #' param_set = paradox::ParamSet$new(
 #'   params = list(
 #'     paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)
 #'   )
 #' )
-#' pe = PerformanceEvaluator$new(task, learner, resampling, param_set)
+#' pe = PerformanceEvaluator$new(task, learner, resampling, measures, param_set)
 #'
 #' terminator = TerminatorEvaluations$new(10)
 #' gs = TunerGridSearch$new(pe, terminator)

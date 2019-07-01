@@ -31,13 +31,12 @@
 #' resampling = mlr3::mlr_resamplings$get("cv")
 #' resampling$param_set$values$folds = 2
 #' measures = mlr3::mlr_measures$mget("classif.ce")
-#' task$measures = measures
 #' param_set = paradox::ParamSet$new(
 #'   params = list(
 #'     paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)
 #'   )
 #' )
-#' pe = PerformanceEvaluator$new(task, learner, resampling, param_set)
+#' pe = PerformanceEvaluator$new(task, learner, resampling, measures, param_set)
 #'
 #' terminator = TerminatorEvaluations$new(10)
 #' rs = TunerGenSA$new(pe, terminator)
@@ -64,23 +63,18 @@ TunerGenSA = R6Class("TunerGenSA",
   private = list(
     tune_step = function() {
       objective = function(x, pe) {
+        measure = pe$measures[[1L]]
 
-        param_value = lapply(x, function(param) param)
+        hashes = pe$bmr$data$hash
+        params = setDT(as.list(x))
+        setnames(params, pe$param_set$ids())
+        private$eval_design_terminator(paradox::Design$new(pe$param_set, params, remove_dupl = TRUE))
+        new_hash = setdiff(pe$bmr$data$hash, hashes)
 
-        # x sometimes comes without names, set them manually:
-        names(param_value) = self$pe$param_set$ids()
-        dt_param_value = do.call(data.table::data.table, param_value)
-
-        private$eval_design_terminator(paradox::Design$new(pe$param_set, dt_param_value, remove_dupl = TRUE))
-
-        # Get estimated generalization error. Use the negation if the measures needs to be minimized:
-        performance = unlist(pe$bmr$data[.N]$performance)[[1]]
-        if (!pe$task$measures[[1]]$minimize) {
-          return(-performance)
-        }
-        return(performance)
+        perf = pe$bmr$resample_result(new_hash)$aggregate(measure)
+        if (measure$minimize) perf else -perf
       }
-      nuisance = GenSA::GenSA(fn = objective, lower = self$pe$param_set$lower, upper = self$pe$param_set$upper,
+      GenSA::GenSA(fn = objective, lower = self$pe$param_set$lower, upper = self$pe$param_set$upper,
         control = self$settings, pe = self$pe)
     }
   )

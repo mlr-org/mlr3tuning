@@ -35,11 +35,6 @@ Stop whether all thresholds are reached (default = FALSE).
 The interface is described in \link{Terminator}.
 }
 
-\examples{
-\donttest{
-t = TerminatorPerformance$new(0.5, pe)
-}
-}
 \seealso{
 Other Terminator: \code{\link{TerminatorEvaluations}},
   \code{\link{TerminatorMultiplexer}},

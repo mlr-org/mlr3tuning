@@ -43,13 +43,12 @@
 #' learner = mlr3::mlr_learners$get("classif.rpart")
 #' resampling = mlr3::mlr_resamplings$get("holdout")
 #' measures = mlr3::mlr_measures$mget("classif.ce")
-#' task$measures = measures
 #' param_set = paradox::ParamSet$new(
 #'   params = list(paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 #'
 #' terminator = TerminatorEvaluations$new(5)
 #'
-#' at = AutoTuner$new(learner, resampling, param_set, terminator, tuner = TunerGridSearch,
+#' at = AutoTuner$new(learner, resampling, measures, param_set, terminator, tuner = TunerGridSearch,
 #'   tuner_settings = list(resolution = 10L))
 #'
 #' at$train(task)
@@ -59,89 +58,74 @@ NULL
 #' @export
 AutoTuner = R6Class("AutoTuner", inherit = mlr3::Learner,
   public = list(
-    learner = NULL,
-
-    initialize = function(learner, resampling, param_set, terminator, tuner, tuner_settings, ctrl = tune_control(), id = "autotuner") {
-
-      self$learner = mlr3::assert_learner(learner = learner)
-
-      private$.terminator = checkmate::assert_r6(terminator, "Terminator")
-      private$.tuner_settings = checkmate::assert_list(tuner_settings)
-      private$.ff_args$resampling = mlr3::assert_resampling(resampling)
-      private$.ff_args$param_set = checkmate::assert_class(param_set, "ParamSet")
-      private$.ff_args$ctrl = checkmate::assert_list(ctrl, names = "unique")
-
+    initialize = function(learner, resampling, measures, param_set, terminator, tuner, tuner_settings, ctrl = tune_control(), id = "autotuner") {
       # TODO: Check for factory
       if (!inherits(tuner, "R6ClassGenerator") && grepl(pattern = "Tuner", x = tuner$classname)) {
         stopf("Tuner must be a R6 class generator that creates tuner (e.g. TunerGridSearch).")
       }
-      private$.tuner = tuner
+
+      self$data$tuner_generator = tuner
+      self$data$learner = learner = mlr3::assert_learner(learner = learner)
+      self$data$terminator = checkmate::assert_r6(terminator, "Terminator")
+      self$data$tuner_settings = checkmate::assert_list(tuner_settings)
+      self$data$resampling = mlr3::assert_resampling(resampling)
+      self$data$measures = mlr3::assert_measures(measures)
+      self$data$param_set = checkmate::assert_class(param_set, "ParamSet")
 
       super$initialize(
         id = id,
-        task_type = self$learner$task_type,
-        packages = self$learner$packages,
-        feature_types = self$learner$feature_types,
-        predict_types = self$learner$predict_types,
-        param_set = self$learner$param_set,
-        properties = self$learner$properties
+        task_type = learner$task_type,
+        packages = learner$packages,
+        feature_types = learner$feature_types,
+        predict_types = learner$predict_types,
+        param_set = learner$param_set,
+        properties = learner$properties
       )
     },
 
-    train = function(task) {
-      if (private$.is_trained) {
-        lg$warn("Learner is already trained.", namespace = "mlr3")
-      } else {
-        self$learner = mlr3::assert_learner(learner = self$learner, task = task)
+    train_internal = function(task) {
+      terminator = self$data$terminator$clone()
+      pe = PerformanceEvaluator$new(
+        task = mlr3::assert_task(task)$clone(deep = TRUE),
+        learner = self$data$learner$clone(deep = TRUE),
+        resampling = self$data$resampling$clone(deep = TRUE),
+        measures  = self$data$measures,
+        param_set = self$data$param_set$clone(deep = TRUE)
+      )
 
-        private$.tuner_settings$terminator = private$.terminator$clone()
-        private$.tuner_settings$pe = PerformanceEvaluator$new(
-          task = mlr3::assert_task(task)$clone(deep = TRUE),
-          learner = self$learner$clone(deep = TRUE),
-          resampling = private$.ff_args$resampling$clone(deep = TRUE),
-          param_set = private$.ff_args$param_set$clone(deep = TRUE),
-          ctrl = private$.ff_args$ctrl
-        )
+      tuner = do.call(self$data$tuner_generator$new, insert_named(self$data$tuner_settings, list(pe = pe, terminator = terminator)))
+      self$data$tuner = tuner$tune()
 
-        private$.tuner = do.call(private$.tuner$new, private$.tuner_settings)
-        private$.tuner$tune()
+      # update param vals
+      self$param_set$values = self$data$learner$param_set$values = tuner$tune_result()$values
 
-        self$learner$param_set$values = private$.tuner$tune_result()$values
-        self$learner$train(task)
+      # train internal learner
+      self$data$learner$train(task)
 
-        private$.is_trained = TRUE
-        self$model = self$learner$model
-      }
-      self
+      return(self$data$learner$model)
     },
 
-    predict = function(task) {
-      self$learner$predict(task)
-    }
-  ),
+    predict_internal = function(task) {
+      self$data$learner$predict_internal(task)
+    },
 
-  private = list(
-    .ff_args = NULL,
-    .terminator = NULL,
-    .tuner = NULL,
-    .tuner_settings = NULL,
-    .is_trained = FALSE,
-
-    deep_clone = function(name, value) {
-      if (R6::is.R6(value)) {
-        return(value$clone(deep = TRUE))
-      } else {
-        return(value)
-      }
+    new_prediction = function(row_ids, truth, ...) {
+      self$data$learner$new_prediction(row_ids, truth, ...)
     }
   ),
 
   active = list(
+    learner = function() {
+      self$data$learner
+    },
+
+    model = function() {
+      self$data$learner$model
+    },
+
     tuner = function(rhs) {
       if (!missing(rhs)) stop("tuner is read only")
-      if (private$.is_trained) return(private$.tuner)
-
-      return(NULL)
+      self$data$tuner
     }
   )
 )

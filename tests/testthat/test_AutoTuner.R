@@ -1,5 +1,25 @@
 context("AutoTuner")
 
+test_that("AutoTuner / single step", {
+  task = mlr3::mlr_tasks$get("iris")
+  learner = mlr3::mlr_learners$get("classif.rpart")
+  measures = c("classif.ce", "time_train", "time_both")
+  terminator = TerminatorEvaluations$new(3)
+
+  param_set = paradox::ParamSet$new(params = list(
+    paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1
+  )))
+  resampling = mlr3::mlr_resamplings$get("cv3")
+
+  at = AutoTuner$new(learner, resampling, measures, param_set, terminator, tuner = TunerRandomSearch,
+    tuner_settings = list(batch_size = 10L))
+
+  expect_learner(at$train(task))
+  expect_prediction(at$predict(task))
+  expect_is(at$model, "rpart")
+  expect_is(at$tuner, "Tuner")
+})
+
 test_that("AutoTuner", {
   outer_folds = 3L
   inner_folds = 2L
@@ -15,7 +35,6 @@ test_that("AutoTuner", {
   resampling$param_set$values = list(folds = inner_folds)
 
   measures = mlr3::mlr_measures$mget(p_measures)
-  task$measures = measures
 
   param_set = paradox::ParamSet$new(params = list(
     paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1
@@ -23,30 +42,29 @@ test_that("AutoTuner", {
 
   terminator = TerminatorEvaluations$new(inner_evals)
 
-  at = AutoTuner$new(learner, resampling, param_set, terminator, tuner = TunerRandomSearch,
+  at = AutoTuner$new(learner, resampling, measures, param_set, terminator, tuner = TunerRandomSearch,
     tuner_settings = list(batch_size = 10L))
 
   # Nested Resampling:
   outer_resampling = mlr3::mlr_resamplings$get("cv")
   outer_resampling$param_set$values = list(folds = outer_folds)
-  r = mlr3::resample(task, at, outer_resampling)
+  rr = mlr3::resample(task, at, outer_resampling)
 
-  expect_null(at$tuner)
-  lapply(map(r$data$learner, "tuner"), function(tuner) checkmate::expect_r6(tuner, "Tuner"))
+  lapply(rr$learners, function(tuner) checkmate::expect_r6(tuner, "AutoTuner"))
 
   at$train(task)
   checkmate::expect_r6(at$tuner, "Tuner")
 
   # Nested Resampling:
-  checkmate::expect_data_table(r$data, nrow = outer_folds)
-  nuisance = lapply(r$data$learner, function(autotuner) {
+  checkmate::expect_data_table(rr$data, nrow = outer_folds)
+  nuisance = lapply(rr$learners, function(autotuner) {
     checkmate::expect_data_table(autotuner$tuner$pe$bmr$data, nrow = inner_evals * inner_folds)
-    checkmate::expect_data_table(autotuner$tuner$pe$bmr$aggregated(), nrow = inner_evals)
+    checkmate::expect_data_table(autotuner$tuner$pe$bmr$aggregate(), nrow = inner_evals)
     expect_equal(names(autotuner$tuner$tune_result()$performance), p_measures)
     autotuner$tuner$tune_result()$performance
   })
 
-  row_ids_inner = lapply(r$data$learner, function(it) {
+  row_ids_inner = lapply(rr$data$learner, function(it) {
     it$tuner$pe$task$row_ids
   })
   row_ids_all = task$row_ids
@@ -64,7 +82,7 @@ test_that("AutoTuner", {
   set.seed(3)
   task = mlr3::mlr_tasks$get("pima")
 
-  at2 = AutoTuner$new(learner, resampling, param_set, terminator, tuner = TunerRandomSearch,
+  at2 = AutoTuner$new(learner, resampling, measures, param_set, terminator, tuner = TunerRandomSearch,
     tuner_settings = list(batch_size = 10L))
 
   expect_null(at2$tuner)
@@ -72,10 +90,10 @@ test_that("AutoTuner", {
 
   # ensure that we have different scores
   checkmate::expect_r6(at2$tuner, "Tuner")
-  expect_equal(anyDuplicated(at2$tuner$aggregated()$classif.ce), 0L)
+  expect_equal(anyDuplicated(at2$tuner$aggregate()$classif.ce), 0L)
 
   expect_prediction(at2$predict(task))
 
-  expect_equal(at2$tuner$aggregated()[which.min(classif.ce), cp], at2$learner$param_set$values$cp)
-  expect_equal(at2$learner$param_set$values, at2$tuner$tune_result()$values)
+  expect_equal(at2$tuner$aggregate()[which.min(classif.ce), cp], at2$param_set$values$cp)
+  expect_equal(at2$data$learner$param_set$values, at2$tuner$tune_result()$values)
 })

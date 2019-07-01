@@ -6,15 +6,15 @@ test_that("Construction", {
   learner$param_set$values = list(minsplit = 3)
   resampling = mlr3::mlr_resamplings$get("holdout")
   measures = mlr3::mlr_measures$mget("classif.ce")
-  task$measures = measures
   param_set = paradox::ParamSet$new(params = list(paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 
   pe = PerformanceEvaluator$new(
     task = task,
     learner = learner,
     resampling = resampling,
+    measures = measures,
     param_set = param_set,
-    ctrl = tune_control(store_prediction = TRUE) # for the exceptions
+    ctrl = tune_control()
   )
 
   expect_r6(pe, "PerformanceEvaluator")
@@ -32,7 +32,7 @@ test_that("Construction", {
   expect_equal(pe$bmr$data$learner[[3L]]$param_set$values$cp, 0.1)
   expect_equal(pe$bmr$data$learner[[3L]]$param_set$values$minsplit, 3)
 
-  expect_resample_result(pe$get_best())
+  expect_resample_result(pe$best())
 })
 
 
@@ -42,15 +42,15 @@ test_that("Construction", {
   learner$param_set$values = list(minsplit = 3)
   resampling = mlr3::mlr_resamplings$get("holdout")
   measures = mlr3::mlr_measures$mget("classif.ce")
-  task$measures = measures
   param_set = paradox::ParamSet$new(params = list(paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 
   pe = PerformanceEvaluator$new(
     task = task,
     learner = learner,
     resampling = resampling,
+    measures = measures,
     param_set = param_set,
-    ctrl = tune_control(store_prediction = TRUE) # for the exceptions
+    ctrl = tune_control()
   )
 
   expect_error(pe$add_hook(hook = mean))

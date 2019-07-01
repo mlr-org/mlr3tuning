@@ -7,14 +7,13 @@ test_that("TerminatorPerformance", {
   resampling = mlr3::mlr_resamplings$get("cv")
   resampling$param_set$values$folds = 2
   measures = mlr3::mlr_measures$mget(c("classif.ce", "classif.acc"))
-  task$measures = measures
   param_set = paradox::ParamSet$new(
     params = list(
       paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)
     )
   )
 
-  pe = PerformanceEvaluator$new(task, learner, resampling, param_set)
+  pe = PerformanceEvaluator$new(task, learner, resampling, measures, param_set)
   expect_error({
     terminator = TerminatorPerformance$new(list(classif.ce = 0.1, false.measure = 0.9), pe)
   })
@@ -31,7 +30,7 @@ test_that("TerminatorPerformance", {
   gs = TunerGenSA$new(pe, terminator)
   gs$tune()
 
-  agg = pe$bmr$aggregated()
+  agg = pe$bmr$aggregate(measures)
   expect_equal(terminator$state$msrs_best$classif.ce, min(agg$classif.ce))
   expect_equal(terminator$state$msrs_best$classif.acc, max(agg$classif.acc))
 })

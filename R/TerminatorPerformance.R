@@ -27,10 +27,6 @@
 #'
 #' @name TerminatorPerformance
 #' @family Terminator
-#' @examples
-#' \donttest{
-#' t = TerminatorPerformance$new(0.5, pe)
-#' }
 NULL
 
 #' @export
@@ -40,11 +36,12 @@ TerminatorPerformance = R6Class("TerminatorPerformance",
   public = list(
 
     initialize = function(thresh, pe, all_reached = FALSE) {
+      measures = pe$measures
       checkmate::assert_r6(pe, "PerformanceEvaluator")
-      checkmate::assert_names(names(thresh), subset.of = names(map(pe$task$measures, "id")))
-      checkmate::assert_logical(all_reached, len = 1)
+      checkmate::assert_names(names(thresh), subset.of = map_chr(measures, "id"))
+      checkmate::assert_flag(all_reached)
       imap(thresh, function(th, i) {
-        checkmate::assert_double(th, len = 1, lower = pe$task$measures[[i]]$range[1], upper = pe$task$measures[[i]]$range[2])
+        checkmate::assert_number(th, lower = measures[[i]]$range[1L], upper = measures[[i]]$range[2L])
       })
       super$initialize(settings = list(thresh = thresh, all_reached = all_reached))
 
@@ -57,10 +54,11 @@ TerminatorPerformance = R6Class("TerminatorPerformance",
     },
 
     update_end = function(pe) {
-      aggr = pe$bmr$aggregated()
+      measures = pe$measures
+      aggr = pe$bmr$aggregate(measures)
       thresh_reached = imap(self$settings$thresh, function(th, i) {
         perfs = aggr[[i]]
-        if (pe$task$measures[[i]]$minimize) {
+        if (measures[[i]]$minimize) {
           self$state$msrs_best[i] = min(perfs)
           return(min(perfs) <= th)
         } else {
@@ -81,8 +79,13 @@ TerminatorPerformance = R6Class("TerminatorPerformance",
     },
 
     format = function() {
-      state = paste(paste0(names(self$settings$thresh), " = ", round(unlist(self$state$msrs_best), 4)), collapse = ", ")
-      sprintf("TerminatorPerformance with current values %s.", state)
+      best = self$state$msrs_best
+      if (length(best)) {
+        state = paste(paste0(names(self$settings$thresh), " = ", round(unlist(self$state$msrs_best), 4)), collapse = ", ")
+        sprintf("TerminatorPerformance with current values %s.", state)
+      } else {
+        "TerminatorPerformance"
+      }
     }
   )
 )

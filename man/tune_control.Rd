@@ -4,12 +4,9 @@
 \alias{tune_control}
 \title{Execution Control Object for Tuning}
 \usage{
-tune_control(store_prediction = FALSE, store_tuning = FALSE, ...)
+tune_control(store_tuning = FALSE, ...)
 }
 \arguments{
-\item{store_prediction}{(\code{logical(1)}):\cr
-Store the predictions of the individual experiments.}
-
 \item{store_tuning}{(\code{logical(1)}):\cr
 Store internal tuning steps, e.g. the optimization path of the tuner.}
 

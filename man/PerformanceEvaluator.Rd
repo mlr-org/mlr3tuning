@@ -13,13 +13,14 @@ The \code{PerformanceEvaluator} class is the basis for further tuning strategies
 }
 \section{Usage}{
 \preformatted{# Construction
-pe = PerformanceEvaluator$new(task, learner, resampling, param_set,
+pe = PerformanceEvaluator$new(task, learner, resampling, measures, param_set,
   ctrl = tune_control())
 
 # Public members
 pe$task
 pe$learner
 pe$resampling
+pe$measures
 pe$param_set
 pe$ctrl
 pe$hooks
@@ -28,7 +29,7 @@ pe$bmr
 # Public methods
 pe$eval(x)
 pe$eval_vectorized(xts)
-pe$get_best()
+pe$best()
 pe$run_hooks(id)
 }
 }
@@ -40,8 +41,10 @@ pe$run_hooks(id)
 The task that we want to evaluate.
 \item \code{learner} (\code{mlr3::Learner}):
 The learner that we want to evaluate.
-\item \code{resampling} (\code{mlr3::Resampling}):
+\item \code{resampling} (\link[mlr3:Resampling]{mlr3::Resampling}):
 The Resampling method that is used to evaluate the learner.
+\item \code{measures} (list of \link[mlr3:Measure]{mlr3::Measure}).
+List of performance measures. The first measure is used for tuning.
 \item \code{param_set} (\link[paradox:ParamSet]{paradox::ParamSet}):
 Parameter set to define the hyperparameter space.
 \item \code{ctrl} (\code{list()}):
@@ -62,13 +65,14 @@ Identifier of a hook.
 \item \code{$task} (\code{mlr3::Task}) the task for which the tuning should be conducted.
 \item \code{$learner} (\code{mlr3::Learner}) the algorithm for which the tuning should be conducted.
 \item \code{$resampling} (\code{mlr3::Resampling}) strategy to evaluate a parameter setting
+\item \code{$measures} (\code{mlr3::Measures}) used for performance assessment.
 \item \code{$param_set} (\code{paradox::ParamSet}) parameter space given to the \code{Tuner} object to generate parameter values.
 \item \code{$ctrl} (\code{list()}) execution control object for tuning (see \code{?tune_control}).
 \item \code{$hooks} (\code{list()}) list of functions that could be executed with \code{run_hooks()}.
 \item \code{$bmr} (\code{mlr3::BenchmarkResult}) object that contains all tuning results as \code{BenchmarkResult} object (see \code{?BenchmarkResult}).
 \item \code{$eval(xt)} evaluates the (transformed) parameter setting \code{xt} (\code{list}) for the given learner and resampling.
 \item \code{$eval_vectorized(xts)} performs resampling for multiple (transformed) parameter settings \code{xts} (list of lists).
-\item \code{$get_best()}  get best parameter configuration from the \code{BenchmarkResult} object.
+\item \code{$best()}  get best parameter configuration from the \code{BenchmarkResult} object.
 \item \code{$run_hooks()} run a function that runs on the whole \code{PerformanceEvaluator} object.
 }
 }
@@ -79,7 +83,6 @@ task = mlr3::mlr_tasks$get("iris")
 learner = mlr3::mlr_learners$get("classif.rpart")
 resampling = mlr3::mlr_resamplings$get("holdout")
 measures = mlr3::mlr_measures$mget("classif.ce")
-task$measures = measures
 param_set = paradox::ParamSet$new(params = list(
   paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1),
   paradox::ParamInt$new("minsplit", lower = 1, upper = 10)))
@@ -88,12 +91,13 @@ pe = PerformanceEvaluator$new(
   task = task,
   learner = learner,
   resampling = resampling,
+  measures = measures,
   param_set = param_set
 )
 
 pe$eval(data.table::data.table(cp = 0.05, minsplit = 5))
 pe$eval(data.table::data.table(cp = 0.01, minsplit = 3))
-pe$get_best()
+pe$best()
 }
 \concept{PerformanceEvaluator}
 \keyword{internal}

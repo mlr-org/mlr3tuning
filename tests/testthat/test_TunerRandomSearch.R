@@ -12,18 +12,16 @@ test_that("TunerRandomSearch", {
   resampling$param_set$values = list(folds = n_folds)
 
   measures = mlr3::mlr_measures$mget(c("classif.ce", "time_train", "time_both"))
-  task$measures = measures
 
   param_set = paradox::ParamSet$new(params = list(
     paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1
   )))
 
   terminator = TerminatorEvaluations$new(5)
-  pe = PerformanceEvaluator$new(task, learner, resampling, param_set)
+  pe = PerformanceEvaluator$new(task, learner, resampling, measures, param_set)
   rs = TunerRandomSearch$new(pe, terminator)
   rs1 = TunerRandomSearch$new(pe, terminator, 2L)
 
-  # lapply(list(rs, rs1), function (rs) {
   result = rs$tune()$tune_result()
   bmr = rs$pe$bmr
   expect_r6(rs, "TunerRandomSearch")
@@ -32,5 +30,4 @@ test_that("TunerRandomSearch", {
   expect_number(result$performance["classif.ce"], lower = measures$classif.ce$range[1], upper = measures$classif.ce$range[2])
   expect_list(result$values, len = 2)
   expect_equal(result$values$minsplit, 3)
-  # })
 })
