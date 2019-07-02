@@ -36,7 +36,6 @@
 #' The interface is described in [Learner].
 #'
 #' @name AutoTuner
-#' @keywords internal
 #' @family Learner
 #' @examples
 #' task = mlr3::mlr_tasks$get("iris")

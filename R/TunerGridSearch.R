@@ -24,7 +24,6 @@
 #' The interface is described in [Tuner].
 #'
 #' @name TunerGridSearch
-#' @keywords internal
 #' @family Tuner
 #' @examples
 #' task = mlr3::mlr_tasks$get("iris")

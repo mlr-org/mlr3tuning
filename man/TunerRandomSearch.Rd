@@ -55,4 +55,3 @@ Other Tuner: \code{\link{TunerGenSA}},
   \code{\link{TunerGridSearch}}, \code{\link{Tuner}}
 }
 \concept{Tuner}
-\keyword{internal}

@@ -54,4 +54,3 @@ Other Tuner: \code{\link{TunerGridSearch}},
   \code{\link{TunerRandomSearch}}, \code{\link{Tuner}}
 }
 \concept{Tuner}
-\keyword{internal}

@@ -1,74 +1,70 @@
 #' @title PerformanceEvaluator Class
 #'
+#' @usage NULL
+#' @format [R6::R6Class] object.
+#'
 #' @description
-#' Implements a performance evaluator for \pkg{mlr3} as `R6` class `PerformanceEvaluator`. An object of that class
-#' contains all relevant informations that are necessary to conduct tuning (`mlr3::Task`, `mlr3::Learner`, `mlr3::Resampling`, `mlr3::Measure`s,
-#' `paradox::ParamSet`).
+#' Implements a performance evaluator for \pkg{mlr3} as `R6` class `PerformanceEvaluator`.
+#' An object of that class contains all relevant information that is necessary to conduct tuning.
+#'
 #' After defining a performance evaluator, we can use it to predict the generalization error of a specific learner configuration
-#' defined by it's hyperparameter (using `$eval()`).
+#' defined by its hyperparameters (using the method `$eval()`).
 #' The `PerformanceEvaluator` class is the basis for further tuning strategies, i.e., grid or random search.
 #'
-#' @section Usage:
+#' @section Construction:
 #' ```
-#' # Construction
 #' pe = PerformanceEvaluator$new(task, learner, resampling, measures, param_set,
 #'   ctrl = tune_control())
+#'```
 #'
-#' # Public members
-#' pe$task
-#' pe$learner
-#' pe$resampling
-#' pe$measures
-#' pe$param_set
-#' pe$ctrl
-#' pe$hooks
-#' pe$bmr
-#'
-#' # Public methods
-#' pe$eval(x)
-#' pe$eval_vectorized(xts)
-#' pe$best()
-#' pe$run_hooks(id)
-#' ```
-#'
-#' @section Arguments:
-#' * `task` (`mlr3::Task`):
-#'   The task that we want to evaluate.
-#' * `learner` (`mlr3::Learner`):
-#'   The learner that we want to evaluate.
-#' * `resampling` ([mlr3::Resampling]):
-#'   The Resampling method that is used to evaluate the learner.
-#' * `measures` (list of [mlr3::Measure]).
-#'   List of performance measures. The first measure is used for tuning.
-#' * `param_set` ([paradox::ParamSet]):
-#'   Parameter set to define the hyperparameter space.
-#' * `ctrl` (`list()`):
+#' * `task` :: [mlr3::Task].
+#' * `learner` :: [mlr3::Learner].
+#' * `resampling` :: [mlr3::Resampling].
+#' * `measures` :: list of [mlr3::Measure].
+#' * `param_set` :: [paradox::ParamSet].
+#' * `ctrl` :: named `list()`\cr
 #'   See [tune_control()].
-#' * `xt` (`list()`):
-#'   A specific (transformed) parameter configuration given as named list (e.g. for rpart `list(cp = 0.05, minsplit = 4)`).
-#' * `xts` (`list()`):
-#'   Collection of multiple (transformed) parameter values gained that is, for example, gained from a tuning strategy like grid search (see `?paradox::generate_design_grid`).
-#' * `id` (`character(1)`):
-#'   Identifier of a hook.
 #'
-#' @section Details:
-#' * `$new()` creates a new object of class [PerformanceEvaluator].
-#' * `$task` (`mlr3::Task`) the task for which the tuning should be conducted.
-#' * `$learner` (`mlr3::Learner`) the algorithm for which the tuning should be conducted.
-#' * `$resampling` (`mlr3::Resampling`) strategy to evaluate a parameter setting
-#' * `$measures` (`mlr3::Measures`) used for performance assessment.
-#' * `$param_set` (`paradox::ParamSet`) parameter space given to the `Tuner` object to generate parameter values.
-#' * `$ctrl` (`list()`) execution control object for tuning (see `?tune_control`).
-#' * `$hooks` (`list()`) list of functions that could be executed with `run_hooks()`.
-#' * `$bmr` (`mlr3::BenchmarkResult`) object that contains all tuning results as `BenchmarkResult` object (see `?BenchmarkResult`).
-#' * `$eval(xt)` evaluates the (transformed) parameter setting `xt` (`list`) for the given learner and resampling.
-#' * `$eval_vectorized(xts)` performs resampling for multiple (transformed) parameter settings `xts` (list of lists).
-#' * `$best()`  get best parameter configuration from the `BenchmarkResult` object.
-#' * `$run_hooks()` run a function that runs on the whole `PerformanceEvaluator` object.
+#' @section Fields:
+#' * `task` :: [mlr3::Task]\cr
+#'   Stored task.
+#' * `learner` :: [mlr3::Learner]\cr
+#'   Stored learner.
+#' * `resampling` :: [mlr3::Resampling]\cr
+#'   Stored resampling
+#' * `measures` :: list of [mlr3::Measure]\cr
+#'   Stored measures.
+#' * `param_set` :: [paradox::ParamSet]\cr
+#'   Stored parameter set.
+#' * `bmr` :: [mlr3::BenchmarkResult]\cr
+#'   A benchmark result, which is used as data storage.
+#' * `hooks` :: `list()`\cr
+#'   List of functions that are executed with `run_hooks()` for evaluation.
+#'   This is for internal use.
+#'
+#' @section Methods:
+#' * `eval(dt)`\cr
+#'   `data.table()` -> `self`\cr
+#'   Evaluates all hyperparameter configurations in `dt`.
+#'   Each configuration is a row.
+#' * `eval(design)`\cr
+#'   [paradox::Design] -> `self`\cr
+#'   Evaluates all configurations defined by the design.
+#' * `best()`\cr
+#'   () -> [mlr3::ResampleResult]\cr
+#'   Queries the [mlr3::BenchmarkResult] for the best [mlr3::ResampleResult] according to the
+#'   first measure in `$measures`.
+#' * `run_hooks()`\cr
+#'   `() -> `NULL`\cr
+#'   Runs all hook functions. For internal use.
+#' * `add_hook(hook)`\cr
+#'   `function()` -> `NULL`\cr
+#'   Adds a hook function. For internal use.
+#'
 #'
 #' @name PerformanceEvaluator
-#' @keywords internal
 #' @family PerformanceEvaluator
+#' @export
 #' @examples
 #' # Object required to define the performance evaluator:
 #' task = mlr3::mlr_tasks$get("iris")
@@ -90,9 +86,6 @@
 #' pe$eval(data.table::data.table(cp = 0.05, minsplit = 5))
 #' pe$eval(data.table::data.table(cp = 0.01, minsplit = 3))
 #' pe$best()
-NULL
-
-#' @export
 PerformanceEvaluator = R6Class("PerformanceEvaluator",
   public = list(
     task = NULL,
