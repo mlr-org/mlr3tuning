@@ -1,29 +1,31 @@
 #' @title TunerGenSA
 #'
+#' @include Tuner.R
+#' @usage NULL
+#' @format [R6::R6Class] object inheriting from [Tuner].
+#'
 #' @description
 #' Tuner child class to conduct generalized simulated annealing (GenSA) as tuning technique.
+#' Internally relies on [GenSA::GenSA()] from package \pkg{GenSA}.
 #'
-#' @section Usage:
+#' @section Construction:
 #' ```
 #' tuner = TunerGenSA$new(pe, terminator, ...)
 #' ```
-#' See [Tuner] for a description of the interface.
+#' For arguments, see [Tuner], and additionally:
+#' * `...` :: named `list()`\cr
+#'   Settings passed down do [GenSA::GenSA()]
+#'   Default settings are `smooth = FALSE`, `acceptance.param = -15`,
+#'   `simple.function = FALSE`, and `temperature = 250`.
 #'
-#' @section Arguments:
-#' * `pe` ([PerformanceEvaluator]):
-#'   Black box function used for the tuning.
-#' * `terminator` ([Terminator]):
-#'   Terminator to control the termination.
-#'   Will be triggered by the hooks of the [PerformanceEvaluator].
-#' * `...`:
-#'   Additional arguments passed to [GenSA::GenSA].
+#' @section Fields:
+#' See [Tuner].
 #'
-#' @section Details:
-#' `$new()` creates a new object of class [TunerGenSA].
-#' The interface is described in [Tuner].
+#' @section Methods:
+#' See [Tuner].
 #'
-#' @name TunerGenSA
 #' @family Tuner
+#' @export
 #' @examples
 #' task = mlr3::mlr_tasks$get("iris")
 #' learner = mlr3::mlr_learners$get("classif.rpart")
@@ -40,10 +42,6 @@
 #' terminator = TerminatorEvaluations$new(10)
 #' rs = TunerGenSA$new(pe, terminator)
 #' rs$tune()$tune_result()
-NULL
-
-#' @export
-#' @include Tuner.R
 TunerGenSA = R6Class("TunerGenSA",
   inherit = Tuner,
   public = list(

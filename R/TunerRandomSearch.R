@@ -1,30 +1,30 @@
 #' @title TunerRandomSearch
 #'
-#' @description
-#' Tuner child class to conduct random search.
+#' @include Tuner.R
+#' @usage NULL
+#' @format [R6::R6Class] object inheriting from [Tuner].
 #'
-#' @section Usage:
+#' @description
+#' Tuner child class to conduct a random search.
+#'
+#' @section Construction:
 #' ```
 #' tuner = TunerRandomSearch$new(pe, terminator, batch_size = 100L)
 #' ```
-#' See [Tuner] for a description of the interface.
+#' For arguments, see [Tuner], and additionally:
 #'
-#' @section Arguments:
-#' * `pe` ([PerformanceEvaluator]):
-#'   Black box function used for the tuning.
-#' * `terminator` ([Terminator]):
-#'   Terminator to control the termination.
-#'   Will be triggered by the hooks of the [PerformanceEvaluator].
-#' * `batch_size` (`integer(1)`):
+#' * `batch_size` :: `integer(1)`\cr
 #'   Maximum number of configurations to try in a batch.
 #'   Each batch is possibly executed in parallel via [mlr3::benchmark()].
 #'
-#' @section Details:
-#' `$new()` creates a new object of class [TunerRandomSearch].
-#' The interface is described in [Tuner].
+#' @section Fields:
+#' See [Tuner].
 #'
-#' @name TunerRandomSearch
+#' @section Methods:
+#' See [Tuner].
+#'
 #' @family Tuner
+#' @export
 #' @examples
 #' task = mlr3::mlr_tasks$get("iris")
 #' learner = mlr3::mlr_learners$get("classif.rpart")
@@ -41,10 +41,6 @@
 #' terminator = TerminatorEvaluations$new(10)
 #' rs = TunerRandomSearch$new(pe, terminator)
 #' rs$tune()$tune_result()
-NULL
-
-#' @export
-#' @include Tuner.R
 TunerRandomSearch = R6Class("TunerRandomSearch",
   inherit = Tuner,
   public = list(

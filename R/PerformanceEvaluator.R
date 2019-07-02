@@ -62,7 +62,6 @@
 #'   Adds a hook function. For internal use.
 #'
 #'
-#' @name PerformanceEvaluator
 #' @family PerformanceEvaluator
 #' @export
 #' @examples
@@ -102,18 +101,18 @@ PerformanceEvaluator = R6Class("PerformanceEvaluator",
       self$learner = mlr3::assert_learner(learner, task = task)
       self$resampling = mlr3::assert_resampling(resampling)
       self$measures = mlr3::assert_measures(measures)
-      self$param_set = checkmate::assert_class(param_set, "ParamSet")
-      self$ctrl = checkmate::assert_list(ctrl, names = "unique")
+      self$param_set = assert_class(param_set, "ParamSet")
+      self$ctrl = tune_control(ctrl)
     },
 
     eval = function(dt) {
-      checkmate::assert_data_table(dt, any.missing = FALSE, min.rows = 1, min.cols = 1)
+      assert_data_table(dt, any.missing = FALSE, min.rows = 1, min.cols = 1)
       self$eval_design(paradox::Design$new(self$param_set, dt, remove_dupl = FALSE))
     },
 
     eval_design = function(design) {
 
-      checkmate::assert_r6(design, "Design")
+      assert_r6(design, "Design")
 
       # Not that pretty but enables the use of transpose from Design:
       if (self$param_set$has_trafo) {
@@ -157,7 +156,7 @@ PerformanceEvaluator = R6Class("PerformanceEvaluator",
     },
 
     add_hook = function(hook) {
-      checkmate::assert_function(hook, args = "pe", nargs = 1)
+      assert_function(hook, args = "pe", nargs = 1)
       self$hooks = append(self$hooks, hook)
     },
 

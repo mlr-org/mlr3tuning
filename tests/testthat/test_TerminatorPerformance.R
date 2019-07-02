@@ -1,6 +1,5 @@
 context("TerminatorPerformance")
 
-
 test_that("TerminatorPerformance", {
   task = mlr3::mlr_tasks$get("iris")
   learner = mlr3::mlr_learners$get("classif.rpart")
@@ -15,22 +14,22 @@ test_that("TerminatorPerformance", {
 
   pe = PerformanceEvaluator$new(task, learner, resampling, measures, param_set)
   expect_error({
-    terminator = TerminatorPerformance$new(list(classif.ce = 0.1, false.measure = 0.9), pe)
+    terminator = TerminatorPerformance$new(c(classif.ce = 0.1, false.measure = 0.9), pe)
   })
   expect_error({
-    terminator = TerminatorPerformance$new(list(classif.ce = 0.1, classif.acc = 2), pe)
-  })
+    terminator = TerminatorPerformance$new(c(classif.ce = 0.1, classif.acc = 2), pe)
+  }, "<=")
   expect_error({
-    terminator = TerminatorPerformance$new(list(0.1, 0.9), pe)
-  })
+    terminator = TerminatorPerformance$new(c(0.1, 0.9), pe)
+  }, "named")
   expect_silent({
-    terminator = TerminatorPerformance$new(list(classif.ce = 0.1, classif.acc = 0.9), pe)
+    terminator = TerminatorPerformance$new(c(classif.ce = 0.1, classif.acc = 0.9), pe)
   })
 
   gs = TunerGenSA$new(pe, terminator)
   gs$tune()
 
-  agg = pe$bmr$aggregate(measures)
-  expect_equal(terminator$state$msrs_best$classif.ce, min(agg$classif.ce))
-  expect_equal(terminator$state$msrs_best$classif.acc, max(agg$classif.acc))
+  aggr = pe$bmr$aggregate(measures)
+  thresh = terminator$settings$thresh
+  expect_true(any(aggr[["classif.ce"]] <= thresh["classif.ce"] & aggr[["classif.acc"]] >= thresh["classif.acc"]))
 })

@@ -1,30 +1,30 @@
 #' @title TunerGridSearch
 #'
-#' @description
-#' Tuner child class to conduct grid search.
+#' @include Tuner.R
+#' @usage NULL
+#' @format [R6::R6Class] object inheriting from [Tuner].
 #'
-#' @section Usage:
+#' @description
+#' Tuner child class to conduct a grid search.
+#'
+#' @section Construction:
 #' ```
 #' tuner = TunerGridSearch$new(pe, terminator, resolution)
 #' ```
-#' See [Tuner] for a description of the interface.
+#' For arguments, see [Tuner], and additionally:
 #'
-#' @section Arguments:
-#' * `pe` ([PerformanceEvaluator]):
-#'   Black box function used for the tuning.
-#' * `terminator` ([Terminator]):
-#'   Terminator to control the termination.
-#'   Will be triggered by the hooks of the [PerformanceEvaluator].
-#' * `resolution` (`integer(1)`):
+#' * `resolution` :: `integer(1)`\cr
 #'   Resolution of the grid.
 #'   If none is specified we will try to calculate the resolution form the Terminator.
 #'
-#' @section Details:
-#' `$new()` creates a new object of class [TunerGridSearch].
-#' The interface is described in [Tuner].
+#' @section Fields:
+#' See [Tuner].
 #'
-#' @name TunerGridSearch
+#' @section Methods:
+#' See [Tuner].
+#'
 #' @family Tuner
+#' @export
 #' @examples
 #' task = mlr3::mlr_tasks$get("iris")
 #' learner = mlr3::mlr_learners$get("classif.rpart")
@@ -41,10 +41,6 @@
 #' terminator = TerminatorEvaluations$new(10)
 #' gs = TunerGridSearch$new(pe, terminator)
 #' gs$tune()$tune_result()
-NULL
-
-#' @export
-#' @include Tuner.R
 TunerGridSearch = R6Class("TunerGridSearch",
   inherit = Tuner,
   public = list(

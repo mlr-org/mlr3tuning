@@ -1,51 +1,49 @@
-#' @title Abstract Tuner Class
+#' @title Tuner
+#'
+#' @usage NULL
+#' @format [R6::R6Class] object.
 #'
 #' @description
-#' Abstract `Tuner` class that implements the main functionality each tuner must have. A tuner is
-#' an object that describes the tuning strategy how to search the hyperparameter space given within
+#' Abstract `Tuner` class that implements the main functionality each tuner must have.
+#' A tuner is an object that describes the tuning strategy how to search the hyperparameter space given within
 #' the `[PerformanceEvaluator]` object.
 #'
-#' @section Usage:
+#' @section Construction:
 #' ```
-#' # Construction
 #' tuner = Tuner$new(id, pe, terminator, settings = list())
-#'
-#' # public members
-#' tuner$id
-#' tuner$pe
-#' tuner$terminator
-#' tuner$settings
-#'
-#' # public methods
-#' tuner$tune()
-#' tuner$tune_result()
-#' tuner$aggregate(unnest)
 #' ```
+#' * `id` :: `character(1)`\cr
+#'   Name of the tuner.
+#' * `pe` :: [PerformanceEvaluator].
+#' * `terminator` :: [Terminator].
+#' * `settings` :: named `list()`\cr
+#'   Arbitrary list, depending on the child class.
 #'
-#' @section Arguments:
-#' * `id` (`character(1)`):\cr
-#'   The id of the Tuner.
-#' * `pe` (`[PerformanceEvaluator]`).
-#' * `terminator` (`[Terminator]`).
-#' * `settings` (`list`):\cr
-#'   The settings for the Tuner.
-#' * `unnest` (`logical(1)`):\cr
-#'   If TRUE returns each parameter as a column of the data table. Otherwise the column includes a list of the parameter.
+#' @section Fields:
+#' * `id` :: `character(1)`\cr
+#'   Name of the tuner.
+#' * `pe` :: [PerformanceEvaluator]\cr
+#'   The current state of the [PerformanceEvaluator].
+#' * `terminator` :: [Terminator].
+#'   The current state of the [Terminator].
+#' * `settings` :: named `list()`\cr
+#'   Arbitrary list, depending on the child class.
 #'
-#' @section Details:
-#' * `$new()` creates a new object of class `[Tuner]`.
-#' * `id` stores an identifier for this `[Tuner]`.
-#' * `pe` stores the [PerformanceEvaluator] to optimize.
-#' * `terminator` stores the `[Terminator]`.
-#' * `settings` is a list of hyperparamter settings for this `[Tuner]`.
-#' * `tune()` performs the tuning, until the budget of the `[Terminator]` in the `[PerformanceEvaluator]` is exhausted.
-#' * `tune_result()` returns a list with 2 elements:
+#' @section Methods:
+#' * `tune()`\cr
+#'   () -> `self`\cr
+#'   Performs the tuning until the budget of the [Terminator] is exhausted.
+#' * `tune_result()`\cr
+#'   () -> named `list()`\cr
+#'   List with 2 elements:
 #'     - `performance` (`numeric()`) with the best performance.
-#'     - `param_set$values` (`numeric()`) with corresponding hyperparameters.
-#' @name Tuner
+#'     - `values` (named `list()` with the corresponding hyperparameters values.
+#' * `aggregate(unnest = TRUE)`
+#'   `logical(1)` -> [data.table::data.table()]\cr
+#'   Returns a table of resample results, similar to the one returned by [mlr3::benchmark()]'s `aggregate()` method.
+#'   If `unnest` is `TRUE`, hyperparameter settings are stored in separate columns instead of inside a list column
+#'
 #' @family Tuner
-NULL
-
 #' @export
 Tuner = R6Class("Tuner",
   public = list(

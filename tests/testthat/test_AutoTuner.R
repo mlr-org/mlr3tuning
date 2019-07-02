@@ -50,16 +50,16 @@ test_that("AutoTuner", {
   outer_resampling$param_set$values = list(folds = outer_folds)
   rr = mlr3::resample(task, at, outer_resampling)
 
-  lapply(rr$learners, function(tuner) checkmate::expect_r6(tuner, "AutoTuner"))
+  lapply(rr$learners, function(tuner) expect_r6(tuner, "AutoTuner"))
 
   at$train(task)
-  checkmate::expect_r6(at$tuner, "Tuner")
+  expect_r6(at$tuner, "Tuner")
 
   # Nested Resampling:
-  checkmate::expect_data_table(rr$data, nrow = outer_folds)
+  expect_data_table(rr$data, nrow = outer_folds)
   nuisance = lapply(rr$learners, function(autotuner) {
-    checkmate::expect_data_table(autotuner$tuner$pe$bmr$data, nrow = inner_evals * inner_folds)
-    checkmate::expect_data_table(autotuner$tuner$pe$bmr$aggregate(), nrow = inner_evals)
+    expect_data_table(autotuner$tuner$pe$bmr$data, nrow = inner_evals * inner_folds)
+    expect_data_table(autotuner$tuner$pe$bmr$aggregate(), nrow = inner_evals)
     expect_equal(names(autotuner$tuner$tune_result()$performance), p_measures)
     autotuner$tuner$tune_result()$performance
   })
@@ -89,7 +89,7 @@ test_that("AutoTuner", {
   at2$train(task)
 
   # ensure that we have different scores
-  checkmate::expect_r6(at2$tuner, "Tuner")
+  expect_r6(at2$tuner, "Tuner")
   expect_equal(anyDuplicated(at2$tuner$aggregate()$classif.ce), 0L)
 
   expect_prediction(at2$predict(task))
