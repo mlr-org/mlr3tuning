@@ -31,6 +31,10 @@ See \link{Terminator}.
 
 \examples{
 t = TerminatorRuntime$new(3)
+print(t)
+
+t = TerminatorRuntime$new(10 * 3600)
+print(t)
 }
 \seealso{
 Other Terminator: \code{\link{TerminatorEvaluations}},

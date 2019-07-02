@@ -27,6 +27,10 @@
 #' @export
 #' @examples
 #' t = TerminatorRuntime$new(3)
+#' print(t)
+#'
+#' t = TerminatorRuntime$new(10 * 3600)
+#' print(t)
 TerminatorRuntime = R6Class("TerminatorRuntime",
   inherit = Terminator,
   public = list(
@@ -52,7 +56,9 @@ TerminatorRuntime = R6Class("TerminatorRuntime",
     },
 
     print = function() {
-      catf("%s with %.3f seconds remaining.", format(self), self$state$remaining)
+      dt = Sys.time()
+      dt = dt + self$state$remaining - dt
+      catf("%s with %.3f %s remaining.", format(self), dt, units(dt))
     }
   )
 )
