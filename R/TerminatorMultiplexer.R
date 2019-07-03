@@ -1,36 +1,34 @@
-#' @title TerminatorMultiplexer Class
+#' @title Combine Terminators
+#'
+#' @include Terminator.R
+#' @usage NULL
+#' @format [R6::R6Class] object inheriting from [Terminator].
 #'
 #' @description
-#' TerminatorMultiplexer takes multiple `Terminator`s and will lead to termination as soon as one Terminator signals a termination.
-#' In the future more advanced termination rules can be implemented using this Multiplexer.
+#' This class takes multiple [Terminator]s and terminates as soon as one of the subordinate Terminators signals a termination.
 #'
-#' @section Usage:
+#' @section Construction:
 #' ```
 #' t = TerminatorMultiplexer$new(terminators)
 #' ```
-#' See [Terminator] for a description of the interface.
-#'
-#' @section Arguments:
-#' * `terminators` (`list`):
+#' * `terminators` :: `list()`\cr
 #'   List of objects of class [Terminator].
 #'
-#' @section Details:
-#' `$new()` creates a new object of class [TerminatorMultiplexer].
+#' @section Fields:
+#' See [Terminator].
 #'
-#' The interface is described in [Terminator].
+#' @section Methods:
+#' See [Terminator].
 #'
 #' @name TerminatorMultiplexer
 #' @family Terminator
+#' @export
 #' @examples
 #' t = TerminatorMultiplexer$new(list(
-#'   TerminatorRuntime$new(3, "mins"),
+#'   TerminatorRuntime$new(60),
 #'   TerminatorEvaluations$new(10)
 #' ))
 #' print(t)
-NULL
-
-#' @export
-#' @include Terminator.R
 TerminatorMultiplexer = R6Class("TerminatorMultiplexer",
   inherit = Terminator,
 
@@ -54,8 +52,10 @@ TerminatorMultiplexer = R6Class("TerminatorMultiplexer",
       invisible(self)
     },
 
-    format = function() {
-      paste0(map_chr(self$terminators, format), collapse = "\n")
+    print = function() {
+      catf("%s with terminators:", format(self))
+      catf(paste("* ", (capture.output({x = lapply(self$terminators, print)}))))
+      invisible(NULL)
     }
   )
 )

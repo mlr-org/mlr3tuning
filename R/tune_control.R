@@ -8,9 +8,9 @@
 #' @param ... :\cr
 #'   Additional arguments passed down to [mlr3::mlr_control()].
 #'
-#' @return (list()) with options passed down to [mlr3::benchmark()].
+#' @return (list()) with options, passed down to [mlr3::benchmark()].
 #' @export
-tune_control = function(store_tuning = FALSE, ...) {
+tune_control = function(..., store_tuning = FALSE) {
   insert_named(
     mlr3::mlr_control(...),
     list(store_tuning = assert_flag(store_tuning))

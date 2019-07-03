@@ -4,17 +4,17 @@
 \alias{tune_control}
 \title{Execution Control Object for Tuning}
 \usage{
-tune_control(store_tuning = FALSE, ...)
+tune_control(..., store_tuning = FALSE)
 }
 \arguments{
-\item{store_tuning}{(\code{logical(1)}):\cr
-Store internal tuning steps, e.g. the optimization path of the tuner.}
-
 \item{...}{:\cr
 Additional arguments passed down to \code{\link[mlr3:mlr_control]{mlr3::mlr_control()}}.}
+
+\item{store_tuning}{(\code{logical(1)}):\cr
+Store internal tuning steps, e.g. the optimization path of the tuner.}
 }
 \value{
-(list()) with options passed down to \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
+(list()) with options, passed down to \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
 }
 \description{
 This function is an extension of \code{\link[mlr3:mlr_control]{mlr3::mlr_control()}}.

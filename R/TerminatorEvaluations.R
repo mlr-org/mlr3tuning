@@ -1,33 +1,31 @@
-#' @title TerminatorEvaluations Class
+#' @title Terminator with Number of Evaluations Criterion
+#'
+#' @include Terminator.R
+#' @usage NULL
+#' @format [R6::R6Class] object inheriting from [Terminator].
 #'
 #' @description
-#' Class to terminate the tuning depending on the number of evaluations. An evaluation
-#' is defined by one resampling of a parameter value.
+#' Class to terminate the tuning depending on the number of evaluations.
+#' An evaluation is defined by one resampling of a parameter value.
 #'
-#' @section Usage:
+#' @section Construction:
 #' ```
-#' # Constructor
 #' t = TerminatorEvaluations$new(max_evaluations)
 #' ```
-#' See [Terminator] for a description of the interface.
 #'
-#' @section Arguments:
-#' * `max_evaluations` (`integer(1)`):
-#'   Maximum number of function evaluations.
+#' * `max_evaluations` :: `integer(1)`\cr
+#'   Number of allowed evaluations.
 #'
-#' @section Details:
-#' `$new()` creates a new object of class [TerminatorEvaluations].
+#' @section Fields:
+#' See [Terminator].
 #'
-#' The interface is described in [Terminator].
+#' @section Methods:
+#' See [Terminator].
 #'
-#' @name TerminatorEvaluations
 #' @family Terminator
+#' @export
 #' @examples
 #' t = TerminatorEvaluations$new(3)
-NULL
-
-#' @export
-#' @include Terminator.R
 TerminatorEvaluations = R6Class("TerminatorEvaluations",
   inherit = Terminator,
   public = list(
@@ -48,6 +46,8 @@ TerminatorEvaluations = R6Class("TerminatorEvaluations",
       self$update_start(pe)
     },
 
-    format = function() sprintf("TerminatorEvaluations with %i remaining evaluations", max(self$settings$max_evaluations - self$state$evals, 0L))
+    print = function() {
+      catf("%s with %i remaining evaluations", format(self), max(self$settings$max_evaluations - self$state$evals, 0L))
+    }
   )
 )

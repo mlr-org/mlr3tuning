@@ -30,7 +30,6 @@
 #'   [PerformanceEvaluator] -> `self`\cr
 #'   Is called in each tuning iteration after the evaluation.
 #'
-#' @name Terminator
 #' @family Terminator
 #' @export
 Terminator = R6Class("Terminator",
@@ -47,6 +46,9 @@ Terminator = R6Class("Terminator",
     },
     update_end = function(pe) {
       stop("$update_end() not implemented for Terminator")
+    },
+    format = function() {
+      sprintf("<%s>", class(self)[1L])
     }
   )
 )

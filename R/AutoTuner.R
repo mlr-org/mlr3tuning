@@ -1,42 +1,51 @@
 #' @title AutoTuner
 #'
+#' @usage NULL
+#' @format [R6::R6Class] object inheriting from [mlr3::Learner].
+#'
 #' @description
-#' The [AutoTuner] conducts tuning and sets the learners parameter configuration to the best parameters obtained by the tuning.
+#' The `AutoTuner` is a [mlr3::Learner] which tunes a subordinate learner via resampling.
+#' The best found configuration is then used to train a model on the complete training data.
+#' Note that this class allows to perform nested resampling by passing an [AutoTuner] object to [mlr3::resample()]
+#' or [mlr3::benchmark()].
 #'
-#' Additionally, this class can be used to do nested resampling by passing an [AutoTuner] object to resample.
-#'
-#' @section Usage:
+#' @section Construction:
 #' ```
-#' # Construction
-#' at = AutoTuner$new(learner, resampling, param_set, terminator,
+#' at = AutoTuner$new(learner, resampling, measures, param_set, terminator,
 #'   tuner, tuner_settings, ctrl = tune_control(), id = "autotuner")
-#'
-#' # public fields
-#' at$learner
 #' ```
-#' See [Learner] for a description of the interface.
-#'
-#' @section Arguments:
-#' * `learner` ([Learner]): \cr
-#'   Internal learner that is tuned and finally returned as trained learner with optimal parameter configuration.
-#' * `resampling` ([Resampling]): \cr
-#'   Resampling strategy for the tuning.
-#' * `param_set` ([paradox::ParamSet]) \cr
-#'   Parameter set for the tuning.
-#' * `terminator` ([Terminator]) \cr
-#'   Terminator used to stop the tuning.
-#' * `tuner` (Tuner Class Generator) \cr
+#' * `learner` :: [mlr3::Learner]\cr
+#'   Subordinate learner to tune.
+#' * `resampling` :: [mlr3::Resampling]\cr
+#'   Resampling strategy used to assess the performance of the learner on the (subset of) the
+#'   [Task] passed to `$train()`.
+#' * `measures` :: list of [mlr3::Measure]\cr
+#'   Performance measures. The first one is subject to tuning.
+#' * `param_set` :: [paradox::ParamSet]\cr
+#'   Tuning space.
+#' * `terminator` :: [Terminator]\cr
+#'   Controls the terminator of the `tuner`.
+#' * `tuner` :: [Tuner]\cr
 #'   Uninitialized tuner factory, e.g. TunerGridSearch.
-#' * `tuner_settings` (named list) \cr
-#'   List with tuner settings (e.g. see `?TunerGridSearch`)
+#' * `tuner_settings` :: named `list()`\cr
+#'   List with tuner settings (e.g. see [TunerGridSearch])
+#' * `ctrl` :: named `list()`\cr
+#'   See `tune_control()`.
+#' * `id` :: `character(1)`\cr
+#'   Name of the learner.
 #'
-#' @section Details:
-#' * With `at$learner` the raw learner with the best parameter configuration can be accessed.
+#' @section Fields:
+#' All fields from [Learner], and additionally:
 #'
-#' The interface is described in [Learner].
+#' * `learner` :: [mlr3::Learner]\cr
+#'   Subordinate learner. After `train()` of the `AutoTuner` has been executed,
+#'   this learner stores the final model on is parametrized with the best found solution.
 #'
-#' @name AutoTuner
+#' @section Methods:
+#' See [mlr3::Learner].
+#'
 #' @family Learner
+#' @export
 #' @examples
 #' task = mlr3::mlr_tasks$get("iris")
 #' learner = mlr3::mlr_learners$get("classif.rpart")
@@ -51,25 +60,22 @@
 #'   tuner_settings = list(resolution = 10L))
 #'
 #' at$train(task)
+#' at$model
 #' at$learner
-NULL
-
-#' @export
 AutoTuner = R6Class("AutoTuner", inherit = mlr3::Learner,
   public = list(
     initialize = function(learner, resampling, measures, param_set, terminator, tuner, tuner_settings, ctrl = tune_control(), id = "autotuner") {
-      # TODO: Check for factory
       if (!inherits(tuner, "R6ClassGenerator") && grepl(pattern = "Tuner", x = tuner$classname)) {
         stopf("Tuner must be a R6 class generator that creates tuner (e.g. TunerGridSearch).")
       }
 
       self$data$tuner_generator = tuner
       self$data$learner = learner = mlr3::assert_learner(learner = learner)
-      self$data$terminator = checkmate::assert_r6(terminator, "Terminator")
-      self$data$tuner_settings = checkmate::assert_list(tuner_settings)
+      self$data$terminator = assert_r6(terminator, "Terminator")
+      self$data$tuner_settings = assert_list(tuner_settings)
       self$data$resampling = mlr3::assert_resampling(resampling)
       self$data$measures = mlr3::assert_measures(measures)
-      self$data$param_set = checkmate::assert_class(param_set, "ParamSet")
+      self$data$param_set = assert_class(param_set, "ParamSet")
 
       super$initialize(
         id = id,

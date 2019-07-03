@@ -1,61 +1,64 @@
-#' @title TerminatorRuntime Class
+#' @title Terminator with Runtime Criterion
+#'
+#' @include Terminator.R
+#' @usage NULL
+#' @format [R6::R6Class] object inheriting from [Terminator].
 #'
 #' @description
-#' Class to terminate the tuning after some time. Note that the runtime is checked after each step
-#' and therefore it could happen that the final runtime is longer than the specified one. Time is measured
-#' for everything that happens between update_start and update_end.
+#' Class to terminate the tuning after a given runtime budget is exceeded.
+#' Runtime measurements starts with `update_start()` and ends with `update_end()`.
+#' Note that the runtime is checked after each step and therefore it is possible that the final runtime is longer than the specified one.
 #'
-#' @section Usage:
+#' @section Construction:
 #' ```
-#' # Constructor
-#' t = TerminatorRuntime$new(max_time, time_unit)
+#' t = TerminatorRuntime$new(runtime)
 #' ```
-#' See [Terminator] for a description of the interface.
 #'
-#' @section Arguments:
-#' * `max_time` (integer(1)):
-#'   Maximal amount of time measures in `units`.
-#' * `units` (character(1)):
-#'   Unit used for measuring time. Possible choices are "secs", "mins", "hours", "days", and "weeks" that
-#'   are directly passed to `difftime()`.
+#' * `time` :: `numeric(1)`\cr
+#'   Maximum allowed runtime, in seconds.
 #'
-#' @section Details:
-#' `$new()` creates a new object of class [TerminatorRuntime].
+#' @section Fields:
+#' See [Terminator].
 #'
-#' The interface is described in [Terminator].
+#' @section Methods:
+#' See [Terminator].
 #'
-#' @name TerminatorRuntime
 #' @family Terminator
-#' @examples
-#' t = TerminatorRuntime$new(3, "mins")
-NULL
-
 #' @export
-#' @include Terminator.R
+#' @examples
+#' t = TerminatorRuntime$new(3)
+#' print(t)
+#'
+#' t = TerminatorRuntime$new(10 * 3600)
+#' print(t)
 TerminatorRuntime = R6Class("TerminatorRuntime",
   inherit = Terminator,
   public = list(
 
-    initialize = function(max_time, units = "minutes") {
-      super$initialize(settings = list(max_time = checkmate::assert_count(max_time, positive = TRUE, coerce = TRUE),
-        units = checkmate::assert_choice(units, choices = c("secs", "mins", "hours", "days", "weeks"))))
+    initialize = function(runtime) {
+      assert_number(runtime, lower = 0)
+      super$initialize(settings = list(runtime = runtime))
       self$terminated = FALSE
-      self$state = list(time_start = NULL, time_end = NULL, time_remaining = self$settings$max_time)
+      self$state = list(start = NULL, remaining = runtime)
     },
 
     update_start = function(pe) {
-      self$state$time_start = Sys.time()
+      self$state$start = proc.time()[[3L]]
       invisible(self)
     },
 
     update_end = function(pe) {
-      self$state$time_end = Sys.time()
-      dtime = difftime(time1 = self$state$time_end, time2 = self$state$time_start, units = self$settings$units)
-      self$state$time_remaining = self$state$time_remaining - dtime
-      self$terminated = self$state$time_remaining < 0
+      self$state$remaining = self$state$remaining - (proc.time()[[3L]] - self$state$start)
+      if (self$state$remaining < 0) {
+        self$terminated = TRUE
+      }
       invisible(self)
     },
 
-    format = function() sprintf("TerminatorRuntime with %f remaining %s.", self$state$time_remaining, self$settings$units)
+    print = function() {
+      dt = Sys.time()
+      dt = dt + self$state$remaining - dt
+      catf("%s with %.3f %s remaining.", format(self), dt, units(dt))
+    }
   )
 )

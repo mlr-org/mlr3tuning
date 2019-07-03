@@ -13,7 +13,7 @@ test_that("TunerGridSearch", {
   measures = mlr3::mlr_measures$mget("classif.ce")
 
   terminator = TerminatorEvaluations$new(5)
-  terminator_false = TerminatorRuntime$new(2, "mins")
+  terminator_false = TerminatorRuntime$new(2 * 60)
   param_set = paradox::ParamSet$new(params = list(
     paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1
   )))

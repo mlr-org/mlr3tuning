@@ -2,12 +2,11 @@ context("TerminatorMultiplexer")
 
 test_that("API", {
   ti = TerminatorEvaluations$new(2)
-  tr = TerminatorRuntime$new(1, "secs")
+  tr = TerminatorRuntime$new(1)
   tm = TerminatorMultiplexer$new(list(ti, tr))
 
   expect_equal(tm$settings$max_evaluations, ti$settings$max_evaluations)
-  expect_equal(tm$settings$max_time, tr$settings$max_time)
-  expect_equal(tm$settings$units, tr$settings$units)
+  expect_equal(tm$settings$runtime, tr$settings$runtime)
 
   bmr = mlr3::benchmark(mlr3::expand_grid(
     tasks = mlr3::mlr_tasks$mget("iris"),
@@ -31,9 +30,8 @@ test_that("API", {
   expect_true(tr$terminated)
 
   expect_equal(tm$terminators[[1]]$state$evals, 1L)
-  expect_equal(tm$terminators[[2]]$settings$max_time, 1L)
-  expect_equal(tm$terminators[[2]]$settings$units, "secs")
+  expect_equal(tm$terminators[[2]]$settings$runtime, 1L)
 
-  expect_string(format(tm), fixed = "1 remaining")
-  expect_string(format(tm), fixed = "with -")
+  expect_output(print(tm), "1 remaining")
+  expect_output(print(tm), "with -")
 })

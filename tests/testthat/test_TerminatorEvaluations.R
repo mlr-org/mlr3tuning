@@ -17,7 +17,7 @@ test_that("API", {
   te$update_end(pe)
   expect_identical(te$state$evals, 1L)
   expect_false(te$terminated)
-  expect_string(format(te), fixed = "1 remaining")
+  expect_output(print(te), "1 remaining")
 
   bmr = mlr3::benchmark(mlr3::expand_grid(
     tasks = mlr3::mlr_tasks$mget("iris"),
@@ -31,5 +31,5 @@ test_that("API", {
   te$update_end(pe)
   expect_identical(te$state$evals, 2L)
   expect_true(te$terminated)
-  expect_string(format(te), fixed = "0 remaining")
+  expect_output(print(te), "0 remaining")
 })
