@@ -37,7 +37,7 @@
 #'   () -> named `list()`\cr
 #'   List with 2 elements:
 #'     - `performance` (`numeric()`) with the best performance.
-#'     - `values` (named `list()` with the corresponding hyperparameters values.
+#'     - `values` (named `list()`) with the corresponding hyperparameters values.
 #' * `aggregate(unnest = TRUE)`
 #'   `logical(1)` -> [data.table::data.table()]\cr
 #'   Returns a table of resample results, similar to the one returned by [mlr3::benchmark()]'s `aggregate()` method.

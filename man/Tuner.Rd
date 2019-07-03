@@ -48,7 +48,7 @@ Performs the tuning until the budget of the \link{Terminator} is exhausted.
 List with 2 elements:
 \itemize{
 \item \code{performance} (\code{numeric()}) with the best performance.
-\item \code{values} (named \code{list()} with the corresponding hyperparameters values.
+\item \code{values} (named \code{list()}) with the corresponding hyperparameters values.
 }
 \item \code{aggregate(unnest = TRUE)}
 \code{logical(1)} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr

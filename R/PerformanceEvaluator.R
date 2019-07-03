@@ -44,7 +44,7 @@
 #'
 #' @section Methods:
 #' * `eval(dt)`\cr
-#'   `data.table()` -> `self`\cr
+#'   [data.table::data.table()] -> `self`\cr
 #'   Evaluates all hyperparameter configurations in `dt`.
 #'   Each configuration is a row.
 #' * `eval(design)`\cr
@@ -55,7 +55,7 @@
 #'   Queries the [mlr3::BenchmarkResult] for the best [mlr3::ResampleResult] according to the
 #'   first measure in `$measures`.
 #' * `run_hooks()`\cr
-#'   `() -> `NULL`\cr
+#'   `()` -> `NULL`\cr
 #'   Runs all hook functions. For internal use.
 #' * `add_hook(hook)`\cr
 #'   `function()` -> `NULL`\cr

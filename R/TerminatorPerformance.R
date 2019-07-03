@@ -14,7 +14,7 @@
 #' * `thresh` :: named `numeric()`\cr
 #'   Thresholds that need to be reached, named with measure ids.
 #'   Terminates if the performance exceeds (respective measure has to be maximized) or falls below (respective measure has to be minimized) all provided threshold simultaneously.
-#' * `pe` :: ([PerformanceEvaluator])\cr
+#' * `pe` :: [PerformanceEvaluator]\cr
 #'   Performance evaluator used for the tuning.
 #'
 #' @section Fields:

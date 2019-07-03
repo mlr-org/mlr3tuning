@@ -53,7 +53,7 @@ This is for internal use.
 
 \itemize{
 \item \code{eval(dt)}\cr
-\code{data.table()} -> \code{self}\cr
+\code{\link[data.table:data.table]{data.table::data.table()}} -> \code{self}\cr
 Evaluates all hyperparameter configurations in \code{dt}.
 Each configuration is a row.
 \item \code{eval(design)}\cr
@@ -64,7 +64,7 @@ Evaluates all configurations defined by the design.
 Queries the \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} for the best \link[mlr3:ResampleResult]{mlr3::ResampleResult} according to the
 first measure in \code{$measures}.
 \item \code{run_hooks()}\cr
-\code{() -> }NULL`\cr
+\code{()} -> \code{NULL}\cr
 Runs all hook functions. For internal use.
 \item \code{add_hook(hook)}\cr
 \code{function()} -> \code{NULL}\cr

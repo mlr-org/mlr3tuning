@@ -15,7 +15,7 @@ Class to terminate the tuning after a performance threshold has been hit.
 \item \code{thresh} :: named \code{numeric()}\cr
 Thresholds that need to be reached, named with measure ids.
 Terminates if the performance exceeds (respective measure has to be maximized) or falls below (respective measure has to be minimized) all provided threshold simultaneously.
-\item \code{pe} :: (\link{PerformanceEvaluator})\cr
+\item \code{pe} :: \link{PerformanceEvaluator}\cr
 Performance evaluator used for the tuning.
 }
 }
