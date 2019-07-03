@@ -40,5 +40,6 @@ reference:
   - title: Link to Machine Learning with mlr3
     contents:
       - PerformanceEvaluator
-      - AutoLearner
+      - AutoTuner
+      - tune_control
 
