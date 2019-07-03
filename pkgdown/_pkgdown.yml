@@ -1,4 +1,4 @@
-url: https://mlr3tuning.mlr-org.com
+url: https://mlr3.mlr-org.com
 
 template:
   params:
@@ -15,3 +15,30 @@ development:
 
 toc:
   depth: 3
+
+navbar:
+  title:
+  type: default
+
+  right:
+  - icon: fa-github fa-lg
+    href: https://github.com/mlr-org/mlr3tuning
+  - icon: fa-slack
+    href: https://mlr-org.slack.com
+  - icon: fa-stack-overflow
+    href: https://stackoverflow.com/questions/tagged/mlr3
+  - icon: fa-rss
+    href: https://mlr-org.com/
+
+reference:
+  - title: Terminators
+    contents:
+      - starts_with("Terminator")
+  - title: Tuners
+    contents:
+      - starts_with("Tuner")
+  - title: Link to Machine Learning with mlr3
+    contents:
+      - PerformanceEvaluator
+      - AutoLearner
+
