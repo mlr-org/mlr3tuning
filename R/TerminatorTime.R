@@ -5,7 +5,7 @@
 #' @format [R6::R6Class] object inheriting from [Terminator].
 #'
 #' @description
-#' Class to terminate the tuning after a fixed date / time.
+#' Class to terminate the tuning after a fixed date / time (as reported by [Sys.time()].
 #'
 #' @section Construction:
 #' ```

@@ -6,7 +6,7 @@
 \title{Terminator with Time Criterion}
 \format{\link[R6:R6Class]{R6::R6Class} object inheriting from \link{Terminator}.}
 \description{
-Class to terminate the tuning after a fixed date / time.
+Class to terminate the tuning after a fixed date / time (as reported by \code{\link[=Sys.time]{Sys.time()}}.
 }
 \section{Construction}{
 \preformatted{t = TerminatorTime$new(time)
