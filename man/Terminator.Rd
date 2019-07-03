@@ -46,7 +46,8 @@ Is called in each tuning iteration after the evaluation.
 Other Terminator: \code{\link{TerminatorEvaluations}},
   \code{\link{TerminatorMultiplexer}},
   \code{\link{TerminatorPerformance}},
-  \code{\link{TerminatorRuntime}}
+  \code{\link{TerminatorRuntime}},
+  \code{\link{TerminatorTime}}
 }
 \concept{Terminator}
 \keyword{datasets}
