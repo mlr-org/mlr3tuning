@@ -33,7 +33,8 @@ See \link{Terminator}.
 \seealso{
 Other Terminator: \code{\link{TerminatorEvaluations}},
   \code{\link{TerminatorMultiplexer}},
-  \code{\link{TerminatorRuntime}}, \code{\link{Terminator}}
+  \code{\link{TerminatorRuntime}},
+  \code{\link{TerminatorTime}}, \code{\link{Terminator}}
 }
 \concept{Terminator}
 \keyword{datasets}

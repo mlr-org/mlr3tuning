@@ -37,7 +37,8 @@ print(t)
 \seealso{
 Other Terminator: \code{\link{TerminatorEvaluations}},
   \code{\link{TerminatorPerformance}},
-  \code{\link{TerminatorRuntime}}, \code{\link{Terminator}}
+  \code{\link{TerminatorRuntime}},
+  \code{\link{TerminatorTime}}, \code{\link{Terminator}}
 }
 \concept{Terminator}
 \keyword{datasets}

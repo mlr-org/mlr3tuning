@@ -40,7 +40,7 @@ print(t)
 Other Terminator: \code{\link{TerminatorEvaluations}},
   \code{\link{TerminatorMultiplexer}},
   \code{\link{TerminatorPerformance}},
-  \code{\link{Terminator}}
+  \code{\link{TerminatorTime}}, \code{\link{Terminator}}
 }
 \concept{Terminator}
 \keyword{datasets}
