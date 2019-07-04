@@ -23,7 +23,7 @@ Authors@R:
              email = "daniel.schalk@stat.uni-muenchen.de",
              comment = c(ORCID = "0000-0003-0950-1947")))
 Description: Implements methods for hyperparameter tuning in
-    mlr3.
+    'mlr3'.
 License: MIT + file LICENSE
 URL: https://mlr3tuning.mlr-org.com
 BugReports: https://github.com/mlr-org/mlr3tuning/issues

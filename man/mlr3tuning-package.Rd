@@ -6,7 +6,8 @@
 \alias{mlr3tuning-package}
 \title{mlr3tuning: Tuning for mlr3}
 \description{
-Implements methods for hyperparameter tuning in mlr3.
+Implements methods for hyperparameter tuning in
+    'mlr3'.
 }
 \seealso{
 Useful links:
