@@ -1,6 +1,6 @@
 Package: mlr3tuning
 Title: Tuning for mlr3
-Version: 0.1.0-9000
+Version: 0.9.0
 Authors@R:
     c(person(given = "Jakob",
              family = "Richter",
@@ -30,21 +30,16 @@ Imports:
 Suggests:
     GenSA,
     knitr,
-    rmarkdown,
     rpart,
     testthat
-VignetteBuilder:
-    knitr
 Remotes:
     mlr-org/paradox,
     mlr-org/mlr3misc,
     mlr-org/mlr3
-ByteCompile: true
 Encoding: UTF-8
-LazyData: true
 NeedsCompilation: no
 Roxygen: list(markdown = TRUE)
-URL: https://github.com/mlr-org/mlr3tuning
+URL: https://mlr3tuning.mlr-org.com
 BugReports: https://github.com/mlr-org/mlr3tuning/issues
 RoxygenNote: 6.1.1
 Collate:

@@ -18,6 +18,9 @@ unregister_mlr3 = function() {
 .onLoad = function(libname, pkgname) {
   # nocov start
   assign("lg", lgr::get_logger("mlr3"), envir = parent.env(environment()))
+  if (Sys.getenv("IN_PKGDOWN") == "true") {
+    lg$set_threshold("warn")
+  }
   register_mlr3()
   setHook(packageEvent("mlr3", "onLoad"), function(...) register_mlr3(), action = "append")
 } # nocov end

@@ -11,7 +11,7 @@ Implements methods for hyperparameter tuning in mlr3.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/mlr-org/mlr3tuning}
+  \item \url{https://mlr3tuning.mlr-org.com}
   \item Report bugs at \url{https://github.com/mlr-org/mlr3tuning/issues}
 }
 

@@ -14,7 +14,7 @@ Additional arguments passed down to \code{\link[mlr3:mlr_control]{mlr3::mlr_cont
 Store internal tuning steps, e.g. the optimization path of the tuner.}
 }
 \value{
-(list()) with options, passed down to \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
+(\code{list()}) with options, passed down to \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
 }
 \description{
 This function is an extension of \code{\link[mlr3:mlr_control]{mlr3::mlr_control()}}.
