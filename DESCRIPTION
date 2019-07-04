@@ -2,19 +2,28 @@ Package: mlr3tuning
 Title: Tuning for mlr3
 Version: 0.9.0
 Authors@R:
-    c(person(given = "Jakob",
-             family = "Richter",
+    c(
+      person(given = "Michel",
+             family = "Lang",
              role = c("cre", "aut"),
-             email = "jakob1richter@gmail.com"),
+             email = "michellang@gmail.com",
+             comment = c(ORCID = "0000-0001-9754-0393")),
+      person(given = "Jakob",
+             family = "Richter",
+             role = "aut",
+             email = "jakob1richter@gmail.com",
+             comment = c(ORCID = "0000-0003-4481-5554")),
       person(given = "Bernd",
              family = "Bischl",
              role = "aut",
-             email = "bernd_bischl@gmx.net"),
-      person(given = "Michel",
-             family = "Lang",
+             email = "bernd_bischl@gmx.net",
+             comment = c(ORCID = "0000-0001-6002-6980")),
+      person(given = "Daniel",
+             family = "Schalk",
              role = "aut",
-             email = "michellang@gmail.com",
-             comment = c(ORCID = "0000-0001-9754-0393")))
+             email = "daniel.schalk@stat.uni-muenchen.de",
+             comment = c(ORCID = "0000-0003-0950-1947"))
+    )
 Description: Implements methods for hyperparameter tuning in mlr3.
 License: MIT + file LICENSE
 Depends:

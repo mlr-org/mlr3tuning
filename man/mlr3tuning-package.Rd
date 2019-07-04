@@ -17,12 +17,13 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Jakob Richter \email{jakob1richter@gmail.com}
+\strong{Maintainer}: Michel Lang \email{michellang@gmail.com} (0000-0001-9754-0393)
 
 Authors:
 \itemize{
-  \item Bernd Bischl \email{bernd_bischl@gmx.net}
-  \item Michel Lang \email{michellang@gmail.com} (0000-0001-9754-0393)
+  \item Jakob Richter \email{jakob1richter@gmail.com} (0000-0003-4481-5554)
+  \item Bernd Bischl \email{bernd_bischl@gmx.net} (0000-0001-6002-6980)
+  \item Daniel Schalk \email{daniel.schalk@stat.uni-muenchen.de} (0000-0003-0950-1947)
 }
 
 }
