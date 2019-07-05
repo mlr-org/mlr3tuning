@@ -1,3 +1,3 @@
-# mlr3tuning 0.9.0
+# mlr3tuning 0.1.0
 
 * Initial prototype.
