@@ -4,10 +4,10 @@
 \name{mlr3tuning-package}
 \alias{mlr3tuning}
 \alias{mlr3tuning-package}
-\title{mlr3tuning: Tuning for mlr3}
+\title{mlr3tuning: Tuning for 'mlr3'}
 \description{
 Implements methods for hyperparameter tuning in
-    'mlr3'.
+    'mlr3', e.g. Grid Search, Random Search, or Simulated Annealing.
 }
 \seealso{
 Useful links:

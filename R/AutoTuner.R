@@ -64,7 +64,7 @@
 #' at$learner
 AutoTuner = R6Class("AutoTuner", inherit = mlr3::Learner,
   public = list(
-    initialize = function(learner, resampling, measures, param_set, terminator, tuner, tuner_settings, ctrl = tune_control(), id = "autotuner") {
+    initialize = function(learner, resampling, measures, param_set, terminator, tuner, tuner_settings = list(), ctrl = tune_control(), id = "autotuner") {
       if (!inherits(tuner, "R6ClassGenerator") && grepl(pattern = "Tuner", x = tuner$classname)) {
         stopf("Tuner must be a R6 class generator that creates tuner (e.g. TunerGridSearch).")
       }
@@ -72,7 +72,7 @@ AutoTuner = R6Class("AutoTuner", inherit = mlr3::Learner,
       self$data$tuner_generator = tuner
       self$data$learner = learner = mlr3::assert_learner(learner = learner)
       self$data$terminator = assert_r6(terminator, "Terminator")
-      self$data$tuner_settings = assert_list(tuner_settings)
+      self$data$tuner_settings = assert_list(tuner_settings, names = "unique")
       self$data$resampling = mlr3::assert_resampling(resampling)
       self$data$measures = mlr3::assert_measures(measures)
       self$data$param_set = assert_class(param_set, "ParamSet")
