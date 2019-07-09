@@ -14,7 +14,7 @@
 #' @section Construction:
 #' ```
 #' pe = PerformanceEvaluator$new(task, learner, resampling, measures, param_set,
-#'   ctrl = tune_control())
+#'   ctrl = list())
 #'```
 #'
 #' * `task` :: [mlr3::Task].
@@ -23,7 +23,7 @@
 #' * `measures` :: list of [mlr3::Measure].
 #' * `param_set` :: [paradox::ParamSet].
 #' * `ctrl` :: named `list()`\cr
-#'   See [tune_control()].
+#'   See [mlr3::mlr_control()].
 #'
 #' @section Fields:
 #' * `task` :: [mlr3::Task]\cr
@@ -96,13 +96,13 @@ PerformanceEvaluator = R6Class("PerformanceEvaluator",
     hooks = NULL,
     bmr = NULL,
 
-    initialize = function(task, learner, resampling, measures, param_set, ctrl = tune_control()) {
+    initialize = function(task, learner, resampling, measures, param_set, ctrl = list()) {
       self$task = mlr3::assert_task(task)
       self$learner = mlr3::assert_learner(learner, task = task)
       self$resampling = mlr3::assert_resampling(resampling)
       self$measures = mlr3::assert_measures(measures)
       self$param_set = assert_class(param_set, "ParamSet")
-      self$ctrl = tune_control(ctrl)
+      self$ctrl = mlr3::mlr_control(ctrl)
     },
 
     eval = function(dt) {

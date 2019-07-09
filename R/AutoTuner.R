@@ -12,7 +12,7 @@
 #' @section Construction:
 #' ```
 #' at = AutoTuner$new(learner, resampling, measures, param_set, terminator,
-#'   tuner, tuner_settings, ctrl = tune_control(), id = "autotuner")
+#'   tuner, tuner_settings, ctrl = list(), id = "autotuner")
 #' ```
 #' * `learner` :: [mlr3::Learner]\cr
 #'   Subordinate learner to tune.
@@ -30,7 +30,7 @@
 #' * `tuner_settings` :: named `list()`\cr
 #'   List with tuner settings (e.g. see [TunerGridSearch])
 #' * `ctrl` :: named `list()`\cr
-#'   See `tune_control()`.
+#'   See [mlr3::mlr_control()].
 #' * `id` :: `character(1)`\cr
 #'   Name of the learner.
 #'
@@ -40,6 +40,13 @@
 #' * `learner` :: [mlr3::Learner]\cr
 #'   Subordinate learner. After `train()` of the `AutoTuner` has been executed,
 #'   this learner stores the final model on is parametrized with the best found solution.
+#'
+#' * `store_bmr` :: `logical(1)`\cr
+#'   If `TRUE`, store the benchmark result as slot `$bmr`.
+#'
+#' * `bmr` :: [mlr3::BenchmarkResult]\cr
+#'   Only stored if `store_bmr` has been set to `TRUE`.
+#'   This object acts as an optimization path.
 #'
 #' @section Methods:
 #' See [mlr3::Learner].
@@ -58,13 +65,20 @@
 #'
 #' at = AutoTuner$new(learner, resampling, measures, param_set, terminator, tuner = TunerGridSearch,
 #'   tuner_settings = list(resolution = 10L))
+#' at$store_bmr = TRUE
 #'
 #' at$train(task)
 #' at$model
 #' at$learner
+#'
+#' # retrieve the best ResampleResult
+#' rr = at$bmr$best(measures)
+#' rr$aggregate(measures)
 AutoTuner = R6Class("AutoTuner", inherit = mlr3::Learner,
   public = list(
-    initialize = function(learner, resampling, measures, param_set, terminator, tuner, tuner_settings = list(), ctrl = tune_control(), id = "autotuner") {
+    store_bmr = FALSE,
+
+    initialize = function(learner, resampling, measures, param_set, terminator, tuner, tuner_settings = list(), ctrl = list(), id = "autotuner") {
       if (!inherits(tuner, "R6ClassGenerator") && grepl(pattern = "Tuner", x = tuner$classname)) {
         stopf("Tuner must be a R6 class generator that creates tuner (e.g. TunerGridSearch).")
       }
@@ -107,6 +121,10 @@ AutoTuner = R6Class("AutoTuner", inherit = mlr3::Learner,
       # train internal learner
       self$data$learner$train(task)
 
+      if (isTRUE(self$store_bmr)) {
+        self$data$bmr = pe$bmr
+      }
+
       return(self$data$learner$model)
     },
 
@@ -128,9 +146,12 @@ AutoTuner = R6Class("AutoTuner", inherit = mlr3::Learner,
       self$data$learner$model
     },
 
-    tuner = function(rhs) {
-      if (!missing(rhs)) stop("tuner is read only")
+    tuner = function() {
       self$data$tuner
+    },
+
+    bmr = function() {
+      self$data$bmr
     }
   )
 )

@@ -13,11 +13,14 @@ test_that("AutoTuner / single step", {
 
   at = AutoTuner$new(learner, resampling, measures, param_set, terminator, tuner = TunerRandomSearch,
     tuner_settings = list(batch_size = 10L))
+  at$store_bmr = TRUE
 
   expect_learner(at$train(task))
   expect_prediction(at$predict(task))
   expect_is(at$model, "rpart")
   expect_is(at$tuner, "Tuner")
+
+  expect_benchmark_result(at$bmr)
 })
 
 test_that("AutoTuner", {
@@ -44,6 +47,8 @@ test_that("AutoTuner", {
 
   at = AutoTuner$new(learner, resampling, measures, param_set, terminator, tuner = TunerRandomSearch,
     tuner_settings = list(batch_size = 10L))
+
+  expect_null(at$bmr)
 
   # Nested Resampling:
   outer_resampling = mlr3::mlr_resamplings$get("cv")

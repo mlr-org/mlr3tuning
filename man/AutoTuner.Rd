@@ -13,7 +13,7 @@ or \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
 }
 \section{Construction}{
 \preformatted{at = AutoTuner$new(learner, resampling, measures, param_set, terminator,
-  tuner, tuner_settings, ctrl = tune_control(), id = "autotuner")
+  tuner, tuner_settings, ctrl = list(), id = "autotuner")
 }
 \itemize{
 \item \code{learner} :: \link[mlr3:Learner]{mlr3::Learner}\cr
@@ -32,7 +32,7 @@ Uninitialized tuner factory, e.g. TunerGridSearch.
 \item \code{tuner_settings} :: named \code{list()}\cr
 List with tuner settings (e.g. see \link{TunerGridSearch})
 \item \code{ctrl} :: named \code{list()}\cr
-See \code{tune_control()}.
+See \code{\link[mlr3:mlr_control]{mlr3::mlr_control()}}.
 \item \code{id} :: \code{character(1)}\cr
 Name of the learner.
 }
@@ -45,6 +45,11 @@ All fields from \link{Learner}, and additionally:
 \item \code{learner} :: \link[mlr3:Learner]{mlr3::Learner}\cr
 Subordinate learner. After \code{train()} of the \code{AutoTuner} has been executed,
 this learner stores the final model on is parametrized with the best found solution.
+\item \code{store_bmr} :: \code{logical(1)}\cr
+If \code{TRUE}, store the benchmark result as slot \code{$bmr}.
+\item \code{bmr} :: \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}\cr
+Only stored if \code{store_bmr} has been set to \code{TRUE}.
+This object acts as an optimization path.
 }
 }
 
@@ -65,10 +70,15 @@ terminator = TerminatorEvaluations$new(5)
 
 at = AutoTuner$new(learner, resampling, measures, param_set, terminator, tuner = TunerGridSearch,
   tuner_settings = list(resolution = 10L))
+at$store_bmr = TRUE
 
 at$train(task)
 at$model
 at$learner
+
+# retrieve the best ResampleResult
+rr = at$bmr$best(measures)
+rr$aggregate(measures)
 }
 \concept{Learner}
 \keyword{datasets}

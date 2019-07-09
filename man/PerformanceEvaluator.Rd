@@ -15,7 +15,7 @@ The \code{PerformanceEvaluator} class is the basis for further tuning strategies
 }
 \section{Construction}{
 \preformatted{pe = PerformanceEvaluator$new(task, learner, resampling, measures, param_set,
-  ctrl = tune_control())
+  ctrl = list())
 }
 \itemize{
 \item \code{task} :: \link[mlr3:Task]{mlr3::Task}.
@@ -24,7 +24,7 @@ The \code{PerformanceEvaluator} class is the basis for further tuning strategies
 \item \code{measures} :: list of \link[mlr3:Measure]{mlr3::Measure}.
 \item \code{param_set} :: \link[paradox:ParamSet]{paradox::ParamSet}.
 \item \code{ctrl} :: named \code{list()}\cr
-See \code{\link[=tune_control]{tune_control()}}.
+See \code{\link[mlr3:mlr_control]{mlr3::mlr_control()}}.
 }
 }
 

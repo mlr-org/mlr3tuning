@@ -13,8 +13,7 @@ test_that("Construction", {
     learner = learner,
     resampling = resampling,
     measures = measures,
-    param_set = param_set,
-    ctrl = tune_control()
+    param_set = param_set
   )
 
   expect_r6(pe, "PerformanceEvaluator")
@@ -49,8 +48,7 @@ test_that("Construction", {
     learner = learner,
     resampling = resampling,
     measures = measures,
-    param_set = param_set,
-    ctrl = tune_control()
+    param_set = param_set
   )
 
   expect_error(pe$add_hook(hook = mean))
