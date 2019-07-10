@@ -110,8 +110,10 @@ PerformanceEvaluator = R6Class("PerformanceEvaluator",
       self$eval_design(paradox::Design$new(self$param_set, dt, remove_dupl = FALSE))
     },
 
+    # evaluates all points in a design
+    # possibly transforms the data before using the trafo from
+    # self$param set
     eval_design = function(design) {
-
       assert_r6(design, "Design")
 
       # Not that pretty but enables the use of transpose from Design:
@@ -124,29 +126,18 @@ PerformanceEvaluator = R6Class("PerformanceEvaluator",
       learners = imap(design$transpose(), function(xt, i) {
         learner = self$learner$clone(deep = TRUE)
         learner$param_set$values = insert_named(learner$param_set$values, xt)
-        learner$id = paste0(learner$id, n_evals + i)
         return(learner)
       })
 
       bmr = mlr3::benchmark(mlr3::expand_grid(tasks = list(self$task), learners = learners,
         resamplings = list(self$resampling)), ctrl = self$ctrl)
 
-      # add params to benchmark result data. if statement ensures that map with just one learner returns
-      # the same as map with more than one learner:
-      bmr$data$pars = map(bmr$data$learner, function(l) {
-        if (nrow(bmr$data) == 1) {
-          list(l$param_set$values)
-        } else {
-          l$param_set$values
-        }
-      })
       if (is.null(self$bmr)) {
-        bmr$data$dob = 1L
         self$bmr = bmr
       } else {
-        bmr$data$dob = max(self$bmr$data$dob) + 1L
         self$bmr$combine(bmr)
       }
+
       self$run_hooks()
       invisible(self)
     },
@@ -161,16 +152,7 @@ PerformanceEvaluator = R6Class("PerformanceEvaluator",
     },
 
     run_hooks = function() {
-      lapply(self$hooks, function(hook) {
-        do.call(hook, list(pe = self))
-      })
-    },
-    deep_clone = function(name, value) {
-      if (R6::is.R6(value)) {
-        value$clone(deep = TRUE)
-      } else {
-        value
-      }
+      lapply(self$hooks, function(hook) hook(pe = self))
     }
   )
 )
