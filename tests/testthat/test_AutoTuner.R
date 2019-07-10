@@ -21,6 +21,11 @@ test_that("AutoTuner / single step", {
   expect_is(at$tuner, "Tuner")
 
   expect_benchmark_result(at$bmr)
+
+  tab = at$tune_path
+  expect_data_table(tab, nrow = 3)
+  expect_subset(measures, names(tab))
+  expect_subset("cp", names(tab))
 })
 
 test_that("AutoTuner", {

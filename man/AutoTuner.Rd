@@ -50,6 +50,11 @@ If \code{TRUE}, store the benchmark result as slot \code{$bmr}.
 \item \code{bmr} :: \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}\cr
 Only stored if \code{store_bmr} has been set to \code{TRUE}.
 This object acts as an optimization path.
+\item \code{tuner} :: \link{Tuner}\cr
+Access to the stored \link{Tuner}.
+\item \code{tune_path} :: \code{\link[data.table:data.table]{data.table::data.table()}}\cr
+Only stored if \code{store_bmr} has been set to \code{TRUE}.
+This is the aggregate of the stored \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} with hyperparameters as separate columns.
 }
 }
 

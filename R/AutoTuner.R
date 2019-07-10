@@ -48,6 +48,13 @@
 #'   Only stored if `store_bmr` has been set to `TRUE`.
 #'   This object acts as an optimization path.
 #'
+#' * `tuner` :: [Tuner]\cr
+#'   Access to the stored [Tuner].
+#'
+#' * `tune_path` :: [data.table::data.table()]\cr
+#'   Only stored if `store_bmr` has been set to `TRUE`.
+#'   This is the aggregate of the stored [mlr3::BenchmarkResult] with hyperparameters as separate columns.
+#'
 #' @section Methods:
 #' See [mlr3::Learner].
 #'
@@ -152,6 +159,12 @@ AutoTuner = R6Class("AutoTuner", inherit = mlr3::Learner,
 
     bmr = function() {
       self$data$bmr
+    },
+
+    tune_path = function() {
+      measures = self$data$tuner$pe$measures
+      tab = self$data$bmr$aggregate(measures, params = TRUE)
+      unnest(tab, "params")
     }
   )
 )
