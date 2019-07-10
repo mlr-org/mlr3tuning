@@ -97,12 +97,12 @@ PerformanceEvaluator = R6Class("PerformanceEvaluator",
     bmr = NULL,
 
     initialize = function(task, learner, resampling, measures, param_set, ctrl = list()) {
-      self$task = mlr3::assert_task(task)
-      self$learner = mlr3::assert_learner(learner, task = task)
-      self$resampling = mlr3::assert_resampling(resampling)
-      self$measures = mlr3::assert_measures(measures)
+      self$task = assert_task(task)
+      self$learner = assert_learner(learner, task = task)
+      self$resampling = assert_resampling(resampling)
+      self$measures = assert_measures(measures)
       self$param_set = assert_class(param_set, "ParamSet")
-      self$ctrl = mlr3::mlr_control(ctrl)
+      self$ctrl = mlr_control(ctrl)
     },
 
     eval = function(dt) {
@@ -111,8 +111,7 @@ PerformanceEvaluator = R6Class("PerformanceEvaluator",
     },
 
     # evaluates all points in a design
-    # possibly transforms the data before using the trafo from
-    # self$param set
+    # possibly transforms the data before using the trafo from self$param set
     eval_design = function(design) {
       assert_r6(design, "Design")
 

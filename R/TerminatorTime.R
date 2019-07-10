@@ -55,8 +55,14 @@ TerminatorTime = R6Class("TerminatorTime",
     },
 
     print = function() {
+      catf("%s (remaining: %s)", format(self), self$remaining)
+    }
+  ),
+
+  active = list(
+    remaining = function() {
       dt = self$settings$time - Sys.time()
-      catf("%s with %.3f %s remaining.", format(self), dt, units(dt))
+      sprintf("%.3f %s", dt, units(dt))
     }
   )
 )

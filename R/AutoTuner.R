@@ -84,11 +84,11 @@ AutoTuner = R6Class("AutoTuner", inherit = mlr3::Learner,
       }
 
       self$data$tuner_generator = tuner
-      self$data$learner = learner = mlr3::assert_learner(learner = learner)
+      self$data$learner = learner = assert_learner(learner = learner)
       self$data$terminator = assert_r6(terminator, "Terminator")
       self$data$tuner_settings = assert_list(tuner_settings, names = "unique")
-      self$data$resampling = mlr3::assert_resampling(resampling)
-      self$data$measures = mlr3::assert_measures(measures)
+      self$data$resampling = assert_resampling(resampling)
+      self$data$measures = assert_measures(measures)
       self$data$param_set = assert_class(param_set, "ParamSet")
 
       super$initialize(
@@ -105,7 +105,7 @@ AutoTuner = R6Class("AutoTuner", inherit = mlr3::Learner,
     train_internal = function(task) {
       terminator = self$data$terminator$clone()
       pe = PerformanceEvaluator$new(
-        task = mlr3::assert_task(task)$clone(deep = TRUE),
+        task = assert_task(task)$clone(deep = TRUE),
         learner = self$data$learner$clone(deep = TRUE),
         resampling = self$data$resampling$clone(deep = TRUE),
         measures  = self$data$measures,

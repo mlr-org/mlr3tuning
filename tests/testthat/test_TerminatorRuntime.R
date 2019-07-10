@@ -2,6 +2,7 @@ context("TerminatorRuntime")
 
 test_that("API", {
   te = TerminatorRuntime$new(1)
+  expect_terminator(te)
 
   expect_identical(te$settings$runtime, 1)
   expect_identical(te$state$start, NULL)

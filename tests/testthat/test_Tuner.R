@@ -1,4 +1,4 @@
-context("aggregate of Tuner")
+context("Tuner")
 
 n_folds = 4
 task = mlr3::mlr_tasks$get("iris")

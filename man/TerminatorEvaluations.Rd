@@ -29,7 +29,7 @@ See \link{Terminator}.
 }
 
 \examples{
-t = TerminatorEvaluations$new(3)
+TerminatorEvaluations$new(3)
 }
 \seealso{
 Other Terminator: \code{\link{TerminatorMultiplexer}},

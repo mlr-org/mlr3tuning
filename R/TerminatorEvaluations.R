@@ -25,7 +25,7 @@
 #' @family Terminator
 #' @export
 #' @examples
-#' t = TerminatorEvaluations$new(3)
+#' TerminatorEvaluations$new(3)
 TerminatorEvaluations = R6Class("TerminatorEvaluations",
   inherit = Terminator,
   public = list(
@@ -47,7 +47,13 @@ TerminatorEvaluations = R6Class("TerminatorEvaluations",
     },
 
     print = function() {
-      catf("%s with %i remaining evaluations", format(self), max(self$settings$max_evaluations - self$state$evals, 0L))
+      catf("%s (remaining: %s)", format(self), self$remaining)
+    }
+  ),
+
+  active = list(
+    remaining = function() {
+      sprintf("%i evaluations", max(self$settings$max_evaluations - self$state$evals, 0L))
     }
   )
 )

@@ -4,6 +4,7 @@ test_that("API", {
   ti = TerminatorEvaluations$new(2)
   tr = TerminatorRuntime$new(1)
   tm = TerminatorMultiplexer$new(list(ti, tr))
+  expect_terminator(tm)
 
   expect_equal(tm$settings$max_evaluations, ti$settings$max_evaluations)
   expect_equal(tm$settings$runtime, tr$settings$runtime)
@@ -32,6 +33,6 @@ test_that("API", {
   expect_equal(tm$terminators[[1]]$state$evals, 1L)
   expect_equal(tm$terminators[[2]]$settings$runtime, 1L)
 
-  expect_output(print(tm), "1 remaining")
-  expect_output(print(tm), "with -")
+  expect_output(print(tm), "remaining: 1")
+  expect_output(print(tm), "-0")
 })

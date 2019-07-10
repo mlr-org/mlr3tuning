@@ -87,9 +87,12 @@ Tuner = R6Class("Tuner",
   ),
   private = list(
     eval_design_terminator = function(design) {
+      lg$info("Evaluating %i configurations", nrow(design$data))
       self$terminator$update_start(self$pe)
       self$pe$eval_design(design)
       self$terminator$update_end(self$pe)
+
+      lg$info("Evaluation finished. Remaining: %s.", self$terminator$remaining)
 
       # Train as long as terminator is not terminated, if he is terminated throw condition of
       # class "terminated_message" that is caught by tryCatch.
@@ -97,13 +100,6 @@ Tuner = R6Class("Tuner",
       # if the terminator is terminated.
       if (self$terminator$terminated) {
         stop(messageCondition("Termination criteria is reached", class = "terminated_message"))
-      }
-    },
-    deep_clone = function(name, value) {
-      if (R6::is.R6(value)) {
-        value$clone(deep = TRUE)
-      } else {
-        value
       }
     }
   )

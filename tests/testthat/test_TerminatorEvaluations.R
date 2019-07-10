@@ -2,6 +2,7 @@ context("TerminatorEvaluations")
 
 test_that("API", {
   te = TerminatorEvaluations$new(2)
+  expect_terminator(te)
   expect_identical(te$settings$max_evaluations, 2L)
   expect_identical(te$state$evals, 0L)
 
@@ -17,7 +18,7 @@ test_that("API", {
   te$update_end(pe)
   expect_identical(te$state$evals, 1L)
   expect_false(te$terminated)
-  expect_output(print(te), "1 remaining")
+  expect_output(print(te), "remaining: 1")
 
   bmr = mlr3::benchmark(mlr3::expand_grid(
     tasks = mlr3::mlr_tasks$mget("iris"),
@@ -31,5 +32,5 @@ test_that("API", {
   te$update_end(pe)
   expect_identical(te$state$evals, 2L)
   expect_true(te$terminated)
-  expect_output(print(te), "0 remaining")
+  expect_output(print(te), "remaining: 0")
 })

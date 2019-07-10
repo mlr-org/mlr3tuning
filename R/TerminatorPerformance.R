@@ -39,6 +39,7 @@ TerminatorPerformance = R6Class("TerminatorPerformance",
       assert_flag(all_reached)
 
       super$initialize(settings = list(thresh = thresh, all_reached = all_reached))
+      self$state$delta = set_names(rep(Inf, length(thresh)), names(thresh))
       self$terminated = FALSE
     },
 
@@ -49,16 +50,18 @@ TerminatorPerformance = R6Class("TerminatorPerformance",
     update_end = function(pe) {
       thresh = self$settings$thresh
       measures = pe$measures[match(map_chr(pe$measures, "id"), names(thresh))]
-      minimize = ifelse(map_lgl(measures, "minimize"), 1, -1)
 
       aggr = pe$bmr$aggregate(pe$measures)[, names(measures), with = FALSE]
-      reached = pmap_lgl(list(aggr = aggr, thresh = thresh, measure = measures),
+      delta = pmap_dbl(list(aggr = aggr, thresh = thresh, measure = measures),
         function(aggr, thresh, measure) {
-          all(if (measure$minimize) aggr <= thresh else aggr >= thresh)
+          if (measure$minimize) min(aggr - thresh) else max(thresh - aggr)
         }
       )
+      names(delta) = names(thresh)
+      self$state$delta = delta
 
-      if (any(reached)) {
+
+      if (any(delta < 0)) {
         self$terminated = TRUE
       }
 
@@ -66,8 +69,14 @@ TerminatorPerformance = R6Class("TerminatorPerformance",
     },
 
     print = function() {
-      catf("%s with goal: %s", format(self), as_short_string(as.list(self$settings$thresh)))
+      catf("%s (remaining: %s)", format(self), self$remaining)
     }
+  ),
 
+  active = list(
+    remaining = function() {
+      delta = self$state$delta
+      paste0(sprintf("%s: %.3f", names(delta), delta), collapse = ", ")
+    }
   )
 )

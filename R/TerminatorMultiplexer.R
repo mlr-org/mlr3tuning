@@ -53,9 +53,14 @@ TerminatorMultiplexer = R6Class("TerminatorMultiplexer",
     },
 
     print = function() {
-      catf("%s with terminators:", format(self))
-      catf(paste("* ", (capture.output({x = lapply(self$terminators, print)}))))
+      catf("%s (remaining: %s)", format(self), self$remaining)
       invisible(NULL)
+    }
+  ),
+
+  active = list(
+    remaining = function() {
+      paste0(map_chr(self$terminators, function(x) x$remaining), collapse = ", ")
     }
   )
 )

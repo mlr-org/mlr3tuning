@@ -21,6 +21,9 @@
 #'   Is `TRUE` if the termination criterion if the child class is met.
 #' * `state` :: `list()`\cr
 #'   Arbitrary state, depending on the child class.
+#' * `remaining` :: `character(1)`\cr
+#'   String describing the remaining budget.
+#'   Used for printing and logging.
 #'
 #' @section Methods:
 #' * `update_start(pe)`\cr
@@ -34,19 +37,14 @@
 #' @export
 Terminator = R6Class("Terminator",
   public = list(
-    terminated = NULL,
+    terminated = FALSE,
     settings = NULL,
     state = NULL,
 
     initialize = function(settings) {
       self$settings = assert_list(settings, names = "unique")
     },
-    update_start = function(pe) {
-      stop("$update_start() not implemented for Terminator")
-    },
-    update_end = function(pe) {
-      stop("$update_end() not implemented for Terminator")
-    },
+
     format = function() {
       sprintf("<%s>", class(self)[1L])
     }
