@@ -21,13 +21,13 @@ test_that("Construction", {
   expect_null(pe$bmr)
 
   expect_r6(pe$eval(data.table::data.table(cp = c(0.01, 0.02))), "PerformanceEvaluator")
-  expect_data_table(pe$bmr$data, nrow = 2L)
+  expect_data_table(pe$bmr$data, nrows = 2L)
   expect_equal(pe$bmr$data$learner[[1L]]$param_set$values$cp, 0.01)
   expect_equal(pe$bmr$data$learner[[1L]]$param_set$values$minsplit, 3)
   expect_equal(pe$bmr$data$learner[[2L]]$param_set$values$cp, 0.02)
 
   expect_r6(pe$eval(data.table(cp = 0.1)), "PerformanceEvaluator")
-  expect_data_table(pe$bmr$data, nrow = 3L)
+  expect_data_table(pe$bmr$data, nrows = 3L)
   expect_equal(pe$bmr$data$learner[[3L]]$param_set$values$cp, 0.1)
   expect_equal(pe$bmr$data$learner[[3L]]$param_set$values$minsplit, 3)
 

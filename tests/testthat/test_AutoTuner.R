@@ -23,7 +23,7 @@ test_that("AutoTuner / single step", {
   expect_benchmark_result(at$bmr)
 
   tab = at$tune_path
-  expect_data_table(tab, nrow = 3)
+  expect_data_table(tab, nrows = 3)
   expect_subset(measures, names(tab))
   expect_subset("cp", names(tab))
 })
@@ -66,10 +66,10 @@ test_that("AutoTuner", {
   expect_r6(at$tuner, "Tuner")
 
   # Nested Resampling:
-  expect_data_table(rr$data, nrow = outer_folds)
+  expect_data_table(rr$data, nrows = outer_folds)
   nuisance = lapply(rr$learners, function(autotuner) {
-    expect_data_table(autotuner$tuner$pe$bmr$data, nrow = inner_evals * inner_folds)
-    expect_data_table(autotuner$tuner$pe$bmr$aggregate(), nrow = inner_evals)
+    expect_data_table(autotuner$tuner$pe$bmr$data, nrows = inner_evals * inner_folds)
+    expect_data_table(autotuner$tuner$pe$bmr$aggregate(), nrows = inner_evals)
     expect_equal(names(autotuner$tuner$tune_result()$performance), p_measures)
     autotuner$tuner$tune_result()$performance
   })

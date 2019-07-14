@@ -31,7 +31,7 @@ test_that("TunerGenSA", {
   result = gs$tune()$tune_result()
   bmr = gs$pe$bmr
   expect_r6(gs, "TunerGenSA")
-  expect_data_table(bmr$data, nrow = n_folds * n_evals)
+  expect_data_table(bmr$data, nrows = n_folds * n_evals)
   expect_equal(bmr$data[, data.table::uniqueN(hash)], n_evals)
   result = gs$tune()$tune_result()
   expect_list(result)

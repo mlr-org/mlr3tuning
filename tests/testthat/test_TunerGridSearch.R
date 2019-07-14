@@ -25,7 +25,7 @@ test_that("TunerGridSearch", {
   result = gs$tune()$tune_result()
   bmr = gs$pe$bmr
   expect_r6(gs, "TunerGridSearch")
-  expect_data_table(bmr$data, nrow = 2 * 5)
+  expect_data_table(bmr$data, nrows = 2 * 5)
   expect_equal(bmr$data[, data.table::uniqueN(hash)], 5)
   expect_equal(gs$settings$resolution, 5)
   result = gs$tune()$tune_result()

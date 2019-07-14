@@ -25,7 +25,7 @@ test_that("TunerRandomSearch", {
   result = rs$tune()$tune_result()
   bmr = rs$pe$bmr
   expect_r6(rs, "TunerRandomSearch")
-  expect_data_table(bmr$data, nrow = n_folds * 5)
+  expect_data_table(bmr$data, nrows = n_folds * 5)
   expect_list(result)
   expect_number(result$performance["classif.ce"], lower = measures$classif.ce$range[1], upper = measures$classif.ce$range[2])
   expect_list(result$values, len = 2)
@@ -47,6 +47,6 @@ test_that("aggregate one row (#40)", {
   tuner_1 = TunerRandomSearch$new(pe, terminator = terminator_1, batch_size = 1)
   tuner_1$tune()
   tab = tuner_1$aggregate()
-  expect_data_table(tab, nrow = 1)
+  expect_data_table(tab, nrows = 1)
   expect_number(tab$classif.ce)
 })
