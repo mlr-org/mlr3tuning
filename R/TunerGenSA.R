@@ -27,14 +27,16 @@
 #' @family Tuner
 #' @export
 #' @examples
-#' task = mlr3::mlr_tasks$get("iris")
-#' learner = mlr3::mlr_learners$get("classif.rpart")
-#' resampling = mlr3::mlr_resamplings$get("cv")
+#' library(mlr3)
+#' library(paradox)
+#' task = mlr_tasks$get("iris")
+#' learner = mlr_learners$get("classif.rpart")
+#' resampling = mlr_resamplings$get("cv")
 #' resampling$param_set$values$folds = 2
-#' measures = mlr3::mlr_measures$mget("classif.ce")
-#' param_set = paradox::ParamSet$new(
+#' measures = mlr_measures$mget("classif.ce")
+#' param_set = ParamSet$new(
 #'   params = list(
-#'     paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)
+#'     ParamDbl$new("cp", lower = 0.001, upper = 0.1)
 #'   )
 #' )
 #' pe = PerformanceEvaluator$new(task, learner, resampling, measures, param_set)
@@ -65,7 +67,7 @@ TunerGenSA = R6Class("TunerGenSA",
         hashes = pe$bmr$data$hash
         params = setDT(as.list(x))
         setnames(params, pe$param_set$ids())
-        private$eval_design_terminator(paradox::Design$new(pe$param_set, params, remove_dupl = TRUE))
+        private$eval_design_terminator(Design$new(pe$param_set, params, remove_dupl = TRUE))
         new_hash = setdiff(pe$bmr$data$hash, hashes)
 
         perf = pe$bmr$resample_result(new_hash)$aggregate(measure)

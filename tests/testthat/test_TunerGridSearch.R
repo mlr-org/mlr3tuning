@@ -2,14 +2,14 @@ context("TunerGridSearch")
 
 
 test_that("TunerGridSearch", {
-  task = mlr3::mlr_tasks$get("iris")
+  task = mlr_tasks$get("iris")
 
-  learner = mlr3::mlr_learners$get("classif.rpart")
+  learner = mlr_learners$get("classif.rpart")
   learner$param_set$values = list(minsplit = 3)
-  resampling = mlr3::mlr_resamplings$get("cv", param_vals = list(folds = 2L))
-  measures = mlr3::mlr_measures$mget("classif.ce")
+  resampling = mlr_resamplings$get("cv", param_vals = list(folds = 2L))
+  measures = mlr_measures$mget("classif.ce")
 
-  param_set = paradox::ParamSet$new(params = list(
+  param_set = ParamSet$new(params = list(
     ParamDbl$new("cp", lower = 0.001, upper = 0.1
   )))
   pe = PerformanceEvaluator$new(task, learner, resampling, measures, param_set)

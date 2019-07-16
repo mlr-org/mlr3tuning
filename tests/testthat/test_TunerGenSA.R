@@ -5,19 +5,19 @@ test_that("TunerGenSA", {
   n_evals = 5
   n_folds = 2
 
-  task = mlr3::mlr_tasks$get("iris")
+  task = mlr_tasks$get("iris")
 
-  learner = mlr3::mlr_learners$get("classif.rpart")
+  learner = mlr_learners$get("classif.rpart")
   learner$param_set$values$minsplit = 3
 
-  resampling = mlr3::mlr_resamplings$get("cv")
+  resampling = mlr_resamplings$get("cv")
   resampling$param_set$values = list(folds = n_folds)
 
-  measures = mlr3::mlr_measures$mget("classif.ce")
+  measures = mlr_measures$mget("classif.ce")
 
   terminator = TerminatorEvaluations$new(n_evals)
-  param_set = paradox::ParamSet$new(params = list(
-    paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1
+  param_set = ParamSet$new(params = list(
+    ParamDbl$new("cp", lower = 0.001, upper = 0.1
   )))
 
   pe = PerformanceEvaluator$new(task, learner, resampling, measures, param_set)

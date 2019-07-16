@@ -1,15 +1,15 @@
 context("AutoTuner")
 
 test_that("AutoTuner / single step", {
-  task = mlr3::mlr_tasks$get("iris")
-  learner = mlr3::mlr_learners$get("classif.rpart")
+  task = mlr_tasks$get("iris")
+  learner = mlr_learners$get("classif.rpart")
   measures = c("classif.ce", "time_train", "time_both")
   terminator = TerminatorEvaluations$new(3)
 
-  param_set = paradox::ParamSet$new(params = list(
-    paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1
+  param_set = ParamSet$new(params = list(
+    ParamDbl$new("cp", lower = 0.001, upper = 0.1
   )))
-  resampling = mlr3::mlr_resamplings$get("cv3")
+  resampling = mlr_resamplings$get("cv3")
 
   at = AutoTuner$new(learner, resampling, measures, param_set, terminator, tuner = TunerRandomSearch,
     tuner_settings = list(batch_size = 10L))
@@ -35,17 +35,17 @@ test_that("AutoTuner", {
 
   p_measures = c("classif.ce", "time_train", "time_both")
 
-  task = mlr3::mlr_tasks$get("iris")
+  task = mlr_tasks$get("iris")
 
-  learner = mlr3::mlr_learners$get("classif.rpart")
+  learner = mlr_learners$get("classif.rpart")
 
-  resampling = mlr3::mlr_resamplings$get("cv")
+  resampling = mlr_resamplings$get("cv")
   resampling$param_set$values = list(folds = inner_folds)
 
-  measures = mlr3::mlr_measures$mget(p_measures)
+  measures = mlr_measures$mget(p_measures)
 
-  param_set = paradox::ParamSet$new(params = list(
-    paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1
+  param_set = ParamSet$new(params = list(
+    ParamDbl$new("cp", lower = 0.001, upper = 0.1
   )))
 
   terminator = TerminatorEvaluations$new(inner_evals)
@@ -56,9 +56,9 @@ test_that("AutoTuner", {
   expect_null(at$bmr)
 
   # Nested Resampling:
-  outer_resampling = mlr3::mlr_resamplings$get("cv")
+  outer_resampling = mlr_resamplings$get("cv")
   outer_resampling$param_set$values = list(folds = outer_folds)
-  rr = mlr3::resample(task, at, outer_resampling)
+  rr = resample(task, at, outer_resampling)
 
   lapply(rr$learners, function(tuner) expect_r6(tuner, "AutoTuner"))
 
@@ -90,7 +90,7 @@ test_that("AutoTuner", {
 
   # check that hyperpars are properly set for the returned learner
   set.seed(3)
-  task = mlr3::mlr_tasks$get("pima")
+  task = mlr_tasks$get("pima")
 
   at2 = AutoTuner$new(learner, resampling, measures, param_set, terminator, tuner = TunerRandomSearch,
     tuner_settings = list(batch_size = 10L))

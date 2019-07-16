@@ -6,10 +6,10 @@ test_that("API", {
   expect_identical(te$settings$max_evaluations, 2L)
   expect_identical(te$state$evals, 0L)
 
-  bmr = mlr3::benchmark(mlr3::expand_grid(
-    tasks = mlr3::mlr_tasks$mget("iris"),
-    learners = mlr3::mlr_learners$mget(c("classif.rpart")),
-    resamplings = mlr3::mlr_resamplings$mget("cv")
+  bmr = benchmark(expand_grid(
+    tasks = mlr_tasks$mget("iris"),
+    learners = mlr_learners$mget(c("classif.rpart")),
+    resamplings = mlr_resamplings$mget("cv")
   ))
   pe = list(bmr = bmr)
 
@@ -20,10 +20,10 @@ test_that("API", {
   expect_false(te$terminated)
   expect_output(print(te), "remaining: 1")
 
-  bmr = mlr3::benchmark(mlr3::expand_grid(
-    tasks = mlr3::mlr_tasks$mget("iris"),
-    learners = mlr3::mlr_learners$mget(c("classif.featureless", "classif.rpart")),
-    resamplings = mlr3::mlr_resamplings$mget("cv")
+  bmr = benchmark(expand_grid(
+    tasks = mlr_tasks$mget("iris"),
+    learners = mlr_learners$mget(c("classif.featureless", "classif.rpart")),
+    resamplings = mlr_resamplings$mget("cv")
   ))
   pe = list(bmr = bmr)
 

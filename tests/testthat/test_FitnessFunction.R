@@ -1,12 +1,12 @@
 context("PerformanceEvaluator")
 
 test_that("Construction", {
-  task = mlr3::mlr_tasks$get("iris")
-  learner = mlr3::mlr_learners$get("classif.rpart")
+  task = mlr_tasks$get("iris")
+  learner = mlr_learners$get("classif.rpart")
   learner$param_set$values = list(minsplit = 3)
-  resampling = mlr3::mlr_resamplings$get("holdout")
-  measures = mlr3::mlr_measures$mget("classif.ce")
-  param_set = paradox::ParamSet$new(params = list(paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
+  resampling = mlr_resamplings$get("holdout")
+  measures = mlr_measures$mget("classif.ce")
+  param_set = ParamSet$new(params = list(ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 
   pe = PerformanceEvaluator$new(
     task = task,
@@ -36,12 +36,12 @@ test_that("Construction", {
 
 
 test_that("Construction", {
-  task = mlr3::mlr_tasks$get("iris")
-  learner = mlr3::mlr_learners$get("classif.rpart")
+  task = mlr_tasks$get("iris")
+  learner = mlr_learners$get("classif.rpart")
   learner$param_set$values = list(minsplit = 3)
-  resampling = mlr3::mlr_resamplings$get("holdout")
-  measures = mlr3::mlr_measures$mget("classif.ce")
-  param_set = paradox::ParamSet$new(params = list(paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
+  resampling = mlr_resamplings$get("holdout")
+  measures = mlr_measures$mget("classif.ce")
+  param_set = ParamSet$new(params = list(ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 
   pe = PerformanceEvaluator$new(
     task = task,

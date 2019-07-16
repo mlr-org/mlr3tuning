@@ -1,3 +1,4 @@
+library(mlr3)
 old_opts = options(
   warnPartialMatchArgs = TRUE,
   warnPartialMatchAttr = TRUE,

@@ -9,10 +9,10 @@ test_that("API", {
   expect_equal(tm$settings$max_evaluations, ti$settings$max_evaluations)
   expect_equal(tm$settings$runtime, tr$settings$runtime)
 
-  bmr = mlr3::benchmark(mlr3::expand_grid(
-    tasks = mlr3::mlr_tasks$mget("iris"),
-    learners = mlr3::mlr_learners$mget(c("classif.rpart")),
-    resamplings = mlr3::mlr_resamplings$mget("cv")
+  bmr = benchmark(expand_grid(
+    tasks = mlr_tasks$mget("iris"),
+    learners = mlr_learners$mget(c("classif.rpart")),
+    resamplings = mlr_resamplings$mget("cv")
   ))
   pe = list(bmr = bmr)
 

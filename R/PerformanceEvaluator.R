@@ -65,14 +65,16 @@
 #' @family PerformanceEvaluator
 #' @export
 #' @examples
+#' library(mlr3)
+#' library(paradox)
 #' # Object required to define the performance evaluator:
-#' task = mlr3::mlr_tasks$get("iris")
-#' learner = mlr3::mlr_learners$get("classif.rpart")
-#' resampling = mlr3::mlr_resamplings$get("holdout")
-#' measures = mlr3::mlr_measures$mget("classif.ce")
-#' param_set = paradox::ParamSet$new(params = list(
-#'   paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1),
-#'   paradox::ParamInt$new("minsplit", lower = 1, upper = 10)))
+#' task = mlr_tasks$get("iris")
+#' learner = mlr_learners$get("classif.rpart")
+#' resampling = mlr_resamplings$get("holdout")
+#' measures = mlr_measures$mget("classif.ce")
+#' param_set = ParamSet$new(params = list(
+#'   ParamDbl$new("cp", lower = 0.001, upper = 0.1),
+#'   ParamInt$new("minsplit", lower = 1, upper = 10)))
 #'
 #' pe = PerformanceEvaluator$new(
 #'   task = task,
@@ -107,7 +109,7 @@ PerformanceEvaluator = R6Class("PerformanceEvaluator",
 
     eval = function(dt) {
       assert_data_table(dt, any.missing = FALSE, min.rows = 1, min.cols = 1)
-      self$eval_design(paradox::Design$new(self$param_set, dt, remove_dupl = FALSE))
+      self$eval_design(Design$new(self$param_set, dt, remove_dupl = FALSE))
     },
 
     # evaluates all points in a design
@@ -128,7 +130,7 @@ PerformanceEvaluator = R6Class("PerformanceEvaluator",
         return(learner)
       })
 
-      bmr = mlr3::benchmark(mlr3::expand_grid(tasks = list(self$task), learners = learners,
+      bmr = benchmark(expand_grid(tasks = list(self$task), learners = learners,
         resamplings = list(self$resampling)), ctrl = self$ctrl)
 
       if (is.null(self$bmr)) {
