@@ -6,54 +6,25 @@ test_that("TunerGridSearch", {
 
   learner = mlr3::mlr_learners$get("classif.rpart")
   learner$param_set$values = list(minsplit = 3)
-
-  resampling = mlr3::mlr_resamplings$get("cv")
-  resampling$param_set$values = list(folds = 2)
-
+  resampling = mlr3::mlr_resamplings$get("cv", param_vals = list(folds = 2L))
   measures = mlr3::mlr_measures$mget("classif.ce")
 
-  terminator = TerminatorEvaluations$new(5)
-  terminator_false = TerminatorRuntime$new(2 * 60)
   param_set = paradox::ParamSet$new(params = list(
-    paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1
+    ParamDbl$new("cp", lower = 0.001, upper = 0.1
   )))
-
   pe = PerformanceEvaluator$new(task, learner, resampling, measures, param_set)
-  expect_error(TunerGridSearch$new(pe, terminator = terminator_false), "resolution")
-  gs = TunerGridSearch$new(pe, terminator = terminator)
+  reso = 3L
+  tt = TunerGridSearch$new(pe, resolution = reso)
 
-  result = gs$tune()$tune_result()
-  bmr = gs$pe$bmr
-  expect_r6(gs, "TunerGridSearch")
-  expect_data_table(bmr$data, nrows = 2 * 5)
-  expect_equal(bmr$data[, data.table::uniqueN(hash)], 5)
-  expect_equal(gs$settings$resolution, 5)
-  result = gs$tune()$tune_result()
+  result = tt$tune()$tune_result()
+  bmr = tt$pe$bmr
+  expect_r6(tt, "TunerGridSearch")
+  expect_data_table(bmr$data, nrows = reso * 2)
+  expect_equal(bmr$data[, data.table::uniqueN(hash)], reso)
+  result = tt$tune()$tune_result()
   expect_list(result)
   expect_number(result$performance["classif.ce"], lower = measures$classif.ce$range[1], upper = measures$classif.ce$range[2])
   expect_list(result$values, len = 2)
   expect_equal(result$values$minsplit, 3)
 })
 
-test_that("Design resolution of grid search is correct", {
-  pe = PerformanceEvaluator$new(
-    task = mlr3::mlr_tasks$get("iris"),
-    learner = mlr3::mlr_learners$get("classif.rpart"),
-    mlr3::mlr_resamplings$get("holdout"),
-    "classif.ce",
-    paradox::ParamSet$new(list(
-      paradox::ParamDbl$new("cp", 0, 1),
-      paradox::ParamInt$new("minsplit", 1, 20),
-      paradox::ParamInt$new("maxcompete", 0, 20))))
-
-
-  expect_output({
-    tune = TunerGridSearch$new(pe, TerminatorEvaluations$new(30))$tune()
-  })
-  r = tune$aggregate(FALSE)
-  param_data = unnest(r[, "params"], "params")
-
-  design = paradox::generate_design_grid(pe$param_set, resolution = 3)
-
-  expect_equal(remove_named(param_data, "xval"), design$data)
-})

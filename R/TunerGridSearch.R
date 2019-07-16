@@ -44,34 +44,23 @@
 TunerGridSearch = R6Class("TunerGridSearch",
   inherit = Tuner,
   public = list(
-    initialize = function(pe, terminator, resolution = NULL) {
-      if (is.null(resolution)) {
-        remaining = terminator$settings$max_evaluations
-        if (is.null(remaining)) {
-          stop("Specify resolution or use a terminator that defines maximal number of evaluations (e.g. TerminatorEvaluations).")
-        }
-        assert_count(remaining, positive = TRUE, coerce = TRUE)
-        resolution = floor(remaining^(1 / pe$param_set$length))
-      }
+    resolution = NULL,
+    grid = NULL,
+
+    initialize = function(pe, terminator = NULL, resolution = 10L, batchsize = 10L) {
       resolution = assert_int(resolution, lower = 1L, coerce = TRUE)
-      super$initialize(id = "grid_search", pe = pe, terminator = terminator, settings = list(resolution = resolution))
+      grid = generate_design_grid(pe$param_set, resolution = resolution)
+      terminator = TerminatorEvaluations$new(nrow(grid$data))
+      super$initialize(id = "grid_search", pe = pe, terminator = terminator)
+      self$resolution = resolution
+      self$grid = grid
+      return(self)
     }
   ),
 
   private = list(
     tune_step = function() {
-      # note: generate_grid_design offers param_resolutions, so theoretically we could allow different resolutions per parameter
-      design = paradox::generate_design_grid(self$pe$param_set, resolution = self$settings$resolution)
-
-      if (inherits(self$terminator, "TerminatorEvaluations")) {
-        if (nrow(design$data) < self$terminator$settings$max_evaluations) {
-          self$terminator$settings$max_evaluations = nrow(design$data)
-          msg_warn = paste0("Set number of maximal evaluations to ", nrow(design$data),
-            " to avoid multiple computation of the same grid.")
-          lg$warn(msg_warn)
-        }
-      }
-      private$eval_design_terminator(design)
+      private$eval_design_terminator(self$grid)
     }
   )
 )
