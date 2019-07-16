@@ -45,6 +45,19 @@
 #'
 #' @family Tuner
 #' @export
+#' @examples
+#' library(mlr3)
+#' library(paradox)
+#' resampling = mlr_resamplings$get("cv", param_vals = list(folds = 2))
+#' param_set = ParamSet$new(list(
+#'   ParamDbl$new("cp", lower = 0.001, upper = 0.1)
+#' ))
+#' pe = PerformanceEvaluator$new("iris", "classif.rpart", resampling, "classif.ce", param_set)
+#' terminator = TerminatorEvaluations$new(3)
+#' tt = TunerRandomSearch$new(pe, terminator) # swap this line to use a different Tuner
+#' tt$tune()
+#' tt$tune_result() # returns best configuration and performance
+#' tt$aggregate() # allows access of data.table / benchmark result of full path of all evaluations
 Tuner = R6Class("Tuner",
   public = list(
     id = NULL,

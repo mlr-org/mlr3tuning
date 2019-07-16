@@ -100,10 +100,10 @@ PerformanceEvaluator = R6Class("PerformanceEvaluator",
 
     initialize = function(task, learner, resampling, measures, param_set, ctrl = list()) {
       self$task = assert_task(task)
-      self$learner = assert_learner(learner, task = task)
+      self$learner = assert_learner(learner, task = self$task)
       self$resampling = assert_resampling(resampling)
       self$measures = assert_measures(measures)
-      self$param_set = assert_class(param_set, "ParamSet")
+      self$param_set = assert_param_set(param_set)
       self$ctrl = mlr_control(ctrl)
     },
 

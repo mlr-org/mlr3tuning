@@ -26,23 +26,7 @@
 #' @family Tuner
 #' @export
 #' @examples
-#' library(mlr3)
-#' library(paradox)
-#' task = mlr_tasks$get("iris")
-#' learner = mlr_learners$get("classif.rpart")
-#' resampling = mlr_resamplings$get("cv")
-#' resampling$param_set$values$folds = 2
-#' measures = mlr_measures$mget("classif.ce")
-#' param_set = ParamSet$new(
-#'   params = list(
-#'     ParamDbl$new("cp", lower = 0.001, upper = 0.1)
-#'   )
-#' )
-#' pe = PerformanceEvaluator$new(task, learner, resampling, measures, param_set)
-#'
-#' terminator = TerminatorEvaluations$new(10)
-#' rs = TunerRandomSearch$new(pe, terminator)
-#' rs$tune()$tune_result()
+#' # see ?Tuner
 TunerRandomSearch = R6Class("TunerRandomSearch",
   inherit = Tuner,
   public = list(
