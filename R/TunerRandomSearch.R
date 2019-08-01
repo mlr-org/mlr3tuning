@@ -15,7 +15,6 @@
 #'
 #' * `batch_size` :: `integer(1)`\cr
 #'   Maximum number of configurations to try in a batch.
-#'   Each batch is possibly executed in parallel via [mlr3::benchmark()].
 #'
 #' @section Fields:
 #' See [Tuner].
@@ -30,7 +29,7 @@
 TunerRandomSearch = R6Class("TunerRandomSearch",
   inherit = Tuner,
   public = list(
-    initialize = function(pe, terminator, batch_size = 100L) {
+    initialize = function(pe, terminator, batch_size = 1L) {
       batch_size = assert_count(batch_size, coerce = TRUE)
       super$initialize(id = "random_search", pe = pe, terminator = terminator, settings = list(batch_size = batch_size))
     }
@@ -38,11 +37,12 @@ TunerRandomSearch = R6Class("TunerRandomSearch",
 
   private = list(
     tune_step = function() {
-      n_evals = self$terminator$settings$max_evaluations
-      n_evals = if (is.null(n_evals)) self$settings$batch_size else min(self$settings$batch_size, n_evals)
-
-      design = generate_design_random(self$pe$param_set, n_evals)
-      self$eval_batch(design$data)
+      tryCatch({
+        while (TRUE) {  # iterate until we have an exception from eval_batch
+          design = generate_design_random(self$pe$param_set, self$settings$batch_size)
+          self$eval_batch(design$data)
+        }
+      }, terminated_message = function(w){})
     }
   )
 )

@@ -16,7 +16,6 @@ For arguments, see \link{Tuner}, and additionally:
 \itemize{
 \item \code{batch_size} :: \code{integer(1)}\cr
 Maximum number of configurations to try in a batch.
-Each batch is possibly executed in parallel via \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
 }
 }
 
