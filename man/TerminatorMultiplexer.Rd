@@ -17,16 +17,6 @@ List of objects of class \link{Terminator}.
 }
 }
 
-\section{Fields}{
-
-See \link{Terminator}.
-}
-
-\section{Methods}{
-
-See \link{Terminator}.
-}
-
 \examples{
 t = TerminatorMultiplexer$new(list(
   TerminatorRuntime$new(60),

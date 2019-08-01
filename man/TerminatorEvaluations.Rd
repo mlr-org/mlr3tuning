@@ -18,16 +18,6 @@ Number of allowed evaluations.
 }
 }
 
-\section{Fields}{
-
-See \link{Terminator}.
-}
-
-\section{Methods}{
-
-See \link{Terminator}.
-}
-
 \examples{
 TerminatorEvaluations$new(3)
 }

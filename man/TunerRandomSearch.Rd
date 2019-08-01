@@ -19,16 +19,6 @@ Maximum number of configurations to try in a batch.
 }
 }
 
-\section{Fields}{
-
-See \link{Tuner}.
-}
-
-\section{Methods}{
-
-See \link{Tuner}.
-}
-
 \examples{
 # see ?Tuner
 }

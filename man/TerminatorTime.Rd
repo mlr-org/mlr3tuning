@@ -17,16 +17,6 @@ Terminator stops after this point in time.
 }
 }
 
-\section{Fields}{
-
-See \link{Terminator}.
-}
-
-\section{Methods}{
-
-See \link{Terminator}.
-}
-
 \examples{
 time = Sys.time() + (60 * 60) # now + 1 hour
 t = TerminatorTime$new(time)

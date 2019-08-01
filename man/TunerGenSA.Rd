@@ -22,16 +22,6 @@ Default settings are \code{smooth = FALSE}, \code{acceptance.param = -15},
 }
 }
 
-\section{Fields}{
-
-See \link{Tuner}.
-}
-
-\section{Methods}{
-
-See \link{Tuner}.
-}
-
 \examples{
 # see ?Tuner
 }

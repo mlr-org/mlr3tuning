@@ -20,16 +20,6 @@ Performance evaluator used for the tuning.
 }
 }
 
-\section{Fields}{
-
-See \link{Terminator}.
-}
-
-\section{Methods}{
-
-See \link{Terminator}.
-}
-
 \seealso{
 Other Terminator: \code{\link{TerminatorEvaluations}},
   \code{\link{TerminatorMultiplexer}},

@@ -19,16 +19,6 @@ Maximum allowed runtime, in seconds.
 }
 }
 
-\section{Fields}{
-
-See \link{Terminator}.
-}
-
-\section{Methods}{
-
-See \link{Terminator}.
-}
-
 \examples{
 TerminatorRuntime$new(3)
 TerminatorRuntime$new(10 * 3600)

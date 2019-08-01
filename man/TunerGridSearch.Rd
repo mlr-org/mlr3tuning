@@ -20,16 +20,6 @@ If none is specified we will try to calculate the resolution form the Terminator
 }
 }
 
-\section{Fields}{
-
-See \link{Tuner}.
-}
-
-\section{Methods}{
-
-See \link{Tuner}.
-}
-
 \examples{
 # see ?Tuner
 }
