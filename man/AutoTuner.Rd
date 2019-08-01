@@ -64,12 +64,14 @@ See \link[mlr3:Learner]{mlr3::Learner}.
 }
 
 \examples{
-task = mlr3::mlr_tasks$get("iris")
-learner = mlr3::mlr_learners$get("classif.rpart")
-resampling = mlr3::mlr_resamplings$get("holdout")
-measures = mlr3::mlr_measures$mget("classif.ce")
-param_set = paradox::ParamSet$new(
-  params = list(paradox::ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
+library(mlr3)
+library(paradox)
+task = mlr_tasks$get("iris")
+learner = mlr_learners$get("classif.rpart")
+resampling = mlr_resamplings$get("holdout")
+measures = mlr_measures$mget("classif.ce")
+param_set = ParamSet$new(
+  params = list(ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 
 terminator = TerminatorEvaluations$new(5)
 

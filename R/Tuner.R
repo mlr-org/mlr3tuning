@@ -42,6 +42,14 @@
 #'   `logical(1)` -> [data.table::data.table()]\cr
 #'   Returns a table of resample results, similar to the one returned by [mlr3::benchmark()]'s `aggregate()` method.
 #'   If `unnest` is `TRUE`, hyperparameter settings are stored in separate columns instead of inside a list column
+#' * `eval_batch(dt)`
+#'   `[data.table::data.table()] --> numeric(n)\cr
+#'   Evaluates a set of design points, passed as a data.table of n rows and returns n performance values.
+#'   This is the only entry point a subclass tuner should use to evaluate the objective function, and it should normally not be called from the
+#'   outside by the user. The batch-eval is requested at the PerformanceEvaluator 'pe' object, and therefore all evaluations are stored inside of it.
+#'   After the batch-eval, all terminators registered with the tuner are checked, and if one is positive,
+#'   an exception is generated of class 'terminated_message'. In this case the current batch of evals is still stored in pe,
+#'   and is considered for returning a final best configuration, but the numeric score are not sent back to the handling optimizer.
 #'
 #' @family Tuner
 #' @export
@@ -72,6 +80,22 @@ Tuner = R6Class("Tuner",
       self$settings = assert_list(settings, names = "unique")
     },
 
+    eval_batch = function(dt) {
+      design = Design$new(self$pe$param_set, dt, remove_dupl = FALSE)
+      lg$info("Evaluating %i configurations", nrow(design$data))
+      self$terminator$update_start(self$pe)
+      self$pe$eval_design(design)
+      self$terminator$update_end(self$pe)
+
+      lg$info("Evaluation finished. Remaining: %s.", self$terminator$remaining)
+
+      # if he is terminated throw condition of class "terminated_message" that we can tryCatch.
+      # if the terminator is terminated.
+      if (self$terminator$terminated) {
+        stop(messageCondition("Termination criteria is reached", class = "terminated_message"))
+      }
+    },
+
     tune = function() {
       while (!self$terminator$terminated) {
         # Catch exception when terminator is terminated:
@@ -96,24 +120,6 @@ Tuner = R6Class("Tuner",
       }
 
       return(dt)
-    }
-  ),
-  private = list(
-    eval_design_terminator = function(design) {
-      lg$info("Evaluating %i configurations", nrow(design$data))
-      self$terminator$update_start(self$pe)
-      self$pe$eval_design(design)
-      self$terminator$update_end(self$pe)
-
-      lg$info("Evaluation finished. Remaining: %s.", self$terminator$remaining)
-
-      # Train as long as terminator is not terminated, if he is terminated throw condition of
-      # class "terminated_message" that is caught by tryCatch.
-      # The exception should be automatically caught since the while loop checks for itself
-      # if the terminator is terminated.
-      if (self$terminator$terminated) {
-        stop(messageCondition("Termination criteria is reached", class = "terminated_message"))
-      }
     }
   )
 )

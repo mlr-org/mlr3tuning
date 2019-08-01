@@ -42,7 +42,7 @@ TunerRandomSearch = R6Class("TunerRandomSearch",
       n_evals = if (is.null(n_evals)) self$settings$batch_size else min(self$settings$batch_size, n_evals)
 
       design = generate_design_random(self$pe$param_set, n_evals)
-      private$eval_design_terminator(design)
+      self$eval_batch(design$data)
     }
   )
 )

@@ -54,9 +54,31 @@ List with 2 elements:
 \code{logical(1)} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
 Returns a table of resample results, similar to the one returned by \code{\link[mlr3:benchmark]{mlr3::benchmark()}}'s \code{aggregate()} method.
 If \code{unnest} is \code{TRUE}, hyperparameter settings are stored in separate columns instead of inside a list column
+\item \code{eval_batch(dt)}
+`\code{\link[data.table:data.table]{data.table::data.table()}} --> numeric(n)\cr
+Evaluates a set of design points, passed as a data.table of n rows and returns n performance values.
+This is the only entry point a subclass tuner should use to evaluate the objective function, and it should normally not be called from the
+outside by the user. The batch-eval is requested at the PerformanceEvaluator 'pe' object, and therefore all evaluations are stored inside of it.
+After the batch-eval, all terminators registered with the tuner are checked, and if one is positive,
+an exception is generated of class 'terminated_message'. In this case the current batch of evals is still stored in pe,
+and is considered for returning a final best configuration, but the numeric score are not sent back to the handling optimizer.
 }
 }
 
+\examples{
+library(mlr3)
+library(paradox)
+resampling = mlr_resamplings$get("cv", param_vals = list(folds = 2))
+param_set = ParamSet$new(list(
+  ParamDbl$new("cp", lower = 0.001, upper = 0.1)
+))
+pe = PerformanceEvaluator$new("iris", "classif.rpart", resampling, "classif.ce", param_set)
+terminator = TerminatorEvaluations$new(3)
+tt = TunerRandomSearch$new(pe, terminator) # swap this line to use a different Tuner
+tt$tune()
+tt$tune_result() # returns best configuration and performance
+tt$aggregate() # allows access of data.table / benchmark result of full path of all evaluations
+}
 \seealso{
 Other Tuner: \code{\link{TunerGenSA}},
   \code{\link{TunerGridSearch}},

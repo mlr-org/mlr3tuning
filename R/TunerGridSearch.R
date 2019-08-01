@@ -46,7 +46,7 @@ TunerGridSearch = R6Class("TunerGridSearch",
 
   private = list(
     tune_step = function() {
-      private$eval_design_terminator(self$grid)
+      self$eval_batch(self$grid$data)
     }
   )
 )

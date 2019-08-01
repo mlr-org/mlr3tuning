@@ -51,7 +51,7 @@ TunerGenSA = R6Class("TunerGenSA",
         hashes = pe$bmr$data$hash
         params = setDT(as.list(x))
         setnames(params, pe$param_set$ids())
-        private$eval_design_terminator(Design$new(pe$param_set, params, remove_dupl = FALSE))
+        self$eval_batch(params)
         new_hash = setdiff(pe$bmr$data$hash, hashes)
 
         perf = pe$bmr$resample_result(new_hash)$aggregate(measure)
