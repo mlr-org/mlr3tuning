@@ -36,7 +36,7 @@ print(t)
 }
 \seealso{
 Other Terminator: \code{\link{TerminatorEvaluations}},
-  \code{\link{TerminatorPerformance}},
+  \code{\link{TerminatorPerfReached}},
   \code{\link{TerminatorRuntime}},
   \code{\link{TerminatorTime}}, \code{\link{Terminator}}
 }

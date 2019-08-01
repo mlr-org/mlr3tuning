@@ -48,7 +48,7 @@ Is called in each tuning iteration after the evaluation.
 \seealso{
 Other Terminator: \code{\link{TerminatorEvaluations}},
   \code{\link{TerminatorMultiplexer}},
-  \code{\link{TerminatorPerformance}},
+  \code{\link{TerminatorPerfReached}},
   \code{\link{TerminatorRuntime}},
   \code{\link{TerminatorTime}}
 }

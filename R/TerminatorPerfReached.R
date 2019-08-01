@@ -9,7 +9,7 @@
 #'
 #' @section Construction:
 #' ```
-#' t = TerminatorPerformance$new(thresh, pe)
+#' t = TerminatorPerfReached$new(thresh, pe)
 #' ```
 #' * `thresh` :: named `numeric()`\cr
 #'   Thresholds that need to be reached, named with measure ids.
@@ -25,7 +25,7 @@
 #'
 #' @family Terminator
 #' @export
-TerminatorPerformance = R6Class("TerminatorPerformance",
+TerminatorPerfReached = R6Class("TerminatorPerfReached",
   inherit = Terminator,
   public = list(
     initialize = function(thresh, pe, all_reached = FALSE) {

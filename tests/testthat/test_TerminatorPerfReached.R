@@ -1,6 +1,6 @@
-context("TerminatorPerformance")
+context("TerminatorPerfReached")
 
-test_that("TerminatorPerformance", {
+test_that("TerminatorPerfReached", {
   task = mlr_tasks$get("iris")
   learner = mlr_learners$get("classif.rpart")
   resampling = mlr_resamplings$get("cv")
@@ -14,13 +14,13 @@ test_that("TerminatorPerformance", {
 
   pe = PerformanceEvaluator$new(task, learner, resampling, measures, param_set)
   expect_error({
-    terminator = TerminatorPerformance$new(c(classif.ce = 0.1, false.measure = 0.9), pe)
+    terminator = TerminatorPerfReached$new(c(classif.ce = 0.1, false.measure = 0.9), pe)
   })
   expect_error({
-    terminator = TerminatorPerformance$new(c(classif.ce = 0.1, classif.acc = 2), pe)
+    terminator = TerminatorPerfReached$new(c(classif.ce = 0.1, classif.acc = 2), pe)
   }, "<=")
   expect_silent({
-    terminator = TerminatorPerformance$new(c(classif.ce = 0.1, classif.acc = 0.9), pe)
+    terminator = TerminatorPerfReached$new(c(classif.ce = 0.1, classif.acc = 0.9), pe)
   })
   expect_terminator(terminator)
 

@@ -54,7 +54,7 @@ Collate:
     'Terminator.R'
     'TerminatorEvaluations.R'
     'TerminatorMultiplexer.R'
-    'TerminatorPerformance.R'
+    'TerminatorPerfReached.R'
     'TerminatorRuntime.R'
     'TerminatorTime.R'
     'Tuner.R'
