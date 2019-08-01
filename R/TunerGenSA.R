@@ -18,12 +18,6 @@
 #'   Default settings are `smooth = FALSE`, `acceptance.param = -15`,
 #'   `simple.function = FALSE`, and `temperature = 250`.
 #'
-#' @section Fields:
-#' See [Tuner].
-#'
-#' @section Methods:
-#' See [Tuner].
-#'
 #' @family Tuner
 #' @export
 #' @examples

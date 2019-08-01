@@ -16,12 +16,6 @@
 #' * `max_evaluations` :: `integer(1)`\cr
 #'   Number of allowed evaluations.
 #'
-#' @section Fields:
-#' See [Terminator].
-#'
-#' @section Methods:
-#' See [Terminator].
-#'
 #' @family Terminator
 #' @export
 #' @examples

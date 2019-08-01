@@ -16,12 +16,6 @@
 #' * `batch_size` :: `integer(1)`\cr
 #'   Maximum number of configurations to try in a batch.
 #'
-#' @section Fields:
-#' See [Tuner].
-#'
-#' @section Methods:
-#' See [Tuner].
-#'
 #' @family Tuner
 #' @export
 #' @examples

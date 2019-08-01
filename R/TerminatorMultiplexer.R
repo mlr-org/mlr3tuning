@@ -14,13 +14,6 @@
 #' * `terminators` :: `list()`\cr
 #'   List of objects of class [Terminator].
 #'
-#' @section Fields:
-#' See [Terminator].
-#'
-#' @section Methods:
-#' See [Terminator].
-#'
-#' @name TerminatorMultiplexer
 #' @family Terminator
 #' @export
 #' @examples

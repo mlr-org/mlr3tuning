@@ -15,12 +15,6 @@
 #' * `time` :: `POSIXct(1)`\cr
 #'   Terminator stops after this point in time.
 #'
-#' @section Fields:
-#' See [Terminator].
-#'
-#' @section Methods:
-#' See [Terminator].
-#'
 #' @family Terminator
 #' @export
 #' @examples

@@ -17,12 +17,6 @@
 #' * `pe` :: [PerformanceEvaluator]\cr
 #'   Performance evaluator used for the tuning.
 #'
-#' @section Fields:
-#' See [Terminator].
-#'
-#' @section Methods:
-#' See [Terminator].
-#'
 #' @family Terminator
 #' @export
 TerminatorPerfReached = R6Class("TerminatorPerfReached",

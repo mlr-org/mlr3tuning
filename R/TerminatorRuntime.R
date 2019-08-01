@@ -17,12 +17,6 @@
 #' * `time` :: `numeric(1)`\cr
 #'   Maximum allowed runtime, in seconds.
 #'
-#' @section Fields:
-#' See [Terminator].
-#'
-#' @section Methods:
-#' See [Terminator].
-#'
 #' @family Terminator
 #' @export
 #' @examples

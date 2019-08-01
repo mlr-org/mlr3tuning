@@ -17,12 +17,6 @@
 #'   Resolution of the grid.
 #'   If none is specified we will try to calculate the resolution form the Terminator.
 #'
-#' @section Fields:
-#' See [Tuner].
-#'
-#' @section Methods:
-#' See [Tuner].
-#'
 #' @family Tuner
 #' @export
 #' @examples
