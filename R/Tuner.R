@@ -12,18 +12,14 @@
 #'
 #' @section Construction:
 #' ```
-#' tuner = Tuner$new(id, pe, terminator, settings = list())
+#' tuner = Tuner$new(pe, terminator, settings = list())
 #' ```
-#' * `id` :: `character(1)`\cr
-#'   Name of the tuner.
 #' * `pe` :: [PerformanceEvaluator].
 #' * `terminator` :: [Terminator].
 #' * `settings` :: named `list()`\cr
 #'   Arbitrary list, depending on the child class.
 #'
 #' @section Fields:
-#' * `id` :: `character(1)`\cr
-#'   Name of the tuner.
 #' * `pe` :: [PerformanceEvaluator]\cr
 #'   The current state of the [PerformanceEvaluator].
 #' * `terminator` :: [Terminator].
@@ -84,20 +80,18 @@
 #' tt$aggregate() # allows access of data.table / benchmark result of full path of all evaluations
 Tuner = R6Class("Tuner",
   public = list(
-    id = NULL,
     pe = NULL,
     terminator = NULL,
     settings = NULL,
 
-    initialize = function(id, pe, terminator, settings = list()) {
-      self$id = assert_string(id)
+    initialize = function(pe, terminator, settings = list()) {
       self$pe = assert_r6(pe, "PerformanceEvaluator")
       self$terminator = assert_r6(terminator, "Terminator")
       self$settings = assert_list(settings, names = "unique")
     },
 
     format = function() {
-      sprintf("<%s:%s>", class(self)[1L], self$id)
+      sprintf("<%s>", class(self)[1L])
     },
 
     print = function() {

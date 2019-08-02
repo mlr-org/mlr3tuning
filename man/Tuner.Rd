@@ -13,11 +13,9 @@ The state of tuning is stored in field \code{pe$bmr} and the tuner offers some a
 bindings to conveniently access results.
 }
 \section{Construction}{
-\preformatted{tuner = Tuner$new(id, pe, terminator, settings = list())
+\preformatted{tuner = Tuner$new(pe, terminator, settings = list())
 }
 \itemize{
-\item \code{id} :: \code{character(1)}\cr
-Name of the tuner.
 \item \code{pe} :: \link{PerformanceEvaluator}.
 \item \code{terminator} :: \link{Terminator}.
 \item \code{settings} :: named \code{list()}\cr
@@ -28,8 +26,6 @@ Arbitrary list, depending on the child class.
 \section{Fields}{
 
 \itemize{
-\item \code{id} :: \code{character(1)}\cr
-Name of the tuner.
 \item \code{pe} :: \link{PerformanceEvaluator}\cr
 The current state of the \link{PerformanceEvaluator}.
 \item \code{terminator} :: \link{Terminator}.
