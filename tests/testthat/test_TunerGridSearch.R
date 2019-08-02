@@ -14,7 +14,8 @@ test_that("TunerGridSearch", {
   )))
   pe = PerformanceEvaluator$new(task, learner, resampling, measures, param_set)
   reso = 3L
-  tt = TunerGridSearch$new(pe, resolution = reso)
+  term = TerminatorEvaluations$new(10000)
+  tt = TunerGridSearch$new(pe, resolution = reso, terminator = term)
 
   result = tt$tune()$tune_result()
   bmr = tt$pe$bmr

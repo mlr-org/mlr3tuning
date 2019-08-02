@@ -7,6 +7,8 @@
 #' Abstract `Tuner` class that implements the main functionality each tuner must have.
 #' A tuner is an object that describes the tuning strategy how to search the hyperparameter space given within
 #' the `[PerformanceEvaluator]` object.
+#' The state of tuning is stored in field `pe$bmr` and the tuner offers some active
+#' bindings to conveniently access results.
 #'
 #' @section Construction:
 #' ```
@@ -45,13 +47,25 @@
 #' * `eval_batch(dt)`
 #'   `[data.table::data.table()] --> numeric(n)\cr
 #'   Evaluates a set of design points, passed as a data.table of n rows and returns n performance values.
-#'   This is the only entry point a subclass tuner should use to evaluate the objective function, and it should normally not be called from the
-#'   outside by the user. The batch-eval is requested at the PerformanceEvaluator 'pe' object,
-#'   so each batch is possibly executed in parallel via [mlr3::benchmark()],
-#'   and all evaluations are stored inside of 'pe'.
-#'   After the batch-eval, all terminators registered with the tuner are checked, and if one is positive,
-#'   an exception is generated of class 'terminated_message'. In this case the current batch of evals is still stored in pe,
-#'   and is considered for returning a final best configuration, but the numeric score are not sent back to the handling optimizer.
+#'   This is the only entry point a subclass tuner should use to evaluate the objective function,
+#'   and it should normally not be called from the outside by the user.
+#'
+#' @section Technical Details and Subclasses
+#' A subclass is implemented in the following way:
+#'  * Inherit from Tuner
+#'  * Specify the private abstract method `tune_interal` and use it to call into your optimizer.
+#'  * When you set up an objective function, you will call `eval_batch` to evaluate design points.
+#'  * The batch-eval is requested at the PerformanceEvaluator 'pe' object,
+#'    so each batch is possibly executed in parallel via [mlr3::benchmark()],
+#'    and all evaluations are stored inside of 'pe$bmr'.
+#'  * After the batch-eval, all terminators registered with the tuner are checked, and if one is positive,
+#'    an exception is generated of class 'terminated_message'. In this case the current
+#'    batch of evals is still stored in pe, but the numeric score are not sent back to t
+#'    he handling optimizer as it has lost execution control.
+#'  * After such an exception was caught we select the best configuration from `pe$bmr` and
+#'    return it.
+#'  * Note that therefore more points than specified by the Terminator might be evaluated,
+#'    as the Terminator is only checked after a batch-eval. How many more depends on the batchsize.
 #'
 #' @family Tuner
 #' @export
@@ -111,10 +125,13 @@ Tuner = R6Class("Tuner",
     },
 
     tune = function() {
-      while (!self$terminator$terminated) {
-        # Catch exception when terminator is terminated:
-        tryCatch(private$tune_step(), terminated_message = function(cond) { })
-      }
+      # run internal tune function which calls the optimizer
+      # the optimizer will call eval_batch,
+      # that will generate an exception when terminator is positive
+      # we then catch that here and stop
+      tryCatch({
+        private$tune_internal()
+      }, terminated_message = function(cond) {})
       return(invisible(self))
     },
 
@@ -134,6 +151,12 @@ Tuner = R6Class("Tuner",
       }
 
       return(dt)
+    }
+  ),
+
+  private = list(
+    tune_internal = function() { # every subclass has to implement this to call optimizer
+      stop("abstract")
     }
   )
 )

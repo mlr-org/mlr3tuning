@@ -6,8 +6,7 @@
 \title{TunerGenSA}
 \format{\link[R6:R6Class]{R6::R6Class} object inheriting from \link{Tuner}.}
 \description{
-Tuner child class to conduct generalized simulated annealing (GenSA) as tuning technique.
-Internally relies on \code{\link[GenSA:GenSA]{GenSA::GenSA()}} from package \pkg{GenSA}.
+Subclass for generalized simulated annealing tuning with \code{\link[GenSA:GenSA]{GenSA::GenSA()}}.
 }
 \section{Construction}{
 \preformatted{tuner = TunerGenSA$new(pe, terminator, ...)
@@ -15,7 +14,7 @@ Internally relies on \code{\link[GenSA:GenSA]{GenSA::GenSA()}} from package \pkg
 
 For arguments, see \link{Tuner}, and additionally:
 \itemize{
-\item \code{...} :: named \code{list()}\cr
+\item \code{...}\cr
 Settings passed down do \code{\link[GenSA:GenSA]{GenSA::GenSA()}}
 Default settings are \code{smooth = FALSE}, \code{acceptance.param = -15},
 \code{simple.function = FALSE}, and \code{temperature = 250}.

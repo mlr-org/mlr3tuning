@@ -5,17 +5,30 @@
 #' @format [R6::R6Class] object inheriting from [Tuner].
 #'
 #' @description
-#' Tuner child class to conduct a grid search.
+#' Subclass for grid search tuning.
+#'
+#' The grid is constructed as a Cartesian product over discretized values per parameter,
+#' see [paradox::generate_design_grid].
+#' The grid is searched in random order.
+#'
+#' In order to support general termination criteria and parallelization,
+#' we evaluate points in a batch-fashion of size `batchsize`.
+#' Number of `batchsize` points are evaluated per iteration (potentially in parallel),
+#' then the termination criteria are checked.
 #'
 #' @section Construction:
 #' ```
-#' tuner = TunerGridSearch$new(pe, terminator, resolution)
+#' tuner = TunerGridSearch$new(pe, terminator, resolution = 10L, batchsize = 1L)
 #' ```
 #' For arguments, see [Tuner], and additionally:
 #'
 #' * `resolution` :: `integer(1)`\cr
 #'   Resolution of the grid.
-#'   If none is specified we will try to calculate the resolution form the Terminator.
+#'   Stored in `settings`.
+#' * `batch_size` :: `integer(1)`\cr
+#'   Maximum number of configurations to try in a batch.
+#'   Stored in `settings`.
+#'
 #'
 #' @family Tuner
 #' @export
@@ -24,23 +37,22 @@
 TunerGridSearch = R6Class("TunerGridSearch",
   inherit = Tuner,
   public = list(
-    resolution = NULL,
-    grid = NULL,
-
-    initialize = function(pe, terminator = NULL, resolution = 10L, batchsize = 10L) {
+    initialize = function(pe, terminator = NULL, resolution = 10L, batchsize = 1L) {
       resolution = assert_int(resolution, lower = 1L, coerce = TRUE)
-      grid = generate_design_grid(pe$param_set, resolution = resolution)
-      terminator = TerminatorEvaluations$new(nrow(grid$data))
-      super$initialize(id = "grid_search", pe = pe, terminator = terminator)
-      self$resolution = resolution
-      self$grid = grid
+      batchsize = assert_int(batchsize, lower = 1L, coerce = TRUE)
+      s = list(batchsize = batchsize, resolution = resolution)
+      super$initialize(id = "grid_search", pe = pe, terminator = terminator, settings = s)
       return(self)
     }
   ),
 
   private = list(
-    tune_step = function() {
-      self$eval_batch(self$grid$data)
+    tune_internal = function() {
+      g = generate_design_grid(self$pe$param_set, resolution = self$settings$resolution)
+      ch = chunk_vector(1:nrow(g$data), chunk_size = self$settings$batchsize, shuffle = TRUE)
+      for (i in 1:length(ch)) {
+        self$eval_batch(g$data[ch[[i]],])
+      }
     }
   )
 )

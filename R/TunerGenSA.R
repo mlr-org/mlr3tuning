@@ -5,15 +5,14 @@
 #' @format [R6::R6Class] object inheriting from [Tuner].
 #'
 #' @description
-#' Tuner child class to conduct generalized simulated annealing (GenSA) as tuning technique.
-#' Internally relies on [GenSA::GenSA()] from package \pkg{GenSA}.
+#' Subclass for generalized simulated annealing tuning with [GenSA::GenSA()].
 #'
 #' @section Construction:
 #' ```
 #' tuner = TunerGenSA$new(pe, terminator, ...)
 #' ```
 #' For arguments, see [Tuner], and additionally:
-#' * `...` :: named `list()`\cr
+#' * `...`\cr
 #'   Settings passed down do [GenSA::GenSA()]
 #'   Default settings are `smooth = FALSE`, `acceptance.param = -15`,
 #'   `simple.function = FALSE`, and `temperature = 250`.
@@ -27,9 +26,7 @@ TunerGenSA = R6Class("TunerGenSA",
   public = list(
     initialize = function(pe, terminator, ...) {
       if (any(pe$param_set$storage_type != "numeric")) {
-        err_msg = "Parameter types needs to be numeric"
-        lg$error(err_msg)
-        stopf(err_msg)
+        stopf("Parameter types need to be numeric!")
       }
 
       # Default settings:
@@ -38,7 +35,7 @@ TunerGenSA = R6Class("TunerGenSA",
     }
   ),
   private = list(
-    tune_step = function() {
+    tune_internal = function() {
       objective = function(x, pe) {
         measure = pe$measures[[1L]]
 

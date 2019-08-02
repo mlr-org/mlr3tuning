@@ -6,17 +6,29 @@
 \title{TunerGridSearch}
 \format{\link[R6:R6Class]{R6::R6Class} object inheriting from \link{Tuner}.}
 \description{
-Tuner child class to conduct a grid search.
+Subclass for grid search tuning.
+
+The grid is constructed as a Cartesian product over discretized values per parameter,
+see \link[paradox:generate_design_grid]{paradox::generate_design_grid}.
+The grid is searched in random order.
+
+In order to support general termination criteria and parallelization,
+we evaluate points in a batch-fashion of size \code{batchsize}.
+Number of \code{batchsize} points are evaluated per iteration (potentially in parallel),
+then the termination criteria are checked.
 }
 \section{Construction}{
-\preformatted{tuner = TunerGridSearch$new(pe, terminator, resolution)
+\preformatted{tuner = TunerGridSearch$new(pe, terminator, resolution = 10L, batchsize = 1L)
 }
 
 For arguments, see \link{Tuner}, and additionally:
 \itemize{
 \item \code{resolution} :: \code{integer(1)}\cr
 Resolution of the grid.
-If none is specified we will try to calculate the resolution form the Terminator.
+Stored in \code{settings}.
+\item \code{batch_size} :: \code{integer(1)}\cr
+Maximum number of configurations to try in a batch.
+Stored in \code{settings}.
 }
 }
 

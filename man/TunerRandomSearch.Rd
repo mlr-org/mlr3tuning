@@ -6,16 +6,22 @@
 \title{TunerRandomSearch}
 \format{\link[R6:R6Class]{R6::R6Class} object inheriting from \link{Tuner}.}
 \description{
-Tuner child class to conduct a random search.
+Subclass for random search tuning.
+
+In order to support general termination criteria and parallelization,
+we evaluate points in a batch-fashion of size \code{batch_size}.
+Number of \code{batch_size} points are evaluated per iteration (potentially in parallel),
+then the termination criteria are checked.
 }
 \section{Construction}{
-\preformatted{tuner = TunerRandomSearch$new(pe, terminator, batch_size = 100L)
+\preformatted{tuner = TunerRandomSearch$new(pe, terminator, batch_size = 1L)
 }
 
 For arguments, see \link{Tuner}, and additionally:
 \itemize{
 \item \code{batch_size} :: \code{integer(1)}\cr
 Maximum number of configurations to try in a batch.
+Stored in \code{settings}.
 }
 }
 
