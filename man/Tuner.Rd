@@ -44,7 +44,7 @@ Arbitrary list, depending on the child class.
 \itemize{
 \item \code{tune()}\cr
 () -> \code{self}\cr
-Performs the tuning until the budget of the \link{Terminator} is exhausted.
+Performs the tuning until the \link{Terminator} becomes positive.
 \item \code{tune_result()}\cr
 () -> named \code{list()}\cr
 List with 2 elements:
@@ -59,7 +59,7 @@ If \code{unnest} is \code{TRUE}, hyperparameter settings are stored in separate 
 \item \code{eval_batch(dt)}
 `\code{\link[data.table:data.table]{data.table::data.table()}} --> numeric(n)\cr
 Evaluates a set of design points, passed as a data.table of n rows and returns n performance values.
-This is the only entry point a subclass tuner should use to evaluate the objective function, i
+This is the only entry point a subclass tuner should use to evaluate the objective function,
 and it should normally not be called from the outside by the user.
 }
 }

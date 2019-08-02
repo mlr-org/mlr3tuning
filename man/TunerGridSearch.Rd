@@ -13,12 +13,12 @@ see \link[paradox:generate_design_grid]{paradox::generate_design_grid}.
 The grid is searched in random order.
 
 In order to support general termination criteria and parallelization,
-we evaluate points in a batch-fashion of size \code{batchsize}.
-Number of \code{batchsize} points are evaluated per iteration (potentially in parallel),
+we evaluate points in a batch-fashion of size \code{batch_size}.
+Number of \code{batch_size} points are evaluated per iteration (potentially in parallel),
 then the termination criteria are checked.
 }
 \section{Construction}{
-\preformatted{tuner = TunerGridSearch$new(pe, terminator, resolution = 10L, batchsize = 1L)
+\preformatted{tuner = TunerGridSearch$new(pe, terminator, resolution = 10L, batch_size = 1L)
 }
 
 For arguments, see \link{Tuner}, and additionally:

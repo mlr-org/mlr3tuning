@@ -12,13 +12,13 @@
 #' The grid is searched in random order.
 #'
 #' In order to support general termination criteria and parallelization,
-#' we evaluate points in a batch-fashion of size `batchsize`.
-#' Number of `batchsize` points are evaluated per iteration (potentially in parallel),
+#' we evaluate points in a batch-fashion of size `batch_size`.
+#' Number of `batch_size` points are evaluated per iteration (potentially in parallel),
 #' then the termination criteria are checked.
 #'
 #' @section Construction:
 #' ```
-#' tuner = TunerGridSearch$new(pe, terminator, resolution = 10L, batchsize = 1L)
+#' tuner = TunerGridSearch$new(pe, terminator, resolution = 10L, batch_size = 1L)
 #' ```
 #' For arguments, see [Tuner], and additionally:
 #'
@@ -37,10 +37,10 @@
 TunerGridSearch = R6Class("TunerGridSearch",
   inherit = Tuner,
   public = list(
-    initialize = function(pe, terminator = NULL, resolution = 10L, batchsize = 1L) {
+    initialize = function(pe, terminator = NULL, resolution = 10L, batch_size = 1L) {
       resolution = assert_int(resolution, lower = 1L, coerce = TRUE)
-      batchsize = assert_int(batchsize, lower = 1L, coerce = TRUE)
-      s = list(batchsize = batchsize, resolution = resolution)
+      batch_size = assert_int(batch_size, lower = 1L, coerce = TRUE)
+      s = list(batch_size = batch_size, resolution = resolution)
       super$initialize(id = "grid_search", pe = pe, terminator = terminator, settings = s)
       return(self)
     }
@@ -49,7 +49,7 @@ TunerGridSearch = R6Class("TunerGridSearch",
   private = list(
     tune_internal = function() {
       g = generate_design_grid(self$pe$param_set, resolution = self$settings$resolution)
-      ch = chunk_vector(1:nrow(g$data), chunk_size = self$settings$batchsize, shuffle = TRUE)
+      ch = chunk_vector(1:nrow(g$data), chunk_size = self$settings$batch_size, shuffle = TRUE)
       for (i in 1:length(ch)) {
         self$eval_batch(g$data[ch[[i]],])
       }
