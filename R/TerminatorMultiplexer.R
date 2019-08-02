@@ -43,11 +43,6 @@ TerminatorMultiplexer = R6Class("TerminatorMultiplexer",
       lapply(self$terminators, function(t) t$update_end(pe))
       self$terminated = self$terminated || some(self$terminators, "terminated")
       invisible(self)
-    },
-
-    print = function() {
-      catf("%s (remaining: %s)", format(self), self$remaining)
-      invisible(NULL)
     }
   ),
 

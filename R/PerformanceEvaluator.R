@@ -107,6 +107,25 @@ PerformanceEvaluator = R6Class("PerformanceEvaluator",
       self$ctrl = mlr_control(ctrl)
     },
 
+    format = function() {
+      sprintf("<%s>", class(self)[1L])
+    },
+
+    print = function() {
+      catf(format(self))
+      catf(str_indent("* Task:", format(self$task)))
+      catf(str_indent("* Learner:", format(self$learner)))
+      catf(str_indent("* Measures:", map_chr(self$measures, "id")))
+      catf(str_indent("* Resampling:", format(self$resampling)))
+      print(self$param_set)
+      catf("Evals:")
+      if (!is.null(self$bmr))
+        print(self$bmr)
+      else
+        catf("[None yet]")
+    },
+
+
     eval = function(dt) {
       assert_data_table(dt, any.missing = FALSE, min.rows = 1, min.cols = 1)
       self$eval_design(Design$new(self$param_set, dt, remove_dupl = FALSE))

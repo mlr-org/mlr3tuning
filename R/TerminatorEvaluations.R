@@ -38,10 +38,6 @@ TerminatorEvaluations = R6Class("TerminatorEvaluations",
 
     update_end = function(pe) {
       self$update_start(pe)
-    },
-
-    print = function() {
-      catf("%s (remaining: %s)", format(self), self$remaining)
     }
   ),
 

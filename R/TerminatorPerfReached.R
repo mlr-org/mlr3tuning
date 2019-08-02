@@ -60,11 +60,8 @@ TerminatorPerfReached = R6Class("TerminatorPerfReached",
       }
 
       invisible(self)
-    },
-
-    print = function() {
-      catf("%s (remaining: %s)", format(self), self$remaining)
     }
+
   ),
 
   active = list(

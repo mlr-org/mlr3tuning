@@ -33,6 +33,6 @@ test_that("API", {
   expect_equal(tm$terminators[[1]]$state$evals, 1L)
   expect_equal(tm$terminators[[2]]$settings$runtime, 1L)
 
-  expect_output(print(tm), "remaining: 1")
-  expect_output(print(tm), "-0")
+  expect_string(tm$remaining, pattern = "1 evaluations")
+  expect_string(tm$remaining, pattern = "-0")
 })

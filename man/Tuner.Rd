@@ -60,6 +60,7 @@ Evaluates a set of design points, passed as a data.table of n rows and returns n
 This is the only entry point a subclass tuner should use to evaluate the objective function, and it should normally not be called from the
 outside by the user. The batch-eval is requested at the PerformanceEvaluator 'pe' object,
 so each batch is possibly executed in parallel via \code{\link[mlr3:benchmark]{mlr3::benchmark()}},
+and all evaluations are stored inside of 'pe'.
 After the batch-eval, all terminators registered with the tuner are checked, and if one is positive,
 an exception is generated of class 'terminated_message'. In this case the current batch of evals is still stored in pe,
 and is considered for returning a final best configuration, but the numeric score are not sent back to the handling optimizer.

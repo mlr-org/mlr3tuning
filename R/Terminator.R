@@ -47,6 +47,15 @@ Terminator = R6Class("Terminator",
 
     format = function() {
       sprintf("<%s>", class(self)[1L])
+    },
+
+    print = function() {
+      catf(format(self))
+      catf(str_indent("* Terminated:", self$terminated))
+      catf(str_indent("* settings:", as_short_string(self$settings)))
     }
+    # print = function() {
+      # catf("%s (remaining: %s)", format(self), self$remaining)
+    # }
   )
 )

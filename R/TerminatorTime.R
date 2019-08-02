@@ -46,10 +46,6 @@ TerminatorTime = R6Class("TerminatorTime",
         self$terminated = TRUE
       }
       invisible(self)
-    },
-
-    print = function() {
-      catf("%s (remaining: %s)", format(self), self$remaining)
     }
   ),
 
