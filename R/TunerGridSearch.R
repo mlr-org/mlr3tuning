@@ -23,7 +23,7 @@
 #' For arguments, see [Tuner], and additionally:
 #'
 #' * `resolution` :: `integer(1)`\cr
-#'   Resolution of the grid.
+#'   Resolution of the grid, see [paradox::generate_design_grid].
 #'   Stored in `settings`.
 #' * `batch_size` :: `integer(1)`\cr
 #'   Maximum number of configurations to try in a batch.
