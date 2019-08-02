@@ -34,7 +34,7 @@
 #' @section Methods:
 #' * `tune()`\cr
 #'   () -> `self`\cr
-#'   Performs the tuning until the budget of the [Terminator] is exhausted.
+#'   Performs the tuning until the [Terminator] becomes positive.
 #' * `tune_result()`\cr
 #'   () -> named `list()`\cr
 #'   List with 2 elements:
