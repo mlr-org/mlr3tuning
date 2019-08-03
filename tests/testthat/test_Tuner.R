@@ -15,7 +15,7 @@ param_set = ParamSet$new(params = list(
   ParamDbl$new("cp", lower = 0.001, upper = 0.1
 )))
 
-pe = PerformanceEvaluator$new(task, learner, resampling, measures, param_set)
+pe = PerfEval$new(task, learner, resampling, measures, param_set)
 
 test_that("API", {
   for (n_evals in c(1,5)) {

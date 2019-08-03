@@ -27,10 +27,10 @@
 #'
 #' @section Methods:
 #' * `update_start(pe)`\cr
-#'   [PerformanceEvaluator] -> `self`\cr
+#'   [PerfEval] -> `self`\cr
 #'   Is called in each tuning iteration before the evaluation.
 #' * `update_end(pe)`\cr
-#'   [PerformanceEvaluator] -> `self`\cr
+#'   [PerfEval] -> `self`\cr
 #'   Is called in each tuning iteration after the evaluation.
 #'
 #' @family Terminator

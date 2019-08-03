@@ -6,7 +6,7 @@
 #' @description
 #' Abstract `Tuner` class that implements the main functionality each tuner must have.
 #' A tuner is an object that describes the tuning strategy how to search the hyperparameter space given within
-#' the `[PerformanceEvaluator]` object.
+#' the `[PerfEval]` object.
 #' The state of tuning is stored in field `pe$bmr` and the tuner offers some active
 #' bindings to conveniently access results.
 #'
@@ -14,14 +14,14 @@
 #' ```
 #' tuner = Tuner$new(pe, terminator, settings = list())
 #' ```
-#' * `pe` :: [PerformanceEvaluator].
+#' * `pe` :: [PerfEval].
 #' * `terminator` :: [Terminator].
 #' * `settings` :: named `list()`\cr
 #'   Arbitrary list, depending on the child class.
 #'
 #' @section Fields:
-#' * `pe` :: [PerformanceEvaluator]\cr
-#'   The current state of the [PerformanceEvaluator].
+#' * `pe` :: [PerfEval]\cr
+#'   The current state of the [PerfEval].
 #' * `terminator` :: [Terminator].
 #'   The current state of the [Terminator].
 #' * `settings` :: named `list()`\cr
@@ -51,7 +51,7 @@
 #'  * Inherit from Tuner
 #'  * Specify the private abstract method `tune_interal` and use it to call into your optimizer.
 #'  * When you set up an objective function, you will call `eval_batch` to evaluate design points.
-#'  * The batch-eval is requested at the PerformanceEvaluator 'pe' object,
+#'  * The batch-eval is requested at the PerfEval 'pe' object,
 #'    so each batch is possibly executed in parallel via [mlr3::benchmark()],
 #'    and all evaluations are stored inside of 'pe$bmr'.
 #'  * After the batch-eval, all terminators registered with the tuner are checked, and if one is positive,
@@ -72,7 +72,7 @@
 #' param_set = ParamSet$new(list(
 #'   ParamDbl$new("cp", lower = 0.001, upper = 0.1)
 #' ))
-#' pe = PerformanceEvaluator$new("iris", "classif.rpart", resampling, "classif.ce", param_set)
+#' pe = PerfEval$new("iris", "classif.rpart", resampling, "classif.ce", param_set)
 #' terminator = TerminatorEvaluations$new(3)
 #' tt = TunerRandomSearch$new(pe, terminator) # swap this line to use a different Tuner
 #' tt$tune()
@@ -85,7 +85,7 @@ Tuner = R6Class("Tuner",
     settings = NULL,
 
     initialize = function(pe, terminator, settings = list()) {
-      self$pe = assert_r6(pe, "PerformanceEvaluator")
+      self$pe = assert_r6(pe, "PerfEval")
       self$terminator = assert_r6(terminator, "Terminator")
       self$settings = assert_list(settings, names = "unique")
     },
@@ -98,7 +98,7 @@ Tuner = R6Class("Tuner",
       catf(format(self))
       catf(str_indent("* Terminator:", format(self$terminator)))
       catf(str_indent("* settings:", as_short_string(self$settings)))
-      catf(str_indent("* PerformanceEvaluator:", format(self$pe)))
+      catf(str_indent("* PerfEval:", format(self$pe)))
       print(self$pe)
     },
 

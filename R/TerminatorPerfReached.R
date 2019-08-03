@@ -14,7 +14,7 @@
 #' * `thresh` :: named `numeric()`\cr
 #'   Thresholds that need to be reached, named with measure ids.
 #'   Terminates if the performance exceeds (respective measure has to be maximized) or falls below (respective measure has to be minimized) all provided threshold simultaneously.
-#' * `pe` :: [PerformanceEvaluator]\cr
+#' * `pe` :: [PerfEval]\cr
 #'   Performance evaluator used for the tuning.
 #'
 #' @family Terminator
@@ -23,7 +23,7 @@ TerminatorPerfReached = R6Class("TerminatorPerfReached",
   inherit = Terminator,
   public = list(
     initialize = function(thresh, pe, all_reached = FALSE) {
-      assert_r6(pe, "PerformanceEvaluator")
+      assert_r6(pe, "PerfEval")
       measures = set_names(pe$measures, map_chr(pe$measures, "id"))
       assert_numeric(thresh, names = "unique", any.missing = FALSE)
       assert_names(names(thresh), subset.of = names(measures))

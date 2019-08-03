@@ -18,7 +18,7 @@ test_that("TunerRandomSearch", {
   )))
 
   terminator = TerminatorEvaluations$new(5)
-  pe = PerformanceEvaluator$new(task, learner, resampling, measures, param_set)
+  pe = PerfEval$new(task, learner, resampling, measures, param_set)
   rs = TunerRandomSearch$new(pe, terminator)
   rs1 = TunerRandomSearch$new(pe, terminator, 2L)
 
@@ -33,7 +33,7 @@ test_that("TunerRandomSearch", {
 })
 
 test_that("aggregate one row (#40)", {
-  pe = PerformanceEvaluator$new(
+  pe = PerfEval$new(
     task = mlr_tasks$get("iris"),
     learner = mlr_learners$get("classif.rpart"),
     resampling = mlr_resamplings$get("cv"),

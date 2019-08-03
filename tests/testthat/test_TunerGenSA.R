@@ -20,7 +20,7 @@ test_that("TunerGenSA", {
     ParamDbl$new("cp", lower = 0.001, upper = 0.1
   )))
 
-  pe = PerformanceEvaluator$new(task, learner, resampling, measures, param_set)
+  pe = PerfEval$new(task, learner, resampling, measures, param_set)
   gs = TunerGenSA$new(pe, terminator = terminator, temperature = 200)
   expect_equal(gs$settings$temperature, 200)
 

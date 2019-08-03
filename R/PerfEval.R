@@ -1,19 +1,19 @@
-#' @title PerformanceEvaluator Class
+#' @title PerfEval Class
 #'
 #' @usage NULL
 #' @format [R6::R6Class] object.
 #'
 #' @description
-#' Implements a performance evaluator for \pkg{mlr3} as `R6` class `PerformanceEvaluator`.
+#' Implements a performance evaluator for \pkg{mlr3} as `R6` class `PerfEval`.
 #' An object of that class contains all relevant information that is necessary to conduct tuning.
 #'
 #' After defining a performance evaluator, we can use it to predict the generalization error of a specific learner configuration
 #' defined by its hyperparameters (using the method `$eval()`).
-#' The `PerformanceEvaluator` class is the basis for further tuning strategies, i.e., grid or random search.
+#' The `PerfEval` class is the basis for further tuning strategies, i.e., grid or random search.
 #'
 #' @section Construction:
 #' ```
-#' pe = PerformanceEvaluator$new(task, learner, resampling, measures, param_set,
+#' pe = PerfEval$new(task, learner, resampling, measures, param_set,
 #'   ctrl = list())
 #'```
 #'
@@ -62,7 +62,7 @@
 #'   Adds a hook function. For internal use.
 #'
 #'
-#' @family PerformanceEvaluator
+#' @family PerfEval
 #' @export
 #' @examples
 #' library(mlr3)
@@ -76,7 +76,7 @@
 #'   ParamDbl$new("cp", lower = 0.001, upper = 0.1),
 #'   ParamInt$new("minsplit", lower = 1, upper = 10)))
 #'
-#' pe = PerformanceEvaluator$new(
+#' pe = PerfEval$new(
 #'   task = task,
 #'   learner = learner,
 #'   resampling = resampling,
@@ -87,7 +87,7 @@
 #' pe$eval(data.table::data.table(cp = 0.05, minsplit = 5))
 #' pe$eval(data.table::data.table(cp = 0.01, minsplit = 3))
 #' pe$best()
-PerformanceEvaluator = R6Class("PerformanceEvaluator",
+PerfEval = R6Class("PerfEval",
   public = list(
     task = NULL,
     learner = NULL,

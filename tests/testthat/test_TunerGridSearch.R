@@ -12,7 +12,7 @@ test_that("TunerGridSearch", {
   param_set = ParamSet$new(params = list(
     ParamDbl$new("cp", lower = 0.001, upper = 0.1
   )))
-  pe = PerformanceEvaluator$new(task, learner, resampling, measures, param_set)
+  pe = PerfEval$new(task, learner, resampling, measures, param_set)
   reso = 3L
   term = TerminatorEvaluations$new(10000)
   tt = TunerGridSearch$new(pe, resolution = reso, terminator = term)

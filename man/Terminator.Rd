@@ -37,10 +37,10 @@ Used for printing and logging.
 
 \itemize{
 \item \code{update_start(pe)}\cr
-\link{PerformanceEvaluator} -> \code{self}\cr
+\link{PerfEval} -> \code{self}\cr
 Is called in each tuning iteration before the evaluation.
 \item \code{update_end(pe)}\cr
-\link{PerformanceEvaluator} -> \code{self}\cr
+\link{PerfEval} -> \code{self}\cr
 Is called in each tuning iteration after the evaluation.
 }
 }

@@ -8,7 +8,7 @@
 \description{
 Abstract \code{Tuner} class that implements the main functionality each tuner must have.
 A tuner is an object that describes the tuning strategy how to search the hyperparameter space given within
-the \code{[PerformanceEvaluator]} object.
+the \code{[PerfEval]} object.
 The state of tuning is stored in field \code{pe$bmr} and the tuner offers some active
 bindings to conveniently access results.
 }
@@ -16,7 +16,7 @@ bindings to conveniently access results.
 \preformatted{tuner = Tuner$new(pe, terminator, settings = list())
 }
 \itemize{
-\item \code{pe} :: \link{PerformanceEvaluator}.
+\item \code{pe} :: \link{PerfEval}.
 \item \code{terminator} :: \link{Terminator}.
 \item \code{settings} :: named \code{list()}\cr
 Arbitrary list, depending on the child class.
@@ -26,8 +26,8 @@ Arbitrary list, depending on the child class.
 \section{Fields}{
 
 \itemize{
-\item \code{pe} :: \link{PerformanceEvaluator}\cr
-The current state of the \link{PerformanceEvaluator}.
+\item \code{pe} :: \link{PerfEval}\cr
+The current state of the \link{PerfEval}.
 \item \code{terminator} :: \link{Terminator}.
 The current state of the \link{Terminator}.
 \item \code{settings} :: named \code{list()}\cr
@@ -67,7 +67,7 @@ resampling = mlr_resamplings$get("cv", param_vals = list(folds = 2))
 param_set = ParamSet$new(list(
   ParamDbl$new("cp", lower = 0.001, upper = 0.1)
 ))
-pe = PerformanceEvaluator$new("iris", "classif.rpart", resampling, "classif.ce", param_set)
+pe = PerfEval$new("iris", "classif.rpart", resampling, "classif.ce", param_set)
 terminator = TerminatorEvaluations$new(3)
 tt = TunerRandomSearch$new(pe, terminator) # swap this line to use a different Tuner
 tt$tune()

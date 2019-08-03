@@ -12,7 +12,7 @@ test_that("TerminatorPerfReached", {
     )
   )
 
-  pe = PerformanceEvaluator$new(task, learner, resampling, measures, param_set)
+  pe = PerfEval$new(task, learner, resampling, measures, param_set)
   expect_error({
     terminator = TerminatorPerfReached$new(c(classif.ce = 0.1, false.measure = 0.9), pe)
   })
