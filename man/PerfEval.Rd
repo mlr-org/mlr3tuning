@@ -6,12 +6,11 @@
 \title{PerfEval Class}
 \format{\link[R6:R6Class]{R6::R6Class} object.}
 \description{
-Implements a performance evaluator for \pkg{mlr3} as \code{R6} class \code{PerfEval}.
-An object of that class contains all relevant information that is necessary to conduct tuning.
+Implements a performance evaluator for tuning. This class encodes the black box objective function,
+that a generic tuner has to optimize. It allows the basic operations of querying the objective
+at design points, storing the evaluated point in an internal archive and querying the archive.
 
-After defining a performance evaluator, we can use it to predict the generalization error of a specific learner configuration
-defined by its hyperparameters (using the method \code{$eval()}).
-The \code{PerfEval} class is the basis for further tuning strategies, i.e., grid or random search.
+The performance evaluator is one of the major inputs for constructing a \link{Tuner}.
 }
 \section{Construction}{
 \preformatted{pe = PerfEval$new(task, learner, resampling, measures, param_set,
