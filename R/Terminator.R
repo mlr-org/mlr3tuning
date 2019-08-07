@@ -57,5 +57,9 @@ Terminator = R6Class("Terminator",
     # print = function() {
       # catf("%s (remaining: %s)", format(self), self$remaining)
     # }
+  ),
+
+  active = list(
+    remaining = function() stop("abstract")
   )
 )

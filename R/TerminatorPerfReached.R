@@ -65,9 +65,6 @@ TerminatorPerfReached = R6Class("TerminatorPerfReached",
   ),
 
   active = list(
-    remaining = function() {
-      delta = self$state$delta
-      paste0(sprintf("%s: %.3f", names(delta), delta), collapse = ", ")
-    }
+    remaining = function() "<?>"
   )
 )
