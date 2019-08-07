@@ -10,10 +10,10 @@ Class to terminate the tuning depending on the number of evaluations.
 An evaluation is defined by one resampling of a parameter value.
 }
 \section{Construction}{
-\preformatted{t = TerminatorEvaluations$new(max_evaluations)
+\preformatted{t = TerminatorEvaluations$new(evals)
 }
 \itemize{
-\item \code{max_evaluations} :: \code{integer(1)}\cr
+\item \code{evals} :: \code{integer(1)}\cr
 Number of allowed evaluations.
 }
 }

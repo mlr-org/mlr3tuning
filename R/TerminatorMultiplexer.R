@@ -29,8 +29,7 @@ TerminatorMultiplexer = R6Class("TerminatorMultiplexer",
     terminators = NULL,
     initialize = function(terminators) {
       self$terminators = assert_list(terminators, types = "Terminator")
-      self$terminated = FALSE
-      super$initialize(settings = do.call("c", lapply(self$terminators, function(t) t$settings)))
+      super$initialize(list())
     },
 
     eval_before = function(pe) {
