@@ -40,6 +40,8 @@
 #' * `hooks` :: `list()`\cr
 #'   List of functions that are executed with `run_hooks()` for evaluation.
 #'   This is for internal use.
+#' * `n_evals` :: `integer(1)`\cr
+#'   Number of unique experiments stored in the container.
 #'
 #' @section Methods:
 #' * `eval(dt)`\cr
@@ -140,8 +142,6 @@ PerfEval = R6Class("PerfEval",
         design$data = self$param_set$trafo(design$data)
       }
 
-      n_evals = if (is.null(self$bmr)) 0L else self$bmr$data[, data.table::uniqueN(get("hash"))]
-
       learners = imap(design$transpose(), function(xt, i) {
         learner = self$learner$clone(deep = TRUE)
         learner$param_set$values = insert_named(learner$param_set$values, xt)
@@ -172,6 +172,12 @@ PerfEval = R6Class("PerfEval",
 
     run_hooks = function() {
       lapply(self$hooks, function(hook) hook(pe = self))
+    }
+  ),
+
+  active = list(
+    n_evals = function() {
+      if (is.null(self$bmr)) 0L else self$bmr$data[, data.table::uniqueN(get("hash"))]
     }
   )
 )

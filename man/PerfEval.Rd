@@ -45,6 +45,8 @@ A benchmark result, which is used as data storage.
 \item \code{hooks} :: \code{list()}\cr
 List of functions that are executed with \code{run_hooks()} for evaluation.
 This is for internal use.
+\item \code{n_evals} :: \code{integer(1)}\cr
+Number of unique experiments stored in the container.
 }
 }
 
