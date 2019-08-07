@@ -1,18 +1,8 @@
 context("TerminatorPerfReached")
 
 test_that("TerminatorPerfReached", {
-  task = mlr_tasks$get("iris")
-  learner = mlr_learners$get("classif.rpart")
-  resampling = mlr_resamplings$get("cv")
-  resampling$param_set$values$folds = 2
   measures = mlr_measures$mget(c("classif.ce", "classif.acc"))
-  param_set = ParamSet$new(
-    params = list(
-      ParamDbl$new("cp", lower = 0.001, upper = 0.1)
-    )
-  )
-
-  pe = PerfEval$new(task, learner, resampling, measures, param_set)
+  pe = TEST_MAKE_PE1(measures = measures)
   expect_error({
     terminator = TerminatorPerfReached$new(c(classif.ce = 0.1, false.measure = 0.9), pe)
   })
