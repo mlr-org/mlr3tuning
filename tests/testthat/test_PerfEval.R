@@ -1,6 +1,6 @@
 context("PerfEval")
 
-test_that("Construction", {
+test_that("PerfEval", {
   task = mlr_tasks$get("iris")
   learner = mlr_learners$get("classif.rpart")
   learner$param_set$values = list(minsplit = 3)
@@ -16,26 +16,29 @@ test_that("Construction", {
     param_set = param_set
   )
 
-  expect_r6(pe, "PerfEval")
-  expect_r6(pe$param_set, "ParamSet")
+  # test empty PE
   expect_null(pe$bmr)
+  expect_identical(pe$n_evals, 0L)
 
-  expect_r6(pe$eval(data.table::data.table(cp = c(0.01, 0.02))), "PerfEval")
+  # add a couple of eval points and test the state of PE
+  pe$eval(data.table(cp = c(0.01, 0.02)))
   expect_data_table(pe$bmr$data, nrows = 2L)
   expect_equal(pe$bmr$data$learner[[1L]]$param_set$values$cp, 0.01)
   expect_equal(pe$bmr$data$learner[[1L]]$param_set$values$minsplit, 3)
   expect_equal(pe$bmr$data$learner[[2L]]$param_set$values$cp, 0.02)
+  expect_identical(pe$n_evals, 2L)
 
-  expect_r6(pe$eval(data.table(cp = 0.1)), "PerfEval")
+  pe$eval(data.table(cp = 0.1))
   expect_data_table(pe$bmr$data, nrows = 3L)
   expect_equal(pe$bmr$data$learner[[3L]]$param_set$values$cp, 0.1)
   expect_equal(pe$bmr$data$learner[[3L]]$param_set$values$minsplit, 3)
+  expect_identical(pe$n_evals, 3L)
 
   expect_resample_result(pe$best())
 })
 
 
-test_that("Construction", {
+test_that("hooks", {
   task = mlr_tasks$get("iris")
   learner = mlr_learners$get("classif.rpart")
   learner$param_set$values = list(minsplit = 3)

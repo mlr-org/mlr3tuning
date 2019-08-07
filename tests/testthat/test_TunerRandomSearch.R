@@ -43,7 +43,7 @@ test_that("aggregate one row (#40)", {
     ))
   )
 
-  terminator_1 = TerminatorEvaluations$new(max_evaluations = 1)
+  terminator_1 = TerminatorEvaluations$new(1)
   tuner_1 = TunerRandomSearch$new(pe, terminator = terminator_1, batch_size = 1)
   tuner_1$tune()
   tab = tuner_1$aggregate()

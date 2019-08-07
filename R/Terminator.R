@@ -26,12 +26,14 @@
 #'   Used for printing and logging.
 #'
 #' @section Methods:
-#' * `update_start(pe)`\cr
+#' * `eval_before(pe)`\cr
 #'   [PerfEval] -> `self`\cr
 #'   Is called in each tuning iteration before the evaluation.
-#' * `update_end(pe)`\cr
+#'   Can/Should be implemented in a subclass.
+#' * `eval_after(pe)`\cr
 #'   [PerfEval] -> `self`\cr
 #'   Is called in each tuning iteration after the evaluation.
+#'   Can/Should be implemented in a subclass.
 #'
 #' @family Terminator
 #' @export
@@ -53,9 +55,16 @@ Terminator = R6Class("Terminator",
       catf(format(self))
       catf(str_indent("* Terminated:", self$terminated))
       catf(str_indent("* settings:", as_short_string(self$settings)))
-    }
+    },
+
+    eval_before = function(pe) invisible(self), # overwrite these 2 in subclasses
+    eval_after = function(pe) invisible(self)
     # print = function() {
       # catf("%s (remaining: %s)", format(self), self$remaining)
     # }
+  ),
+
+  active = list(
+    remaining = function() stop("abstract")
   )
 )

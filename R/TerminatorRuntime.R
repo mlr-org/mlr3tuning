@@ -6,15 +6,13 @@
 #'
 #' @description
 #' Class to terminate the tuning after a given runtime budget is exceeded.
-#' Runtime measurements starts with `update_start()` and ends with `update_end()`.
-#' Note that the runtime is checked after each step and therefore it is possible that the final runtime is longer than the specified one.
 #'
 #' @section Construction:
 #' ```
 #' t = TerminatorRuntime$new(runtime)
 #' ```
 #'
-#' * `time` :: `numeric(1)`\cr
+#' * `runtime` :: `numeric(1)`\cr
 #'   Maximum allowed runtime, in seconds.
 #'
 #' @family Terminator
@@ -25,22 +23,22 @@
 TerminatorRuntime = R6Class("TerminatorRuntime",
   inherit = Terminator,
   public = list(
+    time_start = NULL,
 
     initialize = function(runtime) {
       assert_number(runtime, lower = 0)
       super$initialize(settings = list(runtime = runtime))
-      self$terminated = FALSE
-      self$state = list(start = NULL, remaining = runtime)
     },
 
-    update_start = function(pe) {
-      self$state$start = proc.time()[[3L]]
+    eval_before = function(pe) {
+      if (is.null(self$time_start))
+        self$time_start = as.numeric(Sys.time())
       invisible(self)
     },
 
-    update_end = function(pe) {
-      self$state$remaining = self$state$remaining - (proc.time()[[3L]] - self$state$start)
-      if (self$state$remaining < 0) {
+    eval_after = function(pe) {
+      elapsed = as.numeric(Sys.time()) - self$time_start
+      if (elapsed > self$settings$runtime) {
         self$terminated = TRUE
       }
       invisible(self)
@@ -49,9 +47,9 @@ TerminatorRuntime = R6Class("TerminatorRuntime",
 
   active = list(
     remaining = function() {
-      dt = Sys.time()
-      dt = dt + self$state$remaining - dt
-      sprintf("%.3f %s", dt, units(dt))
+      s = ifelse(is.null(self$time_start), self$settings$runtime,
+        self$settings$runtime - as.numeric(Sys.time()) + self$time_start)
+      sprintf("%g secs", s)
     }
   )
 )

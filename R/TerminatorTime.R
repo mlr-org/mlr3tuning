@@ -34,14 +34,14 @@ TerminatorTime = R6Class("TerminatorTime",
       self$terminated = FALSE
     },
 
-    update_start = function(pe) {
+    eval_before = function(pe) {
       if (Sys.time() > self$settings$time) {
         self$terminated = TRUE
       }
       invisible(self)
     },
 
-    update_end = function(pe) {
+    eval_after = function(pe) {
       if (Sys.time() > self$settings$time) {
         self$terminated = TRUE
       }

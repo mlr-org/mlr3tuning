@@ -29,18 +29,17 @@ TerminatorMultiplexer = R6Class("TerminatorMultiplexer",
     terminators = NULL,
     initialize = function(terminators) {
       self$terminators = assert_list(terminators, types = "Terminator")
-      self$terminated = FALSE
-      super$initialize(settings = do.call("c", lapply(self$terminators, function(t) t$settings)))
+      super$initialize(list())
     },
 
-    update_start = function(pe) {
-      lapply(self$terminators, function(t) t$update_start(pe))
+    eval_before = function(pe) {
+      lapply(self$terminators, function(t) t$eval_before(pe))
       self$terminated = self$terminated || some(self$terminators, "terminated")
       invisible(self)
     },
 
-    update_end = function(pe) {
-      lapply(self$terminators, function(t) t$update_end(pe))
+    eval_after = function(pe) {
+      lapply(self$terminators, function(t) t$eval_after(pe))
       self$terminated = self$terminated || some(self$terminators, "terminated")
       invisible(self)
     }
@@ -48,7 +47,7 @@ TerminatorMultiplexer = R6Class("TerminatorMultiplexer",
 
   active = list(
     remaining = function() {
-      paste0(map_chr(self$terminators, function(x) x$remaining), collapse = ", ")
+      paste0(map_chr(self$terminators, "remaining"), collapse = ", ")
     }
   )
 )

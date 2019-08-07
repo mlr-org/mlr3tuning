@@ -10,10 +10,10 @@
 #'
 #' @section Construction:
 #' ```
-#' t = TerminatorEvaluations$new(max_evaluations)
+#' t = TerminatorEvaluations$new(evals)
 #' ```
 #'
-#' * `max_evaluations` :: `integer(1)`\cr
+#' * `evals` :: `integer(1)`\cr
 #'   Number of allowed evaluations.
 #'
 #' @family Terminator
@@ -24,26 +24,20 @@ TerminatorEvaluations = R6Class("TerminatorEvaluations",
   inherit = Terminator,
   public = list(
 
-    initialize = function(max_evaluations) {
-      super$initialize(settings = list(max_evaluations = assert_count(max_evaluations, positive = TRUE, coerce = TRUE)))
-      self$terminated = FALSE
-      self$state = list(evals = 0L)
+    initialize = function(n_evals) {
+      super$initialize(settings = list(n_evals = assert_count(n_evals, positive = TRUE, coerce = TRUE)))
     },
 
-    update_start = function(pe) {
-      self$state$evals = if (is.null(pe$bmr)) 0L else pe$bmr$data[, data.table::uniqueN(get("hash"))]
-      self$terminated = (self$state$evals >= self$settings$max_evaluations)
+    eval_after = function(pe) {
+      self$terminated = pe$n_evals >= self$settings$n_evals
       invisible(self)
-    },
-
-    update_end = function(pe) {
-      self$update_start(pe)
     }
   ),
 
   active = list(
     remaining = function() {
-      sprintf("%i evaluations", max(self$settings$max_evaluations - self$state$evals, 0L))
+      "???"
+      # sprintf("%i evaluations", max(self$settings$evals - self$state$evals, 0L))
     }
   )
 )

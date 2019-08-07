@@ -7,14 +7,12 @@
 \format{\link[R6:R6Class]{R6::R6Class} object inheriting from \link{Terminator}.}
 \description{
 Class to terminate the tuning after a given runtime budget is exceeded.
-Runtime measurements starts with \code{update_start()} and ends with \code{update_end()}.
-Note that the runtime is checked after each step and therefore it is possible that the final runtime is longer than the specified one.
 }
 \section{Construction}{
 \preformatted{t = TerminatorRuntime$new(runtime)
 }
 \itemize{
-\item \code{time} :: \code{numeric(1)}\cr
+\item \code{runtime} :: \code{numeric(1)}\cr
 Maximum allowed runtime, in seconds.
 }
 }

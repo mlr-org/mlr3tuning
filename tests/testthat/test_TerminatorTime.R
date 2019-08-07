@@ -6,14 +6,14 @@ test_that("Time", {
   expect_is(te$settings$time, "POSIXct")
   expect_false(te$terminated)
 
-  te$update_start(pe)
+  te$eval_before(pe)
   Sys.sleep(0.1)
-  te$update_end(pe)
+  te$eval_after(pe)
   expect_false(te$terminated)
 
-  te$update_start(pe)
+  te$eval_before(pe)
   Sys.sleep(1)
-  te$update_end(pe)
+  te$eval_after(pe)
 
   expect_true(te$terminated)
 })

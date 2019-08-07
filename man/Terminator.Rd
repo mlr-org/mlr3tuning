@@ -36,12 +36,14 @@ Used for printing and logging.
 \section{Methods}{
 
 \itemize{
-\item \code{update_start(pe)}\cr
+\item \code{eval_before(pe)}\cr
 \link{PerfEval} -> \code{self}\cr
 Is called in each tuning iteration before the evaluation.
-\item \code{update_end(pe)}\cr
+Can/Should be implemented in a subclass.
+\item \code{eval_after(pe)}\cr
 \link{PerfEval} -> \code{self}\cr
 Is called in each tuning iteration after the evaluation.
+Can/Should be implemented in a subclass.
 }
 }
 
