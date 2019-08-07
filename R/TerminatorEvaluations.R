@@ -30,14 +30,14 @@ TerminatorEvaluations = R6Class("TerminatorEvaluations",
       self$state = list(evals = 0L)
     },
 
-    update_start = function(pe) {
+    eval_before = function(pe) {
       self$state$evals = if (is.null(pe$bmr)) 0L else pe$bmr$data[, data.table::uniqueN(get("hash"))]
       self$terminated = (self$state$evals >= self$settings$max_evaluations)
       invisible(self)
     },
 
-    update_end = function(pe) {
-      self$update_start(pe)
+    eval_after = function(pe) {
+      self$eval_before(pe)
     }
   ),
 

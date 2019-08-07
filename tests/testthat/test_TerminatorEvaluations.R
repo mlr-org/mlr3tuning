@@ -13,9 +13,9 @@ test_that("API", {
   ))
   pe = list(bmr = bmr)
 
-  te$update_start(pe)
+  te$eval_before(pe)
   expect_identical(te$state$evals, 1L)
-  te$update_end(pe)
+  te$eval_after(pe)
   expect_identical(te$state$evals, 1L)
   expect_false(te$terminated)
   expect_string(te$remaining, pattern = "1 evaluations")
@@ -27,9 +27,9 @@ test_that("API", {
   ))
   pe = list(bmr = bmr)
 
-  te$update_start(pe)
+  te$eval_before(pe)
   expect_identical(te$state$evals, 2L)
-  te$update_end(pe)
+  te$eval_after(pe)
   expect_identical(te$state$evals, 2L)
   expect_true(te$terminated)
   expect_string(te$remaining, pattern = "0 evaluations")

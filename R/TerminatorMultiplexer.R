@@ -33,14 +33,14 @@ TerminatorMultiplexer = R6Class("TerminatorMultiplexer",
       super$initialize(settings = do.call("c", lapply(self$terminators, function(t) t$settings)))
     },
 
-    update_start = function(pe) {
-      lapply(self$terminators, function(t) t$update_start(pe))
+    eval_before = function(pe) {
+      lapply(self$terminators, function(t) t$eval_before(pe))
       self$terminated = self$terminated || some(self$terminators, "terminated")
       invisible(self)
     },
 
-    update_end = function(pe) {
-      lapply(self$terminators, function(t) t$update_end(pe))
+    eval_after = function(pe) {
+      lapply(self$terminators, function(t) t$eval_after(pe))
       self$terminated = self$terminated || some(self$terminators, "terminated")
       invisible(self)
     }

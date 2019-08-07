@@ -10,16 +10,16 @@ test_that("API", {
 
   pe = list(bmr = list(data = data.table()))
 
-  te$update_start(pe)
+  te$eval_before(pe)
   Sys.sleep(0.1)
-  te$update_end(pe)
+  te$eval_after(pe)
 
   expect_number(te$time_start)
   expect_false(te$terminated)
 
-  te$update_start(pe)
+  te$eval_before(pe)
   Sys.sleep(1)
-  te$update_end(pe)
+  te$eval_after(pe)
 
   expect_true(te$terminated)
 })

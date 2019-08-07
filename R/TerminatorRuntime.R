@@ -30,13 +30,13 @@ TerminatorRuntime = R6Class("TerminatorRuntime",
       super$initialize(settings = list(runtime = runtime))
     },
 
-    update_start = function(pe) {
+    eval_before = function(pe) {
       if (is.null(self$time_start))
         self$time_start = as.numeric(Sys.time())
       invisible(self)
     },
 
-    update_end = function(pe) {
+    eval_after = function(pe) {
       elapsed = as.numeric(Sys.time()) - self$time_start
       if (elapsed > self$settings$runtime) {
         self$terminated = TRUE

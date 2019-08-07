@@ -105,9 +105,9 @@ Tuner = R6Class("Tuner",
     eval_batch = function(dt) {
       design = Design$new(self$pe$param_set, dt, remove_dupl = FALSE)
       lg$info("Evaluating %i configurations", nrow(design$data))
-      self$terminator$update_start(self$pe)
+      self$terminator$eval_before(self$pe)
       self$pe$eval_design(design)
-      self$terminator$update_end(self$pe)
+      self$terminator$eval_after(self$pe)
 
       lg$info("Evaluation finished. Remaining: %s.", self$terminator$remaining)
 
