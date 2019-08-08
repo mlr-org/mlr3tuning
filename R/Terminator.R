@@ -19,8 +19,6 @@
 #'   Settings passed during construction.
 #' * `terminated` :: `logical(1)`\cr
 #'   Is `TRUE` if the termination criterion if the child class is met.
-#' * `state` :: `list()`\cr
-#'   Arbitrary state, depending on the child class.
 #' * `remaining` :: `character(1)`\cr
 #'   String describing the remaining budget.
 #'   Used for printing and logging.
@@ -41,7 +39,6 @@ Terminator = R6Class("Terminator",
   public = list(
     terminated = FALSE,
     settings = NULL,
-    state = NULL,
 
     initialize = function(settings) {
       self$settings = assert_list(settings, names = "unique")

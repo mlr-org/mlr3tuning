@@ -1,4 +1,4 @@
-#' @title Terminator with Performance Criterion
+#' @title Terminator that stops when a peformance threshold has been reached
 #'
 #' @include Terminator.R
 #' @usage NULL
@@ -22,6 +22,8 @@
 TerminatorPerfReached = R6Class("TerminatorPerfReached",
   inherit = Terminator,
   public = list(
+    delta = NULL,
+
     initialize = function(thresh, pe, all_reached = FALSE) {
       assert_r6(pe, "PerfEval")
       measures = set_names(pe$measures, map_chr(pe$measures, "id"))
@@ -33,7 +35,7 @@ TerminatorPerfReached = R6Class("TerminatorPerfReached",
       assert_flag(all_reached)
 
       super$initialize(settings = list(thresh = thresh, all_reached = all_reached))
-      self$state$delta = set_names(rep(Inf, length(thresh)), names(thresh))
+      self$delta = set_names(rep(Inf, length(thresh)), names(thresh))
       self$terminated = FALSE
     },
 
@@ -52,7 +54,7 @@ TerminatorPerfReached = R6Class("TerminatorPerfReached",
         }
       )
       names(delta) = names(thresh)
-      self$state$delta = delta
+      self$delta = delta
 
 
       if (any(delta < 0)) {

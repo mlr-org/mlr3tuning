@@ -1,4 +1,4 @@
-#' @title Terminator with Number of Evaluations Criterion
+#' @title Terminator that stops after a number of evals
 #'
 #' @include Terminator.R
 #' @usage NULL

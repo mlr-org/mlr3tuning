@@ -25,8 +25,6 @@ Arbitrary settings required by the child class.
 Settings passed during construction.
 \item \code{terminated} :: \code{logical(1)}\cr
 Is \code{TRUE} if the termination criterion if the child class is met.
-\item \code{state} :: \code{list()}\cr
-Arbitrary state, depending on the child class.
 \item \code{remaining} :: \code{character(1)}\cr
 String describing the remaining budget.
 Used for printing and logging.

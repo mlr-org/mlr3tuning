@@ -3,7 +3,7 @@
 \docType{data}
 \name{TerminatorEvaluations}
 \alias{TerminatorEvaluations}
-\title{Terminator with Number of Evaluations Criterion}
+\title{Terminator that stops after a number of evals}
 \format{\link[R6:R6Class]{R6::R6Class} object inheriting from \link{Terminator}.}
 \description{
 Class to terminate the tuning depending on the number of evaluations.

@@ -3,7 +3,7 @@
 \docType{data}
 \name{TerminatorPerfReached}
 \alias{TerminatorPerfReached}
-\title{Terminator with Performance Criterion}
+\title{Terminator that stops when a peformance threshold has been reached}
 \format{\link[R6:R6Class]{R6::R6Class} object inheriting from \link{Terminator}.}
 \description{
 Class to terminate the tuning after a performance threshold has been hit.
