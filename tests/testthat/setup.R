@@ -30,3 +30,25 @@ TEST_MAKE_PE1 = function(values = NULL, folds = 2L, measures = "classif.ce") {
   return(pe)
 }
 
+
+# a dummy measure which simply returns the cp value of rpart
+# this allows us to 'fake' performance values in unit tests during tuning
+MeasureDummyCP = R6Class("MeasureDummyCP",
+  inherit = MeasureClassif,
+  public = list(
+    initialize = function() {
+      super$initialize(
+        id = "dummy.cp",
+        range = c(0, Inf),
+        minimize = TRUE,
+        packages = "Metrics",
+        properties = "requires_learner"
+      )
+    },
+
+    score_internal = function(prediction, learner, ...) {
+      learner$param_set$values$cp
+    }
+  )
+)
+mlr_measures$add("dummy.cp", MeasureDummyCP)

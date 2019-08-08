@@ -1,12 +1,30 @@
 context("TerminatorPerfReached")
 
 test_that("TerminatorPerfReached", {
-  pe = TEST_MAKE_PE1()
+  te = TerminatorPerfReached$new(0.5)
+  expect_terminator(te)
 
-  # gs = TunerGenSA$new(pe, terminator)
-  # gs$tune()
+  m = mlr_measures$get("dummy.cp")
 
-  # aggr = pe$bmr$aggregate(measures)
-  # thresh = terminator$settings$thresh
-  # expect_true(any(aggr[["classif.ce"]] <= thresh["classif.ce"] & aggr[["classif.acc"]] >= thresh["classif.acc"]))
+  m$minimize = TRUE
+  pe = TEST_MAKE_PE1(measures = m)
+  te$eval_before(pe)
+  pe$eval(data.table(cp = c(0.8, 0.9)))
+  te$eval_after(pe)
+  expect_false(te$terminated)
+  te$eval_before(pe)
+  pe$eval(data.table(cp = c(0.3)))
+  te$eval_after(pe)
+  expect_true(te$terminated)
+
+  m$minimize = FALSE
+  pe = TEST_MAKE_PE1(measures = m)
+  te$eval_before(pe)
+  pe$eval(data.table(cp = c(0.1, 0.2)))
+  te$eval_after(pe)
+  expect_false(te$terminated)
+  te$eval_before(pe)
+  pe$eval(data.table(cp = c(0.9)))
+  te$eval_after(pe)
+  expect_true(te$terminated)
 })
