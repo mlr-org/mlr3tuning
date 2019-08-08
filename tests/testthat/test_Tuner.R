@@ -14,3 +14,4 @@ test_that("API", {
     expect_true("params" %in% names(rs$aggregate(FALSE)))
   }
 })
+

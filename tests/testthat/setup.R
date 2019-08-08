@@ -29,3 +29,4 @@ TEST_MAKE_PE1 = function(values = NULL, folds = 2L, measures = "classif.ce") {
   pe = PerfEval$new("iris", lrn, rs, measures, ps)
   return(pe)
 }
+
