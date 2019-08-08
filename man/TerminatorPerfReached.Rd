@@ -3,17 +3,17 @@
 \docType{data}
 \name{TerminatorPerfReached}
 \alias{TerminatorPerfReached}
-\title{Terminator that stops when a peformance threshold has been reached}
+\title{Terminator that stops when a peformance level has been reached}
 \format{\link[R6:R6Class]{R6::R6Class} object inheriting from \link{Terminator}.}
 \description{
-Class to terminate the tuning after a performance threshold has been hit.
+Class to terminate the tuning after a performance level has been hit.
 }
 \section{Construction}{
-\preformatted{t = TerminatorPerfReached$new(thresh)
+\preformatted{t = TerminatorPerfReached$new(level)
 }
 \itemize{
-\item \code{thresh} :: \code{numeric(1)}\cr
-Threshold that need to be reached.
+\item \code{level} :: \code{numeric(1)}\cr
+Level that needs to be reached.
 Terminates if the performance exceeds (respective measure has to be maximized) or
 falls below (respective measure has to be minimized).
 }
