@@ -22,6 +22,13 @@ test_that("PerfEval", {
   expect_identical(pe$n_evals, 3L)
 
   expect_resample_result(pe$best())
+
+  a = pe$aggregate(unnest = FALSE )
+  expect_data_table(a, nrows = 3L)
+  a = pe$aggregate(unnest = TRUE)
+  expect_data_table(a, nrows = 3L)
+  expect_true("cp" %in% colnames(a))
+  expect_true("classif.ce" %in% colnames(a))
 })
 
 
