@@ -41,3 +41,12 @@ test_that("hooks", {
   }))
   expect_equal(pe$run_hooks(), list("hook"))
 })
+
+test_that("aggregate one row (#40)", {
+  pe = TEST_MAKE_PE1()
+  pe$eval(data.table(cp = c(0.01)))
+  a = pe$aggregate()
+  expect_data_table(a, nrows = 1)
+  expect_number(a$classif.ce)
+})
+
