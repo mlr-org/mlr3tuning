@@ -10,17 +10,15 @@ test_that("PerfEval", {
   # add a couple of eval points and test the state of PE
   pe$eval(data.table(cp = c(0.01, 0.02)))
   expect_data_table(pe$bmr$data, nrows = 4L)
-  hashes = unique(pe$bmr$data$hash)
-  expect_equal(pe$bmr$resample_result(hashes[1])$learners[[1]]$param_set$values$cp, 0.01)
-  expect_equal(pe$bmr$resample_result(hashes[1])$learners[[1]]$param_set$values$minsplit, 3)
-  expect_equal(pe$bmr$resample_result(hashes[2])$learners[[1]]$param_set$values$cp, 0.02)
+  expect_equal(pe$bmr$resample_result(1)$learners[[1]]$param_set$values$cp, 0.01)
+  expect_equal(pe$bmr$resample_result(1)$learners[[1]]$param_set$values$minsplit, 3)
+  expect_equal(pe$bmr$resample_result(2)$learners[[1]]$param_set$values$cp, 0.02)
   expect_identical(pe$n_evals, 2L)
 
   pe$eval(data.table(cp = 0.1))
   expect_data_table(pe$bmr$data, nrows = 6L)
-  hashes = unique(pe$bmr$data$hash)
-  expect_equal(pe$bmr$resample_result(hashes[3])$learners[[1]]$param_set$values$cp, 0.1)
-  expect_equal(pe$bmr$resample_result(hashes[3])$learners[[1]]$param_set$values$minsplit, 3)
+  expect_equal(pe$bmr$resample_result(3)$learners[[1]]$param_set$values$cp, 0.1)
+  expect_equal(pe$bmr$resample_result(3)$learners[[1]]$param_set$values$minsplit, 3)
   expect_identical(pe$n_evals, 3L)
 
   expect_resample_result(pe$best())

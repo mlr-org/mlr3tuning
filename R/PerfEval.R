@@ -6,7 +6,8 @@
 #' @description
 #' Implements a performance evaluator for tuning. This class encodes the black box objective function,
 #' that a generic tuner has to optimize. It allows the basic operations of querying the objective
-#' at design points, storing the evaluated point in an internal archive and querying the archive.
+#' at design points (see `eval_batch`), storing the evaluated point in an internal archive
+#' and querying the archive (see `aggregate`).
 #'
 #' The performance evaluator is one of the major inputs for constructing a [Tuner].
 #'
@@ -61,7 +62,11 @@
 #' * `add_hook(hook)`\cr
 #'   `function()` -> `NULL`\cr
 #'   Adds a hook function. For internal use.
-#'
+#' * `aggregate(unnest = TRUE)`
+#'   `logical(1)` -> [data.table::data.table()]\cr
+#'   Returns a table of contained resample results, similar to the one returned by [mlr3::benchmark()]'s
+#'   `aggregate()` method. If `unnest` is `TRUE`, hyperparameter settings are stored in
+#'   separate columns instead of inside a list column
 #'
 #' @family PerfEval
 #' @export
@@ -159,6 +164,17 @@ PerfEval = R6Class("PerfEval",
 
       self$run_hooks()
       invisible(self)
+    },
+
+    aggregate = function(unnest = TRUE) {
+      if (is.null(self$bmr)) {
+        stopf("No tuning conducted yet.")
+      }
+      dt = self$bmr$aggregate(measures = self$measures, params = TRUE)
+      if (unnest) {
+        dt = mlr3misc::unnest(dt, "params")
+      }
+      return(dt)
     },
 
     best = function() {

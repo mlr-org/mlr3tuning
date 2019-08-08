@@ -39,13 +39,12 @@ TunerGenSA = R6Class("TunerGenSA",
       objective = function(x, pe) {
         measure = pe$measures[[1L]]
 
-        hashes = pe$bmr$data$hash
+        n = length(pe$bmr$hashes)
         params = setDT(as.list(x))
         setnames(params, pe$param_set$ids())
         self$eval_batch(params)
-        new_hash = setdiff(pe$bmr$data$hash, hashes)
 
-        perf = pe$bmr$resample_result(new_hash)$aggregate(measure)
+        perf = pe$bmr$resample_result(n+1)$aggregate(measure)
         if (measure$minimize) perf else -perf
       }
       GenSA::GenSA(fn = objective, lower = self$pe$param_set$lower, upper = self$pe$param_set$upper,

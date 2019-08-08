@@ -50,8 +50,7 @@ List with 2 elements:
 }
 \item \code{aggregate(unnest = TRUE)}
 \code{logical(1)} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
-Returns a table of resample results, similar to the one returned by \code{\link[mlr3:benchmark]{mlr3::benchmark()}}'s \code{aggregate()} method.
-If \code{unnest} is \code{TRUE}, hyperparameter settings are stored in separate columns instead of inside a list column
+Returns a table of contained resample results, simply delegates to the \code{aggregate} method of \link{PerfEval}.
 \item \code{eval_batch(dt)}
 `\code{\link[data.table:data.table]{data.table::data.table()}} --> numeric(n)\cr
 Evaluates a set of design points, passed as a data.table of n rows and returns n performance values.

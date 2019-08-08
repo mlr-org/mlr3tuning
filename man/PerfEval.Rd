@@ -8,7 +8,8 @@
 \description{
 Implements a performance evaluator for tuning. This class encodes the black box objective function,
 that a generic tuner has to optimize. It allows the basic operations of querying the objective
-at design points, storing the evaluated point in an internal archive and querying the archive.
+at design points (see \code{eval_batch}), storing the evaluated point in an internal archive
+and querying the archive (see \code{aggregate}).
 
 The performance evaluator is one of the major inputs for constructing a \link{Tuner}.
 }
@@ -70,6 +71,11 @@ Runs all hook functions. For internal use.
 \item \code{add_hook(hook)}\cr
 \code{function()} -> \code{NULL}\cr
 Adds a hook function. For internal use.
+\item \code{aggregate(unnest = TRUE)}
+\code{logical(1)} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
+Returns a table of contained resample results, similar to the one returned by \code{\link[mlr3:benchmark]{mlr3::benchmark()}}'s
+\code{aggregate()} method. If \code{unnest} is \code{TRUE}, hyperparameter settings are stored in
+separate columns instead of inside a list column
 }
 }
 

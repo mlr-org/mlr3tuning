@@ -85,20 +85,30 @@
 #' rr$aggregate(measures)
 AutoTuner = R6Class("AutoTuner", inherit = Learner,
   public = list(
+    tuner_generator = NULL,
+    #FIXME: doesnt thus store the PE? and hence the complete bmr and all other slots?
+    tuner = NULL,
+    learner = NULL,
+    terminator = NULL,
+    tuner_settings = NULL,
+    resampling = NULL,
+    measures = NULL,
+    tune_ps = NULL,
     store_bmr = FALSE,
+    bmr = NULL,
 
-    initialize = function(learner, resampling, measures, param_set, terminator, tuner, tuner_settings = list(), ctrl = list(), id = "autotuner") {
+    initialize = function(learner, resampling, measures, tune_ps, terminator, tuner, tuner_settings = list(), ctrl = list(), id = "autotuner") {
       if (!inherits(tuner, "R6ClassGenerator") && grepl(pattern = "Tuner", x = tuner$classname)) {
         stopf("Tuner must be a R6 class generator that creates tuner (e.g. TunerGridSearch).")
       }
 
-      self$data$tuner_generator = tuner
-      self$data$learner = learner = assert_learner(learner = learner)
-      self$data$terminator = assert_r6(terminator, "Terminator")
-      self$data$tuner_settings = assert_list(tuner_settings, names = "unique")
-      self$data$resampling = assert_resampling(resampling)
-      self$data$measures = assert_measures(measures)
-      self$data$param_set = assert_class(param_set, "ParamSet")
+      self$tuner_generator = tuner
+      self$learner = learner = assert_learner(learner = learner)
+      self$terminator = assert_r6(terminator, "Terminator")
+      self$tuner_settings = assert_list(tuner_settings, names = "unique")
+      self$resampling = assert_resampling(resampling)
+      self$measures = assert_measures(measures)
+      self$tune_ps = assert_class(tune_ps, "ParamSet")
 
       super$initialize(
         id = id,
@@ -112,60 +122,60 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
     },
 
     train_internal = function(task) {
-      terminator = self$data$terminator$clone()
+      terminator = self$terminator$clone()
       pe = PerfEval$new(
         task = assert_task(task)$clone(deep = TRUE),
-        learner = self$data$learner$clone(deep = TRUE),
-        resampling = self$data$resampling$clone(deep = TRUE),
-        measures  = self$data$measures,
-        param_set = self$data$param_set$clone(deep = TRUE)
+        learner = self$learner$clone(deep = TRUE),
+        resampling = self$resampling$clone(deep = TRUE),
+        measures  = self$measures,
+        param_set = self$tune_ps$clone(deep = TRUE)
       )
 
-      tuner = do.call(self$data$tuner_generator$new, insert_named(self$data$tuner_settings, list(pe = pe, terminator = terminator)))
-      self$data$tuner = tuner$tune()
+      tuner = do.call(self$tuner_generator$new, insert_named(self$tuner_settings, list(pe = pe, terminator = terminator)))
+      self$tuner = tuner$tune()
 
       # update param vals
-      self$param_set$values = self$data$learner$param_set$values = tuner$tune_result()$values
+      self$learner$param_set$values = tuner$tune_result()$values
 
       # train internal learner
-      self$data$learner$train(task)
+      self$learner$train(task)
 
       if (isTRUE(self$store_bmr)) {
-        self$data$bmr = pe$bmr
+        self$bmr = pe$bmr
       }
 
-      return(self$data$learner$model)
+      return(self$learner$model)
     },
 
     predict_internal = function(task) {
-      self$data$learner$predict_internal(task)
+      self$learner$predict_internal(task)
     },
 
     new_prediction = function(row_ids, truth, ...) {
-      self$data$learner$new_prediction(row_ids, truth, ...)
+      self$learner$new_prediction(row_ids, truth, ...)
     }
   ),
 
   active = list(
-    learner = function() {
-      self$data$learner
-    },
+    # learner = function() {
+    #   self$learner
+    # },
 
-    model = function() {
-      self$data$learner$model
-    },
+    # model = function() {
+    #   self$learner$model
+    # },
 
-    tuner = function() {
-      self$data$tuner
-    },
+    # tuner = function() {
+    #   self$tuner
+    # },
 
-    bmr = function() {
-      self$data$bmr
-    },
+    # bmr = function() {
+      # self$bmr
+    # },
 
     tune_path = function() {
-      measures = self$data$tuner$pe$measures
-      tab = self$data$bmr$aggregate(measures, params = TRUE)
+      measures = self$tuner$pe$measures
+      tab = self$bmr$aggregate(measures, params = TRUE)
       unnest(tab, "params")
     }
   )

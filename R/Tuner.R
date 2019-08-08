@@ -38,8 +38,7 @@
 #'     - `values` (named `list()`) with the corresponding hyperparameters values.
 #' * `aggregate(unnest = TRUE)`
 #'   `logical(1)` -> [data.table::data.table()]\cr
-#'   Returns a table of resample results, similar to the one returned by [mlr3::benchmark()]'s `aggregate()` method.
-#'   If `unnest` is `TRUE`, hyperparameter settings are stored in separate columns instead of inside a list column
+#'   Returns a table of contained resample results, simply delegates to the `aggregate` method of [PerfEval].
 #' * `eval_batch(dt)`
 #'   `[data.table::data.table()] --> numeric(n)\cr
 #'   Evaluates a set of design points, passed as a data.table of n rows and returns n performance values.
@@ -135,17 +134,7 @@ Tuner = R6Class("Tuner",
       list(performance = rr$aggregate(measures), values = rr$learners[[1L]]$param_set$values)
     },
 
-    aggregate = function(unnest = TRUE) {
-      if (is.null(self$pe$bmr)) {
-        stopf("No tuning conducted yet.")
-      }
-      dt = self$pe$bmr$aggregate(params = TRUE)
-      if (unnest) {
-        dt = mlr3misc::unnest(dt, "params")
-      }
-
-      return(dt)
-    }
+    aggregate = function(unnest = TRUE) self$pe$aggregate(unnest)
   ),
 
   private = list(

@@ -12,9 +12,10 @@ Class to terminate the tuning after a performance threshold has been hit.
 \preformatted{t = TerminatorPerfReached$new(thresh)
 }
 \itemize{
-\item \code{thresh} :: named \code{numeric()}\cr
-Thresholds that need to be reached, named with measure ids.
-Terminates if the performance exceeds (respective measure has to be maximized) or falls below (respective measure has to be minimized) all provided threshold simultaneously.
+\item \code{thresh} :: \code{numeric(1)}\cr
+Threshold that need to be reached.
+Terminates if the performance exceeds (respective measure has to be maximized) or
+falls below (respective measure has to be minimized).
 }
 }
 
