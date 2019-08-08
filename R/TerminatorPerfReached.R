@@ -9,13 +9,11 @@
 #'
 #' @section Construction:
 #' ```
-#' t = TerminatorPerfReached$new(thresh, pe)
+#' t = TerminatorPerfReached$new(thresh)
 #' ```
 #' * `thresh` :: named `numeric()`\cr
 #'   Thresholds that need to be reached, named with measure ids.
 #'   Terminates if the performance exceeds (respective measure has to be maximized) or falls below (respective measure has to be minimized) all provided threshold simultaneously.
-#' * `pe` :: [PerfEval]\cr
-#'   Performance evaluator used for the tuning.
 #'
 #' @family Terminator
 #' @export
@@ -24,14 +22,8 @@ TerminatorPerfReached = R6Class("TerminatorPerfReached",
   public = list(
     delta = NULL,
 
-    initialize = function(thresh, pe, all_reached = FALSE) {
-      assert_r6(pe, "PerfEval")
-      measures = set_names(pe$measures, map_chr(pe$measures, "id"))
+    initialize = function(thresh, all_reached = FALSE) {
       assert_numeric(thresh, names = "unique", any.missing = FALSE)
-      assert_names(names(thresh), subset.of = names(measures))
-      imap(thresh, function(th, id) {
-        assert_number(th, lower = measures[[id]]$range[1L], upper = measures[[id]]$range[2L])
-      })
       assert_flag(all_reached)
 
       super$initialize(settings = list(thresh = thresh, all_reached = all_reached))

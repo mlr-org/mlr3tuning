@@ -9,14 +9,12 @@
 Class to terminate the tuning after a performance threshold has been hit.
 }
 \section{Construction}{
-\preformatted{t = TerminatorPerfReached$new(thresh, pe)
+\preformatted{t = TerminatorPerfReached$new(thresh)
 }
 \itemize{
 \item \code{thresh} :: named \code{numeric()}\cr
 Thresholds that need to be reached, named with measure ids.
 Terminates if the performance exceeds (respective measure has to be maximized) or falls below (respective measure has to be minimized) all provided threshold simultaneously.
-\item \code{pe} :: \link{PerfEval}\cr
-Performance evaluator used for the tuning.
 }
 }
 
