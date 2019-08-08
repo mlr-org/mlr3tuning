@@ -1,4 +1,4 @@
-#' @title Terminator with Runtime Criterion
+#' @title Terminator that stops afthat stops after runtime is depletedd
 #'
 #' @include Terminator.R
 #' @usage NULL

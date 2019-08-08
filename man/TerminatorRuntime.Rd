@@ -3,7 +3,7 @@
 \docType{data}
 \name{TerminatorRuntime}
 \alias{TerminatorRuntime}
-\title{Terminator with Runtime Criterion}
+\title{Terminator that stops afthat stops after runtime is depletedd}
 \format{\link[R6:R6Class]{R6::R6Class} object inheriting from \link{Terminator}.}
 \description{
 Class to terminate the tuning after a given runtime budget is exceeded.

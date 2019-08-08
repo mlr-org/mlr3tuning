@@ -1,4 +1,4 @@
-#' @title Terminator with Time Criterion
+#' @title Terminator that stops when timepoint has been reached
 #'
 #' @include Terminator.R
 #' @usage NULL

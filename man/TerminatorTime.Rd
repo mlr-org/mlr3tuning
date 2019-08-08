@@ -3,7 +3,7 @@
 \docType{data}
 \name{TerminatorTime}
 \alias{TerminatorTime}
-\title{Terminator with Time Criterion}
+\title{Terminator that stops when timepoint has been reached}
 \format{\link[R6:R6Class]{R6::R6Class} object inheriting from \link{Terminator}.}
 \description{
 Class to terminate the tuning after a fixed date / time (as reported by \code{\link[=Sys.time]{Sys.time()}}).
