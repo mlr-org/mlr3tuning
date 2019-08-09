@@ -14,7 +14,7 @@
 #' @section Construction:
 #' ```
 #' pe = PerfEval$new(task, learner, resampling, measures, param_set,
-#'   ctrl = list())
+#'   store_models = FALSE)
 #'```
 #'
 #' * `task` :: [mlr3::Task].
@@ -22,8 +22,8 @@
 #' * `resampling` :: [mlr3::Resampling].
 #' * `measures` :: list of [mlr3::Measure].
 #' * `param_set` :: [paradox::ParamSet].
-#' * `ctrl` :: named `list()`\cr
-#'   See [mlr3::mlr_control()].
+#' * `store_models` :: `logical(1)`\cr
+#'   Keep the fitted learner models? Passed down to [mlr3::benchmark()].
 #'
 #' @section Fields:
 #' * `task` :: [mlr3::Task]\cr
@@ -88,16 +88,16 @@ PerfEval = R6Class("PerfEval",
     resampling = NULL,
     measures = NULL,
     param_set = NULL,
-    ctrl = NULL,
+    store_models = NULL,
     bmr = NULL,
 
-    initialize = function(task, learner, resampling, measures, param_set, ctrl = list()) {
+    initialize = function(task, learner, resampling, measures, param_set, store_models = FALSE) {
       self$task = assert_task(task)
       self$learner = assert_learner(learner, task = self$task)
       self$resampling = assert_resampling(resampling)
       self$measures = assert_measures(measures)
       self$param_set = assert_param_set(param_set)
-      self$ctrl = mlr_control(ctrl)
+      self$store_models = assert_flag(store_models)
     },
 
     format = function() {
@@ -136,7 +136,7 @@ PerfEval = R6Class("PerfEval",
       })
 
       bmr = benchmark(expand_grid(tasks = list(self$task), learners = learners,
-        resamplings = list(self$resampling)), ctrl = self$ctrl)
+        resamplings = list(self$resampling)), store_models = self$store_models)
 
       if (is.null(self$bmr)) {
         self$bmr = bmr

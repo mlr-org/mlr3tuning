@@ -12,7 +12,7 @@
 #' @section Construction:
 #' ```
 #' at = AutoTuner$new(learner, resampling, measures, param_set, terminator,
-#'   tuner, tuner_settings, ctrl = list(), id = "autotuner")
+#'   tuner, tuner_settings, store_models = FALSE, id = "autotuner")
 #' ```
 #' * `learner` :: [mlr3::Learner]\cr
 #'   Subordinate learner to tune.
@@ -29,8 +29,8 @@
 #'   Uninitialized tuner factory, e.g. TunerGridSearch.
 #' * `tuner_settings` :: named `list()`\cr
 #'   List with tuner settings (e.g. see [TunerGridSearch])
-#' * `ctrl` :: named `list()`\cr
-#'   See [mlr3::mlr_control()].
+#' * `store_models` :: `logical(1)`\cr
+#'   Keep the fitted learner models? Passed down to [mlr3::benchmark()].
 #' * `id` :: `character(1)`\cr
 #'   Name of the learner.
 #'
@@ -92,11 +92,12 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
     tune_ps = NULL,
     store_bmr = FALSE,
     bmr = NULL,
+    store_models = FALSE,
     # FIXME: state = bmr + learner
     # FIXME: look at pipeopelearner for paramset
     # FIXME: autotuner paramset darf eigentlich nicht die params mehr enthalten über die getuned wird
 
-    initialize = function(learner, resampling, measures, tune_ps, terminator, tuner, tuner_settings = list(), ctrl = list(), id = "autotuner") {
+    initialize = function(learner, resampling, measures, tune_ps, terminator, tuner, tuner_settings = list(), store_models = FALSE, id = "autotuner") {
       if (!inherits(tuner, "R6ClassGenerator") && grepl(pattern = "Tuner", x = tuner$classname)) {
         stopf("Tuner must be a R6 class generator that creates tuner (e.g. TunerGridSearch).")
       }
@@ -108,6 +109,7 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
       self$resampling = assert_resampling(resampling)
       self$measures = assert_measures(measures)
       self$tune_ps = assert_class(tune_ps, "ParamSet")
+      self$store_models = assert_flag(store_models)
 
       super$initialize(
         id = id,
@@ -127,7 +129,8 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
         learner = self$learner$clone(deep = TRUE),
         resampling = self$resampling$clone(deep = TRUE),
         measures  = self$measures,
-        param_set = self$tune_ps$clone(deep = TRUE)
+        param_set = self$tune_ps$clone(deep = TRUE),
+        store_models = self$store_models
       )
 
       tuner = do.call(self$tuner_generator$new, insert_named(self$tuner_settings, list(pe = pe, terminator = terminator)))
