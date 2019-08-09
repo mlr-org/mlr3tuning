@@ -85,11 +85,10 @@ as the Terminator is only checked after a batch-eval. How many more depends on t
 \examples{
 library(mlr3)
 library(paradox)
-resampling = mlr_resamplings$get("cv", param_vals = list(folds = 2))
 param_set = ParamSet$new(list(
   ParamDbl$new("cp", lower = 0.001, upper = 0.1)
 ))
-pe = PerfEval$new("iris", "classif.rpart", resampling, "classif.ce", param_set)
+pe = PerfEval$new("iris", "classif.rpart", "holdout", "classif.ce", param_set)
 terminator = TerminatorEvaluations$new(3)
 tt = TunerRandomSearch$new(pe, terminator) # swap this line to use a different Tuner
 tt$tune()
