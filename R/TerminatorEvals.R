@@ -10,7 +10,7 @@
 #'
 #' @section Construction:
 #' ```
-#' t = TerminatorEvaluations$new(evals)
+#' t = TerminatorEvals$new(evals)
 #' ```
 #'
 #' * `evals` :: `integer(1)`\cr
@@ -19,8 +19,8 @@
 #' @family Terminator
 #' @export
 #' @examples
-#' TerminatorEvaluations$new(3)
-TerminatorEvaluations = R6Class("TerminatorEvaluations",
+#' TerminatorEvals$new(3)
+TerminatorEvals = R6Class("TerminatorEvals",
   inherit = Terminator,
   public = list(
 
@@ -29,7 +29,7 @@ TerminatorEvaluations = R6Class("TerminatorEvaluations",
     },
 
     eval_after = function(pe) {
-      self$terminated = pe$n_evals >= self$settings$n_evals
+      self$is_terminated = pe$n_evals >= self$settings$n_evals
       invisible(self)
     }
   )

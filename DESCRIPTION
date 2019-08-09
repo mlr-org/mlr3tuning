@@ -52,7 +52,7 @@ Collate:
     'AutoTuner.R'
     'PerfEval.R'
     'Terminator.R'
-    'TerminatorEvaluations.R'
+    'TerminatorEvals.R'
     'TerminatorMultiplexer.R'
     'TerminatorNone.R'
     'TerminatorPerfReached.R'

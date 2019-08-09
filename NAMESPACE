@@ -3,7 +3,7 @@
 export(AutoTuner)
 export(PerfEval)
 export(Terminator)
-export(TerminatorEvaluations)
+export(TerminatorEvals)
 export(TerminatorMultiplexer)
 export(TerminatorNone)
 export(TerminatorPerfReached)

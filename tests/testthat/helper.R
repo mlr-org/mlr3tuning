@@ -2,7 +2,7 @@ lapply(list.files(system.file("testthat", package = "mlr3"), pattern = "^helper.
 
 expect_terminator = function(term) {
   expect_r6(term, "Terminator", public = c("eval_before", "eval_after"))
-  expect_flag(term$terminated)
+  expect_flag(term$is_terminated)
 }
 
 # test an implemented subclass tuner by running a couple of standard tests
@@ -10,8 +10,7 @@ expect_terminator = function(term) {
 # term_evals: how we configure the Terminator
 # real_evals: how many evals we really expect (as the optim might early stop)
 # returns: tuner, so we can investgate its state more in individual tests
-test_tuner = function(tuner_factory, arg_list = list(), n_dim = 1L,
-  term_evals = 5L, real_evals = term_evals) {
+test_tuner = function(tuner_factory, arg_list = list(), n_dim = 1L, term_evals = 2L, real_evals = term_evals) {
 
   ps = if (n_dim == 1) {
     ParamSet$new(params = list(
@@ -23,11 +22,10 @@ test_tuner = function(tuner_factory, arg_list = list(), n_dim = 1L,
       ParamInt$new("minsplit", lower = 1, upper = 9)
     ))
   }
-  pe = PerfEval$new("iris", "classif.rpart", "holdout", "classif.ce", ps)
-  term = TerminatorEvaluations$new(term_evals)
-  arg_list_2 = list(pe = pe, terminator = term)
-  arg_list_2 = insert_named(arg_list_2, arg_list)
-  tuner = do.call(tuner_factory$new, arg_list_2)
+  term = TerminatorEvals$new(term_evals)
+  pe = PerfEval$new("iris", "classif.rpart", "holdout", "classif.ce", ps, term)
+  tuner = do.call(tuner_factory$new, arg_list)
+  tuner$pe = pe
 
   tuner$tune()
   r = tuner$tune_result()
@@ -54,13 +52,14 @@ TEST_MAKE_PS1 = function(n_dim = 1L) {
     ))
   }
 }
-TEST_MAKE_PE1 = function(values = NULL, folds = 2L, measures = "classif.ce", n_dim = 1L) {
+TEST_MAKE_PE1 = function(values = NULL, folds = 2L, measures = "classif.ce", n_dim = 1L, term_evals = 5L) {
   ps = TEST_MAKE_PS1(n_dim = n_dim)
   lrn = mlr_learners$get("classif.rpart")
   if (!is.null(values))
     lrn$param_set$values = values
   rs = mlr_resamplings$get("cv", param_vals = list(folds = folds))
-  pe = PerfEval$new("iris", lrn, rs, measures, ps)
+  term = TerminatorEvals$new(term_evals)
+  pe = PerfEval$new("iris", lrn, rs, measures, ps, term)
   return(pe)
 }
 

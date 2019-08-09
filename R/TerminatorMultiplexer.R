@@ -19,7 +19,7 @@
 #' @examples
 #' t = TerminatorMultiplexer$new(list(
 #'   TerminatorRuntime$new(60),
-#'   TerminatorEvaluations$new(10)
+#'   TerminatorEvals$new(10)
 #' ))
 #' print(t)
 TerminatorMultiplexer = R6Class("TerminatorMultiplexer",
@@ -34,13 +34,13 @@ TerminatorMultiplexer = R6Class("TerminatorMultiplexer",
 
     eval_before = function(pe) {
       lapply(self$terminators, function(t) t$eval_before(pe))
-      self$terminated = self$terminated || some(self$terminators, "terminated")
+      self$is_terminated = self$is_terminated || some(self$terminators, "is_terminated")
       invisible(self)
     },
 
     eval_after = function(pe) {
       lapply(self$terminators, function(t) t$eval_after(pe))
-      self$terminated = self$terminated || some(self$terminators, "terminated")
+      self$is_terminated = self$is_terminated || some(self$terminators, "is_terminated")
       invisible(self)
     }
   )

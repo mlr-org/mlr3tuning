@@ -9,7 +9,7 @@
 #'
 #' @section Construction:
 #' ```
-#' tuner = TunerGenSA$new(pe, terminator, ...)
+#' tuner = TunerGenSA$new(...)
 #' ```
 #' For arguments, see [Tuner], and additionally:
 #' * `...`\cr
@@ -25,14 +25,10 @@
 TunerGenSA = R6Class("TunerGenSA",
   inherit = Tuner,
   public = list(
-    initialize = function(pe, terminator, ...) {
-      if (any(pe$param_set$storage_type != "numeric")) {
-        stopf("Parameter types need to be numeric!")
-      }
-
+    initialize = function(...) {
       # Default settings:
       settings = list(smooth = FALSE, acceptance.param = -15, simple.function = FALSE, temperature = 250)
-      super$initialize(pe = pe, terminator = terminator, settings = insert_named(settings, list(...)))
+      super$initialize(settings = insert_named(settings, list(...)))
     }
   ),
   private = list(
@@ -43,7 +39,7 @@ TunerGenSA = R6Class("TunerGenSA",
         n = length(pe$bmr$hashes)
         params = setDT(as.list(x))
         setnames(params, pe$param_set$ids())
-        self$eval_batch(params)
+        self$pe$eval_batch(params)
 
         perf = pe$bmr$resample_result(n+1)$aggregate(measure)
         if (measure$minimize) perf else -perf

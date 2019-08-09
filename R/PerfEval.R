@@ -90,14 +90,16 @@ PerfEval = R6Class("PerfEval",
     param_set = NULL,
     store_models = NULL,
     bmr = NULL,
+    terminator = NULL,
 
-    initialize = function(task, learner, resampling, measures, param_set, store_models = FALSE) {
+    initialize = function(task, learner, resampling, measures, param_set, terminator, store_models = FALSE) {
       self$task = assert_task(task)
       self$learner = assert_learner(learner, task = self$task)
       self$resampling = assert_resampling(resampling)
       self$measures = assert_measures(measures)
       self$param_set = assert_param_set(param_set)
       self$store_models = assert_flag(store_models)
+      self$terminator = assert_r6(terminator, "Terminator")
     },
 
     format = function() {
@@ -124,6 +126,8 @@ PerfEval = R6Class("PerfEval",
       assert_data_table(dt, any.missing = FALSE, min.rows = 1, min.cols = 1)
       design = Design$new(self$param_set, dt, remove_dupl = FALSE)
 
+      lg$info("Evaluating %i configurations", nrow(dt))
+
       # Not that pretty but enables the use of transpose from Design:
       if (self$param_set$has_trafo) {
         design$data = self$param_set$trafo(design$data)
@@ -135,14 +139,23 @@ PerfEval = R6Class("PerfEval",
         return(learner)
       })
 
+      # update terminator and eval via benchmark
+      self$terminator$eval_before(self)
       bmr = benchmark(expand_grid(tasks = list(self$task), learners = learners,
         resamplings = list(self$resampling)), store_models = self$store_models)
-
+      # store evalualted results
       if (is.null(self$bmr)) {
         self$bmr = bmr
       } else {
         self$bmr$combine(bmr)
       }
+      self$terminator$eval_after(self)
+
+      # if the terminator is positive throw condition of class "terminated_message" that we can tryCatch
+      if (self$terminator$is_terminated) {
+        stop(messageCondition("Termination criteria is reached", class = "terminated_message"))
+      }
+
       # get aggregated measures in dt, return them
       mids = map_chr(self$measures, "id")
       return(bmr$aggregate(measures = self$measures)[, mids, with = FALSE])

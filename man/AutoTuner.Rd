@@ -47,9 +47,6 @@ Subordinate learner. After \code{train()} of the \code{AutoTuner} has been execu
 this learner stores the final model on is parametrized with the best found solution.
 \item \code{store_bmr} :: \code{logical(1)}\cr
 If \code{TRUE}, store the benchmark result as slot \code{$bmr}.
-\item \code{bmr} :: \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}\cr
-Only stored if \code{store_bmr} has been set to \code{TRUE}.
-This object acts as an optimization path.
 \item \code{tuner} :: \link{Tuner}\cr
 Access to the stored \link{Tuner}.
 \item \code{tune_path} :: \code{\link[data.table:data.table]{data.table::data.table()}}\cr
@@ -73,7 +70,7 @@ measures = mlr_measures$mget("classif.ce")
 param_set = ParamSet$new(
   params = list(ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 
-terminator = TerminatorEvaluations$new(5)
+terminator = TerminatorEvals$new(5)
 
 at = AutoTuner$new(learner, resampling, measures, param_set, terminator, tuner = TunerGridSearch,
   tuner_settings = list(resolution = 10L))

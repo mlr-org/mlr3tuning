@@ -7,10 +7,9 @@
 \format{\link[R6:R6Class]{R6::R6Class} object.}
 \description{
 Abstract \code{Tuner} class that implements the main functionality each tuner must have.
-A tuner is an object that describes the tuning strategy how to search the hyperparameter space given within
-the \code{[PerfEval]} object.
-The state of tuning is stored in field \code{pe$bmr} and the tuner offers some active
-bindings to conveniently access results.
+A tuner is an object that describes the tuning strategy how to optimize the black-box function and its feasible set
+defined by the \code{[PerfEval]} object.
+The state of tuning is stored in field \code{pe$bmr}.
 }
 \section{Construction}{
 \preformatted{tuner = Tuner$new(pe, terminator, settings = list())
@@ -52,13 +51,6 @@ List with 2 elements:
 \item \code{archive(unnest = TRUE)}\cr
 (\code{logical(1)}) -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
 Returns a table of contained resample results, simply delegates to the \code{archive} method of \link{PerfEval}.
-\item \code{eval_batch(dt)}\cr
-(\code{\link[data.table:data.table]{data.table::data.table()}}) -> \link[data.table:data.table]{data.table::data.table}\cr
-Evaluates a set of design points, see \code{eval_batch} in \link{PerfEval}, which this method delegates to.
-This is the only entry point a subclass tuner should use to evaluate the objective function,
-and it should normally not be called from the outside by the user.
-The difference to \code{eval_batch} in \link{PerfEval} is that this also runs all associated terminators and potentially
-stops with an exception.
 }
 }
 
@@ -68,14 +60,14 @@ A subclass is implemented in the following way:
 \itemize{
 \item Inherit from Tuner
 \item Specify the private abstract method \code{tune_internal} and use it to call into your optimizer.
-\item When you set up an objective function, you will call \code{eval_batch} to evaluate design points.
+\item When you set up an objective function, you will call \code{pe$eval_batch} to evaluate design points.
 \item The batch-eval is requested at the PerfEval 'pe' object,
 so each batch is possibly executed in parallel via \code{\link[mlr3:benchmark]{mlr3::benchmark()}},
 and all evaluations are stored inside of 'pe$bmr'.
-\item After the batch-eval, all terminators registered with the tuner are checked, and if one is positive,
+\item After the batch-eval, all registered terminators are checked, and if one is positive,
 an exception is generated of class 'terminated_message'. In this case the current
-batch of evals is still stored in pe, but the numeric score are not sent back to t
-he handling optimizer as it has lost execution control.
+batch of evals is still stored in pe, but the numeric score are not sent back to
+the handling optimizer as it has lost execution control.
 \item After such an exception was caught we select the best configuration from \code{pe$bmr} and
 return it.
 \item Note that therefore more points than specified by the Terminator might be evaluated,
@@ -90,7 +82,7 @@ param_set = ParamSet$new(list(
   ParamDbl$new("cp", lower = 0.001, upper = 0.1)
 ))
 pe = PerfEval$new("iris", "classif.rpart", "holdout", "classif.ce", param_set)
-terminator = TerminatorEvaluations$new(3)
+terminator = TerminatorEvals$new(3)
 tt = TunerRandomSearch$new(pe, terminator) # swap this line to use a different Tuner
 tt$tune()
 tt$tune_result() # returns best configuration and performance

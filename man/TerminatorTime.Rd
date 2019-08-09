@@ -27,7 +27,7 @@ t = TerminatorTime$new(time)
 print(t)
 }
 \seealso{
-Other Terminator: \code{\link{TerminatorEvaluations}},
+Other Terminator: \code{\link{TerminatorEvals}},
   \code{\link{TerminatorMultiplexer}},
   \code{\link{TerminatorNone}},
   \code{\link{TerminatorPerfReached}},

@@ -20,7 +20,7 @@ falls below (respective measure has to be minimized).
 }
 
 \seealso{
-Other Terminator: \code{\link{TerminatorEvaluations}},
+Other Terminator: \code{\link{TerminatorEvals}},
   \code{\link{TerminatorMultiplexer}},
   \code{\link{TerminatorNone}},
   \code{\link{TerminatorRuntime}},

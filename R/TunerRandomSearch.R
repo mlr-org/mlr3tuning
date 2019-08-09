@@ -14,7 +14,7 @@
 #'
 #' @section Construction:
 #' ```
-#' tuner = TunerRandomSearch$new(pe, terminator, batch_size = 1L)
+#' tuner = TunerRandomSearch$new(batch_size = 1L)
 #' ```
 #' For arguments, see [Tuner], and additionally:
 #'
@@ -29,10 +29,10 @@
 TunerRandomSearch = R6Class("TunerRandomSearch",
   inherit = Tuner,
   public = list(
-    initialize = function(pe, terminator, batch_size = 1L) {
+    initialize = function(batch_size = 1L) {
       batch_size = assert_count(batch_size, coerce = TRUE)
       s = list(batch_size = batch_size)
-      super$initialize(pe = pe, terminator = terminator, settings = s)
+      super$initialize(settings = s)
     }
   ),
 
@@ -40,7 +40,7 @@ TunerRandomSearch = R6Class("TunerRandomSearch",
     tune_internal = function() {
       while (TRUE) {  # iterate until we have an exception from eval_batch
         design = generate_design_random(self$pe$param_set, self$settings$batch_size)
-        self$eval_batch(design$data)
+        self$pe$eval_batch(design$data)
       }
     }
   )

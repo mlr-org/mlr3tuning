@@ -66,7 +66,7 @@
 #' param_set = ParamSet$new(
 #'   params = list(ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 #'
-#' terminator = TerminatorEvaluations$new(5)
+#' terminator = TerminatorEvals$new(5)
 #'
 #' at = AutoTuner$new(learner, resampling, measures, param_set, terminator, tuner = TunerGridSearch,
 #'   tuner_settings = list(resolution = 10L))
@@ -127,10 +127,12 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
         resampling = self$resampling,
         measures  = self$measures,
         param_set = self$tune_ps,
+        terminator = self$terminator,
         store_models = self$store_models
       )
 
-      tuner = do.call(self$tuner_generator$new, insert_named(self$tuner_settings, list(pe = pe, terminator = terminator)))
+      tuner = do.call(self$tuner_generator$new, self$tuner_settings)
+      tuner$pe = pe
 
       # update param vals
       learner$param_set$values = tuner$tune()$tune_result()$values

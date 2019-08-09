@@ -14,7 +14,7 @@ Number of \code{batch_size} points are evaluated per iteration (potentially in p
 then the termination criteria are checked.
 }
 \section{Construction}{
-\preformatted{tuner = TunerRandomSearch$new(pe, terminator, batch_size = 1L)
+\preformatted{tuner = TunerRandomSearch$new(batch_size = 1L)
 }
 
 For arguments, see \link{Tuner}, and additionally:

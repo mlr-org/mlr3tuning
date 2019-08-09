@@ -20,12 +20,12 @@ List of objects of class \link{Terminator}.
 \examples{
 t = TerminatorMultiplexer$new(list(
   TerminatorRuntime$new(60),
-  TerminatorEvaluations$new(10)
+  TerminatorEvals$new(10)
 ))
 print(t)
 }
 \seealso{
-Other Terminator: \code{\link{TerminatorEvaluations}},
+Other Terminator: \code{\link{TerminatorEvals}},
   \code{\link{TerminatorNone}},
   \code{\link{TerminatorPerfReached}},
   \code{\link{TerminatorRuntime}},

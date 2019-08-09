@@ -6,7 +6,7 @@ test_that("API", {
 
   expect_identical(te$settings$runtime, 1)
   expect_identical(te$time_start, NULL)
-  expect_false(te$terminated)
+  expect_false(te$is_terminated)
 
   pe = list(bmr = list(data = data.table()))
 
@@ -15,11 +15,11 @@ test_that("API", {
   te$eval_after(pe)
 
   expect_number(te$time_start)
-  expect_false(te$terminated)
+  expect_false(te$is_terminated)
 
   te$eval_before(pe)
   Sys.sleep(1)
   te$eval_after(pe)
 
-  expect_true(te$terminated)
+  expect_true(te$is_terminated)
 })

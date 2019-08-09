@@ -18,7 +18,7 @@ Number of \code{batch_size} points are evaluated per iteration (potentially in p
 then the termination criteria are checked.
 }
 \section{Construction}{
-\preformatted{tuner = TunerGridSearch$new(pe, terminator, resolution = 10L, batch_size = 1L)
+\preformatted{tuner = TunerGridSearch$new(resolution = 10L, batch_size = 1L)
 }
 
 For arguments, see \link{Tuner}, and additionally:

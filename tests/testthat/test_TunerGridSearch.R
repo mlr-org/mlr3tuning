@@ -22,7 +22,8 @@ test_that("TunerGridSearch", {
 test_that("TunerGridSearch with TerminatorNone", {
   pe = TEST_MAKE_PE1(n_dim = 2L)
   term = TerminatorNone$new()
-  tuner = TunerGridSearch$new(pe = pe, terminator = term, resolution = 2L)
+  tuner = TunerGridSearch$new(resolution = 2L)
+  tuner$pe = pe
   tuner$tune()
   r = tuner$tune_result()
   bmr = tuner$pe$bmr

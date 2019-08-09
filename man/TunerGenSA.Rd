@@ -9,7 +9,7 @@
 Subclass for generalized simulated annealing tuning with \code{\link[GenSA:GenSA]{GenSA::GenSA()}}.
 }
 \section{Construction}{
-\preformatted{tuner = TunerGenSA$new(pe, terminator, ...)
+\preformatted{tuner = TunerGenSA$new(...)
 }
 
 For arguments, see \link{Tuner}, and additionally:

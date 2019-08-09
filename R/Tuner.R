@@ -5,10 +5,9 @@
 #'
 #' @description
 #' Abstract `Tuner` class that implements the main functionality each tuner must have.
-#' A tuner is an object that describes the tuning strategy how to search the hyperparameter space given within
-#' the `[PerfEval]` object.
-#' The state of tuning is stored in field `pe$bmr` and the tuner offers some active
-#' bindings to conveniently access results.
+#' A tuner is an object that describes the tuning strategy how to optimize the black-box function and its feasible set
+#' defined by the `[PerfEval]` object.
+#' The state of tuning is stored in field `pe$bmr`.
 #'
 #' @section Construction:
 #' ```
@@ -40,26 +39,19 @@
 #' * `archive(unnest = TRUE)`\cr
 #'   (`logical(1)`) -> [data.table::data.table()]\cr
 #'   Returns a table of contained resample results, simply delegates to the `archive` method of [PerfEval].
-#' * `eval_batch(dt)`\cr
-#'   ([data.table::data.table()]) -> [data.table::data.table]\cr
-#'   Evaluates a set of design points, see `eval_batch` in [PerfEval], which this method delegates to.
-#'   This is the only entry point a subclass tuner should use to evaluate the objective function,
-#'   and it should normally not be called from the outside by the user.
-#'   The difference to `eval_batch` in [PerfEval] is that this also runs all associated terminators and potentially
-#'   stops with an exception.
 #'
 #' @section Technical Details and Subclasses:
 #' A subclass is implemented in the following way:
 #'  * Inherit from Tuner
 #'  * Specify the private abstract method `tune_internal` and use it to call into your optimizer.
-#'  * When you set up an objective function, you will call `eval_batch` to evaluate design points.
+#'  * When you set up an objective function, you will call `pe$eval_batch` to evaluate design points.
 #'  * The batch-eval is requested at the PerfEval 'pe' object,
 #'    so each batch is possibly executed in parallel via [mlr3::benchmark()],
 #'    and all evaluations are stored inside of 'pe$bmr'.
-#'  * After the batch-eval, all terminators registered with the tuner are checked, and if one is positive,
+#'  * After the batch-eval, all registered terminators are checked, and if one is positive,
 #'    an exception is generated of class 'terminated_message'. In this case the current
-#'    batch of evals is still stored in pe, but the numeric score are not sent back to t
-#'    he handling optimizer as it has lost execution control.
+#'    batch of evals is still stored in pe, but the numeric score are not sent back to
+#'    the handling optimizer as it has lost execution control.
 #'  * After such an exception was caught we select the best configuration from `pe$bmr` and
 #'    return it.
 #'  * Note that therefore more points than specified by the Terminator might be evaluated,
@@ -74,20 +66,16 @@
 #'   ParamDbl$new("cp", lower = 0.001, upper = 0.1)
 #' ))
 #' pe = PerfEval$new("iris", "classif.rpart", "holdout", "classif.ce", param_set)
-#' terminator = TerminatorEvaluations$new(3)
+#' terminator = TerminatorEvals$new(3)
 #' tt = TunerRandomSearch$new(pe, terminator) # swap this line to use a different Tuner
 #' tt$tune()
 #' tt$tune_result() # returns best configuration and performance
 #' tt$archive() # allows access of data.table / benchmark result of full path of all evaluations
 Tuner = R6Class("Tuner",
   public = list(
-    pe = NULL,
-    terminator = NULL,
     settings = NULL,
 
-    initialize = function(pe, terminator, settings = list()) {
-      self$pe = assert_r6(pe, "PerfEval")
-      self$terminator = assert_r6(terminator, "Terminator")
+    initialize = function(settings = list()) {
       self$settings = assert_list(settings, names = "unique")
     },
 
@@ -103,21 +91,9 @@ Tuner = R6Class("Tuner",
       print(self$pe)
     },
 
-    eval_batch = function(dt) {
-      lg$info("Evaluating %i configurations", nrow(dt))
-      self$terminator$eval_before(self$pe)
-      y = self$pe$eval_batch(dt)
-      self$terminator$eval_after(self$pe)
-
-      # if he is terminated throw condition of class "terminated_message" that we can tryCatch.
-      # if the terminator is terminated.
-      if (self$terminator$terminated) {
-        stop(messageCondition("Termination criteria is reached", class = "terminated_message"))
-      }
-      return(y)
-    },
-
     tune = function() {
+      if (is.null(self$pe))
+        stopf("PerfEval object is not set yet!")
       # run internal tune function which calls the optimizer
       # the optimizer will call eval_batch,
       # that will generate an exception when terminator is positive
@@ -137,7 +113,17 @@ Tuner = R6Class("Tuner",
     archive = function(unnest = TRUE) self$pe$archive(unnest)
   ),
 
+  active = list(
+    pe = function(rhs) {
+      if (missing(rhs))
+        return(private$.pe)
+      private$.pe = assert_r6(rhs, "PerfEval")
+    }
+  ),
+
   private = list(
+    .pe = NULL,
+
     tune_internal = function() { # every subclass has to implement this to call optimizer
       stop("abstract")
     }

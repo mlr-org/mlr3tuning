@@ -26,7 +26,7 @@
 #' @section Fields:
 #' * `settings` :: named `list()`\cr
 #'   Settings passed during construction.
-#' * `terminated` :: `logical(1)`\cr
+#' * `is_terminated` :: `logical(1)`\cr
 #'   Is `TRUE` if the termination criterion if the child class is met.
 #'
 #' @section Methods:
@@ -43,7 +43,7 @@
 #' @export
 Terminator = R6Class("Terminator",
   public = list(
-    terminated = FALSE,
+    is_terminated = FALSE,
     settings = NULL,
 
     initialize = function(settings) {
@@ -56,7 +56,7 @@ Terminator = R6Class("Terminator",
 
     print = function() {
       catf(format(self))
-      catf(str_indent("* Terminated:", self$terminated))
+      catf(str_indent("* Terminated:", self$is_terminated))
       catf(str_indent("* settings:", as_short_string(self$settings)))
     },
 

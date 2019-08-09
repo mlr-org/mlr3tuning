@@ -2,7 +2,7 @@ context("AutoTuner")
 
 test_that("AutoTuner / train+predict", {
   measures = c("classif.ce", "time_train", "time_both")
-  terminator = TerminatorEvaluations$new(3)
+  terminator = TerminatorEvals$new(3)
   task = "iris"
 
   ps = TEST_MAKE_PS1()
@@ -34,7 +34,7 @@ test_that("AutoTuner / resample", {
 
   param_set = TEST_MAKE_PS1()
 
-  terminator = TerminatorEvaluations$new(inner_evals)
+  terminator = TerminatorEvals$new(inner_evals)
 
   at = AutoTuner$new("classif.rpart", r_inner, measures, param_set, terminator, tuner = TunerRandomSearch)
 
@@ -55,7 +55,7 @@ test_that("AutoTuner / resample", {
 
 test_that("AutoTuner / param_set", {
   measures = "classif.ce"
-  terminator = TerminatorEvaluations$new(3)
+  terminator = TerminatorEvals$new(3)
   task = "iris"
   ps = TEST_MAKE_PS1()
   at = AutoTuner$new("classif.rpart", "holdout", measures, ps, terminator, tuner = TunerRandomSearch)

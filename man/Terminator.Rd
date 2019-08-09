@@ -34,7 +34,7 @@ Arbitrary settings required by the child class.
 \itemize{
 \item \code{settings} :: named \code{list()}\cr
 Settings passed during construction.
-\item \code{terminated} :: \code{logical(1)}\cr
+\item \code{is_terminated} :: \code{logical(1)}\cr
 Is \code{TRUE} if the termination criterion if the child class is met.
 }
 }
@@ -54,7 +54,7 @@ Can/Should be implemented in a subclass.
 }
 
 \seealso{
-Other Terminator: \code{\link{TerminatorEvaluations}},
+Other Terminator: \code{\link{TerminatorEvals}},
   \code{\link{TerminatorMultiplexer}},
   \code{\link{TerminatorNone}},
   \code{\link{TerminatorPerfReached}},

@@ -22,7 +22,7 @@ TerminatorRuntime$new(3)
 TerminatorRuntime$new(10 * 3600)
 }
 \seealso{
-Other Terminator: \code{\link{TerminatorEvaluations}},
+Other Terminator: \code{\link{TerminatorEvals}},
   \code{\link{TerminatorMultiplexer}},
   \code{\link{TerminatorNone}},
   \code{\link{TerminatorPerfReached}},

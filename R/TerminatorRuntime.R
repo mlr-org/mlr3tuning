@@ -39,7 +39,7 @@ TerminatorRuntime = R6Class("TerminatorRuntime",
     eval_after = function(pe) {
       elapsed = as.numeric(Sys.time()) - self$time_start
       if (elapsed > self$settings$runtime) {
-        self$terminated = TRUE
+        self$is_terminated = TRUE
       }
       invisible(self)
     }
