@@ -56,9 +56,6 @@ Terminator = R6Class("Terminator",
 
     eval_before = function(pe) invisible(self), # overwrite these 2 in subclasses
     eval_after = function(pe) invisible(self)
-    # print = function() {
-      # catf("%s (remaining: %s)", format(self), self$remaining)
-    # }
   ),
 
   active = list(
