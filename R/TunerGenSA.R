@@ -16,6 +16,7 @@
 #'   Settings passed down do [GenSA::GenSA()]
 #'   Default settings are `smooth = FALSE`, `acceptance.param = -15`,
 #'   `simple.function = FALSE`, and `temperature = 250`.
+#'   Stored in `settings`.
 #'
 #' @family Tuner
 #' @export
