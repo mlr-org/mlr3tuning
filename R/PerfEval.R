@@ -45,13 +45,10 @@
 #'   Number of unique experiments stored in the container.
 #'
 #' @section Methods:
-#' * `eval(dt)`\cr
+#' * `eval_batch(dt)`\cr
 #'   [data.table::data.table()] -> `self`\cr
 #'   Evaluates all hyperparameter configurations in `dt`.
 #'   Each configuration is a row.
-#' * `eval(design)`\cr
-#'   [paradox::Design] -> `self`\cr
-#'   Evaluates all configurations defined by the design.
 #' * `best()`\cr
 #'   () -> [mlr3::ResampleResult]\cr
 #'   Queries the [mlr3::BenchmarkResult] for the best [mlr3::ResampleResult] according to the
@@ -73,6 +70,7 @@
 #' @examples
 #' library(mlr3)
 #' library(paradox)
+#' library(data.table)
 #' # Object required to define the performance evaluator:
 #' task = mlr_tasks$get("iris")
 #' learner = mlr_learners$get("classif.rpart")
@@ -90,8 +88,7 @@
 #'   param_set = param_set
 #' )
 #'
-#' pe$eval(data.table::data.table(cp = 0.05, minsplit = 5))
-#' pe$eval(data.table::data.table(cp = 0.01, minsplit = 3))
+#' pe$eval_batch(data.table(cp = c(0.05, 0.01), minsplit = c(5, 3)))
 #' pe$best()
 PerfEval = R6Class("PerfEval",
   public = list(
@@ -131,16 +128,11 @@ PerfEval = R6Class("PerfEval",
         catf("[None yet]")
     },
 
-
-    eval = function(dt) {
-      assert_data_table(dt, any.missing = FALSE, min.rows = 1, min.cols = 1)
-      self$eval_design(Design$new(self$param_set, dt, remove_dupl = FALSE))
-    },
-
     # evaluates all points in a design
     # possibly transforms the data before using the trafo from self$param set
-    eval_design = function(design) {
-      assert_r6(design, "Design")
+    eval_batch = function(dt) {
+      assert_data_table(dt, any.missing = FALSE, min.rows = 1, min.cols = 1)
+      design = Design$new(self$param_set, dt, remove_dupl = FALSE)
 
       # Not that pretty but enables the use of transpose from Design:
       if (self$param_set$has_trafo) {

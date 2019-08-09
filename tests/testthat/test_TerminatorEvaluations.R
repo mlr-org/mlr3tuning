@@ -7,12 +7,12 @@ test_that("API", {
 
   pe = TEST_MAKE_PE1()
 
-  pe$eval(data.table(cp = 0.1))
+  pe$eval_batch(data.table(cp = 0.1))
   te$eval_after(pe)
   expect_false(te$terminated)
   # expect_string(te$remaining, pattern = "1 evaluations")
 
-  pe$eval(data.table(cp = 0.2))
+  pe$eval_batch(data.table(cp = 0.2))
   te$eval_after(pe)
   expect_true(te$terminated)
   # expect_string(te$remaining, pattern = "0 evaluations")

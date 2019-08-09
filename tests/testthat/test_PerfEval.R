@@ -8,14 +8,14 @@ test_that("PerfEval", {
   expect_identical(pe$n_evals, 0L)
 
   # add a couple of eval points and test the state of PE
-  pe$eval(data.table(cp = c(0.01, 0.02)))
+  pe$eval_batch(data.table(cp = c(0.01, 0.02)))
   expect_data_table(pe$bmr$data, nrows = 4L)
   expect_equal(pe$bmr$resample_result(1)$learners[[1]]$param_set$values$cp, 0.01)
   expect_equal(pe$bmr$resample_result(1)$learners[[1]]$param_set$values$minsplit, 3)
   expect_equal(pe$bmr$resample_result(2)$learners[[1]]$param_set$values$cp, 0.02)
   expect_identical(pe$n_evals, 2L)
 
-  pe$eval(data.table(cp = 0.1))
+  pe$eval_batch(data.table(cp = 0.1))
   expect_data_table(pe$bmr$data, nrows = 6L)
   expect_equal(pe$bmr$resample_result(3)$learners[[1]]$param_set$values$cp, 0.1)
   expect_equal(pe$bmr$resample_result(3)$learners[[1]]$param_set$values$minsplit, 3)
@@ -44,7 +44,7 @@ test_that("hooks", {
 
 test_that("archive one row (#40)", {
   pe = TEST_MAKE_PE1()
-  pe$eval(data.table(cp = c(0.01)))
+  pe$eval_batch(data.table(cp = c(0.01)))
   a = pe$archive()
   expect_data_table(a, nrows = 1)
   expect_number(a$classif.ce)

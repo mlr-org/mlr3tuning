@@ -82,10 +82,6 @@ at$store_bmr = TRUE
 at$train(task)
 at$model
 at$learner
-
-# retrieve the best ResampleResult
-rr = at$bmr$best(measures)
-rr$archive(measures)
 }
 \concept{Learner}
 \keyword{datasets}

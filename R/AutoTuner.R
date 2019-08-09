@@ -79,10 +79,6 @@
 #' at$train(task)
 #' at$model
 #' at$learner
-#'
-#' # retrieve the best ResampleResult
-#' rr = at$bmr$best(measures)
-#' rr$archive(measures)
 AutoTuner = R6Class("AutoTuner", inherit = Learner,
   public = list(
     tuner_generator = NULL,

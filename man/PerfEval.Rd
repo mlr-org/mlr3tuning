@@ -54,13 +54,10 @@ Number of unique experiments stored in the container.
 \section{Methods}{
 
 \itemize{
-\item \code{eval(dt)}\cr
+\item \code{eval_batch(dt)}\cr
 \code{\link[data.table:data.table]{data.table::data.table()}} -> \code{self}\cr
 Evaluates all hyperparameter configurations in \code{dt}.
 Each configuration is a row.
-\item \code{eval(design)}\cr
-\link[paradox:Design]{paradox::Design} -> \code{self}\cr
-Evaluates all configurations defined by the design.
 \item \code{best()}\cr
 () -> \link[mlr3:ResampleResult]{mlr3::ResampleResult}\cr
 Queries the \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} for the best \link[mlr3:ResampleResult]{mlr3::ResampleResult} according to the
@@ -82,6 +79,7 @@ separate columns instead of inside a list column
 \examples{
 library(mlr3)
 library(paradox)
+library(data.table)
 # Object required to define the performance evaluator:
 task = mlr_tasks$get("iris")
 learner = mlr_learners$get("classif.rpart")
@@ -99,8 +97,7 @@ pe = PerfEval$new(
   param_set = param_set
 )
 
-pe$eval(data.table::data.table(cp = 0.05, minsplit = 5))
-pe$eval(data.table::data.table(cp = 0.01, minsplit = 3))
+pe$eval_batch(data.table(cp = c(0.05, 0.01), minsplit = c(5, 3)))
 pe$best()
 }
 \concept{PerfEval}

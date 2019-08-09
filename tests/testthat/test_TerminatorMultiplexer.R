@@ -9,7 +9,7 @@ test_that("API", {
   pe = TEST_MAKE_PE1()
 
   tm$eval_before(pe)
-  pe$eval(data.table(cp = 0.1))
+  pe$eval_batch(data.table(cp = 0.1))
   tm$eval_after(pe)
   expect_false(tm$terminated)
   expect_false(ti$terminated)

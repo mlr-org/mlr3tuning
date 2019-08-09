@@ -36,14 +36,16 @@
 #'   List with 2 elements:
 #'     - `performance` (`numeric()`) with the best performance.
 #'     - `values` (named `list()`) with the corresponding hyperparameters values.
-#' * `archive(unnest = TRUE)`
-#'   `logical(1)` -> [data.table::data.table()]\cr
+#' * `archive(unnest = TRUE)`\cr
+#'   (`logical(1)`) -> [data.table::data.table()]\cr
 #'   Returns a table of contained resample results, simply delegates to the `archive` method of [PerfEval].
-#' * `eval_batch(dt)`
-#'   `[data.table::data.table()] --> numeric(n)\cr
+#' * `eval_batch(dt)`\cr
+#'   ([data.table::data.table()]) -> `numeric(n)`\cr
 #'   Evaluates a set of design points, passed as a data.table of n rows and returns n performance values.
 #'   This is the only entry point a subclass tuner should use to evaluate the objective function,
 #'   and it should normally not be called from the outside by the user.
+#'   The difference to `eval_batch` in [PerfEval] is that this also runs all associated terminators and potentially
+#'   stops with an exception.
 #'
 #' @section Technical Details and Subclasses
 #' A subclass is implemented in the following way:
@@ -102,10 +104,9 @@ Tuner = R6Class("Tuner",
     },
 
     eval_batch = function(dt) {
-      design = Design$new(self$pe$param_set, dt, remove_dupl = FALSE)
-      lg$info("Evaluating %i configurations", nrow(design$data))
+      lg$info("Evaluating %i configurations", nrow(dt))
       self$terminator$eval_before(self$pe)
-      self$pe$eval_design(design)
+      self$pe$eval_batch(dt)
       self$terminator$eval_after(self$pe)
 
       lg$info("Evaluation finished. Remaining: %s.", self$terminator$remaining)
