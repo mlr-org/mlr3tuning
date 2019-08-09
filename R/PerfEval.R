@@ -46,10 +46,10 @@
 #'   [data.table::data.table()] -> [data.table::data.table]\cr
 #'   Evaluates all hyperparameter configurations in `dt` through resampling, where each configuration is a row, and columns are scalar parameters.
 #'   Return a data.table with corresponding rows, where each column is an named measure.
-#' * `best()`\cr
-#'   () -> [mlr3::ResampleResult]\cr
-#'   Queries the [mlr3::BenchmarkResult] for the best [mlr3::ResampleResult] according to the
-#'   first measure in `$measures`.
+#' * `best(ties_method = "random")`\cr
+#'   (`character(1)`) -> [mlr3::ResampleResult]\cr
+#'   Queries the [mlr3::BenchmarkResult] for the best [mlr3::ResampleResult] according to the first measure in `$measures`.
+#'   `ties_method` can be "first", "last" or "random".
 #' * `archive(unnest = TRUE)`
 #'   `logical(1)` -> [data.table::data.table()]\cr
 #'   Returns a table of contained resample results, similar to the one returned by [mlr3::benchmark()]'s
@@ -159,13 +159,13 @@ PerfEval = R6Class("PerfEval",
       return(dt)
     },
 
-    best = function() {
+    best = function(ties_method = "random") {
       #FIXME: we need tie handling?
       # measure = assert_measure(measure, learner = self$data$learner[[1L]])
       m = self$measures[[1L]]
       tab = self$bmr$aggregate(m, ids = FALSE)
       best = if (m$minimize) which_min else which_max
-      tab$resample_result[[best(tab[[m$id]])]]
+      tab$resample_result[[best(tab[[m$id]], ties_method = ties_method)]]
     }
 
   ),

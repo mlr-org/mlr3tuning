@@ -31,8 +31,9 @@
 #' * `tune()`\cr
 #'   () -> `self`\cr
 #'   Performs the tuning until the [Terminator] becomes positive.
-#' * `tune_result()`\cr
-#'   () -> named `list()`\cr
+#' * `tune_result(ties.method = "random")`\cr
+#'   (`character(1)`) -> named `list()`\cr
+#'   `ties_method` can be "first", "last" or "random".
 #'   List with 2 elements:
 #'     - `performance` (`numeric()`) with the best performance.
 #'     - `values` (named `list()`) with the corresponding hyperparameters values.
@@ -127,9 +128,9 @@ Tuner = R6Class("Tuner",
       return(invisible(self))
     },
 
-    tune_result = function() {
+    tune_result = function(ties_method = "random") {
       measures = self$pe$measures
-      rr = self$pe$best()
+      rr = self$pe$best(ties_method)
       list(performance = rr$aggregate(measures), values = rr$learners[[1L]]$param_set$values)
     },
 

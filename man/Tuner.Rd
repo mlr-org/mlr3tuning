@@ -41,8 +41,9 @@ Arbitrary list, depending on the child class.
 \item \code{tune()}\cr
 () -> \code{self}\cr
 Performs the tuning until the \link{Terminator} becomes positive.
-\item \code{tune_result()}\cr
-() -> named \code{list()}\cr
+\item \code{tune_result(ties.method = "random")}\cr
+(\code{character(1)}) -> named \code{list()}\cr
+\code{ties_method} can be "first", "last" or "random".
 List with 2 elements:
 \itemize{
 \item \code{performance} (\code{numeric()}) with the best performance.

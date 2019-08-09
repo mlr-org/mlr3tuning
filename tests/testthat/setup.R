@@ -15,13 +15,20 @@ set.seed(123)
 
 
 # create a simple PE object for rpart with cp param and 2CV resampling
-TEST_MAKE_PS1 = function() {
-  ps = ParamSet$new(params = list(
-    ParamDbl$new("cp", lower = 0.001, upper = 0.1)
-  ))
+TEST_MAKE_PS1 = function(n_dim = 1L) {
+  ps = if (n_dim == 1) {
+    ParamSet$new(params = list(
+      ParamDbl$new("cp", lower = 0.1, upper = 0.3)
+    ))
+  } else if (n_dim == 2) {
+    ParamSet$new(params = list(
+      ParamDbl$new("cp", lower = 0.1, upper = 0.3),
+      ParamInt$new("minsplit", lower = 1, upper = 9)
+    ))
+  }
 }
-TEST_MAKE_PE1 = function(values = NULL, folds = 2L, measures = "classif.ce") {
-  ps = TEST_MAKE_PS1()
+TEST_MAKE_PE1 = function(values = NULL, folds = 2L, measures = "classif.ce", n_dim = 1L) {
+  ps = TEST_MAKE_PS1(n_dim = n_dim)
   lrn = mlr_learners$get("classif.rpart")
   if (!is.null(values))
     lrn$param_set$values = values

@@ -55,10 +55,10 @@ Number of unique experiments stored in the container.
 \code{\link[data.table:data.table]{data.table::data.table()}} -> \link[data.table:data.table]{data.table::data.table}\cr
 Evaluates all hyperparameter configurations in \code{dt} through resampling, where each configuration is a row, and columns are scalar parameters.
 Return a data.table with corresponding rows, where each column is an named measure.
-\item \code{best()}\cr
-() -> \link[mlr3:ResampleResult]{mlr3::ResampleResult}\cr
-Queries the \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} for the best \link[mlr3:ResampleResult]{mlr3::ResampleResult} according to the
-first measure in \code{$measures}.
+\item \code{best(ties_method = "random")}\cr
+(\code{character(1)}) -> \link[mlr3:ResampleResult]{mlr3::ResampleResult}\cr
+Queries the \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} for the best \link[mlr3:ResampleResult]{mlr3::ResampleResult} according to the first measure in \code{$measures}.
+\code{ties_method} can be "first", "last" or "random".
 \item \code{archive(unnest = TRUE)}
 \code{logical(1)} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
 Returns a table of contained resample results, similar to the one returned by \code{\link[mlr3:benchmark]{mlr3::benchmark()}}'s
