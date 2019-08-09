@@ -43,9 +43,9 @@
 #'
 #' @section Methods:
 #' * `eval_batch(dt)`\cr
-#'   [data.table::data.table()] -> `self`\cr
-#'   Evaluates all hyperparameter configurations in `dt`.
-#'   Each configuration is a row.
+#'   [data.table::data.table()] -> [data.table::data.table]\cr
+#'   Evaluates all hyperparameter configurations in `dt` through resampling, where each configuration is a row, and columns are scalar parameters.
+#'   Return a data.table with corresponding rows, where each column is an named measure.
 #' * `best()`\cr
 #'   () -> [mlr3::ResampleResult]\cr
 #'   Queries the [mlr3::BenchmarkResult] for the best [mlr3::ResampleResult] according to the
@@ -143,8 +143,9 @@ PerfEval = R6Class("PerfEval",
       } else {
         self$bmr$combine(bmr)
       }
-
-      invisible(self)
+      # get aggregated measures in dt, return them
+      mids = map_chr(self$measures, "id")
+      return(bmr$aggregate(measures = self$measures)[, mids, with = FALSE])
     },
 
     archive = function(unnest = TRUE) {
@@ -159,7 +160,12 @@ PerfEval = R6Class("PerfEval",
     },
 
     best = function() {
-      self$bmr$best(self$measures[[1L]])
+      #FIXME: we need tie handling?
+      # measure = assert_measure(measure, learner = self$data$learner[[1L]])
+      m = self$measures[[1L]]
+      tab = self$bmr$aggregate(m, ids = FALSE)
+      best = if (m$minimize) which_min else which_max
+      tab$resample_result[[best(tab[[m$id]])]]
     }
 
   ),

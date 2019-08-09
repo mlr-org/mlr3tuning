@@ -43,9 +43,6 @@ Stored measures.
 Stored parameter set.
 \item \code{bmr} :: \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}\cr
 A benchmark result, which is used as data storage.
-\item \code{hooks} :: \code{list()}\cr
-List of functions that are executed with \code{run_hooks()} for evaluation.
-This is for internal use.
 \item \code{n_evals} :: \code{integer(1)}\cr
 Number of unique experiments stored in the container.
 }
@@ -55,19 +52,13 @@ Number of unique experiments stored in the container.
 
 \itemize{
 \item \code{eval_batch(dt)}\cr
-\code{\link[data.table:data.table]{data.table::data.table()}} -> \code{self}\cr
-Evaluates all hyperparameter configurations in \code{dt}.
-Each configuration is a row.
+\code{\link[data.table:data.table]{data.table::data.table()}} -> \link[data.table:data.table]{data.table::data.table}\cr
+Evaluates all hyperparameter configurations in \code{dt} through resampling, where each configuration is a row, and columns are scalar parameters.
+Return a data.table with corresponding rows, where each column is an named measure.
 \item \code{best()}\cr
 () -> \link[mlr3:ResampleResult]{mlr3::ResampleResult}\cr
 Queries the \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} for the best \link[mlr3:ResampleResult]{mlr3::ResampleResult} according to the
 first measure in \code{$measures}.
-\item \code{run_hooks()}\cr
-\code{()} -> \code{NULL}\cr
-Runs all hook functions. For internal use.
-\item \code{add_hook(hook)}\cr
-\code{function()} -> \code{NULL}\cr
-Adds a hook function. For internal use.
 \item \code{archive(unnest = TRUE)}
 \code{logical(1)} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
 Returns a table of contained resample results, similar to the one returned by \code{\link[mlr3:benchmark]{mlr3::benchmark()}}'s

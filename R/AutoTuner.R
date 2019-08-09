@@ -92,6 +92,9 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
     tune_ps = NULL,
     store_bmr = FALSE,
     bmr = NULL,
+    # FIXME: state = bmr + learner
+    # FIXME: look at pipeopelearner for paramset
+    # FIXME: autotuner paramset darf eigentlich nicht die params mehr enthalten über die getuned wird
 
     initialize = function(learner, resampling, measures, tune_ps, terminator, tuner, tuner_settings = list(), ctrl = list(), id = "autotuner") {
       if (!inherits(tuner, "R6ClassGenerator") && grepl(pattern = "Tuner", x = tuner$classname)) {

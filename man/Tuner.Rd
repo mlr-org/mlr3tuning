@@ -52,8 +52,8 @@ List with 2 elements:
 (\code{logical(1)}) -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
 Returns a table of contained resample results, simply delegates to the \code{archive} method of \link{PerfEval}.
 \item \code{eval_batch(dt)}\cr
-(\code{\link[data.table:data.table]{data.table::data.table()}}) -> \code{numeric(n)}\cr
-Evaluates a set of design points, passed as a data.table of n rows and returns n performance values.
+(\code{\link[data.table:data.table]{data.table::data.table()}}) -> \link[data.table:data.table]{data.table::data.table}\cr
+Evaluates a set of design points, see \code{eval_batch} in \link{PerfEval}, which this method delegates to.
 This is the only entry point a subclass tuner should use to evaluate the objective function,
 and it should normally not be called from the outside by the user.
 The difference to \code{eval_batch} in \link{PerfEval} is that this also runs all associated terminators and potentially

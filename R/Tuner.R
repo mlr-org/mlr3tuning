@@ -40,8 +40,8 @@
 #'   (`logical(1)`) -> [data.table::data.table()]\cr
 #'   Returns a table of contained resample results, simply delegates to the `archive` method of [PerfEval].
 #' * `eval_batch(dt)`\cr
-#'   ([data.table::data.table()]) -> `numeric(n)`\cr
-#'   Evaluates a set of design points, passed as a data.table of n rows and returns n performance values.
+#'   ([data.table::data.table()]) -> [data.table::data.table]\cr
+#'   Evaluates a set of design points, see `eval_batch` in [PerfEval], which this method delegates to.
 #'   This is the only entry point a subclass tuner should use to evaluate the objective function,
 #'   and it should normally not be called from the outside by the user.
 #'   The difference to `eval_batch` in [PerfEval] is that this also runs all associated terminators and potentially
@@ -105,7 +105,7 @@ Tuner = R6Class("Tuner",
     eval_batch = function(dt) {
       lg$info("Evaluating %i configurations", nrow(dt))
       self$terminator$eval_before(self$pe)
-      self$pe$eval_batch(dt)
+      y = self$pe$eval_batch(dt)
       self$terminator$eval_after(self$pe)
 
       # if he is terminated throw condition of class "terminated_message" that we can tryCatch.
@@ -113,6 +113,7 @@ Tuner = R6Class("Tuner",
       if (self$terminator$terminated) {
         stop(messageCondition("Termination criteria is reached", class = "terminated_message"))
       }
+      return(y)
     },
 
     tune = function() {
@@ -128,7 +129,7 @@ Tuner = R6Class("Tuner",
 
     tune_result = function() {
       measures = self$pe$measures
-      rr = self$pe$bmr$best(measures[[1L]])
+      rr = self$pe$best()
       list(performance = rr$aggregate(measures), values = rr$learners[[1L]]$param_set$values)
     },
 
