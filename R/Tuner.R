@@ -47,7 +47,7 @@
 #'   The difference to `eval_batch` in [PerfEval] is that this also runs all associated terminators and potentially
 #'   stops with an exception.
 #'
-#' @section Technical Details and Subclasses
+#' @section Technical Details and Subclasses:
 #' A subclass is implemented in the following way:
 #'  * Inherit from Tuner
 #'  * Specify the private abstract method `tune_interal` and use it to call into your optimizer.

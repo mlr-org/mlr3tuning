@@ -13,6 +13,7 @@ Implements methods for hyperparameter tuning in
 Useful links:
 \itemize{
   \item \url{https://mlr3tuning.mlr-org.com}
+  \item \url{https://github.com/mlr-org/mlr3tuning}
   \item Report bugs at \url{https://github.com/mlr-org/mlr3tuning/issues}
 }
 

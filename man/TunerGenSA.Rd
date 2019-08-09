@@ -18,6 +18,7 @@ For arguments, see \link{Tuner}, and additionally:
 Settings passed down do \code{\link[GenSA:GenSA]{GenSA::GenSA()}}
 Default settings are \code{smooth = FALSE}, \code{acceptance.param = -15},
 \code{simple.function = FALSE}, and \code{temperature = 250}.
+Stored in \code{settings}.
 }
 }
 

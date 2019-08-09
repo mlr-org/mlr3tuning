@@ -61,6 +61,27 @@ stops with an exception.
 }
 }
 
+\section{Technical Details and Subclasses}{
+
+A subclass is implemented in the following way:
+\itemize{
+\item Inherit from Tuner
+\item Specify the private abstract method \code{tune_interal} and use it to call into your optimizer.
+\item When you set up an objective function, you will call \code{eval_batch} to evaluate design points.
+\item The batch-eval is requested at the PerfEval 'pe' object,
+so each batch is possibly executed in parallel via \code{\link[mlr3:benchmark]{mlr3::benchmark()}},
+and all evaluations are stored inside of 'pe$bmr'.
+\item After the batch-eval, all terminators registered with the tuner are checked, and if one is positive,
+an exception is generated of class 'terminated_message'. In this case the current
+batch of evals is still stored in pe, but the numeric score are not sent back to t
+he handling optimizer as it has lost execution control.
+\item After such an exception was caught we select the best configuration from \code{pe$bmr} and
+return it.
+\item Note that therefore more points than specified by the Terminator might be evaluated,
+as the Terminator is only checked after a batch-eval. How many more depends on the batchsize.
+}
+}
+
 \examples{
 library(mlr3)
 library(paradox)
