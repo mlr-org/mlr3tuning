@@ -67,7 +67,7 @@ stops with an exception.
 A subclass is implemented in the following way:
 \itemize{
 \item Inherit from Tuner
-\item Specify the private abstract method \code{tune_interal} and use it to call into your optimizer.
+\item Specify the private abstract method \code{tune_internal} and use it to call into your optimizer.
 \item When you set up an objective function, you will call \code{eval_batch} to evaluate design points.
 \item The batch-eval is requested at the PerfEval 'pe' object,
 so each batch is possibly executed in parallel via \code{\link[mlr3:benchmark]{mlr3::benchmark()}},

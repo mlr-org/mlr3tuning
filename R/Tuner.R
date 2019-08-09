@@ -51,7 +51,7 @@
 #' @section Technical Details and Subclasses:
 #' A subclass is implemented in the following way:
 #'  * Inherit from Tuner
-#'  * Specify the private abstract method `tune_interal` and use it to call into your optimizer.
+#'  * Specify the private abstract method `tune_internal` and use it to call into your optimizer.
 #'  * When you set up an objective function, you will call `eval_batch` to evaluate design points.
 #'  * The batch-eval is requested at the PerfEval 'pe' object,
 #'    so each batch is possibly executed in parallel via [mlr3::benchmark()],

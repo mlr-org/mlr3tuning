@@ -23,6 +23,7 @@ TerminatorEvaluations$new(3)
 }
 \seealso{
 Other Terminator: \code{\link{TerminatorMultiplexer}},
+  \code{\link{TerminatorNone}},
   \code{\link{TerminatorPerfReached}},
   \code{\link{TerminatorRuntime}},
   \code{\link{TerminatorTime}}, \code{\link{Terminator}}

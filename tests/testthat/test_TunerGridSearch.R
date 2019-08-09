@@ -19,3 +19,14 @@ test_that("TunerGridSearch", {
   expect_set_equal(unique(a$minsplit), c(1, 5, 9))
 })
 
+test_that("TunerGridSearch with TerminatorNone", {
+  pe = TEST_MAKE_PE1(n_dim = 2L)
+  term = TerminatorNone$new()
+  tuner = TunerGridSearch$new(pe = pe, terminator = term, resolution = 2L)
+  tuner$tune()
+  r = tuner$tune_result()
+  bmr = tuner$pe$bmr
+  expect_data_table(bmr$data, nrows = 8L)
+})
+
+

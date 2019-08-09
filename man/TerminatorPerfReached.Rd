@@ -22,6 +22,7 @@ falls below (respective measure has to be minimized).
 \seealso{
 Other Terminator: \code{\link{TerminatorEvaluations}},
   \code{\link{TerminatorMultiplexer}},
+  \code{\link{TerminatorNone}},
   \code{\link{TerminatorRuntime}},
   \code{\link{TerminatorTime}}, \code{\link{Terminator}}
 }
