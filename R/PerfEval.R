@@ -38,9 +38,6 @@
 #'   Stored parameter set.
 #' * `bmr` :: [mlr3::BenchmarkResult]\cr
 #'   A benchmark result, which is used as data storage.
-#' * `hooks` :: `list()`\cr
-#'   List of functions that are executed with `run_hooks()` for evaluation.
-#'   This is for internal use.
 #' * `n_evals` :: `integer(1)`\cr
 #'   Number of unique experiments stored in the container.
 #'
@@ -53,12 +50,6 @@
 #'   () -> [mlr3::ResampleResult]\cr
 #'   Queries the [mlr3::BenchmarkResult] for the best [mlr3::ResampleResult] according to the
 #'   first measure in `$measures`.
-#' * `run_hooks()`\cr
-#'   `()` -> `NULL`\cr
-#'   Runs all hook functions. For internal use.
-#' * `add_hook(hook)`\cr
-#'   `function()` -> `NULL`\cr
-#'   Adds a hook function. For internal use.
 #' * `archive(unnest = TRUE)`
 #'   `logical(1)` -> [data.table::data.table()]\cr
 #'   Returns a table of contained resample results, similar to the one returned by [mlr3::benchmark()]'s
@@ -98,7 +89,6 @@ PerfEval = R6Class("PerfEval",
     measures = NULL,
     param_set = NULL,
     ctrl = NULL,
-    hooks = NULL,
     bmr = NULL,
 
     initialize = function(task, learner, resampling, measures, param_set, ctrl = list()) {
@@ -154,7 +144,6 @@ PerfEval = R6Class("PerfEval",
         self$bmr$combine(bmr)
       }
 
-      self$run_hooks()
       invisible(self)
     },
 
@@ -171,16 +160,8 @@ PerfEval = R6Class("PerfEval",
 
     best = function() {
       self$bmr$best(self$measures[[1L]])
-    },
-
-    add_hook = function(hook) {
-      assert_function(hook, args = "pe", nargs = 1)
-      self$hooks = append(self$hooks, hook)
-    },
-
-    run_hooks = function() {
-      lapply(self$hooks, function(hook) hook(pe = self))
     }
+
   ),
 
   active = list(

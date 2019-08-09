@@ -32,16 +32,6 @@ test_that("PerfEval", {
 })
 
 
-test_that("hooks", {
-  pe = TEST_MAKE_PE1(values = list(minsplit = 3), folds = 2L)
-
-  expect_error(pe$add_hook(hook = mean))
-  expect_silent(pe$add_hook(hook = function(pe) {
-    "hook"
-  }))
-  expect_equal(pe$run_hooks(), list("hook"))
-})
-
 test_that("archive one row (#40)", {
   pe = TEST_MAKE_PE1()
   pe$eval_batch(data.table(cp = c(0.01)))
