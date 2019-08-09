@@ -85,4 +85,4 @@ MeasureDummyCP = R6Class("MeasureDummyCP",
     }
   )
 )
-mlr_measures$add("dummy.cp", MeasureDummyCP)
+mlr3::mlr_measures$add("dummy.cp", MeasureDummyCP)
