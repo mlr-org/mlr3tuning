@@ -26,6 +26,8 @@ For arguments, see \link{Tuner}, and additionally:
 \item \code{resolution} :: \code{integer(1)}\cr
 Resolution of the grid, see \link[paradox:generate_design_grid]{paradox::generate_design_grid}.
 Stored in \code{settings}.
+\item \code{param_resolutions} :: named \code{integer()} \cr
+Resolution per param, named by parameter ID, see \link[paradox:generate_design_grid]{paradox::generate_design_grid}.
 \item \code{batch_size} :: \code{integer(1)}\cr
 Maximum number of configurations to try in a batch.
 Stored in \code{settings}.
