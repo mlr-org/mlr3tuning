@@ -47,12 +47,5 @@ TerminatorTime = R6Class("TerminatorTime",
       }
       invisible(self)
     }
-  ),
-
-  active = list(
-    remaining = function() {
-      dt = self$settings$time - Sys.time()
-      sprintf("%.3f %s", dt, units(dt))
-    }
   )
 )

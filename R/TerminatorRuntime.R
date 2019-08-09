@@ -43,13 +43,5 @@ TerminatorRuntime = R6Class("TerminatorRuntime",
       }
       invisible(self)
     }
-  ),
-
-  active = list(
-    remaining = function() {
-      s = ifelse(is.null(self$time_start), self$settings$runtime,
-        self$settings$runtime - as.numeric(Sys.time()) + self$time_start)
-      sprintf("%g secs", s)
-    }
   )
 )

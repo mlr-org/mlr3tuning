@@ -43,11 +43,5 @@ TerminatorMultiplexer = R6Class("TerminatorMultiplexer",
       self$terminated = self$terminated || some(self$terminators, "terminated")
       invisible(self)
     }
-  ),
-
-  active = list(
-    remaining = function() {
-      paste0(map_chr(self$terminators, "remaining"), collapse = ", ")
-    }
   )
 )

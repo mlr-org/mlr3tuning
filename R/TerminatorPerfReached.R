@@ -37,9 +37,5 @@ TerminatorPerfReached = R6Class("TerminatorPerfReached",
       invisible(self)
     }
 
-  ),
-
-  active = list(
-    remaining = function() "<?>"
   )
 )

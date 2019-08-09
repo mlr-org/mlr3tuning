@@ -22,6 +22,4 @@ test_that("API", {
   expect_false(ti$terminated)
   expect_true(tr$terminated)
 
-  # expect_string(tm$remaining, pattern = "1 evaluations")
-  expect_string(tm$remaining, pattern = "-0")
 })

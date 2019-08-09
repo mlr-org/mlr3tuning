@@ -109,8 +109,6 @@ Tuner = R6Class("Tuner",
       self$pe$eval_batch(dt)
       self$terminator$eval_after(self$pe)
 
-      lg$info("Evaluation finished. Remaining: %s.", self$terminator$remaining)
-
       # if he is terminated throw condition of class "terminated_message" that we can tryCatch.
       # if the terminator is terminated.
       if (self$terminator$terminated) {

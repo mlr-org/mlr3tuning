@@ -19,9 +19,6 @@
 #'   Settings passed during construction.
 #' * `terminated` :: `logical(1)`\cr
 #'   Is `TRUE` if the termination criterion if the child class is met.
-#' * `remaining` :: `character(1)`\cr
-#'   String describing the remaining budget.
-#'   Used for printing and logging.
 #'
 #' @section Methods:
 #' * `eval_before(pe)`\cr
@@ -56,9 +53,5 @@ Terminator = R6Class("Terminator",
 
     eval_before = function(pe) invisible(self), # overwrite these 2 in subclasses
     eval_after = function(pe) invisible(self)
-  ),
-
-  active = list(
-    remaining = function() stop("abstract")
   )
 )

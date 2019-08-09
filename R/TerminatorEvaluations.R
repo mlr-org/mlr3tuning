@@ -32,12 +32,5 @@ TerminatorEvaluations = R6Class("TerminatorEvaluations",
       self$terminated = pe$n_evals >= self$settings$n_evals
       invisible(self)
     }
-  ),
-
-  active = list(
-    remaining = function() {
-      "???"
-      # sprintf("%i evaluations", max(self$settings$evals - self$state$evals, 0L))
-    }
   )
 )
