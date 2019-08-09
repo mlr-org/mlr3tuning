@@ -44,10 +44,6 @@
 #' * `store_bmr` :: `logical(1)`\cr
 #'   If `TRUE`, store the benchmark result as slot `$bmr`.
 #'
-#' * `bmr` :: [mlr3::BenchmarkResult]\cr
-#'   Only stored if `store_bmr` has been set to `TRUE`.
-#'   This object acts as an optimization path.
-#'
 #' * `tuner` :: [Tuner]\cr
 #'   Access to the stored [Tuner].
 #'
@@ -83,15 +79,13 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
   public = list(
     tuner_generator = NULL,
     #FIXME: doesnt thus store the PE? and hence the complete bmr and all other slots?
-    tuner = NULL,
     learner = NULL,
     terminator = NULL,
-    tuner_settings = NULL,
     resampling = NULL,
     measures = NULL,
+    tuner_settings = NULL,
     tune_ps = NULL,
     store_bmr = FALSE,
-    bmr = NULL,
     store_models = FALSE,
     # FIXME: state = bmr + learner
     # FIXME: look at pipeopelearner for paramset
@@ -101,12 +95,14 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
       if (!inherits(tuner, "R6ClassGenerator") && grepl(pattern = "Tuner", x = tuner$classname)) {
         stopf("Tuner must be a R6 class generator that creates tuner (e.g. TunerGridSearch).")
       }
+      self$id = id  # needs to be set first for param_set active binding
 
       self$tuner_generator = tuner
-      self$learner = learner = assert_learner(learner = learner)
+      self$learner = learner = assert_learner(learner = learner, clone = TRUE)
+      self$learner$param_set$set_id = ""
       self$terminator = assert_r6(terminator, "Terminator")
       self$tuner_settings = assert_list(tuner_settings, names = "unique")
-      self$resampling = assert_resampling(resampling)
+      self$resampling = assert_resampling(resampling, clone = TRUE)
       self$measures = assert_measures(measures)
       self$tune_ps = assert_class(tune_ps, "ParamSet")
       self$store_models = assert_flag(store_models)
@@ -124,58 +120,63 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
 
     train_internal = function(task) {
       terminator = self$terminator$clone()
+      learner = self$learner$clone(deep = TRUE)
       pe = PerfEval$new(
-        task = assert_task(task)$clone(deep = TRUE),
-        learner = self$learner$clone(deep = TRUE),
-        resampling = self$resampling$clone(deep = TRUE),
+        task = assert_task(task, clone = TRUE),
+        learner = learner,
+        resampling = self$resampling,
         measures  = self$measures,
-        param_set = self$tune_ps$clone(deep = TRUE),
+        param_set = self$tune_ps,
         store_models = self$store_models
       )
 
       tuner = do.call(self$tuner_generator$new, insert_named(self$tuner_settings, list(pe = pe, terminator = terminator)))
-      self$tuner = tuner$tune()
 
       # update param vals
-      self$learner$param_set$values = tuner$tune_result()$values
+      learner$param_set$values = tuner$tune()$tune_result()$values
 
       # train internal learner
-      self$learner$train(task)
+      model = list(learner = learner$train(task))
 
       if (isTRUE(self$store_bmr)) {
-        self$bmr = pe$bmr
+        model$bmr = pe$bmr
       }
 
-      return(self$learner$model)
+      model
     },
 
     predict_internal = function(task) {
-      self$learner$predict_internal(task)
-    },
-
-    new_prediction = function(row_ids, truth, ...) {
-      self$learner$new_prediction(row_ids, truth, ...)
-    },
-
-    archive = function(unnest = TRUE) self$tuner$archive(unnest)
+      self$model$learner$predict(task)
+    }
   ),
 
   active = list(
-    # learner = function() {
-    #   self$learner
-    # },
-
-    # model = function() {
-    #   self$learner$model
-    # },
-
-    # tuner = function() {
-    #   self$tuner
-    # },
-
-    # bmr = function() {
-      # self$bmr
-    # },
-
+    param_set = function(val) {
+      if (is.null(private$.param_set)) {
+        private$.param_set = ParamSetCollection$new(list(
+          # --> this is how we would insert the self$tuner_paramset:
+          # self$tuner$param_set,
+          self$learner$param_set
+        ))
+        private$.param_set$set_id = private$.ps_id
+      }
+      if (!missing(val) && !identical(val, private$.param_set)) {
+        stop("param_set is read-only.")
+      }
+      private$.param_set
+    }
+  ),
+  private = list(
+    deep_clone = function(name, value) {
+      if (!is.null(private$.param_set)) {
+        private$.ps_id = private$.param_set$set_id
+        private$.param_set = NULL # required to keep clone identical to original, otherwise tests get really ugly
+      }
+      if (is.environment(value) && !is.null(value[[".__enclos_env__"]])) {
+        return(value$clone(deep = TRUE))
+      }
+      value
+    },
+    .ps_id = ""
   )
 )
