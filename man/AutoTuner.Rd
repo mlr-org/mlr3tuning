@@ -13,7 +13,7 @@ or \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
 }
 \section{Construction}{
 \preformatted{at = AutoTuner$new(learner, resampling, measures, param_set, terminator,
-  tuner, tuner_settings, ctrl = list(), id = "autotuner")
+  tuner, tuner_settings, store_models = FALSE, id = "autotuner")
 }
 \itemize{
 \item \code{learner} :: \link[mlr3:Learner]{mlr3::Learner}\cr
@@ -31,8 +31,8 @@ Controls the terminator of the \code{tuner}.
 Uninitialized tuner factory, e.g. TunerGridSearch.
 \item \code{tuner_settings} :: named \code{list()}\cr
 List with tuner settings (e.g. see \link{TunerGridSearch})
-\item \code{ctrl} :: named \code{list()}\cr
-See \code{\link[mlr3:mlr_control]{mlr3::mlr_control()}}.
+\item \code{store_models} :: \code{logical(1)}\cr
+Keep the fitted learner models? Passed down to \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
 \item \code{id} :: \code{character(1)}\cr
 Name of the learner.
 }

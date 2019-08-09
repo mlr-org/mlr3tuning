@@ -15,7 +15,7 @@ The performance evaluator is one of the major inputs for constructing a \link{Tu
 }
 \section{Construction}{
 \preformatted{pe = PerfEval$new(task, learner, resampling, measures, param_set,
-  ctrl = list())
+  store_models = FALSE)
 }
 \itemize{
 \item \code{task} :: \link[mlr3:Task]{mlr3::Task}.
@@ -23,8 +23,8 @@ The performance evaluator is one of the major inputs for constructing a \link{Tu
 \item \code{resampling} :: \link[mlr3:Resampling]{mlr3::Resampling}.
 \item \code{measures} :: list of \link[mlr3:Measure]{mlr3::Measure}.
 \item \code{param_set} :: \link[paradox:ParamSet]{paradox::ParamSet}.
-\item \code{ctrl} :: named \code{list()}\cr
-See \code{\link[mlr3:mlr_control]{mlr3::mlr_control()}}.
+\item \code{store_models} :: \code{logical(1)}\cr
+Keep the fitted learner models? Passed down to \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
 }
 }
 
