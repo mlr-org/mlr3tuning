@@ -192,8 +192,6 @@ PerfEval = R6Class("PerfEval",
   ),
 
   active = list(
-    n_evals = function() {
-      if (is.null(self$bmr)) 0L else self$bmr$data[, data.table::uniqueN(get("hash"))]
-    }
+    n_evals = function() length(self$bmr$hashes) # FIXME: maybe at some point BMR container has AB "size"?
   )
 )
