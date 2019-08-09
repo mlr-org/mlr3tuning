@@ -16,13 +16,13 @@ test_that("AutoTuner / train+predict", {
 
   expect_benchmark_result(at$bmr)
 
-  tab = at$tune_path
+  tab = at$archive()
   expect_data_table(tab, nrows = 3)
   expect_subset(measures, names(tab))
   expect_subset("cp", names(tab))
 
   # check tune result is correct
-  expect_equal(at$tuner$aggregate()[which.min(classif.ce), cp], at$param_set$values$cp)
+  expect_equal(at$tuner$archive()[which.min(classif.ce), cp], at$param_set$values$cp)
   expect_equal(at$learner$param_set$values, at$tuner$tune_result()$values)
 })
 
@@ -52,7 +52,7 @@ test_that("AutoTuner / resample", {
   expect_data_table(rr$data, nrows = outer_folds)
   # lapply(rr$learners, function(autotuner) {
   #   expect_data_table(autotuner$tuner$pe$bmr$data, nrows = inner_evals * inner_folds)
-  #   expect_data_table(autotuner$tuner$pe$bmr$aggregate(), nrows = inner_evals)
+  #   expect_data_table(autotuner$tuner$pe$bmr$archive(), nrows = inner_evals)
   #   expect_equal(names(autotuner$tuner$tune_result()$performance), p_measures)
   #   autotuner$tuner$tune_result()$performance
   # })

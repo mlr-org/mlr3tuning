@@ -54,7 +54,7 @@ This object acts as an optimization path.
 Access to the stored \link{Tuner}.
 \item \code{tune_path} :: \code{\link[data.table:data.table]{data.table::data.table()}}\cr
 Only stored if \code{store_bmr} has been set to \code{TRUE}.
-This is the aggregate of the stored \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} with hyperparameters as separate columns.
+This is the archive of the stored \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} with hyperparameters as separate columns.
 }
 }
 
@@ -85,7 +85,7 @@ at$learner
 
 # retrieve the best ResampleResult
 rr = at$bmr$best(measures)
-rr$aggregate(measures)
+rr$archive(measures)
 }
 \concept{Learner}
 \keyword{datasets}

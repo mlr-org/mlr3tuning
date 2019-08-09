@@ -36,9 +36,9 @@
 #'   List with 2 elements:
 #'     - `performance` (`numeric()`) with the best performance.
 #'     - `values` (named `list()`) with the corresponding hyperparameters values.
-#' * `aggregate(unnest = TRUE)`
+#' * `archive(unnest = TRUE)`
 #'   `logical(1)` -> [data.table::data.table()]\cr
-#'   Returns a table of contained resample results, simply delegates to the `aggregate` method of [PerfEval].
+#'   Returns a table of contained resample results, simply delegates to the `archive` method of [PerfEval].
 #' * `eval_batch(dt)`
 #'   `[data.table::data.table()] --> numeric(n)\cr
 #'   Evaluates a set of design points, passed as a data.table of n rows and returns n performance values.
@@ -76,7 +76,7 @@
 #' tt = TunerRandomSearch$new(pe, terminator) # swap this line to use a different Tuner
 #' tt$tune()
 #' tt$tune_result() # returns best configuration and performance
-#' tt$aggregate() # allows access of data.table / benchmark result of full path of all evaluations
+#' tt$archive() # allows access of data.table / benchmark result of full path of all evaluations
 Tuner = R6Class("Tuner",
   public = list(
     pe = NULL,
@@ -134,7 +134,7 @@ Tuner = R6Class("Tuner",
       list(performance = rr$aggregate(measures), values = rr$learners[[1L]]$param_set$values)
     },
 
-    aggregate = function(unnest = TRUE) self$pe$aggregate(unnest)
+    archive = function(unnest = TRUE) self$pe$archive(unnest)
   ),
 
   private = list(

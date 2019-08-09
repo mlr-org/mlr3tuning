@@ -48,9 +48,9 @@ List with 2 elements:
 \item \code{performance} (\code{numeric()}) with the best performance.
 \item \code{values} (named \code{list()}) with the corresponding hyperparameters values.
 }
-\item \code{aggregate(unnest = TRUE)}
+\item \code{archive(unnest = TRUE)}
 \code{logical(1)} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
-Returns a table of contained resample results, simply delegates to the \code{aggregate} method of \link{PerfEval}.
+Returns a table of contained resample results, simply delegates to the \code{archive} method of \link{PerfEval}.
 \item \code{eval_batch(dt)}
 `\code{\link[data.table:data.table]{data.table::data.table()}} --> numeric(n)\cr
 Evaluates a set of design points, passed as a data.table of n rows and returns n performance values.
@@ -71,7 +71,7 @@ terminator = TerminatorEvaluations$new(3)
 tt = TunerRandomSearch$new(pe, terminator) # swap this line to use a different Tuner
 tt$tune()
 tt$tune_result() # returns best configuration and performance
-tt$aggregate() # allows access of data.table / benchmark result of full path of all evaluations
+tt$archive() # allows access of data.table / benchmark result of full path of all evaluations
 }
 \seealso{
 Other Tuner: \code{\link{TunerGenSA}},

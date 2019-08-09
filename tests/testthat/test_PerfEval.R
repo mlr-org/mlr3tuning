@@ -23,9 +23,9 @@ test_that("PerfEval", {
 
   expect_resample_result(pe$best())
 
-  a = pe$aggregate(unnest = FALSE )
+  a = pe$archive(unnest = FALSE )
   expect_data_table(a, nrows = 3L)
-  a = pe$aggregate(unnest = TRUE)
+  a = pe$archive(unnest = TRUE)
   expect_data_table(a, nrows = 3L)
   expect_true("cp" %in% colnames(a))
   expect_true("classif.ce" %in% colnames(a))
@@ -42,10 +42,10 @@ test_that("hooks", {
   expect_equal(pe$run_hooks(), list("hook"))
 })
 
-test_that("aggregate one row (#40)", {
+test_that("archive one row (#40)", {
   pe = TEST_MAKE_PE1()
   pe$eval(data.table(cp = c(0.01)))
-  a = pe$aggregate()
+  a = pe$archive()
   expect_data_table(a, nrows = 1)
   expect_number(a$classif.ce)
 })

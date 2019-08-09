@@ -53,7 +53,7 @@
 #'
 #' * `tune_path` :: [data.table::data.table()]\cr
 #'   Only stored if `store_bmr` has been set to `TRUE`.
-#'   This is the aggregate of the stored [mlr3::BenchmarkResult] with hyperparameters as separate columns.
+#'   This is the archive of the stored [mlr3::BenchmarkResult] with hyperparameters as separate columns.
 #'
 #' @section Methods:
 #' See [mlr3::Learner].
@@ -82,7 +82,7 @@
 #'
 #' # retrieve the best ResampleResult
 #' rr = at$bmr$best(measures)
-#' rr$aggregate(measures)
+#' rr$archive(measures)
 AutoTuner = R6Class("AutoTuner", inherit = Learner,
   public = list(
     tuner_generator = NULL,
@@ -153,7 +153,9 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
 
     new_prediction = function(row_ids, truth, ...) {
       self$learner$new_prediction(row_ids, truth, ...)
-    }
+    },
+
+    archive = function(unnest = TRUE) self$tuner$archive(unnest)
   ),
 
   active = list(
@@ -173,10 +175,5 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
       # self$bmr
     # },
 
-    tune_path = function() {
-      measures = self$tuner$pe$measures
-      tab = self$bmr$aggregate(measures, params = TRUE)
-      unnest(tab, "params")
-    }
   )
 )
