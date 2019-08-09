@@ -12,8 +12,8 @@ Class to terminate the tuning after a performance level has been hit.
 \preformatted{t = TerminatorPerfReached$new(level)
 }
 \itemize{
-\item \code{level} :: \code{numeric(1)}\cr
-Level that needs to be reached.
+\item \code{level} :: named \code{numeric(1)}\cr
+Level that needs to be reached, named with the ID of the measure we want to check.
 Terminates if the performance exceeds (respective measure has to be maximized) or
 falls below (respective measure has to be minimized).
 }

@@ -11,8 +11,8 @@
 #' ```
 #' t = TerminatorPerfReached$new(level)
 #' ```
-#' * `level` :: `numeric(1)`\cr
-#'   Level that needs to be reached.
+#' * `level` :: named `numeric(1)`\cr
+#'   Level that needs to be reached, named with the ID of the measure we want to check.
 #'   Terminates if the performance exceeds (respective measure has to be maximized) or
 #'   falls below (respective measure has to be minimized).
 #'
@@ -22,18 +22,22 @@ TerminatorPerfReached = R6Class("TerminatorPerfReached",
   inherit = Terminator,
   public = list(
     initialize = function(level) {
-      #FIXME: can we still name the measure? we then need to assert the validity of the name below
       assert_number(level)
+      assert_names(names(level), subset.of = mlr_measures$keys())
       super$initialize(settings = list(level = level))
     },
 
     eval_after = function(pe) {
       level = self$settings$level
-      m = pe$measures[[1]]
+      mid = names(level)
       aggr = pe$archive()
+      m = get_by_id(pe$measures, mid)
+      if (is.null(m)) {
+        stopf("Measure '%s' not being measured by Tuner / PerfEval!", mid)
+      }
       self$terminated =
-        ( m$minimize && any(aggr[[m$id]] <= self$settings$level)) ||
-        (!m$minimize && any(aggr[[m$id]] >= self$settings$level))
+        ( m$minimize && any(aggr[[mid]] <= self$settings$level)) ||
+        (!m$minimize && any(aggr[[mid]] >= self$settings$level))
       invisible(self)
     }
 

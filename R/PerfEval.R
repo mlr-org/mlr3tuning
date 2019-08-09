@@ -171,6 +171,6 @@ PerfEval = R6Class("PerfEval",
   ),
 
   active = list(
-    n_evals = function() length(self$bmr$hashes) # FIXME: maybe at some point BMR container has AB "size"?
+    n_evals = function() length(self$bmr$hashes)
   )
 )
