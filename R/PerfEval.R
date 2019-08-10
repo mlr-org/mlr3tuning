@@ -9,12 +9,14 @@
 #' at design points (see `eval_batch`), storing the evaluated point in an internal archive
 #' and querying the archive (see `archive`).
 #'
-#' The performance evaluator is one of the major inputs for constructing a [Tuner].
+#' The performance evaluator is the major input for a [Tuner].
+#'
+#' Evaluations of HP configurations are performed in batches, and after a batch-eval, if the [Terminator] is positive,
+#' an exception is raised. No further evaluations can be performed from this point on.
 #'
 #' @section Construction:
 #' ```
-#' pe = PerfEval$new(task, learner, resampling, measures, param_set,
-#'   store_models = FALSE)
+#' pe = PerfEval$new(task, learner, resampling, measures, param_set, terminator, store_models = FALSE)
 #'```
 #'
 #' * `task` :: [mlr3::Task].
@@ -22,22 +24,20 @@
 #' * `resampling` :: [mlr3::Resampling].
 #' * `measures` :: list of [mlr3::Measure].
 #' * `param_set` :: [paradox::ParamSet].
+#' * `terminator` :: [Terminator].
 #' * `store_models` :: `logical(1)`\cr
 #'   Keep the fitted learner models? Passed down to [mlr3::benchmark()].
 #'
 #' @section Fields:
 #' * `task` :: [mlr3::Task]\cr
-#'   Stored task.
 #' * `learner` :: [mlr3::Learner]\cr
-#'   Stored learner.
 #' * `resampling` :: [mlr3::Resampling]\cr
-#'   Stored resampling
 #' * `measures` :: list of [mlr3::Measure]\cr
-#'   Stored measures.
 #' * `param_set` :: [paradox::ParamSet]\cr
-#'   Stored parameter set.
+#' * `terminator` :: [Terminator]\cr
+#' * `store_models` :: `logical(1)`\cr
 #' * `bmr` :: [mlr3::BenchmarkResult]\cr
-#'   A benchmark result, which is used as data storage.
+#'   A benchmark result, container object for all performed [ResampleResult]s when evaluating HP configurations.
 #' * `n_evals` :: `integer(1)`\cr
 #'   Number of unique experiments stored in the container.
 #'
@@ -46,6 +46,7 @@
 #'   [data.table::data.table()] -> [data.table::data.table]\cr
 #'   Evaluates all hyperparameter configurations in `dt` through resampling, where each configuration is a row, and columns are scalar parameters.
 #'   Return a data.table with corresponding rows, where each column is an named measure.
+#'   After a batch-eval the [Terminator] is checked, if it is positive, an exception of class `terminated_message` is raised.
 #' * `best(ties_method = "random")`\cr
 #'   (`character(1)`) -> [mlr3::ResampleResult]\cr
 #'   Queries the [mlr3::BenchmarkResult] for the best [mlr3::ResampleResult] according to the first measure in `$measures`.
@@ -54,7 +55,7 @@
 #'   `logical(1)` -> [data.table::data.table()]\cr
 #'   Returns a table of contained resample results, similar to the one returned by [mlr3::benchmark()]'s
 #'   `archive()` method. If `unnest` is `TRUE`, hyperparameter settings are stored in
-#'   separate columns instead of inside a list column
+#'   separate columns instead of inside a list column.
 #'
 #' @family PerfEval
 #' @export
@@ -71,16 +72,17 @@
 #'   ParamDbl$new("cp", lower = 0.001, upper = 0.1),
 #'   ParamInt$new("minsplit", lower = 1, upper = 10)))
 #'
+#' terminator = TerminatorEvals$new(5)
 #' pe = PerfEval$new(
 #'   task = task,
 #'   learner = learner,
 #'   resampling = resampling,
 #'   measures = measures,
-#'   param_set = param_set
+#'   param_set = param_set,
+#'   terminator = terminator
 #' )
-#'
 #' pe$eval_batch(data.table(cp = c(0.05, 0.01), minsplit = c(5, 3)))
-#' pe$best()
+#' pe$archive()
 PerfEval = R6Class("PerfEval",
   public = list(
     task = NULL,
@@ -88,9 +90,9 @@ PerfEval = R6Class("PerfEval",
     resampling = NULL,
     measures = NULL,
     param_set = NULL,
+    terminator = NULL,
     store_models = NULL,
     bmr = NULL,
-    terminator = NULL,
 
     initialize = function(task, learner, resampling, measures, param_set, terminator, store_models = FALSE) {
       self$task = assert_task(task)
@@ -112,6 +114,8 @@ PerfEval = R6Class("PerfEval",
       catf(str_indent("* Learner:", format(self$learner)))
       catf(str_indent("* Measures:", map_chr(self$measures, "id")))
       catf(str_indent("* Resampling:", format(self$resampling)))
+      catf(str_indent("* Terminator:", format(self$terminator)))
+      catf(str_indent("* store_models:", self$store_models))
       print(self$param_set)
       catf("Evals:")
       if (!is.null(self$bmr))

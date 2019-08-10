@@ -25,18 +25,16 @@ test_tuner = function(tuner_factory, arg_list = list(), n_dim = 1L, term_evals =
   term = TerminatorEvals$new(term_evals)
   pe = PerfEval$new("iris", "classif.rpart", "holdout", "classif.ce", ps, term)
   tuner = do.call(tuner_factory$new, arg_list)
-  tuner$pe = pe
 
-  tuner$tune()
-  r = tuner$tune_result()
-  bmr = tuner$pe$bmr
+  r = tuner$tune(pe)
+  bmr = pe$bmr
 
   expect_data_table(bmr$data, nrows = real_evals)
   expect_equal(pe$n_evals, real_evals)
   expect_list(r)
   expect_number(r$performance["classif.ce"], lower = 0, upper = 1)
   expect_list(r$values, len = n_dim + 1)
-  return(tuner)
+  list(tune_result = r, pe = pe)
 }
 
 # create a simple PE object for rpart with cp param and 2CV resampling

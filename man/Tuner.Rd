@@ -9,14 +9,11 @@
 Abstract \code{Tuner} class that implements the main functionality each tuner must have.
 A tuner is an object that describes the tuning strategy how to optimize the black-box function and its feasible set
 defined by the \code{[PerfEval]} object.
-The state of tuning is stored in field \code{pe$bmr}.
 }
 \section{Construction}{
-\preformatted{tuner = Tuner$new(pe, terminator, settings = list())
+\preformatted{tuner = Tuner$new(settings = list())
 }
 \itemize{
-\item \code{pe} :: \link{PerfEval}.
-\item \code{terminator} :: \link{Terminator}.
 \item \code{settings} :: named \code{list()}\cr
 Arbitrary list, depending on the child class.
 }
@@ -25,32 +22,21 @@ Arbitrary list, depending on the child class.
 \section{Fields}{
 
 \itemize{
-\item \code{pe} :: \link{PerfEval}\cr
-The current state of the \link{PerfEval}.
-\item \code{terminator} :: \link{Terminator}.
-The current state of the \link{Terminator}.
 \item \code{settings} :: named \code{list()}\cr
-Arbitrary list, depending on the child class.
 }
 }
 
 \section{Methods}{
 
 \itemize{
-\item \code{tune()}\cr
-() -> \code{self}\cr
-Performs the tuning until the \link{Terminator} becomes positive.
-\item \code{tune_result(ties.method = "random")}\cr
-(\code{character(1)}) -> named \code{list()}\cr
-\code{ties_method} can be "first", "last" or "random".
-List with 2 elements:
+\item \code{tune(pe)}\cr
+(\link{PerfEval}) -> \code{list}\cr
+Performs the tuning on a \link{PerfEval} until termination.
+Returns list with 2 elements:
 \itemize{
 \item \code{performance} (\code{numeric()}) with the best performance.
 \item \code{values} (named \code{list()}) with the corresponding hyperparameters values.
 }
-\item \code{archive(unnest = TRUE)}\cr
-(\code{logical(1)}) -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
-Returns a table of contained resample results, simply delegates to the \code{archive} method of \link{PerfEval}.
 }
 }
 
@@ -81,12 +67,11 @@ library(paradox)
 param_set = ParamSet$new(list(
   ParamDbl$new("cp", lower = 0.001, upper = 0.1)
 ))
-pe = PerfEval$new("iris", "classif.rpart", "holdout", "classif.ce", param_set)
 terminator = TerminatorEvals$new(3)
-tt = TunerRandomSearch$new(pe, terminator) # swap this line to use a different Tuner
-tt$tune()
-tt$tune_result() # returns best configuration and performance
-tt$archive() # allows access of data.table / benchmark result of full path of all evaluations
+pe = PerfEval$new("iris", "classif.rpart", "holdout", "classif.ce", param_set, terminator)
+tt = TunerRandomSearch$new() # swap this line to use a different Tuner
+res = tt$tune(pe) # returns best configuration and performance, and logs in 'pe'
+pe$archive() # allows access of data.table / benchmark result of full path of all evaluations
 }
 \seealso{
 Other Tuner: \code{\link{TunerGenSA}},

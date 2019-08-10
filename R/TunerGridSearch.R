@@ -48,11 +48,11 @@ TunerGridSearch = R6Class("TunerGridSearch",
   ),
 
   private = list(
-    tune_internal = function() {
-      g = generate_design_grid(self$pe$param_set, resolution = self$settings$resolution, param_resolutions = self$settings$param_resolutions)
+    tune_internal = function(pe) {
+      g = generate_design_grid(pe$param_set, resolution = self$settings$resolution, param_resolutions = self$settings$param_resolutions)
       ch = chunk_vector(1:nrow(g$data), chunk_size = self$settings$batch_size, shuffle = TRUE)
       for (i in 1:length(ch)) {
-        self$pe$eval_batch(g$data[ch[[i]],])
+        pe$eval_batch(g$data[ch[[i]],])
       }
     }
   )

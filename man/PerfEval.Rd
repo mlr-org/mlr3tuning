@@ -11,11 +11,13 @@ that a generic tuner has to optimize. It allows the basic operations of querying
 at design points (see \code{eval_batch}), storing the evaluated point in an internal archive
 and querying the archive (see \code{archive}).
 
-The performance evaluator is one of the major inputs for constructing a \link{Tuner}.
+The performance evaluator is the major input for a \link{Tuner}.
+
+Evaluations of HP configurations are performed in batches, and after a batch-eval, if the \link{Terminator} is positive,
+an exception is raised. No further evaluations can be performed from this point on.
 }
 \section{Construction}{
-\preformatted{pe = PerfEval$new(task, learner, resampling, measures, param_set,
-  store_models = FALSE)
+\preformatted{pe = PerfEval$new(task, learner, resampling, measures, param_set, terminator, store_models = FALSE)
 }
 \itemize{
 \item \code{task} :: \link[mlr3:Task]{mlr3::Task}.
@@ -23,6 +25,7 @@ The performance evaluator is one of the major inputs for constructing a \link{Tu
 \item \code{resampling} :: \link[mlr3:Resampling]{mlr3::Resampling}.
 \item \code{measures} :: list of \link[mlr3:Measure]{mlr3::Measure}.
 \item \code{param_set} :: \link[paradox:ParamSet]{paradox::ParamSet}.
+\item \code{terminator} :: \link{Terminator}.
 \item \code{store_models} :: \code{logical(1)}\cr
 Keep the fitted learner models? Passed down to \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
 }
@@ -32,17 +35,14 @@ Keep the fitted learner models? Passed down to \code{\link[mlr3:benchmark]{mlr3:
 
 \itemize{
 \item \code{task} :: \link[mlr3:Task]{mlr3::Task}\cr
-Stored task.
 \item \code{learner} :: \link[mlr3:Learner]{mlr3::Learner}\cr
-Stored learner.
 \item \code{resampling} :: \link[mlr3:Resampling]{mlr3::Resampling}\cr
-Stored resampling
 \item \code{measures} :: list of \link[mlr3:Measure]{mlr3::Measure}\cr
-Stored measures.
 \item \code{param_set} :: \link[paradox:ParamSet]{paradox::ParamSet}\cr
-Stored parameter set.
+\item \code{terminator} :: \link{Terminator}\cr
+\item \code{store_models} :: \code{logical(1)}\cr
 \item \code{bmr} :: \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}\cr
-A benchmark result, which is used as data storage.
+A benchmark result, container object for all performed \link{ResampleResult}s when evaluating HP configurations.
 \item \code{n_evals} :: \code{integer(1)}\cr
 Number of unique experiments stored in the container.
 }
@@ -55,6 +55,7 @@ Number of unique experiments stored in the container.
 \code{\link[data.table:data.table]{data.table::data.table()}} -> \link[data.table:data.table]{data.table::data.table}\cr
 Evaluates all hyperparameter configurations in \code{dt} through resampling, where each configuration is a row, and columns are scalar parameters.
 Return a data.table with corresponding rows, where each column is an named measure.
+After a batch-eval the \link{Terminator} is checked, if it is positive, an exception of class \code{terminated_message} is raised.
 \item \code{best(ties_method = "random")}\cr
 (\code{character(1)}) -> \link[mlr3:ResampleResult]{mlr3::ResampleResult}\cr
 Queries the \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} for the best \link[mlr3:ResampleResult]{mlr3::ResampleResult} according to the first measure in \code{$measures}.
@@ -63,7 +64,7 @@ Queries the \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} for the best \lin
 \code{logical(1)} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
 Returns a table of contained resample results, similar to the one returned by \code{\link[mlr3:benchmark]{mlr3::benchmark()}}'s
 \code{archive()} method. If \code{unnest} is \code{TRUE}, hyperparameter settings are stored in
-separate columns instead of inside a list column
+separate columns instead of inside a list column.
 }
 }
 
@@ -80,16 +81,17 @@ param_set = ParamSet$new(params = list(
   ParamDbl$new("cp", lower = 0.001, upper = 0.1),
   ParamInt$new("minsplit", lower = 1, upper = 10)))
 
+terminator = TerminatorEvals$new(5)
 pe = PerfEval$new(
   task = task,
   learner = learner,
   resampling = resampling,
   measures = measures,
-  param_set = param_set
+  param_set = param_set,
+  terminator = terminator
 )
-
 pe$eval_batch(data.table(cp = c(0.05, 0.01), minsplit = c(5, 3)))
-pe$best()
+pe$archive()
 }
 \concept{PerfEval}
 \keyword{datasets}

@@ -7,38 +7,24 @@
 #' Abstract `Tuner` class that implements the main functionality each tuner must have.
 #' A tuner is an object that describes the tuning strategy how to optimize the black-box function and its feasible set
 #' defined by the `[PerfEval]` object.
-#' The state of tuning is stored in field `pe$bmr`.
 #'
 #' @section Construction:
 #' ```
-#' tuner = Tuner$new(pe, terminator, settings = list())
+#' tuner = Tuner$new(settings = list())
 #' ```
-#' * `pe` :: [PerfEval].
-#' * `terminator` :: [Terminator].
 #' * `settings` :: named `list()`\cr
 #'   Arbitrary list, depending on the child class.
 #'
 #' @section Fields:
-#' * `pe` :: [PerfEval]\cr
-#'   The current state of the [PerfEval].
-#' * `terminator` :: [Terminator].
-#'   The current state of the [Terminator].
 #' * `settings` :: named `list()`\cr
-#'   Arbitrary list, depending on the child class.
 #'
 #' @section Methods:
-#' * `tune()`\cr
-#'   () -> `self`\cr
-#'   Performs the tuning until the [Terminator] becomes positive.
-#' * `tune_result(ties.method = "random")`\cr
-#'   (`character(1)`) -> named `list()`\cr
-#'   `ties_method` can be "first", "last" or "random".
-#'   List with 2 elements:
+#' * `tune(pe)`\cr
+#'   ([PerfEval]) -> `list`\cr
+#'   Performs the tuning on a [PerfEval] until termination.
+#'   Returns list with 2 elements:
 #'     - `performance` (`numeric()`) with the best performance.
 #'     - `values` (named `list()`) with the corresponding hyperparameters values.
-#' * `archive(unnest = TRUE)`\cr
-#'   (`logical(1)`) -> [data.table::data.table()]\cr
-#'   Returns a table of contained resample results, simply delegates to the `archive` method of [PerfEval].
 #'
 #' @section Technical Details and Subclasses:
 #' A subclass is implemented in the following way:
@@ -65,15 +51,15 @@
 #' param_set = ParamSet$new(list(
 #'   ParamDbl$new("cp", lower = 0.001, upper = 0.1)
 #' ))
-#' pe = PerfEval$new("iris", "classif.rpart", "holdout", "classif.ce", param_set)
 #' terminator = TerminatorEvals$new(3)
-#' tt = TunerRandomSearch$new(pe, terminator) # swap this line to use a different Tuner
-#' tt$tune()
-#' tt$tune_result() # returns best configuration and performance
-#' tt$archive() # allows access of data.table / benchmark result of full path of all evaluations
+#' pe = PerfEval$new("iris", "classif.rpart", "holdout", "classif.ce", param_set, terminator)
+#' tt = TunerRandomSearch$new() # swap this line to use a different Tuner
+#' res = tt$tune(pe) # returns best configuration and performance, and logs in 'pe'
+#' pe$archive() # allows access of data.table / benchmark result of full path of all evaluations
 Tuner = R6Class("Tuner",
   public = list(
     settings = NULL,
+    ties_method = "random", #FIXME: bad handling
 
     initialize = function(settings = list()) {
       self$settings = assert_list(settings, names = "unique")
@@ -85,46 +71,26 @@ Tuner = R6Class("Tuner",
 
     print = function() {
       catf(format(self))
-      catf(str_indent("* Terminator:", format(self$terminator)))
       catf(str_indent("* settings:", as_short_string(self$settings)))
-      catf(str_indent("* PerfEval:", format(self$pe)))
-      print(self$pe)
     },
 
-    tune = function() {
-      if (is.null(self$pe))
-        stopf("PerfEval object is not set yet!")
+    tune = function(pe) {
       # run internal tune function which calls the optimizer
       # the optimizer will call eval_batch,
       # that will generate an exception when terminator is positive
       # we then catch that here and stop
       tryCatch({
-        private$tune_internal()
+        private$tune_internal(pe)
       }, terminated_message = function(cond) {})
-      return(invisible(self))
-    },
 
-    tune_result = function(ties_method = "random") {
-      measures = self$pe$measures
-      rr = self$pe$best(ties_method)
-      list(performance = rr$aggregate(measures), values = rr$learners[[1L]]$param_set$values)
-    },
-
-    archive = function(unnest = TRUE) self$pe$archive(unnest)
-  ),
-
-  active = list(
-    pe = function(rhs) {
-      if (missing(rhs))
-        return(private$.pe)
-      private$.pe = assert_r6(rhs, "PerfEval")
+      rr = pe$best(self$ties_method)
+      #FIXME: autotuner setting later
+      list(performance = rr$aggregate(pe$measures), values = rr$learners[[1L]]$param_set$values)
     }
   ),
 
   private = list(
-    .pe = NULL,
-
-    tune_internal = function() { # every subclass has to implement this to call optimizer
+    tune_internal = function(pe) { # every subclass has to implement this to call optimizer
       stop("abstract")
     }
   )
