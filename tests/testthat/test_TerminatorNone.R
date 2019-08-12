@@ -5,4 +5,3 @@ test_that("API", {
   expect_terminator(te)
   expect_false(te$is_terminated)
 })
-

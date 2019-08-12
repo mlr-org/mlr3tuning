@@ -31,8 +31,9 @@ TerminatorRuntime = R6Class("TerminatorRuntime",
     },
 
     eval_before = function(pe) {
-      if (is.null(self$time_start))
+      if (is.null(self$time_start)) {
         self$time_start = as.numeric(Sys.time())
+      }
       invisible(self)
     },
 

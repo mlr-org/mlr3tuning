@@ -25,5 +25,3 @@ test_that("TunerGridSearch with TerminatorNone", {
   bmr = pe$bmr
   expect_data_table(bmr$data, nrows = 8L)
 })
-
-

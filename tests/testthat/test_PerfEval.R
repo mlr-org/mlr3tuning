@@ -38,7 +38,7 @@ test_that("PerfEval", {
   expect_identical(blrn$param_set$values, list(maxdepth = 10, cp = 0.001, minsplit = 4))
 
   # test archive
-  a = pe$archive(unnest = FALSE )
+  a = pe$archive(unnest = FALSE)
   expect_data_table(a, nrows = 4L)
   a = pe$archive(unnest = TRUE)
   expect_data_table(a, nrows = 4L)
@@ -54,4 +54,3 @@ test_that("archive one row (#40)", {
   expect_data_table(a, nrows = 1)
   expect_number(a$classif.ce)
 })
-

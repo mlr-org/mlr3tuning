@@ -21,5 +21,4 @@ test_that("API", {
   expect_true(tm$is_terminated)
   expect_false(ti$is_terminated)
   expect_true(tr$is_terminated)
-
 })

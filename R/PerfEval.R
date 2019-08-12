@@ -17,7 +17,7 @@
 #' @section Construction:
 #' ```
 #' pe = PerfEval$new(task, learner, resampling, measures, param_set, terminator, store_models = FALSE)
-#'```
+#' ```
 #'
 #' * `task` :: [mlr3::Task].
 #' * `learner` :: [mlr3::Learner].
@@ -109,6 +109,7 @@ PerfEval = R6Class("PerfEval",
     },
 
     print = function() {
+
       catf(format(self))
       catf(str_indent("* Task:", format(self$task)))
       catf(str_indent("* Learner:", format(self$learner)))
@@ -118,15 +119,17 @@ PerfEval = R6Class("PerfEval",
       catf(str_indent("* store_models:", self$store_models))
       print(self$param_set)
       catf("Evals:")
-      if (!is.null(self$bmr))
+      if (!is.null(self$bmr)) {
         print(self$bmr)
-      else
+      } else {
         catf("[None yet]")
+      }
     },
 
     # evaluates all points in a design
     # possibly transforms the data before using the trafo from self$param set
     eval_batch = function(dt) {
+
       assert_data_table(dt, any.missing = FALSE, min.rows = 1, min.cols = 1)
       design = Design$new(self$param_set, dt, remove_dupl = FALSE)
 
@@ -177,7 +180,7 @@ PerfEval = R6Class("PerfEval",
     },
 
     best = function(ties_method = "random") {
-      #FIXME: we need tie handling?
+      # FIXME: we need tie handling?
       # measure = assert_measure(measure, learner = self$data$learner[[1L]])
       m = self$measures[[1L]]
       tab = self$bmr$aggregate(m, ids = FALSE)

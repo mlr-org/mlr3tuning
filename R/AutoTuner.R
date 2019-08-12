@@ -78,7 +78,7 @@
 AutoTuner = R6Class("AutoTuner", inherit = Learner,
   public = list(
     tuner_generator = NULL,
-    #FIXME: doesnt thus store the PE? and hence the complete bmr and all other slots?
+    # FIXME: doesnt thus store the PE? and hence the complete bmr and all other slots?
     learner = NULL,
     terminator = NULL,
     resampling = NULL,
@@ -92,10 +92,11 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
     # FIXME: autotuner paramset darf eigentlich nicht die params mehr enthalten über die getuned wird
 
     initialize = function(learner, resampling, measures, tune_ps, terminator, tuner, tuner_settings = list(), store_models = FALSE, id = "autotuner") {
+
       if (!inherits(tuner, "R6ClassGenerator") && grepl(pattern = "Tuner", x = tuner$classname)) {
         stopf("Tuner must be a R6 class generator that creates tuner (e.g. TunerGridSearch).")
       }
-      self$id = id  # needs to be set first for param_set active binding
+      self$id = id # needs to be set first for param_set active binding
 
       self$tuner_generator = tuner
       self$learner = learner = assert_learner(learner = learner, clone = TRUE)
@@ -119,13 +120,14 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
     },
 
     train_internal = function(task) {
+
       terminator = self$terminator$clone()
       learner = self$learner$clone(deep = TRUE)
       pe = PerfEval$new(
         task = assert_task(task, clone = TRUE),
         learner = learner,
         resampling = self$resampling,
-        measures  = self$measures,
+        measures = self$measures,
         param_set = self$tune_ps,
         terminator = self$terminator,
         store_models = self$store_models

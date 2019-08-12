@@ -41,7 +41,7 @@ TunerGenSA = R6Class("TunerGenSA",
         setnames(params, pe$param_set$ids())
         pe$eval_batch(params)
 
-        perf = pe$bmr$resample_result(n+1)$aggregate(measure)
+        perf = pe$bmr$resample_result(n + 1)$aggregate(measure)
         if (measure$minimize) perf else -perf
       }
       GenSA::GenSA(fn = objective, lower = pe$param_set$lower, upper = pe$param_set$upper,

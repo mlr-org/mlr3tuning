@@ -23,4 +23,3 @@ TerminatorNone = R6Class("TerminatorNone",
     }
   )
 )
-

@@ -53,8 +53,9 @@ TEST_MAKE_PS1 = function(n_dim = 1L) {
 TEST_MAKE_PE1 = function(values = NULL, folds = 2L, measures = "classif.ce", n_dim = 1L, term_evals = 5L) {
   ps = TEST_MAKE_PS1(n_dim = n_dim)
   lrn = mlr_learners$get("classif.rpart")
-  if (!is.null(values))
+  if (!is.null(values)) {
     lrn$param_set$values = values
+  }
   rs = mlr_resamplings$get("cv", param_vals = list(folds = folds))
   term = TerminatorEvals$new(term_evals)
   pe = PerfEval$new("iris", lrn, rs, measures, ps, term)

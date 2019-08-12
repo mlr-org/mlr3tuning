@@ -59,7 +59,7 @@
 Tuner = R6Class("Tuner",
   public = list(
     settings = NULL,
-    ties_method = "random", #FIXME: bad handling
+    ties_method = "random", # FIXME: bad handling
 
     initialize = function(settings = list()) {
       self$settings = assert_list(settings, names = "unique")
@@ -81,16 +81,18 @@ Tuner = R6Class("Tuner",
       # we then catch that here and stop
       tryCatch({
         private$tune_internal(pe)
-      }, terminated_message = function(cond) {})
+      }, terminated_message = function(cond) {
+      })
 
       rr = pe$best(self$ties_method)
-      #FIXME: autotuner setting later
+      # FIXME: autotuner setting later
       list(performance = rr$aggregate(pe$measures), values = rr$learners[[1L]]$param_set$values)
     }
   ),
 
   private = list(
-    tune_internal = function(pe) { # every subclass has to implement this to call optimizer
+    tune_internal = function(pe) {
+      # every subclass has to implement this to call optimizer
       stop("abstract")
     }
   )

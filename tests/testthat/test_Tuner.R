@@ -3,7 +3,7 @@ context("Tuner")
 
 test_that("API", {
   measures = mlr_measures$mget(c("classif.ce", "time_train", "time_both"))
-  for (n_evals in c(1,5)) {
+  for (n_evals in c(1, 5)) {
     rs = TunerRandomSearch$new()
     pe = TEST_MAKE_PE1(measures = measures, term_evals = n_evals)
     r = rs$tune(pe)
@@ -13,4 +13,3 @@ test_that("API", {
     expect_true("params" %in% names(pe$archive(FALSE)))
   }
 })
-

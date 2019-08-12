@@ -11,15 +11,18 @@ test_that("AutoTuner / train+predict", {
 
   at_clone = at$clone(deep = TRUE)
   expect_learner(at$train(task))
-  expect_prediction({prd1 = at$predict(task)})
+  expect_prediction({
+    prd1 = at$predict(task)
+  })
   at_clone$state = at$state
   expect_equal(at$clone(deep = TRUE), at_clone)
-  expect_prediction({prd2 = at_clone$predict(task)})
+  expect_prediction({
+    prd2 = at_clone$predict(task)
+  })
   expect_equal(prd1, prd2)
   expect_is(at$model$learner$model, "rpart")
 
   expect_benchmark_result(at$model$bmr)
-
 })
 
 test_that("AutoTuner / resample", {
@@ -76,5 +79,4 @@ test_that("AutoTuner / param_set", {
   at$param_set$set_id = "xyz"
   at2 = at$clone(deep = TRUE)
   expect_equal(at$param_set, at2$param_set)
-
 })

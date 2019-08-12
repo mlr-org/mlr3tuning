@@ -36,8 +36,8 @@ TerminatorPerfReached = R6Class("TerminatorPerfReached",
         stopf("Measure '%s' not being measured by Tuner / PerfEval!", mid)
       }
       self$is_terminated =
-        ( m$minimize && any(aggr[[mid]] <= self$settings$level)) ||
-        (!m$minimize && any(aggr[[mid]] >= self$settings$level))
+        (m$minimize && any(aggr[[mid]] <= self$settings$level)) ||
+          (!m$minimize && any(aggr[[mid]] >= self$settings$level))
       invisible(self)
     }
 

@@ -6,7 +6,7 @@ messageCondition = function(msg, ..., class = NULL, call = NULL) {
 # returns NULL if not found
 get_by_id = function(xs, id) {
   for (x in xs) {
-    if(x$id == id) {
+    if (x$id == id) {
       return(x)
     }
   }
