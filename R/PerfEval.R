@@ -126,12 +126,8 @@ PerfEval = R6Class("PerfEval",
       catf(str_indent("* Terminator:", format(self$terminator)))
       catf(str_indent("* store_models:", self$store_models))
       print(self$param_set)
-      catf("Evals:")
-      if (!is.null(self$bmr)) {
-        print(self$bmr)
-      } else {
-        catf("[None yet]")
-      }
+      catf("Archive:")
+      print(self$archive())
     },
 
     # evaluates all points in a design
@@ -175,7 +171,7 @@ PerfEval = R6Class("PerfEval",
 
     archive = function(unnest = TRUE) {
       if (is.null(self$bmr)) {
-        stopf("No tuning conducted yet.")
+        return(data.table())
       }
       dt = self$bmr$aggregate(measures = self$measures, params = TRUE)
       if (unnest) {

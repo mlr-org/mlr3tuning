@@ -5,6 +5,7 @@ test_that("PerfEval", {
   # test empty PE
   expect_null(pe$bmr)
   expect_identical(pe$n_evals, 0L)
+  expect_output(print(pe), "Null data.table")
 
   # add a couple of eval points and test the state of PE
   pe$eval_batch(data.table(cp = c(0.01, 0.02), minsplit = c(3, 4)))
@@ -16,6 +17,7 @@ test_that("PerfEval", {
   expect_equal(pe$bmr$resample_result(2)$learners[[1]]$param_set$values$minsplit, 4)
   expect_equal(pe$bmr$resample_result(2)$learners[[1]]$param_set$values$maxdepth, 10)
   expect_identical(pe$n_evals, 2L)
+  expect_output(print(pe), "0.02")
 
   pe$eval_batch(data.table(cp = c(0.001, 0.001), minsplit = c(3, 4)))
   expect_data_table(pe$bmr$data, nrows = 8L)
