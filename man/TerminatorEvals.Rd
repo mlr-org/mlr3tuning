@@ -15,6 +15,7 @@ An evaluation is defined by one resampling of a parameter value.
 \itemize{
 \item \code{evals} :: \code{integer(1)}\cr
 Number of allowed evaluations.
+Stored in \code{settings}.
 }
 }
 
@@ -22,7 +23,7 @@ Number of allowed evaluations.
 TerminatorEvals$new(3)
 }
 \seealso{
-Other Terminator: \code{\link{TerminatorMultiplexer}},
+Other Terminator: \code{\link{TerminatorCombo}},
   \code{\link{TerminatorNone}},
   \code{\link{TerminatorPerfReached}},
   \code{\link{TerminatorRuntime}},

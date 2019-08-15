@@ -15,6 +15,7 @@
 #'
 #' * `evals` :: `integer(1)`\cr
 #'   Number of allowed evaluations.
+#'   Stored in `settings`.
 #'
 #' @family Terminator
 #' @export

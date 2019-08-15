@@ -14,6 +14,7 @@
 #'
 #' * `runtime` :: `numeric(1)`\cr
 #'   Maximum allowed runtime, in seconds.
+#'   Stored in `settings`.
 #'
 #' @family Terminator
 #' @export

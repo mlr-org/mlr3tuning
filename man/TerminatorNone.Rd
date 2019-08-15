@@ -14,8 +14,8 @@ Mainly useful for grid search, or maybe other tuners, where the stopping is inhe
 }
 
 \seealso{
-Other Terminator: \code{\link{TerminatorEvals}},
-  \code{\link{TerminatorMultiplexer}},
+Other Terminator: \code{\link{TerminatorCombo}},
+  \code{\link{TerminatorEvals}},
   \code{\link{TerminatorPerfReached}},
   \code{\link{TerminatorRuntime}},
   \code{\link{TerminatorTime}}, \code{\link{Terminator}}

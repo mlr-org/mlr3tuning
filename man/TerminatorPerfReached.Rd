@@ -16,12 +16,13 @@ Class to terminate the tuning after a performance level has been hit.
 Level that needs to be reached, named with the ID of the measure we want to check.
 Terminates if the performance exceeds (respective measure has to be maximized) or
 falls below (respective measure has to be minimized).
+Stored in \code{settings}.
 }
 }
 
 \seealso{
-Other Terminator: \code{\link{TerminatorEvals}},
-  \code{\link{TerminatorMultiplexer}},
+Other Terminator: \code{\link{TerminatorCombo}},
+  \code{\link{TerminatorEvals}},
   \code{\link{TerminatorNone}},
   \code{\link{TerminatorRuntime}},
   \code{\link{TerminatorTime}}, \code{\link{Terminator}}

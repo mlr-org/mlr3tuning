@@ -47,8 +47,8 @@ Must be implemented in a subclass.
 }
 
 \seealso{
-Other Terminator: \code{\link{TerminatorEvals}},
-  \code{\link{TerminatorMultiplexer}},
+Other Terminator: \code{\link{TerminatorCombo}},
+  \code{\link{TerminatorEvals}},
   \code{\link{TerminatorNone}},
   \code{\link{TerminatorPerfReached}},
   \code{\link{TerminatorRuntime}},

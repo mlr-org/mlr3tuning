@@ -14,6 +14,7 @@ Class to terminate the tuning after a fixed date / time (as reported by \code{\l
 \itemize{
 \item \code{time} :: \code{POSIXct(1)}\cr
 Terminator stops after this point in time.
+Stored in \code{settings}.
 }
 }
 
@@ -27,8 +28,8 @@ t = TerminatorTime$new(time)
 print(t)
 }
 \seealso{
-Other Terminator: \code{\link{TerminatorEvals}},
-  \code{\link{TerminatorMultiplexer}},
+Other Terminator: \code{\link{TerminatorCombo}},
+  \code{\link{TerminatorEvals}},
   \code{\link{TerminatorNone}},
   \code{\link{TerminatorPerfReached}},
   \code{\link{TerminatorRuntime}}, \code{\link{Terminator}}

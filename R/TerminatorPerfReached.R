@@ -15,6 +15,7 @@
 #'   Level that needs to be reached, named with the ID of the measure we want to check.
 #'   Terminates if the performance exceeds (respective measure has to be maximized) or
 #'   falls below (respective measure has to be minimized).
+#'   Stored in `settings`.
 #'
 #' @family Terminator
 #' @export

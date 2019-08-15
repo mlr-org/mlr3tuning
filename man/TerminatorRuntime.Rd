@@ -14,6 +14,7 @@ Class to terminate the tuning after a given runtime budget is exceeded.
 \itemize{
 \item \code{runtime} :: \code{numeric(1)}\cr
 Maximum allowed runtime, in seconds.
+Stored in \code{settings}.
 }
 }
 
@@ -22,8 +23,8 @@ TerminatorRuntime$new(3)
 TerminatorRuntime$new(10 * 3600)
 }
 \seealso{
-Other Terminator: \code{\link{TerminatorEvals}},
-  \code{\link{TerminatorMultiplexer}},
+Other Terminator: \code{\link{TerminatorCombo}},
+  \code{\link{TerminatorEvals}},
   \code{\link{TerminatorNone}},
   \code{\link{TerminatorPerfReached}},
   \code{\link{TerminatorTime}}, \code{\link{Terminator}}

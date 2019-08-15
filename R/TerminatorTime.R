@@ -14,6 +14,7 @@
 #'
 #' * `time` :: `POSIXct(1)`\cr
 #'   Terminator stops after this point in time.
+#'   Stored in `settings`.
 #'
 #' @family Terminator
 #' @export
