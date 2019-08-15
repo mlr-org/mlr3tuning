@@ -6,7 +6,7 @@
 \title{Combine Terminators}
 \format{\link[R6:R6Class]{R6::R6Class} object inheriting from \link{Terminator}.}
 \description{
-This class takes multiple \link{Terminator}s and terminates as soon as one or all of the included terminators signal are positive.
+This class takes multiple \link{Terminator}s and terminates as soon as one or all of the included terminators are positive.
 }
 \section{Construction}{
 \preformatted{t = TerminatorCombo$new(terminators, any = TRUE)

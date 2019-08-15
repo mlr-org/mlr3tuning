@@ -58,6 +58,7 @@ Number of unique experiments stored in the container.
 Evaluates all hyperparameter configurations in \code{dt} through resampling, where each configuration is a row, and columns are scalar parameters.
 Return a data.table with corresponding rows, where each column is an named measure.
 After a batch-eval the \link{Terminator} is checked, if it is positive, an exception of class \code{terminated_message} is raised.
+This function should be internally called by the tuner.
 \item \code{best(ties_method = "random")}\cr
 (\code{character(1)}) -> \link[mlr3:ResampleResult]{mlr3::ResampleResult}\cr
 Queries the \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} for the best \link[mlr3:ResampleResult]{mlr3::ResampleResult} according to the first measure in \code{$measures}.

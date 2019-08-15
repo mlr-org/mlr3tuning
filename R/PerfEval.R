@@ -49,6 +49,7 @@
 #'   Evaluates all hyperparameter configurations in `dt` through resampling, where each configuration is a row, and columns are scalar parameters.
 #'   Return a data.table with corresponding rows, where each column is an named measure.
 #'   After a batch-eval the [Terminator] is checked, if it is positive, an exception of class `terminated_message` is raised.
+#'   This function should be internally called by the tuner.
 #' * `best(ties_method = "random")`\cr
 #'   (`character(1)`) -> [mlr3::ResampleResult]\cr
 #'   Queries the [mlr3::BenchmarkResult] for the best [mlr3::ResampleResult] according to the first measure in `$measures`.
