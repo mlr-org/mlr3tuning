@@ -48,7 +48,6 @@ Terminator = R6Class("Terminator",
 
     print = function() {
       catf(format(self))
-      catf(str_indent("* Terminated:", self$is_terminated))
       catf(str_indent("* settings:", as_short_string(self$settings)))
     },
 

@@ -83,6 +83,9 @@ Tuner = R6Class("Tuner",
       if (length(not_supported_pclasses) > 0L)
         stopf("Tuner '%s' does not support param types: '%s'", class(self)[1L], paste0(not_supported_pclasses, collapse = ","))
       pe$start_time = Sys.time()
+      lg$info("Starting to tune %i parameters with '%s' and '%s'" ,
+        pe$param_set$length, self$format(), pe$terminator$format())
+      lg$info("Terminator settings: %s", as_short_string(pe$terminator$settings))
       # run internal tune function which calls the optimizer
       # the optimizer will call eval_batch,
       # that will generate an exception when terminator is positive
@@ -94,6 +97,7 @@ Tuner = R6Class("Tuner",
 
       rr = pe$best(self$ties_method)
       # FIXME: autotuner setting later
+      lg$info("Finished tuning")
       list(performance = rr$aggregate(pe$measures), values = rr$learners[[1L]]$param_set$values)
     }
   ),

@@ -138,21 +138,20 @@ PerfEval = R6Class("PerfEval",
       design = Design$new(self$param_set, dt, remove_dupl = FALSE)
 
       lg$info("Evaluating %i configurations", nrow(dt))
+      lg$info("%s", capture.output(dt))
 
-      # Not that pretty but enables the use of transpose from Design:
-      if (self$param_set$has_trafo) {
-        design$data = self$param_set$trafo(design$data)
-      }
+      parlist = design$transpose(trafo = TRUE)
 
-      learners = imap(design$transpose(), function(xt, i) {
-        learner = self$learner$clone(deep = TRUE)
-        learner$param_set$values = insert_named(learner$param_set$values, xt)
-        return(learner)
+      # clone learners same length as parlist and set the configs
+      lrns = lapply(parlist, function(xs) {
+        lrn = self$learner$clone(deep = TRUE)
+        lrn$param_set$values = insert_named(lrn$param_set$values, xs)
+        return(lrn)
       })
 
       # eval via benchmark and check terminator
-      bmr = benchmark(expand_grid(tasks = list(self$task), learners = learners,
-        resamplings = list(self$resampling)), store_models = self$store_models)
+      g = expand_grid(tasks = list(self$task), learners = lrns, resamplings = list(self$resampling))
+      bmr = benchmark(g, store_models = self$store_models)
       # store evalualted results
       if (is.null(self$bmr)) {
         self$bmr = bmr
