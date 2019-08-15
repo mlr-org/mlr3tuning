@@ -17,12 +17,14 @@ or \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
 }
 \itemize{
 \item \code{learner} :: \link[mlr3:Learner]{mlr3::Learner}\cr
-Subordinate learner to tune.
+Learner to tune.
+See also \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}.
 \item \code{resampling} :: \link[mlr3:Resampling]{mlr3::Resampling}\cr
 Resampling strategy used to assess the performance of the learner on the (subset of) the
-\link{Task} passed to \code{$train()}.
+See also \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}.
 \item \code{measures} :: list of \link[mlr3:Measure]{mlr3::Measure}\cr
-Performance measures. The first one is subject to tuning.
+Performance measures. The first one is optimized.
+See also \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}.
 \item \code{param_set} :: \link[paradox:ParamSet]{paradox::ParamSet}\cr
 Tuning space.
 \item \code{terminator} :: \link{Terminator}\cr

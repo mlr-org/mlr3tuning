@@ -21,9 +21,13 @@ an exception is raised. No further evaluations can be performed from this point 
 }
 \itemize{
 \item \code{task} :: \link[mlr3:Task]{mlr3::Task}.
+See also \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}.
 \item \code{learner} :: \link[mlr3:Learner]{mlr3::Learner}.
+See also \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}.
 \item \code{resampling} :: \link[mlr3:Resampling]{mlr3::Resampling}.
+See also \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}.
 \item \code{measures} :: list of \link[mlr3:Measure]{mlr3::Measure}.
+See also \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}.
 \item \code{param_set} :: \link[paradox:ParamSet]{paradox::ParamSet}.
 \item \code{terminator} :: \link{Terminator}.
 \item \code{store_models} :: \code{logical(1)}\cr

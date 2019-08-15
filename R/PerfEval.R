@@ -20,9 +20,13 @@
 #' ```
 #'
 #' * `task` :: [mlr3::Task].
+#'   See also [mlr3::mlr_sugar].
 #' * `learner` :: [mlr3::Learner].
+#'   See also [mlr3::mlr_sugar].
 #' * `resampling` :: [mlr3::Resampling].
+#'   See also [mlr3::mlr_sugar].
 #' * `measures` :: list of [mlr3::Measure].
+#'   See also [mlr3::mlr_sugar].
 #' * `param_set` :: [paradox::ParamSet].
 #' * `terminator` :: [Terminator].
 #' * `store_models` :: `logical(1)`\cr

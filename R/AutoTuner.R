@@ -15,12 +15,14 @@
 #'   tuner, tuner_settings, store_models = FALSE, id = "autotuner")
 #' ```
 #' * `learner` :: [mlr3::Learner]\cr
-#'   Subordinate learner to tune.
+#'   Learner to tune.
+#'   See also [mlr3::mlr_sugar].
 #' * `resampling` :: [mlr3::Resampling]\cr
 #'   Resampling strategy used to assess the performance of the learner on the (subset of) the
-#'   [Task] passed to `$train()`.
+#'   See also [mlr3::mlr_sugar].
 #' * `measures` :: list of [mlr3::Measure]\cr
-#'   Performance measures. The first one is subject to tuning.
+#'   Performance measures. The first one is optimized.
+#'   See also [mlr3::mlr_sugar].
 #' * `param_set` :: [paradox::ParamSet]\cr
 #'   Tuning space.
 #' * `terminator` :: [Terminator]\cr
