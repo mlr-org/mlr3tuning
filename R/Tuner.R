@@ -81,7 +81,7 @@ Tuner = R6Class("Tuner",
     tune = function(pe) {
       not_supported_pclasses = setdiff(unique(pe$param_set$class), self$param_classes)
       if (length(not_supported_pclasses) > 0L)
-        stopf("Tuner '%' %does not support param types: %s", paste0(not_supported_pclasses, collapse = TRUE))
+        stopf("Tuner '%s' does not support param types: '%s'", class(self)[1L], paste0(not_supported_pclasses, collapse = ","))
       pe$start_time = Sys.time()
       # run internal tune function which calls the optimizer
       # the optimizer will call eval_batch,
