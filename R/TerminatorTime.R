@@ -31,21 +31,10 @@ TerminatorTime = R6Class("TerminatorTime",
     initialize = function(time) {
       assert_class(time, "POSIXct")
       super$initialize(settings = list(time = time))
-      self$is_terminated = FALSE
     },
 
-    eval_before = function(pe) {
-      if (Sys.time() > self$settings$time) {
-        self$is_terminated = TRUE
-      }
-      invisible(self)
-    },
-
-    eval_after = function(pe) {
-      if (Sys.time() > self$settings$time) {
-        self$is_terminated = TRUE
-      }
-      invisible(self)
+    is_terminated = function(pe) {
+      return(Sys.time() > self$settings$time)
     }
   )
 )

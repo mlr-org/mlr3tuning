@@ -2,29 +2,20 @@ context("TerminatorPerfReached")
 
 test_that("TerminatorPerfReached", {
   te = TerminatorPerfReached$new(c(dummy.cp = 0.5))
-  expect_terminator(te)
-
+  pe = TEST_MAKE_PE1()
   m = mlr_measures$get("dummy.cp")
 
   m$minimize = TRUE
   pe = TEST_MAKE_PE1(measures = m)
-  te$eval_before(pe)
   pe$eval_batch(data.table(cp = c(0.8, 0.9)))
-  te$eval_after(pe)
-  expect_false(te$is_terminated)
-  te$eval_before(pe)
+  expect_false(te$is_terminated(pe))
   pe$eval_batch(data.table(cp = c(0.3)))
-  te$eval_after(pe)
-  expect_true(te$is_terminated)
+  expect_true(te$is_terminated(pe))
 
   m$minimize = FALSE
   pe = TEST_MAKE_PE1(measures = m)
-  te$eval_before(pe)
   pe$eval_batch(data.table(cp = c(0.1, 0.2)))
-  te$eval_after(pe)
-  expect_false(te$is_terminated)
-  te$eval_before(pe)
+  expect_false(te$is_terminated(pe))
   pe$eval_batch(data.table(cp = c(0.9)))
-  te$eval_after(pe)
-  expect_true(te$is_terminated)
+  expect_true(te$is_terminated(pe))
 })

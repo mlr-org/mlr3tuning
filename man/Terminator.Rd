@@ -33,23 +33,16 @@ Arbitrary settings required by the child class.
 
 \itemize{
 \item \code{settings} :: named \code{list()}\cr
-Settings passed during construction.
-\item \code{is_terminated} :: \code{logical(1)}\cr
-Is \code{TRUE} if the termination criterion if the child class is met.
 }
 }
 
 \section{Methods}{
 
 \itemize{
-\item \code{eval_before(pe)}\cr
-\link{PerfEval} -> \code{self}\cr
-Is called in each tuning iteration before the evaluation.
-Can/Should be implemented in a subclass.
-\item \code{eval_after(pe)}\cr
-\link{PerfEval} -> \code{self}\cr
-Is called in each tuning iteration after the evaluation.
-Can/Should be implemented in a subclass.
+\item \code{is_terminated(pe)}\cr
+\link{PerfEval} -> \code{logical(1)}\cr
+Is \code{TRUE} iff the termination criterion is positive.
+Must be implemented in a subclass.
 }
 }
 

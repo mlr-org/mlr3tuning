@@ -34,7 +34,7 @@
 #'  * The batch-eval is requested at the PerfEval 'pe' object,
 #'    so each batch is possibly executed in parallel via [mlr3::benchmark()],
 #'    and all evaluations are stored inside of 'pe$bmr'.
-#'  * After the batch-eval, all registered terminators are checked, and if one is positive,
+#'  * After the batch-eval, the terminator is checked, and if is positive,
 #'    an exception is generated of class 'terminated_message'. In this case the current
 #'    batch of evals is still stored in pe, but the numeric score are not sent back to
 #'    the handling optimizer as it has lost execution control.
@@ -75,6 +75,7 @@ Tuner = R6Class("Tuner",
     },
 
     tune = function(pe) {
+      pe$start_time = Sys.time()
       # run internal tune function which calls the optimizer
       # the optimizer will call eval_batch,
       # that will generate an exception when terminator is positive

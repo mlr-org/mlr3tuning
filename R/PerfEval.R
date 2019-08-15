@@ -27,6 +27,8 @@
 #' * `terminator` :: [Terminator].
 #' * `store_models` :: `logical(1)`\cr
 #'   Keep the fitted learner models? Passed down to [mlr3::benchmark()].
+#' * `start_time` :: `POSIXct(1)`\cr
+#'   Time the tuning / evaluations were started.
 #'
 #' @section Fields:
 #' * `task` :: [mlr3::Task]\cr
@@ -93,6 +95,7 @@ PerfEval = R6Class("PerfEval",
     terminator = NULL,
     store_models = NULL,
     bmr = NULL,
+    start_time = NULL,
 
     initialize = function(task, learner, resampling, measures, param_set, terminator, store_models = FALSE) {
       self$task = assert_task(task)
@@ -146,8 +149,7 @@ PerfEval = R6Class("PerfEval",
         return(learner)
       })
 
-      # update terminator and eval via benchmark
-      self$terminator$eval_before(self)
+      # eval via benchmark and check terminator
       bmr = benchmark(expand_grid(tasks = list(self$task), learners = learners,
         resamplings = list(self$resampling)), store_models = self$store_models)
       # store evalualted results
@@ -156,10 +158,8 @@ PerfEval = R6Class("PerfEval",
       } else {
         self$bmr$combine(bmr)
       }
-      self$terminator$eval_after(self)
-
       # if the terminator is positive throw condition of class "terminated_message" that we can tryCatch
-      if (self$terminator$is_terminated) {
+      if (self$terminator$is_terminated(self)) {
         stop(messageCondition("Termination criteria is reached", class = "terminated_message"))
       }
 

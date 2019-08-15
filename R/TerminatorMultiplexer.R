@@ -32,16 +32,8 @@ TerminatorMultiplexer = R6Class("TerminatorMultiplexer",
       super$initialize(list())
     },
 
-    eval_before = function(pe) {
-      lapply(self$terminators, function(t) t$eval_before(pe))
-      self$is_terminated = self$is_terminated || some(self$terminators, "is_terminated")
-      invisible(self)
-    },
-
-    eval_after = function(pe) {
-      lapply(self$terminators, function(t) t$eval_after(pe))
-      self$is_terminated = self$is_terminated || some(self$terminators, "is_terminated")
-      invisible(self)
+    is_terminated = function(pe) {
+      any(map_lgl(self$terminators, function(t) t$is_terminated(pe)))
     }
   )
 )

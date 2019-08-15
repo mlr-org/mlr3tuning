@@ -28,6 +28,8 @@ an exception is raised. No further evaluations can be performed from this point 
 \item \code{terminator} :: \link{Terminator}.
 \item \code{store_models} :: \code{logical(1)}\cr
 Keep the fitted learner models? Passed down to \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
+\item \code{start_time} :: \code{POSIXct(1)}\cr
+Time the tuning / evaluations were started.
 }
 }
 

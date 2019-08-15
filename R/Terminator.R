@@ -25,25 +25,17 @@
 #'
 #' @section Fields:
 #' * `settings` :: named `list()`\cr
-#'   Settings passed during construction.
-#' * `is_terminated` :: `logical(1)`\cr
-#'   Is `TRUE` if the termination criterion if the child class is met.
 #'
 #' @section Methods:
-#' * `eval_before(pe)`\cr
-#'   [PerfEval] -> `self`\cr
-#'   Is called in each tuning iteration before the evaluation.
-#'   Can/Should be implemented in a subclass.
-#' * `eval_after(pe)`\cr
-#'   [PerfEval] -> `self`\cr
-#'   Is called in each tuning iteration after the evaluation.
-#'   Can/Should be implemented in a subclass.
+#' * `is_terminated(pe)`\cr
+#'   [PerfEval] -> `logical(1)`\cr
+#'   Is `TRUE` iff the termination criterion is positive.
+#'   Must be implemented in a subclass.
 #'
 #' @family Terminator
 #' @export
 Terminator = R6Class("Terminator",
   public = list(
-    is_terminated = FALSE,
     settings = NULL,
 
     initialize = function(settings) {
@@ -60,7 +52,6 @@ Terminator = R6Class("Terminator",
       catf(str_indent("* settings:", as_short_string(self$settings)))
     },
 
-    eval_before = function(pe) invisible(self), # overwrite these 2 in subclasses
-    eval_after = function(pe) invisible(self)
+    is_terminated = function(pe) invisible(self) # overwrite in subclasses
   )
 )

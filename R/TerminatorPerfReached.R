@@ -27,7 +27,7 @@ TerminatorPerfReached = R6Class("TerminatorPerfReached",
       super$initialize(settings = list(level = level))
     },
 
-    eval_after = function(pe) {
+    is_terminated = function(pe) {
       level = self$settings$level
       mid = names(level)
       aggr = pe$archive()
@@ -35,11 +35,8 @@ TerminatorPerfReached = R6Class("TerminatorPerfReached",
       if (is.null(m)) {
         stopf("Measure '%s' not being measured by Tuner / PerfEval!", mid)
       }
-      self$is_terminated =
-        (m$minimize && any(aggr[[mid]] <= self$settings$level)) ||
-          (!m$minimize && any(aggr[[mid]] >= self$settings$level))
-      invisible(self)
+      (m$minimize && any(aggr[[mid]] <= self$settings$level)) ||
+        (!m$minimize && any(aggr[[mid]] >= self$settings$level))
     }
-
   )
 )

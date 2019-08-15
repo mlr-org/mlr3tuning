@@ -23,26 +23,14 @@
 TerminatorRuntime = R6Class("TerminatorRuntime",
   inherit = Terminator,
   public = list(
-    time_start = NULL,
-
     initialize = function(runtime) {
       assert_number(runtime, lower = 0)
       super$initialize(settings = list(runtime = runtime))
     },
 
-    eval_before = function(pe) {
-      if (is.null(self$time_start)) {
-        self$time_start = as.numeric(Sys.time())
-      }
-      invisible(self)
-    },
-
-    eval_after = function(pe) {
-      elapsed = as.numeric(Sys.time()) - self$time_start
-      if (elapsed > self$settings$runtime) {
-        self$is_terminated = TRUE
-      }
-      invisible(self)
+    is_terminated = function(pe) {
+      elapsed = as.numeric(Sys.time()) - as.numeric(pe$start_time)
+      return(elapsed > self$settings$runtime)
     }
   )
 )

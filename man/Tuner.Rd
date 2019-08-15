@@ -50,7 +50,7 @@ A subclass is implemented in the following way:
 \item The batch-eval is requested at the PerfEval 'pe' object,
 so each batch is possibly executed in parallel via \code{\link[mlr3:benchmark]{mlr3::benchmark()}},
 and all evaluations are stored inside of 'pe$bmr'.
-\item After the batch-eval, all registered terminators are checked, and if one is positive,
+\item After the batch-eval, the terminator is checked, and if is positive,
 an exception is generated of class 'terminated_message'. In this case the current
 batch of evals is still stored in pe, but the numeric score are not sent back to
 the handling optimizer as it has lost execution control.

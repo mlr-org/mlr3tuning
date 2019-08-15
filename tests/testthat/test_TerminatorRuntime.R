@@ -2,24 +2,13 @@ context("TerminatorRuntime")
 
 test_that("API", {
   te = TerminatorRuntime$new(1)
-  expect_terminator(te)
+  pe = TEST_MAKE_PE1()
+  pe$start_time = Sys.time() # as in "Tuner$tune()"
+  expect_false(te$is_terminated(pe))
 
-  expect_identical(te$settings$runtime, 1)
-  expect_identical(te$time_start, NULL)
-  expect_false(te$is_terminated)
-
-  pe = list(bmr = list(data = data.table()))
-
-  te$eval_before(pe)
   Sys.sleep(0.1)
-  te$eval_after(pe)
+  expect_false(te$is_terminated(pe))
 
-  expect_number(te$time_start)
-  expect_false(te$is_terminated)
-
-  te$eval_before(pe)
   Sys.sleep(1)
-  te$eval_after(pe)
-
-  expect_true(te$is_terminated)
+  expect_true(te$is_terminated(pe))
 })
