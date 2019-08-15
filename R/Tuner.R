@@ -14,6 +14,8 @@
 #' ```
 #' * `settings` :: named `list()`\cr
 #'   Arbitrary list, depending on the child class.
+#' * `param_classes` :: `character`\cr
+#'   Supported parameter classes that the tuner can optimize, subclasses of [paradox::Param].
 #'
 #' @section Fields:
 #' * `settings` :: named `list()`\cr
@@ -59,9 +61,11 @@
 Tuner = R6Class("Tuner",
   public = list(
     settings = NULL,
+    param_classes = NULL,
     ties_method = "random", # FIXME: bad handling
 
-    initialize = function(settings = list()) {
+    initialize = function(param_classes, settings = list()) {
+      self$param_classes = param_classes
       self$settings = assert_list(settings, names = "unique")
     },
 
@@ -75,6 +79,9 @@ Tuner = R6Class("Tuner",
     },
 
     tune = function(pe) {
+      not_supported_pclasses = setdiff(unique(pe$param_set$class), self$param_classes)
+      if (length(not_supported_pclasses) > 0L)
+        stopf("Tuner '%' %does not support param types: %s", paste0(not_supported_pclasses, collapse = TRUE))
       pe$start_time = Sys.time()
       # run internal tune function which calls the optimizer
       # the optimizer will call eval_batch,

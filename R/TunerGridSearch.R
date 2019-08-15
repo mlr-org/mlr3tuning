@@ -42,8 +42,10 @@ TunerGridSearch = R6Class("TunerGridSearch",
     initialize = function(resolution = 10L, param_resolutions = NULL, batch_size = 1L) {
       batch_size = assert_int(batch_size, lower = 1L, coerce = TRUE)
       s = list(batch_size = batch_size, resolution = resolution, param_resolutions = param_resolutions)
-      super$initialize(settings = s)
-      return(self)
+      super$initialize(
+        param_classes = c("ParamLgl", "ParamInt", "ParamDbl", "ParamFct"),
+        settings = s
+      )
     }
   ),
 

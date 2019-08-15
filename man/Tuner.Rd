@@ -16,6 +16,8 @@ defined by the \code{[PerfEval]} object.
 \itemize{
 \item \code{settings} :: named \code{list()}\cr
 Arbitrary list, depending on the child class.
+\item \code{param_classes} :: \code{character}\cr
+Supported parameter classes that the tuner can optimize, subclasses of \link[paradox:Param]{paradox::Param}.
 }
 }
 

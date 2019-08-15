@@ -32,7 +32,10 @@ TunerRandomSearch = R6Class("TunerRandomSearch",
     initialize = function(batch_size = 1L) {
       batch_size = assert_count(batch_size, coerce = TRUE)
       s = list(batch_size = batch_size)
-      super$initialize(settings = s)
+      super$initialize(
+        param_classes = c("ParamLgl", "ParamInt", "ParamDbl", "ParamFct"),
+        settings = s
+      )
     }
   ),
 

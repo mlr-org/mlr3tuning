@@ -27,8 +27,12 @@ TunerGenSA = R6Class("TunerGenSA",
   public = list(
     initialize = function(...) {
       # Default settings:
-      settings = list(smooth = FALSE, acceptance.param = -15, simple.function = FALSE, temperature = 250)
-      super$initialize(settings = insert_named(settings, list(...)))
+      s = list(smooth = FALSE, acceptance.param = -15, simple.function = FALSE, temperature = 250)
+      s = insert_named(s, list(...))
+      super$initialize(
+        param_classes = c("ParamInt", "ParamDbl"),
+        settings = s
+      )
     }
   ),
   private = list(
