@@ -28,7 +28,7 @@
 #'
 #' @section Methods:
 #' * `is_terminated(pe)`\cr
-#'   [PerfEval] -> `logical(1)`\cr
+#'   [TuningInstance] -> `logical(1)`\cr
 #'   Is `TRUE` iff the termination criterion is positive.
 #'   Must be implemented in a subclass.
 #'

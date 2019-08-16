@@ -125,7 +125,7 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
 
       terminator = self$terminator$clone()
       learner = self$learner$clone(deep = TRUE)
-      pe = PerfEval$new(
+      pe = TuningInstance$new(
         task = assert_task(task, clone = TRUE),
         learner = learner,
         resampling = self$resampling,

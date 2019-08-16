@@ -1,4 +1,4 @@
-#' @title PerfEval Class
+#' @title TuningInstance Class
 #'
 #' @usage NULL
 #' @format [R6::R6Class] object.
@@ -16,7 +16,7 @@
 #'
 #' @section Construction:
 #' ```
-#' pe = PerfEval$new(task, learner, resampling, measures, param_set, terminator, store_models = FALSE)
+#' pe = TuningInstance$new(task, learner, resampling, measures, param_set, terminator, store_models = FALSE)
 #' ```
 #'
 #' * `task` :: [mlr3::Task].
@@ -65,7 +65,7 @@
 #'   `archive()` method. If `unnest` is `TRUE`, hyperparameter settings are stored in
 #'   separate columns instead of inside a list column.
 #'
-#' @family PerfEval
+#' @family TuningInstance
 #' @export
 #' @examples
 #' library(mlr3)
@@ -81,7 +81,7 @@
 #'   ParamInt$new("minsplit", lower = 1, upper = 10)))
 #'
 #' terminator = TerminatorEvals$new(5)
-#' pe = PerfEval$new(
+#' pe = TuningInstance$new(
 #'   task = task,
 #'   learner = learner,
 #'   resampling = resampling,
@@ -91,7 +91,7 @@
 #' )
 #' pe$eval_batch(data.table(cp = c(0.05, 0.01), minsplit = c(5, 3)))
 #' pe$archive()
-PerfEval = R6Class("PerfEval",
+TuningInstance = R6Class("TuningInstance",
   public = list(
     task = NULL,
     learner = NULL,

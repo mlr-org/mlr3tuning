@@ -34,7 +34,7 @@ TerminatorPerfReached = R6Class("TerminatorPerfReached",
       aggr = pe$archive()
       m = get_by_id(pe$measures, mid)
       if (is.null(m)) {
-        stopf("Measure '%s' not being measured by Tuner / PerfEval!", mid)
+        stopf("Measure '%s' not being measured by Tuner / TuningInstance!", mid)
       }
       (m$minimize && any(aggr[[mid]] <= self$settings$level)) ||
         (!m$minimize && any(aggr[[mid]] >= self$settings$level))

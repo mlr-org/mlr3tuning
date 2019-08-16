@@ -18,7 +18,7 @@ test_tuner = function(tuner_factory, arg_list = list(), n_dim = 1L, term_evals =
     ))
   }
   term = TerminatorEvals$new(term_evals)
-  pe = PerfEval$new("iris", "classif.rpart", "holdout", "classif.ce", ps, term)
+  pe = TuningInstance$new("iris", "classif.rpart", "holdout", "classif.ce", ps, term)
   tuner = do.call(tuner_factory$new, arg_list)
 
   r = tuner$tune(pe)
@@ -53,7 +53,7 @@ TEST_MAKE_PE1 = function(values = NULL, folds = 2L, measures = "classif.ce", n_d
   }
   rs = mlr_resamplings$get("cv", param_vals = list(folds = folds))
   term = TerminatorEvals$new(term_evals)
-  pe = PerfEval$new("iris", lrn, rs, measures, ps, term)
+  pe = TuningInstance$new("iris", lrn, rs, measures, ps, term)
   return(pe)
 }
 

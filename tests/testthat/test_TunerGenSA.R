@@ -8,7 +8,7 @@ test_that("TunerGenSA", {
     ParamLgl$new("save_tasks")
   ))
   term = TerminatorEvals$new(2)
-  pe = PerfEval$new("iris", "classif.debug", "holdout", "classif.ce", ps, term)
+  pe = TuningInstance$new("iris", "classif.debug", "holdout", "classif.ce", ps, term)
   tt = TunerGenSA$new()
   expect_error(tt$tune(pe), "support")
 })
@@ -27,7 +27,7 @@ test_that("TunerGenSA with int params and trafo", {
     return(x)
   }
   term = TerminatorEvals$new(2)
-  pe = PerfEval$new("iris", "classif.rpart", "holdout", "classif.ce", ps, term)
+  pe = TuningInstance$new("iris", "classif.rpart", "holdout", "classif.ce", ps, term)
   tt = TunerGenSA$new()
   tt$tune(pe)
   d = pe$archive()

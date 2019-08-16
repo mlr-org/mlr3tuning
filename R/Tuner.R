@@ -6,7 +6,7 @@
 #' @description
 #' Abstract `Tuner` class that implements the main functionality each tuner must have.
 #' A tuner is an object that describes the tuning strategy how to optimize the black-box function and its feasible set
-#' defined by the `[PerfEval]` object.
+#' defined by the `[TuningInstance]` object.
 #'
 #' @section Construction:
 #' ```
@@ -21,9 +21,9 @@
 #' * `settings` :: named `list()`\cr
 #'
 #' @section Methods:
-#' * `tune(pe)`\cr
-#'   ([PerfEval]) -> `list`\cr
-#'   Performs the tuning on a [PerfEval] until termination.
+#' * `tune(inst)`\cr
+#'   ([TuningInstance]) -> `list`\cr
+#'   Performs the tuning on a [TuningInstance] until termination.
 #'   Returns list with 2 elements:
 #'     - `performance` (`numeric()`) with the best performance.
 #'     - `values` (named `list()`) with the corresponding hyperparameters values.
@@ -32,15 +32,15 @@
 #' A subclass is implemented in the following way:
 #'  * Inherit from Tuner
 #'  * Specify the private abstract method `tune_internal` and use it to call into your optimizer.
-#'  * When you set up an objective function, you will call `pe$eval_batch` to evaluate design points.
-#'  * The batch-eval is requested at the PerfEval 'pe' object,
+#'  * When you set up an objective function, you will call `inst$eval_batch` to evaluate design points.
+#'  * The batch-eval is requested at the TuningInstance 'inst' object,
 #'    so each batch is possibly executed in parallel via [mlr3::benchmark()],
-#'    and all evaluations are stored inside of 'pe$bmr'.
+#'    and all evaluations are stored inside of 'inst$bmr'.
 #'  * After the batch-eval, the terminator is checked, and if is positive,
 #'    an exception is generated of class 'terminated_message'. In this case the current
-#'    batch of evals is still stored in pe, but the numeric score are not sent back to
+#'    batch of evals is still stored in inst, but the numeric score are not sent back to
 #'    the handling optimizer as it has lost execution control.
-#'  * After such an exception was caught we select the best configuration from `pe$bmr` and
+#'  * After such an exception was caught we select the best configuration from `inst$bmr` and
 #'    return it.
 #'  * Note that therefore more points than specified by the Terminator might be evaluated,
 #'    as the Terminator is only checked after a batch-eval. How many more depends on the batchsize.
@@ -54,10 +54,10 @@
 #'   ParamDbl$new("cp", lower = 0.001, upper = 0.1)
 #' ))
 #' terminator = TerminatorEvals$new(3)
-#' pe = PerfEval$new("iris", "classif.rpart", "holdout", "classif.ce", param_set, terminator)
+#' inst = TuningInstance$new("iris", "classif.rpart", "holdout", "classif.ce", param_set, terminator)
 #' tt = TunerRandomSearch$new() # swap this line to use a different Tuner
-#' res = tt$tune(pe) # returns best configuration and performance, and logs in 'pe'
-#' pe$archive() # allows access of data.table / benchmark result of full path of all evaluations
+#' res = tt$tune(inst) # returns best configuration and performance, and logs in 'inst'
+#' inst$archive() # allows access of data.table / benchmark result of full path of all evaluations
 Tuner = R6Class("Tuner",
   public = list(
     settings = NULL,
@@ -78,35 +78,35 @@ Tuner = R6Class("Tuner",
       catf(str_indent("* settings:", as_short_string(self$settings)))
     },
 
-    tune = function(pe) {
+    tune = function(inst) {
       # FIXME: i currently do not know how to check for types after trafo, see issue #154
-      if (!pe$param_set$has_trafo) {
-        not_supported_pclasses = setdiff(unique(pe$param_set$class), self$param_classes)
+      if (!inst$param_set$has_trafo) {
+        not_supported_pclasses = setdiff(unique(inst$param_set$class), self$param_classes)
         if (length(not_supported_pclasses) > 0L)
           stopf("Tuner '%s' does not support param types: '%s'", class(self)[1L], paste0(not_supported_pclasses, collapse = ","))
       }
-      pe$start_time = Sys.time()
+      inst$start_time = Sys.time()
       lg$info("Starting to tune %i parameters with '%s' and '%s'" ,
-        pe$param_set$length, self$format(), pe$terminator$format())
-      lg$info("Terminator settings: %s", as_short_string(pe$terminator$settings))
+        inst$param_set$length, self$format(), inst$terminator$format())
+      lg$info("Terminator settings: %s", as_short_string(inst$terminator$settings))
       # run internal tune function which calls the optimizer
       # the optimizer will call eval_batch,
       # that will generate an exception when terminator is positive
       # we then catch that here and stop
       tryCatch({
-        private$tune_internal(pe)
+        private$tune_internal(inst)
       }, terminated_message = function(cond) {
       })
 
-      rr = pe$best(self$ties_method)
+      rr = inst$best(self$ties_method)
       # FIXME: autotuner setting later
       lg$info("Finished tuning")
-      list(performance = rr$aggregate(pe$measures), values = rr$learners[[1L]]$param_set$values)
+      list(performance = rr$aggregate(inst$measures), values = rr$learners[[1L]]$param_set$values)
     }
   ),
 
   private = list(
-    tune_internal = function(pe) {
+    tune_internal = function(inst) {
       # every subclass has to implement this to call optimizer
       stop("abstract")
     }

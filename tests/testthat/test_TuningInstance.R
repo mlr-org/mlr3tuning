@@ -1,6 +1,6 @@
-context("PerfEval")
+context("TuningInstance")
 
-test_that("PerfEval", {
+test_that("TuningInstance", {
   pe = TEST_MAKE_PE1(values = list(maxdepth = 10), folds = 2L, measures = "dummy.cp", n_dim = 2)
   # test empty PE
   expect_null(pe$bmr)

@@ -8,7 +8,7 @@
 \description{
 Abstract \code{Tuner} class that implements the main functionality each tuner must have.
 A tuner is an object that describes the tuning strategy how to optimize the black-box function and its feasible set
-defined by the \code{[PerfEval]} object.
+defined by the \code{[TuningInstance]} object.
 }
 \section{Construction}{
 \preformatted{tuner = Tuner$new(settings = list())
@@ -31,9 +31,9 @@ Supported parameter classes that the tuner can optimize, subclasses of \link[par
 \section{Methods}{
 
 \itemize{
-\item \code{tune(pe)}\cr
-(\link{PerfEval}) -> \code{list}\cr
-Performs the tuning on a \link{PerfEval} until termination.
+\item \code{tune(inst)}\cr
+(\link{TuningInstance}) -> \code{list}\cr
+Performs the tuning on a \link{TuningInstance} until termination.
 Returns list with 2 elements:
 \itemize{
 \item \code{performance} (\code{numeric()}) with the best performance.
@@ -48,15 +48,15 @@ A subclass is implemented in the following way:
 \itemize{
 \item Inherit from Tuner
 \item Specify the private abstract method \code{tune_internal} and use it to call into your optimizer.
-\item When you set up an objective function, you will call \code{pe$eval_batch} to evaluate design points.
-\item The batch-eval is requested at the PerfEval 'pe' object,
+\item When you set up an objective function, you will call \code{inst$eval_batch} to evaluate design points.
+\item The batch-eval is requested at the TuningInstance 'inst' object,
 so each batch is possibly executed in parallel via \code{\link[mlr3:benchmark]{mlr3::benchmark()}},
-and all evaluations are stored inside of 'pe$bmr'.
+and all evaluations are stored inside of 'inst$bmr'.
 \item After the batch-eval, the terminator is checked, and if is positive,
 an exception is generated of class 'terminated_message'. In this case the current
-batch of evals is still stored in pe, but the numeric score are not sent back to
+batch of evals is still stored in inst, but the numeric score are not sent back to
 the handling optimizer as it has lost execution control.
-\item After such an exception was caught we select the best configuration from \code{pe$bmr} and
+\item After such an exception was caught we select the best configuration from \code{inst$bmr} and
 return it.
 \item Note that therefore more points than specified by the Terminator might be evaluated,
 as the Terminator is only checked after a batch-eval. How many more depends on the batchsize.
@@ -70,10 +70,10 @@ param_set = ParamSet$new(list(
   ParamDbl$new("cp", lower = 0.001, upper = 0.1)
 ))
 terminator = TerminatorEvals$new(3)
-pe = PerfEval$new("iris", "classif.rpart", "holdout", "classif.ce", param_set, terminator)
+inst = TuningInstance$new("iris", "classif.rpart", "holdout", "classif.ce", param_set, terminator)
 tt = TunerRandomSearch$new() # swap this line to use a different Tuner
-res = tt$tune(pe) # returns best configuration and performance, and logs in 'pe'
-pe$archive() # allows access of data.table / benchmark result of full path of all evaluations
+res = tt$tune(inst) # returns best configuration and performance, and logs in 'inst'
+inst$archive() # allows access of data.table / benchmark result of full path of all evaluations
 }
 \seealso{
 Other Tuner: \code{\link{TunerGenSA}},
