@@ -23,11 +23,12 @@ Stored in \code{settings}.
 TerminatorEvals$new(3)
 }
 \seealso{
-Other Terminator: \code{\link{TerminatorCombo}},
+Other Terminator: \code{\link{TerminatorClockTime}},
+  \code{\link{TerminatorCombo}},
+  \code{\link{TerminatorModelTime}},
   \code{\link{TerminatorNone}},
   \code{\link{TerminatorPerfReached}},
-  \code{\link{TerminatorRuntime}},
-  \code{\link{TerminatorTime}}, \code{\link{Terminator}}
+  \code{\link{Terminator}}
 }
 \concept{Terminator}
 \keyword{datasets}

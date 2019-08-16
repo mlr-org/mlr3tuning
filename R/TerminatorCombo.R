@@ -21,7 +21,7 @@
 #' @export
 #' @examples
 #' t = TerminatorCombo$new(list(
-#'   TerminatorRuntime$new(60),
+#'   TerminatorModelTime$new(60),
 #'   TerminatorEvals$new(10)
 #' ))
 #' print(t)

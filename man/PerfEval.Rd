@@ -34,6 +34,7 @@ See also \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}.
 Keep the fitted learner models? Passed down to \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
 \item \code{start_time} :: \code{POSIXct(1)}\cr
 Time the tuning / evaluations were started.
+This is set in the beginning of \code{tune} of \link{Tuner}.
 }
 }
 

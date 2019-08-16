@@ -22,17 +22,18 @@ Stored in \code{settings}.
 
 \examples{
 t = TerminatorCombo$new(list(
-  TerminatorRuntime$new(60),
+  TerminatorModelTime$new(60),
   TerminatorEvals$new(10)
 ))
 print(t)
 }
 \seealso{
-Other Terminator: \code{\link{TerminatorEvals}},
+Other Terminator: \code{\link{TerminatorClockTime}},
+  \code{\link{TerminatorEvals}},
+  \code{\link{TerminatorModelTime}},
   \code{\link{TerminatorNone}},
   \code{\link{TerminatorPerfReached}},
-  \code{\link{TerminatorRuntime}},
-  \code{\link{TerminatorTime}}, \code{\link{Terminator}}
+  \code{\link{Terminator}}
 }
 \concept{Terminator}
 \keyword{datasets}

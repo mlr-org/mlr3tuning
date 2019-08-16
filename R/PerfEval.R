@@ -33,6 +33,7 @@
 #'   Keep the fitted learner models? Passed down to [mlr3::benchmark()].
 #' * `start_time` :: `POSIXct(1)`\cr
 #'   Time the tuning / evaluations were started.
+#'   This is set in the beginning of `tune` of [Tuner].
 #'
 #' @section Fields:
 #' * `task` :: [mlr3::Task]\cr

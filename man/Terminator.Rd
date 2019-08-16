@@ -47,12 +47,12 @@ Must be implemented in a subclass.
 }
 
 \seealso{
-Other Terminator: \code{\link{TerminatorCombo}},
+Other Terminator: \code{\link{TerminatorClockTime}},
+  \code{\link{TerminatorCombo}},
   \code{\link{TerminatorEvals}},
+  \code{\link{TerminatorModelTime}},
   \code{\link{TerminatorNone}},
-  \code{\link{TerminatorPerfReached}},
-  \code{\link{TerminatorRuntime}},
-  \code{\link{TerminatorTime}}
+  \code{\link{TerminatorPerfReached}}
 }
 \concept{Terminator}
 \keyword{datasets}

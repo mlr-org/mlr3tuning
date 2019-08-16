@@ -21,11 +21,11 @@ Stored in \code{settings}.
 }
 
 \seealso{
-Other Terminator: \code{\link{TerminatorCombo}},
+Other Terminator: \code{\link{TerminatorClockTime}},
+  \code{\link{TerminatorCombo}},
   \code{\link{TerminatorEvals}},
-  \code{\link{TerminatorNone}},
-  \code{\link{TerminatorRuntime}},
-  \code{\link{TerminatorTime}}, \code{\link{Terminator}}
+  \code{\link{TerminatorModelTime}},
+  \code{\link{TerminatorNone}}, \code{\link{Terminator}}
 }
 \concept{Terminator}
 \keyword{datasets}

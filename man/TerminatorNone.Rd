@@ -14,11 +14,12 @@ Mainly useful for grid search, or maybe other tuners, where the stopping is inhe
 }
 
 \seealso{
-Other Terminator: \code{\link{TerminatorCombo}},
+Other Terminator: \code{\link{TerminatorClockTime}},
+  \code{\link{TerminatorCombo}},
   \code{\link{TerminatorEvals}},
+  \code{\link{TerminatorModelTime}},
   \code{\link{TerminatorPerfReached}},
-  \code{\link{TerminatorRuntime}},
-  \code{\link{TerminatorTime}}, \code{\link{Terminator}}
+  \code{\link{Terminator}}
 }
 \concept{Terminator}
 \keyword{datasets}
