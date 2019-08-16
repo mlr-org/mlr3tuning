@@ -79,12 +79,9 @@ Tuner = R6Class("Tuner",
     },
 
     tune = function(inst) {
-      # FIXME: i currently do not know how to check for types after trafo, see issue #154
-      if (!inst$param_set$has_trafo) {
-        not_supported_pclasses = setdiff(unique(inst$param_set$class), self$param_classes)
-        if (length(not_supported_pclasses) > 0L)
-          stopf("Tuner '%s' does not support param types: '%s'", class(self)[1L], paste0(not_supported_pclasses, collapse = ","))
-      }
+      not_supported_pclasses = setdiff(unique(inst$param_set$class), self$param_classes)
+      if (length(not_supported_pclasses) > 0L)
+        stopf("Tuner '%s' does not support param types: '%s'", class(self)[1L], paste0(not_supported_pclasses, collapse = ","))
       inst$start_time = Sys.time()
       lg$info("Starting to tune %i parameters with '%s' and '%s'" ,
         inst$param_set$length, self$format(), inst$terminator$format())
