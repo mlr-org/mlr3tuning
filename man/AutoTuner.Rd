@@ -13,7 +13,7 @@ or \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
 }
 \section{Construction}{
 \preformatted{at = AutoTuner$new(learner, resampling, measures, param_set, terminator,
-  tuner, tuner_settings, store_models = FALSE, id = "autotuner")
+  tuner, store_models = FALSE, id = "autotuner")
 }
 \itemize{
 \item \code{learner} :: \link[mlr3:Learner]{mlr3::Learner}\cr
@@ -26,13 +26,11 @@ See also \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}.
 Performance measures. The first one is optimized.
 See also \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}.
 \item \code{param_set} :: \link[paradox:ParamSet]{paradox::ParamSet}\cr
-Tuning space.
+Parameter space to tune over.
 \item \code{terminator} :: \link{Terminator}\cr
-Controls the terminator of the \code{tuner}.
+When to stop tuning.
 \item \code{tuner} :: \link{Tuner}\cr
-Uninitialized tuner factory, e.g. TunerGridSearch.
-\item \code{tuner_settings} :: named \code{list()}\cr
-List with tuner settings (e.g. see \link{TunerGridSearch})
+Tuning algorithm to run.
 \item \code{store_models} :: \code{logical(1)}\cr
 Keep the fitted learner models? Passed down to \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
 \item \code{id} :: \code{character(1)}\cr
@@ -47,10 +45,13 @@ All fields from \link{Learner}, and additionally:
 \item \code{learner} :: \link[mlr3:Learner]{mlr3::Learner}\cr
 Subordinate learner. After \code{train()} of the \code{AutoTuner} has been executed,
 this learner stores the final model on is parametrized with the best found solution.
+\item \code{resampling} :: \link[mlr3:Resampling]{mlr3::Resampling}
+\item \code{measures} :: list of \link[mlr3:Measure]{mlr3::Measure}
+\item \code{tune_ps} :: \link[paradox:ParamSet]{paradox::ParamSet}
+\item \code{terminator} :: \link{Terminator}
+\item \code{tuner} :: \link{Tuner}
 \item \code{store_bmr} :: \code{logical(1)}\cr
 If \code{TRUE}, store the benchmark result as slot \code{$bmr}.
-\item \code{tuner} :: \link{Tuner}\cr
-Access to the stored \link{Tuner}.
 \item \code{tune_path} :: \code{\link[data.table:data.table]{data.table::data.table()}}\cr
 Only stored if \code{store_bmr} has been set to \code{TRUE}.
 This is the archive of the stored \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} with hyperparameters as separate columns.
@@ -73,9 +74,8 @@ param_set = ParamSet$new(
   params = list(ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 
 terminator = TerminatorEvals$new(5)
-
-at = AutoTuner$new(learner, resampling, measures, param_set, terminator, tuner = TunerGridSearch,
-  tuner_settings = list(resolution = 10L))
+tuner = TunerGridSeearch$new()
+at = AutoTuner$new(learner, resampling, measures, param_set, terminator, tuner)
 at$store_bmr = TRUE
 
 at$train(task)
