@@ -90,7 +90,7 @@ param_set = ParamSet$new(params = list(
   ParamInt$new("minsplit", lower = 1, upper = 10)))
 
 terminator = TerminatorEvals$new(5)
-pe = TuningInstance$new(
+inst = TuningInstance$new(
   task = task,
   learner = learner,
   resampling = resampling,
@@ -98,8 +98,8 @@ pe = TuningInstance$new(
   param_set = param_set,
   terminator = terminator
 )
-pe$eval_batch(data.table(cp = c(0.05, 0.01), minsplit = c(5, 3)))
-pe$archive()
+inst$eval_batch(data.table(cp = c(0.05, 0.01), minsplit = c(5, 3)))
+inst$archive()
 }
 \concept{TuningInstance}
 \keyword{datasets}

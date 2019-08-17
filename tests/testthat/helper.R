@@ -18,21 +18,41 @@ test_tuner = function(tuner_factory, arg_list = list(), n_dim = 1L, term_evals =
     ))
   }
   term = TerminatorEvals$new(term_evals)
-  pe = TuningInstance$new("iris", "classif.rpart", "holdout", "classif.ce", ps, term)
+  inst = TuningInstance$new("iris", "classif.rpart", "holdout", "classif.ce", ps, term)
   tuner = do.call(tuner_factory$new, arg_list)
 
-  r = tuner$tune(pe)
-  bmr = pe$bmr
+  r = tuner$tune(inst)
+  bmr = inst$bmr
 
   expect_data_table(bmr$data, nrows = real_evals)
-  expect_equal(pe$n_evals, real_evals)
+  expect_equal(inst$n_evals, real_evals)
   expect_list(r)
   expect_number(r$performance["classif.ce"], lower = 0, upper = 1)
   expect_list(r$values, len = n_dim + 1)
-  list(tune_result = r, pe = pe)
+  list(tune_result = r, inst = inst)
 }
 
-# create a simple PE object for rpart with cp param and 2CV resampling
+test_tuner_subordinate = function(tuner_factory, arg_list = list(), n_evals = 2L) {
+  ParamSet$new(params = list(
+    ParamDbl$new("cp", lower = 0.1, upper = 0.3),
+    ParamInt$new("minsplit", lower = 1, upper = 9)
+  ))
+  term = TerminatorEvals$new(n_evals)
+  inst = TuningInstance$new("iris", "classif.svm", "holdout", "classif.ce", ps, term)
+  tuner = do.call(tuner_factory$new, arg_list)
+
+  r = tuner$tune(inst)
+  bmr = inst$bmr
+
+  expect_data_table(bmr$data, nrows = n_evals)
+  expect_equal(inst$n_evals, n_evals)
+  expect_number(r$performance["classif.ce"], lower = 0, upper = 1)
+  expect_list(r$values, len = n_dim + 1)
+  list(tune_result = r, inst = inst)
+}
+
+
+# create a simple inst object for rpart with cp param and 2CV resampling
 TEST_MAKE_PS1 = function(n_dim = 1L) {
   ps = if (n_dim == 1) {
     ParamSet$new(params = list(
@@ -45,7 +65,7 @@ TEST_MAKE_PS1 = function(n_dim = 1L) {
     ))
   }
 }
-TEST_MAKE_PE1 = function(values = NULL, folds = 2L, measures = "classif.ce", n_dim = 1L, term_evals = 5L) {
+TEST_MAKE_INST1 = function(values = NULL, folds = 2L, measures = "classif.ce", n_dim = 1L, term_evals = 5L) {
   ps = TEST_MAKE_PS1(n_dim = n_dim)
   lrn = mlr_learners$get("classif.rpart")
   if (!is.null(values)) {
@@ -53,8 +73,8 @@ TEST_MAKE_PE1 = function(values = NULL, folds = 2L, measures = "classif.ce", n_d
   }
   rs = mlr_resamplings$get("cv", param_vals = list(folds = folds))
   term = TerminatorEvals$new(term_evals)
-  pe = TuningInstance$new("iris", lrn, rs, measures, ps, term)
-  return(pe)
+  inst = TuningInstance$new("iris", lrn, rs, measures, ps, term)
+  return(inst)
 }
 
 
@@ -79,3 +99,39 @@ MeasureDummyCP = R6Class("MeasureDummyCP",
   )
 )
 mlr3::mlr_measures$add("dummy.cp", MeasureDummyCP)
+
+
+LearnerRegrDepParams = R6Class("LearnerRegrDepParams", inherit = LearnerRegr,
+  public = list(
+    initialize = function(id = "regr.depparams") {
+      param_set = ParamSet$new(
+          params = list(
+            ParamFct$new("p1", levels = c("a", "b"), default = "a"),
+            ParamDbl$new("p2", lower = 0, upper = 1)
+          )
+      )
+      ps$add_dep("p2", on = "p1", cond = CondEqual$new("a"))
+      super$initialize(
+        id = id,
+        feature_types = c("logical", "integer", "numeric", "character", "factor", "ordered"),
+        predict_types = c("response"),
+        param_set = param_set,
+        properties = c("missings")
+      )
+    },
+
+    train_internal = function(task) {
+      tn = task$target_names
+      return(list())
+    },
+
+    predict_internal = function(task) {
+      n = task$nrow
+      response = rep(99, n)
+      PredictionRegr$new(task, response = response)
+    }
+  )
+)
+mlr3::mlr_learners$add("regr.depparams", LearnerRegrDepParams)
+
+

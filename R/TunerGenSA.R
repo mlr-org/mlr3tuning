@@ -36,20 +36,20 @@ TunerGenSA = R6Class("TunerGenSA",
     }
   ),
   private = list(
-    tune_internal = function(pe) {
-      objective = function(x, pe) {
-        measure = pe$measures[[1L]]
+    tune_internal = function(inst) {
+      objective = function(x, inst) {
+        measure = inst$measures[[1L]]
 
-        n = length(pe$bmr$hashes)
+        n = length(inst$bmr$hashes)
         params = setDT(as.list(x))
-        setnames(params, pe$param_set$ids())
-        pe$eval_batch(params)
+        setnames(params, inst$param_set$ids())
+        inst$eval_batch(params)
 
-        perf = pe$bmr$resample_result(n + 1)$aggregate(measure)
+        perf = inst$bmr$resample_result(n + 1)$aggregate(measure)
         if (measure$minimize) perf else -perf
       }
-      GenSA::GenSA(fn = objective, lower = pe$param_set$lower, upper = pe$param_set$upper,
-        control = self$settings, pe = pe)
+      GenSA::GenSA(fn = objective, lower = inst$param_set$lower, upper = inst$param_set$upper,
+        control = self$settings, inst = inst)
     }
   )
 )

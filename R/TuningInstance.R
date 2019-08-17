@@ -81,7 +81,7 @@
 #'   ParamInt$new("minsplit", lower = 1, upper = 10)))
 #'
 #' terminator = TerminatorEvals$new(5)
-#' pe = TuningInstance$new(
+#' inst = TuningInstance$new(
 #'   task = task,
 #'   learner = learner,
 #'   resampling = resampling,
@@ -89,8 +89,8 @@
 #'   param_set = param_set,
 #'   terminator = terminator
 #' )
-#' pe$eval_batch(data.table(cp = c(0.05, 0.01), minsplit = c(5, 3)))
-#' pe$archive()
+#' inst$eval_batch(data.table(cp = c(0.05, 0.01), minsplit = c(5, 3)))
+#' inst$archive()
 TuningInstance = R6Class("TuningInstance",
   public = list(
     task = NULL,
@@ -135,13 +135,14 @@ TuningInstance = R6Class("TuningInstance",
     # possibly transforms the data before using the trafo from self$param set
     eval_batch = function(dt) {
 
-      assert_data_table(dt, any.missing = FALSE, min.rows = 1, min.cols = 1)
+      # dt can contain missings because of non-fullfilled dep
+      assert_data_table(dt, any.missing = TRUE, min.rows = 1, min.cols = 1)
       design = Design$new(self$param_set, dt, remove_dupl = FALSE)
 
       lg$info("Evaluating %i configurations", nrow(dt))
       lg$info("%s", capture.output(dt))
 
-      parlist = design$transpose(trafo = TRUE)
+      parlist = design$transpose(trafo = TRUE, filter_na = TRUE) # remove non-satisfied deps
 
       # clone learners same length as parlist and set the configs
       lrns = lapply(parlist, function(xs) {

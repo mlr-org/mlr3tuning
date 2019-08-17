@@ -80,7 +80,7 @@
 AutoTuner = R6Class("AutoTuner", inherit = Learner,
   public = list(
     tuner_generator = NULL,
-    # FIXME: doesnt thus store the PE? and hence the complete bmr and all other slots?
+    # FIXME: doesnt thus store the inst? and hence the complete bmr and all other slots?
     learner = NULL,
     terminator = NULL,
     resampling = NULL,
@@ -125,7 +125,7 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
 
       terminator = self$terminator$clone()
       learner = self$learner$clone(deep = TRUE)
-      pe = TuningInstance$new(
+      inst = TuningInstance$new(
         task = assert_task(task, clone = TRUE),
         learner = learner,
         resampling = self$resampling,
@@ -138,14 +138,14 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
       tuner = do.call(self$tuner_generator$new, self$tuner_settings)
 
       # update param vals
-      tres = tuner$tune(pe)
+      tres = tuner$tune(inst)
       learner$param_set$values = tres$values
 
       # train internal learner
       model = list(learner = learner$train(task))
 
       if (isTRUE(self$store_bmr)) {
-        model$bmr = pe$bmr
+        model$bmr = inst$bmr
       }
 
       model

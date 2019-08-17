@@ -1,7 +1,7 @@
 context("TuningInstance")
 
 test_that("TuningInstance", {
-  pe = TEST_MAKE_PE1(values = list(maxdepth = 10), folds = 2L, measures = "dummy.cp", n_dim = 2)
+  pe = TEST_MAKE_INST1(values = list(maxdepth = 10), folds = 2L, measures = "dummy.cp", n_dim = 2)
   # test empty PE
   expect_null(pe$bmr)
   expect_identical(pe$n_evals, 0L)
@@ -50,7 +50,7 @@ test_that("TuningInstance", {
 
 
 test_that("archive one row (#40)", {
-  pe = TEST_MAKE_PE1()
+  pe = TEST_MAKE_INST1()
   pe$eval_batch(data.table(cp = c(0.01)))
   a = pe$archive()
   expect_data_table(a, nrows = 1)
