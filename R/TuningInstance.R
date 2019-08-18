@@ -155,7 +155,7 @@ TuningInstance = R6Class("TuningInstance",
       })
 
       # eval via benchmark and check terminator
-      d = expand_grid(tasks = list(self$task), learners = lrns, resamplings = list(self$resampling))
+      d = benchmark_grid(tasks = list(self$task), learners = lrns, resamplings = list(self$resampling))
       bm_args = insert_named(self$bm_args, list(design = d))
       bmr = do.call(benchmark, bm_args)
       # store evaluated results
