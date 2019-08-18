@@ -95,9 +95,9 @@ Tuner = R6Class("Tuner",
       }, terminated_message = function(cond) {
       })
 
-      rr = inst$best(self$ties_method)
+      rr = inst$best(ties_method = self$ties_method)
       # FIXME: autotuner setting later
-      lg$info("Finished tuning")
+      lg$info("Finished tuning after %i evals", inst$n_evals)
       list(performance = rr$aggregate(inst$measures), values = rr$learners[[1L]]$param_set$values)
     }
   ),

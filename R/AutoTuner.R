@@ -12,7 +12,7 @@
 #' @section Construction:
 #' ```
 #' at = AutoTuner$new(learner, resampling, measures, param_set, terminator,
-#'   tuner, store_models = FALSE, id = "autotuner")
+#'   tuner, bm_args = list(), id = "autotuner")
 #' ```
 #' * `learner` :: [mlr3::Learner]\cr
 #'   Learner to tune.
@@ -29,8 +29,8 @@
 #'   When to stop tuning.
 #' * `tuner` :: [Tuner]\cr
 #'   Tuning algorithm to run.
-#' * `store_models` :: `logical(1)`\cr
-#'   Keep the fitted learner models? Passed down to [mlr3::benchmark()].
+#' * `bm_args` :: `list`\cr
+#'   Further args for [mlr::benchmark], see [TuningInstance].
 #' * `id` :: `character(1)`\cr
 #'   Name of the learner.
 #'
@@ -67,7 +67,7 @@
 #'   params = list(ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 #'
 #' terminator = TerminatorEvals$new(5)
-#' tuner = TunerGridSeearch$new()
+#' tuner = TunerGridSearch$new()
 #' at = AutoTuner$new(learner, resampling, measures, param_set, terminator, tuner)
 #' at$store_bmr = TRUE
 #'
@@ -84,12 +84,12 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
     tuner = NULL,
     tune_ps = NULL,
     store_bmr = FALSE,
-    store_models = FALSE,
+    bm_args = NULL,
     # FIXME: state = bmr + learner
     # FIXME: look at pipeopelearner for paramset
     # FIXME: autotuner paramset darf eigentlich nicht die params mehr enthalten über die getuned wird
 
-    initialize = function(learner, resampling, measures, tune_ps, terminator, tuner, store_models = FALSE, id = "autotuner") {
+    initialize = function(learner, resampling, measures, tune_ps, terminator, tuner, bm_args = list(), id = "autotuner") {
 
       self$id = assert_string(id) # needs to be set first for param_set active binding
       self$tuner = assert_r6(tuner, "Tuner")
@@ -99,7 +99,7 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
       self$resampling = assert_resampling(resampling, clone = TRUE)
       self$measures = assert_measures(measures)
       self$tune_ps = assert_class(tune_ps, "ParamSet")
-      self$store_models = assert_flag(store_models)
+      self$bm_args = assert_list(bm_args, names = "unique")
 
       super$initialize(
         id = id,
@@ -123,7 +123,7 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
         measures = self$measures,
         param_set = self$tune_ps,
         terminator = self$terminator,
-        store_models = self$store_models
+        bm_args = self$bm_args
       )
 
       # update param vals

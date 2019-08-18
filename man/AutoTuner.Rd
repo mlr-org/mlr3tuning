@@ -13,7 +13,7 @@ or \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
 }
 \section{Construction}{
 \preformatted{at = AutoTuner$new(learner, resampling, measures, param_set, terminator,
-  tuner, store_models = FALSE, id = "autotuner")
+  tuner, bm_args = list(), id = "autotuner")
 }
 \itemize{
 \item \code{learner} :: \link[mlr3:Learner]{mlr3::Learner}\cr
@@ -31,8 +31,8 @@ Parameter space to tune over.
 When to stop tuning.
 \item \code{tuner} :: \link{Tuner}\cr
 Tuning algorithm to run.
-\item \code{store_models} :: \code{logical(1)}\cr
-Keep the fitted learner models? Passed down to \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
+\item \code{bm_args} :: \code{list}\cr
+Further args for \link[mlr:benchmark]{mlr::benchmark}, see \link{TuningInstance}.
 \item \code{id} :: \code{character(1)}\cr
 Name of the learner.
 }
@@ -74,7 +74,7 @@ param_set = ParamSet$new(
   params = list(ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 
 terminator = TerminatorEvals$new(5)
-tuner = TunerGridSeearch$new()
+tuner = TunerGridSearch$new()
 at = AutoTuner$new(learner, resampling, measures, param_set, terminator, tuner)
 at$store_bmr = TRUE
 
