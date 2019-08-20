@@ -39,7 +39,5 @@ reference:
       - starts_with("Tuner")
   - title: Link to Machine Learning with mlr3
     contents:
-      - PerformanceEvaluator
+      - TuningInstance
       - AutoTuner
-      - tune_control
-
