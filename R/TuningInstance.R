@@ -12,7 +12,7 @@
 #'
 #' Evaluations of hyperparameter configurations are performed in batches by calling [mlr3::benchmark()] internally.
 #' After a batch is evaluated, the [Terminator] is queried for the remaining budget.
-#' If more than the available budget has been used, an exception is raised, and no further evaluations can be performed from this point on.
+#' If the available budget is exhausted, an exception is raised, and no further evaluations can be performed from this point on.
 #'
 #' @section Construction:
 #' ```

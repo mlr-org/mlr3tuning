@@ -14,7 +14,7 @@ and querying the archive (see \code{$archive()}).
 
 Evaluations of hyperparameter configurations are performed in batches by calling \code{\link[mlr3:benchmark]{mlr3::benchmark()}} internally.
 After a batch is evaluated, the \link{Terminator} is queried for the remaining budget.
-If more than the available budget has been used, an exception is raised, and no further evaluations can be performed from this point on.
+If the available budget is exhausted, an exception is raised, and no further evaluations can be performed from this point on.
 }
 \section{Construction}{
 \preformatted{pe = TuningInstance$new(task, learner, resampling, measures, param_set, terminator, bm_args = list())

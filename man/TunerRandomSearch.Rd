@@ -16,8 +16,6 @@ then the termination criteria are checked.
 \section{Construction}{
 \preformatted{tuner = TunerRandomSearch$new(batch_size = 1L)
 }
-
-For arguments, see \link{Tuner}, and additionally:
 \itemize{
 \item \code{batch_size} :: \code{integer(1)}\cr
 Maximum number of configurations to try in a batch.

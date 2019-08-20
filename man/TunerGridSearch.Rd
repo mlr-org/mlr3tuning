@@ -10,7 +10,7 @@ Subclass for grid search tuning.
 
 The grid is constructed as a Cartesian product over discretized values per parameter,
 see \link[paradox:generate_design_grid]{paradox::generate_design_grid}.
-The grid is searched in random order.
+The points of the grid are evaluated in a random order.
 
 In order to support general termination criteria and parallelization,
 we evaluate points in a batch-fashion of size \code{batch_size}.
@@ -20,14 +20,12 @@ then the termination criteria are checked.
 \section{Construction}{
 \preformatted{tuner = TunerGridSearch$new(resolution = 10L, batch_size = 1L)
 }
-
-For arguments, see \link{Tuner}, and additionally:
 \itemize{
 \item \code{resolution} :: \code{integer(1)}\cr
-Resolution of the grid, see \link[paradox:generate_design_grid]{paradox::generate_design_grid}.
+Resolution of the grid, see \code{\link[paradox:generate_design_grid]{paradox::generate_design_grid()}}.
 Stored in \code{settings}.
 \item \code{param_resolutions} :: named \code{integer()} \cr
-Resolution per param, named by parameter ID, see \link[paradox:generate_design_grid]{paradox::generate_design_grid}.
+Resolution per parameter, named by parameter ID, see \code{\link[paradox:generate_design_grid]{paradox::generate_design_grid()}}.
 \item \code{batch_size} :: \code{integer(1)}\cr
 Maximum number of configurations to try in a batch.
 Stored in \code{settings}.

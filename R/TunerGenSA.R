@@ -11,7 +11,7 @@
 #' ```
 #' tuner = TunerGenSA$new(...)
 #' ```
-#' For arguments, see [Tuner], and additionally:
+#'
 #' * `...`\cr
 #'   Settings passed down do [GenSA::GenSA()]
 #'   Default settings are `smooth = FALSE`, `acceptance.param = -15`,
@@ -30,26 +30,26 @@ TunerGenSA = R6Class("TunerGenSA",
       s = list(smooth = FALSE, acceptance.param = -15, simple.function = FALSE, temperature = 250)
       s = insert_named(s, list(...))
       super$initialize(
-        param_classes = c("ParamDbl"),
+        param_classes = "ParamDbl",
         settings = s
       )
     }
   ),
   private = list(
-    tune_internal = function(inst) {
-      objective = function(x, inst) {
-        measure = inst$measures[[1L]]
+    tune_internal = function(instance) {
+      objective = function(x, instance) {
+        measure = instance$measures[[1L]]
 
-        n = length(inst$bmr$hashes)
+        n = instance$bmr$n_resample_results
         params = setDT(as.list(x))
-        setnames(params, inst$param_set$ids())
-        inst$eval_batch(params)
+        setnames(params, instance$param_set$ids())
+        instance$eval_batch(params)
 
-        perf = inst$bmr$resample_result(n + 1)$aggregate(measure)
+        perf = instance$bmr$resample_result(n + 1)$aggregate(measure)
         if (measure$minimize) perf else -perf
       }
-      GenSA::GenSA(fn = objective, lower = inst$param_set$lower, upper = inst$param_set$upper,
-        control = self$settings, inst = inst)
+      GenSA::GenSA(fn = objective, lower = instance$param_set$lower, upper = instance$param_set$upper,
+        control = self$settings, instance = instance)
     }
   )
 )

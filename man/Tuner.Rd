@@ -7,17 +7,17 @@
 \format{\link[R6:R6Class]{R6::R6Class} object.}
 \description{
 Abstract \code{Tuner} class that implements the main functionality each tuner must have.
-A tuner is an object that describes the tuning strategy how to optimize the black-box function and its feasible set
-defined by the \code{[TuningInstance]} object.
+A tuner is an object that describes the tuning strategy, i.e. how to optimize the black-box
+function and its feasible set defined by the \link{TuningInstance} object.
 }
 \section{Construction}{
-\preformatted{tuner = Tuner$new(settings = list())
+\preformatted{tuner = Tuner$new(param_classes, settings = list())
 }
 \itemize{
-\item \code{settings} :: named \code{list()}\cr
-Arbitrary list, depending on the child class.
-\item \code{param_classes} :: \code{character}\cr
+\item \code{param_classes} :: \code{character()}\cr
 Supported parameter classes that the tuner can optimize, subclasses of \link[paradox:Param]{paradox::Param}.
+\item \code{settings} :: named \code{list()}\cr
+Arbitrary named list, depending on the child class.
 }
 }
 
@@ -31,10 +31,10 @@ Supported parameter classes that the tuner can optimize, subclasses of \link[par
 \section{Methods}{
 
 \itemize{
-\item \code{tune(inst)}\cr
-(\link{TuningInstance}) -> \code{list}\cr
+\item \code{tune(instance)}\cr
+(\link{TuningInstance}) -> \code{list()}\cr
 Performs the tuning on a \link{TuningInstance} until termination.
-Returns list with 2 elements:
+Returns a list with 2 elements:
 \itemize{
 \item \code{performance} (\code{numeric()}) with the best performance.
 \item \code{values} (named \code{list()}) with the corresponding hyperparameters values.
@@ -47,19 +47,20 @@ Returns list with 2 elements:
 A subclass is implemented in the following way:
 \itemize{
 \item Inherit from Tuner
-\item Specify the private abstract method \code{tune_internal} and use it to call into your optimizer.
-\item When you set up an objective function, you will call \code{inst$eval_batch} to evaluate design points.
-\item The batch-eval is requested at the TuningInstance 'inst' object,
+\item Specify the private abstract method \code{$tune_internal()} and use it to call into your optimizer.
+\item When you set up an objective function, you will call \code{instance$eval_batch()} to evaluate design points.
+\item The batch evaluation is requested at the \link{TuningInstance} object \code{instance},
 so each batch is possibly executed in parallel via \code{\link[mlr3:benchmark]{mlr3::benchmark()}},
-and all evaluations are stored inside of 'inst$bmr'.
-\item After the batch-eval, the terminator is checked, and if is positive,
-an exception is generated of class 'terminated_message'. In this case the current
-batch of evals is still stored in inst, but the numeric score are not sent back to
+and all evaluations are stored inside of \code{instance$bmr}.
+\item After the batch evaluation, the \link{Terminator} is checked, and if it is positive,
+an exception of class \code{"terminated_message"} is generated. In this case the current
+batch of evaluations is still stored in \code{instance}, but the numeric scores are not sent back to
 the handling optimizer as it has lost execution control.
-\item After such an exception was caught we select the best configuration from \code{inst$bmr} and
+\item After such an exception was caught we select the best configuration from \code{instance$bmr} and
 return it.
-\item Note that therefore more points than specified by the Terminator might be evaluated,
-as the Terminator is only checked after a batch-eval. How many more depends on the batchsize.
+\item Note that therefore more points than specified by the \link{Terminator} may be evaluated,
+as the Terminator is only checked after a batch evaluation.
+How many more depends on the setting of the batch size.
 }
 }
 
@@ -70,10 +71,10 @@ param_set = ParamSet$new(list(
   ParamDbl$new("cp", lower = 0.001, upper = 0.1)
 ))
 terminator = TerminatorEvals$new(3)
-inst = TuningInstance$new("iris", "classif.rpart", "holdout", "classif.ce", param_set, terminator)
+instance = TuningInstance$new("iris", "classif.rpart", "holdout", "classif.ce", param_set, terminator)
 tt = TunerRandomSearch$new() # swap this line to use a different Tuner
-res = tt$tune(inst) # returns best configuration and performance, and logs in 'inst'
-inst$archive() # allows access of data.table / benchmark result of full path of all evaluations
+res = tt$tune(instance) # returns best configuration and performance, and logs in 'instance'
+instance$archive() # allows access of data.table / benchmark result of full path of all evaluations
 }
 \seealso{
 Other Tuner: \code{\link{TunerGenSA}},
