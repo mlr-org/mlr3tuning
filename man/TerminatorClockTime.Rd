@@ -15,17 +15,20 @@ or a fixed time point has been reached (as reported by \code{\link[=Sys.time]{Sy
 \itemize{
 \item \code{secs} :: \code{numeric(1)}\cr
 Maximum allowed time, in seconds.
-Stored in \code{settings}.
+Mutually exclusive with argument \code{stop_time}.
+Stored in \code{$settings}.
 \item \code{stop_time} :: \code{POSIXct(1)}\cr
 Terminator stops after this point in time.
-Stored in \code{settings}.
+Mutually exclusive with argument \code{secs}.
+Stored in \code{$settings}.
 }
 }
 
 \examples{
-tt = TerminatorClockTime$new(secs = 3600)
+TerminatorClockTime$new(secs = 3600)
+
 stop_time = as.POSIXct("2030-01-01 00:00:00")
-tt = TerminatorClockTime$new(stop_time = stop_time)
+TerminatorClockTime$new(stop_time = stop_time)
 }
 \seealso{
 Other Terminator: \code{\link{TerminatorCombo}},

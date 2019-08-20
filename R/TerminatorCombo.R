@@ -33,8 +33,7 @@ TerminatorCombo = R6Class("TerminatorSet",
 
     initialize = function(terminators, any = TRUE) {
       self$terminators = assert_list(terminators, types = "Terminator")
-      assert_flag(any)
-      super$initialize(settings = list(any = any))
+      super$initialize(settings = list(any = assert_flag(any)))
     },
 
     is_terminated = function(pe) {

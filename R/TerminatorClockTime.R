@@ -15,31 +15,34 @@
 #'
 #' * `secs` :: `numeric(1)`\cr
 #'   Maximum allowed time, in seconds.
-#'   Stored in `settings`.
+#'   Mutually exclusive with argument `stop_time`.
+#'   Stored in `$settings`.
 #' * `stop_time` :: `POSIXct(1)`\cr
 #'   Terminator stops after this point in time.
-#'   Stored in `settings`.
+#'   Mutually exclusive with argument `secs`.
+#'   Stored in `$settings`.
 #'
 #' @family Terminator
 #' @export
 #' @examples
-#' tt = TerminatorClockTime$new(secs = 3600)
+#' TerminatorClockTime$new(secs = 3600)
+#'
 #' stop_time = as.POSIXct("2030-01-01 00:00:00")
-#' tt = TerminatorClockTime$new(stop_time = stop_time)
+#' TerminatorClockTime$new(stop_time = stop_time)
 TerminatorClockTime = R6Class("TerminatorClockTime",
   inherit = Terminator,
   public = list(
     initialize = function(secs = NULL, stop_time = NULL) {
       assert_number(secs, lower = 0, null.ok = TRUE)
-      assert_class(stop_time, "POSIXct", null.ok = TRUE)
-      if (is.null(secs) && is.null(stop_time) || (!is.null(secs) && !is.null(stop_time)))
-        stopf("Exactly one arg of 'secs' and 'stop_time' has to be set!")
+      assert_posixct(stop_time, null.ok = TRUE)
+      if (!xor(is.null(secs), is.null(stop_time)))
+        stopf("Exactly one argument of 'secs' and 'stop_time' has to be set!")
       super$initialize(settings = list(secs = secs, stop_time = stop_time))
     },
 
     is_terminated = function(pe) {
       if (!is.null(self$settings$secs)) {
-        d = as.numeric(Sys.time()) - as.numeric(pe$start_time)
+        d = difftime(Sys.time(), pe$start_time, units = "secs")
         return(d >= self$settings$secs)
       } else {
         return(Sys.time() >= self$settings$stop_time)

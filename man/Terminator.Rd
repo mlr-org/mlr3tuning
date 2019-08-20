@@ -11,14 +11,15 @@ A terminator is an object that determines when to stop the tuning.
 
 Termination of tuning works as follows:
 \itemize{
-\item Evaluations in a tuner a performed in batches of size \code{batch_size}.
-\item After a batch-eval the Tuner is checked, if it is positive, we stop.
-\item The tuning algorithm itself might decide not to produce any more points or even a smaller batch in its last evaluation.
+\item Evaluations in a tuner are performed in batches of size \code{batch_size}.
+\item After a batch evaluation the \link{Terminator} is checked, if it is positive, we stop.
+\item The tuning algorithm itself might decide not to produce any more points, or even might decide to do a smaller batch in its last evaluation.
 }
 
-Therefore the following note seems in order: While it is definitely possible to execute a fine-grained control for termination,
-and for many tuners we can specify exactly when to stop, it might happen that a few too many or even a few too few evaluations are
-performed, especially if your batchsize is large. So better check the size of the returned archive.
+Therefore the following note seems in order:
+While it is definitely possible to execute a fine-grained control for termination, and for many tuners we can specify exactly when to stop,
+it might happen that a few too many or even a few too few evaluations are performed, especially if the batch size is larger than 1.
+So better check the size of the returned archive.
 }
 \section{Construction}{
 \preformatted{t = Terminator$new(settings)

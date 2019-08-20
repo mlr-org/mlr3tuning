@@ -9,6 +9,6 @@ test_that("Time", {
   Sys.sleep(0.1)
   expect_false(te$is_terminated(pe))
 
-  Sys.sleep(1)
+  Sys.sleep(1.2)
   expect_true(te$is_terminated(pe))
 })
