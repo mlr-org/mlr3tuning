@@ -16,23 +16,20 @@ or \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
   tuner, bm_args = list(), id = "autotuner")
 }
 \itemize{
-\item \code{learner} :: \link[mlr3:Learner]{mlr3::Learner}\cr
+\item \code{learner} :: \link[mlr3:Learner]{mlr3::Learner} | \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}\cr
 Learner to tune.
-See also \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}.
-\item \code{resampling} :: \link[mlr3:Resampling]{mlr3::Resampling}\cr
+\item \code{resampling} :: \link[mlr3:Resampling]{mlr3::Resampling} | \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}\cr
 Resampling strategy used to assess the performance of the learner on the (subset of) the
-See also \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}.
-\item \code{measures} :: list of \link[mlr3:Measure]{mlr3::Measure}\cr
+\item \code{measures} :: list of \link[mlr3:Measure]{mlr3::Measure} | \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}\cr
 Performance measures. The first one is optimized.
-See also \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}.
 \item \code{param_set} :: \link[paradox:ParamSet]{paradox::ParamSet}\cr
-Parameter space to tune over.
+Hyperparameter search space.
 \item \code{terminator} :: \link{Terminator}\cr
 When to stop tuning.
 \item \code{tuner} :: \link{Tuner}\cr
 Tuning algorithm to run.
-\item \code{bm_args} :: \code{list}\cr
-Further args for \link[mlr:benchmark]{mlr::benchmark}, see \link{TuningInstance}.
+\item \code{bm_args} :: \code{list()}\cr
+Further arguments for \code{\link[mlr:benchmark]{mlr::benchmark()}}, see \link{TuningInstance}.
 \item \code{id} :: \code{character(1)}\cr
 Name of the learner.
 }
@@ -44,14 +41,15 @@ All fields from \link{Learner}, and additionally:
 \itemize{
 \item \code{learner} :: \link[mlr3:Learner]{mlr3::Learner}\cr
 Subordinate learner. After \code{train()} of the \code{AutoTuner} has been executed,
-this learner stores the final model on is parametrized with the best found solution.
-\item \code{resampling} :: \link[mlr3:Resampling]{mlr3::Resampling}
-\item \code{measures} :: list of \link[mlr3:Measure]{mlr3::Measure}
-\item \code{tune_ps} :: \link[paradox:ParamSet]{paradox::ParamSet}
-\item \code{terminator} :: \link{Terminator}
-\item \code{tuner} :: \link{Tuner}
+this learner stores the final model and is parametrized with the best found solution.
+\item \code{resampling} :: \link[mlr3:Resampling]{mlr3::Resampling}.
+\item \code{measures} :: list of \link[mlr3:Measure]{mlr3::Measure}.
+\item \code{tune_ps} :: \link[paradox:ParamSet]{paradox::ParamSet}\cr
+Hyperparameter search space.
+\item \code{terminator} :: \link{Terminator}.
+\item \code{tuner} :: \link{Tuner}.
 \item \code{store_bmr} :: \code{logical(1)}\cr
-If \code{TRUE}, store the benchmark result as slot \code{$bmr}.
+If \code{TRUE}, stores the benchmark result as slot \code{$bmr}.
 \item \code{tune_path} :: \code{\link[data.table:data.table]{data.table::data.table()}}\cr
 Only stored if \code{store_bmr} has been set to \code{TRUE}.
 This is the archive of the stored \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} with hyperparameters as separate columns.

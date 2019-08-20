@@ -14,23 +14,20 @@
 #' at = AutoTuner$new(learner, resampling, measures, param_set, terminator,
 #'   tuner, bm_args = list(), id = "autotuner")
 #' ```
-#' * `learner` :: [mlr3::Learner]\cr
+#' * `learner` :: [mlr3::Learner] | [mlr3::mlr_sugar]\cr
 #'   Learner to tune.
-#'   See also [mlr3::mlr_sugar].
-#' * `resampling` :: [mlr3::Resampling]\cr
+#' * `resampling` :: [mlr3::Resampling] | [mlr3::mlr_sugar]\cr
 #'   Resampling strategy used to assess the performance of the learner on the (subset of) the
-#'   See also [mlr3::mlr_sugar].
-#' * `measures` :: list of [mlr3::Measure]\cr
+#' * `measures` :: list of [mlr3::Measure] | [mlr3::mlr_sugar]\cr
 #'   Performance measures. The first one is optimized.
-#'   See also [mlr3::mlr_sugar].
 #' * `param_set` :: [paradox::ParamSet]\cr
-#'   Parameter space to tune over.
+#'   Hyperparameter search space.
 #' * `terminator` :: [Terminator]\cr
 #'   When to stop tuning.
 #' * `tuner` :: [Tuner]\cr
 #'   Tuning algorithm to run.
-#' * `bm_args` :: `list`\cr
-#'   Further args for [mlr::benchmark], see [TuningInstance].
+#' * `bm_args` :: `list()`\cr
+#'   Further arguments for [mlr::benchmark()], see [TuningInstance].
 #' * `id` :: `character(1)`\cr
 #'   Name of the learner.
 #'
@@ -39,14 +36,15 @@
 #'
 #' * `learner` :: [mlr3::Learner]\cr
 #'   Subordinate learner. After `train()` of the `AutoTuner` has been executed,
-#'   this learner stores the final model on is parametrized with the best found solution.
-#' * `resampling` :: [mlr3::Resampling]
-#' * `measures` :: list of [mlr3::Measure]
-#' * `tune_ps` :: [paradox::ParamSet]
-#' * `terminator` :: [Terminator]
-#' * `tuner` :: [Tuner]
+#'   this learner stores the final model and is parametrized with the best found solution.
+#' * `resampling` :: [mlr3::Resampling].
+#' * `measures` :: list of [mlr3::Measure].
+#' * `tune_ps` :: [paradox::ParamSet]\cr
+#'   Hyperparameter search space.
+#' * `terminator` :: [Terminator].
+#' * `tuner` :: [Tuner].
 #' * `store_bmr` :: `logical(1)`\cr
-#'   If `TRUE`, store the benchmark result as slot `$bmr`.
+#'   If `TRUE`, stores the benchmark result as slot `$bmr`.
 #' * `tune_path` :: [data.table::data.table()]\cr
 #'   Only stored if `store_bmr` has been set to `TRUE`.
 #'   This is the archive of the stored [mlr3::BenchmarkResult] with hyperparameters as separate columns.
@@ -76,7 +74,7 @@
 #' at$learner
 AutoTuner = R6Class("AutoTuner", inherit = Learner,
   public = list(
-    # FIXME: doesnt thus store the inst? and hence the complete bmr and all other slots?
+    # FIXME: doesnt thus store the instance? and hence the complete bmr and all other slots?
     learner = NULL,
     terminator = NULL,
     resampling = NULL,
@@ -90,7 +88,6 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
     # FIXME: autotuner paramset darf eigentlich nicht die params mehr enthalten über die getuned wird
 
     initialize = function(learner, resampling, measures, tune_ps, terminator, tuner, bm_args = list(), id = "autotuner") {
-
       self$id = assert_string(id) # needs to be set first for param_set active binding
       self$tuner = assert_r6(tuner, "Tuner")
       self$learner = learner = assert_learner(learner = learner, clone = TRUE)
@@ -116,7 +113,7 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
 
       terminator = self$terminator$clone()
       learner = self$learner$clone(deep = TRUE)
-      inst = TuningInstance$new(
+      instance = TuningInstance$new(
         task = assert_task(task, clone = TRUE),
         learner = learner,
         resampling = self$resampling,
@@ -127,14 +124,14 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
       )
 
       # update param vals
-      tres = self$tuner$tune(inst)
+      tres = self$tuner$tune(instance)
       learner$param_set$values = tres$values
 
       # train internal learner
       model = list(learner = learner$train(task))
 
       if (isTRUE(self$store_bmr)) {
-        model$bmr = inst$bmr
+        model$bmr = instance$bmr
       }
 
       model
