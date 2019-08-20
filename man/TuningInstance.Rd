@@ -9,12 +9,12 @@
 Specifies a general tuning scenario, including performance evaluator and archive for Tuners to
 act upon. This class encodes the black box objective function,
 that a \link{Tuner} has to optimize. It allows the basic operations of querying the objective
-at design points (see \code{eval_batch}), storing the evaluated point in an internal archive
-and querying the archive (see \code{archive}).
+at design points (see \code{$eval_batch()}), storing the evaluated point in an internal archive
+and querying the archive (see \code{$archive()}).
 
-Evaluations of HP configurations are performed in batches by calling \link[mlr3:benchmark]{mlr3::benchmark} internally,
-and after a batch-eval, if the \link{Terminator} is positive, an exception is raised.
-No further evaluations can be performed from this point on.
+Evaluations of hyperparameter configurations are performed in batches by calling \code{\link[mlr3:benchmark]{mlr3::benchmark()}} internally.
+After a batch is evaluated, the \link{Terminator} is queried for the remaining budget.
+If more than the available budget has been used, an exception is raised, and no further evaluations can be performed from this point on.
 }
 \section{Construction}{
 \preformatted{pe = TuningInstance$new(task, learner, resampling, measures, param_set, terminator, bm_args = list())
@@ -23,32 +23,29 @@ No further evaluations can be performed from this point on.
 This defines the resampled performance of a learner on a task, a feasibility region
 for the parameters the tuner is supposed to optimize, and a termination criterion.
 \itemize{
-\item \code{task} :: \link[mlr3:Task]{mlr3::Task}.
-See also \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}.
-\item \code{learner} :: \link[mlr3:Learner]{mlr3::Learner}.
-See also \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}.
-\item \code{resampling} :: \link[mlr3:Resampling]{mlr3::Resampling}.
-See also \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}.
-\item \code{measures} :: list of \link[mlr3:Measure]{mlr3::Measure}.
-See also \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}.
-\item \code{param_set} :: \link[paradox:ParamSet]{paradox::ParamSet}.
+\item \code{task} :: \link[mlr3:Task]{mlr3::Task} | \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}.
+\item \code{learner} :: \link[mlr3:Learner]{mlr3::Learner} | \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}.
+\item \code{resampling} :: \link[mlr3:Resampling]{mlr3::Resampling} | \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}.
+\item \code{measures} :: list of \link[mlr3:Measure]{mlr3::Measure} | \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}.
+\item \code{param_set} :: \link[paradox:ParamSet]{paradox::ParamSet}\cr
+Hyperparameter search space.
 \item \code{terminator} :: \link{Terminator}.
-\item \code{bm_args} :: \code{list}\cr
-Further args for \link[mlr:benchmark]{mlr::benchmark}.
+\item \code{bm_args} :: named \code{list()}\cr
+Further args for \code{\link[mlr:benchmark]{mlr::benchmark()}}.
 }
 }
 
 \section{Fields}{
 
 \itemize{
-\item \code{task} :: \link[mlr3:Task]{mlr3::Task}\cr
-\item \code{learner} :: \link[mlr3:Learner]{mlr3::Learner}\cr
-\item \code{resampling} :: \link[mlr3:Resampling]{mlr3::Resampling}\cr
-\item \code{measures} :: list of \link[mlr3:Measure]{mlr3::Measure}\cr
-\item \code{param_set} :: \link[paradox:ParamSet]{paradox::ParamSet}\cr
-\item \code{terminator} :: \link{Terminator}\cr
+\item \code{task} :: \link[mlr3:Task]{mlr3::Task}.
+\item \code{learner} :: \link[mlr3:Learner]{mlr3::Learner}.
+\item \code{resampling} :: \link[mlr3:Resampling]{mlr3::Resampling}.
+\item \code{measures} :: list of \link[mlr3:Measure]{mlr3::Measure}.
+\item \code{param_set} :: \link[paradox:ParamSet]{paradox::ParamSet}.
+\item \code{terminator} :: \link{Terminator}.
 \item \code{bmr} :: \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}\cr
-A benchmark result, container object for all performed \link{ResampleResult}s when evaluating HP configurations.
+A benchmark result, container object for all performed \link[mlr3:ResampleResult]{mlr3::ResampleResult}s when evaluating hyperparameter configurations.
 \item \code{n_evals} :: \code{integer(1)}\cr
 Number of configuration evaluations stored in the container.
 \item \code{start_time} :: \code{POSIXct(1)}\cr
@@ -61,19 +58,19 @@ This is set in the beginning of \code{tune} of \link{Tuner}.
 
 \itemize{
 \item \code{eval_batch(dt)}\cr
-\code{\link[data.table:data.table]{data.table::data.table()}} -> \link[data.table:data.table]{data.table::data.table}\cr
+\code{\link[data.table:data.table]{data.table::data.table()}} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
 Evaluates all hyperparameter configurations in \code{dt} through resampling, where each configuration is a row, and columns are scalar parameters.
-Return a data.table with corresponding rows, where each column is a named measure.
+Returns a \code{data.table()} with corresponding rows, where each column is a named measure.
 After a batch-eval the \link{Terminator} is checked, if it is positive, an exception of class \code{terminated_message} is raised.
 This function should be internally called by the tuner.
 \item \code{best(measure = NULL, ties_method = "random")}\cr
-(\link{Measure}, \code{character(1)}) -> \link[mlr3:ResampleResult]{mlr3::ResampleResult}\cr
+(\link[mlr3:Measure]{mlr3::Measure} | \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}, \code{character(1)}) -> \link[mlr3:ResampleResult]{mlr3::ResampleResult}\cr
 Queries the \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} for the best \link[mlr3:ResampleResult]{mlr3::ResampleResult} according \code{measure} (default is the first measure in \code{$measures}).
-\code{ties_method} can be "first", "last" or "random".
+\code{ties_method} can be "first", "last" or "random" (c.f. \code{\link[mlr3misc:which_max]{mlr3misc::which_max()}}).
 \item \code{archive(unnest = TRUE)}
 \code{logical(1)} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
 Returns a table of contained resample results, similar to the one returned by \code{\link[mlr3:benchmark]{mlr3::benchmark()}}'s
-\code{archive()} method. If \code{unnest} is \code{TRUE}, hyperparameter settings are stored in
+\code{$aggregate()} method. If \code{unnest} is \code{TRUE}, hyperparameter settings are stored in
 separate columns instead of inside a list column.
 }
 }

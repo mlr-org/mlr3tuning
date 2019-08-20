@@ -31,13 +31,15 @@ navbar:
     href: https://mlr-org.com/
 
 reference:
-  - title: Terminators
+  - title: Black Box Function
     contents:
-      - starts_with("Terminator")
+      - TuningInstance
   - title: Tuners
     contents:
       - starts_with("Tuner")
-  - title: Link to Machine Learning with mlr3
+  - title: Terminators
     contents:
-      - TuningInstance
+      - starts_with("Terminator")
+  - title: Auto-tuned Learner
+    contents:
       - AutoTuner

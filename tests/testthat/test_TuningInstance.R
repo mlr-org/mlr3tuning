@@ -3,9 +3,9 @@ context("TuningInstance")
 test_that("TuningInstance", {
   pe = TEST_MAKE_INST1(values = list(maxdepth = 10), folds = 2L, measures = "dummy.cp", n_dim = 2)
   # test empty PE
-  expect_null(pe$bmr)
+  expect_data_table(pe$bmr$data, nrows = 0)
   expect_identical(pe$n_evals, 0L)
-  expect_output(print(pe), "Null data.table")
+  expect_output(print(pe), "Empty data.table")
 
   # add a couple of eval points and test the state of PE
   pe$eval_batch(data.table(cp = c(0.01, 0.02), minsplit = c(3, 4)))

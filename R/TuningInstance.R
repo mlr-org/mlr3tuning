@@ -7,12 +7,12 @@
 #' Specifies a general tuning scenario, including performance evaluator and archive for Tuners to
 #' act upon. This class encodes the black box objective function,
 #' that a [Tuner] has to optimize. It allows the basic operations of querying the objective
-#' at design points (see `eval_batch`), storing the evaluated point in an internal archive
-#' and querying the archive (see `archive`).
+#' at design points (see `$eval_batch()`), storing the evaluated point in an internal archive
+#' and querying the archive (see `$archive()`).
 #'
-#' Evaluations of HP configurations are performed in batches by calling [mlr3::benchmark] internally,
-#' and after a batch-eval, if the [Terminator] is positive, an exception is raised.
-#' No further evaluations can be performed from this point on.
+#' Evaluations of hyperparameter configurations are performed in batches by calling [mlr3::benchmark()] internally.
+#' After a batch is evaluated, the [Terminator] is queried for the remaining budget.
+#' If more than the available budget has been used, an exception is raised, and no further evaluations can be performed from this point on.
 #'
 #' @section Construction:
 #' ```
@@ -21,28 +21,25 @@
 #' This defines the resampled performance of a learner on a task, a feasibility region
 #' for the parameters the tuner is supposed to optimize, and a termination criterion.
 #'
-#' * `task` :: [mlr3::Task].
-#'   See also [mlr3::mlr_sugar].
-#' * `learner` :: [mlr3::Learner].
-#'   See also [mlr3::mlr_sugar].
-#' * `resampling` :: [mlr3::Resampling].
-#'   See also [mlr3::mlr_sugar].
-#' * `measures` :: list of [mlr3::Measure].
-#'   See also [mlr3::mlr_sugar].
-#' * `param_set` :: [paradox::ParamSet].
+#' * `task` :: [mlr3::Task] | [mlr3::mlr_sugar].
+#' * `learner` :: [mlr3::Learner] | [mlr3::mlr_sugar].
+#' * `resampling` :: [mlr3::Resampling] | [mlr3::mlr_sugar].
+#' * `measures` :: list of [mlr3::Measure] | [mlr3::mlr_sugar].
+#' * `param_set` :: [paradox::ParamSet]\cr
+#'   Hyperparameter search space.
 #' * `terminator` :: [Terminator].
-#' * `bm_args` :: `list`\cr
-#'   Further args for [mlr::benchmark].
+#' * `bm_args` :: named `list()`\cr
+#'   Further args for [mlr::benchmark()].
 #'
 #' @section Fields:
-#' * `task` :: [mlr3::Task]\cr
-#' * `learner` :: [mlr3::Learner]\cr
-#' * `resampling` :: [mlr3::Resampling]\cr
-#' * `measures` :: list of [mlr3::Measure]\cr
-#' * `param_set` :: [paradox::ParamSet]\cr
-#' * `terminator` :: [Terminator]\cr
+#' * `task` :: [mlr3::Task].
+#' * `learner` :: [mlr3::Learner].
+#' * `resampling` :: [mlr3::Resampling].
+#' * `measures` :: list of [mlr3::Measure].
+#' * `param_set` :: [paradox::ParamSet].
+#' * `terminator` :: [Terminator].
 #' * `bmr` :: [mlr3::BenchmarkResult]\cr
-#'   A benchmark result, container object for all performed [ResampleResult]s when evaluating HP configurations.
+#'   A benchmark result, container object for all performed [mlr3::ResampleResult]s when evaluating hyperparameter configurations.
 #' * `n_evals` :: `integer(1)`\cr
 #'   Number of configuration evaluations stored in the container.
 #' * `start_time` :: `POSIXct(1)`\cr
@@ -51,19 +48,21 @@
 #'
 #' @section Methods:
 #' * `eval_batch(dt)`\cr
-#'   [data.table::data.table()] -> [data.table::data.table]\cr
+#'   [data.table::data.table()] -> [data.table::data.table()]\cr
 #'   Evaluates all hyperparameter configurations in `dt` through resampling, where each configuration is a row, and columns are scalar parameters.
-#'   Return a data.table with corresponding rows, where each column is a named measure.
+#'   Returns a `data.table()` with corresponding rows, where each column is a named measure.
 #'   After a batch-eval the [Terminator] is checked, if it is positive, an exception of class `terminated_message` is raised.
 #'   This function should be internally called by the tuner.
+#'
 #' * `best(measure = NULL, ties_method = "random")`\cr
-#'   ([Measure], `character(1)`) -> [mlr3::ResampleResult]\cr
+#'   ([mlr3::Measure] | [mlr3::mlr_sugar], `character(1)`) -> [mlr3::ResampleResult]\cr
 #'   Queries the [mlr3::BenchmarkResult] for the best [mlr3::ResampleResult] according `measure` (default is the first measure in `$measures`).
-#'   `ties_method` can be "first", "last" or "random".
+#'   `ties_method` can be "first", "last" or "random" (c.f. [mlr3misc::which_max()]).
+#'
 #' * `archive(unnest = TRUE)`
 #'   `logical(1)` -> [data.table::data.table()]\cr
 #'   Returns a table of contained resample results, similar to the one returned by [mlr3::benchmark()]'s
-#'   `archive()` method. If `unnest` is `TRUE`, hyperparameter settings are stored in
+#'   `$aggregate()` method. If `unnest` is `TRUE`, hyperparameter settings are stored in
 #'   separate columns instead of inside a list column.
 #'
 #' @family TuningInstance
@@ -105,13 +104,14 @@ TuningInstance = R6Class("TuningInstance",
     start_time = NULL,
 
     initialize = function(task, learner, resampling, measures, param_set, terminator, bm_args = list()) {
-      self$task = assert_task(task)
-      self$learner = assert_learner(learner, task = self$task)
-      self$resampling = assert_resampling(resampling)
-      self$measures = assert_measures(measures)
-      self$param_set = assert_param_set(param_set)
-      self$terminator = assert_r6(terminator, "Terminator")
+      self$task = assert_task(task, clone = TRUE)
+      self$learner = assert_learner(learner, task = self$task, clone = TRUE)
+      self$resampling = assert_resampling(resampling, clone = TRUE)
+      self$measures = assert_measures(measures, task = self$task, learner = self$learner, clone = TRUE)
+      self$param_set = assert_param_set(param_set, must_bounded = TRUE, no_untyped = TRUE)
+      self$terminator = assert_terminator(terminator)
       self$bm_args = assert_list(bm_args, names = "unique")
+      self$bmr = BenchmarkResult$new(data.table())
     },
 
     format = function() {
@@ -135,9 +135,8 @@ TuningInstance = R6Class("TuningInstance",
     # evaluates all points in a design
     # possibly transforms the data before using the trafo from self$param set
     eval_batch = function(dt) {
-
       # dt can contain missings because of non-fullfilled deps
-      assert_data_table(dt, any.missing = TRUE, min.rows = 1, min.cols = 1)
+      assert_data_table(dt, any.missing = TRUE, min.rows = 1L, min.cols = 1L)
       # this checks the validity of dt lines in the paramset
       design = Design$new(self$param_set, dt, remove_dupl = FALSE)
 
@@ -156,15 +155,10 @@ TuningInstance = R6Class("TuningInstance",
 
       # eval via benchmark and check terminator
       d = benchmark_grid(tasks = list(self$task), learners = lrns, resamplings = list(self$resampling))
-      bm_args = insert_named(self$bm_args, list(design = d))
-      bmr = do.call(benchmark, bm_args)
+      bmr = invoke(benchmark, design = d, .args = self$bm_args)
       # store evaluated results
-      # FIXME: this is could be simplified if mlr3$combine accepts NULL, opened issue #327
-      if (is.null(self$bmr)) {
-        self$bmr = bmr
-      } else {
-        self$bmr$combine(bmr)
-      }
+      self$bmr$combine(bmr)
+
       # if the terminator is positive throw condition of class "terminated_message" that we can tryCatch
       if (self$terminator$is_terminated(self)) {
         stop(messageCondition("TuningInstance terminated", class = "terminated_message"))
@@ -172,13 +166,10 @@ TuningInstance = R6Class("TuningInstance",
 
       # get aggregated measures in dt, return them
       mids = map_chr(self$measures, "id")
-      return(bmr$aggregate(measures = self$measures)[, mids, with = FALSE])
+      return(bmr$aggregate(measures = self$measures, ids = FALSE)[, mids, with = FALSE])
     },
 
     archive = function(unnest = TRUE) {
-      if (is.null(self$bmr)) {
-        return(data.table())
-      }
       dt = self$bmr$aggregate(measures = self$measures, params = TRUE)
       if (unnest) {
         dt = mlr3misc::unnest(dt, "params")
@@ -187,9 +178,8 @@ TuningInstance = R6Class("TuningInstance",
     },
 
     best = function(measure = NULL, ties_method = "random") {
-      if (is.null(measure))
-        measure = self$measures[[1L]]
-      measure = assert_measure(measure)
+      measure = if (is.null(measure)) self$measures[[1L]] else assert_measure(measure, task = self$task, learner = self$learner)
+
       # check that we are only using contained measures
       assert_choice(measure$id, map_chr(self$measures, "id"))
       tab = self$bmr$aggregate(measure, ids = FALSE)
@@ -201,6 +191,6 @@ TuningInstance = R6Class("TuningInstance",
   ),
 
   active = list(
-    n_evals = function() length(self$bmr$hashes)
+    n_evals = function() self$bmr$n_resample_results
   )
 )
