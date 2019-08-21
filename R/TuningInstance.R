@@ -72,10 +72,10 @@
 #' library(paradox)
 #' library(data.table)
 #' # Object required to define the performance evaluator:
-#' task = mlr_tasks$get("iris")
-#' learner = mlr_learners$get("classif.rpart")
-#' resampling = mlr_resamplings$get("holdout")
-#' measures = mlr_measures$mget("classif.ce")
+#' task = tsk("iris")
+#' learner = lrn("classif.rpart")
+#' resampling = rsmp("holdout")
+#' measures = msr("classif.ce")
 #' param_set = ParamSet$new(params = list(
 #'   ParamDbl$new("cp", lower = 0.001, upper = 0.1),
 #'   ParamInt$new("minsplit", lower = 1, upper = 10)))
@@ -104,10 +104,10 @@ TuningInstance = R6Class("TuningInstance",
     start_time = NULL,
 
     initialize = function(task, learner, resampling, measures, param_set, terminator, bm_args = list()) {
-      self$task = assert_task(task, clone = TRUE)
-      self$learner = assert_learner(learner, task = self$task, clone = TRUE)
-      self$resampling = assert_resampling(resampling, clone = TRUE)
-      self$measures = assert_measures(measures, task = self$task, learner = self$learner, clone = TRUE)
+      self$task = assert_task(as_task(task, clone = TRUE))
+      self$learner = assert_learner(as_learner(learner, clone = TRUE), task = self$task)
+      self$resampling = assert_resampling(as_resampling(resampling, clone = TRUE))
+      self$measures = assert_measures(as_measures(measures, clone = TRUE), task = self$task, learner = self$learner)
       self$param_set = assert_param_set(param_set, must_bounded = TRUE, no_untyped = TRUE)
       self$terminator = assert_terminator(terminator)
       self$bm_args = assert_list(bm_args, names = "unique")

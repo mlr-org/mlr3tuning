@@ -71,7 +71,7 @@ TEST_MAKE_INST1 = function(values = NULL, folds = 2L, measures = "classif.ce", n
   if (!is.null(values)) {
     lrn$param_set$values = values
   }
-  rs = mlr_resamplings$get("cv", param_vals = list(folds = folds))
+  rs = rsmp("cv", folds = folds)
   term = TerminatorEvals$new(term_evals)
   inst = TuningInstance$new("iris", lrn, rs, measures, ps, term)
   return(inst)

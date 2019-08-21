@@ -57,10 +57,10 @@
 #' @examples
 #' library(mlr3)
 #' library(paradox)
-#' task = mlr_tasks$get("iris")
-#' learner = mlr_learners$get("classif.rpart")
-#' resampling = mlr_resamplings$get("holdout")
-#' measures = mlr_measures$mget("classif.ce")
+#' task = tsk("iris")
+#' learner = lrn("classif.rpart")
+#' resampling = rsmp("holdout")
+#' measures = msr("classif.ce")
 #' param_set = ParamSet$new(
 #'   params = list(ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 #'
@@ -90,11 +90,11 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
     initialize = function(learner, resampling, measures, tune_ps, terminator, tuner, bm_args = list(), id = "autotuner") {
       self$id = assert_string(id) # needs to be set first for param_set active binding
       self$tuner = assert_r6(tuner, "Tuner")
-      self$learner = learner = assert_learner(learner = learner, clone = TRUE)
+      self$learner = learner = assert_learner(learner = as_learner(learner, clone = TRUE))
       self$learner$param_set$set_id = ""
       self$terminator = assert_r6(terminator, "Terminator")
-      self$resampling = assert_resampling(resampling, clone = TRUE)
-      self$measures = assert_measures(measures)
+      self$resampling = assert_resampling(as_resampling(resampling, clone = TRUE))
+      self$measures = assert_measures(as_measures(measures, clone = TRUE), learner = learner)
       self$tune_ps = assert_class(tune_ps, "ParamSet")
       self$bm_args = assert_list(bm_args, names = "unique")
 
@@ -114,7 +114,7 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
       terminator = self$terminator$clone()
       learner = self$learner$clone(deep = TRUE)
       instance = TuningInstance$new(
-        task = assert_task(task, clone = TRUE),
+        task = assert_task(as_task(task, clone = TRUE)),
         learner = learner,
         resampling = self$resampling,
         measures = self$measures,

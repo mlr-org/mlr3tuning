@@ -32,8 +32,8 @@ test_that("AutoTuner / resample", {
   inner_evals = 3L
 
   p_measures = c("classif.ce", "time_train", "time_both")
-  r_inner = mlr_resamplings$get("holdout")
-  r_outer = mlr_resamplings$get("cv", param_vals = list(folds = 2))
+  r_inner = rsmp("holdout")
+  r_outer = rsmp("cv", folds = 2)
   measures = mlr_measures$mget(p_measures)
 
   param_set = TEST_MAKE_PS1()
