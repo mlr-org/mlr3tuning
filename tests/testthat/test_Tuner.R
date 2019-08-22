@@ -1,6 +1,5 @@
 context("Tuner")
 
-
 test_that("API", {
   measures = mlr_measures$mget(c("classif.ce", "time_train", "time_both"))
   for (n_evals in c(1, 5)) {

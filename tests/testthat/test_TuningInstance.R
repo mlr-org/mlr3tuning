@@ -1,7 +1,7 @@
 context("TuningInstance")
 
 test_that("TuningInstance", {
-  pe = TEST_MAKE_INST1(values = list(maxdepth = 10), folds = 2L, measures = "dummy.cp", n_dim = 2)
+  pe = TEST_MAKE_INST1(values = list(maxdepth = 10), folds = 2L, measures = msr("dummy.cp"), n_dim = 2)
   # test empty PE
   expect_data_table(pe$bmr$data, nrows = 0)
   expect_identical(pe$n_evals, 0L)

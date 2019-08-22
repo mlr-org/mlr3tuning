@@ -1,13 +1,13 @@
 context("AutoTuner")
 
 test_that("AutoTuner / train+predict", {
-  measures = c("classif.ce", "time_train", "time_both")
+  measures = map(c("classif.ce", "time_train", "time_both"), msr)
   terminator = TerminatorEvals$new(3)
-  task = "iris"
+  task = tsk("iris")
 
   ps = TEST_MAKE_PS1()
   tuner = TunerRandomSearch$new()
-  at = AutoTuner$new("classif.rpart", "holdout", measures, ps, terminator, tuner = tuner)
+  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), measures, ps, terminator, tuner = tuner)
   at$store_bmr = TRUE
 
   at_clone = at$clone(deep = TRUE)
@@ -32,20 +32,20 @@ test_that("AutoTuner / resample", {
   inner_evals = 3L
 
   p_measures = c("classif.ce", "time_train", "time_both")
+  measures = mlr_measures$mget(p_measures)
   r_inner = rsmp("holdout")
   r_outer = rsmp("cv", folds = 2)
-  measures = mlr_measures$mget(p_measures)
 
   param_set = TEST_MAKE_PS1()
 
   terminator = TerminatorEvals$new(inner_evals)
 
   tuner = TunerRandomSearch$new()
-  at = AutoTuner$new("classif.rpart", r_inner, measures, param_set, terminator, tuner)
+  at = AutoTuner$new(lrn("classif.rpart"), r_inner, measures, param_set, terminator, tuner)
 
   expect_null(at$model$bmr)
 
-  rr = resample("iris", at, r_outer)
+  rr = resample(tsk("iris"), at, r_outer)
 
 
   # check tuning results of all outer folds
@@ -59,12 +59,12 @@ test_that("AutoTuner / resample", {
 })
 
 test_that("AutoTuner / param_set", {
-  measures = "classif.ce"
+  measures = msr("classif.ce")
   terminator = TerminatorEvals$new(3)
-  task = "iris"
+  task = tsk("iris")
   ps = TEST_MAKE_PS1()
   tuner = TunerRandomSearch$new()
-  at = AutoTuner$new("classif.rpart", "holdout", measures, ps, terminator, tuner)
+  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), measures, ps, terminator, tuner)
   at$param_set$values$maxdepth = 1
   at$param_set$values$cp = 1
   expect_equal(at$param_set$values[names(at$learner$param_set$values)], at$learner$param_set$values)

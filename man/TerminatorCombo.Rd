@@ -21,11 +21,10 @@ Stored in \code{settings}.
 }
 
 \examples{
-t = TerminatorCombo$new(list(
+TerminatorCombo$new(list(
   TerminatorModelTime$new(60),
   TerminatorEvals$new(10)
 ))
-print(t)
 }
 \seealso{
 Other Terminator: \code{\link{TerminatorClockTime}},

@@ -71,7 +71,14 @@ param_set = ParamSet$new(list(
   ParamDbl$new("cp", lower = 0.001, upper = 0.1)
 ))
 terminator = TerminatorEvals$new(3)
-instance = TuningInstance$new("iris", "classif.rpart", "holdout", "classif.ce", param_set, terminator)
+instance = TuningInstance$new(
+  task = tsk("iris"),
+  learner = lrn("classif.rpart"),
+  resampling = rsmp("holdout"),
+  measures = msr("classif.ce"),
+  param_set = param_set,
+  terminator = terminator
+)
 tt = TunerRandomSearch$new() # swap this line to use a different Tuner
 res = tt$tune(instance) # returns best configuration and performance, and logs in 'instance'
 instance$archive() # allows access of data.table / benchmark result of full path of all evaluations

@@ -20,11 +20,10 @@
 #' @family Terminator
 #' @export
 #' @examples
-#' t = TerminatorCombo$new(list(
+#' TerminatorCombo$new(list(
 #'   TerminatorModelTime$new(60),
 #'   TerminatorEvals$new(10)
 #' ))
-#' print(t)
 TerminatorCombo = R6Class("TerminatorSet",
   inherit = Terminator,
 
