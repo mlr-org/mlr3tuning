@@ -110,7 +110,7 @@ LearnerRegrDepParams = R6Class("LearnerRegrDepParams", inherit = LearnerRegr,
             ParamDbl$new("p2", lower = 0, upper = 1)
           )
       )
-      ps$add_dep("p2", on = "p1", cond = CondEqual$new("a"))
+      param_set$add_dep("p2", on = "p1", cond = CondEqual$new("a"))
       super$initialize(
         id = id,
         feature_types = c("logical", "integer", "numeric", "character", "factor", "ordered"),
@@ -133,5 +133,3 @@ LearnerRegrDepParams = R6Class("LearnerRegrDepParams", inherit = LearnerRegr,
   )
 )
 mlr3::mlr_learners$add("regr.depparams", LearnerRegrDepParams)
-
-
