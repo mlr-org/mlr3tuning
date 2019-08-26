@@ -69,5 +69,5 @@ Collate:
     'TuningInstance.R'
     'assertions.R'
     'helper.R'
-    'term.R'
+    'sugar.R'
     'zzz.R'
