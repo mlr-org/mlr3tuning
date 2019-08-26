@@ -1,8 +1,9 @@
 #' @title Terminator that stops accoring to clock
 #'
-#' @include Terminator.R
+#' @aliases mlr_terminators_clock_time
 #' @usage NULL
 #' @format [R6::R6Class] object inheriting from [Terminator].
+#' @include Terminator.R
 #'
 #' @description
 #' Class to terminate the tuning either after the complete process took a number of seconds on the clock
@@ -50,3 +51,5 @@ TerminatorClockTime = R6Class("TerminatorClockTime",
     }
   )
 )
+
+mlr_terminators$add("clock_time", TerminatorClockTime)

@@ -2,6 +2,7 @@
 #'
 #' @usage NULL
 #' @format [R6::R6Class] object.
+#' @include mlr_tuners.R
 #'
 #' @description
 #' Abstract `Tuner` class that implements the main functionality each tuner must have.

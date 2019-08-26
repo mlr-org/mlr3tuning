@@ -3,6 +3,7 @@
 \docType{data}
 \name{TerminatorPerfReached}
 \alias{TerminatorPerfReached}
+\alias{mlr_terminators_perf_reached}
 \title{Terminator that stops when a peformance level has been reached}
 \format{\link[R6:R6Class]{R6::R6Class} object inheriting from \link{Terminator}.}
 \description{
@@ -25,7 +26,8 @@ Other Terminator: \code{\link{TerminatorClockTime}},
   \code{\link{TerminatorCombo}},
   \code{\link{TerminatorEvals}},
   \code{\link{TerminatorModelTime}},
-  \code{\link{TerminatorNone}}, \code{\link{Terminator}}
+  \code{\link{TerminatorNone}}, \code{\link{Terminator}},
+  \code{\link{mlr_terminators}}, \code{\link{mlr_tuners}}
 }
 \concept{Terminator}
 \keyword{datasets}

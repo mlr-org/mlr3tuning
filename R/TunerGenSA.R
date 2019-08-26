@@ -1,5 +1,6 @@
 #' @title TunerGenSA
 #'
+#' @aliases mlr_tuners_gensa
 #' @include Tuner.R
 #' @usage NULL
 #' @format [R6::R6Class] object inheriting from [Tuner].
@@ -53,3 +54,5 @@ TunerGenSA = R6Class("TunerGenSA",
     }
   )
 )
+
+mlr_tuners$add("gensa", TunerGenSA)

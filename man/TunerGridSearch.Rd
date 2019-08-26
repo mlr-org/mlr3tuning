@@ -3,6 +3,7 @@
 \docType{data}
 \name{TunerGridSearch}
 \alias{TunerGridSearch}
+\alias{mlr_tuners_grid_search}
 \title{TunerGridSearch}
 \format{\link[R6:R6Class]{R6::R6Class} object inheriting from \link{Tuner}.}
 \description{

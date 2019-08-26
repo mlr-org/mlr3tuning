@@ -97,7 +97,24 @@ inst = TuningInstance$new(
   param_set = param_set,
   terminator = terminator
 )
-inst$eval_batch(data.table(cp = c(0.05, 0.01), minsplit = c(5, 3)))
+
+# first 4 points as cross product
+design = CJ(cp = c(0.05, 0.01), minsplit = c(5, 3))
+inst$eval_batch(design)
+inst$archive()
+
+# try more points, catch the eventually raised terminated message
+tryCatch(
+  inst$eval_batch(data.table(cp = 0.01, minsplit = 7)),
+  terminated_message = function(e) message(as.character(e))
+)
+
+# try another point although the budget is now exhausted
+tryCatch(
+  inst$eval_batch(data.table(cp = 0.01, minsplit = 9)),
+  terminated_message = function(e) message(as.character(e))
+)
+
 inst$archive()
 }
 \concept{TuningInstance}

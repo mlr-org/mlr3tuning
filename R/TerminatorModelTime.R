@@ -1,8 +1,9 @@
 #' @title Terminator that stops after a budget of model evaluation time is depleted
 #'
-#' @include Terminator.R
+#' @aliases mlr_terminators_model_time
 #' @usage NULL
 #' @format [R6::R6Class] object inheriting from [Terminator].
+#' @include Terminator.R
 #'
 #' @description
 #' Class to terminate the tuning after a given model evaluation budget is exceeded.
@@ -40,3 +41,5 @@ TerminatorModelTime = R6Class("TerminatorModelTime",
     }
   )
 )
+
+mlr_terminators$add("model_time", TerminatorModelTime)

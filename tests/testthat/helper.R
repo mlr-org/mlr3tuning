@@ -1,5 +1,21 @@
 lapply(list.files(system.file("testthat", package = "mlr3"), pattern = "^helper.*\\.[rR]$", full.names = TRUE), source)
 
+expect_tuner = function(tuner) {
+  expect_r6(tuner, "Tuner",
+    public = c("tune", "settings"),
+    private = "tune_internal"
+  )
+  expect_list(tuner$settings, names = "unique")
+  expect_function(tuner$tune, args = "instance")
+}
+
+expect_terminator = function(term) {
+  expect_r6(term, "Terminator",
+    public = c("is_terminated", "settings")
+  )
+  expect_list(term$settings, names = "unique")
+}
+
 # test an implemented subclass tuner by running a couple of standard tests
 # on a simple example
 # term_evals: how we configure the Terminator

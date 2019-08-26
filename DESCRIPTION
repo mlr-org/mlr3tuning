@@ -53,6 +53,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
 Collate:
     'AutoTuner.R'
+    'mlr_terminators.R'
     'Terminator.R'
     'TerminatorClockTime.R'
     'TerminatorCombo.R'
@@ -60,6 +61,7 @@ Collate:
     'TerminatorModelTime.R'
     'TerminatorNone.R'
     'TerminatorPerfReached.R'
+    'mlr_tuners.R'
     'Tuner.R'
     'TunerGenSA.R'
     'TunerGridSearch.R'
@@ -67,4 +69,5 @@ Collate:
     'TuningInstance.R'
     'assertions.R'
     'helper.R'
+    'term.R'
     'zzz.R'

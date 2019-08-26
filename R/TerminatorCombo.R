@@ -1,8 +1,9 @@
 #' @title Combine Terminators
 #'
-#' @include Terminator.R
+#' @aliases mlr_terminators_combo
 #' @usage NULL
 #' @format [R6::R6Class] object inheriting from [Terminator].
+#' @include Terminator.R
 #'
 #' @description
 #' This class takes multiple [Terminator]s and terminates as soon as one or all of the included terminators are positive.
@@ -24,7 +25,7 @@
 #'   TerminatorModelTime$new(60),
 #'   TerminatorEvals$new(10)
 #' ))
-TerminatorCombo = R6Class("TerminatorSet",
+TerminatorCombo = R6Class("TerminatorCombo",
   inherit = Terminator,
 
   public = list(
@@ -41,3 +42,5 @@ TerminatorCombo = R6Class("TerminatorSet",
     }
   )
 )
+
+mlr_terminators$add("combo", TerminatorCombo)

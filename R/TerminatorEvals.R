@@ -1,8 +1,9 @@
 #' @title Terminator that stops after a number of evals
 #'
-#' @include Terminator.R
+#' @aliases mlr_terminators_evals
 #' @usage NULL
 #' @format [R6::R6Class] object inheriting from [Terminator].
+#' @include Terminator.R
 #'
 #' @description
 #' Class to terminate the tuning depending on the number of evaluations.
@@ -34,3 +35,5 @@ TerminatorEvals = R6Class("TerminatorEvals",
     }
   )
 )
+
+mlr_terminators$add("evals", TerminatorEvals)

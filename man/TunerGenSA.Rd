@@ -3,6 +3,7 @@
 \docType{data}
 \name{TunerGenSA}
 \alias{TunerGenSA}
+\alias{mlr_tuners_gensa}
 \title{TunerGenSA}
 \format{\link[R6:R6Class]{R6::R6Class} object inheriting from \link{Tuner}.}
 \description{

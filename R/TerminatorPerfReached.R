@@ -1,8 +1,9 @@
 #' @title Terminator that stops when a peformance level has been reached
 #'
-#' @include Terminator.R
+#' @aliases mlr_terminators_perf_reached
 #' @usage NULL
 #' @format [R6::R6Class] object inheriting from [Terminator].
+#' @include Terminator.R
 #'
 #' @description
 #' Class to terminate the tuning after a performance level has been hit.
@@ -45,3 +46,5 @@ TerminatorPerfReached = R6Class("TerminatorPerfReached",
     }
   )
 )
+
+mlr_terminators$add("perf_reached", TerminatorPerfReached)

@@ -3,6 +3,7 @@
 \docType{data}
 \name{TerminatorEvals}
 \alias{TerminatorEvals}
+\alias{mlr_terminators_evals}
 \title{Terminator that stops after a number of evals}
 \format{\link[R6:R6Class]{R6::R6Class} object inheriting from \link{Terminator}.}
 \description{
@@ -28,7 +29,8 @@ Other Terminator: \code{\link{TerminatorClockTime}},
   \code{\link{TerminatorModelTime}},
   \code{\link{TerminatorNone}},
   \code{\link{TerminatorPerfReached}},
-  \code{\link{Terminator}}
+  \code{\link{Terminator}}, \code{\link{mlr_terminators}},
+  \code{\link{mlr_tuners}}
 }
 \concept{Terminator}
 \keyword{datasets}

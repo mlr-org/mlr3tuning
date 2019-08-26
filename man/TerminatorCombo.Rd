@@ -3,6 +3,7 @@
 \docType{data}
 \name{TerminatorCombo}
 \alias{TerminatorCombo}
+\alias{mlr_terminators_combo}
 \title{Combine Terminators}
 \format{\link[R6:R6Class]{R6::R6Class} object inheriting from \link{Terminator}.}
 \description{
@@ -32,7 +33,8 @@ Other Terminator: \code{\link{TerminatorClockTime}},
   \code{\link{TerminatorModelTime}},
   \code{\link{TerminatorNone}},
   \code{\link{TerminatorPerfReached}},
-  \code{\link{Terminator}}
+  \code{\link{Terminator}}, \code{\link{mlr_terminators}},
+  \code{\link{mlr_tuners}}
 }
 \concept{Terminator}
 \keyword{datasets}

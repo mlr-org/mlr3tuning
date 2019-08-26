@@ -1,8 +1,9 @@
 #' @title Terminator that never stops.
 #'
-#' @include Terminator.R
+#' @aliases mlr_terminators_none
 #' @usage NULL
 #' @format [R6::R6Class] object inheriting from [Terminator].
+#' @include Terminator.R
 #'
 #' @description
 #' Mainly useful for grid search, or maybe other tuners, where the stopping is inherently controlled by the tuner itself.
@@ -25,3 +26,5 @@ TerminatorNone = R6Class("TerminatorNone",
     is_terminated = function(pe) return(FALSE)
   )
 )
+
+mlr_terminators$add("none", TerminatorNone)

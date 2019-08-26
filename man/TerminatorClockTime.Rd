@@ -3,6 +3,7 @@
 \docType{data}
 \name{TerminatorClockTime}
 \alias{TerminatorClockTime}
+\alias{mlr_terminators_clock_time}
 \title{Terminator that stops accoring to clock}
 \format{\link[R6:R6Class]{R6::R6Class} object inheriting from \link{Terminator}.}
 \description{
@@ -36,7 +37,8 @@ Other Terminator: \code{\link{TerminatorCombo}},
   \code{\link{TerminatorModelTime}},
   \code{\link{TerminatorNone}},
   \code{\link{TerminatorPerfReached}},
-  \code{\link{Terminator}}
+  \code{\link{Terminator}}, \code{\link{mlr_terminators}},
+  \code{\link{mlr_tuners}}
 }
 \concept{Terminator}
 \keyword{datasets}

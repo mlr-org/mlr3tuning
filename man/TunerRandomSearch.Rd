@@ -3,6 +3,7 @@
 \docType{data}
 \name{TunerRandomSearch}
 \alias{TunerRandomSearch}
+\alias{mlr_tuners_random_search}
 \title{TunerRandomSearch}
 \format{\link[R6:R6Class]{R6::R6Class} object inheriting from \link{Tuner}.}
 \description{
