@@ -1,5 +1,12 @@
-messageCondition = function(msg, ..., class = NULL, call = NULL) {
-  structure(list(message = msg, call = call, ...), class = c(class, "message", "condition"))
+terminated_message = function(instance) {
+  msg = sprintf(
+    fmt = "TuningInstance (tsk:%s, lrn:%s, term:%s) terminated",
+    instance$task$id,
+    instance$learner$id,
+    format(instance$terminator)
+  )
+
+  set_class(list(message = msg, call = NULL), c("terminated_message", "message", "condition"))
 }
 
 # get an object from a list of id-able-objects, like many from mlr3

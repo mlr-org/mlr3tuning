@@ -89,7 +89,24 @@
 #'   param_set = param_set,
 #'   terminator = terminator
 #' )
-#' inst$eval_batch(data.table(cp = c(0.05, 0.01), minsplit = c(5, 3)))
+#'
+#' # first 4 points as cross product
+#' design = CJ(cp = c(0.05, 0.01), minsplit = c(5, 3))
+#' inst$eval_batch(design)
+#' inst$archive()
+#'
+#' # try more points, catch the eventually raised terminated message
+#' tryCatch(
+#'   inst$eval_batch(data.table(cp = 0.01, minsplit = 7)),
+#'   terminated_message = function(e) message(as.character(e))
+#' )
+#'
+#' # try another point although the budget is now exhausted
+#' tryCatch(
+#'   inst$eval_batch(data.table(cp = 0.01, minsplit = 9)),
+#'   terminated_message = function(e) message(as.character(e))
+#' )
+#'
 #' inst$archive()
 TuningInstance = R6Class("TuningInstance",
   public = list(
@@ -120,7 +137,7 @@ TuningInstance = R6Class("TuningInstance",
 
     print = function() {
 
-      catf(format(self))
+      catf(self$format())
       catf(str_indent("* Task:", format(self$task)))
       catf(str_indent("* Learner:", format(self$learner)))
       catf(str_indent("* Measures:", map_chr(self$measures, "id")))
@@ -135,8 +152,13 @@ TuningInstance = R6Class("TuningInstance",
     # evaluates all points in a design
     # possibly transforms the data before using the trafo from self$param set
     eval_batch = function(dt) {
-      # dt can contain missings because of non-fullfilled deps
+      if (self$terminator$is_terminated(self)) {
+        stop(terminated_message(self))
+      }
+
+      # dt can contain missings because of non-fulfilled dependencies
       assert_data_table(dt, any.missing = TRUE, min.rows = 1L, min.cols = 1L)
+
       # this checks the validity of dt lines in the paramset
       design = Design$new(self$param_set, dt, remove_dupl = FALSE)
 
@@ -161,7 +183,7 @@ TuningInstance = R6Class("TuningInstance",
 
       # if the terminator is positive throw condition of class "terminated_message" that we can tryCatch
       if (self$terminator$is_terminated(self)) {
-        stop(messageCondition("TuningInstance terminated", class = "terminated_message"))
+        stop(terminated_message(self))
       }
 
       # get aggregated measures in dt, return them
