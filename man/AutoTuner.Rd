@@ -29,7 +29,7 @@ When to stop tuning.
 \item \code{tuner} :: \link{Tuner}\cr
 Tuning algorithm to run.
 \item \code{bm_args} :: \code{list()}\cr
-Further arguments for \code{\link[mlr:benchmark]{mlr::benchmark()}}, see \link{TuningInstance}.
+Further arguments for \code{\link[mlr3:benchmark]{mlr3::benchmark()}}, see \link{TuningInstance}.
 \item \code{id} :: \code{character(1)}\cr
 Name of the learner.
 }

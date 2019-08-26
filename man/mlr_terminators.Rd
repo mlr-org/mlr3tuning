@@ -19,8 +19,7 @@ See \link[mlr3misc:Dictionary]{mlr3misc::Dictionary}.
 }
 
 \examples{
-mlr_terminators$get("perf_reached")
-term("evals")
+term("evals", n_evals = 10)
 }
 \seealso{
 Sugar function: \code{\link[=term]{term()}}

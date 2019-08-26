@@ -19,8 +19,7 @@
 #' Sugar function: [term()]
 #' @export
 #' @examples
-#' mlr_terminators$get("perf_reached")
-#' term("evals")
+#' term("evals", n_evals = 10)
 mlr_terminators = R6Class("DictionaryTerminator",
   inherit = Dictionary,
   cloneable = FALSE

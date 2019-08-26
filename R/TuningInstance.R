@@ -29,7 +29,7 @@
 #'   Hyperparameter search space.
 #' * `terminator` :: [Terminator].
 #' * `bm_args` :: named `list()`\cr
-#'   Further args for [mlr::benchmark()].
+#'   Further args for [mlr3::benchmark()].
 #'
 #' @section Fields:
 #' * `task` :: [mlr3::Task].

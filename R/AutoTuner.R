@@ -27,7 +27,7 @@
 #' * `tuner` :: [Tuner]\cr
 #'   Tuning algorithm to run.
 #' * `bm_args` :: `list()`\cr
-#'   Further arguments for [mlr::benchmark()], see [TuningInstance].
+#'   Further arguments for [mlr3::benchmark()], see [TuningInstance].
 #' * `id` :: `character(1)`\cr
 #'   Name of the learner.
 #'

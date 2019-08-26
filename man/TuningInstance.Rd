@@ -31,7 +31,7 @@ for the parameters the tuner is supposed to optimize, and a termination criterio
 Hyperparameter search space.
 \item \code{terminator} :: \link{Terminator}.
 \item \code{bm_args} :: named \code{list()}\cr
-Further args for \code{\link[mlr:benchmark]{mlr::benchmark()}}.
+Further args for \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
 }
 }
 
