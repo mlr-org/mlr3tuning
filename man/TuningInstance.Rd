@@ -61,7 +61,7 @@ This is set in the beginning of \code{tune} of \link{Tuner}.
 \code{\link[data.table:data.table]{data.table::data.table()}} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
 Evaluates all hyperparameter configurations in \code{dt} through resampling, where each configuration is a row, and columns are scalar parameters.
 Returns a \code{data.table()} with corresponding rows, where each column is a named measure.
-After a batch-eval the \link{Terminator} is checked, if it is positive, an exception of class \code{terminated_message} is raised.
+After a batch-eval the \link{Terminator} is checked, if it is positive, an exception of class \code{terminated_error} is raised.
 This function should be internally called by the tuner.
 \item \code{best(measure = NULL, ties_method = "random")}\cr
 (\link[mlr3:Measure]{mlr3::Measure} | \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}, \code{character(1)}) -> \link[mlr3:ResampleResult]{mlr3::ResampleResult}\cr
@@ -106,13 +106,13 @@ inst$archive()
 # try more points, catch the eventually raised terminated message
 tryCatch(
   inst$eval_batch(data.table(cp = 0.01, minsplit = 7)),
-  terminated_message = function(e) message(as.character(e))
+  terminated_error = function(e) message(as.character(e))
 )
 
 # try another point although the budget is now exhausted
 tryCatch(
   inst$eval_batch(data.table(cp = 0.01, minsplit = 9)),
-  terminated_message = function(e) message(as.character(e))
+  terminated_error = function(e) message(as.character(e))
 )
 
 inst$archive()

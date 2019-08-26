@@ -51,7 +51,7 @@
 #'   [data.table::data.table()] -> [data.table::data.table()]\cr
 #'   Evaluates all hyperparameter configurations in `dt` through resampling, where each configuration is a row, and columns are scalar parameters.
 #'   Returns a `data.table()` with corresponding rows, where each column is a named measure.
-#'   After a batch-eval the [Terminator] is checked, if it is positive, an exception of class `terminated_message` is raised.
+#'   After a batch-eval the [Terminator] is checked, if it is positive, an exception of class `terminated_error` is raised.
 #'   This function should be internally called by the tuner.
 #'
 #' * `best(measure = NULL, ties_method = "random")`\cr
@@ -98,13 +98,13 @@
 #' # try more points, catch the eventually raised terminated message
 #' tryCatch(
 #'   inst$eval_batch(data.table(cp = 0.01, minsplit = 7)),
-#'   terminated_message = function(e) message(as.character(e))
+#'   terminated_error = function(e) message(as.character(e))
 #' )
 #'
 #' # try another point although the budget is now exhausted
 #' tryCatch(
 #'   inst$eval_batch(data.table(cp = 0.01, minsplit = 9)),
-#'   terminated_message = function(e) message(as.character(e))
+#'   terminated_error = function(e) message(as.character(e))
 #' )
 #'
 #' inst$archive()
@@ -153,7 +153,7 @@ TuningInstance = R6Class("TuningInstance",
     # possibly transforms the data before using the trafo from self$param set
     eval_batch = function(dt) {
       if (self$terminator$is_terminated(self)) {
-        stop(terminated_message(self))
+        stop(terminated_error(self))
       }
 
       # dt can contain missings because of non-fulfilled dependencies
@@ -181,9 +181,9 @@ TuningInstance = R6Class("TuningInstance",
       # store evaluated results
       self$bmr$combine(bmr)
 
-      # if the terminator is positive throw condition of class "terminated_message" that we can tryCatch
+      # if the terminator is positive throw condition of class "terminated_error" that we can tryCatch
       if (self$terminator$is_terminated(self)) {
-        stop(terminated_message(self))
+        stop(terminated_error(self))
       }
 
       # get aggregated measures in dt, return them

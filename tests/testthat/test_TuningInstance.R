@@ -56,3 +56,9 @@ test_that("archive one row (#40)", {
   expect_data_table(a, nrows = 1)
   expect_number(a$classif.ce)
 })
+
+test_that("budget", {
+  pe = TEST_MAKE_INST1()
+  design = generate_design_random(pe$param_set, 8)$data
+  expect_error(pe$eval_batch(design[1:6, ]), class = "terminated_error")
+})
