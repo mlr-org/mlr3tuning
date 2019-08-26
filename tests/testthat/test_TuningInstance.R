@@ -61,4 +61,17 @@ test_that("budget", {
   pe = TEST_MAKE_INST1()
   design = generate_design_random(pe$param_set, 8)$data
   expect_error(pe$eval_batch(design[1:6, ]), class = "terminated_error")
+  tab = pe$archive()
+  expect_data_table(tab, nrow = 6)
+
+  pe = TEST_MAKE_INST1()
+  tuner = tnr("random_search", batch_size = 6)
+  tuner$tune(pe)
+  tab = pe$archive()
+  expect_data_table(tab, nrow = 6)
+
+  # second start should be a NOP
+  tuner$tune(pe)
+  tab = pe$archive()
+  expect_data_table(tab, nrow = 6)
 })
