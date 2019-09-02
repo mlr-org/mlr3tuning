@@ -63,6 +63,12 @@ Evaluates all hyperparameter configurations in \code{dt} through resampling, whe
 Returns a \code{data.table()} with corresponding rows, where each column is a named measure.
 After a batch-eval the \link{Terminator} is checked, if it is positive, an exception of class \code{terminated_error} is raised.
 This function should be internally called by the tuner.
+\item \code{tuner_objective(x)}\cr
+\link{numeric(n)} -> \link{numeric(1)}\cr
+Evaluates a simple numeric vector of hyperparameter settings, and returns a scalar objective value,
+where the return value is negated if the measure is maximized.
+Internally, \code{eval_batch} is called with a single row.
+This function serves as a objective function for tuners of numeric spaces - which should always be minimized.
 \item \code{best(measure = NULL, ties_method = "random")}\cr
 (\link[mlr3:Measure]{mlr3::Measure} | \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}, \code{character(1)}) -> \link[mlr3:ResampleResult]{mlr3::ResampleResult}\cr
 Queries the \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} for the best \link[mlr3:ResampleResult]{mlr3::ResampleResult} according \code{measure} (default is the first measure in \code{$measures}).

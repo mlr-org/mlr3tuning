@@ -23,8 +23,8 @@
 #' @export
 #' @examples
 #' # see ?Tuner
-TunerGenSA = R6Class("TunerGenSA",
-  inherit = Tuner,
+TunerGenSA = R6Class("TunerGenSA", inherit = Tuner,
+
   public = list(
     initialize = function(...) {
       # Default settings:
@@ -36,21 +36,11 @@ TunerGenSA = R6Class("TunerGenSA",
       )
     }
   ),
+
   private = list(
     tune_internal = function(instance) {
-      objective = function(x, instance) {
-        measure = instance$measures[[1L]]
-
-        n = instance$bmr$n_resample_results
-        params = setDT(as.list(x))
-        setnames(params, instance$param_set$ids())
-        instance$eval_batch(params)
-
-        perf = instance$bmr$resample_result(n + 1)$aggregate(measure)
-        if (measure$minimize) perf else -perf
-      }
-      GenSA::GenSA(fn = objective, lower = instance$param_set$lower, upper = instance$param_set$upper,
-        control = self$settings, instance = instance)
+      GenSA::GenSA(fn = instance$tuner_objective, lower = instance$param_set$lower,
+        upper = instance$param_set$upper, control = self$settings)
     }
   )
 )

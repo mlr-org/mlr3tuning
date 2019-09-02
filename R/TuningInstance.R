@@ -54,6 +54,13 @@
 #'   After a batch-eval the [Terminator] is checked, if it is positive, an exception of class `terminated_error` is raised.
 #'   This function should be internally called by the tuner.
 #'
+#' * `tuner_objective(x)`\cr
+#'   [numeric(n)] -> [numeric(1)]\cr
+#'   Evaluates a simple numeric vector of hyperparameter settings, and returns a scalar objective value,
+#'   where the return value is negated if the measure is maximized.
+#'   Internally, `eval_batch` is called with a single row.
+#'   This function serves as a objective function for tuners of numeric spaces - which should always be minimized.
+#'
 #' * `best(measure = NULL, ties_method = "random")`\cr
 #'   ([mlr3::Measure] | [mlr3::mlr_sugar], `character(1)`) -> [mlr3::ResampleResult]\cr
 #'   Queries the [mlr3::BenchmarkResult] for the best [mlr3::ResampleResult] according `measure` (default is the first measure in `$measures`).
@@ -189,6 +196,13 @@ TuningInstance = R6Class("TuningInstance",
       # get aggregated measures in dt, return them
       mids = map_chr(self$measures, "id")
       return(bmr$aggregate(measures = self$measures, ids = FALSE)[, mids, with = FALSE])
+    },
+
+    tuner_objective = function(x) {
+      m = self$measures[[1L]]
+      d = setnames(setDT(as.list(x)), self$param_set$ids())
+      y = self$eval_batch(d)[[m$id]]
+      if (m$minimize) y else -y
     },
 
     archive = function(unnest = TRUE) {
