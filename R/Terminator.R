@@ -9,7 +9,7 @@
 #' A terminator is an object that determines when to stop the tuning.
 #'
 #' Termination of tuning works as follows:
-#' * Evaluations in a tuner are performed in batches of size `batch_size`.
+#' * Evaluations in a tuner are performed in batches.
 #' * Before and after a batch evaluation the [Terminator] is checked, if it is positive, we stop.
 #' * The tuning algorithm itself might decide not to produce any more points, or even might decide to do a smaller batch in its last evaluation.
 #'

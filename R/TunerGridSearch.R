@@ -14,8 +14,8 @@
 #'
 #' In order to support general termination criteria and parallelization,
 #' we evaluate points in a batch-fashion of size `batch_size`.
-#' Number of `batch_size` points are evaluated per iteration (potentially in parallel),
-#' then the termination criteria are checked.
+#' Larger batches mean we can parallelize more, smaller batches imply a more fine-grained checking
+#' of termination criteria.
 #'
 #' @section Construction:
 #' ```
