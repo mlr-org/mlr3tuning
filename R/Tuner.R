@@ -11,16 +11,20 @@
 #'
 #' @section Construction:
 #' ```
-#' tuner = Tuner$new(param_classes, settings = list())
+#' tuner = Tuner$new(param_classes, settings = list(), packages = character())
 #' ```
 #'
 #' * `param_classes` :: `character()`\cr
 #'   Supported parameter classes that the tuner can optimize, subclasses of [paradox::Param].
 #' * `settings` :: named `list()`\cr
 #'   Arbitrary named list, depending on the child class.
+#' * `packages` :: `character()`\cr
+#'   Set of required packages.
+#'   Note that these packages will be loaded via [requireNamespace()], and are not attached.
 #'
 #' @section Fields:
 #' * `settings` :: named `list()`\cr
+#' * `packages` :: `character()`\cr
 #'
 #' @section Methods:
 #' * `tune(instance)`\cr
@@ -71,13 +75,15 @@
 #' instance$archive() # allows access of data.table / benchmark result of full path of all evaluations
 Tuner = R6Class("Tuner",
   public = list(
+    packages = NULL,
     settings = NULL,
     param_classes = NULL,
     ties_method = "random", # FIXME: bad handling
 
-    initialize = function(param_classes, settings = list()) {
+    initialize = function(param_classes, settings = list(), packages = character()) {
       self$param_classes = param_classes
       self$settings = assert_list(settings, names = "unique")
+      self$packages = assert_set(packages)
     },
 
     format = function() {
@@ -87,9 +93,11 @@ Tuner = R6Class("Tuner",
     print = function() {
       catf(format(self))
       catf(str_indent("* settings:", as_short_string(self$settings)))
+      catf(str_indent("* Packages:", self$packages))
     },
 
     tune = function(instance) {
+      require_namespaces(self$packages)
       not_supported_pclasses = setdiff(unique(instance$param_set$class), self$param_classes)
       if (length(not_supported_pclasses) > 0L)
         stopf("Tuner '%s' does not support param types: '%s'", class(self)[1L], paste0(not_supported_pclasses, collapse = ","))
