@@ -10,7 +10,7 @@
 #'
 #' Termination of tuning works as follows:
 #' * Evaluations in a tuner are performed in batches of size `batch_size`.
-#' * After a batch evaluation the [Terminator] is checked, if it is positive, we stop.
+#' * Before and after a batch evaluation the [Terminator] is checked, if it is positive, we stop.
 #' * The tuning algorithm itself might decide not to produce any more points, or even might decide to do a smaller batch in its last evaluation.
 #'
 #' Therefore the following note seems in order:

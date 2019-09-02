@@ -12,7 +12,7 @@ A terminator is an object that determines when to stop the tuning.
 Termination of tuning works as follows:
 \itemize{
 \item Evaluations in a tuner are performed in batches of size \code{batch_size}.
-\item After a batch evaluation the \link{Terminator} is checked, if it is positive, we stop.
+\item Before and after a batch evaluation the \link{Terminator} is checked, if it is positive, we stop.
 \item The tuning algorithm itself might decide not to produce any more points, or even might decide to do a smaller batch in its last evaluation.
 }
 
