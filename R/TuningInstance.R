@@ -56,7 +56,7 @@
 #'
 #' * `tuner_objective(x)`\cr
 #'   `numeric()` -> `numeric(1)`\cr
-#'   Evaluates a simple numeric vector of hyperparameter settings, and returns a scalar objective value,
+#'   Evaluates a hyperparameter configuration of only numeric values, and returns a scalar objective value,
 #'   where the return value is negated if the measure is maximized.
 #'   Internally, `$eval_batch()` is called with a single row.
 #'   This function serves as a objective function for tuners of numeric spaces - which should always be minimized.
@@ -69,7 +69,7 @@
 #' * `archive(unnest = TRUE)`
 #'   `logical(1)` -> [data.table::data.table()]\cr
 #'   Returns a table of contained resample results, similar to the one returned by [mlr3::benchmark()]'s
-#'   `$aggregate()` method. If `unnest` is `TRUE`, hyperparameter settings are stored in
+#'   `$aggregate()` method. If `unnest` is `TRUE`, hyperparameter configuration settings are stored in
 #'   separate columns instead of inside a list column.
 #'
 #' @family TuningInstance

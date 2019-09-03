@@ -23,15 +23,14 @@
 #' t = Terminator$new(param_set = ParamSet$new(), param_vals = list())
 #' ```
 #' * `param_set` :: [paradox::ParamSet]\cr
-#'   Set of hyperparameters.
+#'   Set of control parameters for terminator.
 #'
 #' * `param_vals` :: named `list()`\cr
-#'   List of hyperparameter settings.
+#'   Settings of control parameters for terminator.
 #'
 #' @section Fields:
 #'
 #' * `param_set` :: [paradox::ParamSet]\cr
-#'   Description of available hyperparameters and hyperparameter settings.
 #'
 #' @section Methods:
 #' * `is_terminated(inst)`\cr

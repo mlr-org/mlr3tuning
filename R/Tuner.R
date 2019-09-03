@@ -16,13 +16,13 @@
 #' ```
 #'
 #' * `param_set` :: [paradox::ParamSet]\cr
-#'   Set of hyperparameters.
+#'   Set of control parameters for tuner.
 #'
 #' * `param_vals` :: named `list()`\cr
-#'   List of hyperparameter settings.
+#'   Settings of control parameters for tuner.
 #'
 #' * `param_classes` :: `character()`\cr
-#'   Supported parameter classes that the tuner can optimize, subclasses of [paradox::Param].
+#'   Supported parameter classes for learner hyperparameters that the tuner can optimize, subclasses of [paradox::Param].
 #'
 #' * `properties` :: `character()`\cr
 #'   Set of properties of the tuner. Must be a subset of [`mlr_reflections$tuner_properties`][mlr_reflections].
@@ -33,7 +33,6 @@
 #'
 #' @section Fields:
 #' * `param_set` :: [paradox::ParamSet]\cr
-#'   Description of available hyperparameters and hyperparameter settings.
 #' * `param_classes` :: `character()`\cr
 #' * `properties` :: `character()`\cr
 #' * `packages` :: `character()`\cr
@@ -121,7 +120,7 @@ Tuner = R6Class("Tuner",
       instance$start_time = Sys.time()
       lg$info("Starting to tune %i parameters with '%s' and '%s'" ,
         instance$param_set$length, self$format(), instance$terminator$format())
-      lg$info("Terminator settings: %s", as_short_string(instance$terminator$settings))
+      lg$info("Terminator settings: %s", as_short_string(instance$terminator$param_set$values))
       # run internal tune function which calls the optimizer
       # the optimizer will call eval_batch,
       # that will generate an exception when terminator is positive
