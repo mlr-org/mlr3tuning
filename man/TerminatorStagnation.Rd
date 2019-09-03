@@ -8,9 +8,7 @@
 \format{\link[R6:R6Class]{R6::R6Class} object inheriting from \link{Terminator}.}
 \description{
 Class to terminate the tuning after the performance stagnates, i.e. does not improve more than
-\code{tol} over the last \code{iters} iterations.
-
-TODO: NA handling.
+\code{threshold} over the last \code{iters} iterations.
 }
 \section{Construction}{
 \preformatted{t = TerminatorStagnation$new(iters, tol = sqrt(.Machine$double.eps))
@@ -18,8 +16,11 @@ TODO: NA handling.
 \itemize{
 \item \code{iters} :: \code{integer(1)}\cr
 Number of iterations to evaluate the performance improvement on.
-\item \code{tol} :: \code{numeric(1)}\cr
-Tolerance threshold. If the improvement is less than \code{tol}, tuning is stopped.
+Stored in the parameter set \code{$param_set}.
+\item \code{threshold} :: \code{numeric(1)}\cr
+If the improvement is less than \code{threshold}, tuning is stopped.
+Default is \code{sqrt(.Machine$double.eps)}.
+Stored in the parameter set \code{$param_set}.
 }
 }
 

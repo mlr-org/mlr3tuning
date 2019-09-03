@@ -1,7 +1,7 @@
 context("TerminatorStagnation")
 
 test_that("TerminatorStagnation", {
-  self = ts = TerminatorStagnation$new(iters = 3)
+  ts = TerminatorStagnation$new(iters = 3)
   m = mlr_measures$get("dummy.cp")
 
   m$minimize = TRUE

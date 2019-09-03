@@ -17,8 +17,8 @@ term("perf_reached")
 \item \code{measure} :: \code{character(1)}\cr
 Name of a measure in the \link{TuningInstance}.
 Stored in the parameter set \code{$param_set}.
-\item \code{threshold} :: \code{numeric(1)}\cr
-Performance threshold that needs to be reached.
+\item \code{level} :: \code{numeric(1)}\cr
+Performance level that needs to be reached.
 Terminates if the performance exceeds (respective measure has to be maximized) or
 falls below (respective measure has to be minimized).
 Stored in the parameter set \code{$param_set}.
