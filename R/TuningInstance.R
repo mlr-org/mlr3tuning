@@ -16,7 +16,7 @@
 #'
 #' @section Construction:
 #' ```
-#' pe = TuningInstance$new(task, learner, resampling, measures, param_set, terminator, bm_args = list())
+#' inst = TuningInstance$new(task, learner, resampling, measures, param_set, terminator = TerminatorNone$new(), bm_args = list())
 #' ```
 #' This defines the resampled performance of a learner on a task, a feasibility region
 #' for the parameters the tuner is supposed to optimize, and a termination criterion.
@@ -44,7 +44,7 @@
 #'   Number of configuration evaluations stored in the container.
 #' * `start_time` :: `POSIXct(1)`\cr
 #'   Time the tuning / evaluations were started.
-#'   This is set in the beginning of `tune` of [Tuner].
+#'   This is set in the beginning of `$tune()` of [Tuner].
 #'
 #' @section Methods:
 #' * `eval_batch(dt)`\cr
@@ -127,7 +127,7 @@ TuningInstance = R6Class("TuningInstance",
     bmr = NULL,
     start_time = NULL,
 
-    initialize = function(task, learner, resampling, measures, param_set, terminator, bm_args = list()) {
+    initialize = function(task, learner, resampling, measures, param_set, terminator = TerminatorNone$new(), bm_args = list()) {
       self$task = assert_task(as_task(task, clone = TRUE))
       self$learner = assert_learner(as_learner(learner, clone = TRUE), task = self$task)
       self$resampling = assert_resampling(as_resampling(resampling, clone = TRUE))

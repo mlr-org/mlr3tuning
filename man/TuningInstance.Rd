@@ -17,7 +17,7 @@ After a batch is evaluated, the \link{Terminator} is queried for the remaining b
 If the available budget is exhausted, an exception is raised, and no further evaluations can be performed from this point on.
 }
 \section{Construction}{
-\preformatted{pe = TuningInstance$new(task, learner, resampling, measures, param_set, terminator, bm_args = list())
+\preformatted{inst = TuningInstance$new(task, learner, resampling, measures, param_set, terminator = TerminatorNone$new(), bm_args = list())
 }
 
 This defines the resampled performance of a learner on a task, a feasibility region
@@ -50,7 +50,7 @@ A benchmark result, container object for all performed \link[mlr3:ResampleResult
 Number of configuration evaluations stored in the container.
 \item \code{start_time} :: \code{POSIXct(1)}\cr
 Time the tuning / evaluations were started.
-This is set in the beginning of \code{tune} of \link{Tuner}.
+This is set in the beginning of \code{$tune()} of \link{Tuner}.
 }
 }
 
