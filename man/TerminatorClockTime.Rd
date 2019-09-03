@@ -4,7 +4,7 @@
 \name{TerminatorClockTime}
 \alias{TerminatorClockTime}
 \alias{mlr_terminators_clock_time}
-\title{Terminator that stops accoring to clock}
+\title{Terminator that stops according to the clock time}
 \format{\link[R6:R6Class]{R6::R6Class} object inheriting from \link{Terminator}.}
 \description{
 Class to terminate the tuning either after the complete process took a number of seconds on the clock
@@ -38,6 +38,7 @@ Other Terminator: \code{\link{TerminatorCombo}},
   \code{\link{TerminatorModelTime}},
   \code{\link{TerminatorNone}},
   \code{\link{TerminatorPerfReached}},
+  \code{\link{TerminatorStagnation}},
   \code{\link{Terminator}}, \code{\link{mlr_terminators}},
   \code{\link{mlr_tuners}}
 }

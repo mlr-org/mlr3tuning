@@ -20,6 +20,7 @@ Other Terminator: \code{\link{TerminatorClockTime}},
   \code{\link{TerminatorEvals}},
   \code{\link{TerminatorModelTime}},
   \code{\link{TerminatorPerfReached}},
+  \code{\link{TerminatorStagnation}},
   \code{\link{Terminator}}, \code{\link{mlr_terminators}},
   \code{\link{mlr_tuners}}
 }

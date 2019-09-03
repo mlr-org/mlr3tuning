@@ -31,7 +31,7 @@ for the parameters the tuner is supposed to optimize, and a termination criterio
 Hyperparameter search space.
 \item \code{terminator} :: \link{Terminator}.
 \item \code{bm_args} :: named \code{list()}\cr
-Further args for \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
+Further arguments for \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
 }
 }
 
@@ -61,7 +61,7 @@ This is set in the beginning of \code{tune} of \link{Tuner}.
 \code{\link[data.table:data.table]{data.table::data.table()}} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
 Evaluates all hyperparameter configurations in \code{dt} through resampling, where each configuration is a row, and columns are scalar parameters.
 Returns a \code{data.table()} with corresponding rows, where each column is a named measure.
-After a batch-eval the \link{Terminator} is checked, if it is positive, an exception of class \code{terminated_error} is raised.
+After a batch-evaluation the \link{Terminator} is checked, if it is positive, an exception of class \code{terminated_error} is raised.
 This function should be internally called by the tuner.
 \item \code{tuner_objective(x)}\cr
 \code{numeric()} -> \code{numeric(1)}\cr

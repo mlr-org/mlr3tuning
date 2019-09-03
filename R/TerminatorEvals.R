@@ -1,4 +1,4 @@
-#' @title Terminator that stops after a number of evals
+#' @title Terminator that stops after a number of evaluations
 #'
 #' @aliases mlr_terminators_evals
 #' @usage NULL

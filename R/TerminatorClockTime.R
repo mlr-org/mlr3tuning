@@ -1,4 +1,4 @@
-#' @title Terminator that stops accoring to clock
+#' @title Terminator that stops according to the clock time
 #'
 #' @aliases mlr_terminators_clock_time
 #' @usage NULL

@@ -1,4 +1,4 @@
-#' @title Terminator that stops when a peformance level has been reached
+#' @title Terminator that stops when a performance level has been reached
 #'
 #' @aliases mlr_terminators_perf_reached
 #' @usage NULL
@@ -18,8 +18,8 @@
 #'   Name of a measure in the [TuningInstance].
 #'   Stored in the parameter set `$param_set`.
 #'
-#' * `threshold` :: `numeric(1)`\cr
-#'   Performance threshold that needs to be reached.
+#' * `level` :: `numeric(1)`\cr
+#'   Performance level that needs to be reached.
 #'   Terminates if the performance exceeds (respective measure has to be maximized) or
 #'   falls below (respective measure has to be minimized).
 #'   Stored in the parameter set `$param_set`.
@@ -29,14 +29,14 @@
 TerminatorPerfReached = R6Class("TerminatorPerfReached",
   inherit = Terminator,
   public = list(
-    initialize = function(measure, threshold) {
+    initialize = function(measure, level) {
       ps = ParamSet$new(list(
         ParamUty$new("measure", tags = "required"),
-        ParamDbl$new("threshold", tags = "required")
+        ParamDbl$new("level", tags = "required")
       ))
       super$initialize(
         param_set = ps,
-        param_vals = list(measure = assert_string(measure), threshold = assert_number(threshold))
+        param_vals = list(measure = assert_string(measure), level = assert_number(level))
       )
     },
 
@@ -49,9 +49,9 @@ TerminatorPerfReached = R6Class("TerminatorPerfReached",
       aggr = inst$archive(unnest = FALSE)
 
       if (m$minimize) {
-        any(aggr[[pv$measure]] <= pv$threshold)
+        any(aggr[[pv$measure]] <= pv$level)
       } else {
-        any(aggr[[pv$measure]] >= pv$threshold)
+        any(aggr[[pv$measure]] >= pv$level)
       }
     }
   )
