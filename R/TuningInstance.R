@@ -169,6 +169,7 @@ TuningInstance = R6Class("TuningInstance",
       # this checks the validity of dt lines in the paramset
       design = Design$new(self$param_set, dt, remove_dupl = FALSE)
 
+
       lg$info("Evaluating %i configurations", nrow(dt))
       lg$info("%s", capture.output(dt))
 
@@ -187,6 +188,16 @@ TuningInstance = R6Class("TuningInstance",
       bmr = invoke(benchmark, design = d, .args = self$bm_args)
       # store evaluated results
       self$bmr$combine(bmr)
+
+      if (lg$threshold >= 400) {
+        # somewhat bad code, but
+        # - i dont know how to reference the current level as "info" instead of "400" for the threshold in lgr
+        # - i only want to aggregate when "info" is set and we want to remove the aggregation in eval_batch later
+        mids = map_chr(self$measures, "id")
+        a = bmr$aggregate(measures = self$measures, ids = FALSE)[, mids, with = FALSE]
+        lg$info("Result:")
+        lg$info("%s", capture.output(cbind(dt, a)))
+      }
 
       # if the terminator is positive throw condition of class "terminated_error" that we can tryCatch
       if (self$terminator$is_terminated(self)) {
