@@ -2,10 +2,10 @@ lapply(list.files(system.file("testthat", package = "mlr3"), pattern = "^helper.
 
 expect_tuner = function(tuner) {
   expect_r6(tuner, "Tuner",
-    public = c("tune", "settings"),
+    public = c("tune", "param_set"),
     private = "tune_internal"
   )
-  expect_list(tuner$settings, names = "unique")
+  expect_is(tuner$param_set, "ParamSet")
   expect_function(tuner$tune, args = "instance")
 }
 
@@ -21,7 +21,7 @@ expect_terminator = function(term) {
 # term_evals: how we configure the Terminator
 # real_evals: how many evals we really expect (as the optim might early stop)
 # returns: tune_result and instance
-test_tuner = function(tuner_factory, arg_list = list(), n_dim = 1L, term_evals = 2L, real_evals = term_evals) {
+test_tuner = function(key, ..., n_dim = 1L, term_evals = 2L, real_evals = term_evals) {
   ps = if (n_dim == 1) {
     ParamSet$new(params = list(
       ParamDbl$new("cp", lower = 0.1, upper = 0.3)
@@ -34,7 +34,7 @@ test_tuner = function(tuner_factory, arg_list = list(), n_dim = 1L, term_evals =
   }
   term = TerminatorEvals$new(term_evals)
   inst = TuningInstance$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), ps, term)
-  tuner = do.call(tuner_factory$new, arg_list)
+  tuner = tnr(key, ...)
 
   r = tuner$tune(inst)
   bmr = inst$bmr
@@ -49,11 +49,11 @@ test_tuner = function(tuner_factory, arg_list = list(), n_dim = 1L, term_evals =
 
 # test an implemented subclass tuner by running a test with dependent params
 # returns: tune_result and instance
-test_tuner_dependencies = function(tuner_factory, arg_list = list(), n_evals = 2L) {
+test_tuner_dependencies = function(key, ..., n_evals = 2L) {
   term = TerminatorEvals$new(n_evals)
   ll = LearnerRegrDepParams$new()
   inst = TuningInstance$new(tsk("boston_housing"), ll, rsmp("holdout"), msr("regr.mse"), ll$param_set, term)
-  tuner = do.call(tuner_factory$new, arg_list)
+  tuner = tnr(key, ...)
 
   r = tuner$tune(inst)
   bmr = inst$bmr

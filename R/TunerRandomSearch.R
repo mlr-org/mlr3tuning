@@ -15,12 +15,13 @@
 #'
 #' @section Construction:
 #' ```
-#' tuner = TunerRandomSearch$new(batch_size = 1L)
+#' TunerRandomSearch$new(batch_size = 1L)
+#' tnr("random_search")
 #' ```
 #'
+#' @section Parameters:
 #' * `batch_size` :: `integer(1)`\cr
 #'   Maximum number of configurations to try in a batch.
-#'   Stored in `settings`.
 #'
 #' @family Tuner
 #' @export
@@ -29,20 +30,23 @@
 TunerRandomSearch = R6Class("TunerRandomSearch",
   inherit = Tuner,
   public = list(
-    initialize = function(batch_size = 1L) {
-      s = list(batch_size = assert_count(batch_size, positive = TRUE, coerce = TRUE))
+    initialize = function() {
+      ps = ParamSet$new(list(
+          ParamInt$new("batch_size", lower = 1L, tags = "required")
+      ))
       super$initialize(
+        param_set = ps, param_vals = list(batch_size = 1L),
         param_classes = c("ParamLgl", "ParamInt", "ParamDbl", "ParamFct"),
-        properties = "dependencies",
-        settings = s
+        properties = "dependencies"
       )
     }
   ),
 
   private = list(
     tune_internal = function(instance) {
+      batch_size = self$param_set$values$batch_size
       while (TRUE) { # iterate until we have an exception from eval_batch
-        design = generate_design_random(instance$param_set, self$settings$batch_size)
+        design = generate_design_random(instance$param_set, batch_size)
         instance$eval_batch(design$data)
       }
     }

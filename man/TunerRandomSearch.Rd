@@ -15,12 +15,16 @@ Larger batches mean we can parallelize more, smaller batches imply a more fine-g
 of termination criteria.
 }
 \section{Construction}{
-\preformatted{tuner = TunerRandomSearch$new(batch_size = 1L)
+\preformatted{TunerRandomSearch$new(batch_size = 1L)
+tnr("random_search")
 }
+}
+
+\section{Parameters}{
+
 \itemize{
 \item \code{batch_size} :: \code{integer(1)}\cr
 Maximum number of configurations to try in a batch.
-Stored in \code{settings}.
 }
 }
 

@@ -19,17 +19,20 @@ Larger batches mean we can parallelize more, smaller batches imply a more fine-g
 of termination criteria.
 }
 \section{Construction}{
-\preformatted{tuner = TunerGridSearch$new(resolution = 10L, batch_size = 1L)
+\preformatted{TunerGridSearch$new()
+tnr("grid_search")
 }
+}
+
+\section{Parameters}{
+
 \itemize{
 \item \code{resolution} :: \code{integer(1)}\cr
 Resolution of the grid, see \code{\link[paradox:generate_design_grid]{paradox::generate_design_grid()}}.
-Stored in \code{settings}.
 \item \code{param_resolutions} :: named \code{integer()} \cr
 Resolution per parameter, named by parameter ID, see \code{\link[paradox:generate_design_grid]{paradox::generate_design_grid()}}.
 \item \code{batch_size} :: \code{integer(1)}\cr
 Maximum number of configurations to try in a batch.
-Stored in \code{settings}.
 }
 }
 

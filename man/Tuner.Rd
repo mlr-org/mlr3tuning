@@ -11,13 +11,12 @@ A tuner is an object that describes the tuning strategy, i.e. how to optimize th
 function and its feasible set defined by the \link{TuningInstance} object.
 }
 \section{Construction}{
-\preformatted{tuner = Tuner$new(param_classes, settings = list(), properties = character(), packages = character())
+\preformatted{tuner = Tuner$new(param_set = ParamSet$new(), param_vals = list(), param_classes = character(),
+  properties = character(), packages = character())
 }
 \itemize{
 \item \code{param_classes} :: \code{character()}\cr
 Supported parameter classes that the tuner can optimize, subclasses of \link[paradox:Param]{paradox::Param}.
-\item \code{settings} :: named \code{list()}\cr
-Arbitrary named list, depending on the child class.
 \item \code{properties} :: \code{character()}\cr
 Set of properties of the tuner. Must be a subset of \code{\link[=mlr_reflections]{mlr_reflections$tuner_properties}}.
 \item \code{packages} :: \code{character()}\cr
@@ -29,7 +28,6 @@ Note that these packages will be loaded via \code{\link[=requireNamespace]{requi
 \section{Fields}{
 
 \itemize{
-\item \code{settings} :: named \code{list()}\cr
 \item \code{properties} :: \code{character()}\cr
 \item \code{packages} :: \code{character()}\cr
 }

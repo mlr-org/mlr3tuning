@@ -10,14 +10,15 @@
 #'
 #' @section Construction:
 #' ```
-#' tuner = TunerGenSA$new(...)
+#' TunerGenSA$new(...)
+#' tnr("gensa")
 #' ```
 #'
-#' * `...`\cr
+#' @section Parameters:
+#' * `control`\cr
 #'   Settings passed down do [GenSA::GenSA()]
 #'   Default settings are `smooth = FALSE`, `acceptance.param = -15`,
 #'   `simple.function = FALSE`, and `temperature = 250`.
-#'   Stored in `settings`.
 #'
 #' @family Tuner
 #' @export
@@ -26,13 +27,21 @@
 TunerGenSA = R6Class("TunerGenSA", inherit = Tuner,
 
   public = list(
-    initialize = function(...) {
-      # Default settings:
-      s = list(smooth = FALSE, acceptance.param = -15, simple.function = FALSE, temperature = 250)
-      s = insert_named(s, list(...))
+    initialize = function() {
+      ps = ParamSet$new(list(
+          ParamInt$new("maxit", lower = 1L),
+          ParamDbl$new("threshold.stop"),
+          ParamInt$new("nb.stop.improvement", lower = 1L),
+          ParamLgl$new("smooth", default = TRUE),
+          ParamInt$new("max.call", default = 1e7),
+          ParamDbl$new("max.time"),
+          ParamDbl$new("temperature"),
+          ParamDbl$new("acceptance.param"),
+          ParamLgl$new("simple.function", default = FALSE)
+      ))
       super$initialize(
+        param_set = ps, param_vals = list(smooth = FALSE, acceptance.param = -15, simple.function = FALSE, temperature = 250),
         param_classes = "ParamDbl",
-        settings = s,
         packages = "GenSA"
       )
     }
@@ -41,7 +50,7 @@ TunerGenSA = R6Class("TunerGenSA", inherit = Tuner,
   private = list(
     tune_internal = function(instance) {
       GenSA::GenSA(fn = instance$tuner_objective, lower = instance$param_set$lower,
-        upper = instance$param_set$upper, control = self$settings)
+        upper = instance$param_set$upper, control = self$param_set$values)
     }
   )
 )

@@ -10,14 +10,18 @@
 Subclass for generalized simulated annealing tuning with \code{\link[GenSA:GenSA]{GenSA::GenSA()}}.
 }
 \section{Construction}{
-\preformatted{tuner = TunerGenSA$new(...)
+\preformatted{TunerGenSA$new(...)
+tnr("gensa")
 }
+}
+
+\section{Parameters}{
+
 \itemize{
-\item \code{...}\cr
+\item \code{control}\cr
 Settings passed down do \code{\link[GenSA:GenSA]{GenSA::GenSA()}}
 Default settings are \code{smooth = FALSE}, \code{acceptance.param = -15},
 \code{simple.function = FALSE}, and \code{temperature = 250}.
-Stored in \code{settings}.
 }
 }
 

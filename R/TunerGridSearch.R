@@ -19,17 +19,17 @@
 #'
 #' @section Construction:
 #' ```
-#' tuner = TunerGridSearch$new(resolution = 10L, batch_size = 1L)
+#' TunerGridSearch$new()
+#' tnr("grid_search")
 #' ```
 #'
+#' @section Parameters:
 #' * `resolution` :: `integer(1)`\cr
 #'   Resolution of the grid, see [paradox::generate_design_grid()].
-#'   Stored in `settings`.
 #' * `param_resolutions` :: named `integer()` \cr
 #'   Resolution per parameter, named by parameter ID, see [paradox::generate_design_grid()].
 #' * `batch_size` :: `integer(1)`\cr
 #'   Maximum number of configurations to try in a batch.
-#'   Stored in `settings`.
 #'
 #'
 #' @family Tuner
@@ -39,26 +39,27 @@
 TunerGridSearch = R6Class("TunerGridSearch",
   inherit = Tuner,
   public = list(
-    initialize = function(resolution = 10L, param_resolutions = NULL, batch_size = 1L) {
-      s = list(
-        batch_size = assert_count(batch_size, positive = TRUE, coerce = TRUE),
-        resolution = assert_count(resolution, positive = TRUE, coerce = TRUE),
-        param_resolutions = assert_integer(param_resolutions, any.missing = FALSE, lower = 1L, names = "unique", null.ok = TRUE)
-      )
+    initialize = function() {
+      ps = ParamSet$new(list(
+          ParamInt$new("batch_size", lower = 1L, tags = "required"),
+          ParamInt$new("resolution", lower = 1L),
+          ParamUty$new("param_resolutions")
+      ))
       super$initialize(
+        param_set = ps, param_vals = list(resolution = 10L, batch_size = 1L),
         param_classes = c("ParamLgl", "ParamInt", "ParamDbl", "ParamFct"),
-        properties = "dependencies",
-        settings = s
+        properties = "dependencies"
       )
     }
   ),
 
   private = list(
     tune_internal = function(instance) {
-      g = generate_design_grid(instance$param_set, resolution = self$settings$resolution, param_resolutions = self$settings$param_resolutions)
-      ch = chunk_vector(seq_row(g$data), chunk_size = self$settings$batch_size, shuffle = TRUE)
-      for (i in seq_along(ch)) {
-        instance$eval_batch(g$data[ch[[i]], ])
+      pv = self$param_set$values
+      g = generate_design_grid(instance$param_set, resolution = pv$resolution, param_resolutions = pv$param_resolutions)
+      ch = chunk_vector(seq_row(g$data), chunk_size = pv$batch_size, shuffle = TRUE)
+      for (inds in ch) {
+        instance$eval_batch(g$data[inds, ])
       }
     }
   )
