@@ -55,10 +55,10 @@
 #'   This function should be internally called by the tuner.
 #'
 #' * `tuner_objective(x)`\cr
-#'   [numeric(n)] -> [numeric(1)]\cr
+#'   `numeric()` -> `numeric(1)`\cr
 #'   Evaluates a simple numeric vector of hyperparameter settings, and returns a scalar objective value,
 #'   where the return value is negated if the measure is maximized.
-#'   Internally, `eval_batch` is called with a single row.
+#'   Internally, `$eval_batch()` is called with a single row.
 #'   This function serves as a objective function for tuners of numeric spaces - which should always be minimized.
 #'
 #' * `best(measure = NULL, ties_method = "random")`\cr
