@@ -78,7 +78,7 @@ library(paradox)
 param_set = ParamSet$new(list(
   ParamDbl$new("cp", lower = 0.001, upper = 0.1)
 ))
-terminator = TerminatorEvals$new(3)
+terminator = term("evals", n_evals = 3)
 instance = TuningInstance$new(
   task = tsk("iris"),
   learner = lrn("classif.rpart"),
@@ -87,7 +87,7 @@ instance = TuningInstance$new(
   param_set = param_set,
   terminator = terminator
 )
-tt = TunerRandomSearch$new() # swap this line to use a different Tuner
+tt = tnr("random_search") # swap this line to use a different Tuner
 res = tt$tune(instance) # returns best configuration and performance, and logs in 'instance'
 instance$archive() # allows access of data.table / benchmark result of full path of all evaluations
 }

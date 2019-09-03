@@ -26,6 +26,8 @@ TerminatorCombo$new(list(
   TerminatorModelTime$new(60),
   TerminatorEvals$new(10)
 ))
+
+term("combo", list(term("model_time", 60), term("evals", 10)))
 }
 \seealso{
 Other Terminator: \code{\link{TerminatorClockTime}},

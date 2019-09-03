@@ -23,7 +23,7 @@
 #' @export
 #' @examples
 #' TerminatorModelTime$new(3)
-#' TerminatorModelTime$new(10 * 3600)
+#' term("model_time", secs = 10 * 3600)
 TerminatorModelTime = R6Class("TerminatorModelTime",
   inherit = Terminator,
   public = list(

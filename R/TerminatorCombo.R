@@ -25,6 +25,8 @@
 #'   TerminatorModelTime$new(60),
 #'   TerminatorEvals$new(10)
 #' ))
+#'
+#' term("combo", list(term("model_time", 60), term("evals", 10)))
 TerminatorCombo = R6Class("TerminatorCombo",
   inherit = Terminator,
 

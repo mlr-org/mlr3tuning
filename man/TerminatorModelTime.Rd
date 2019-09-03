@@ -23,7 +23,7 @@ Stored in \code{settings}.
 
 \examples{
 TerminatorModelTime$new(3)
-TerminatorModelTime$new(10 * 3600)
+term("model_time", secs = 10 * 3600)
 }
 \seealso{
 Other Terminator: \code{\link{TerminatorClockTime}},

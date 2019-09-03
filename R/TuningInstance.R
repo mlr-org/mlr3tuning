@@ -87,7 +87,7 @@
 #'   ParamDbl$new("cp", lower = 0.001, upper = 0.1),
 #'   ParamInt$new("minsplit", lower = 1, upper = 10)))
 #'
-#' terminator = TerminatorEvals$new(5)
+#' terminator = term("evals", n_evals = 5)
 #' inst = TuningInstance$new(
 #'   task = task,
 #'   learner = learner,

@@ -71,8 +71,8 @@ measures = msr("classif.ce")
 param_set = ParamSet$new(
   params = list(ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 
-terminator = TerminatorEvals$new(5)
-tuner = TunerGridSearch$new()
+terminator = term("evals", n_evals = 5)
+tuner = tnr("grid_search")
 at = AutoTuner$new(learner, resampling, measures, param_set, terminator, tuner)
 at$store_bmr = TRUE
 

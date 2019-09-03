@@ -29,7 +29,7 @@ Stored in \code{$settings}.
 TerminatorClockTime$new(secs = 3600)
 
 stop_time = as.POSIXct("2030-01-01 00:00:00")
-TerminatorClockTime$new(stop_time = stop_time)
+term("clock_time", stop_time = stop_time)
 }
 \seealso{
 Other Terminator: \code{\link{TerminatorCombo}},
