@@ -11,17 +11,19 @@ Class to terminate the tuning depending on the number of evaluations.
 An evaluation is defined by one resampling of a parameter value.
 }
 \section{Construction}{
-\preformatted{t = TerminatorEvals$new(evals)
+\preformatted{TerminatorEvals$new(n_evals = 1L)
+term("evals")
 }
 \itemize{
-\item \code{evals} :: \code{integer(1)}\cr
+\item \code{n_evals} :: \code{integer(1)}\cr
 Number of allowed evaluations.
-Stored in \code{settings}.
+Stored in the parameter set \code{$param_set}.
 }
 }
 
 \examples{
 TerminatorEvals$new(3)
+term("evals", 5)
 }
 \seealso{
 Other Terminator: \code{\link{TerminatorClockTime}},

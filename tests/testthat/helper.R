@@ -11,9 +11,9 @@ expect_tuner = function(tuner) {
 
 expect_terminator = function(term) {
   expect_r6(term, "Terminator",
-    public = c("is_terminated", "settings")
+    public = c("is_terminated", "param_set")
   )
-  expect_list(term$settings, names = "unique")
+  expect_is(term$param_set, "ParamSet")
 }
 
 # test an implemented subclass tuner by running a couple of standard tests
@@ -86,7 +86,7 @@ TEST_MAKE_INST1 = function(values = NULL, folds = 2L, measures = msr("classif.ce
     lrn$param_set$values = values
   }
   rs = rsmp("cv", folds = folds)
-  term = TerminatorEvals$new(term_evals)
+  term = term("evals", n_evals = term_evals)
   inst = TuningInstance$new(tsk("iris"), lrn, rs, measures, ps, term)
   return(inst)
 }

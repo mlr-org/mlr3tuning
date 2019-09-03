@@ -11,22 +11,23 @@
 #'
 #' @section Construction:
 #' ```
-#' t = TerminatorClockTime$new(secs = NULL, time = NULL)
+#' TerminatorClockTime$new(secs = NULL, stop_time = NULL)
+#' term("clock_time")
 #' ```
-#'
 #' * `secs` :: `numeric(1)`\cr
 #'   Maximum allowed time, in seconds.
 #'   Mutually exclusive with argument `stop_time`.
-#'   Stored in `$settings`.
+#'   Stored in the parameter set `$param_set`.
+#'
 #' * `stop_time` :: `POSIXct(1)`\cr
 #'   Terminator stops after this point in time.
 #'   Mutually exclusive with argument `secs`.
-#'   Stored in `$settings`.
+#'   Stored in the parameter set `$param_set`.
 #'
 #' @family Terminator
 #' @export
 #' @examples
-#' TerminatorClockTime$new(secs = 3600)
+#' term("clock_time", secs = 1800)
 #'
 #' stop_time = as.POSIXct("2030-01-01 00:00:00")
 #' term("clock_time", stop_time = stop_time)
@@ -35,19 +36,27 @@ TerminatorClockTime = R6Class("TerminatorClockTime",
   public = list(
     initialize = function(secs = NULL, stop_time = NULL) {
       assert_number(secs, lower = 0, null.ok = TRUE)
-      assert_posixct(stop_time, null.ok = TRUE)
-      if (!xor(is.null(secs), is.null(stop_time)))
-        stopf("Exactly one argument of 'secs' and 'stop_time' has to be set!")
-      super$initialize(settings = list(secs = secs, stop_time = stop_time))
+      assert_posixct(stop_time, len = 1L, any.missing = FALSE, null.ok = TRUE)
+
+      super$initialize(
+        param_set = ParamSet$new(list(
+            ParamDbl$new("secs", lower = 0),
+            ParamUty$new("stop_time"))
+        ),
+        param_vals = discard(list(secs = secs, stop_time = stop_time), is.null)
+      )
     },
 
     is_terminated = function(inst) {
-      if (!is.null(self$settings$secs)) {
+      pv = self$param_set$values
+      if (!xor(is.null(pv$secs), is.null(pv$stop_time)))
+        stopf("Exactly one parameter of 'secs' and 'stop_time' has to be set!")
+
+      if (!is.null(pv$secs)) {
         d = difftime(Sys.time(), inst$start_time, units = "secs")
-        return(d >= self$settings$secs)
-      } else {
-        return(Sys.time() >= self$settings$stop_time)
+        return(d >= pv$secs)
       }
+      return(Sys.time() >= pv$stop_time)
     }
   )
 )

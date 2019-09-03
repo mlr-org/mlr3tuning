@@ -15,15 +15,26 @@
 #'   properties = character(), packages = character())
 #' ```
 #'
+#' * `param_set` :: [paradox::ParamSet]\cr
+#'   Set of hyperparameters.
+#'
+#' * `param_vals` :: named `list()`\cr
+#'   List of hyperparameter settings.
+#'
 #' * `param_classes` :: `character()`\cr
 #'   Supported parameter classes that the tuner can optimize, subclasses of [paradox::Param].
+#'
 #' * `properties` :: `character()`\cr
 #'   Set of properties of the tuner. Must be a subset of [`mlr_reflections$tuner_properties`][mlr_reflections].
+#'
 #' * `packages` :: `character()`\cr
 #'   Set of required packages.
 #'   Note that these packages will be loaded via [requireNamespace()], and are not attached.
 #'
 #' @section Fields:
+#' * `param_set` :: [paradox::ParamSet]\cr
+#'   Description of available hyperparameters and hyperparameter settings.
+#' * `param_classes` :: `character()`\cr
 #' * `properties` :: `character()`\cr
 #' * `packages` :: `character()`\cr
 #'
@@ -77,9 +88,9 @@
 Tuner = R6Class("Tuner",
   public = list(
     param_set = NULL,
-    packages = NULL,
     param_classes = NULL,
     properties = NULL,
+    packages = NULL,
     ties_method = "random", # FIXME: bad handling
 
     initialize = function(param_set = ParamSet$new(), param_vals = list(), param_classes = character(), properties = character(), packages = character()) {

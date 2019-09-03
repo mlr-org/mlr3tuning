@@ -20,13 +20,18 @@
 #'
 #' @section Construction:
 #' ```
-#' t = Terminator$new(settings)
+#' t = Terminator$new(param_set = ParamSet$new(), param_vals = list())
 #' ```
-#' * `settings` :: named `list()`\cr
-#'   Arbitrary settings required by the child class.
+#' * `param_set` :: [paradox::ParamSet]\cr
+#'   Set of hyperparameters.
+#'
+#' * `param_vals` :: named `list()`\cr
+#'   List of hyperparameter settings.
 #'
 #' @section Fields:
-#' * `settings` :: named `list()`\cr
+#'
+#' * `param_set` :: [paradox::ParamSet]\cr
+#'   Description of available hyperparameters and hyperparameter settings.
 #'
 #' @section Methods:
 #' * `is_terminated(inst)`\cr
@@ -38,10 +43,11 @@
 #' @export
 Terminator = R6Class("Terminator",
   public = list(
-    settings = NULL,
+    param_set = NULL,
 
-    initialize = function(settings) {
-      self$settings = assert_list(settings, names = "unique")
+    initialize = function(param_set = ParamSet$new(), param_vals = list()) {
+      self$param_set = assert_param_set(param_set)
+      self$param_set$values = param_vals
     },
 
     format = function() {
@@ -49,8 +55,8 @@ Terminator = R6Class("Terminator",
     },
 
     print = function() {
-      catf(format(self))
-      catf(str_indent("* Settings:", as_short_string(self$settings)))
+      catf(self$format())
+      catf(str_indent("* Parameters:", as_short_string(self$param_set$values)))
     },
 
     is_terminated = function(inst) TRUE # overwrite in subclasses

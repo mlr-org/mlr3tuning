@@ -15,6 +15,10 @@ function and its feasible set defined by the \link{TuningInstance} object.
   properties = character(), packages = character())
 }
 \itemize{
+\item \code{param_set} :: \link[paradox:ParamSet]{paradox::ParamSet}\cr
+Set of hyperparameters.
+\item \code{param_vals} :: named \code{list()}\cr
+List of hyperparameter settings.
 \item \code{param_classes} :: \code{character()}\cr
 Supported parameter classes that the tuner can optimize, subclasses of \link[paradox:Param]{paradox::Param}.
 \item \code{properties} :: \code{character()}\cr
@@ -28,6 +32,9 @@ Note that these packages will be loaded via \code{\link[=requireNamespace]{requi
 \section{Fields}{
 
 \itemize{
+\item \code{param_set} :: \link[paradox:ParamSet]{paradox::ParamSet}\cr
+Description of available hyperparameters and hyperparameter settings.
+\item \code{param_classes} :: \code{character()}\cr
 \item \code{properties} :: \code{character()}\cr
 \item \code{packages} :: \code{character()}\cr
 }
