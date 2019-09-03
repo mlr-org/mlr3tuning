@@ -13,6 +13,9 @@
 #' Evaluations of hyperparameter configurations are performed in batches by calling [mlr3::benchmark()] internally.
 #' After a batch is evaluated, the [Terminator] is queried for the remaining budget.
 #' If the available budget is exhausted, an exception is raised, and no further evaluations can be performed from this point on.
+#
+#' A list of multiple measures can be passed to the instance, and they will always be all evaluated.
+#' But single-criteria tuners always optimize the first measure in the passed list.
 #'
 #' @section Construction:
 #' ```
