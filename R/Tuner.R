@@ -9,6 +9,9 @@
 #' A tuner is an object that describes the tuning strategy, i.e. how to optimize the black-box
 #' function and its feasible set defined by the [TuningInstance] object.
 #'
+#' If the tuning instance contains multiple measures, they will always be all evaluated.
+#' But single-criteria tuners always optimize the first measure in the passed list.
+#'
 #' @section Construction:
 #' ```
 #' tuner = Tuner$new(param_set = ParamSet$new(), param_vals = list(), param_classes = character(),
