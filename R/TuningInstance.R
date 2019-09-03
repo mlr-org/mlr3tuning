@@ -185,6 +185,12 @@ TuningInstance = R6Class("TuningInstance",
       # eval via benchmark and check terminator
       d = benchmark_grid(tasks = list(self$task), learners = lrns, resamplings = list(self$resampling))
       bmr = invoke(benchmark, design = d, .args = self$bm_args)
+
+      # add date of birth column
+      dob = self$bmr$rr_data$dob
+      dob = if (length(dob)) max(dob) + 1L else 1L
+      bmr$rr_data[, ("dob") := dob]
+
       # store evaluated results
       self$bmr$combine(bmr)
 
