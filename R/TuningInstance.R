@@ -29,7 +29,7 @@
 #'   Hyperparameter search space.
 #' * `terminator` :: [Terminator].
 #' * `bm_args` :: named `list()`\cr
-#'   Further args for [mlr3::benchmark()].
+#'   Further arguments for [mlr3::benchmark()].
 #'
 #' @section Fields:
 #' * `task` :: [mlr3::Task].
@@ -51,7 +51,7 @@
 #'   [data.table::data.table()] -> [data.table::data.table()]\cr
 #'   Evaluates all hyperparameter configurations in `dt` through resampling, where each configuration is a row, and columns are scalar parameters.
 #'   Returns a `data.table()` with corresponding rows, where each column is a named measure.
-#'   After a batch-eval the [Terminator] is checked, if it is positive, an exception of class `terminated_error` is raised.
+#'   After a batch-evaluation the [Terminator] is checked, if it is positive, an exception of class `terminated_error` is raised.
 #'   This function should be internally called by the tuner.
 #'
 #' * `tuner_objective(x)`\cr

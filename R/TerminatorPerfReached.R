@@ -1,4 +1,4 @@
-#' @title Terminator that stops when a peformance level has been reached
+#' @title Terminator that stops when a performance level has been reached
 #'
 #' @aliases mlr_terminators_perf_reached
 #' @usage NULL
