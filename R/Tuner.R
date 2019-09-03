@@ -11,21 +11,30 @@
 #'
 #' @section Construction:
 #' ```
-#' tuner = Tuner$new(param_classes, settings = list(), properties = character(), packages = character())
+#' tuner = Tuner$new(param_set = ParamSet$new(), param_vals = list(), param_classes = character(),
+#'   properties = character(), packages = character())
 #' ```
+#'
+#' * `param_set` :: [paradox::ParamSet]\cr
+#'   Set of hyperparameters.
+#'
+#' * `param_vals` :: named `list()`\cr
+#'   List of hyperparameter settings.
 #'
 #' * `param_classes` :: `character()`\cr
 #'   Supported parameter classes that the tuner can optimize, subclasses of [paradox::Param].
-#' * `settings` :: named `list()`\cr
-#'   Arbitrary named list, depending on the child class.
+#'
 #' * `properties` :: `character()`\cr
 #'   Set of properties of the tuner. Must be a subset of [`mlr_reflections$tuner_properties`][mlr_reflections].
+#'
 #' * `packages` :: `character()`\cr
 #'   Set of required packages.
 #'   Note that these packages will be loaded via [requireNamespace()], and are not attached.
 #'
 #' @section Fields:
-#' * `settings` :: named `list()`\cr
+#' * `param_set` :: [paradox::ParamSet]\cr
+#'   Description of available hyperparameters and hyperparameter settings.
+#' * `param_classes` :: `character()`\cr
 #' * `properties` :: `character()`\cr
 #' * `packages` :: `character()`\cr
 #'
@@ -78,16 +87,17 @@
 #' instance$archive() # allows access of data.table / benchmark result of full path of all evaluations
 Tuner = R6Class("Tuner",
   public = list(
-    packages = NULL,
-    settings = NULL,
+    param_set = NULL,
     param_classes = NULL,
     properties = NULL,
+    packages = NULL,
     ties_method = "random", # FIXME: bad handling
 
-    initialize = function(param_classes, settings = list(), properties = character(), packages = character()) {
+    initialize = function(param_set = ParamSet$new(), param_vals = list(), param_classes = character(), properties = character(), packages = character()) {
+      self$param_set = assert_param_set(param_set)
+      self$param_set$values = param_vals
       self$param_classes = param_classes
-      self$settings = assert_list(settings, names = "unique")
-      self$properties = sort(assert_subset(properties, mlr_reflections$tuner_properties))
+      self$properties = assert_subset(properties, mlr_reflections$tuner_properties)
       self$packages = assert_set(packages)
     },
 
@@ -97,7 +107,7 @@ Tuner = R6Class("Tuner",
 
     print = function() {
       catf(format(self))
-      catf(str_indent("* settings:", as_short_string(self$settings)))
+      catf(str_indent("* Parameters:", as_short_string(self$param_set$values)))
       catf(str_indent("* Packages:", self$packages))
       catf(str_indent("* Properties:", self$properties))
     },

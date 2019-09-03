@@ -10,14 +10,18 @@
 Class to terminate the tuning after a performance level has been hit.
 }
 \section{Construction}{
-\preformatted{t = TerminatorPerfReached$new(level)
+\preformatted{TerminatorPerfReached$new(level)
+term("perf_reached")
 }
 \itemize{
-\item \code{level} :: named \code{numeric(1)}\cr
-Level that needs to be reached, named with the ID of the measure we want to check.
+\item \code{measure} :: \code{character(1)}\cr
+Name of a measure in the \link{TuningInstance}.
+Stored in the parameter set \code{$param_set}.
+\item \code{threshold} :: \code{numeric(1)}\cr
+Performance threshold that needs to be reached.
 Terminates if the performance exceeds (respective measure has to be maximized) or
 falls below (respective measure has to be minimized).
-Stored in \code{settings}.
+Stored in the parameter set \code{$param_set}.
 }
 }
 

@@ -11,22 +11,23 @@ Class to terminate the tuning either after the complete process took a number of
 or a fixed time point has been reached (as reported by \code{\link[=Sys.time]{Sys.time()}}).
 }
 \section{Construction}{
-\preformatted{t = TerminatorClockTime$new(secs = NULL, time = NULL)
+\preformatted{TerminatorClockTime$new(secs = NULL, stop_time = NULL)
+term("clock_time")
 }
 \itemize{
 \item \code{secs} :: \code{numeric(1)}\cr
 Maximum allowed time, in seconds.
 Mutually exclusive with argument \code{stop_time}.
-Stored in \code{$settings}.
+Stored in the parameter set \code{$param_set}.
 \item \code{stop_time} :: \code{POSIXct(1)}\cr
 Terminator stops after this point in time.
 Mutually exclusive with argument \code{secs}.
-Stored in \code{$settings}.
+Stored in the parameter set \code{$param_set}.
 }
 }
 
 \examples{
-TerminatorClockTime$new(secs = 3600)
+term("clock_time", secs = 1800)
 
 stop_time = as.POSIXct("2030-01-01 00:00:00")
 term("clock_time", stop_time = stop_time)

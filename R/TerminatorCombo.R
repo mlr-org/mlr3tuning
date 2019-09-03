@@ -10,37 +10,45 @@
 #'
 #' @section Construction:
 #' ```
-#' t = TerminatorCombo$new(terminators, any = TRUE)
+#' TerminatorCombo$new(terminators = list(TerminatorNone$new()), any = TRUE)
+#' term("combo")
 #' ```
 #' * `terminators` :: `list()`\cr
 #'   List of objects of class [Terminator].
+#'
 #' * `any` :: `logical(1)`\cr
 #'   Terminate iff any included terminator is positive? (not all).
-#'   Stored in `settings`.
+#'   Stored in the parameter set `$param_set`.
 #'
 #' @family Terminator
 #' @export
 #' @examples
 #' TerminatorCombo$new(list(
-#'   TerminatorModelTime$new(60),
-#'   TerminatorEvals$new(10)
+#'   TerminatorModelTime$new(),
+#'   TerminatorEvals$new()
 #' ))
 #'
-#' term("combo", list(term("model_time", 60), term("evals", 10)))
+#' term("combo",
+#'   list(term("model_time", secs = 60), term("evals", n_evals = 10)),
+#'   any = FALSE
+#' )
 TerminatorCombo = R6Class("TerminatorCombo",
   inherit = Terminator,
 
   public = list(
     terminators = NULL,
 
-    initialize = function(terminators, any = TRUE) {
-      self$terminators = assert_list(terminators, types = "Terminator")
-      super$initialize(settings = list(any = assert_flag(any)))
+    initialize = function(terminators = list(TerminatorNone$new()), any = TRUE) {
+      self$terminators = assert_list(terminators, types = "Terminator", min.len = 1L)
+      super$initialize(
+        ParamSet$new(list(ParamLgl$new("any", default = TRUE, tags = "required"))),
+        list(any = assert_flag(any))
+      )
     },
 
-    is_terminated = function(pe) {
-      g = if (self$settings$any) any else all
-      g(map_lgl(self$terminators, function(t) t$is_terminated(pe)))
+    is_terminated = function(inst) {
+      g = if (self$param_set$values$any) any else all
+      g(map_lgl(self$terminators, function(t) t$is_terminated(inst)))
     }
   )
 )

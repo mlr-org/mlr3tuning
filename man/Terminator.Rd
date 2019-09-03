@@ -22,25 +22,28 @@ it might happen that a few too many or even a few too few evaluations are perfor
 So better check the size of the returned archive.
 }
 \section{Construction}{
-\preformatted{t = Terminator$new(settings)
+\preformatted{t = Terminator$new(param_set = ParamSet$new(), param_vals = list())
 }
 \itemize{
-\item \code{settings} :: named \code{list()}\cr
-Arbitrary settings required by the child class.
+\item \code{param_set} :: \link[paradox:ParamSet]{paradox::ParamSet}\cr
+Set of hyperparameters.
+\item \code{param_vals} :: named \code{list()}\cr
+List of hyperparameter settings.
 }
 }
 
 \section{Fields}{
 
 \itemize{
-\item \code{settings} :: named \code{list()}\cr
+\item \code{param_set} :: \link[paradox:ParamSet]{paradox::ParamSet}\cr
+Description of available hyperparameters and hyperparameter settings.
 }
 }
 
 \section{Methods}{
 
 \itemize{
-\item \code{is_terminated(pe)}\cr
+\item \code{is_terminated(inst)}\cr
 \link{TuningInstance} -> \code{logical(1)}\cr
 Is \code{TRUE} iff the termination criterion is positive.
 Must be implemented in a subclass.

@@ -2,7 +2,7 @@ context("TunerGenSA")
 
 
 test_that("TunerGenSA", {
-  test_tuner(TunerGenSA)
+  test_tuner("gensa")
 
   ps = ParamSet$new(params = list(
     ParamLgl$new("save_tasks")
