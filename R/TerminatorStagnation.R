@@ -1,4 +1,4 @@
-#' @title Terminator that stops when a performance level has been reached
+#' @title Terminator that stops when tuning does not improve
 #'
 #' @aliases mlr_terminators_stagnation
 #' @usage NULL
