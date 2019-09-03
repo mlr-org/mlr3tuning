@@ -47,6 +47,7 @@ TunerGridSearch = R6Class("TunerGridSearch",
       )
       super$initialize(
         param_classes = c("ParamLgl", "ParamInt", "ParamDbl", "ParamFct"),
+        properties = "dependencies",
         settings = s
       )
     }

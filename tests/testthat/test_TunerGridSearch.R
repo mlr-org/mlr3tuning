@@ -2,7 +2,8 @@ context("TunerGridSearch")
 
 
 test_that("TunerGridSearch", {
-  tuner = test_tuner(TunerGridSearch, list(resolution = 7), term_evals = 5L, real_evals = 5, n_dim = 1L)
+  test_tuner(TunerGridSearch, list(resolution = 7), term_evals = 5L, real_evals = 5, n_dim = 1L)
+  test_tuner_dependencies(TunerGridSearch)
 
   z = test_tuner(TunerGridSearch, list(resolution = 3), term_evals = 999L, real_evals = 9, n_dim = 2L)
   a = z$inst$archive()

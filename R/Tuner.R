@@ -3,6 +3,7 @@
 #' @usage NULL
 #' @format [R6::R6Class] object.
 #' @include mlr_tuners.R
+#' @include mlr_reflections.R
 #'
 #' @description
 #' Abstract `Tuner` class that implements the main functionality each tuner must have.
@@ -11,19 +12,22 @@
 #'
 #' @section Construction:
 #' ```
-#' tuner = Tuner$new(param_classes, settings = list(), packages = character())
+#' tuner = Tuner$new(param_classes, settings = list(), properties = character(), packages = character())
 #' ```
 #'
 #' * `param_classes` :: `character()`\cr
 #'   Supported parameter classes that the tuner can optimize, subclasses of [paradox::Param].
 #' * `settings` :: named `list()`\cr
 #'   Arbitrary named list, depending on the child class.
+#' * `properties` :: `character()`\cr
+#'   Set of properties of the tuner. Must be a subset of [`mlr_reflections$tuner_properties`][mlr_reflections].
 #' * `packages` :: `character()`\cr
 #'   Set of required packages.
 #'   Note that these packages will be loaded via [requireNamespace()], and are not attached.
 #'
 #' @section Fields:
 #' * `settings` :: named `list()`\cr
+#' * `properties` :: `character()`\cr
 #' * `packages` :: `character()`\cr
 #'
 #' @section Methods:
@@ -78,11 +82,13 @@ Tuner = R6Class("Tuner",
     packages = NULL,
     settings = NULL,
     param_classes = NULL,
+    properties = NULL,
     ties_method = "random", # FIXME: bad handling
 
-    initialize = function(param_classes, settings = list(), packages = character()) {
+    initialize = function(param_classes, settings = list(), properties = character(), packages = character()) {
       self$param_classes = param_classes
       self$settings = assert_list(settings, names = "unique")
+      self$properties = sort(assert_subset(properties, mlr_reflections$tuner_properties))
       self$packages = assert_set(packages)
     },
 
@@ -94,10 +100,13 @@ Tuner = R6Class("Tuner",
       catf(format(self))
       catf(str_indent("* settings:", as_short_string(self$settings)))
       catf(str_indent("* Packages:", self$packages))
+      catf(str_indent("* Properties:", self$properties))
     },
 
     tune = function(instance) {
       require_namespaces(self$packages)
+      if ("dependencies" %nin% self$properties && instance$param_set$has_deps)
+        stopf("Tuner '%s' does not support param sets with dependencies!", self$format())
       not_supported_pclasses = setdiff(unique(instance$param_set$class), self$param_classes)
       if (length(not_supported_pclasses) > 0L)
         stopf("Tuner '%s' does not support param types: '%s'", class(self)[1L], paste0(not_supported_pclasses, collapse = ","))

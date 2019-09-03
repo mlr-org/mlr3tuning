@@ -61,6 +61,7 @@ Collate:
     'TerminatorModelTime.R'
     'TerminatorNone.R'
     'TerminatorPerfReached.R'
+    'mlr_reflections.R'
     'mlr_tuners.R'
     'Tuner.R'
     'TunerGenSA.R'

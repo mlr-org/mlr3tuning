@@ -12,3 +12,17 @@ test_that("API", {
     expect_true("params" %in% names(pe$archive(FALSE)))
   }
 })
+
+test_that("proper error if tuner cannot handle deps", {
+  ps = ParamSet$new(params = list(
+    ParamDbl$new("cp", lower = 0.001, upper = 0.1),
+    ParamDbl$new("minsplit", lower = 1, upper = 10)
+  ))
+  ps$add_dep("minsplit", on = "cp", cond = CondEqual$new(0.1))
+  term = TerminatorEvals$new(2)
+  inst = TuningInstance$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), ps, term)
+  tt = TunerGenSA$new()
+  expect_error(tt$tune(inst), "dependencies")
+})
+
+
