@@ -91,7 +91,6 @@ Tuner = R6Class("Tuner",
     param_classes = NULL,
     properties = NULL,
     packages = NULL,
-    ties_method = "random", # FIXME: bad handling
 
     initialize = function(param_set = ParamSet$new(), param_vals = list(), param_classes = character(), properties = character(), packages = character()) {
       self$param_set = assert_param_set(param_set)
@@ -132,7 +131,7 @@ Tuner = R6Class("Tuner",
       }, terminated_error = function(cond) {
       })
 
-      rr = instance$best(ties_method = self$ties_method)
+      rr = instance$best()
       # FIXME: autotuner setting later
       lg$info("Finished tuning after %i evals", instance$n_evals)
       list(performance = rr$aggregate(instance$measures), values = rr$learners[[1L]]$param_set$values)

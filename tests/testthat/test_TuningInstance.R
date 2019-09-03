@@ -29,16 +29,6 @@ test_that("TuningInstance", {
   expect_equal(pe$bmr$resample_result(4)$learners[[1]]$param_set$values$maxdepth, 10)
   expect_identical(pe$n_evals, 4L)
 
-  # test best-method
-  b = pe$best(ties_method = "first")
-  blrn = b$learners[[1L]]
-  expect_resample_result(b)
-  expect_identical(blrn$param_set$values, list(maxdepth = 10, cp = 0.001, minsplit = 3))
-  b = pe$best(ties_method = "last")
-  blrn = b$learners[[1L]]
-  expect_resample_result(b)
-  expect_identical(blrn$param_set$values, list(maxdepth = 10, cp = 0.001, minsplit = 4))
-
   # test archive
   a = pe$archive(unnest = FALSE)
   expect_data_table(a, nrows = 4L)

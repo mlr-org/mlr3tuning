@@ -61,10 +61,10 @@
 #'   Internally, `$eval_batch()` is called with a single row.
 #'   This function serves as a objective function for tuners of numeric spaces - which should always be minimized.
 #'
-#' * `best(measure = NULL, ties_method = "random")`\cr
+#' * `best(measure = NULL)`\cr
 #'   ([mlr3::Measure] | [mlr3::mlr_sugar], `character(1)`) -> [mlr3::ResampleResult]\cr
 #'   Queries the [mlr3::BenchmarkResult] for the best [mlr3::ResampleResult] according `measure` (default is the first measure in `$measures`).
-#'   `ties_method` can be "first", "last" or "random" (c.f. [mlr3misc::which_max()]).
+#'   In case of ties, one of the tied values is selected randomly.
 #'
 #' * `archive(unnest = TRUE)`
 #'   `logical(1)` -> [data.table::data.table()]\cr
@@ -213,15 +213,14 @@ TuningInstance = R6Class("TuningInstance",
       return(dt)
     },
 
-    best = function(measure = NULL, ties_method = "random") {
+    best = function(measure = NULL) {
       measure = if (is.null(measure)) self$measures[[1L]] else assert_measure(measure, task = self$task, learner = self$learner)
 
       # check that we are only using contained measures
       assert_choice(measure$id, map_chr(self$measures, "id"))
       tab = self$bmr$aggregate(measure, ids = FALSE)
       best = if (measure$minimize) which_min else which_max
-      # this asserts the ties_methods
-      tab$resample_result[[best(tab[[measure$id]], ties_method = ties_method)]]
+      tab$resample_result[[best(tab[[measure$id]])]]
     }
 
   ),

@@ -69,10 +69,10 @@ Evaluates a simple numeric vector of hyperparameter settings, and returns a scal
 where the return value is negated if the measure is maximized.
 Internally, \code{$eval_batch()} is called with a single row.
 This function serves as a objective function for tuners of numeric spaces - which should always be minimized.
-\item \code{best(measure = NULL, ties_method = "random")}\cr
+\item \code{best(measure = NULL)}\cr
 (\link[mlr3:Measure]{mlr3::Measure} | \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}, \code{character(1)}) -> \link[mlr3:ResampleResult]{mlr3::ResampleResult}\cr
 Queries the \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} for the best \link[mlr3:ResampleResult]{mlr3::ResampleResult} according \code{measure} (default is the first measure in \code{$measures}).
-\code{ties_method} can be "first", "last" or "random" (c.f. \code{\link[mlr3misc:which_max]{mlr3misc::which_max()}}).
+In case of ties, one of the tied values is selected randomly.
 \item \code{archive(unnest = TRUE)}
 \code{logical(1)} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
 Returns a table of contained resample results, similar to the one returned by \code{\link[mlr3:benchmark]{mlr3::benchmark()}}'s
