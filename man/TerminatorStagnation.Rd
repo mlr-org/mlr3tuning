@@ -4,7 +4,7 @@
 \name{TerminatorStagnation}
 \alias{TerminatorStagnation}
 \alias{mlr_terminators_stagnation}
-\title{Terminator that stops when a performance level has been reached}
+\title{Terminator that stops when tuning does not improve}
 \format{\link[R6:R6Class]{R6::R6Class} object inheriting from \link{Terminator}.}
 \description{
 Class to terminate the tuning after the performance stagnates, i.e. does not improve more than
