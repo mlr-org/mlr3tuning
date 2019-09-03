@@ -29,11 +29,11 @@ TerminatorPerfReached = R6Class("TerminatorPerfReached",
       super$initialize(settings = list(level = level))
     },
 
-    is_terminated = function(pe) {
+    is_terminated = function(inst) {
       level = self$settings$level
       mid = names(level)
-      aggr = pe$archive(unnest = FALSE)
-      m = get_by_id(pe$measures, mid)
+      aggr = inst$archive(unnest = FALSE)
+      m = get_by_id(inst$measures, mid)
       if (is.null(m)) {
         stopf("Measure '%s' not being measured by Tuner / TuningInstance!", mid)
       }

@@ -41,9 +41,9 @@ TerminatorClockTime = R6Class("TerminatorClockTime",
       super$initialize(settings = list(secs = secs, stop_time = stop_time))
     },
 
-    is_terminated = function(pe) {
+    is_terminated = function(inst) {
       if (!is.null(self$settings$secs)) {
-        d = difftime(Sys.time(), pe$start_time, units = "secs")
+        d = difftime(Sys.time(), inst$start_time, units = "secs")
         return(d >= self$settings$secs)
       } else {
         return(Sys.time() >= self$settings$stop_time)

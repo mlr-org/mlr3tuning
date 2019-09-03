@@ -40,7 +40,7 @@ Arbitrary settings required by the child class.
 \section{Methods}{
 
 \itemize{
-\item \code{is_terminated(pe)}\cr
+\item \code{is_terminated(inst)}\cr
 \link{TuningInstance} -> \code{logical(1)}\cr
 Is \code{TRUE} iff the termination criterion is positive.
 Must be implemented in a subclass.

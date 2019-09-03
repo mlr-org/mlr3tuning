@@ -30,8 +30,8 @@ TerminatorEvals = R6Class("TerminatorEvals",
       super$initialize(settings = list(n_evals = assert_count(n_evals, positive = TRUE, coerce = TRUE)))
     },
 
-    is_terminated = function(pe) {
-      pe$n_evals >= self$settings$n_evals
+    is_terminated = function(inst) {
+      inst$n_evals >= self$settings$n_evals
     }
   )
 )

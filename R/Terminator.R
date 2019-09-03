@@ -29,7 +29,7 @@
 #' * `settings` :: named `list()`\cr
 #'
 #' @section Methods:
-#' * `is_terminated(pe)`\cr
+#' * `is_terminated(inst)`\cr
 #'   [TuningInstance] -> `logical(1)`\cr
 #'   Is `TRUE` iff the termination criterion is positive.
 #'   Must be implemented in a subclass.
@@ -53,6 +53,6 @@ Terminator = R6Class("Terminator",
       catf(str_indent("* Settings:", as_short_string(self$settings)))
     },
 
-    is_terminated = function(pe) TRUE # overwrite in subclasses
+    is_terminated = function(inst) TRUE # overwrite in subclasses
   )
 )
