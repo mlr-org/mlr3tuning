@@ -26,9 +26,9 @@ So better check the size of the returned archive.
 }
 \itemize{
 \item \code{param_set} :: \link[paradox:ParamSet]{paradox::ParamSet}\cr
-Set of hyperparameters.
+Set of control parameters for terminator.
 \item \code{param_vals} :: named \code{list()}\cr
-List of hyperparameter settings.
+Settings of control parameters for terminator.
 }
 }
 
@@ -36,7 +36,6 @@ List of hyperparameter settings.
 
 \itemize{
 \item \code{param_set} :: \link[paradox:ParamSet]{paradox::ParamSet}\cr
-Description of available hyperparameters and hyperparameter settings.
 }
 }
 

@@ -51,9 +51,13 @@
 #'
 #' @section Methods:
 #' * `eval_batch(dt)`\cr
-#'   [data.table::data.table()] -> [data.table::data.table()]\cr
+#'   [data.table::data.table()] -> named `list()`\cr
 #'   Evaluates all hyperparameter configurations in `dt` through resampling, where each configuration is a row, and columns are scalar parameters.
-#'   Returns a `data.table()` with corresponding rows, where each column is a named measure.
+#'   Updates the internal [BenchmarkResult] `$bmr` by reference, and returns a named list with two elements:
+#'   * `"batch_nr"`: Number of the new batch.
+#'     This number is calculated in an auto-increment fashion and stored also stored inside the [BenchmarkResult] as column `batch_nr`
+#'   * `"hashes"`: hashes of the added [ResampleResult]s.
+#'
 #'   After a batch-evaluation the [Terminator] is checked, if it is positive, an exception of class `terminated_error` is raised.
 #'   This function should be internally called by the tuner.
 #'
@@ -71,9 +75,8 @@
 #'
 #' * `archive(unnest = TRUE)`
 #'   `logical(1)` -> [data.table::data.table()]\cr
-#'   Returns a table of contained resample results, similar to the one returned by [mlr3::benchmark()]'s
-#'   `$aggregate()` method. If `unnest` is `TRUE`, hyperparameter configuration settings are stored in
-#'   separate columns instead of inside a list column.
+#'   Returns a table of contained resample results, similar to the one returned by [mlr3::benchmark()]'s `$aggregate()` method.
+#'   If `unnest` is `TRUE` (default), hyperparameter configuration settings are stored in separate columns instead of inside a list column.
 #'
 #' @family TuningInstance
 #' @export
@@ -190,10 +193,10 @@ TuningInstance = R6Class("TuningInstance",
       d = benchmark_grid(tasks = list(self$task), learners = lrns, resamplings = list(self$resampling))
       bmr = invoke(benchmark, design = d, .args = self$bm_args)
 
-      # add date of birth column
-      dob = self$bmr$rr_data$dob
-      dob = if (length(dob)) max(dob) + 1L else 1L
-      bmr$rr_data[, ("dob") := dob]
+      # add column "batch_nr"
+      batch_nr = self$bmr$rr_data$batch_nr
+      batch_nr = if (length(batch_nr)) max(batch_nr) + 1L else 1L
+      bmr$rr_data[, ("batch_nr") := batch_nr]
 
       # store evaluated results
       self$bmr$combine(bmr)
@@ -213,15 +216,14 @@ TuningInstance = R6Class("TuningInstance",
         stop(terminated_error(self))
       }
 
-      # get aggregated measures in dt, return them
-      mids = map_chr(self$measures, "id")
-      return(bmr$aggregate(measures = self$measures, ids = FALSE)[, mids, with = FALSE])
+      return(list(batch_nr = batch_nr, hashes = bmr$hashes))
     },
 
     tuner_objective = function(x) {
       m = self$measures[[1L]]
       d = setnames(setDT(as.list(x)), self$param_set$ids())
-      y = self$eval_batch(d)[[m$id]]
+      hashes = self$eval_batch(d)$hashes
+      y = map_dbl(hashes, function(h) self$bmr$resample_result(hash = h)$aggregate(m))
       if (m$minimize) y else -y
     },
 
