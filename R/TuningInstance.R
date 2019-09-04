@@ -246,6 +246,29 @@ TuningInstance = R6Class("TuningInstance",
   ),
 
   active = list(
-    n_evals = function() self$bmr$n_resample_results
+    n_evals = function() self$bmr$n_resample_results,
+
+    selected_rr = function(rhs) {
+      if (missing(rhs)) {
+        return(private$.selected_rr)
+      }
+      assert_r6(rhs, "ResampleResult")
+      assert_choice(rhs$hash, self$bmr$hashes)
+      private$.selected_rr = rhs
+    },
+
+    selected_config = function() {
+      self$selected_rr$learners[[1L]]$param_set$values
+    },
+
+    selected_perf = function() {
+      # FIXME: this seems pretty tedious code, see mlr3 issue #338
+      mids = map_chr(self$measures, "id")
+      set_names(as.numeric(self$selected_rr$performance(self$measures)[, mids, with = FALSE]), mids)
+    }
+  ),
+
+  private = list(
+    .selected_rr = NULL
   )
 )

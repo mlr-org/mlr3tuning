@@ -42,11 +42,8 @@
 #'
 #' @section Methods:
 #' * `tune(instance)`\cr
-#'   ([TuningInstance]) -> `list()`\cr
+#'   ([TuningInstance]) -> `self`\cr
 #'   Performs the tuning on a [TuningInstance] until termination.
-#'   Returns a list with 2 elements:
-#'     - `performance` (`numeric()`) with the best performance.
-#'     - `values` (named `list()`) with the corresponding hyperparameters values.
 #'
 #' @section Technical Details and Subclasses:
 #' A subclass is implemented in the following way:
@@ -132,11 +129,8 @@ Tuner = R6Class("Tuner",
         private$tune_internal(instance)
       }, terminated_error = function(cond) {
       })
-
-      rr = instance$best()
-      # FIXME: autotuner setting later
       lg$info("Finished tuning after %i evals", instance$n_evals)
-      list(performance = rr$aggregate(instance$measures), values = rr$learners[[1L]]$param_set$values)
+      instance$selected_rr = private$select_best(instance)
     }
   ),
 
@@ -144,6 +138,10 @@ Tuner = R6Class("Tuner",
     tune_internal = function(instance) {
       # every subclass has to implement this to call optimizer
       stop("abstract")
-    }
+    },
+
+    select_best = function(instance) {
+      instance$best()
+     }
   )
 )
