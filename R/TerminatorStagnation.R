@@ -11,7 +11,7 @@
 #'
 #' @section Construction:
 #' ```
-#' t = TerminatorStagnation$new(iters, tol = sqrt(.Machine$double.eps))
+#' t = TerminatorStagnation$new(iters, tol = 0)
 #' ```
 #'
 #' * `iters` :: `integer(1)`\cr
@@ -20,7 +20,7 @@
 #'
 #' * `threshold` :: `numeric(1)`\cr
 #'   If the improvement is less than `threshold`, tuning is stopped.
-#'   Default is `sqrt(.Machine$double.eps)`.
+#'   Default is `0`.
 #'   Stored in the parameter set `$param_set`.
 #'
 #' @family Terminator
@@ -28,10 +28,10 @@
 TerminatorStagnation = R6Class("TerminatorStagnation",
   inherit = Terminator,
   public = list(
-    initialize = function(iters, threshold = sqrt(.Machine$double.eps)) {
+    initialize = function(iters, threshold = 0) {
       ps = ParamSet$new(list(
         ParamInt$new("iters", lower = 1L, tags = "required"),
-        ParamDbl$new("threshold", lower = 0, tags = "required")
+        ParamDbl$new("threshold", lower = 0, default = 0, tags = "required")
       ))
 
       super$initialize(
