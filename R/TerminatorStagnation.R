@@ -33,14 +33,9 @@ TerminatorStagnation = R6Class("TerminatorStagnation",
         ParamInt$new("iters", lower = 1L, tags = "required"),
         ParamDbl$new("threshold", lower = 0, default = 0, tags = "required")
       ))
+      ps$values = list(iters = iters, threshold = threshold)
 
-      super$initialize(
-        param_set = ps,
-        param_vals = list(
-          iters = assert_count(iters, positive = TRUE, coerce = TRUE),
-          threshold = assert_number(threshold, lower = 0)
-        )
-      )
+      super$initialize(param_set = ps)
     },
 
     is_terminated = function(inst) {

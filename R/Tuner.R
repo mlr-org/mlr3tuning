@@ -14,15 +14,12 @@
 #'
 #' @section Construction:
 #' ```
-#' tuner = Tuner$new(param_set = ParamSet$new(), param_vals = list(), param_classes = character(),
+#' tuner = Tuner$new(param_set = ParamSet$new(), param_classes = character(),
 #'   properties = character(), packages = character())
 #' ```
 #'
 #' * `param_set` :: [paradox::ParamSet]\cr
 #'   Set of control parameters for tuner.
-#'
-#' * `param_vals` :: named `list()`\cr
-#'   Settings of control parameters for tuner.
 #'
 #' * `param_classes` :: `character()`\cr
 #'   Supported parameter classes for learner hyperparameters that the tuner can optimize, subclasses of [paradox::Param].
@@ -98,9 +95,8 @@ Tuner = R6Class("Tuner",
     properties = NULL,
     packages = NULL,
 
-    initialize = function(param_set = ParamSet$new(), param_vals = list(), param_classes = character(), properties = character(), packages = character()) {
+    initialize = function(param_set = ParamSet$new(), param_classes = character(), properties = character(), packages = character()) {
       self$param_set = assert_param_set(param_set)
-      self$param_set$values = param_vals
       self$param_classes = param_classes
       self$properties = assert_subset(properties, mlr_reflections$tuner_properties)
       self$packages = assert_set(packages)

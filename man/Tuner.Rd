@@ -14,14 +14,12 @@ If the tuning instance contains multiple measures, they will always be all evalu
 But single-criteria tuners always optimize the first measure in the passed list.
 }
 \section{Construction}{
-\preformatted{tuner = Tuner$new(param_set = ParamSet$new(), param_vals = list(), param_classes = character(),
+\preformatted{tuner = Tuner$new(param_set = ParamSet$new(), param_classes = character(),
   properties = character(), packages = character())
 }
 \itemize{
 \item \code{param_set} :: \link[paradox:ParamSet]{paradox::ParamSet}\cr
 Set of control parameters for tuner.
-\item \code{param_vals} :: named \code{list()}\cr
-Settings of control parameters for tuner.
 \item \code{param_classes} :: \code{character()}\cr
 Supported parameter classes for learner hyperparameters that the tuner can optimize, subclasses of \link[paradox:Param]{paradox::Param}.
 \item \code{properties} :: \code{character()}\cr
@@ -50,7 +48,7 @@ Note that these packages will be loaded via \code{\link[=requireNamespace]{requi
 Performs the tuning on a \link{TuningInstance} until termination.
 \item \code{tune_result(instance)}\cr
 \link{TuningInstance} -> named \code{list()}\cr
-Returns what the \link{Tuner} thinks is the "best" tuning result as named list:
+Returns the "best" tuning result as named list:
 \itemize{
 \item \code{"performance"} (\code{numeric()}) with the best performance.
 \item \code{"values"} (named \code{list()}) with the corresponding hyperparameters values.

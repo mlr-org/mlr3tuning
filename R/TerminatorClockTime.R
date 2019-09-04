@@ -38,13 +38,13 @@ TerminatorClockTime = R6Class("TerminatorClockTime",
       assert_number(secs, lower = 0, null.ok = TRUE)
       assert_posixct(stop_time, len = 1L, any.missing = FALSE, null.ok = TRUE)
 
-      super$initialize(
-        param_set = ParamSet$new(list(
-            ParamDbl$new("secs", lower = 0),
-            ParamUty$new("stop_time"))
-        ),
-        param_vals = discard(list(secs = secs, stop_time = stop_time), is.null)
+      ps = ParamSet$new(list(
+        ParamDbl$new("secs", lower = 0),
+        ParamUty$new("stop_time"))
       )
+      ps$values = discard(list(secs = secs, stop_time = stop_time), is.null)
+
+      super$initialize(param_set = ps)
     },
 
     is_terminated = function(inst) {

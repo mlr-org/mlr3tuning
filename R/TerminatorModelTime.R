@@ -32,11 +32,10 @@ TerminatorModelTime = R6Class("TerminatorModelTime",
   inherit = Terminator,
   public = list(
     initialize = function(secs = 0) {
-      assert_number(secs)
-      super$initialize(
-        param_set = ParamSet$new(list(ParamDbl$new("secs", lower = 0, tags = "required"))),
-        param_vals = list(secs = secs)
-      )
+      ps = ParamSet$new(list(ParamDbl$new("secs", lower = 0, tags = "required")))
+      ps$values = list(secs = secs)
+
+      super$initialize(param_set = ps)
     },
 
     is_terminated = function(inst) {

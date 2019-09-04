@@ -22,13 +22,11 @@ it might happen that a few too many or even a few too few evaluations are perfor
 So better check the size of the returned archive.
 }
 \section{Construction}{
-\preformatted{t = Terminator$new(param_set = ParamSet$new(), param_vals = list())
+\preformatted{t = Terminator$new(param_set = ParamSet$new())
 }
 \itemize{
 \item \code{param_set} :: \link[paradox:ParamSet]{paradox::ParamSet}\cr
 Set of control parameters for terminator.
-\item \code{param_vals} :: named \code{list()}\cr
-Settings of control parameters for terminator.
 }
 }
 

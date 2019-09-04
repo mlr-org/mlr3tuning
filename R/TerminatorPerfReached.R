@@ -34,10 +34,9 @@ TerminatorPerfReached = R6Class("TerminatorPerfReached",
         ParamUty$new("measure", tags = "required"),
         ParamDbl$new("level", tags = "required")
       ))
-      super$initialize(
-        param_set = ps,
-        param_vals = list(measure = assert_string(measure), level = assert_number(level))
-      )
+      ps$values = list(measure = assert_string(measure), level = assert_number(level))
+
+      super$initialize(param_set = ps)
     },
 
     is_terminated = function(inst) {

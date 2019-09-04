@@ -32,10 +32,12 @@ TunerRandomSearch = R6Class("TunerRandomSearch",
   public = list(
     initialize = function() {
       ps = ParamSet$new(list(
-          ParamInt$new("batch_size", lower = 1L, tags = "required")
+        ParamInt$new("batch_size", lower = 1L, tags = "required")
       ))
+      ps$values = list(batch_size = 1L)
+
       super$initialize(
-        param_set = ps, param_vals = list(batch_size = 1L),
+        param_set = ps,
         param_classes = c("ParamLgl", "ParamInt", "ParamDbl", "ParamFct"),
         properties = "dependencies"
       )
