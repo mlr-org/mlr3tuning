@@ -42,11 +42,14 @@
 #'
 #' @section Methods:
 #' * `tune(instance)`\cr
-#'   ([TuningInstance]) -> `list()`\cr
+#'   [TuningInstance] -> `self`\cr
 #'   Performs the tuning on a [TuningInstance] until termination.
-#'   Returns a list with 2 elements:
-#'     - `performance` (`numeric()`) with the best performance.
-#'     - `values` (named `list()`) with the corresponding hyperparameters values.
+#'
+#' * `tune_result(instance)`\cr
+#'   [TuningInstance] -> named `list()`\cr
+#'   Returns the "best" tuning result as named list:
+#'     - `"performance"` (`numeric()`) with the best performance.
+#'     - `"values"` (named `list()`) with the corresponding hyperparameters values.
 #'
 #' @section Technical Details and Subclasses:
 #' A subclass is implemented in the following way:
@@ -85,7 +88,8 @@
 #'   terminator = terminator
 #' )
 #' tt = tnr("random_search") # swap this line to use a different Tuner
-#' res = tt$tune(instance) # returns best configuration and performance, and logs in 'instance'
+#' tt$tune(instance) # modifies the instance by reference
+#' tt$tune_result(instance) # returns best configuration and performance
 #' instance$archive() # allows access of data.table / benchmark result of full path of all evaluations
 Tuner = R6Class("Tuner",
   public = list(
@@ -130,12 +134,14 @@ Tuner = R6Class("Tuner",
       # we then catch that here and stop
       tryCatch({
         private$tune_internal(instance)
-      }, terminated_error = function(cond) {
-      })
+      }, terminated_error = function(cond) { })
 
-      rr = instance$best()
-      # FIXME: autotuner setting later
       lg$info("Finished tuning after %i evals", instance$n_evals)
+      invisible(self)
+    },
+
+    tune_result = function(instance) {
+      rr = instance$best()
       list(performance = rr$aggregate(instance$measures), values = rr$learners[[1L]]$param_set$values)
     }
   ),

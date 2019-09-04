@@ -124,8 +124,8 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
       )
 
       # update param vals
-      tres = self$tuner$tune(instance)
-      learner$param_set$values = tres$values
+      self$tuner$tune(instance)
+      learner$param_set$values = self$tuner$tune_result(instance)$values
 
       # train internal learner
       model = list(learner = learner$train(task))

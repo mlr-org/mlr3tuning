@@ -46,12 +46,14 @@ Note that these packages will be loaded via \code{\link[=requireNamespace]{requi
 
 \itemize{
 \item \code{tune(instance)}\cr
-(\link{TuningInstance}) -> \code{list()}\cr
+\link{TuningInstance} -> \code{self}\cr
 Performs the tuning on a \link{TuningInstance} until termination.
-Returns a list with 2 elements:
+\item \code{tune_result(instance)}\cr
+\link{TuningInstance} -> named \code{list()}\cr
+Returns what the \link{Tuner} thinks is the "best" tuning result as named list:
 \itemize{
-\item \code{performance} (\code{numeric()}) with the best performance.
-\item \code{values} (named \code{list()}) with the corresponding hyperparameters values.
+\item \code{"performance"} (\code{numeric()}) with the best performance.
+\item \code{"values"} (named \code{list()}) with the corresponding hyperparameters values.
 }
 }
 }
@@ -95,7 +97,8 @@ instance = TuningInstance$new(
   terminator = terminator
 )
 tt = tnr("random_search") # swap this line to use a different Tuner
-res = tt$tune(instance) # returns best configuration and performance, and logs in 'instance'
+tt$tune(instance) # modifies the instance by reference
+tt$tune_result(instance) # returns best configuration and performance
 instance$archive() # allows access of data.table / benchmark result of full path of all evaluations
 }
 \seealso{
