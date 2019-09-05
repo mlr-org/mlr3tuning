@@ -81,10 +81,11 @@
 #' @family TuningInstance
 #' @export
 #' @examples
-#' library(mlr3)
-#' library(paradox)
 #' library(data.table)
-#' # Object required to define the performance evaluator:
+#' library(paradox)
+#' library(mlr3)
+#'
+#' # Objects required to define the performance evaluator:
 #' task = tsk("iris")
 #' learner = lrn("classif.rpart")
 #' resampling = rsmp("holdout")
@@ -207,9 +208,8 @@ TuningInstance = R6Class("TuningInstance",
       # this checks the validity of dt lines in the paramset
       design = Design$new(self$param_set, dt, remove_dupl = FALSE)
 
-
       lg$info("Evaluating %i configurations", nrow(dt))
-      lg$info("%s", capture.output(dt))
+      lg$info(capture.output(print(dt, class = FALSE, row.names = FALSE, print.keys = FALSE)))
 
       # trafo and remove non-satisfied deps
       parlist = design$transpose(trafo = TRUE, filter_na = TRUE)
@@ -240,7 +240,7 @@ TuningInstance = R6Class("TuningInstance",
         mids = map_chr(self$measures, "id")
         a = bmr$aggregate(measures = self$measures, ids = FALSE)[, mids, with = FALSE]
         lg$info("Result:")
-        lg$info("%s", capture.output(cbind(dt, a)))
+        lg$info(capture.output(print(cbind(dt, a), class = FALSE, row.names = FALSE, print.keys = FALSE)))
       }
 
       # if the terminator is positive throw condition of class "terminated_error" that we can tryCatch
