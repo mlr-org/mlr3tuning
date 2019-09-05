@@ -89,9 +89,10 @@
 #' learner = lrn("classif.rpart")
 #' resampling = rsmp("holdout")
 #' measures = msr("classif.ce")
-#' param_set = ParamSet$new(params = list(
+#' param_set = ParamSet$new(list(
 #'   ParamDbl$new("cp", lower = 0.001, upper = 0.1),
-#'   ParamInt$new("minsplit", lower = 1, upper = 10)))
+#'   ParamInt$new("minsplit", lower = 1, upper = 10))
+#' )
 #'
 #' terminator = term("evals", n_evals = 5)
 #' inst = TuningInstance$new(
@@ -121,6 +122,36 @@
 #' )
 #'
 #' inst$archive()
+#'
+#' ### Error handling
+#' # get a learner which breaks with 50% probability
+#' # set encapsulation + fallback
+#' learner = lrn("classif.debug", error_train = 0.5)
+#' learner$encapsulate = c(train = "evaluate", predict = "evaluate")
+#' learner$fallback = lrn("classif.featureless")
+#'
+#' param_set = ParamSet$new(list(
+#'   ParamDbl$new("x", lower = 0, upper = 1)
+#' ))
+#'
+#' inst = TuningInstance$new(
+#'   task = tsk("wine"),
+#'   learner = learner,
+#'   resampling = rsmp("cv", folds = 3),
+#'   measures = msr("classif.ce"),
+#'   param_set = param_set,
+#'   terminator = term("evals", n_evals = 5)
+#' )
+#'
+#' tryCatch(
+#'   inst$eval_batch(data.table(x = 1:5 / 5)),
+#'   terminated_error = function(e) message(as.character(e))
+#' )
+#'
+#' archive = inst$archive()
+#'
+#' # column errors: multiple errors recorded
+#' print(archive)
 TuningInstance = R6Class("TuningInstance",
   public = list(
     task = NULL,
@@ -142,6 +173,7 @@ TuningInstance = R6Class("TuningInstance",
       self$terminator = assert_terminator(terminator)
       self$bm_args = assert_list(bm_args, names = "unique")
       self$bmr = BenchmarkResult$new(data.table())
+      self$bmr$rr_data[, ("batch_nr") := integer()]
     },
 
     format = function() {
@@ -228,23 +260,34 @@ TuningInstance = R6Class("TuningInstance",
     },
 
     archive = function(unnest = TRUE) {
-      dt = self$bmr$aggregate(measures = self$measures, params = TRUE)
+      dt = self$bmr$aggregate(measures = self$measures, params = TRUE, conditions = TRUE)
       if (unnest) {
         dt = mlr3misc::unnest(dt, "params")
       }
+      setcolorder(dt, c("nr", "batch_nr"))
       return(dt)
     },
 
     best = function(measure = NULL) {
-      measure = if (is.null(measure)) self$measures[[1L]] else assert_measure(measure, task = self$task, learner = self$learner)
+      if (is.null(measure)) {
+        measure = self$measures[[1L]]
+      } else {
+        measure = as_measure(measure, task_type = self$task$task_type)
+        # check that we are only using contained measures
+        assert_choice(measure$id, map_chr(self$measures, "id"))
+      }
+      assert_measure(measure, task = self$task, learner = self$learner)
+      if (is.na(measure$minimize))
+        stopf("Measure '%s' has minimize = NA and hence cannot be tuned", measure$id)
 
-      # check that we are only using contained measures
-      assert_choice(measure$id, map_chr(self$measures, "id"))
       tab = self$bmr$aggregate(measure, ids = FALSE)
-      best = if (measure$minimize) which_min else which_max
-      tab$resample_result[[best(tab[[measure$id]])]]
-    }
+      y = tab[[measure$id]]
+      if (allMissing(y))
+        stopf("No non-missing performance value stored")
 
+      best = if (measure$minimize) which_min else which_max
+      tab$resample_result[[best(y, na_rm = TRUE)]]
+    }
   ),
 
   active = list(

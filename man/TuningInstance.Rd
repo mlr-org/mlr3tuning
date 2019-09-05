@@ -98,9 +98,10 @@ task = tsk("iris")
 learner = lrn("classif.rpart")
 resampling = rsmp("holdout")
 measures = msr("classif.ce")
-param_set = ParamSet$new(params = list(
+param_set = ParamSet$new(list(
   ParamDbl$new("cp", lower = 0.001, upper = 0.1),
-  ParamInt$new("minsplit", lower = 1, upper = 10)))
+  ParamInt$new("minsplit", lower = 1, upper = 10))
+)
 
 terminator = term("evals", n_evals = 5)
 inst = TuningInstance$new(
@@ -130,6 +131,36 @@ tryCatch(
 )
 
 inst$archive()
+
+### Error handling
+# get a learner which breaks with 50\% probability
+# set encapsulation + fallback
+learner = lrn("classif.debug", error_train = 0.5)
+learner$encapsulate = c(train = "evaluate", predict = "evaluate")
+learner$fallback = lrn("classif.featureless")
+
+param_set = ParamSet$new(list(
+  ParamDbl$new("x", lower = 0, upper = 1)
+))
+
+inst = TuningInstance$new(
+  task = tsk("wine"),
+  learner = learner,
+  resampling = rsmp("cv", folds = 3),
+  measures = msr("classif.ce"),
+  param_set = param_set,
+  terminator = term("evals", n_evals = 5)
+)
+
+tryCatch(
+  inst$eval_batch(data.table(x = 1:5 / 5)),
+  terminated_error = function(e) message(as.character(e))
+)
+
+archive = inst$archive()
+
+# column errors: multiple errors recorded
+print(archive)
 }
 \concept{TuningInstance}
 \keyword{datasets}
