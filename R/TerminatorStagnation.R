@@ -53,9 +53,9 @@ TerminatorStagnation = R6Class("TerminatorStagnation",
       perf_window = tail(aggr[[m$id]],  iters)
 
       if (m$minimize) {
-        min(perf_window) > min(perf_before) - pv$threshold
+        min(perf_window) >= min(perf_before) - pv$threshold
       } else {
-        max(perf_window) < max(perf_before) + pv$threshold
+        max(perf_window) <= max(perf_before) + pv$threshold
       }
     }
   )
