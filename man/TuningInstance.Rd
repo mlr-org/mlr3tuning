@@ -20,7 +20,7 @@ A list of multiple measures can be passed to the instance, and they will always 
 But single-criteria tuners always optimize the first measure in the passed list.
 }
 \section{Construction}{
-\preformatted{inst = TuningInstance$new(task, learner, resampling, measures, param_set, terminator = TerminatorNone$new(), bm_args = list())
+\preformatted{inst = TuningInstance$new(task, learner, resampling, measures, param_set, terminator, bm_args = list())
 }
 
 This defines the resampled performance of a learner on a task, a feasibility region
