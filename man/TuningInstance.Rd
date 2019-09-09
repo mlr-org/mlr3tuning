@@ -18,6 +18,9 @@ If the available budget is exhausted, an exception is raised, and no further eva
 
 A list of multiple measures can be passed to the instance, and they will always be all evaluated.
 But single-criteria tuners always optimize the first measure in the passed list.
+
+The tuner is also supposed to store its final result, consisting of a selected hyperparameter configuration,
+and associated estimated performance values in the instance slots \code{result_config} and \code{result_perf}.
 }
 \section{Construction}{
 \preformatted{inst = TuningInstance$new(task, learner, resampling, measures, param_set, terminator, bm_args = list())
@@ -54,6 +57,14 @@ Number of configuration evaluations stored in the container.
 \item \code{start_time} :: \code{POSIXct(1)}\cr
 Time the tuning / evaluations were started.
 This is set in the beginning of \code{$tune()} of \link{Tuner}.
+\item \code{result_config} :: named \link{list}.
+The tuner writes the estimated optimal configuration of the learner here.
+Must a list of settings which include all parameters from \code{param_set}
+and all other static param settings with which the learner was run.
+\item \code{result_perf} :: named \link{numeric}.
+The tuner writes the estimated performance of \code{result_config} here.
+Must be a vector of performance measures, named with performance IDs,
+regarding all elements in \code{measures}.
 }
 }
 

@@ -12,6 +12,10 @@ function and its feasible set defined by the \link{TuningInstance} object.
 
 If the tuning instance contains multiple measures, they will always be all evaluated.
 But single-criteria tuners always optimize the first measure in the passed list.
+
+A tuner must at the end of its tuning write to the slots \code{result_config} and \code{result_perf}
+of the \link[=TuningInstance]{Tuninginstance} where the best selected hyperparameter configuration and its estimated performance
+vector are then stored for result access.
 }
 \section{Construction}{
 \preformatted{tuner = Tuner$new(param_set = ParamSet$new(), param_classes = character(),
@@ -69,6 +73,10 @@ return it.
 as the Terminator is only checked before and after a batch evaluation,
 and not in-between evaluation in a batch.
 How many more depends on the setting of the batch size.
+\item Overwrite the private super-method \code{assign_result} if you want to decide yourself how to estimate
+the final configuration in the instance and its estimated performance.
+The default behavior is: We pick the best resample-experiment, regarding the first measure,
+then assign its config and aggregated perf to the instance.
 }
 }
 
@@ -89,7 +97,8 @@ instance = TuningInstance$new(
 )
 tt = tnr("random_search") # swap this line to use a different Tuner
 tt$tune(instance) # modifies the instance by reference
-tt$tune_result(instance) # returns best configuration and performance
+instance$result_config # returns best configuration
+instance$result_perf # returns best performance
 instance$archive() # allows access of data.table / benchmark result of full path of all evaluations
 }
 \seealso{

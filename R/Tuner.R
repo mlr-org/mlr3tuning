@@ -12,6 +12,10 @@
 #' If the tuning instance contains multiple measures, they will always be all evaluated.
 #' But single-criteria tuners always optimize the first measure in the passed list.
 #'
+#' A tuner must at the end of its tuning write to the slots `result_config` and `result_perf`
+#' of the [Tuninginstance] where the best selected hyperparameter configuration and its estimated performance
+#' vector are then stored for result access.
+#'
 #' @section Construction:
 #' ```
 #' tuner = Tuner$new(param_set = ParamSet$new(), param_classes = character(),
@@ -61,6 +65,10 @@
 #'    as the Terminator is only checked before and after a batch evaluation,
 #'    and not in-between evaluation in a batch.
 #'    How many more depends on the setting of the batch size.
+#'  * Overwrite the private super-method `assign_result` if you want to decide yourself how to estimate
+#'    the final configuration in the instance and its estimated performance.
+#'    The default behavior is: We pick the best resample-experiment, regarding the first measure,
+#'    then assign its config and aggregated perf to the instance.
 #'
 #' @family Tuner
 #' @export
@@ -81,7 +89,8 @@
 #' )
 #' tt = tnr("random_search") # swap this line to use a different Tuner
 #' tt$tune(instance) # modifies the instance by reference
-#' tt$tune_result(instance) # returns best configuration and performance
+#' instance$result_config # returns best configuration
+#' instance$result_perf # returns best performance
 #' instance$archive() # allows access of data.table / benchmark result of full path of all evaluations
 Tuner = R6Class("Tuner",
   public = list(
@@ -149,6 +158,10 @@ Tuner = R6Class("Tuner",
       stop("abstract")
     },
 
+    # the default super-method to assign results for a Tuner at the end
+    # - pick the best resample-experiment, regarding the first measure
+    # - then assign its config and aggregated perf to instance
+    # --> a Tuner can overwrite this if it wants to do something more fancy
     assign_result = function(instance) {
       rr = instance$best()
       instance$result_config = rr$learners[[1L]]$param_set$values
