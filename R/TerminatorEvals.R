@@ -29,9 +29,10 @@ TerminatorEvals = R6Class("TerminatorEvals",
   public = list(
 
     initialize = function(n_evals = 1L) {
-      assert_count(n_evals, positive = TRUE)
       ps = ParamSet$new(list(ParamInt$new("n_evals", lower = 1L, tags = "required")))
-      super$initialize(param_set = ps, param_vals = list(n_evals = n_evals))
+      ps$values = list(n_evals = n_evals)
+
+      super$initialize(param_set = ps)
     },
 
     is_terminated = function(inst) {

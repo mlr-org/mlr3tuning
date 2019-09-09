@@ -19,7 +19,7 @@
 #'
 #' @section Construction:
 #' ```
-#' inst = TuningInstance$new(task, learner, resampling, measures, param_set, terminator = TerminatorNone$new(), bm_args = list())
+#' inst = TuningInstance$new(task, learner, resampling, measures, param_set, terminator, bm_args = list())
 #' ```
 #' This defines the resampled performance of a learner on a task, a feasibility region
 #' for the parameters the tuner is supposed to optimize, and a termination criterion.
@@ -51,9 +51,13 @@
 #'
 #' @section Methods:
 #' * `eval_batch(dt)`\cr
-#'   [data.table::data.table()] -> [data.table::data.table()]\cr
+#'   [data.table::data.table()] -> named `list()`\cr
 #'   Evaluates all hyperparameter configurations in `dt` through resampling, where each configuration is a row, and columns are scalar parameters.
-#'   Returns a `data.table()` with corresponding rows, where each column is a named measure.
+#'   Updates the internal [BenchmarkResult] `$bmr` by reference, and returns a named list with two elements:
+#'   * `"batch_nr"`: Number of the new batch.
+#'     This number is calculated in an auto-increment fashion and stored also stored inside the [BenchmarkResult] as column `batch_nr`
+#'   * `"hashes"`: hashes of the added [ResampleResult]s.
+#'
 #'   After a batch-evaluation the [Terminator] is checked, if it is positive, an exception of class `terminated_error` is raised.
 #'   This function should be internally called by the tuner.
 #'
@@ -71,24 +75,25 @@
 #'
 #' * `archive(unnest = TRUE)`
 #'   `logical(1)` -> [data.table::data.table()]\cr
-#'   Returns a table of contained resample results, similar to the one returned by [mlr3::benchmark()]'s
-#'   `$aggregate()` method. If `unnest` is `TRUE`, hyperparameter configuration settings are stored in
-#'   separate columns instead of inside a list column.
+#'   Returns a table of contained resample results, similar to the one returned by [mlr3::benchmark()]'s `$aggregate()` method.
+#'   If `unnest` is `TRUE` (default), hyperparameter configuration settings are stored in separate columns instead of inside a list column.
 #'
 #' @family TuningInstance
 #' @export
 #' @examples
-#' library(mlr3)
-#' library(paradox)
 #' library(data.table)
-#' # Object required to define the performance evaluator:
+#' library(paradox)
+#' library(mlr3)
+#'
+#' # Objects required to define the performance evaluator:
 #' task = tsk("iris")
 #' learner = lrn("classif.rpart")
 #' resampling = rsmp("holdout")
 #' measures = msr("classif.ce")
-#' param_set = ParamSet$new(params = list(
+#' param_set = ParamSet$new(list(
 #'   ParamDbl$new("cp", lower = 0.001, upper = 0.1),
-#'   ParamInt$new("minsplit", lower = 1, upper = 10)))
+#'   ParamInt$new("minsplit", lower = 1, upper = 10))
+#' )
 #'
 #' terminator = term("evals", n_evals = 5)
 #' inst = TuningInstance$new(
@@ -118,6 +123,36 @@
 #' )
 #'
 #' inst$archive()
+#'
+#' ### Error handling
+#' # get a learner which breaks with 50% probability
+#' # set encapsulation + fallback
+#' learner = lrn("classif.debug", error_train = 0.5)
+#' learner$encapsulate = c(train = "evaluate", predict = "evaluate")
+#' learner$fallback = lrn("classif.featureless")
+#'
+#' param_set = ParamSet$new(list(
+#'   ParamDbl$new("x", lower = 0, upper = 1)
+#' ))
+#'
+#' inst = TuningInstance$new(
+#'   task = tsk("wine"),
+#'   learner = learner,
+#'   resampling = rsmp("cv", folds = 3),
+#'   measures = msr("classif.ce"),
+#'   param_set = param_set,
+#'   terminator = term("evals", n_evals = 5)
+#' )
+#'
+#' tryCatch(
+#'   inst$eval_batch(data.table(x = 1:5 / 5)),
+#'   terminated_error = function(e) message(as.character(e))
+#' )
+#'
+#' archive = inst$archive()
+#'
+#' # column errors: multiple errors recorded
+#' print(archive)
 TuningInstance = R6Class("TuningInstance",
   public = list(
     task = NULL,
@@ -130,7 +165,7 @@ TuningInstance = R6Class("TuningInstance",
     bmr = NULL,
     start_time = NULL,
 
-    initialize = function(task, learner, resampling, measures, param_set, terminator = TerminatorNone$new(), bm_args = list()) {
+    initialize = function(task, learner, resampling, measures, param_set, terminator, bm_args = list()) {
       self$task = assert_task(as_task(task, clone = TRUE))
       self$learner = assert_learner(as_learner(learner, clone = TRUE), task = self$task)
       self$resampling = assert_resampling(as_resampling(resampling, clone = TRUE))
@@ -139,6 +174,7 @@ TuningInstance = R6Class("TuningInstance",
       self$terminator = assert_terminator(terminator)
       self$bm_args = assert_list(bm_args, names = "unique")
       self$bmr = BenchmarkResult$new(data.table())
+      self$bmr$rr_data[, ("batch_nr") := integer()]
     },
 
     format = function() {
@@ -172,9 +208,8 @@ TuningInstance = R6Class("TuningInstance",
       # this checks the validity of dt lines in the paramset
       design = Design$new(self$param_set, dt, remove_dupl = FALSE)
 
-
       lg$info("Evaluating %i configurations", nrow(dt))
-      lg$info("%s", capture.output(dt))
+      lg$info(capture.output(print(dt, class = FALSE, row.names = FALSE, print.keys = FALSE)))
 
       # trafo and remove non-satisfied deps
       parlist = design$transpose(trafo = TRUE, filter_na = TRUE)
@@ -190,10 +225,10 @@ TuningInstance = R6Class("TuningInstance",
       d = benchmark_grid(tasks = list(self$task), learners = lrns, resamplings = list(self$resampling))
       bmr = invoke(benchmark, design = d, .args = self$bm_args)
 
-      # add date of birth column
-      dob = self$bmr$rr_data$dob
-      dob = if (length(dob)) max(dob) + 1L else 1L
-      bmr$rr_data[, ("dob") := dob]
+      # add column "batch_nr"
+      batch_nr = self$bmr$rr_data$batch_nr
+      batch_nr = if (length(batch_nr)) max(batch_nr) + 1L else 1L
+      bmr$rr_data[, ("batch_nr") := batch_nr]
 
       # store evaluated results
       self$bmr$combine(bmr)
@@ -205,7 +240,7 @@ TuningInstance = R6Class("TuningInstance",
         mids = map_chr(self$measures, "id")
         a = bmr$aggregate(measures = self$measures, ids = FALSE)[, mids, with = FALSE]
         lg$info("Result:")
-        lg$info("%s", capture.output(cbind(dt, a)))
+        lg$info(capture.output(print(cbind(dt, a), class = FALSE, row.names = FALSE, print.keys = FALSE)))
       }
 
       # if the terminator is positive throw condition of class "terminated_error" that we can tryCatch
@@ -213,36 +248,46 @@ TuningInstance = R6Class("TuningInstance",
         stop(terminated_error(self))
       }
 
-      # get aggregated measures in dt, return them
-      mids = map_chr(self$measures, "id")
-      return(bmr$aggregate(measures = self$measures, ids = FALSE)[, mids, with = FALSE])
+      return(list(batch_nr = batch_nr, hashes = bmr$hashes))
     },
 
     tuner_objective = function(x) {
       m = self$measures[[1L]]
       d = setnames(setDT(as.list(x)), self$param_set$ids())
-      y = self$eval_batch(d)[[m$id]]
+      hashes = self$eval_batch(d)$hashes
+      y = map_dbl(hashes, function(h) self$bmr$resample_result(hash = h)$aggregate(m))
       if (m$minimize) y else -y
     },
 
     archive = function(unnest = TRUE) {
-      dt = self$bmr$aggregate(measures = self$measures, params = TRUE)
+      dt = self$bmr$aggregate(measures = self$measures, params = TRUE, conditions = TRUE)
       if (unnest) {
         dt = mlr3misc::unnest(dt, "params")
       }
+      setcolorder(dt, c("nr", "batch_nr"))
       return(dt)
     },
 
     best = function(measure = NULL) {
-      measure = if (is.null(measure)) self$measures[[1L]] else assert_measure(measure, task = self$task, learner = self$learner)
+      if (is.null(measure)) {
+        measure = self$measures[[1L]]
+      } else {
+        measure = as_measure(measure, task_type = self$task$task_type)
+        # check that we are only using contained measures
+        assert_choice(measure$id, map_chr(self$measures, "id"))
+      }
+      assert_measure(measure, task = self$task, learner = self$learner)
+      if (is.na(measure$minimize))
+        stopf("Measure '%s' has minimize = NA and hence cannot be tuned", measure$id)
 
-      # check that we are only using contained measures
-      assert_choice(measure$id, map_chr(self$measures, "id"))
       tab = self$bmr$aggregate(measure, ids = FALSE)
-      best = if (measure$minimize) which_min else which_max
-      tab$resample_result[[best(tab[[measure$id]])]]
-    }
+      y = tab[[measure$id]]
+      if (allMissing(y))
+        stopf("No non-missing performance value stored")
 
+      best = if (measure$minimize) which_min else which_max
+      tab$resample_result[[best(y, na_rm = TRUE)]]
+    }
   ),
 
   active = list(

@@ -11,7 +11,7 @@
 #'
 #' @section Construction:
 #' ```
-#' t = TerminatorStagnation$new(iters, tol = sqrt(.Machine$double.eps))
+#' t = TerminatorStagnation$new(iters, tol = 0)
 #' ```
 #'
 #' * `iters` :: `integer(1)`\cr
@@ -20,7 +20,7 @@
 #'
 #' * `threshold` :: `numeric(1)`\cr
 #'   If the improvement is less than `threshold`, tuning is stopped.
-#'   Default is `sqrt(.Machine$double.eps)`.
+#'   Default is `0`.
 #'   Stored in the parameter set `$param_set`.
 #'
 #' @family Terminator
@@ -28,19 +28,14 @@
 TerminatorStagnation = R6Class("TerminatorStagnation",
   inherit = Terminator,
   public = list(
-    initialize = function(iters, threshold = sqrt(.Machine$double.eps)) {
+    initialize = function(iters, threshold = 0) {
       ps = ParamSet$new(list(
         ParamInt$new("iters", lower = 1L, tags = "required"),
-        ParamDbl$new("threshold", lower = 0, tags = "required")
+        ParamDbl$new("threshold", lower = 0, default = 0, tags = "required")
       ))
+      ps$values = list(iters = iters, threshold = threshold)
 
-      super$initialize(
-        param_set = ps,
-        param_vals = list(
-          iters = assert_count(iters, positive = TRUE, coerce = TRUE),
-          threshold = assert_number(threshold, lower = 0)
-        )
-      )
+      super$initialize(param_set = ps)
     },
 
     is_terminated = function(inst) {
@@ -58,9 +53,9 @@ TerminatorStagnation = R6Class("TerminatorStagnation",
       perf_window = tail(aggr[[m$id]],  iters)
 
       if (m$minimize) {
-        min(perf_window) > min(perf_before) - pv$threshold
+        min(perf_window) >= min(perf_before) - pv$threshold
       } else {
-        max(perf_window) < max(perf_before) + pv$threshold
+        max(perf_window) <= max(perf_before) + pv$threshold
       }
     }
   )

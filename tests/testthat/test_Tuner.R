@@ -24,5 +24,3 @@ test_that("proper error if tuner cannot handle deps", {
   tt = TunerGenSA$new()
   expect_error(tt$tune(inst), "dependencies")
 })
-
-

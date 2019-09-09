@@ -1,7 +1,10 @@
 # mlr3tuning
 
 [![Build Status Linux](https://travis-ci.org/mlr-org/mlr3tuning.svg?branch=master)](https://travis-ci.org/mlr-org/mlr3tuning)
-[![CRAN](https://www.r-pkg.org/badges/version/mlr3tuning)](https://cran.r-project.org/package=mlr3tuning)
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version-ago/mlr3tuning)](https://cran.r-project.org/package=mlr3tuning)
+[![cran checks](https://cranchecks.info/badges/worst/mlr3tuning)](https://cran.r-project.org/web/checks/check_results_mlr3tuning.html)
+[![CRAN Downloads](https://cranlogs.r-pkg.org/badges/mlr3tuning)](https://cran.rstudio.com/web/packages/mlr3tuning/index.html)
+[![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![Coverage Status](https://coveralls.io/repos/github/mlr-org/mlr3tuning/badge.svg?branch=master)](https://coveralls.io/github/mlr-org/mlr3tuning?branch=master)
 [![StackOverflow](https://img.shields.io/badge/stackoverflow-mlr3-orange.svg)](https://stackoverflow.com/questions/tagged/mlr3)
 

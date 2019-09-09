@@ -15,9 +15,12 @@ and querying the archive (see \code{$archive()}).
 Evaluations of hyperparameter configurations are performed in batches by calling \code{\link[mlr3:benchmark]{mlr3::benchmark()}} internally.
 After a batch is evaluated, the \link{Terminator} is queried for the remaining budget.
 If the available budget is exhausted, an exception is raised, and no further evaluations can be performed from this point on.
+
+A list of multiple measures can be passed to the instance, and they will always be all evaluated.
+But single-criteria tuners always optimize the first measure in the passed list.
 }
 \section{Construction}{
-\preformatted{inst = TuningInstance$new(task, learner, resampling, measures, param_set, terminator = TerminatorNone$new(), bm_args = list())
+\preformatted{inst = TuningInstance$new(task, learner, resampling, measures, param_set, terminator, bm_args = list())
 }
 
 This defines the resampled performance of a learner on a task, a feasibility region
@@ -58,14 +61,20 @@ This is set in the beginning of \code{$tune()} of \link{Tuner}.
 
 \itemize{
 \item \code{eval_batch(dt)}\cr
-\code{\link[data.table:data.table]{data.table::data.table()}} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
+\code{\link[data.table:data.table]{data.table::data.table()}} -> named \code{list()}\cr
 Evaluates all hyperparameter configurations in \code{dt} through resampling, where each configuration is a row, and columns are scalar parameters.
-Returns a \code{data.table()} with corresponding rows, where each column is a named measure.
+Updates the internal \link{BenchmarkResult} \code{$bmr} by reference, and returns a named list with two elements:
+\itemize{
+\item \code{"batch_nr"}: Number of the new batch.
+This number is calculated in an auto-increment fashion and stored also stored inside the \link{BenchmarkResult} as column \code{batch_nr}
+\item \code{"hashes"}: hashes of the added \link{ResampleResult}s.
+}
+
 After a batch-evaluation the \link{Terminator} is checked, if it is positive, an exception of class \code{terminated_error} is raised.
 This function should be internally called by the tuner.
 \item \code{tuner_objective(x)}\cr
 \code{numeric()} -> \code{numeric(1)}\cr
-Evaluates a simple numeric vector of hyperparameter settings, and returns a scalar objective value,
+Evaluates a hyperparameter configuration of only numeric values, and returns a scalar objective value,
 where the return value is negated if the measure is maximized.
 Internally, \code{$eval_batch()} is called with a single row.
 This function serves as a objective function for tuners of numeric spaces - which should always be minimized.
@@ -75,24 +84,25 @@ Queries the \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} for the best \lin
 In case of ties, one of the tied values is selected randomly.
 \item \code{archive(unnest = TRUE)}
 \code{logical(1)} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
-Returns a table of contained resample results, similar to the one returned by \code{\link[mlr3:benchmark]{mlr3::benchmark()}}'s
-\code{$aggregate()} method. If \code{unnest} is \code{TRUE}, hyperparameter settings are stored in
-separate columns instead of inside a list column.
+Returns a table of contained resample results, similar to the one returned by \code{\link[mlr3:benchmark]{mlr3::benchmark()}}'s \code{$aggregate()} method.
+If \code{unnest} is \code{TRUE} (default), hyperparameter configuration settings are stored in separate columns instead of inside a list column.
 }
 }
 
 \examples{
-library(mlr3)
-library(paradox)
 library(data.table)
-# Object required to define the performance evaluator:
+library(paradox)
+library(mlr3)
+
+# Objects required to define the performance evaluator:
 task = tsk("iris")
 learner = lrn("classif.rpart")
 resampling = rsmp("holdout")
 measures = msr("classif.ce")
-param_set = ParamSet$new(params = list(
+param_set = ParamSet$new(list(
   ParamDbl$new("cp", lower = 0.001, upper = 0.1),
-  ParamInt$new("minsplit", lower = 1, upper = 10)))
+  ParamInt$new("minsplit", lower = 1, upper = 10))
+)
 
 terminator = term("evals", n_evals = 5)
 inst = TuningInstance$new(
@@ -122,6 +132,36 @@ tryCatch(
 )
 
 inst$archive()
+
+### Error handling
+# get a learner which breaks with 50\% probability
+# set encapsulation + fallback
+learner = lrn("classif.debug", error_train = 0.5)
+learner$encapsulate = c(train = "evaluate", predict = "evaluate")
+learner$fallback = lrn("classif.featureless")
+
+param_set = ParamSet$new(list(
+  ParamDbl$new("x", lower = 0, upper = 1)
+))
+
+inst = TuningInstance$new(
+  task = tsk("wine"),
+  learner = learner,
+  resampling = rsmp("cv", folds = 3),
+  measures = msr("classif.ce"),
+  param_set = param_set,
+  terminator = term("evals", n_evals = 5)
+)
+
+tryCatch(
+  inst$eval_batch(data.table(x = 1:5 / 5)),
+  terminated_error = function(e) message(as.character(e))
+)
+
+archive = inst$archive()
+
+# column errors: multiple errors recorded
+print(archive)
 }
 \concept{TuningInstance}
 \keyword{datasets}

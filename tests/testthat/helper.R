@@ -36,7 +36,8 @@ test_tuner = function(key, ..., n_dim = 1L, term_evals = 2L, real_evals = term_e
   inst = TuningInstance$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), ps, term)
   tuner = tnr(key, ...)
 
-  tuner$tune(inst)
+  expect_tuner(tuner$tune(inst))
+  # r = tuner$tune_result(inst)
   bmr = inst$bmr
 
   expect_data_table(bmr$data, nrows = real_evals)
@@ -58,7 +59,8 @@ test_tuner_dependencies = function(key, ..., n_evals = 2L) {
   inst = TuningInstance$new(tsk("boston_housing"), ll, rsmp("holdout"), msr("regr.mse"), ll$param_set, term)
   tuner = tnr(key, ...)
 
-  tuner$tune(inst)
+  expect_tuner(tuner$tune(inst))
+  # r = tuner$tune_result(inst)
   bmr = inst$bmr
 
   expect_data_table(bmr$data, nrows = n_evals)

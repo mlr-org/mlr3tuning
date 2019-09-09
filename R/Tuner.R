@@ -14,15 +14,12 @@
 #'
 #' @section Construction:
 #' ```
-#' tuner = Tuner$new(param_set = ParamSet$new(), param_vals = list(), param_classes = character(),
+#' tuner = Tuner$new(param_set = ParamSet$new(), param_classes = character(),
 #'   properties = character(), packages = character())
 #' ```
 #'
 #' * `param_set` :: [paradox::ParamSet]\cr
 #'   Set of control parameters for tuner.
-#'
-#' * `param_vals` :: named `list()`\cr
-#'   Settings of control parameters for tuner.
 #'
 #' * `param_classes` :: `character()`\cr
 #'   Supported parameter classes for learner hyperparameters that the tuner can optimize, subclasses of [paradox::Param].
@@ -44,6 +41,7 @@
 #' * `tune(instance)`\cr
 #'   ([TuningInstance]) -> `self`\cr
 #'   Performs the tuning on a [TuningInstance] until termination.
+#'
 #'
 #' @section Technical Details and Subclasses:
 #' A subclass is implemented in the following way:
@@ -82,7 +80,8 @@
 #'   terminator = terminator
 #' )
 #' tt = tnr("random_search") # swap this line to use a different Tuner
-#' res = tt$tune(instance) # returns best configuration and performance, and logs in 'instance'
+#' tt$tune(instance) # modifies the instance by reference
+#' tt$tune_result(instance) # returns best configuration and performance
 #' instance$archive() # allows access of data.table / benchmark result of full path of all evaluations
 Tuner = R6Class("Tuner",
   public = list(
@@ -91,9 +90,8 @@ Tuner = R6Class("Tuner",
     properties = NULL,
     packages = NULL,
 
-    initialize = function(param_set = ParamSet$new(), param_vals = list(), param_classes = character(), properties = character(), packages = character()) {
+    initialize = function(param_set = ParamSet$new(), param_classes = character(), properties = character(), packages = character()) {
       self$param_set = assert_param_set(param_set)
-      self$param_set$values = param_vals
       self$param_classes = param_classes
       self$properties = assert_subset(properties, mlr_reflections$tuner_properties)
       self$packages = assert_set(packages)
@@ -127,11 +125,22 @@ Tuner = R6Class("Tuner",
       # we then catch that here and stop
       tryCatch({
         private$tune_internal(instance)
-      }, terminated_error = function(cond) {
-      })
+      }, terminated_error = function(cond) {})
       lg$info("Finished tuning after %i evals", instance$n_evals)
       instance$selected_rr = private$select_best(instance)
+      invisible(self)
     }
+
+# * `tune_result(instance)`\cr
+#   [TuningInstance] -> named `list()`\cr
+#   Returns the "best" tuning result as named list:
+#     - `"performance"` (`numeric()`) with the best performance.
+#     - `"values"` (named `list()`) with the corresponding hyperparameters values.
+
+    # tune_result = function(instance) {
+      # rr = instance$best()
+      # list(performance = rr$aggregate(instance$measures), values = rr$learners[[1L]]$param_set$values)
+    # }
   ),
 
   private = list(

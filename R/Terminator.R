@@ -20,13 +20,10 @@
 #'
 #' @section Construction:
 #' ```
-#' t = Terminator$new(param_set = ParamSet$new(), param_vals = list())
+#' t = Terminator$new(param_set = ParamSet$new())
 #' ```
 #' * `param_set` :: [paradox::ParamSet]\cr
 #'   Set of control parameters for terminator.
-#'
-#' * `param_vals` :: named `list()`\cr
-#'   Settings of control parameters for terminator.
 #'
 #' @section Fields:
 #'
@@ -44,9 +41,8 @@ Terminator = R6Class("Terminator",
   public = list(
     param_set = NULL,
 
-    initialize = function(param_set = ParamSet$new(), param_vals = list()) {
+    initialize = function(param_set = ParamSet$new()) {
       self$param_set = assert_param_set(param_set)
-      self$param_set$values = param_vals
     },
 
     format = function() {

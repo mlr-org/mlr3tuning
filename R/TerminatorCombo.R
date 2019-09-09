@@ -40,10 +40,10 @@ TerminatorCombo = R6Class("TerminatorCombo",
 
     initialize = function(terminators = list(TerminatorNone$new()), any = TRUE) {
       self$terminators = assert_list(terminators, types = "Terminator", min.len = 1L)
-      super$initialize(
-        ParamSet$new(list(ParamLgl$new("any", default = TRUE, tags = "required"))),
-        list(any = assert_flag(any))
-      )
+      ps = ParamSet$new(list(ParamLgl$new("any", default = TRUE, tags = "required")))
+      ps$values = list(any = any)
+
+      super$initialize(param_set = ps)
     },
 
     is_terminated = function(inst) {
