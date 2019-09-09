@@ -58,6 +58,8 @@ test_that("AutoTuner / resample", {
   # })
 })
 
+# we had an issue that the AutoTuner did not return statically configured param in its result
+# see issue #51
 test_that("AutoTuner / param_set", {
   measures = msr("classif.ce")
   terminator = TerminatorEvals$new(3)
