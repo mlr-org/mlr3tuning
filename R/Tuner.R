@@ -127,7 +127,7 @@ Tuner = R6Class("Tuner",
         private$tune_internal(instance)
       }, terminated_error = function(cond) {})
       lg$info("Finished tuning after %i evals", instance$n_evals)
-      instance$selected_rr = private$select_best(instance)
+      private$assign_result(instance)
       invisible(self)
     }
 
@@ -149,8 +149,11 @@ Tuner = R6Class("Tuner",
       stop("abstract")
     },
 
-    select_best = function(instance) {
-      instance$best()
-     }
+    assign_result = function(instance) {
+      rr = instance$best()
+      instance$result_config = rr$learners[[1L]]$param_set$values
+      instance$result_perf = rr$aggregate(instance$measures)
+      return(self)
+    }
   )
 )

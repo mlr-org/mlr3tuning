@@ -19,8 +19,8 @@ test_that("failing learner", {
   instance = TuningInstance$new(task = tsk("iris"), learner = learner, resampling = rsmp("holdout"),
     measures = msr("classif.ce"), param_set = param_set, terminator = term("evals", n_evals = 10))
   tt$tune(instance)
-  expect_list(instance$selected_config, len = 2)
-  expect_named(instance$selected_config, c("error_train", "x"))
+  expect_list(instance$result_config, len = 2)
+  expect_named(instance$result_config, c("error_train", "x"))
 })
 
 

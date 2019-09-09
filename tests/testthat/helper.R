@@ -43,8 +43,8 @@ test_tuner = function(key, ..., n_dim = 1L, term_evals = 2L, real_evals = term_e
   expect_data_table(bmr$data, nrows = real_evals)
   expect_equal(inst$n_evals, real_evals)
 
-  sc = inst$selected_config
-  sp = inst$selected_perf
+  sc = inst$result_config
+  sp = inst$result_perf
   expect_list(sc, len = n_dim + 1)
   expect_numeric(sp, len = 1L)
   expect_named(sp, "classif.ce")
@@ -67,8 +67,8 @@ test_tuner_dependencies = function(key, ..., n_evals = 2L) {
   expect_equal(inst$n_evals, n_evals)
 
 
-  sc = inst$selected_config
-  sp = inst$selected_perf
+  sc = inst$result_config
+  sp = inst$result_perf
   expect_list(sc)
   expect_numeric(sp, len = 1L)
   expect_named(sp, "regr.mse")
