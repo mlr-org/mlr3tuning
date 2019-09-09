@@ -68,6 +68,8 @@
 #'   * `"batch_nr"`: Number of the new batch.
 #'     This number is calculated in an auto-increment fashion and stored also stored inside the [BenchmarkResult] as column `batch_nr`
 #'   * `"hashes"`: hashes of the added [ResampleResult]s.
+#'   * `"perf"`: A data.table of evaluated performances for `dt`. Has the same nr of rows as `dt`, and the same nr of columns as `measures`. Columns are named with measure-IDs.
+#'     A cell entry is the (aggregated) performance of that configuration for that measure.
 #'
 #'   After a batch-evaluation the [Terminator] is checked, if it is positive, an exception of class `terminated_error` is raised.
 #'   This function should be internally called by the tuner.
@@ -246,11 +248,11 @@ TuningInstance = R6Class("TuningInstance",
       # store evaluated results
       self$bmr$combine(bmr)
 
+      mids = ids(self$measures)
       if (lg$threshold >= 400) {
         # somewhat bad code, but
         # - i dont know how to reference the current level as "info" instead of "400" for the threshold in lgr
         # - i only want to aggregate when "info" is set and we want to remove the aggregation in eval_batch later
-        mids = map_chr(self$measures, "id")
         a = bmr$aggregate(measures = self$measures, ids = FALSE)[, mids, with = FALSE]
         lg$info("Result:")
         lg$info(capture.output(print(cbind(dt, a), class = FALSE, row.names = FALSE, print.keys = FALSE)))
@@ -260,15 +262,15 @@ TuningInstance = R6Class("TuningInstance",
       if (self$terminator$is_terminated(self)) {
         stop(terminated_error(self))
       }
-
-      return(list(batch_nr = batch_nr, hashes = bmr$hashes))
+      perf = bmr$aggregate(measures = self$measures, ids = FALSE)[, mids, with = FALSE]
+      return(list(batch_nr = batch_nr, hashes = bmr$hashes, perf = perf))
     },
 
     tuner_objective = function(x) {
       m = self$measures[[1L]]
       d = setnames(setDT(as.list(x)), self$param_set$ids())
-      hashes = self$eval_batch(d)$hashes
-      y = map_dbl(hashes, function(h) self$bmr$resample_result(hash = h)$aggregate(m))
+      z = self$eval_batch(d)
+      y = z$perf[[m$id]]
       if (m$minimize) y else -y
     },
 

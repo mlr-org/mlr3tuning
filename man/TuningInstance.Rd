@@ -79,6 +79,8 @@ Updates the internal \link{BenchmarkResult} \code{$bmr} by reference, and return
 \item \code{"batch_nr"}: Number of the new batch.
 This number is calculated in an auto-increment fashion and stored also stored inside the \link{BenchmarkResult} as column \code{batch_nr}
 \item \code{"hashes"}: hashes of the added \link{ResampleResult}s.
+\item \code{"perf"}: A data.table of evaluated performances for \code{dt}. Has the same nr of rows as \code{dt}, and the same nr of columns as \code{measures}. Columns are named with measure-IDs.
+A cell entry is the (aggregated) performance of that configuration for that measure.
 }
 
 After a batch-evaluation the \link{Terminator} is checked, if it is positive, an exception of class \code{terminated_error} is raised.
