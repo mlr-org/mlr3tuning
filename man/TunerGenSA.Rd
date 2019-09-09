@@ -10,18 +10,22 @@
 Subclass for generalized simulated annealing tuning with \code{\link[GenSA:GenSA]{GenSA::GenSA()}}.
 }
 \section{Construction}{
-\preformatted{TunerGenSA$new(...)
+\preformatted{TunerGenSA$new()
 tnr("gensa")
 }
 }
 
 \section{Parameters}{
 
+For the meaning of the control param see \code{\link[GenSA:GenSA]{GenSA::GenSA()}}.
+For consistency, we have removed all GenSA control parameters which refer to the stopping of the algorithm and
+where mlr3 terminators allow to obtain the same behavior.
 \itemize{
-\item \code{control}\cr
-Settings passed down do \code{\link[GenSA:GenSA]{GenSA::GenSA()}}
-Default settings are \code{smooth = FALSE}, \code{acceptance.param = -15},
-\code{simple.function = FALSE}, and \code{temperature = 250}.
+\item \code{smooth} :: \code{logical(1)}\cr
+\item \code{temperature} :: \code{numeric(1)}\cr
+\item \code{acceptance.param} :: \code{numeric(1)}\cr
+\item \code{verbose} :: \code{logical(1)}\cr
+\item \code{trace.mat} :: \code{logical(1)}\cr
 }
 }
 

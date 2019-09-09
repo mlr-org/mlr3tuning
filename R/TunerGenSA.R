@@ -10,15 +10,19 @@
 #'
 #' @section Construction:
 #' ```
-#' TunerGenSA$new(...)
+#' TunerGenSA$new()
 #' tnr("gensa")
 #' ```
-#'
 #' @section Parameters:
-#' * `control`\cr
-#'   Settings passed down do [GenSA::GenSA()]
-#'   Default settings are `smooth = FALSE`, `acceptance.param = -15`,
-#'   `simple.function = FALSE`, and `temperature = 250`.
+#' For the meaning of the control param see [GenSA::GenSA()].
+#' For consistency, we have removed all GenSA control parameters which refer to the stopping of the algorithm and
+#' where mlr3 terminators allow to obtain the same behavior.
+#'
+#' * `smooth` :: `logical(1)`\cr
+#' * `temperature` :: `numeric(1)`\cr
+#' * `acceptance.param` :: `numeric(1)`\cr
+#' * `verbose` :: `logical(1)`\cr
+#' * `trace.mat` :: `logical(1)`\cr
 #'
 #' @family Tuner
 #' @export
@@ -28,17 +32,12 @@ TunerGenSA = R6Class("TunerGenSA", inherit = Tuner,
   public = list(
     initialize = function() {
       ps = ParamSet$new(list(
-        ParamInt$new("maxit", lower = 1L),
-        ParamDbl$new("threshold.stop"),
-        ParamInt$new("nb.stop.improvement", lower = 1L),
         ParamLgl$new("smooth", default = TRUE),
-        ParamInt$new("max.call", default = 1e7),
-        ParamDbl$new("max.time"),
-        ParamDbl$new("temperature"),
-        ParamDbl$new("acceptance.param"),
-        ParamLgl$new("simple.function", default = FALSE)
+        ParamDbl$new("temperature", default = 5230),
+        ParamDbl$new("acceptance.param", default = -5),
+        ParamLgl$new("verbose", default = FALSE),
+        ParamLgl$new("trace.mat", default = TRUE)
       ))
-      ps$values = list(smooth = FALSE, acceptance.param = -15, simple.function = FALSE, temperature = 250)
       super$initialize(
         param_set = ps,
         param_classes = "ParamDbl",
@@ -49,8 +48,10 @@ TunerGenSA = R6Class("TunerGenSA", inherit = Tuner,
 
   private = list(
     tune_internal = function(instance) {
+      v = self$param_set$values
+      v$maxit = 1000000 # make sure GenSA does not stop
       GenSA::GenSA(fn = instance$tuner_objective, lower = instance$param_set$lower,
-        upper = instance$param_set$upper, control = self$param_set$values)
+        upper = instance$param_set$upper, control = v)
     }
   )
 )
