@@ -19,8 +19,8 @@ test_that("failing learner", {
   instance = TuningInstance$new(task = tsk("iris"), learner = learner, resampling = rsmp("holdout"),
     measures = msr("classif.ce"), param_set = param_set, terminator = term("evals", n_evals = 10))
   tt$tune(instance)
-  res = tt$tune_result(instance)
-  expect_list(res, len = 2)
+  expect_list(instance$result_config, len = 2)
+  expect_named(instance$result_config, c("error_train", "x"))
 })
 
 
@@ -35,8 +35,7 @@ test_that("predictions missing", {
 
   instance = TuningInstance$new(task = tsk("iris"), learner = learner, resampling = rsmp("holdout"),
     measures = msr("classif.ce"), param_set = param_set, terminator = term("evals", n_evals = 10))
-  tt$tune(instance)
-  expect_error(tt$tune_result(instance), "[Nn]o non-missing")
+  expect_error(tt$tune(instance), "[Nn]o non-missing")
 })
 
 
