@@ -37,15 +37,18 @@ test_tuner = function(key, ..., n_dim = 1L, term_evals = 2L, real_evals = term_e
   tuner = tnr(key, ...)
 
   expect_tuner(tuner$tune(inst))
-  r = tuner$tune_result(inst)
+  # r = tuner$tune_result(inst)
   bmr = inst$bmr
 
   expect_data_table(bmr$data, nrows = real_evals)
   expect_equal(inst$n_evals, real_evals)
-  expect_list(r)
-  expect_number(r$performance["classif.ce"], lower = 0, upper = 1)
-  expect_list(r$values, len = n_dim + 1)
-  list(tune_result = r, inst = inst)
+
+  sc = inst$result_config
+  sp = inst$result_perf
+  expect_list(sc, len = n_dim + 1)
+  expect_numeric(sp, len = 1L)
+  expect_named(sp, "classif.ce")
+  list(tuner = tuner, inst = inst)
 }
 
 # test an implemented subclass tuner by running a test with dependent params
@@ -57,14 +60,19 @@ test_tuner_dependencies = function(key, ..., n_evals = 2L) {
   tuner = tnr(key, ...)
 
   expect_tuner(tuner$tune(inst))
-  r = tuner$tune_result(inst)
+  # r = tuner$tune_result(inst)
   bmr = inst$bmr
 
   expect_data_table(bmr$data, nrows = n_evals)
   expect_equal(inst$n_evals, n_evals)
-  expect_number(r$performance["regr.mse"], lower = 0)
-  expect_list(r$values)
-  list(tune_result = r, inst = inst)
+
+
+  sc = inst$result_config
+  sp = inst$result_perf
+  expect_list(sc)
+  expect_numeric(sp, len = 1L)
+  expect_named(sp, "regr.mse")
+  list(tuner = tuner, inst = inst)
 }
 
 
