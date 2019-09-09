@@ -137,6 +137,14 @@ Tuner = R6Class("Tuner",
       }, terminated_error = function(cond) {})
       lg$info("Finished tuning after %i evals", instance$n_evals)
       private$assign_result(instance)
+      # do some asserts here, so that the tuner in custom assign_result code cannot do some bullshit
+      # assert that config is a list with names of params in set and static params from learner
+      assert_list(instance$result_config)
+      pids = union(instance$param_set$ids(), names(instance$learner$param_set$values))
+      assert_names(names(instance$result_config), permutation.of = pids)
+      # result_perf must be numeric and cover all measures
+      assert_numeric(instance$result_perf)
+      assert_names(names(instance$result_perf), permutation.of = ids(instance$measures))
       invisible(self)
     }
 

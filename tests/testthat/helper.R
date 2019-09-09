@@ -46,6 +46,10 @@ test_tuner = function(key, ..., n_dim = 1L, term_evals = 2L, real_evals = term_e
   sc = inst$result_config
   sp = inst$result_perf
   expect_list(sc, len = n_dim + 1)
+  if (n_dim == 1)
+    expect_named(sc, c("xval", "cp"))
+  else
+    expect_named(sc, c("xval", "cp", "minsplit"))
   expect_numeric(sp, len = 1L)
   expect_named(sp, "classif.ce")
   list(tuner = tuner, inst = inst)
@@ -70,6 +74,8 @@ test_tuner_dependencies = function(key, ..., n_evals = 2L) {
   sc = inst$result_config
   sp = inst$result_perf
   expect_list(sc)
+  expect_named(sc, c("p1", "p2"))
+  expect_numeric(sp, len = 1L)
   expect_numeric(sp, len = 1L)
   expect_named(sp, "regr.mse")
   list(tuner = tuner, inst = inst)
