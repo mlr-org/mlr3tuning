@@ -6,32 +6,30 @@
 \title{AutoTuner}
 \format{\link[R6:R6Class]{R6::R6Class} object inheriting from \link[mlr3:Learner]{mlr3::Learner}.}
 \description{
-The \code{AutoTuner} is a \link[mlr3:Learner]{mlr3::Learner} which tunes a subordinate learner via resampling.
-The best found configuration is then used to train a model on the complete training data.
+The \code{AutoTuner} is a \link[mlr3:Learner]{mlr3::Learner} which auto-tunes by first going tuning its hyperparameters
+on the training data, then setting the optimal configuration in the learner, then finally
+fitting the model on the complete training data.
 Note that this class allows to perform nested resampling by passing an \link{AutoTuner} object to \code{\link[mlr3:resample]{mlr3::resample()}}
 or \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
 }
 \section{Construction}{
-\preformatted{at = AutoTuner$new(learner, resampling, measures, param_set, terminator,
-  tuner, bm_args = list(), id = "autotuner")
+\preformatted{at = AutoTuner$new(learner, resampling, measures, tune_ps, terminator, tuner, bm_args = list())
 }
 \itemize{
 \item \code{learner} :: \link[mlr3:Learner]{mlr3::Learner} | \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}\cr
-Learner to tune.
+Learner to tune, see \link{TuningInstance}.
 \item \code{resampling} :: \link[mlr3:Resampling]{mlr3::Resampling} | \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}\cr
-Resampling strategy used to assess the performance of the learner on the (subset of) the
+Resampling strategy during tuning, see \link{TuningInstance}.
 \item \code{measures} :: list of \link[mlr3:Measure]{mlr3::Measure} | \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}\cr
-Performance measures. The first one is optimized.
-\item \code{param_set} :: \link[paradox:ParamSet]{paradox::ParamSet}\cr
-Hyperparameter search space.
+Performance measures. The first one is optimized, see \link{TuningInstance}.
+\item \code{tune_ps} :: \link[paradox:ParamSet]{paradox::ParamSet}\cr
+Hyperparameter search space, see \link{TuningInstance}.
 \item \code{terminator} :: \link{Terminator}\cr
-When to stop tuning.
+When to stop tuning, see \link{TuningInstance}.
 \item \code{tuner} :: \link{Tuner}\cr
 Tuning algorithm to run.
 \item \code{bm_args} :: \code{list()}\cr
 Further arguments for \code{\link[mlr3:benchmark]{mlr3::benchmark()}}, see \link{TuningInstance}.
-\item \code{id} :: \code{character(1)}\cr
-Name of the learner.
 }
 }
 
@@ -40,19 +38,13 @@ Name of the learner.
 All fields from \link{Learner}, and additionally:
 \itemize{
 \item \code{learner} :: \link[mlr3:Learner]{mlr3::Learner}\cr
-Subordinate learner. After \code{train()} of the \code{AutoTuner} has been executed,
-this learner stores the final model and is parametrized with the best found solution.
 \item \code{resampling} :: \link[mlr3:Resampling]{mlr3::Resampling}.
 \item \code{measures} :: list of \link[mlr3:Measure]{mlr3::Measure}.
 \item \code{tune_ps} :: \link[paradox:ParamSet]{paradox::ParamSet}\cr
-Hyperparameter search space.
 \item \code{terminator} :: \link{Terminator}.
 \item \code{tuner} :: \link{Tuner}.
 \item \code{store_bmr} :: \code{logical(1)}\cr
 If \code{TRUE}, stores the benchmark result as slot \code{$bmr}.
-\item \code{tune_path} :: \code{\link[data.table:data.table]{data.table::data.table()}}\cr
-Only stored if \code{store_bmr} has been set to \code{TRUE}.
-This is the archive of the stored \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} with hyperparameters as separate columns.
 }
 }
 
