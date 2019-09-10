@@ -19,3 +19,31 @@ get_by_id = function(xs, id) {
   }
   return(NULL)
 }
+
+
+
+# calculate pareto front of an all-numeric data frame
+# also works for >2D pareto front
+pareto_front = function(data_frame, maximize = TRUE) {
+
+    assert_data_frame(data_frame, types = "numeric")
+    assert_logical(maximize)
+
+    cummaxmin = if (maximize) cummax else cummin
+    
+    # prepare each column as comma seperated argument
+    arg = paste0("data_frame[[", 1:ncol(data_frame), "]]", collapse = ", ")
+    # sort the whole data.frame and go stepwise through the columns whenever
+    # entries are tied
+    code = paste0("order(", arg, ", decreasing = ", maximize, ")")
+    sorted = eval(parse(text = code))
+    sorted_data = data_frame[sorted, ]
+    last_col = sorted_data[[length(sorted_data)]]
+    # remove all entries that violate sort-inverted monotony in their last col
+    front = sorted_data[!duplicated(cummaxmin(last_col)), ]
+
+    return(front)
+}
+
+
+ 
