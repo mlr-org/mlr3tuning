@@ -46,12 +46,16 @@
 #'   ([TuningInstance]) -> `self`\cr
 #'   Performs the tuning on a [TuningInstance] until termination.
 #'
+#' @section Private Methods:
+#' * `tune_internal(instance)` -> `self`\cr
+#'   Abstract base method. Implement to specify tuning of your subclass.
+#'   See technical details sections.
 #'
 #' @section Technical Details and Subclasses:
 #' A subclass is implemented in the following way:
 #'  * Inherit from Tuner
 #'  * Specify the private abstract method `$tune_internal()` and use it to call into your optimizer.
-#'  * When you set up an objective function, you will call `instance$eval_batch()` to evaluate design points.
+#'  * You need to call `instance$eval_batch()` to evaluate design points.
 #'  * The batch evaluation is requested at the [TuningInstance] object `instance`,
 #'    so each batch is possibly executed in parallel via [mlr3::benchmark()],
 #'    and all evaluations are stored inside of `instance$bmr`.
@@ -147,17 +151,6 @@ Tuner = R6Class("Tuner",
       assert_names(names(instance$result_perf), permutation.of = ids(instance$measures))
       invisible(self)
     }
-
-# * `tune_result(instance)`\cr
-#   [TuningInstance] -> named `list()`\cr
-#   Returns the "best" tuning result as named list:
-#     - `"performance"` (`numeric()`) with the best performance.
-#     - `"values"` (named `list()`) with the corresponding hyperparameters values.
-
-    # tune_result = function(instance) {
-      # rr = instance$best()
-      # list(performance = rr$aggregate(instance$measures), values = rr$learners[[1L]]$param_set$values)
-    # }
   ),
 
   private = list(

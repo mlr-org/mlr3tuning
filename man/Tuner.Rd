@@ -53,13 +53,22 @@ Performs the tuning on a \link{TuningInstance} until termination.
 }
 }
 
+\section{Private Methods}{
+
+\itemize{
+\item \code{tune_internal(instance)} -> \code{self}\cr
+Abstract base method. Implement to specify tuning of your subclass.
+See technical details sections.
+}
+}
+
 \section{Technical Details and Subclasses}{
 
 A subclass is implemented in the following way:
 \itemize{
 \item Inherit from Tuner
 \item Specify the private abstract method \code{$tune_internal()} and use it to call into your optimizer.
-\item When you set up an objective function, you will call \code{instance$eval_batch()} to evaluate design points.
+\item You need to call \code{instance$eval_batch()} to evaluate design points.
 \item The batch evaluation is requested at the \link{TuningInstance} object \code{instance},
 so each batch is possibly executed in parallel via \code{\link[mlr3:benchmark]{mlr3::benchmark()}},
 and all evaluations are stored inside of \code{instance$bmr}.
