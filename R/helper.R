@@ -21,28 +21,37 @@ get_by_id = function(xs, id) {
 }
 
 
-# calculate pareto front of an all-numeric data frame (or matrix)
-# also works for >2D pareto front
-pareto_front = function(data_frame, maximize = TRUE) {
+#' @description calculate pareto front of an all-numeric data frame (or matrix)
+#'   also works for >2D pareto front
+#' @example data_frame = data.frame(c(1, 0.25, 0.75, 0), c(0, 0.25, 0.75, 1))
+#'   pareto_front(data_frame)
+#'   data_frame = data.frame(c(1,1,0,1), c(1,1,0,0), c(1,0,1,0), c(1,1,1,1))
+#'   pareto_front(data_frame, maximize = FALSE)
+pareto_front = function(data_frame, maximize = TRUE, return_data = TRUE) {
 
     assert_data_frame(data_frame, types = "numeric")
     assert_logical(maximize)
+    assert_logical(return_data)
 
-    cummaxmin = if (maximize) cummax else cummin
+    # function for cummulative min or max of vector
+    cummaxmin = function(x, m) if (m) cummax(x) else cummin(x)
     
     # prepare each column as comma seperated argument
     arg = paste0("data_frame[[", 1:ncol(data_frame), "]]", collapse = ", ")
     # sort the whole data.frame and go stepwise through the columns whenever
     # entries are tied
-    code = paste0("order(", arg, ", decreasing = ", maximize, ")")
+    code   = paste0("order(", arg, ", decreasing = ", deparse(maximize), ")")
     sorted = eval(parse(text = code))
     sorted_data = data_frame[sorted, ]
-    last_col = sorted_data[[length(sorted_data)]]
-    # remove all entries that violate sort-inverted monotony in their last col
-    front = sorted_data[!duplicated(cummaxmin(last_col)), ]
+    # flag non-violations of strict monotony in each column
+    bool_matrix = mapply(function(x, m) !duplicated(cummaxmin(x, m)), sorted_data, maximize)
+    # check for any flag in each row
+    front = apply(bool_matrix, 1, any)
+
+    # select data as return
+    if (return_data) front = sorted_data[front, ]
 
     return(front)
 }
-
 
  

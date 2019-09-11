@@ -283,25 +283,36 @@ TuningInstance = R6Class("TuningInstance",
       return(dt)
     },
 
-    best = function(measure = NULL) {
-      if (is.null(measure)) {
-        measure = self$measures[[1L]]
+    best = function(measures = NULL) {
+
+      measure_ids = map_chr(measures, "id")
+
+      if (is.null(measures)) {
+        measures = self$measures
       } else {
-        measure = as_measure(measure, task_type = self$task$task_type)
+        measures = lapply(measures, as_measure, task_type = self$task$task_type)
         # check that we are only using contained measures
-        assert_choice(measure$id, map_chr(self$measures, "id"))
+        #assert_choice(measure_ids, map_chr(self$measures, "id"))
       }
-      assert_measure(measure, task = self$task, learner = self$learner)
-      if (is.na(measure$minimize))
-        stopf("Measure '%s' has minimize = NA and hence cannot be tuned", measure$id)
+      #assert_measure(measure, task = self$task, learner = self$learner)
+      #if (is.na(measure$minimize))
+      #  stopf("Measure '%s' has minimize = NA and hence cannot be tuned", measure$id)
 
-      tab = self$bmr$aggregate(measure, ids = FALSE)
-      y = tab[[measure$id]]
-      if (allMissing(y))
-        stopf("No non-missing performance value stored")
+      tab = self$bmr$aggregate(measures, ids = FALSE)
+      y = tab[measure_ids]
+      #if (allMissing(y))
+      #  stopf("No non-missing performance value stored")
 
-      best = if (measure$minimize) which_min else which_max
-      tab$resample_result[[best(y, na_rm = TRUE)]]
+      if (length(measures) == 1) {
+        best = if (measures$minimize) which_min else which_max
+        is_best = best(y, na_rm = TRUE)
+
+      } else {
+        minimize = map_chr(measures, "minimize")
+        is_best = pareto_front(y, !minimize, return_data = FALSE)
+
+      }
+      result = tab$resample_result[[is_best]]
     }
   ),
 
