@@ -34,7 +34,9 @@ TerminatorPerfReached = R6Class("TerminatorPerfReached",
         ParamUty$new("measure", tags = "required"),
         ParamDbl$new("level", tags = "required")
       ))
-      ps$values = list(measure = assert_string(measure), level = assert_number(level))
+      assert_choice(measure, mlr_measures$keys())
+      assert_number(level)
+      ps$values = list(measure = measure, level = level)
 
       super$initialize(param_set = ps)
     },

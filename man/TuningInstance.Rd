@@ -59,8 +59,10 @@ Time the tuning / evaluations were started.
 This is set in the beginning of \code{$tune()} of \link{Tuner}.
 \item \code{result_config} :: named \link{list}.
 The tuner writes the estimated optimal configuration of the learner here.
-Must a list of settings which include all parameters from \code{param_set}
+Must be a list of settings which include all parameters from \code{param_set}
 and all other static param settings with which the learner was run.
+The configuration must be a valid and pass the \code{check} / \code{assert} function
+of the \link[paradox:ParamSet]{paradox::ParamSet}.
 \item \code{result_perf} :: named \link{numeric}.
 The tuner writes the estimated performance of \code{result_config} here.
 Must be a vector of performance measures, named with performance IDs,

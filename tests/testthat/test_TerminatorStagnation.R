@@ -30,7 +30,11 @@ test_that("TerminatorStagnation", {
   expect_data_table(tab, nrows = 20)
 
   # last improvement in step 10
-  design = data.table(cp = c(seq(from = 0.5, to = 0.3, length.out = 10), rep(0.3, 10)))
+
+  # make sure cp values define different exps, but the scores are the same (so we stagnate)
+  m = msr("dummy.cp", minimize = TRUE, fun = function(x) round(x, digits = 2))
+  design = data.table(cp = c(seq(from = 0.5, to = 0.3, length.out = 10),
+    seq(from = 0.2999, to = 0.299, length.out = 10)))
   inst = TEST_MAKE_INST1(measures = m, term_evals = 100)
   for (i in seq_row(design)) {
     lgr::without_logging(inst$eval_batch(design[i]))

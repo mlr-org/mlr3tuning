@@ -74,10 +74,10 @@ test_tuner_dependencies = function(key, ..., n_evals = 2L) {
   sc = inst$result_config
   sp = inst$result_perf
   expect_list(sc)
-  expect_named(sc, c("p1", "p2"))
+  expect_names(names(sc), subset.of = c("p1", "p2"))
   expect_numeric(sp, len = 1L)
   expect_numeric(sp, len = 1L)
-  expect_named(sp, "regr.mse")
+  expect_names(names(sp), identical.to = "regr.mse")
   list(tuner = tuner, inst = inst)
 }
 
@@ -113,7 +113,11 @@ TEST_MAKE_INST1 = function(values = NULL, folds = 2L, measures = msr("classif.ce
 MeasureDummyCP = R6Class("MeasureDummyCP",
   inherit = MeasureClassif,
   public = list(
-    initialize = function() {
+    # allow a fun to transform cp to score, this allows further shenenigans
+    # to disentangle cp value and score
+    fun = NULL,
+
+    initialize = function(fun = identity) {
       super$initialize(
         id = "dummy.cp",
         range = c(0, Inf),
@@ -121,10 +125,11 @@ MeasureDummyCP = R6Class("MeasureDummyCP",
         packages = "Metrics",
         properties = "requires_learner"
       )
+      self$fun = fun # allow a fun to transform cp to score
     },
 
     score_internal = function(prediction, learner, ...) {
-      learner$param_set$values$cp
+      self$fun(learner$param_set$values$cp)
     }
   )
 )

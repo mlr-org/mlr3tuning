@@ -29,6 +29,8 @@ TerminatorStagnation = R6Class("TerminatorStagnation",
   inherit = Terminator,
   public = list(
     initialize = function(iters, threshold = 0) {
+      assert_count(iters)
+      assert_number(threshold, lower = 0)
       ps = ParamSet$new(list(
         ParamInt$new("iters", lower = 1L, tags = "required"),
         ParamDbl$new("threshold", lower = 0, default = 0, tags = "required")

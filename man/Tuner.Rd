@@ -18,8 +18,7 @@ of the \link[=TuningInstance]{Tuninginstance} where the best selected hyperparam
 vector are then stored for result access.
 }
 \section{Construction}{
-\preformatted{tuner = Tuner$new(param_set = ParamSet$new(), param_classes = character(),
-  properties = character(), packages = character())
+\preformatted{tuner = Tuner$new(param_set, param_classes, properties, packages = character())
 }
 \itemize{
 \item \code{param_set} :: \link[paradox:ParamSet]{paradox::ParamSet}\cr

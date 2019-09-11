@@ -53,8 +53,10 @@
 #'   This is set in the beginning of `$tune()` of [Tuner].
 #' * `result_config` :: named [list].
 #'    The tuner writes the estimated optimal configuration of the learner here.
-#'    Must a list of settings which include all parameters from `param_set`
+#'    Must be a list of settings which include all parameters from `param_set`
 #'    and all other static param settings with which the learner was run.
+#'    The configuration must be a valid and pass the `check` / `assert` function
+#'    of the [paradox::ParamSet].
 #' * `result_perf` :: named [numeric].
 #'    The tuner writes the estimated performance of `result_config` here.
 #'    Must be a vector of performance measures, named with performance IDs,
@@ -190,6 +192,7 @@ TuningInstance = R6Class("TuningInstance",
       self$bm_args = assert_list(bm_args, names = "unique")
       self$bmr = BenchmarkResult$new(data.table())
       self$bmr$rr_data[, ("batch_nr") := integer()]
+      self$resampling$instantiate(self$task)
     },
 
     format = function() {
@@ -237,7 +240,7 @@ TuningInstance = R6Class("TuningInstance",
       })
 
       # eval via benchmark and check terminator
-      d = benchmark_grid(tasks = list(self$task), learners = lrns, resamplings = list(self$resampling))
+      d = data.table(task = list(self$task), learner = lrns, resampling = list(self$resampling))
       bmr = invoke(benchmark, design = d, .args = self$bm_args)
 
       # add column "batch_nr"
@@ -267,6 +270,8 @@ TuningInstance = R6Class("TuningInstance",
     },
 
     tuner_objective = function(x) {
+      assert_numeric(x, len = self$param_set$length)
+      self$param_set$assert(as.list(x))
       m = self$measures[[1L]]
       d = setnames(setDT(as.list(x)), self$param_set$ids())
       z = self$eval_batch(d)
