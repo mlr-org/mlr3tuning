@@ -21,8 +21,7 @@ get_by_id = function(xs, id) {
 }
 
 
-
-# calculate pareto front of an all-numeric data frame
+# calculate pareto front of an all-numeric data frame (or matrix)
 # also works for >2D pareto front
 pareto_front = function(data_frame, maximize = TRUE) {
 
