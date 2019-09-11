@@ -15,11 +15,8 @@
 #' ```
 #'
 #' @section Parameters:
-#' * `measure` :: `character(1)`\cr
-#'   Name of a measure in the [TuningInstance], default is "" - which is stupid.
-#'
 #' * `level` :: `numeric(1)`\cr
-#'   Performance level that needs to be reached, default is 0 - which is stupid.
+#'   Performance level that needs to be reached, default is 0.
 #'   Terminates if the performance exceeds (respective measure has to be maximized) or
 #'   falls below (respective measure has to be minimized).
 #'
@@ -30,26 +27,20 @@ TerminatorPerfReached = R6Class("TerminatorPerfReached",
   public = list(
     initialize = function() {
       ps = ParamSet$new(list(
-        ParamUty$new("measure", default = "", tags = "required"),
         ParamDbl$new("level", default = 0, tags = "required")
       ))
-      ps$values = list(measure = "", level = 0)
-
+      ps$values = list(level = 0)
       super$initialize(param_set = ps)
     },
 
     is_terminated = function(inst) {
       pv = self$param_set$values
-      m = get_by_id(inst$measures, pv$measure)
-      if (is.null(m)) {
-        stopf("Measure '%s' not being measured by Tuner / TuningInstance!", pv$measure)
-      }
+      m = inst$measures[[1L]]
       aggr = inst$archive(unnest = FALSE)
-
       if (m$minimize) {
-        any(aggr[[pv$measure]] <= pv$level)
+        any(aggr[[m$id]] <= pv$level)
       } else {
-        any(aggr[[pv$measure]] >= pv$level)
+        any(aggr[[m$id]] >= pv$level)
       }
     }
   )

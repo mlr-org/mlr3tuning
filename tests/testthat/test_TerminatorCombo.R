@@ -2,7 +2,7 @@ context("TerminatorCombo")
 
 test_that("API", {
   t1 = term("evals", n_evals = 2)
-  t2 = term("perf_reached", measure = "dummy.cp", level = 0)
+  t2 = term("perf_reached", level = 0)
 
   tt = term("combo", terminators = list(t1, t2), any = TRUE)
   inst = TEST_MAKE_INST1(measures = msr("dummy.cp"))

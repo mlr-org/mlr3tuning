@@ -18,10 +18,8 @@ term("perf_reached")
 \section{Parameters}{
 
 \itemize{
-\item \code{measure} :: \code{character(1)}\cr
-Name of a measure in the \link{TuningInstance}, default is "" - which is stupid.
 \item \code{level} :: \code{numeric(1)}\cr
-Performance level that needs to be reached, default is 0 - which is stupid.
+Performance level that needs to be reached, default is 0.
 Terminates if the performance exceeds (respective measure has to be maximized) or
 falls below (respective measure has to be minimized).
 }
