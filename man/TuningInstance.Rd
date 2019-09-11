@@ -9,7 +9,7 @@
 Specifies a general tuning scenario, including performance evaluator and archive for Tuners to
 act upon. This class encodes the black box objective function,
 that a \link{Tuner} has to optimize. It allows the basic operations of querying the objective
-at design points (see \code{$eval_batch()}), storing the evaluated point in an internal archive
+at design points (see \code{$eval_batch()}), storing the evaluations in an internal archive
 and querying the archive (see \code{$archive()}).
 
 Evaluations of hyperparameter configurations are performed in batches by calling \code{\link[mlr3:benchmark]{mlr3::benchmark()}} internally.
@@ -32,6 +32,8 @@ for the parameters the tuner is supposed to optimize, and a termination criterio
 \item \code{task} :: \link[mlr3:Task]{mlr3::Task} | \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}.
 \item \code{learner} :: \link[mlr3:Learner]{mlr3::Learner} | \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}.
 \item \code{resampling} :: \link[mlr3:Resampling]{mlr3::Resampling} | \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}.
+Note that the resampling is instantiated at the beginning so that all configurations
+are evaluated on the same data splits.
 \item \code{measures} :: list of \link[mlr3:Measure]{mlr3::Measure} | \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}.
 \item \code{param_set} :: \link[paradox:ParamSet]{paradox::ParamSet}\cr
 Hyperparameter search space.

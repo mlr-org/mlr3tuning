@@ -7,7 +7,7 @@
 #' Specifies a general tuning scenario, including performance evaluator and archive for Tuners to
 #' act upon. This class encodes the black box objective function,
 #' that a [Tuner] has to optimize. It allows the basic operations of querying the objective
-#' at design points (see `$eval_batch()`), storing the evaluated point in an internal archive
+#' at design points (see `$eval_batch()`), storing the evaluations in an internal archive
 #' and querying the archive (see `$archive()`).
 #'
 #' Evaluations of hyperparameter configurations are performed in batches by calling [mlr3::benchmark()] internally.
@@ -30,6 +30,8 @@
 #' * `task` :: [mlr3::Task] | [mlr3::mlr_sugar].
 #' * `learner` :: [mlr3::Learner] | [mlr3::mlr_sugar].
 #' * `resampling` :: [mlr3::Resampling] | [mlr3::mlr_sugar].
+#'   Note that the resampling is instantiated at the beginning so that all configurations
+#'   are evaluated on the same data splits.
 #' * `measures` :: list of [mlr3::Measure] | [mlr3::mlr_sugar].
 #' * `param_set` :: [paradox::ParamSet]\cr
 #'   Hyperparameter search space.
