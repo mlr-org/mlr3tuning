@@ -11,16 +11,17 @@ Class to terminate the tuning after the performance stagnates, i.e. does not imp
 \code{threshold} over the last \code{iters} iterations.
 }
 \section{Construction}{
-\preformatted{t = TerminatorStagnation$new(iters, tol = 0)
+\preformatted{t = TerminatorStagnation$new()
 }
+}
+
+\section{Parameters}{
+
 \itemize{
 \item \code{iters} :: \code{integer(1)}\cr
-Number of iterations to evaluate the performance improvement on.
-Stored in the parameter set \code{$param_set}.
+Number of iterations to evaluate the performance improvement on, default is 10.
 \item \code{threshold} :: \code{numeric(1)}\cr
-If the improvement is less than \code{threshold}, tuning is stopped.
-Default is \code{0}.
-Stored in the parameter set \code{$param_set}.
+If the improvement is less than \code{threshold}, tuning is stopped, default is \code{0}.
 }
 }
 

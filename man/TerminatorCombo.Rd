@@ -10,24 +10,24 @@
 This class takes multiple \link{Terminator}s and terminates as soon as one or all of the included terminators are positive.
 }
 \section{Construction}{
-\preformatted{TerminatorCombo$new(terminators = list(TerminatorNone$new()), any = TRUE)
+\preformatted{TerminatorCombo$new(terminators = list(TerminatorNone$new()))
 term("combo")
 }
 \itemize{
 \item \code{terminators} :: \code{list()}\cr
 List of objects of class \link{Terminator}.
+}
+}
+
+\section{Parameters}{
+
+\itemize{
 \item \code{any} :: \code{logical(1)}\cr
-Terminate iff any included terminator is positive? (not all).
-Stored in the parameter set \code{$param_set}.
+Terminate iff any included terminator is positive? (not all), default is `TRUE.
 }
 }
 
 \examples{
-TerminatorCombo$new(list(
-  TerminatorModelTime$new(),
-  TerminatorEvals$new()
-))
-
 term("combo",
   list(term("model_time", secs = 60), term("evals", n_evals = 10)),
   any = FALSE

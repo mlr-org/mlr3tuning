@@ -11,18 +11,18 @@
 #'
 #' @section Construction:
 #' ```
-#' TerminatorClockTime$new(secs = NULL, stop_time = NULL)
+#' TerminatorClockTime$new()
 #' term("clock_time")
 #' ```
+#'
+#' @section Parameters:
 #' * `secs` :: `numeric(1)`\cr
-#'   Maximum allowed time, in seconds.
+#'   Maximum allowed time, in seconds, default is 100.
 #'   Mutually exclusive with argument `stop_time`.
-#'   Stored in the parameter set `$param_set`.
 #'
 #' * `stop_time` :: `POSIXct(1)`\cr
 #'   Terminator stops after this point in time.
 #'   Mutually exclusive with argument `secs`.
-#'   Stored in the parameter set `$param_set`.
 #'
 #' @family Terminator
 #' @export
@@ -34,23 +34,19 @@
 TerminatorClockTime = R6Class("TerminatorClockTime",
   inherit = Terminator,
   public = list(
-    initialize = function(secs = NULL, stop_time = NULL) {
-      assert_number(secs, lower = 0, null.ok = TRUE)
-      assert_posixct(stop_time, len = 1L, any.missing = FALSE, null.ok = TRUE)
-
+    initialize = function() {
       ps = ParamSet$new(list(
-        ParamDbl$new("secs", lower = 0),
+        ParamDbl$new("secs", lower = 0, default = 100),
         ParamUty$new("stop_time"))
       )
-      ps$values = discard(list(secs = secs, stop_time = stop_time), is.null)
-
       super$initialize(param_set = ps)
     },
 
     is_terminated = function(inst) {
       pv = self$param_set$values
+      #FIXME: actually this should be done in the assert of the paramset?
       if (!xor(is.null(pv$secs), is.null(pv$stop_time)))
-        stopf("Exactly one parameter of 'secs' and 'stop_time' has to be set!")
+        stopf("Exactly one parameter of 'secs' and 'stop_time' can be set!")
 
       if (!is.null(pv$secs)) {
         d = difftime(Sys.time(), inst$start_time, units = "secs")

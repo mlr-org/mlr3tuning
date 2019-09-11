@@ -2,12 +2,12 @@ context("AutoTuner")
 
 test_that("AutoTuner / train+predict", {
   measures = map(c("classif.ce", "time_train", "time_both"), msr)
-  terminator = TerminatorEvals$new(3)
+  te = term("evals", n_evals = 3)
   task = tsk("iris")
 
   ps = TEST_MAKE_PS1()
   tuner = TunerRandomSearch$new()
-  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), measures, ps, terminator, tuner = tuner)
+  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), measures, ps, te, tuner = tuner)
   at$store_bmr = TRUE
 
   at_clone = at$clone(deep = TRUE)
@@ -38,10 +38,10 @@ test_that("AutoTuner / resample", {
 
   param_set = TEST_MAKE_PS1()
 
-  terminator = TerminatorEvals$new(inner_evals)
+  te = term("evals", n_evals = inner_evals)
 
   tuner = TunerRandomSearch$new()
-  at = AutoTuner$new(lrn("classif.rpart"), r_inner, measures, param_set, terminator, tuner)
+  at = AutoTuner$new(lrn("classif.rpart"), r_inner, measures, param_set, te, tuner)
 
   expect_null(at$model$bmr)
 
@@ -62,11 +62,11 @@ test_that("AutoTuner / resample", {
 # see issue #51
 test_that("AutoTuner / param_set", {
   measures = msr("classif.ce")
-  terminator = TerminatorEvals$new(3)
+  te = term("evals", n_evals = 3)
   task = tsk("iris")
   ps = TEST_MAKE_PS1()
   tuner = TunerRandomSearch$new()
-  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), measures, ps, terminator, tuner)
+  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), measures, ps, te, tuner)
   at$param_set$values$maxdepth = 1
   at$param_set$values$cp = 1
   expect_equal(at$param_set$values[names(at$learner$param_set$values)], at$learner$param_set$values)

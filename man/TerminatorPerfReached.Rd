@@ -10,18 +10,20 @@
 Class to terminate the tuning after a performance level has been hit.
 }
 \section{Construction}{
-\preformatted{TerminatorPerfReached$new(level)
+\preformatted{TerminatorPerfReached$new()
 term("perf_reached")
 }
+}
+
+\section{Parameters}{
+
 \itemize{
 \item \code{measure} :: \code{character(1)}\cr
-Name of a measure in the \link{TuningInstance}.
-Stored in the parameter set \code{$param_set}.
+Name of a measure in the \link{TuningInstance}, default is "" - which is stupid.
 \item \code{level} :: \code{numeric(1)}\cr
-Performance level that needs to be reached.
+Performance level that needs to be reached, default is 0 - which is stupid.
 Terminates if the performance exceeds (respective measure has to be maximized) or
 falls below (respective measure has to be minimized).
-Stored in the parameter set \code{$param_set}.
 }
 }
 

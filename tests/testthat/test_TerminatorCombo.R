@@ -1,10 +1,10 @@
 context("TerminatorCombo")
 
 test_that("API", {
-  t1 = TerminatorEvals$new(2)
-  t2 = TerminatorPerfReached$new("dummy.cp", 0)
+  t1 = term("evals", n_evals = 2)
+  t2 = term("perf_reached", measure = "dummy.cp", level = 0)
 
-  tt = TerminatorCombo$new(list(t1, t2), any = TRUE)
+  tt = term("combo", terminators = list(t1, t2), any = TRUE)
   inst = TEST_MAKE_INST1(measures = msr("dummy.cp"))
   inst$eval_batch(data.table(cp = 0.2))
   expect_false(t1$is_terminated(inst))
@@ -16,7 +16,7 @@ test_that("API", {
   expect_true(tt$is_terminated(inst))
 
 
-  tt = TerminatorCombo$new(list(t1, t2), any = FALSE)
+  tt = term("combo", terminators = list(t1, t2), any = FALSE)
   inst = TEST_MAKE_INST1(measures = msr("dummy.cp"))
   inst$eval_batch(data.table(cp = 0.2))
   expect_false(t1$is_terminated(inst))

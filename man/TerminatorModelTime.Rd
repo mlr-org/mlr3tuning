@@ -12,7 +12,7 @@ The terminator measures the used time to train and predict all models contained
 in the archive.
 }
 \section{Construction}{
-\preformatted{TerminatorModelTime$new(secs)
+\preformatted{TerminatorModelTime$new()
 term("model_time")
 }
 }
@@ -21,9 +21,7 @@ term("model_time")
 
 \itemize{
 \item \code{secs} :: \code{numeric(1)}\cr
-Maximum allowed time, in seconds.
-Default is 0 seconds.
-Stored in the parameter set \code{$param_set}.
+Maximum allowed time, in seconds, default is 0.
 }
 }
 

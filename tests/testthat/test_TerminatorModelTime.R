@@ -1,7 +1,7 @@
 context("TerminatorModelTime")
 
 test_that("API", {
-  te = TerminatorModelTime$new(2)
+  te = term("model_time", secs = 2)
   inst = TEST_MAKE_INST1()
   inst$eval_batch(data.table(cp = 1))
   inst$start_time = Sys.time() # as in "Tuner$tune()"

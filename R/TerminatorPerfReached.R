@@ -10,33 +10,30 @@
 #'
 #' @section Construction:
 #' ```
-#' TerminatorPerfReached$new(level)
+#' TerminatorPerfReached$new()
 #' term("perf_reached")
 #' ```
 #'
+#' @section Parameters:
 #' * `measure` :: `character(1)`\cr
-#'   Name of a measure in the [TuningInstance].
-#'   Stored in the parameter set `$param_set`.
+#'   Name of a measure in the [TuningInstance], default is "" - which is stupid.
 #'
 #' * `level` :: `numeric(1)`\cr
-#'   Performance level that needs to be reached.
+#'   Performance level that needs to be reached, default is 0 - which is stupid.
 #'   Terminates if the performance exceeds (respective measure has to be maximized) or
 #'   falls below (respective measure has to be minimized).
-#'   Stored in the parameter set `$param_set`.
 #'
 #' @family Terminator
 #' @export
 TerminatorPerfReached = R6Class("TerminatorPerfReached",
   inherit = Terminator,
   public = list(
-    initialize = function(measure, level) {
+    initialize = function() {
       ps = ParamSet$new(list(
-        ParamUty$new("measure", tags = "required"),
-        ParamDbl$new("level", tags = "required")
+        ParamUty$new("measure", default = "", tags = "required"),
+        ParamDbl$new("level", default = 0, tags = "required")
       ))
-      assert_choice(measure, mlr_measures$keys())
-      assert_number(level)
-      ps$values = list(measure = measure, level = level)
+      ps$values = list(measure = "", level = 0)
 
       super$initialize(param_set = ps)
     },

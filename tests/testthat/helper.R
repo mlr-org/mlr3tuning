@@ -32,7 +32,7 @@ test_tuner = function(key, ..., n_dim = 1L, term_evals = 2L, real_evals = term_e
       ParamInt$new("minsplit", lower = 1, upper = 9)
     ))
   }
-  term = TerminatorEvals$new(term_evals)
+  term = term("evals", n_evals = term_evals)
   inst = TuningInstance$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), ps, term)
   tuner = tnr(key, ...)
 
