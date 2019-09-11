@@ -45,11 +45,11 @@ test_tuner = function(key, ..., n_dim = 1L, term_evals = 2L, real_evals = term_e
 
   sc = inst$result_config
   sp = inst$result_perf
-  expect_list(sc, len = n_dim + 1)
+  expect_list(sc, len = n_dim)
   if (n_dim == 1)
-    expect_named(sc, c("xval", "cp"))
+    expect_named(sc, c("cp"))
   else
-    expect_named(sc, c("xval", "cp", "minsplit"))
+    expect_named(sc, c("cp", "minsplit"))
   expect_numeric(sp, len = 1L)
   expect_named(sp, "classif.ce")
   list(tuner = tuner, inst = inst)

@@ -181,8 +181,6 @@ TuningInstance = R6Class("TuningInstance",
     bm_args = NULL,
     bmr = NULL,
     start_time = NULL,
-    result_config = NULL,
-    result_perf = NULL,
 
     initialize = function(task, learner, resampling, measures, param_set, terminator, bm_args = list()) {
       self$task = assert_task(as_task(task, clone = TRUE))
@@ -202,7 +200,6 @@ TuningInstance = R6Class("TuningInstance",
     },
 
     print = function() {
-
       catf(self$format())
       catf(str_indent("* Task:", format(self$task)))
       catf(str_indent("* Learner:", format(self$learner)))
@@ -313,6 +310,34 @@ TuningInstance = R6Class("TuningInstance",
   ),
 
   active = list(
-    n_evals = function() self$bmr$n_resample_results
+    n_evals = function() self$bmr$n_resample_results,
+
+    result_perf = function(rhs) {
+      if (missing(rhs))
+        return(private$.result_perf)
+      # result_perf must be numeric and cover all measures
+      assert_numeric(rhs)
+      assert_names(names(rhs), permutation.of = ids(self$measures))
+      private$.result_perf = rhs
+    },
+
+    result_config = function(rhs) {
+      if (missing(rhs))
+        return(private$.result_config)
+      assert_list(rhs)
+      self$param_set$assert(rhs)
+      private$.result_config = rhs
+    },
+
+    result_config_complete = function() {
+      rc = private$.result_config
+      res = self$learner$param_set$values
+      insert_named(res, rc)
+    }
+  ),
+
+  private = list(
+    .result_config = NULL,
+    .result_perf = NULL
   )
 )
