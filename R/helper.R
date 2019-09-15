@@ -24,10 +24,10 @@ get_by_id = function(xs, id) {
 #' @description calculate pareto front of an all-numeric data frame (or matrix)
 #'   also works for >2D pareto front
 #' @example data_frame = data.frame(c(1, 0.25, 0.75, 0), c(0, 0.25, 0.75, 1))
-#'   pareto_front(data_frame)
+#'   calculate_pareto_front(data_frame)
 #'   data_frame = data.frame(c(1,1,0,1), c(1,1,0,0), c(1,0,1,0), c(1,1,1,1))
-#'   pareto_front(data_frame, maximize = FALSE)
-pareto_front = function(data_frame, maximize = TRUE, return_data = TRUE) {
+#'   calculate_pareto_front(data_frame, maximize = FALSE)
+calculate_pareto_front = function(data_frame, maximize = TRUE, return_data = TRUE) {
 
     assert_data_frame(data_frame, types = "numeric")
     assert_logical(maximize)
