@@ -10,7 +10,9 @@
 .onLoad = function(libname, pkgname) {
   # nocov start
   x = utils::getFromNamespace("mlr_reflections", ns = "mlr3")
-  x$tuner_properties = "dependencies"
+  x$tuner_properties = unique(
+    c(x$tuner_properties, "dependencies", "singlecrit", "multicrit")
+  )
 
   assign("lg", lgr::get_logger("mlr3/mlr3tuning"), envir = parent.env(environment()))
   if (Sys.getenv("IN_PKGDOWN") == "true") {

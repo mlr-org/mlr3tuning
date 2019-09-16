@@ -307,16 +307,22 @@ TuningInstance = R6Class("TuningInstance",
 
     pareto_front = function(measures = NULL) {
 
-      measure_ids = map_chr(measures, "id")
+      if (length(self$measures) < 2)
+        stopf("Tuning instance was initialized with less than two measures.")
+
 
       if (is.null(measures)) {
         measures = self$measures
+      
       } else {
         measures = lapply(measures, as_measure, task_type = self$task$task_type)
-        # check that we are only using contained measures
-        assert_choice(measure_ids, map_chr(self$measures, "id"))
-     }
-      # check that at leaste two measures are given
+      }
+     browser() 
+      measure_ids = map_chr(measures, "id")
+      # check that we are only using contained measures
+      assert_choice(measure_ids, map_chr(self$measures, "id"))
+
+      # check that at leaste two measures are given as arguments (or NULL)
       assert_true(length(measure_ids) > 1)
       #assert_measure(measure, task = self$task, learner = self$learner)
       #if (is.na(measure$minimize))
