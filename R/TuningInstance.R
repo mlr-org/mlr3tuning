@@ -297,6 +297,7 @@ TuningInstance = R6Class("TuningInstance",
 
       tab = self$bmr$aggregate(measure, ids = FALSE)
       y = tab[[measure$id]]
+
       if (allMissing(y))
         stopf("No non-missing performance value stored")
 
@@ -307,20 +308,24 @@ TuningInstance = R6Class("TuningInstance",
 
     pareto_front = function(measures = NULL) {
 
-      if (length(self$measures) < 2)
+      if (length(self$measures) < 2) {
         stopf("Tuning instance was initialized with less than two measures.")
+      }
 
-
+      # use all measures of the tuning instance OR only defined by argument
       if (is.null(measures)) {
         measures = self$measures
       
       } else {
-        measures = lapply(measures, as_measure, task_type = self$task$task_type)
+        measures = lapply(measures, msr, task_type = self$task$task_type)
       }
-     browser() 
-      measure_ids = map_chr(measures, "id")
+      
       # check that we are only using contained measures
-      assert_choice(measure_ids, map_chr(self$measures, "id"))
+      measure_ids = sapply(
+        map_chr(measures, "id"), 
+        assert_choice, 
+        map_chr(self$measures, "id")
+      )
 
       # check that at leaste two measures are given as arguments (or NULL)
       assert_true(length(measure_ids) > 1)
@@ -329,14 +334,14 @@ TuningInstance = R6Class("TuningInstance",
       #  stopf("Measure '%s' has minimize = NA and hence cannot be tuned", measure$id)
 
       tab = self$bmr$aggregate(measures, ids = FALSE)
-      y = tab[measure_ids]
+      y = tab[, measure_ids, with = FALSE]
       #if (allMissing(y))
       #  stopf("No non-missing performance value stored")
 
-      minimize = map_chr(measures, "minimize")
-      is_pareto = calculate_pareto_front(y, !minimize, return_data = FALSE)
+      minimize = map_lgl(measures, "minimize")
+      is_pareto = calculate_pareto_front(y, !minimize)
 
-      result = tab$resample_result[is_pareto]
+      tab$resample_result[is_pareto]
     }
   ),
 

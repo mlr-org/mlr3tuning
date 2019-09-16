@@ -27,31 +27,31 @@ get_by_id = function(xs, id) {
 #'   calculate_pareto_front(data_frame)
 #'   data_frame = data.frame(c(1,1,0,1), c(1,1,0,0), c(1,0,1,0), c(1,1,1,1))
 #'   calculate_pareto_front(data_frame, maximize = FALSE)
-calculate_pareto_front = function(data_frame, maximize = TRUE, return_data = TRUE) {
+calculate_pareto_front = function(data_frame, maximize = TRUE) {
 
-    assert_data_frame(data_frame, types = "numeric")
-    assert_logical(maximize)
-    assert_logical(return_data)
+  assert_data_frame(data_frame, types = "numeric")
+  assert_logical(maximize)
 
-    # function for cummulative min or max of vector
-    cummaxmin = function(x, m) if (m) cummax(x) else cummin(x)
-    
-    # prepare each column as comma seperated argument
-    arg = paste0("data_frame[[", 1:ncol(data_frame), "]]", collapse = ", ")
-    # sort the whole data.frame and go stepwise through the columns whenever
-    # entries are tied
-    code   = paste0("order(", arg, ", decreasing = ", deparse(maximize), ")")
-    sorted = eval(parse(text = code))
-    sorted_data = data_frame[sorted, ]
-    # flag non-violations of strict monotony in each column
-    bool_matrix = mapply(function(x, m) !duplicated(cummaxmin(x, m)), sorted_data, maximize)
-    # check for any flag in each row
-    front = apply(bool_matrix, 1, any)
+  # sort the whole data.frame and go stepwise through the columns whenever
+  # entries are tied
+  sorted = do.call(order, c(as.list(data_frame), decreasing = maximize))
+  sorted_data = data_frame[sorted, ]
 
-    # select data as return
-    if (return_data) front = sorted_data[front, ]
+# function for cummulative min or max of vector
+  cummaxmin = function(x, m) if (m) cummax(x) else cummin(x)
+   
+  # flag non-violations of strict monotony in each column
+  bool_matrix = mapply(function(x, m) !duplicated(cummaxmin(x, m)), sorted_data, maximize)
+  # check for any flag in each row
+  front = apply(bool_matrix, 1, any)
+  # get original indices
+  revert_sort = as.numeric(rownames(sorted_data))
 
-    return(front)
+  result = revert_sort[front]
+  # stabilize algorithm by not switching up the order of the front members
+  result = result[order(result)]
+
+  return(result)
 }
 
  

@@ -41,7 +41,8 @@ TunerGenSA = R6Class("TunerGenSA", inherit = Tuner,
       super$initialize(
         param_set = ps,
         param_classes = "ParamDbl",
-        packages = "GenSA"
+        packages = "GenSA",
+        properties = "singlecrit"
       )
     }
   ),
