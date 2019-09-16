@@ -53,8 +53,8 @@ test_that("AutoTuner / resample", {
   # lapply(rr$learners, function(autotuner) {
   #   expect_data_table(autotuner$tuner$pe$bmr$data, nrows = inner_evals * inner_folds)
   #   expect_data_table(autotuner$tuner$pe$bmr$archive(), nrows = inner_evals)
-  #   expect_equal(names(autotuner$tuner$tune_result()$performance), p_measures)
-  #   autotuner$tuner$tune_result()$performance
+  #   expect_equal(names(autotuner$tuner$tune_result()$score), p_measures)
+  #   autotuner$tuner$tune_result()$score
   # })
 })
 
