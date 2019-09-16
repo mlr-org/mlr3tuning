@@ -13,13 +13,12 @@ function and its feasible set defined by the \link{TuningInstance} object.
 If the tuning instance contains multiple measures, they will always be all evaluated.
 But single-criteria tuners always optimize the first measure in the passed list.
 
-A tuner must at the end of its tuning write to the slots \code{result_config} and \code{result_perf}
+A tuner must at the end of its tuning write to the active bindings \code{result_config} and \code{result_perf}
 of the \link[=TuningInstance]{Tuninginstance} where the best selected hyperparameter configuration and its estimated performance
 vector are then stored for result access.
 }
 \section{Construction}{
-\preformatted{tuner = Tuner$new(param_set = ParamSet$new(), param_classes = character(),
-  properties = character(), packages = character())
+\preformatted{tuner = Tuner$new(param_set, param_classes, properties, packages = character())
 }
 \itemize{
 \item \code{param_set} :: \link[paradox:ParamSet]{paradox::ParamSet}\cr
@@ -41,6 +40,13 @@ Note that these packages will be loaded via \code{\link[=requireNamespace]{requi
 \item \code{param_classes} :: \code{character()}\cr
 \item \code{properties} :: \code{character()}\cr
 \item \code{packages} :: \code{character()}\cr
+\item \code{result_config} :: named \code{list}\cr
+Optimal configuration of settings, from the feasible \code{param_set}.
+\item \code{result_config_complete} :: named \code{list}\cr
+The same as \code{result_config}, but if the learner had some extra parameters statically set before tuning,
+these are also included here.
+\item \code{result_perf} :: named \code{numeric()}\cr
+Vector of estimated performance values of optimal configuration.
 }
 }
 

@@ -7,7 +7,7 @@
 #' Specifies a general tuning scenario, including performance evaluator and archive for Tuners to
 #' act upon. This class encodes the black box objective function,
 #' that a [Tuner] has to optimize. It allows the basic operations of querying the objective
-#' at design points (see `$eval_batch()`), storing the evaluated point in an internal archive
+#' at design points (see `$eval_batch()`), storing the evaluations in an internal archive
 #' and querying the archive (see `$archive()`).
 #'
 #' Evaluations of hyperparameter configurations are performed in batches by calling [mlr3::benchmark()] internally.
@@ -30,6 +30,8 @@
 #' * `task` :: [mlr3::Task] | [mlr3::mlr_sugar].
 #' * `learner` :: [mlr3::Learner] | [mlr3::mlr_sugar].
 #' * `resampling` :: [mlr3::Resampling] | [mlr3::mlr_sugar].
+#'   Note that the resampling is instantiated at the beginning so that all configurations
+#'   are evaluated on the same data splits.
 #' * `measures` :: list of [mlr3::Measure] | [mlr3::mlr_sugar].
 #' * `param_set` :: [paradox::ParamSet]\cr
 #'   Hyperparameter search space.
@@ -53,8 +55,10 @@
 #'   This is set in the beginning of `$tune()` of [Tuner].
 #' * `result_config` :: named [list].
 #'    The tuner writes the estimated optimal configuration of the learner here.
-#'    Must a list of settings which include all parameters from `param_set`
+#'    Must be a list of settings which include all parameters from `param_set`
 #'    and all other static param settings with which the learner was run.
+#'    The configuration must be a valid and pass the `check` / `assert` function
+#'    of the [paradox::ParamSet].
 #' * `result_perf` :: named [numeric].
 #'    The tuner writes the estimated performance of `result_config` here.
 #'    Must be a vector of performance measures, named with performance IDs,
@@ -177,8 +181,6 @@ TuningInstance = R6Class("TuningInstance",
     bm_args = NULL,
     bmr = NULL,
     start_time = NULL,
-    result_config = NULL,
-    result_perf = NULL,
 
     initialize = function(task, learner, resampling, measures, param_set, terminator, bm_args = list()) {
       self$task = assert_task(as_task(task, clone = TRUE))
@@ -190,6 +192,7 @@ TuningInstance = R6Class("TuningInstance",
       self$bm_args = assert_list(bm_args, names = "unique")
       self$bmr = BenchmarkResult$new(data.table())
       self$bmr$rr_data[, ("batch_nr") := integer()]
+      self$resampling$instantiate(self$task)
     },
 
     format = function() {
@@ -197,7 +200,6 @@ TuningInstance = R6Class("TuningInstance",
     },
 
     print = function() {
-
       catf(self$format())
       catf(str_indent("* Task:", format(self$task)))
       catf(str_indent("* Learner:", format(self$learner)))
@@ -237,7 +239,7 @@ TuningInstance = R6Class("TuningInstance",
       })
 
       # eval via benchmark and check terminator
-      d = benchmark_grid(tasks = list(self$task), learners = lrns, resamplings = list(self$resampling))
+      d = data.table(task = list(self$task), learner = lrns, resampling = list(self$resampling))
       bmr = invoke(benchmark, design = d, .args = self$bm_args)
 
       # add column "batch_nr"
@@ -267,6 +269,8 @@ TuningInstance = R6Class("TuningInstance",
     },
 
     tuner_objective = function(x) {
+      assert_numeric(x, len = self$param_set$length)
+      self$param_set$assert(as.list(x))
       m = self$measures[[1L]]
       d = setnames(setDT(as.list(x)), self$param_set$ids())
       z = self$eval_batch(d)
@@ -346,6 +350,34 @@ TuningInstance = R6Class("TuningInstance",
   ),
 
   active = list(
-    n_evals = function() self$bmr$n_resample_results
+    n_evals = function() self$bmr$n_resample_results,
+
+    result_perf = function(rhs) {
+      if (missing(rhs))
+        return(private$.result_perf)
+      # result_perf must be numeric and cover all measures
+      assert_numeric(rhs)
+      assert_names(names(rhs), permutation.of = ids(self$measures))
+      private$.result_perf = rhs
+    },
+
+    result_config = function(rhs) {
+      if (missing(rhs))
+        return(private$.result_config)
+      assert_list(rhs)
+      self$param_set$assert(rhs)
+      private$.result_config = rhs
+    },
+
+    result_config_complete = function() {
+      rc = private$.result_config
+      res = self$learner$param_set$values
+      insert_named(res, rc)
+    }
+  ),
+
+  private = list(
+    .result_config = NULL,
+    .result_perf = NULL
   )
 )

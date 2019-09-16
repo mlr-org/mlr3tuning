@@ -11,26 +11,26 @@
 #'
 #' @section Construction:
 #' ```
-#' TerminatorEvals$new(n_evals = 1L)
+#' TerminatorEvals$new()
 #' term("evals")
 #' ```
 #'
+#' @section Parameters:
 #' * `n_evals` :: `integer(1)`\cr
-#'   Number of allowed evaluations.
-#'   Stored in the parameter set `$param_set`.
+#'   Number of allowed evaluations, default is 100L
 #'
 #' @family Terminator
 #' @export
 #' @examples
-#' TerminatorEvals$new(3)
-#' term("evals", 5)
+#' TerminatorEvals$new()
+#' term("evals", n_evals = 5)
 TerminatorEvals = R6Class("TerminatorEvals",
   inherit = Terminator,
   public = list(
 
-    initialize = function(n_evals = 1L) {
-      ps = ParamSet$new(list(ParamInt$new("n_evals", lower = 1L, tags = "required")))
-      ps$values = list(n_evals = n_evals)
+    initialize = function() {
+      ps = ParamSet$new(list(ParamInt$new("n_evals", lower = 1L, default = 100L, tags = "required")))
+      ps$values = list(n_evals = 100L)
 
       super$initialize(param_set = ps)
     },

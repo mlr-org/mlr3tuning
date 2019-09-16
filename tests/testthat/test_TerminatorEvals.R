@@ -1,7 +1,7 @@
 context("TerminatorEvals")
 
 test_that("API", {
-  te = TerminatorEvals$new(2)
+  te = term("evals", n_evals = 2)
 
   inst = TEST_MAKE_INST1()
 

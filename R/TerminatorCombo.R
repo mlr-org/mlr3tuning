@@ -10,24 +10,19 @@
 #'
 #' @section Construction:
 #' ```
-#' TerminatorCombo$new(terminators = list(TerminatorNone$new()), any = TRUE)
+#' TerminatorCombo$new(terminators = list(TerminatorNone$new()))
 #' term("combo")
 #' ```
 #' * `terminators` :: `list()`\cr
 #'   List of objects of class [Terminator].
 #'
+#' @section Parameters:
 #' * `any` :: `logical(1)`\cr
-#'   Terminate iff any included terminator is positive? (not all).
-#'   Stored in the parameter set `$param_set`.
+#'   Terminate iff any included terminator is positive? (not all), default is `TRUE.
 #'
 #' @family Terminator
 #' @export
 #' @examples
-#' TerminatorCombo$new(list(
-#'   TerminatorModelTime$new(),
-#'   TerminatorEvals$new()
-#' ))
-#'
 #' term("combo",
 #'   list(term("model_time", secs = 60), term("evals", n_evals = 10)),
 #'   any = FALSE
@@ -38,11 +33,10 @@ TerminatorCombo = R6Class("TerminatorCombo",
   public = list(
     terminators = NULL,
 
-    initialize = function(terminators = list(TerminatorNone$new()), any = TRUE) {
+    initialize = function(terminators = list(TerminatorNone$new())) {
       self$terminators = assert_list(terminators, types = "Terminator", min.len = 1L)
       ps = ParamSet$new(list(ParamLgl$new("any", default = TRUE, tags = "required")))
-      ps$values = list(any = any)
-
+      ps$values = list(any = TRUE)
       super$initialize(param_set = ps)
     },
 

@@ -12,14 +12,13 @@
 #' If the tuning instance contains multiple measures, they will always be all evaluated.
 #' But single-criteria tuners always optimize the first measure in the passed list.
 #'
-#' A tuner must at the end of its tuning write to the slots `result_config` and `result_perf`
+#' A tuner must at the end of its tuning write to the active bindings `result_config` and `result_perf`
 #' of the [Tuninginstance] where the best selected hyperparameter configuration and its estimated performance
 #' vector are then stored for result access.
 #'
 #' @section Construction:
 #' ```
-#' tuner = Tuner$new(param_set = ParamSet$new(), param_classes = character(),
-#'   properties = character(), packages = character())
+#' tuner = Tuner$new(param_set, param_classes, properties, packages = character())
 #' ```
 #'
 #' * `param_set` :: [paradox::ParamSet]\cr
@@ -40,6 +39,13 @@
 #' * `param_classes` :: `character()`\cr
 #' * `properties` :: `character()`\cr
 #' * `packages` :: `character()`\cr
+#' * `result_config` :: named `list`\cr
+#'   Optimal configuration of settings, from the feasible `param_set`.
+#' * `result_config_complete` :: named `list`\cr
+#'   The same as `result_config`, but if the learner had some extra parameters statically set before tuning,
+#'   these are also included here.
+#' * `result_perf` :: named `numeric()`\cr
+#'   Vector of estimated performance values of optimal configuration.
 #'
 #' @section Methods:
 #' * `tune(instance)`\cr
@@ -103,7 +109,7 @@ Tuner = R6Class("Tuner",
     properties = NULL,
     packages = NULL,
 
-    initialize = function(param_set = ParamSet$new(), param_classes = character(), properties = character(), packages = character()) {
+    initialize = function(param_set, param_classes, properties, packages = character()) {
       self$param_set = assert_param_set(param_set)
       self$param_classes = param_classes
       self$properties = assert_subset(properties, mlr_reflections$tuner_properties)
@@ -122,6 +128,7 @@ Tuner = R6Class("Tuner",
     },
 
     tune = function(instance) {
+      assert_r6(instance, "TuningInstance")
       require_namespaces(self$packages)
       if ("dependencies" %nin% self$properties && instance$param_set$has_deps)
         stopf("Tuner '%s' does not support param sets with dependencies!", self$format())
@@ -141,14 +148,6 @@ Tuner = R6Class("Tuner",
       }, terminated_error = function(cond) {})
       lg$info("Finished tuning after %i evals", instance$n_evals)
       private$assign_result(instance)
-      # do some asserts here, so that the tuner in custom assign_result code cannot do some bullshit
-      # assert that config is a list with names of params in set and static params from learner
-      assert_list(instance$result_config)
-      pids = union(instance$param_set$ids(), names(instance$learner$param_set$values))
-      assert_names(names(instance$result_config), permutation.of = pids)
-      # result_perf must be numeric and cover all measures
-      assert_numeric(instance$result_perf)
-      assert_names(names(instance$result_perf), permutation.of = ids(instance$measures))
       invisible(self)
     }
   ),
@@ -164,8 +163,11 @@ Tuner = R6Class("Tuner",
     # - then assign its config and aggregated perf to instance
     # --> a Tuner can overwrite this if it wants to do something more fancy
     assign_result = function(instance) {
+      assert_r6(instance, "TuningInstance")
       rr = instance$best()
-      instance$result_config = rr$learners[[1L]]$param_set$values
+      pv = rr$learners[[1L]]$param_set$values
+      pv = pv[names(pv) %in% instance$param_set$ids()] # only store values from the inst$ps
+      instance$result_config = pv
       instance$result_perf = rr$aggregate(instance$measures)
       return(self)
     }

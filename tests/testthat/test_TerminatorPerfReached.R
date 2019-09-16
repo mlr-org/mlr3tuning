@@ -1,7 +1,7 @@
 context("TerminatorPerfReached")
 
 test_that("TerminatorPerfReached", {
-  te = TerminatorPerfReached$new("dummy.cp", 0.5)
+  te = term("perf_reached", level = 0.5)
   inst = TEST_MAKE_INST1()
   m = mlr_measures$get("dummy.cp")
 

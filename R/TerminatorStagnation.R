@@ -11,30 +11,27 @@
 #'
 #' @section Construction:
 #' ```
-#' t = TerminatorStagnation$new(iters, tol = 0)
+#' t = TerminatorStagnation$new()
 #' ```
 #'
+#' @section Parameters:
 #' * `iters` :: `integer(1)`\cr
-#'   Number of iterations to evaluate the performance improvement on.
-#'   Stored in the parameter set `$param_set`.
+#'   Number of iterations to evaluate the performance improvement on, default is 10.
 #'
 #' * `threshold` :: `numeric(1)`\cr
-#'   If the improvement is less than `threshold`, tuning is stopped.
-#'   Default is `0`.
-#'   Stored in the parameter set `$param_set`.
+#'   If the improvement is less than `threshold`, tuning is stopped, default is `0`.
 #'
 #' @family Terminator
 #' @export
 TerminatorStagnation = R6Class("TerminatorStagnation",
   inherit = Terminator,
   public = list(
-    initialize = function(iters, threshold = 0) {
+    initialize = function() {
       ps = ParamSet$new(list(
-        ParamInt$new("iters", lower = 1L, tags = "required"),
+        ParamInt$new("iters", lower = 1L, default = 10, tags = "required"),
         ParamDbl$new("threshold", lower = 0, default = 0, tags = "required")
       ))
-      ps$values = list(iters = iters, threshold = threshold)
-
+      ps$values = list(iters = 10, threshold = 0)
       super$initialize(param_set = ps)
     },
 

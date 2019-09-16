@@ -12,16 +12,13 @@
 #'
 #' @section Construction:
 #' ```
-#' TerminatorModelTime$new(secs)
+#' TerminatorModelTime$new()
 #' term("model_time")
 #' ```
 #'
 #' @section Parameters:
-#'
 #' * `secs` :: `numeric(1)`\cr
-#'   Maximum allowed time, in seconds.
-#'   Default is 0 seconds.
-#'   Stored in the parameter set `$param_set`.
+#'   Maximum allowed time, in seconds, default is 0.
 #'
 #' @family Terminator
 #' @export
@@ -31,10 +28,9 @@
 TerminatorModelTime = R6Class("TerminatorModelTime",
   inherit = Terminator,
   public = list(
-    initialize = function(secs = 0) {
-      ps = ParamSet$new(list(ParamDbl$new("secs", lower = 0, tags = "required")))
-      ps$values = list(secs = secs)
-
+    initialize = function() {
+      ps = ParamSet$new(list(ParamDbl$new("secs", lower = 0, default = 0, tags = "required")))
+      ps$values = list(secs = 0)
       super$initialize(param_set = ps)
     },
 
