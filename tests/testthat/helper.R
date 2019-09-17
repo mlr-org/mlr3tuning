@@ -35,9 +35,8 @@ test_tuner = function(key, ..., n_dim = 1L, term_evals = 2L, real_evals = term_e
   term = term("evals", n_evals = term_evals)
   inst = TuningInstance$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), ps, term)
   tuner = tnr(key, ...)
-
-  expect_tuner(tuner$tune(inst))
-  # r = tuner$tune_result(inst)
+  expect_tuner(tuner)
+  tuner$tune(inst)
   bmr = inst$bmr
 
   expect_data_table(bmr$data, nrows = real_evals)
@@ -62,9 +61,8 @@ test_tuner_dependencies = function(key, ..., term_evals = 2L) {
   ll = LearnerRegrDepParams$new()
   inst = TuningInstance$new(tsk("boston_housing"), ll, rsmp("holdout"), msr("regr.mse"), ll$param_set, term)
   tuner = tnr(key, ...)
-
-  expect_tuner(tuner$tune(inst))
-  # r = tuner$tune_result(inst)
+  expect_tuner(tuner)
+  tuner$tune(inst)
   bmr = inst$bmr
 
   expect_data_table(bmr$data, nrows = term_evals)
@@ -74,7 +72,7 @@ test_tuner_dependencies = function(key, ..., term_evals = 2L) {
   sc = inst$result_config
   sp = inst$result_perf
   expect_list(sc)
-  expect_names(names(sc), subset.of = c("xx", "cp"))
+  expect_names(names(sc), subset.of = c("xx", "yy", "cp"))
   expect_numeric(sp, len = 1L)
   expect_numeric(sp, len = 1L)
   expect_names(names(sp), identical.to = "regr.mse")
@@ -112,10 +110,11 @@ TEST_MAKE_PS2 = function() {
   ps = ParamSet$new(
     params = list(
       ParamFct$new("xx", levels = c("a", "b"), default = "a"),
+      ParamDbl$new("yy", lower = 0, upper = 1),
       ParamDbl$new("cp", lower = 0, upper = 1)
     )
   )
-  ps$add_dep("cp", on = "xx", cond = CondEqual$new("a"))
+  ps$add_dep("yy", on = "xx", cond = CondEqual$new("a"))
   return(ps)
 }
 TEST_MAKE_INST2 = function(measures = msr("dummy.cp.regr"), term_evals = 5L) {

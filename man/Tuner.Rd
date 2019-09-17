@@ -55,8 +55,11 @@ Performs the tuning on a \link{TuningInstance} until termination.
 \section{Private Methods}{
 
 \itemize{
-\item \code{tune_internal(instance)} -> \code{self}\cr
+\item \code{tune_internal(instance)} -> \code{NULL}\cr
 Abstract base method. Implement to specify tuning of your subclass.
+See technical details sections.
+\item \code{assign_result(instance)} -> \code{NULL}\cr
+Abstract base method. Implement to specify how the final configuration is selected.
 See technical details sections.
 }
 }

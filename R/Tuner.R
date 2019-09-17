@@ -1,3 +1,14 @@
+tuner_assign_result_default = function(instance) {
+  assert_r6(instance, "TuningInstance")
+  rr = instance$best()
+  pv = rr$learners[[1L]]$param_set$values
+  pv = pv[names(pv) %in% instance$param_set$ids()] # only store values from the inst$ps
+  instance$result_config = pv
+  instance$result_perf = rr$aggregate(instance$measures)
+  invisible(NULL)
+}
+
+
 #' @title Tuner
 #'
 #' @usage NULL
@@ -46,8 +57,11 @@
 #'   Performs the tuning on a [TuningInstance] until termination.
 #'
 #' @section Private Methods:
-#' * `tune_internal(instance)` -> `self`\cr
+#' * `tune_internal(instance)` -> `NULL`\cr
 #'   Abstract base method. Implement to specify tuning of your subclass.
+#'   See technical details sections.
+#' * `assign_result(instance)` -> `NULL`\cr
+#'   Abstract base method. Implement to specify how the final configuration is selected.
 #'   See technical details sections.
 #'
 #' @section Technical Details and Subclasses:
@@ -141,7 +155,7 @@ Tuner = R6Class("Tuner",
       }, terminated_error = function(cond) {})
       lg$info("Finished tuning after %i evals", instance$n_evals)
       private$assign_result(instance)
-      invisible(self)
+      invisible(NULL)
     }
   ),
 
@@ -155,14 +169,6 @@ Tuner = R6Class("Tuner",
     # - pick the best resample-experiment, regarding the first measure
     # - then assign its config and aggregated perf to instance
     # --> a Tuner can overwrite this if it wants to do something more fancy
-    assign_result = function(instance) {
-      assert_r6(instance, "TuningInstance")
-      rr = instance$best()
-      pv = rr$learners[[1L]]$param_set$values
-      pv = pv[names(pv) %in% instance$param_set$ids()] # only store values from the inst$ps
-      instance$result_config = pv
-      instance$result_perf = rr$aggregate(instance$measures)
-      return(self)
-    }
+    assign_result = tuner_assign_result_default
   )
 )

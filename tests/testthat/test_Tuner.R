@@ -24,3 +24,13 @@ test_that("proper error if tuner cannot handle deps", {
   tt = TunerGenSA$new()
   expect_error(tt$tune(inst), "dependencies")
 })
+
+test_that("we get a result when some subordinate params are not fulfilled", {
+  inst = TEST_MAKE_INST2(measures = msr("dummy.cp.regr"))
+  d = data.table(xx = c("a", "b"), yy = c(1, NA), cp = c(0.2, 0.1))
+  inst$eval_batch(d)
+  tuner_assign_result_default(inst)
+  expect_equal(inst$result_perf, c(dummy.cp.regr = 0.1))
+  expect_equal(inst$result_config, list(xx = "b", cp = 0.1))
+})
+
