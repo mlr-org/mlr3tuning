@@ -77,3 +77,12 @@ test_that("budget", {
   tab = pe$archive()
   expect_data_table(tab, nrows = 6)
 })
+
+test_that("the same experiment can be added twice", {
+  pe = TEST_MAKE_INST1()
+  d = data.table(cp = c(0.1, 0.1))
+  pe$eval_batch(d)
+  tab = pe$archive()
+  expect_data_table(tab, nrows = 2)
+})
+
