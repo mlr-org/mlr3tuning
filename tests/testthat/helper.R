@@ -57,8 +57,8 @@ test_tuner = function(key, ..., n_dim = 1L, term_evals = 2L, real_evals = term_e
 
 # test an implemented subclass tuner by running a test with dependent params
 # returns: tune_result and instance
-test_tuner_dependencies = function(key, ..., n_evals = 2L) {
-  term = TerminatorEvals$new(n_evals)
+test_tuner_dependencies = function(key, ..., term_evals = 2L) {
+  term = term("evals", n_evals = term_evals)
   ll = LearnerRegrDepParams$new()
   inst = TuningInstance$new(tsk("boston_housing"), ll, rsmp("holdout"), msr("regr.mse"), ll$param_set, term)
   tuner = tnr(key, ...)
@@ -67,8 +67,8 @@ test_tuner_dependencies = function(key, ..., n_evals = 2L) {
   # r = tuner$tune_result(inst)
   bmr = inst$bmr
 
-  expect_data_table(bmr$data, nrows = n_evals)
-  expect_equal(inst$n_evals, n_evals)
+  expect_data_table(bmr$data, nrows = term_evals)
+  expect_equal(inst$n_evals, term_evals)
 
 
   sc = inst$result_config
