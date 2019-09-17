@@ -59,13 +59,16 @@ Number of configuration evaluations stored in the container.
 \item \code{start_time} :: \code{POSIXct(1)}\cr
 Time the tuning / evaluations were started.
 This is set in the beginning of \code{$tune()} of \link{Tuner}.
-\item \code{result_config} :: named \link{list}.
+\item \code{result_config} :: named \code{list}\cr
+Optimal configuration of settings, from the feasible \code{param_set}.
 The tuner writes the estimated optimal configuration of the learner here.
-Must be a list of settings which include all parameters from \code{param_set}
-and all other static param settings with which the learner was run.
-The configuration must be a valid and pass the \code{check} / \code{assert} function
-of the \link[paradox:ParamSet]{paradox::ParamSet}.
-\item \code{result_perf} :: named \link{numeric}.
+Must be a list of settings only of parameters from \code{param_set}.
+The configuration must be a valid and pass the \code{check} / \code{assert} function of the \link[paradox:ParamSet]{paradox::ParamSet}.
+\item \code{result_config_complete} :: named \code{list}\cr
+Convenience access. The same as \code{result_config}, but if the learner had some extra parameters
+statically set before tuning, these are also included here.
+\item \code{result_perf} :: named \code{numeric()}\cr
+Vector of estimated performance values of optimal configuration.
 The tuner writes the estimated performance of \code{result_config} here.
 Must be a vector of performance measures, named with performance IDs,
 regarding all elements in \code{measures}.
@@ -82,7 +85,7 @@ Updates the internal \link{BenchmarkResult} \code{$bmr} by reference, and return
 \itemize{
 \item \code{"batch_nr"}: Number of the new batch.
 This number is calculated in an auto-increment fashion and stored also stored inside the \link{BenchmarkResult} as column \code{batch_nr}
-\item \code{"hashes"}: hashes of the added \link{ResampleResult}s.
+\item \code{"uhashes"}: hashes of the added \link{ResampleResult}s.
 \item \code{"perf"}: A data.table of evaluated performances for \code{dt}. Has the same nr of rows as \code{dt}, and the same nr of columns as \code{measures}. Columns are named with measure-IDs.
 A cell entry is the (aggregated) performance of that configuration for that measure.
 }

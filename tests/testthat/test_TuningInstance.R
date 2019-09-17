@@ -19,9 +19,9 @@ test_that("TuningInstance", {
   expect_identical(pe$n_evals, 2L)
   expect_output(print(pe), "0.02")
   expect_list(z, len = 3)
-  expect_named(z, c("batch_nr", "hashes", "perf"))
+  expect_named(z, c("batch_nr", "uhashes", "perf"))
   expect_equal(z$batch_nr, 1L)
-  expect_character(z$hashes, len = 2L)
+  expect_character(z$uhashes, len = 2L)
   expect_data_table(z$perf, nrows = 2L, ncols = 1L)
   expect_named(z$perf, "dummy.cp")
 
@@ -35,9 +35,9 @@ test_that("TuningInstance", {
   expect_equal(pe$bmr$resample_result(4)$learners[[1]]$param_set$values$maxdepth, 10)
   expect_identical(pe$n_evals, 4L)
   expect_list(z, len = 3)
-  expect_named(z, c("batch_nr", "hashes", "perf"))
+  expect_named(z, c("batch_nr", "uhashes", "perf"))
   expect_equal(z$batch_nr, 1L)
-  expect_character(z$hashes, len = 2L)
+  expect_character(z$uhashes, len = 2L)
   expect_data_table(z$perf, nrows = 2L, ncols = 1L)
   expect_named(z$perf, "dummy.cp")
 

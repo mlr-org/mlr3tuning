@@ -40,13 +40,6 @@ Note that these packages will be loaded via \code{\link[=requireNamespace]{requi
 \item \code{param_classes} :: \code{character()}\cr
 \item \code{properties} :: \code{character()}\cr
 \item \code{packages} :: \code{character()}\cr
-\item \code{result_config} :: named \code{list}\cr
-Optimal configuration of settings, from the feasible \code{param_set}.
-\item \code{result_config_complete} :: named \code{list}\cr
-The same as \code{result_config}, but if the learner had some extra parameters statically set before tuning,
-these are also included here.
-\item \code{result_perf} :: named \code{numeric()}\cr
-Vector of estimated performance values of optimal configuration.
 }
 }
 

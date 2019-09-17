@@ -39,13 +39,6 @@
 #' * `param_classes` :: `character()`\cr
 #' * `properties` :: `character()`\cr
 #' * `packages` :: `character()`\cr
-#' * `result_config` :: named `list`\cr
-#'   Optimal configuration of settings, from the feasible `param_set`.
-#' * `result_config_complete` :: named `list`\cr
-#'   The same as `result_config`, but if the learner had some extra parameters statically set before tuning,
-#'   these are also included here.
-#' * `result_perf` :: named `numeric()`\cr
-#'   Vector of estimated performance values of optimal configuration.
 #'
 #' @section Methods:
 #' * `tune(instance)`\cr

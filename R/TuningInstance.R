@@ -53,16 +53,19 @@
 #' * `start_time` :: `POSIXct(1)`\cr
 #'   Time the tuning / evaluations were started.
 #'   This is set in the beginning of `$tune()` of [Tuner].
-#' * `result_config` :: named [list].
-#'    The tuner writes the estimated optimal configuration of the learner here.
-#'    Must be a list of settings which include all parameters from `param_set`
-#'    and all other static param settings with which the learner was run.
-#'    The configuration must be a valid and pass the `check` / `assert` function
-#'    of the [paradox::ParamSet].
-#' * `result_perf` :: named [numeric].
-#'    The tuner writes the estimated performance of `result_config` here.
-#'    Must be a vector of performance measures, named with performance IDs,
-#'    regarding all elements in `measures`.
+#' * `result_config` :: named `list`\cr
+#'   Optimal configuration of settings, from the feasible `param_set`.
+#'   The tuner writes the estimated optimal configuration of the learner here.
+#'   Must be a list of settings only of parameters from `param_set`.
+#'   The configuration must be a valid and pass the `check` / `assert` function of the [paradox::ParamSet].
+#' * `result_config_complete` :: named `list`\cr
+#'   Convenience access. The same as `result_config`, but if the learner had some extra parameters
+#'   statically set before tuning, these are also included here.
+#' * `result_perf` :: named `numeric()`\cr
+#'   Vector of estimated performance values of optimal configuration.
+#'   The tuner writes the estimated performance of `result_config` here.
+#'   Must be a vector of performance measures, named with performance IDs,
+#'   regarding all elements in `measures`.
 #'
 #' @section Methods:
 #' * `eval_batch(dt)`\cr
@@ -71,7 +74,7 @@
 #'   Updates the internal [BenchmarkResult] `$bmr` by reference, and returns a named list with two elements:
 #'   * `"batch_nr"`: Number of the new batch.
 #'     This number is calculated in an auto-increment fashion and stored also stored inside the [BenchmarkResult] as column `batch_nr`
-#'   * `"hashes"`: hashes of the added [ResampleResult]s.
+#'   * `"uhashes"`: hashes of the added [ResampleResult]s.
 #'   * `"perf"`: A data.table of evaluated performances for `dt`. Has the same nr of rows as `dt`, and the same nr of columns as `measures`. Columns are named with measure-IDs.
 #'     A cell entry is the (aggregated) performance of that configuration for that measure.
 #'
@@ -265,7 +268,7 @@ TuningInstance = R6Class("TuningInstance",
         stop(terminated_error(self))
       }
       perf = bmr$aggregate(measures = self$measures, ids = FALSE)[, mids, with = FALSE]
-      return(list(batch_nr = batch_nr, hashes = bmr$hashes, perf = perf))
+      return(list(batch_nr = batch_nr, uhashes = bmr$uhashes, perf = perf))
     },
 
     tuner_objective = function(x) {
