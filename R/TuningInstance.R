@@ -83,7 +83,8 @@
 #' * `archive(unnest = TRUE)`\cr
 #'   `logical(1)` -> [data.table::data.table()]\cr
 #'   Returns a table of contained resample results, similar to the one returned by [mlr3::benchmark()]'s `$aggregate()` method.
-#'   If `unnest` is `TRUE` (default), hyperparameter configuration settings are stored in separate columns instead of inside a list column.
+#'   If `unnest` is `TRUE` (default), hyperparameter configuration settings are stored in separate columns instead of inside a list column,
+#'   and dependent, inactive parameters are encoded with `NA`.
 #'
 #' * `result(complete = FALSE)`\cr
 #'   `logical(1)` -> named `list`\cr

@@ -92,7 +92,8 @@ In case of ties, one of the tied values is selected randomly.
 \item \code{archive(unnest = TRUE)}\cr
 \code{logical(1)} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
 Returns a table of contained resample results, similar to the one returned by \code{\link[mlr3:benchmark]{mlr3::benchmark()}}'s \code{$aggregate()} method.
-If \code{unnest} is \code{TRUE} (default), hyperparameter configuration settings are stored in separate columns instead of inside a list column.
+If \code{unnest} is \code{TRUE} (default), hyperparameter configuration settings are stored in separate columns instead of inside a list column,
+and dependent, inactive parameters are encoded with \code{NA}.
 \item \code{result(complete = FALSE)}\cr
 \code{logical(1)} -> named \code{list}\cr
 Access result of the tuning, i.e., the optimal configuration and its estimated performance. Elements:\cr
