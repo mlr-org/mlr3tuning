@@ -18,7 +18,7 @@
 #' But single-criteria tuners always optimize the first measure in the passed list.
 #'
 #' The tuner is also supposed to store its final result, consisting of a selected hyperparameter configuration,
-#' and associated estimated performance values in the instance slots `result_config` and `result_perf`.
+#' and associated estimated performance values, by calling the method `instance$assign_result`.
 #'
 #' @section Construction:
 #' ```
@@ -53,19 +53,6 @@
 #' * `start_time` :: `POSIXct(1)`\cr
 #'   Time the tuning / evaluations were started.
 #'   This is set in the beginning of `$tune()` of [Tuner].
-#' * `result_config` :: named `list`\cr
-#'   Optimal configuration of settings, from the feasible `param_set`.
-#'   The tuner writes the estimated optimal configuration of the learner here.
-#'   Must be a list of settings only of parameters from `param_set`.
-#'   The configuration must be a valid and pass the `check` / `assert` function of the [paradox::ParamSet].
-#' * `result_config_complete` :: named `list`\cr
-#'   Convenience access. The same as `result_config`, but if the learner had some extra parameters
-#'   statically set before tuning, these are also included here.
-#' * `result_perf` :: named `numeric()`\cr
-#'   Vector of estimated performance values of optimal configuration.
-#'   The tuner writes the estimated performance of `result_config` here.
-#'   Must be a vector of performance measures, named with performance IDs,
-#'   regarding all elements in `measures`.
 #'
 #' @section Methods:
 #' * `eval_batch(dt)`\cr
@@ -93,10 +80,24 @@
 #'   Queries the [mlr3::BenchmarkResult] for the best [mlr3::ResampleResult] according `measure` (default is the first measure in `$measures`).
 #'   In case of ties, one of the tied values is selected randomly.
 #'
-#' * `archive(unnest = TRUE)`
+#' * `archive(unnest = TRUE)`\cr
 #'   `logical(1)` -> [data.table::data.table()]\cr
 #'   Returns a table of contained resample results, similar to the one returned by [mlr3::benchmark()]'s `$aggregate()` method.
 #'   If `unnest` is `TRUE` (default), hyperparameter configuration settings are stored in separate columns instead of inside a list column.
+#'
+#' * `result(complete = FALSE)`\cr
+#'   `logical(1)` -> named `list`\cr
+#'    Access result of the tuning, i.e., the optimal configuration and its estimated performance. Elements:\cr
+#'   * `"perf"`: Named vector of estimated performance values of optimal configuration.
+#'   * `"config"`: Named list of optimal hyperparameter settings, without potential `trafo` applied.
+#'   * `"config_trafo"`: Named list of optimal hyperparameter settings, with potential `trafo` applied, otherwise the same as `config`.
+#'    If`complete` is `TRUE`, and if the learner had some extra parameters statically set before tuning, these are included in the configuration.
+#'
+#' * `assign_result(config, perf)`\cr
+#'   (`list`, `numeric`) -> `NULL`\cr
+#'   The tuner writes the estimated optimal configuration and estimated performance values here, for internal use.
+#'   * `config`: Must be a named list of settings only of parameters from `param_set` and be feasible, untransformed.
+#'   * `perf` : Must be a named numeric vector of performance measures, named with performance IDs, regarding all elements in `measures`.
 #'
 #' @family TuningInstance
 #' @export
@@ -309,38 +310,34 @@ TuningInstance = R6Class("TuningInstance",
 
       best = if (measure$minimize) which_min else which_max
       tab$resample_result[[best(y, na_rm = TRUE)]]
+    },
+
+    result = function(complete = FALSE) {
+      config = private$.result$config
+      perf = private$.result$perf
+      if (complete)
+        config = insert_named(self$learner$param_set$values, config)
+      # if ps has no trafo, just use the normal config
+      trafo = if (is.null(self$param_set$trafo)) identity else self$param_set$trafo
+      config_trafo = trafo(config)
+      list(config = config, config_trafo = config_trafo, perf = perf)
+    },
+
+    assign_result = function(config, perf) {
+      # result config must be feasible for paramset
+      self$param_set$assert(config)
+      # result perf must be numeric and cover all measures
+      assert_numeric(perf)
+      assert_names(names(perf), permutation.of = ids(self$measures))
+      private$.result = list(config = config, perf = perf)
     }
   ),
 
   active = list(
-    n_evals = function() self$bmr$n_resample_results,
-
-    result_perf = function(rhs) {
-      if (missing(rhs))
-        return(private$.result_perf)
-      # result_perf must be numeric and cover all measures
-      assert_numeric(rhs)
-      assert_names(names(rhs), permutation.of = ids(self$measures))
-      private$.result_perf = rhs
-    },
-
-    result_config = function(rhs) {
-      if (missing(rhs))
-        return(private$.result_config)
-      assert_list(rhs)
-      self$param_set$assert(rhs)
-      private$.result_config = rhs
-    },
-
-    result_config_complete = function() {
-      rc = private$.result_config
-      res = self$learner$param_set$values
-      insert_named(res, rc)
-    }
+    n_evals = function() self$bmr$n_resample_results
   ),
 
   private = list(
-    .result_config = NULL,
-    .result_perf = NULL
+    .result = NULL
   )
 )

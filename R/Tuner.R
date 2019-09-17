@@ -3,8 +3,8 @@ tuner_assign_result_default = function(instance) {
   rr = instance$best()
   pv = rr$learners[[1L]]$param_set$values
   pv = pv[names(pv) %in% instance$param_set$ids()] # only store values from the inst$ps
-  instance$result_config = pv
-  instance$result_perf = rr$aggregate(instance$measures)
+  perf = rr$aggregate(instance$measures)
+  instance$assign_result(pv, perf)
   invisible(NULL)
 }
 
@@ -23,7 +23,7 @@ tuner_assign_result_default = function(instance) {
 #' If the tuning instance contains multiple measures, they will always be all evaluated.
 #' But single-criteria tuners always optimize the first measure in the passed list.
 #'
-#' A tuner must at the end of its tuning write to the active bindings `result_config` and `result_perf`
+#' A tuner must at the end of its tuning write its result to the `assign_result` method
 #' of the [Tuninginstance] where the best selected hyperparameter configuration and its estimated performance
 #' vector are then stored for result access.
 #'
@@ -106,8 +106,7 @@ tuner_assign_result_default = function(instance) {
 #' )
 #' tt = tnr("random_search") # swap this line to use a different Tuner
 #' tt$tune(instance) # modifies the instance by reference
-#' instance$result_config # returns best configuration
-#' instance$result_perf # returns best performance
+#' instance$result() # returns best configuration and best performance
 #' instance$archive() # allows access of data.table / benchmark result of full path of all evaluations
 Tuner = R6Class("Tuner",
   public = list(

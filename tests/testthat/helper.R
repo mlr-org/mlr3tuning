@@ -42,8 +42,9 @@ test_tuner = function(key, ..., n_dim = 1L, term_evals = 2L, real_evals = term_e
   expect_data_table(bmr$data, nrows = real_evals)
   expect_equal(inst$n_evals, real_evals)
 
-  sc = inst$result_config
-  sp = inst$result_perf
+  r = inst$result()
+  sc = r$config
+  sp = r$perf
   expect_list(sc, len = n_dim)
   if (n_dim == 1)
     expect_named(sc, c("cp"))
@@ -68,9 +69,9 @@ test_tuner_dependencies = function(key, ..., term_evals = 2L) {
   expect_data_table(bmr$data, nrows = term_evals)
   expect_equal(inst$n_evals, term_evals)
 
-
-  sc = inst$result_config
-  sp = inst$result_perf
+  r = inst$result()
+  sc = r$config
+  sp = r$perf
   expect_list(sc)
   expect_names(names(sc), subset.of = c("xx", "yy", "cp"))
   expect_numeric(sp, len = 1L)

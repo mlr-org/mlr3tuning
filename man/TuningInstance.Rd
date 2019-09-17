@@ -20,7 +20,7 @@ A list of multiple measures can be passed to the instance, and they will always 
 But single-criteria tuners always optimize the first measure in the passed list.
 
 The tuner is also supposed to store its final result, consisting of a selected hyperparameter configuration,
-and associated estimated performance values in the instance slots \code{result_config} and \code{result_perf}.
+and associated estimated performance values, by calling the method \code{instance$assign_result}.
 }
 \section{Construction}{
 \preformatted{inst = TuningInstance$new(task, learner, resampling, measures, param_set, terminator, bm_args = list())
@@ -59,19 +59,6 @@ Number of configuration evaluations stored in the container.
 \item \code{start_time} :: \code{POSIXct(1)}\cr
 Time the tuning / evaluations were started.
 This is set in the beginning of \code{$tune()} of \link{Tuner}.
-\item \code{result_config} :: named \code{list}\cr
-Optimal configuration of settings, from the feasible \code{param_set}.
-The tuner writes the estimated optimal configuration of the learner here.
-Must be a list of settings only of parameters from \code{param_set}.
-The configuration must be a valid and pass the \code{check} / \code{assert} function of the \link[paradox:ParamSet]{paradox::ParamSet}.
-\item \code{result_config_complete} :: named \code{list}\cr
-Convenience access. The same as \code{result_config}, but if the learner had some extra parameters
-statically set before tuning, these are also included here.
-\item \code{result_perf} :: named \code{numeric()}\cr
-Vector of estimated performance values of optimal configuration.
-The tuner writes the estimated performance of \code{result_config} here.
-Must be a vector of performance measures, named with performance IDs,
-regarding all elements in \code{measures}.
 }
 }
 
@@ -102,10 +89,26 @@ This function serves as a objective function for tuners of numeric spaces - whic
 (\link[mlr3:Measure]{mlr3::Measure} | \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}, \code{character(1)}) -> \link[mlr3:ResampleResult]{mlr3::ResampleResult}\cr
 Queries the \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} for the best \link[mlr3:ResampleResult]{mlr3::ResampleResult} according \code{measure} (default is the first measure in \code{$measures}).
 In case of ties, one of the tied values is selected randomly.
-\item \code{archive(unnest = TRUE)}
+\item \code{archive(unnest = TRUE)}\cr
 \code{logical(1)} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
 Returns a table of contained resample results, similar to the one returned by \code{\link[mlr3:benchmark]{mlr3::benchmark()}}'s \code{$aggregate()} method.
 If \code{unnest} is \code{TRUE} (default), hyperparameter configuration settings are stored in separate columns instead of inside a list column.
+\item \code{result(complete = FALSE)}\cr
+\code{logical(1)} -> named \code{list}\cr
+Access result of the tuning, i.e., the optimal configuration and its estimated performance. Elements:\cr
+\itemize{
+\item \code{"perf"}: Named vector of estimated performance values of optimal configuration.
+\item \code{"config"}: Named list of optimal hyperparameter settings, without potential \code{trafo} applied.
+\item \code{"config_trafo"}: Named list of optimal hyperparameter settings, with potential \code{trafo} applied, otherwise the same as \code{config}.
+If\code{complete} is \code{TRUE}, and if the learner had some extra parameters statically set before tuning, these are included in the configuration.
+}
+\item \code{assign_result(config, perf)}\cr
+(\code{list}, \code{numeric}) -> \code{NULL}\cr
+The tuner writes the estimated optimal configuration and estimated performance values here, for internal use.
+\itemize{
+\item \code{config}: Must be a named list of settings only of parameters from \code{param_set} and be feasible, untransformed.
+\item \code{perf} : Must be a named numeric vector of performance measures, named with performance IDs, regarding all elements in \code{measures}.
+}
 }
 }
 

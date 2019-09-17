@@ -13,7 +13,7 @@ function and its feasible set defined by the \link{TuningInstance} object.
 If the tuning instance contains multiple measures, they will always be all evaluated.
 But single-criteria tuners always optimize the first measure in the passed list.
 
-A tuner must at the end of its tuning write to the active bindings \code{result_config} and \code{result_perf}
+A tuner must at the end of its tuning write its result to the \code{assign_result} method
 of the \link[=TuningInstance]{Tuninginstance} where the best selected hyperparameter configuration and its estimated performance
 vector are then stored for result access.
 }
@@ -108,8 +108,7 @@ instance = TuningInstance$new(
 )
 tt = tnr("random_search") # swap this line to use a different Tuner
 tt$tune(instance) # modifies the instance by reference
-instance$result_config # returns best configuration
-instance$result_perf # returns best performance
+instance$result() # returns best configuration and best performance
 instance$archive() # allows access of data.table / benchmark result of full path of all evaluations
 }
 \seealso{
