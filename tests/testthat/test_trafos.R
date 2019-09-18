@@ -21,3 +21,29 @@ test_that("simple exp trafo works", {
   a = inst$archive()
   expect_equal(a$cp, c(2^-7, 2^-3))
 })
+
+test_that("trafo where param names change", {
+  ll = lrn("classif.rpart")
+  ps = ParamSet$new(params = list(
+    ParamFct$new("foo", levels = c("a", "b"))
+  ))
+  ps$trafo = function(x, param_set) {
+    if (x$foo == "a")
+      x$cp = 0.11
+    else
+      x$cp = 0.22
+    x$foo = NULL
+    return(x)
+  }
+  te = term("evals", n_evals = 3)
+  tuner = tnr("grid_search", resolution = 2)
+  inst = TuningInstance$new(tsk("iris"), ll, rsmp("holdout"), msr("dummy.cp.classif"), ps, te)
+  tuner$tune(inst)
+  r = inst$result(complete = FALSE)
+  expect_equal(r$config, list(foo = "a"))
+  expect_equal(r$config_trafo, list(cp = 0.11))
+  expect_equal(r$perf, c(dummy.cp.classif = 0.11))
+  a = inst$archive()
+  expect_equal(a$cp, c(0.11, 0.22))
+})
+
