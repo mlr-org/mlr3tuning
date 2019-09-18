@@ -4,7 +4,7 @@ tuner_assign_result_default = function(instance) {
   rr = instance$best()
   perf = rr$aggregate(instance$measures)
   # get the untrafoed config that matches this RR
-  pv = instance$bmr$rr_data[rr$uhash, on = "uhash"]$config[[1L]]
+  pv = instance$bmr$rr_data[rr$uhash, on = "uhash"]$tune_x[[1L]]
   instance$assign_result(pv, perf)
   invisible(NULL)
 }
@@ -107,7 +107,7 @@ tuner_assign_result_default = function(instance) {
 #' )
 #' tt = tnr("random_search") # swap this line to use a different Tuner
 #' tt$tune(instance) # modifies the instance by reference
-#' instance$result() # returns best configuration and best performance
+#' instance$result # returns best configuration and best performance
 #' instance$archive() # allows access of data.table / benchmark result of full path of all evaluations
 Tuner = R6Class("Tuner",
   public = list(

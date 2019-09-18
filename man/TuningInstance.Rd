@@ -46,12 +46,12 @@ Further arguments for \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
 \section{Fields}{
 
 \itemize{
-\item \code{task} :: \link[mlr3:Task]{mlr3::Task}.
-\item \code{learner} :: \link[mlr3:Learner]{mlr3::Learner}.
-\item \code{resampling} :: \link[mlr3:Resampling]{mlr3::Resampling}.
-\item \code{measures} :: list of \link[mlr3:Measure]{mlr3::Measure}.
-\item \code{param_set} :: \link[paradox:ParamSet]{paradox::ParamSet}.
-\item \code{terminator} :: \link{Terminator}.
+\item \code{task} :: \link[mlr3:Task]{mlr3::Task}; from construction.
+\item \code{learner} :: \link[mlr3:Learner]{mlr3::Learner}; from construction.
+\item \code{resampling} :: \link[mlr3:Resampling]{mlr3::Resampling}; from construction.
+\item \code{measures} :: list of \link[mlr3:Measure]{mlr3::Measure}; from construction.
+\item \code{param_set} :: \link[paradox:ParamSet]{paradox::ParamSet}; from construction.
+\item \code{terminator} :: \link{Terminator}; from construction.
 \item \code{bmr} :: \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}\cr
 A benchmark result, container object for all performed \link[mlr3:ResampleResult]{mlr3::ResampleResult}s when evaluating hyperparameter configurations.
 \item \code{n_evals} :: \code{integer(1)}\cr
@@ -59,6 +59,14 @@ Number of configuration evaluations stored in the container.
 \item \code{start_time} :: \code{POSIXct(1)}\cr
 Time the tuning / evaluations were started.
 This is set in the beginning of \code{$tune()} of \link{Tuner}.
+\item \code{result} :: named \code{list}\cr
+Access result of the tuning, i.e., the optimal configuration and its estimated performance. Elements:\cr
+\itemize{
+\item \code{"perf"}: Named vector of estimated performance values of optimal configuration.
+\item \code{"tune_x"}: Named list of optimal hyperparameter settings, without potential \code{trafo} applied.
+\item \code{"params"}: Named list of optimal hyperparameter settings, similar to \code{tune_x}, but with potential \code{trafo} applied.
+Also, if the learner had some extra parameters statically set before tuning, these are included here.
+}
 }
 }
 
@@ -81,7 +89,7 @@ After a batch-evaluation the \link{Terminator} is checked, if it is positive, an
 This function should be internally called by the tuner.
 \item \code{tuner_objective(x)}\cr
 \code{numeric()} -> \code{numeric(1)}\cr
-Evaluates a hyperparameter configuration of only numeric values, and returns a scalar objective value,
+Evaluates a hyperparameter configuration (untransformed) of only numeric values, and returns a scalar objective value,
 where the return value is negated if the measure is maximized.
 Internally, \code{$eval_batch()} is called with a single row.
 This function serves as a objective function for tuners of numeric spaces - which should always be minimized.
@@ -89,25 +97,24 @@ This function serves as a objective function for tuners of numeric spaces - whic
 (\link[mlr3:Measure]{mlr3::Measure} | \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}, \code{character(1)}) -> \link[mlr3:ResampleResult]{mlr3::ResampleResult}\cr
 Queries the \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} for the best \link[mlr3:ResampleResult]{mlr3::ResampleResult} according \code{measure} (default is the first measure in \code{$measures}).
 In case of ties, one of the tied values is selected randomly.
-\item \code{archive(unnest = TRUE)}\cr
-\code{logical(1)} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
+\item \code{archive(unnest = "params")}\cr
+\code{character(1)} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
 Returns a table of contained resample results, similar to the one returned by \code{\link[mlr3:benchmark]{mlr3::benchmark()}}'s \code{$aggregate()} method.
-If \code{unnest} is \code{TRUE} (default), hyperparameter configuration settings are stored in separate columns instead of inside a list column,
-and dependent, inactive parameters are encoded with \code{NA}.
-\item \code{result(complete = FALSE)}\cr
-\code{logical(1)} -> named \code{list}\cr
-Access result of the tuning, i.e., the optimal configuration and its estimated performance. Elements:\cr
+Some interesting columns of this table are:
 \itemize{
-\item \code{"perf"}: Named vector of estimated performance values of optimal configuration.
-\item \code{"config"}: Named list of optimal hyperparameter settings, without potential \code{trafo} applied.
-\item \code{"config_trafo"}: Named list of optimal hyperparameter settings, with potential \code{trafo} applied, otherwise the same as \code{config}.
-If\code{complete} is \code{TRUE}, and if the learner had some extra parameters statically set before tuning, these are included in the configuration.
+\item All evaluated measures are included as numeric columns, named with their measure ID.
+\item \code{tune_x}: A list column that contains the parameter settings the tuner evaluated, without potential \code{trafo} applied.
+\item \code{params}: A list column that contains the parameter settings that were actually used in the learner.
+Similar to \code{tune_x}, but with potential \code{trafo} applied.
+Also, if the learner had some extra parameters statically set before tuning, these are included here.
+\code{unnest} can have the values "no", "tune_x" or "params". If it is not set to "no", settings of the respective list-column
+are stored in separate columns instead of the list-column, and dependent, inactive parameters are encoded with \code{NA}.
 }
-\item \code{assign_result(config, perf)}\cr
+\item \code{assign_result(tune_x, perf)}\cr
 (\code{list}, \code{numeric}) -> \code{NULL}\cr
-The tuner writes the estimated optimal configuration and estimated performance values here, for internal use.
+The tuner writes the best found list of settings and estimated performance values here. For internal use.
 \itemize{
-\item \code{config}: Must be a named list of settings only of parameters from \code{param_set} and be feasible, untransformed.
+\item \code{tune_x}: Must be a named list of settings only of parameters from \code{param_set} and be feasible, untransformed.
 \item \code{perf} : Must be a named numeric vector of performance measures, named with performance IDs, regarding all elements in \code{measures}.
 }
 }

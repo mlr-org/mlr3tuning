@@ -42,9 +42,9 @@ test_that("TuningInstance", {
   expect_named(z$perf, "dummy.cp.classif")
 
   # test archive
-  a = inst$archive(unnest = FALSE)
+  a = inst$archive(unnest = "no")
   expect_data_table(a, nrows = 4L)
-  a = inst$archive(unnest = TRUE)
+  a = inst$archive(unnest = "params")
   expect_data_table(a, nrows = 4L)
   expect_true("cp" %in% colnames(a))
   expect_true("dummy.cp.classif" %in% colnames(a))

@@ -36,7 +36,7 @@ TerminatorPerfReached = R6Class("TerminatorPerfReached",
     is_terminated = function(inst) {
       pv = self$param_set$values
       m = inst$measures[[1L]]
-      aggr = inst$archive(unnest = FALSE)
+      aggr = inst$archive(unnest = "no")
       if (m$minimize) {
         any(aggr[[m$id]] <= pv$level)
       } else {

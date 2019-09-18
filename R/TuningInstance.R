@@ -40,12 +40,12 @@
 #'   Further arguments for [mlr3::benchmark()].
 #'
 #' @section Fields:
-#' * `task` :: [mlr3::Task].
-#' * `learner` :: [mlr3::Learner].
-#' * `resampling` :: [mlr3::Resampling].
-#' * `measures` :: list of [mlr3::Measure].
-#' * `param_set` :: [paradox::ParamSet].
-#' * `terminator` :: [Terminator].
+#' * `task` :: [mlr3::Task]; from construction.
+#' * `learner` :: [mlr3::Learner]; from construction.
+#' * `resampling` :: [mlr3::Resampling]; from construction.
+#' * `measures` :: list of [mlr3::Measure]; from construction.
+#' * `param_set` :: [paradox::ParamSet]; from construction.
+#' * `terminator` :: [Terminator]; from construction.
 #' * `bmr` :: [mlr3::BenchmarkResult]\cr
 #'   A benchmark result, container object for all performed [mlr3::ResampleResult]s when evaluating hyperparameter configurations.
 #' * `n_evals` :: `integer(1)`\cr
@@ -53,6 +53,12 @@
 #' * `start_time` :: `POSIXct(1)`\cr
 #'   Time the tuning / evaluations were started.
 #'   This is set in the beginning of `$tune()` of [Tuner].
+#' * `result` :: named `list`\cr
+#'   Access result of the tuning, i.e., the optimal configuration and its estimated performance. Elements:\cr
+#'   * `"perf"`: Named vector of estimated performance values of optimal configuration.
+#'   * `"tune_x"`: Named list of optimal hyperparameter settings, without potential `trafo` applied.
+#'   * `"params"`: Named list of optimal hyperparameter settings, similar to `tune_x`, but with potential `trafo` applied.
+#'     Also, if the learner had some extra parameters statically set before tuning, these are included here.
 #'
 #' @section Methods:
 #' * `eval_batch(dt)`\cr
@@ -70,7 +76,7 @@
 #'
 #' * `tuner_objective(x)`\cr
 #'   `numeric()` -> `numeric(1)`\cr
-#'   Evaluates a hyperparameter configuration of only numeric values, and returns a scalar objective value,
+#'   Evaluates a hyperparameter configuration (untransformed) of only numeric values, and returns a scalar objective value,
 #'   where the return value is negated if the measure is maximized.
 #'   Internally, `$eval_batch()` is called with a single row.
 #'   This function serves as a objective function for tuners of numeric spaces - which should always be minimized.
@@ -80,24 +86,22 @@
 #'   Queries the [mlr3::BenchmarkResult] for the best [mlr3::ResampleResult] according `measure` (default is the first measure in `$measures`).
 #'   In case of ties, one of the tied values is selected randomly.
 #'
-#' * `archive(unnest = TRUE)`\cr
-#'   `logical(1)` -> [data.table::data.table()]\cr
+#' * `archive(unnest = "params")`\cr
+#'   `character(1)` -> [data.table::data.table()]\cr
 #'   Returns a table of contained resample results, similar to the one returned by [mlr3::benchmark()]'s `$aggregate()` method.
-#'   If `unnest` is `TRUE` (default), hyperparameter configuration settings are stored in separate columns instead of inside a list column,
-#'   and dependent, inactive parameters are encoded with `NA`.
+#'   Some interesting columns of this table are:
+#'   * All evaluated measures are included as numeric columns, named with their measure ID.
+#'   * `tune_x`: A list column that contains the parameter settings the tuner evaluated, without potential `trafo` applied.
+#'   * `params`: A list column that contains the parameter settings that were actually used in the learner.
+#'      Similar to `tune_x`, but with potential `trafo` applied.
+#'      Also, if the learner had some extra parameters statically set before tuning, these are included here.
+#'   `unnest` can have the values "no", "tune_x" or "params". If it is not set to "no", settings of the respective list-column
+#'   are stored in separate columns instead of the list-column, and dependent, inactive parameters are encoded with `NA`.
 #'
-#' * `result(complete = FALSE)`\cr
-#'   `logical(1)` -> named `list`\cr
-#'    Access result of the tuning, i.e., the optimal configuration and its estimated performance. Elements:\cr
-#'   * `"perf"`: Named vector of estimated performance values of optimal configuration.
-#'   * `"config"`: Named list of optimal hyperparameter settings, without potential `trafo` applied.
-#'   * `"config_trafo"`: Named list of optimal hyperparameter settings, with potential `trafo` applied, otherwise the same as `config`.
-#'    If`complete` is `TRUE`, and if the learner had some extra parameters statically set before tuning, these are included in the configuration.
-#'
-#' * `assign_result(config, perf)`\cr
+#' * `assign_result(tune_x, perf)`\cr
 #'   (`list`, `numeric`) -> `NULL`\cr
-#'   The tuner writes the estimated optimal configuration and estimated performance values here, for internal use.
-#'   * `config`: Must be a named list of settings only of parameters from `param_set` and be feasible, untransformed.
+#'   The tuner writes the best found list of settings and estimated performance values here. For internal use.
+#'   * `tune_x`: Must be a named list of settings only of parameters from `param_set` and be feasible, untransformed.
 #'   * `perf` : Must be a named numeric vector of performance measures, named with performance IDs, regarding all elements in `measures`.
 #'
 #' @family TuningInstance
@@ -253,8 +257,8 @@ TuningInstance = R6Class("TuningInstance",
       batch_nr = if (length(batch_nr)) max(batch_nr) + 1L else 1L
       bmr$rr_data[, ("batch_nr") := batch_nr]
 
-      # rr_data: add column "config"
-      bmr$rr_data[, ("config") := list(parlist_untrafoed)]
+      # rr_data: add column "tune_x"
+      bmr$rr_data[, ("tune_x") := list(parlist_untrafoed)]
 
       # store evaluated results
       self$bmr$combine(bmr)
@@ -287,10 +291,11 @@ TuningInstance = R6Class("TuningInstance",
       if (m$minimize) y else -y
     },
 
-    archive = function(unnest = TRUE) {
+    archive = function(unnest = "params") {
+      assert_choice(unnest, c("no", "params", "tune_x"))
       dt = self$bmr$aggregate(measures = self$measures, params = TRUE, conditions = TRUE)
-      if (unnest) {
-        dt = mlr3misc::unnest(dt, "params")
+      if (unnest != "no") {
+        dt = mlr3misc::unnest(dt, unnest)
       }
       setcolorder(dt, c("nr", "batch_nr"))
       return(dt)
@@ -318,29 +323,28 @@ TuningInstance = R6Class("TuningInstance",
       tab$resample_result[[best_index]]
     },
 
-    result = function(complete = FALSE) {
-      config = private$.result$config
-      perf = private$.result$perf
-      if (complete)
-        config = insert_named(self$learner$param_set$values, config)
-      # if ps has no trafo, just use the normal config
-      trafo = if (is.null(self$param_set$trafo)) identity else self$param_set$trafo
-      config_trafo = trafo(config)
-      list(config = config, config_trafo = config_trafo, perf = perf)
-    },
-
-    assign_result = function(config, perf) {
-      # result config must be feasible for paramset
-      self$param_set$assert(config)
+    assign_result = function(tune_x, perf) {
+      # result tune_x must be feasible for paramset
+      self$param_set$assert(tune_x)
       # result perf must be numeric and cover all measures
       assert_numeric(perf)
       assert_names(names(perf), permutation.of = ids(self$measures))
-      private$.result = list(config = config, perf = perf)
+      private$.result = list(tune_x = tune_x, perf = perf)
     }
   ),
 
   active = list(
-    n_evals = function() self$bmr$n_resample_results
+    n_evals = function() self$bmr$n_resample_results,
+
+    result = function() {
+      tune_x = private$.result$tune_x
+      perf = private$.result$perf
+      # if ps has no trafo, just use the normal config
+      trafo = if (is.null(self$param_set$trafo)) identity else self$param_set$trafo
+      params = trafo(tune_x)
+      params = insert_named(self$learner$param_set$values, params)
+      list(tune_x = tune_x, params = params, perf = perf)
+    }
   ),
 
   private = list(

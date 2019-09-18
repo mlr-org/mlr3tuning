@@ -108,7 +108,7 @@ instance = TuningInstance$new(
 )
 tt = tnr("random_search") # swap this line to use a different Tuner
 tt$tune(instance) # modifies the instance by reference
-instance$result() # returns best configuration and best performance
+instance$result # returns best configuration and best performance
 instance$archive() # allows access of data.table / benchmark result of full path of all evaluations
 }
 \seealso{

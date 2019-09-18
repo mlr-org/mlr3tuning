@@ -116,7 +116,7 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
 
       # update param vals
       self$tuner$tune(instance)
-      learner$param_set$values = instance$result(complete = TRUE)$config_trafo
+      learner$param_set$values = instance$result$params
 
       # train internal learner
       model = list(learner = learner$train(task))

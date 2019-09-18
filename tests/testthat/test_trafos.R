@@ -14,9 +14,9 @@ test_that("simple exp trafo works", {
   tuner = tnr("design_points", design = d)
   inst = TuningInstance$new(tsk("iris"), ll, rsmp("holdout"), msr("dummy.cp.classif"), ps, te)
   tuner$tune(inst)
-  r = inst$result(complete = FALSE)
-  expect_equal(r$config, list(cp = -7))
-  expect_equal(r$config_trafo, list(cp = 2^-7))
+  r = inst$result
+  expect_equal(r$tune_x, list(cp = -7))
+  expect_equal(r$params, list(xval = 0, cp = 2^-7))
   expect_equal(r$perf, c(dummy.cp.classif = 2^-7))
   a = inst$archive()
   expect_equal(a$cp, c(2^-7, 2^-3))
@@ -39,11 +39,11 @@ test_that("trafo where param names change", {
   tuner = tnr("grid_search", resolution = 2)
   inst = TuningInstance$new(tsk("iris"), ll, rsmp("holdout"), msr("dummy.cp.classif"), ps, te)
   tuner$tune(inst)
-  r = inst$result(complete = FALSE)
-  expect_equal(r$config, list(foo = "a"))
-  expect_equal(r$config_trafo, list(cp = 0.11))
+  r = inst$result
+  expect_equal(r$tune_x, list(foo = "a"))
+  expect_equal(r$params, list(xval = 0, cp = 0.11))
   expect_equal(r$perf, c(dummy.cp.classif = 0.11))
   a = inst$archive()
-  expect_equal(a$cp, c(0.11, 0.22))
+  expect_set_equal(a$cp, c(0.11, 0.22)) # NB: grid search randomly permutes order
 })
 

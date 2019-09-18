@@ -9,7 +9,7 @@ test_that("API", {
     a = pe$archive()
     expect_data_table(a, nrows = n_evals)
     expect_true("cp" %in% names(a))
-    expect_true("params" %in% names(pe$archive(FALSE)))
+    expect_true("params" %in% names(pe$archive(unnest = "no")))
   }
 })
 
@@ -30,8 +30,8 @@ test_that("we get a result when some subordinate params are not fulfilled", {
   d = data.table(xx = c("a", "b"), yy = c(1, NA), cp = c(0.2, 0.1))
   inst$eval_batch(d)
   tuner_assign_result_default(inst)
-  r = inst$result()
+  r = inst$result
   expect_equal(r$perf, c(dummy.cp.regr = 0.1))
-  expect_equal(r$config, list(xx = "b", cp = 0.1))
+  expect_equal(r$tune_x, list(xx = "b", cp = 0.1))
 })
 
