@@ -1,9 +1,10 @@
 tuner_assign_result_default = function(instance) {
   assert_r6(instance, "TuningInstance")
+  # get best RR - best by mean perf value and extract perf values
   rr = instance$best()
-  pv = rr$learners[[1L]]$param_set$values
-  pv = pv[names(pv) %in% instance$param_set$ids()] # only store values from the inst$ps
   perf = rr$aggregate(instance$measures)
+  # get the untrafoed config that matches this RR
+  pv = instance$bmr$rr_data[rr$uhash, on = "uhash"]$config[[1L]]
   instance$assign_result(pv, perf)
   invisible(NULL)
 }

@@ -233,11 +233,12 @@ TuningInstance = R6Class("TuningInstance",
       lg$info("Evaluating %i configurations", nrow(dt))
       lg$info(capture.output(print(dt, class = FALSE, row.names = FALSE, print.keys = FALSE)))
 
-      # trafo and remove non-satisfied deps
-      parlist = design$transpose(trafo = TRUE, filter_na = TRUE)
+      # convert configs to lists and remove non-satisfied deps
+      parlist_trafoed = design$transpose(trafo = TRUE, filter_na = TRUE)
+      parlist_untrafoed = design$transpose(trafo = FALSE, filter_na = TRUE)
 
-      # clone learners same length as parlist and set the configs
-      lrns = lapply(parlist, function(xs) {
+      # clone learners same length as parlist and set the configs (trafoed)
+      lrns = lapply(parlist_trafoed, function(xs) {
         lrn = self$learner$clone(deep = TRUE)
         lrn$param_set$values = insert_named(lrn$param_set$values, xs)
         return(lrn)
@@ -247,10 +248,13 @@ TuningInstance = R6Class("TuningInstance",
       d = data.table(task = list(self$task), learner = lrns, resampling = list(self$resampling))
       bmr = invoke(benchmark, design = d, .args = self$bm_args)
 
-      # add column "batch_nr"
+      # rr_data: add column "batch_nr"
       batch_nr = self$bmr$rr_data$batch_nr
       batch_nr = if (length(batch_nr)) max(batch_nr) + 1L else 1L
       bmr$rr_data[, ("batch_nr") := batch_nr]
+
+      # rr_data: add column "config"
+      bmr$rr_data[, ("config") := list(parlist_untrafoed)]
 
       # store evaluated results
       self$bmr$combine(bmr)
@@ -309,8 +313,9 @@ TuningInstance = R6Class("TuningInstance",
       if (allMissing(y))
         stopf("No non-missing performance value stored")
 
-      best = if (measure$minimize) which_min else which_max
-      tab$resample_result[[best(y, na_rm = TRUE)]]
+      which_best = if (measure$minimize) which_min else which_max
+      best_index = which_best(y, na_rm = TRUE)
+      tab$resample_result[[best_index]]
     },
 
     result = function(complete = FALSE) {
