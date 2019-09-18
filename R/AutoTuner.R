@@ -4,7 +4,7 @@
 #' @format [R6::R6Class] object inheriting from [mlr3::Learner].
 #'
 #' @description
-#' The `AutoTuner` is a [mlr3::Learner] which auto-tunes by first going tuning its hyperparameters
+#' The `AutoTuner` is a [mlr3::Learner] which auto-tunes by first tuning the hyperparameters of its encapsulated learner
 #' on the training data, then setting the optimal configuration in the learner, then finally
 #' fitting the model on the complete training data.
 #' Note that this class allows to perform nested resampling by passing an [AutoTuner] object to [mlr3::resample()]
@@ -32,14 +32,17 @@
 #' @section Fields:
 #' All fields from [Learner], and additionally:
 #'
-#' * `learner` :: [mlr3::Learner]\cr
-#' * `resampling` :: [mlr3::Resampling].
-#' * `measures` :: list of [mlr3::Measure].
-#' * `tune_ps` :: [paradox::ParamSet]\cr
-#' * `terminator` :: [Terminator].
-#' * `tuner` :: [Tuner].
-#' * `store_bmr` :: `logical(1)`\cr
-#'   If `TRUE`, stores the benchmark result as slot `$bmr`.
+#' * `learner` :: [mlr3::Learner]; from construction.
+#' * `resampling` :: [mlr3::Resampling]; from construction.
+#' * `measures` :: list of [mlr3::Measure]; from construction.
+#' * `tune_ps` :: [paradox::ParamSet]; from construction.
+#' * `terminator` :: [Terminator]; from construction.
+#' * `tuner` :: [Tuner]; from construction.
+#' * `store_tuning_instance` :: `logical(1)`\cr
+#'   If `TRUE`, stores the internally created [TuningInstance] with all intermediate results in slot `$tuning_instance`.
+#'   By default, this is `TRUE`.
+#' * `tuning_instance` :: [TuningInstance]\cr
+#'   Internally created tuning instance with all intermediate results.
 #'
 #' @section Methods:
 #' See [mlr3::Learner].
@@ -59,7 +62,7 @@
 #' terminator = term("evals", n_evals = 5)
 #' tuner = tnr("grid_search")
 #' at = AutoTuner$new(learner, resampling, measures, param_set, terminator, tuner)
-#' at$store_bmr = TRUE
+#' at$store_tuning_instance = TRUE
 #'
 #' at$train(task)
 #' at$model
@@ -72,8 +75,9 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
     measures = NULL,
     tuner = NULL,
     tune_ps = NULL,
-    store_bmr = FALSE,
+    store_tuning_instance = TRUE,
     bm_args = NULL,
+    # tuning_instance = NULL,
 
     initialize = function(learner, resampling, measures, tune_ps, terminator, tuner, bm_args = list()) {
       self$learner = assert_learner(learner)
@@ -117,8 +121,8 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
       # train internal learner
       model = list(learner = learner$train(task))
 
-      if (isTRUE(self$store_bmr)) {
-        model$bmr = instance$bmr
+      if (isTRUE(self$store_tuning_instance)) {
+        model$tuning_instance = instance
       }
 
       model
@@ -143,7 +147,9 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
         stop("param_set is read-only.")
       }
       private$.param_set
-    }
+    },
+
+    tuning_instance = function() self$model$tuning_instance
   ),
   private = list(
     deep_clone = function(name, value) {

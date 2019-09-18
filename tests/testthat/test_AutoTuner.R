@@ -1,29 +1,25 @@
 context("AutoTuner")
 
 test_that("AutoTuner / train+predict", {
-  measures = map(c("classif.ce", "time_train", "time_both"), msr)
   te = term("evals", n_evals = 3)
   task = tsk("iris")
-
-  ps = TEST_MAKE_PS1()
-  tuner = TunerRandomSearch$new()
-  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), measures, ps, te, tuner = tuner)
-  at$store_bmr = TRUE
-
-  at_clone = at$clone(deep = TRUE)
-  expect_learner(at$train(task))
-  expect_prediction({
-    prd1 = at$predict(task)
-  })
-  at_clone$state = at$state
-  expect_equal(at$clone(deep = TRUE), at_clone)
-  expect_prediction({
-    prd2 = at_clone$predict(task)
-  })
-  expect_equal(prd1, prd2)
+  ps = TEST_MAKE_PS1(n_dim = 1)
+  ms = MeasureDummyCPClassif$new(fun = function(cp) if (cp == 0.2) 0 else 1) # lets fake a measure, so we control the best config
+  tuner = tnr("grid_search", resolution = 3)
+  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, ps, te, tuner = tuner)
+  expect_learner(at)
+  at$train(task)
+  expect_learner(at)
+  expect_equal(at$model$learner$param_set$values, list(xval = 0, cp = 0.2))
+  inst = at$tuning_instance
+  expect_benchmark_result(inst$bmr)
+  a = inst$archive()
+  expect_data_table(a, nrows = 3L)
+  r = inst$result()
+  expect_equal(r$config, list(cp = 0.2))
+  prd = at$predict(task)
+  expect_prediction(prd)
   expect_is(at$model$learner$model, "rpart")
-
-  expect_benchmark_result(at$model$bmr)
 })
 
 test_that("AutoTuner / resample", {
@@ -31,31 +27,31 @@ test_that("AutoTuner / resample", {
   inner_folds = 1L
   inner_evals = 3L
 
-  p_measures = c("classif.ce", "time_train", "time_both")
-  measures = mlr_measures$mget(p_measures)
+  ms = MeasureDummyCPClassif$new(fun = function(cp) if (cp == 0.2) 0 else 1) # lets fake a measure, so we control the best config
+  tuner = tnr("grid_search", resolution = 3)
   r_inner = rsmp("holdout")
   r_outer = rsmp("cv", folds = 2)
-
   param_set = TEST_MAKE_PS1()
-
   te = term("evals", n_evals = inner_evals)
+  tuner = tnr("grid_search", resolution = 3)
+  at = AutoTuner$new(lrn("classif.rpart"), r_inner, ms, param_set, te, tuner)
 
-  tuner = TunerRandomSearch$new()
-  at = AutoTuner$new(lrn("classif.rpart"), r_inner, measures, param_set, te, tuner)
+  expect_null(at$model$tuning_instance)
 
-  expect_null(at$model$bmr)
-
-  rr = resample(tsk("iris"), at, r_outer)
-
+  rr = resample(tsk("iris"), at, r_outer, store_models = TRUE)
 
   # check tuning results of all outer folds
   expect_data_table(rr$data, nrows = outer_folds)
-  # lapply(rr$learners, function(autotuner) {
-  #   expect_data_table(autotuner$tuner$pe$bmr$data, nrows = inner_evals * inner_folds)
-  #   expect_data_table(autotuner$tuner$pe$bmr$archive(), nrows = inner_evals)
-  #   expect_equal(names(autotuner$tuner$tune_result()$score), p_measures)
-  #   autotuner$tuner$tune_result()$score
-  # })
+  lapply(rr$learners, function(ll) {
+    assert_r6(ll, "AutoTuner")
+    expect_equal(ll$model$learner$param_set$values, list(xval = 0, cp = 0.2))
+    inst = ll$tuning_instance
+    assert_r6(inst, "TuningInstance")
+    r = inst$result()
+    expect_data_table(inst$bmr$data, nrows = inner_evals * inner_folds)
+    expect_data_table(inst$archive(), nrows = inner_evals)
+    expect_numeric(r$perf, len = 1L)
+  })
 })
 
 # we had an issue that the AutoTuner did not return statically configured param in its result
@@ -85,3 +81,6 @@ test_that("AutoTuner / param_set", {
   at2 = at$clone(deep = TRUE)
   expect_equal(at$param_set, at2$param_set)
 })
+
+
+

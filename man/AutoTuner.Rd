@@ -6,7 +6,7 @@
 \title{AutoTuner}
 \format{\link[R6:R6Class]{R6::R6Class} object inheriting from \link[mlr3:Learner]{mlr3::Learner}.}
 \description{
-The \code{AutoTuner} is a \link[mlr3:Learner]{mlr3::Learner} which auto-tunes by first going tuning its hyperparameters
+The \code{AutoTuner} is a \link[mlr3:Learner]{mlr3::Learner} which auto-tunes by first tuning the hyperparameters of its encapsulated learner
 on the training data, then setting the optimal configuration in the learner, then finally
 fitting the model on the complete training data.
 Note that this class allows to perform nested resampling by passing an \link{AutoTuner} object to \code{\link[mlr3:resample]{mlr3::resample()}}
@@ -37,14 +37,17 @@ Further arguments for \code{\link[mlr3:benchmark]{mlr3::benchmark()}}, see \link
 
 All fields from \link{Learner}, and additionally:
 \itemize{
-\item \code{learner} :: \link[mlr3:Learner]{mlr3::Learner}\cr
-\item \code{resampling} :: \link[mlr3:Resampling]{mlr3::Resampling}.
-\item \code{measures} :: list of \link[mlr3:Measure]{mlr3::Measure}.
-\item \code{tune_ps} :: \link[paradox:ParamSet]{paradox::ParamSet}\cr
-\item \code{terminator} :: \link{Terminator}.
-\item \code{tuner} :: \link{Tuner}.
-\item \code{store_bmr} :: \code{logical(1)}\cr
-If \code{TRUE}, stores the benchmark result as slot \code{$bmr}.
+\item \code{learner} :: \link[mlr3:Learner]{mlr3::Learner}; from construction.
+\item \code{resampling} :: \link[mlr3:Resampling]{mlr3::Resampling}; from construction.
+\item \code{measures} :: list of \link[mlr3:Measure]{mlr3::Measure}; from construction.
+\item \code{tune_ps} :: \link[paradox:ParamSet]{paradox::ParamSet}; from construction.
+\item \code{terminator} :: \link{Terminator}; from construction.
+\item \code{tuner} :: \link{Tuner}; from construction.
+\item \code{store_tuning_instance} :: \code{logical(1)}\cr
+If \code{TRUE}, stores the internally created \link{TuningInstance} with all intermediate results in slot \code{$tuning_instance}.
+By default, this is \code{TRUE}.
+\item \code{tuning_instance} :: \link{TuningInstance}\cr
+Internally created tuning instance with all intermediate results.
 }
 }
 
@@ -66,7 +69,7 @@ param_set = ParamSet$new(
 terminator = term("evals", n_evals = 5)
 tuner = tnr("grid_search")
 at = AutoTuner$new(learner, resampling, measures, param_set, terminator, tuner)
-at$store_bmr = TRUE
+at$store_tuning_instance = TRUE
 
 at$train(task)
 at$model
