@@ -112,8 +112,8 @@ instance$result() # returns best configuration and best performance
 instance$archive() # allows access of data.table / benchmark result of full path of all evaluations
 }
 \seealso{
-Other Tuner: \code{\link{TunerGenSA}},
-  \code{\link{TunerGridSearch}},
+Other Tuner: \code{\link{TunerDesignPoints}},
+  \code{\link{TunerGenSA}}, \code{\link{TunerGridSearch}},
   \code{\link{TunerRandomSearch}}
 }
 \concept{Tuner}

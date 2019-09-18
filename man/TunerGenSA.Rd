@@ -33,7 +33,8 @@ where mlr3 terminators allow to obtain the same behavior.
 # see ?Tuner
 }
 \seealso{
-Other Tuner: \code{\link{TunerGridSearch}},
+Other Tuner: \code{\link{TunerDesignPoints}},
+  \code{\link{TunerGridSearch}},
   \code{\link{TunerRandomSearch}}, \code{\link{Tuner}}
 }
 \concept{Tuner}

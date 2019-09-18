@@ -40,7 +40,8 @@ Maximum number of configurations to try in a batch.
 # see ?Tuner
 }
 \seealso{
-Other Tuner: \code{\link{TunerGenSA}},
+Other Tuner: \code{\link{TunerDesignPoints}},
+  \code{\link{TunerGenSA}},
   \code{\link{TunerRandomSearch}}, \code{\link{Tuner}}
 }
 \concept{Tuner}
