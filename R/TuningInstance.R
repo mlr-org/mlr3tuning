@@ -202,7 +202,7 @@ TuningInstance = R6Class("TuningInstance",
       self$terminator = assert_terminator(terminator)
       self$bm_args = assert_list(bm_args, names = "unique")
       self$bmr = BenchmarkResult$new(data.table())
-      self$bmr$rr_data[, ("batch_nr") := integer()]
+      self$bmr$rr_data[, c("batch_nr", "tune_x") := list(integer(), list())]
       self$resampling$instantiate(self$task)
     },
 
