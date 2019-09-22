@@ -18,7 +18,7 @@ test_that("simple exp trafo works", {
   expect_equal(r$tune_x, list(cp = -7))
   expect_equal(r$params, list(xval = 0, cp = 2^-7))
   expect_equal(r$perf, c(dummy.cp.classif = 2^-7))
-  a = inst$archive()
+  a = inst$archive(unnest = "params")
   expect_equal(a$cp, c(2^-7, 2^-3))
 })
 
@@ -43,7 +43,7 @@ test_that("trafo where param names change", {
   expect_equal(r$tune_x, list(foo = "a"))
   expect_equal(r$params, list(xval = 0, cp = 0.11))
   expect_equal(r$perf, c(dummy.cp.classif = 0.11))
-  a = inst$archive()
+  a = inst$archive(unnest = "params")
   expect_set_equal(a$cp, c(0.11, 0.22)) # NB: grid search randomly permutes order
 })
 

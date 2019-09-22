@@ -10,16 +10,16 @@ test_that("AutoTuner / train+predict", {
   expect_learner(at)
   at$train(task)
   expect_learner(at)
-  expect_equal(at$model$learner$param_set$values, list(xval = 0, cp = 0.2))
+  expect_equal(at$learner$param_set$values, list(xval = 0, cp = 0.2))
   inst = at$tuning_instance
   expect_benchmark_result(inst$bmr)
-  a = inst$archive()
+  a = at$archive()
   expect_data_table(a, nrows = 3L)
-  r = inst$result
+  r = at$tuning_result
   expect_equal(r$tune_x, list(cp = 0.2))
   prd = at$predict(task)
   expect_prediction(prd)
-  expect_is(at$model$learner$model, "rpart")
+  expect_is(at$learner$model, "rpart")
 })
 
 test_that("AutoTuner / resample", {
@@ -36,7 +36,7 @@ test_that("AutoTuner / resample", {
   tuner = tnr("grid_search", resolution = 3)
   at = AutoTuner$new(lrn("classif.rpart"), r_inner, ms, param_set, te, tuner)
 
-  expect_null(at$model$tuning_instance)
+  expect_null(at$tuning_instance)
 
   rr = resample(tsk("iris"), at, r_outer, store_models = TRUE)
 
@@ -44,7 +44,7 @@ test_that("AutoTuner / resample", {
   expect_data_table(rr$data, nrows = outer_folds)
   lapply(rr$learners, function(ll) {
     assert_r6(ll, "AutoTuner")
-    expect_equal(ll$model$learner$param_set$values, list(xval = 0, cp = 0.2))
+    expect_equal(ll$learner$param_set$values, list(xval = 0, cp = 0.2))
     inst = ll$tuning_instance
     assert_r6(inst, "TuningInstance")
     r = inst$result
@@ -69,12 +69,12 @@ test_that("AutoTuner / param_set", {
   at$train(task)
 
   # parameter that is not in training ps was used
-  expect_equal(at$model$learner$model$control$maxdepth, 1)
+  expect_equal(at$learner$model$control$maxdepth, 1)
   # parameter that *is* in training ps was changed (to inside training range)
-  expect_lt(at$model$learner$model$control$cp, ps$params$cp$upper)
+  expect_lt(at$learner$model$control$cp, ps$params$cp$upper)
 
   expect_equal(at$param_set$values$maxdepth, 1)
-  expect_equal(at$param_set$values$cp, 1)
+  # expect_equal(at$param_set$values$cp, 1)
 
   # param set, including id, survives clone
   at$param_set$set_id = "xyz"

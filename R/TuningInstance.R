@@ -86,7 +86,7 @@
 #'   Queries the [mlr3::BenchmarkResult] for the best [mlr3::ResampleResult] according `measure` (default is the first measure in `$measures`).
 #'   In case of ties, one of the tied values is selected randomly.
 #'
-#' * `archive(unnest = "params")`\cr
+#' * `archive(unnest = "no")`\cr
 #'   `character(1)` -> [data.table::data.table()]\cr
 #'   Returns a table of contained resample results, similar to the one returned by [mlr3::benchmark()]'s `$aggregate()` method.
 #'   Some interesting columns of this table are:
@@ -291,7 +291,7 @@ TuningInstance = R6Class("TuningInstance",
       if (m$minimize) y else -y
     },
 
-    archive = function(unnest = "params") {
+    archive = function(unnest = "no") {
       assert_choice(unnest, c("no", "params", "tune_x"))
       dt = self$bmr$aggregate(measures = self$measures, params = TRUE, conditions = TRUE)
       if (unnest != "no") {

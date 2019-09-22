@@ -26,6 +26,6 @@ test_that("TunerGenSA with int params and trafo", {
   inst = TuningInstance$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), ps, te)
   tt = TunerGenSA$new()
   tt$tune(inst)
-  d = inst$archive()
+  d = inst$archive(unnest = "params")
   expect_integer(d$minsplit)
 })

@@ -37,23 +37,29 @@ Further arguments for \code{\link[mlr3:benchmark]{mlr3::benchmark()}}, see \link
 
 All fields from \link{Learner}, and additionally:
 \itemize{
-\item \code{learner} :: \link[mlr3:Learner]{mlr3::Learner}; from construction.
-\item \code{resampling} :: \link[mlr3:Resampling]{mlr3::Resampling}; from construction.
-\item \code{measures} :: list of \link[mlr3:Measure]{mlr3::Measure}; from construction.
-\item \code{tune_ps} :: \link[paradox:ParamSet]{paradox::ParamSet}; from construction.
-\item \code{terminator} :: \link{Terminator}; from construction.
+\item \code{instance_args} :: \code{list}
+All arguments from construction to create the \link{TuningInstance}.
 \item \code{tuner} :: \link{Tuner}; from construction.
 \item \code{store_tuning_instance} :: \code{logical(1)}\cr
 If \code{TRUE}, stores the internally created \link{TuningInstance} with all intermediate results in slot \code{$tuning_instance}.
 By default, this is \code{TRUE}.
+\item \code{learner} :: \link[mlr3:Learner]{mlr3::Learner}
+Trained learner
 \item \code{tuning_instance} :: \link{TuningInstance}\cr
 Internally created tuning instance with all intermediate results.
+\item \code{tuning_result} :: named \code{list}\cr
+Short-cut to \code{result} from \link{TuningInstance}.
 }
 }
 
 \section{Methods}{
 
-See \link[mlr3:Learner]{mlr3::Learner}.
+\itemize{
+\item \code{archive(unnest = "params")}\cr
+\code{character(1)} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
+Short-cut to method from \link{TuningInstance}.
+\item And see \link[mlr3:Learner]{mlr3::Learner}.
+}
 }
 
 \examples{
