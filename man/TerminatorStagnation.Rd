@@ -25,6 +25,10 @@ If the improvement is less than \code{threshold}, tuning is stopped, default is 
 }
 }
 
+\examples{
+TerminatorStagnation$new()
+term("stagnation", iters = 5, threshold = 1e-5)
+}
 \seealso{
 Other Terminator: \code{\link{TerminatorClockTime}},
   \code{\link{TerminatorCombo}},

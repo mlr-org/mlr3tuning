@@ -151,13 +151,14 @@ design = CJ(cp = c(0.05, 0.01), minsplit = c(5, 3))
 inst$eval_batch(design)
 inst$archive()
 
-# try more points, catch the eventually raised terminated message
+# try more points, catch the raised terminated message
 tryCatch(
   inst$eval_batch(data.table(cp = 0.01, minsplit = 7)),
   terminated_error = function(e) message(as.character(e))
 )
 
 # try another point although the budget is now exhausted
+# -> no extra evaluations
 tryCatch(
   inst$eval_batch(data.table(cp = 0.01, minsplit = 9)),
   terminated_error = function(e) message(as.character(e))

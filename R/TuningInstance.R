@@ -137,13 +137,14 @@
 #' inst$eval_batch(design)
 #' inst$archive()
 #'
-#' # try more points, catch the eventually raised terminated message
+#' # try more points, catch the raised terminated message
 #' tryCatch(
 #'   inst$eval_batch(data.table(cp = 0.01, minsplit = 7)),
 #'   terminated_error = function(e) message(as.character(e))
 #' )
 #'
 #' # try another point although the budget is now exhausted
+#' # -> no extra evaluations
 #' tryCatch(
 #'   inst$eval_batch(data.table(cp = 0.01, minsplit = 9)),
 #'   terminated_error = function(e) message(as.character(e))
@@ -295,11 +296,13 @@ TuningInstance = R6Class("TuningInstance",
     archive = function(unnest = "no") {
       assert_choice(unnest, c("no", "params", "tune_x"))
       dt = self$bmr$aggregate(measures = self$measures, params = TRUE, conditions = TRUE)
+      # TODO: column reordering should become a mlr3misc function
+      setcolorder(dt, c("nr", "batch_nr"))
+      setcolorder(dt, c(head(names(dt), which(names(dt) == "params")), "tune_x"))
       if (unnest != "no") {
         dt = mlr3misc::unnest(dt, unnest)
       }
-      setcolorder(dt, c("nr", "batch_nr"))
-      return(dt)
+      dt[]
     },
 
     best = function(measure = NULL) {

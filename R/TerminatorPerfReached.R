@@ -18,10 +18,13 @@
 #' * `level` :: `numeric(1)`\cr
 #'   Performance level that needs to be reached, default is 0.
 #'   Terminates if the performance exceeds (respective measure has to be maximized) or
-#'   falls below (respective measure has to be minimized).
+#'   falls below (respective measure has to be minimized) this value.
 #'
 #' @family Terminator
 #' @export
+#' @examples
+#' TerminatorPerfReached$new()
+#' term("perf_reached")
 TerminatorPerfReached = R6Class("TerminatorPerfReached",
   inherit = Terminator,
   public = list(

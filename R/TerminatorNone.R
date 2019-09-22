@@ -11,6 +11,7 @@
 #' @section Construction:
 #' ```
 #' t = TerminatorNone$new()
+#' term("none")
 #' ```
 #'
 #' @family Terminator

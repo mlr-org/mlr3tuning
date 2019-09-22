@@ -11,6 +11,7 @@ Mainly useful for grid search, or maybe other tuners, where the stopping is inhe
 }
 \section{Construction}{
 \preformatted{t = TerminatorNone$new()
+term("none")
 }
 }
 
