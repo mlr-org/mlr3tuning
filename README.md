@@ -10,8 +10,17 @@ Extends the [mlr3](https://mlr3.mlr-org.com) package with tuning.
 
 ## Installation
 
-```r
-remotes::install_github("mlr-org/mlr3tuning")
+
+CRAN version
+
+```{r eval = FALSE}
+install.packages("mlr3filters")
+```
+
+Development version
+
+```{r, eval = FALSE}
+remotes::install_github("mlr-org/mlr3filters")
 ```
 
 ## Documentation

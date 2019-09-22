@@ -42,14 +42,14 @@ TerminatorClockTime = R6Class("TerminatorClockTime",
       super$initialize(param_set = ps)
     },
 
-    is_terminated = function(inst) {
+    is_terminated = function(instance) {
       pv = self$param_set$values
       #FIXME: actually this should be done in the assert of the paramset?
       if (!xor(is.null(pv$secs), is.null(pv$stop_time)))
         stopf("Exactly one parameter of 'secs' and 'stop_time' can be set!")
 
       if (!is.null(pv$secs)) {
-        d = difftime(Sys.time(), inst$start_time, units = "secs")
+        d = difftime(Sys.time(), instance$start_time, units = "secs")
         return(d >= pv$secs)
       }
       return(Sys.time() >= pv$stop_time)

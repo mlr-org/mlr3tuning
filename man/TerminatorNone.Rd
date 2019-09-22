@@ -21,8 +21,7 @@ Other Terminator: \code{\link{TerminatorClockTime}},
   \code{\link{TerminatorModelTime}},
   \code{\link{TerminatorPerfReached}},
   \code{\link{TerminatorStagnation}},
-  \code{\link{Terminator}}, \code{\link{mlr_terminators}},
-  \code{\link{mlr_tuners}}
+  \code{\link{Terminator}}, \code{\link{mlr_terminators}}
 }
 \concept{Terminator}
 \keyword{datasets}

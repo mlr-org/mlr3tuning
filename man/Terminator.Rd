@@ -6,20 +6,20 @@
 \title{Abstract Terminator Class}
 \format{\link[R6:R6Class]{R6::R6Class} object.}
 \description{
-Abstract \code{Terminator} class that implements the main functionality each terminator must have.
+Abstract \code{Terminator} class that implements the base functionality each terminator must provide.
 A terminator is an object that determines when to stop the tuning.
 
 Termination of tuning works as follows:
 \itemize{
 \item Evaluations in a tuner are performed in batches.
-\item Before and after a batch evaluation the \link{Terminator} is checked, if it is positive, we stop.
+\item Before and after each batch evaluation, the \link{Terminator} is checked, and if it is positive, we stop.
 \item The tuning algorithm itself might decide not to produce any more points, or even might decide to do a smaller batch in its last evaluation.
 }
 
 Therefore the following note seems in order:
 While it is definitely possible to execute a fine-grained control for termination, and for many tuners we can specify exactly when to stop,
-it might happen that a few too many or even a few too few evaluations are performed, especially if the batch size is larger than 1.
-So better check the size of the returned archive.
+it might happen that too few or even too many evaluations are performed, especially if multiple points are evaluated in a single batch (c.f. batch size parameter of many tuners).
+So it is advised to check the size of the returned archive, in particular if you are benchmarking multiple tuners.
 }
 \section{Construction}{
 \preformatted{t = Terminator$new(param_set = ParamSet$new())
@@ -33,7 +33,7 @@ Set of control parameters for terminator.
 \section{Fields}{
 
 \itemize{
-\item \code{param_set} :: \link[paradox:ParamSet]{paradox::ParamSet}\cr
+\item \code{param_set} :: \link[paradox:ParamSet]{paradox::ParamSet}; from construction.
 }
 }
 
@@ -42,8 +42,8 @@ Set of control parameters for terminator.
 \itemize{
 \item \code{is_terminated(inst)}\cr
 \link{TuningInstance} -> \code{logical(1)}\cr
-Is \code{TRUE} iff the termination criterion is positive.
-Must be implemented in a subclass.
+Is \code{TRUE} iff the termination criterion is positive, and \code{FALSE} otherwise.
+Must be implemented in each subclass.
 }
 }
 
@@ -55,7 +55,7 @@ Other Terminator: \code{\link{TerminatorClockTime}},
   \code{\link{TerminatorNone}},
   \code{\link{TerminatorPerfReached}},
   \code{\link{TerminatorStagnation}},
-  \code{\link{mlr_terminators}}, \code{\link{mlr_tuners}}
+  \code{\link{mlr_terminators}}
 }
 \concept{Terminator}
 \keyword{datasets}

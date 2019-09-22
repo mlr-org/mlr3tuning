@@ -8,6 +8,8 @@
 #' @description
 #' Subclass for random search tuning.
 #'
+#' The random points are sampled by [paradox::generate_design_random()].
+#'
 #' In order to support general termination criteria and parallelization,
 #' we evaluate points in a batch-fashion of size `batch_size`.
 #' Larger batches mean we can parallelize more, smaller batches imply a more fine-grained checking
@@ -47,7 +49,7 @@ TunerRandomSearch = R6Class("TunerRandomSearch",
   private = list(
     tune_internal = function(instance) {
       batch_size = self$param_set$values$batch_size
-      while (TRUE) { # iterate until we have an exception from eval_batch
+      repeat { # iterate until we have an exception from eval_batch
         design = generate_design_random(instance$param_set, batch_size)
         instance$eval_batch(design$data)
       }

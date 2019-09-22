@@ -1,15 +1,3 @@
-tuner_assign_result_default = function(instance) {
-  assert_r6(instance, "TuningInstance")
-  # get best RR - best by mean perf value and extract perf values
-  rr = instance$best()
-  perf = rr$aggregate(instance$measures)
-  # get the untrafoed config that matches this RR
-  pv = instance$bmr$rr_data[rr$uhash, on = "uhash"]$tune_x[[1L]]
-  instance$assign_result(pv, perf)
-  invisible(NULL)
-}
-
-
 #' @title Tuner
 #'
 #' @usage NULL
@@ -17,16 +5,15 @@ tuner_assign_result_default = function(instance) {
 #' @include mlr_tuners.R
 #'
 #' @description
-#' Abstract `Tuner` class that implements the main functionality each tuner must have.
+#' Abstract `Tuner` class that implements the base functionality each tuner must provide.
 #' A tuner is an object that describes the tuning strategy, i.e. how to optimize the black-box
 #' function and its feasible set defined by the [TuningInstance] object.
 #'
-#' If the tuning instance contains multiple measures, they will always be all evaluated.
-#' But single-criteria tuners always optimize the first measure in the passed list.
+#' A list of measures can be passed to the instance, and they will always be all evaluated.
+#' However, single-criteria tuners optimize only the first measure.
 #'
-#' A tuner must at the end of its tuning write its result to the `assign_result` method
-#' of the [Tuninginstance] where the best selected hyperparameter configuration and its estimated performance
-#' vector are then stored for result access.
+#' A tuner must write its result to the `assign_result` method of the [Tuninginstance] at the end of its tuning in
+#' order to store the best selected hyperparameter configuration and its estimated performance vector.
 #'
 #' @section Construction:
 #' ```
@@ -47,14 +34,14 @@ tuner_assign_result_default = function(instance) {
 #'   Note that these packages will be loaded via [requireNamespace()], and are not attached.
 #'
 #' @section Fields:
-#' * `param_set` :: [paradox::ParamSet]\cr
+#' * `param_set` :: [paradox::ParamSet]; from construction.
 #' * `param_classes` :: `character()`\cr
-#' * `properties` :: `character()`\cr
-#' * `packages` :: `character()`\cr
+#' * `properties` :: `character(); from construction.
+#' * `packages` :: `character()`; from construction.
 #'
 #' @section Methods:
 #' * `tune(instance)`\cr
-#'   ([TuningInstance]) -> `self`\cr
+#'   [TuningInstance] -> `self`\cr
 #'   Performs the tuning on a [TuningInstance] until termination.
 #'
 #' @section Private Methods:
@@ -86,7 +73,7 @@ tuner_assign_result_default = function(instance) {
 #'  * Overwrite the private super-method `assign_result` if you want to decide yourself how to estimate
 #'    the final configuration in the instance and its estimated performance.
 #'    The default behavior is: We pick the best resample-experiment, regarding the first measure,
-#'    then assign its config and aggregated perf to the instance.
+#'    then assign its configuration and aggregated performance to the instance.
 #'
 #' @family Tuner
 #' @export
@@ -169,6 +156,20 @@ Tuner = R6Class("Tuner",
     # - pick the best resample-experiment, regarding the first measure
     # - then assign its config and aggregated perf to instance
     # --> a Tuner can overwrite this if it wants to do something more fancy
-    assign_result = tuner_assign_result_default
+    assign_result = function(instance) {
+      tuner_assign_result_default(instance)
+    }
   )
 )
+
+tuner_assign_result_default = function(instance) {
+  assert_r6(instance, "TuningInstance")
+  # get best RR - best by mean perf value and extract perf values
+  rr = instance$best()
+  perf = rr$aggregate(instance$measures)
+  # get the untrafoed config that matches this RR
+  pv = instance$bmr$rr_data[rr$uhash, on = "uhash"]$tune_x[[1L]]
+  instance$assign_result(pv, perf)
+  invisible(NULL)
+}
+

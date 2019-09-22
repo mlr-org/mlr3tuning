@@ -6,16 +6,15 @@
 \title{Tuner}
 \format{\link[R6:R6Class]{R6::R6Class} object.}
 \description{
-Abstract \code{Tuner} class that implements the main functionality each tuner must have.
+Abstract \code{Tuner} class that implements the base functionality each tuner must provide.
 A tuner is an object that describes the tuning strategy, i.e. how to optimize the black-box
 function and its feasible set defined by the \link{TuningInstance} object.
 
-If the tuning instance contains multiple measures, they will always be all evaluated.
-But single-criteria tuners always optimize the first measure in the passed list.
+A list of measures can be passed to the instance, and they will always be all evaluated.
+However, single-criteria tuners optimize only the first measure.
 
-A tuner must at the end of its tuning write its result to the \code{assign_result} method
-of the \link[=TuningInstance]{Tuninginstance} where the best selected hyperparameter configuration and its estimated performance
-vector are then stored for result access.
+A tuner must write its result to the \code{assign_result} method of the \link[=TuningInstance]{Tuninginstance} at the end of its tuning in
+order to store the best selected hyperparameter configuration and its estimated performance vector.
 }
 \section{Construction}{
 \preformatted{tuner = Tuner$new(param_set, param_classes, properties, packages = character())
@@ -36,10 +35,10 @@ Note that these packages will be loaded via \code{\link[=requireNamespace]{requi
 \section{Fields}{
 
 \itemize{
-\item \code{param_set} :: \link[paradox:ParamSet]{paradox::ParamSet}\cr
+\item \code{param_set} :: \link[paradox:ParamSet]{paradox::ParamSet}; from construction.
 \item \code{param_classes} :: \code{character()}\cr
-\item \code{properties} :: \code{character()}\cr
-\item \code{packages} :: \code{character()}\cr
+\item \code{properties} :: `character(); from construction.
+\item \code{packages} :: \code{character()}; from construction.
 }
 }
 
@@ -47,7 +46,7 @@ Note that these packages will be loaded via \code{\link[=requireNamespace]{requi
 
 \itemize{
 \item \code{tune(instance)}\cr
-(\link{TuningInstance}) -> \code{self}\cr
+\link{TuningInstance} -> \code{self}\cr
 Performs the tuning on a \link{TuningInstance} until termination.
 }
 }
@@ -87,7 +86,7 @@ How many more depends on the setting of the batch size.
 \item Overwrite the private super-method \code{assign_result} if you want to decide yourself how to estimate
 the final configuration in the instance and its estimated performance.
 The default behavior is: We pick the best resample-experiment, regarding the first measure,
-then assign its config and aggregated perf to the instance.
+then assign its configuration and aggregated performance to the instance.
 }
 }
 
@@ -114,7 +113,7 @@ instance$archive() # allows access of data.table / benchmark result of full path
 \seealso{
 Other Tuner: \code{\link{TunerDesignPoints}},
   \code{\link{TunerGenSA}}, \code{\link{TunerGridSearch}},
-  \code{\link{TunerRandomSearch}}
+  \code{\link{TunerRandomSearch}}, \code{\link{mlr_tuners}}
 }
 \concept{Tuner}
 \keyword{datasets}

@@ -9,12 +9,12 @@
 #'
 #' This dictionary can get populated with additional tuners by add-on packages.
 #'
-#' For a more convenient way to retrieve and construct terminator, see [tnr()].
+#' For a more convenient way to retrieve and construct tuner, see [tnr()].
 #'
 #' @section Methods:
 #' See [mlr3misc::Dictionary].
 #'
-#' @family Terminator
+#' @family Tuner
 #' @seealso
 #' Sugar function: [tnr()]
 #' @export
