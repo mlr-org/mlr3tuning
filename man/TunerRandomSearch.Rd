@@ -9,6 +9,8 @@
 \description{
 Subclass for random search tuning.
 
+The random points are sampled by \code{\link[paradox:generate_design_random]{paradox::generate_design_random()}}.
+
 In order to support general termination criteria and parallelization,
 we evaluate points in a batch-fashion of size \code{batch_size}.
 Larger batches mean we can parallelize more, smaller batches imply a more fine-grained checking
@@ -34,7 +36,7 @@ Maximum number of configurations to try in a batch.
 \seealso{
 Other Tuner: \code{\link{TunerDesignPoints}},
   \code{\link{TunerGenSA}}, \code{\link{TunerGridSearch}},
-  \code{\link{Tuner}}
+  \code{\link{Tuner}}, \code{\link{mlr_tuners}}
 }
 \concept{Tuner}
 \keyword{datasets}

@@ -19,4 +19,3 @@ tnr = function(.key, ...) {
 term = function(.key, ...) {
   dictionary_sugar(mlr_terminators, .key, ...)
 }
-

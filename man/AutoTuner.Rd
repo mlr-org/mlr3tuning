@@ -16,11 +16,11 @@ or \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
 \preformatted{at = AutoTuner$new(learner, resampling, measures, tune_ps, terminator, tuner, bm_args = list())
 }
 \itemize{
-\item \code{learner} :: \link[mlr3:Learner]{mlr3::Learner} | \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}\cr
+\item \code{learner} :: \link[mlr3:Learner]{mlr3::Learner}\cr
 Learner to tune, see \link{TuningInstance}.
-\item \code{resampling} :: \link[mlr3:Resampling]{mlr3::Resampling} | \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}\cr
+\item \code{resampling} :: \link[mlr3:Resampling]{mlr3::Resampling}\cr
 Resampling strategy during tuning, see \link{TuningInstance}.
-\item \code{measures} :: list of \link[mlr3:Measure]{mlr3::Measure} | \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}\cr
+\item \code{measures} :: list of \link[mlr3:Measure]{mlr3::Measure}\cr
 Performance measures. The first one is optimized, see \link{TuningInstance}.
 \item \code{tune_ps} :: \link[paradox:ParamSet]{paradox::ParamSet}\cr
 Hyperparameter search space, see \link{TuningInstance}.
@@ -54,11 +54,11 @@ Short-cut to \code{result} from \link{TuningInstance}.
 
 \section{Methods}{
 
+All methods from \link{Learner}, and additionally:
 \itemize{
 \item \code{archive(unnest = "params")}\cr
 \code{character(1)} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
 Short-cut to method from \link{TuningInstance}.
-\item And see \link[mlr3:Learner]{mlr3::Learner}.
 }
 }
 

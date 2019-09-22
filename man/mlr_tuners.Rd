@@ -11,7 +11,7 @@ Each tuner has an associated help page, see \code{mlr_tuners_[id]}.
 
 This dictionary can get populated with additional tuners by add-on packages.
 
-For a more convenient way to retrieve and construct terminator, see \code{\link[=tnr]{tnr()}}.
+For a more convenient way to retrieve and construct tuner, see \code{\link[=tnr]{tnr()}}.
 }
 \section{Methods}{
 
@@ -25,14 +25,9 @@ tnr("random_search")
 \seealso{
 Sugar function: \code{\link[=tnr]{tnr()}}
 
-Other Terminator: \code{\link{TerminatorClockTime}},
-  \code{\link{TerminatorCombo}},
-  \code{\link{TerminatorEvals}},
-  \code{\link{TerminatorModelTime}},
-  \code{\link{TerminatorNone}},
-  \code{\link{TerminatorPerfReached}},
-  \code{\link{TerminatorStagnation}},
-  \code{\link{Terminator}}, \code{\link{mlr_terminators}}
+Other Tuner: \code{\link{TunerDesignPoints}},
+  \code{\link{TunerGenSA}}, \code{\link{TunerGridSearch}},
+  \code{\link{TunerRandomSearch}}, \code{\link{Tuner}}
 }
-\concept{Terminator}
+\concept{Tuner}
 \keyword{datasets}

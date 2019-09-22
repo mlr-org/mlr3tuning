@@ -7,34 +7,34 @@
 #' Specifies a general tuning scenario, including performance evaluator and archive for Tuners to
 #' act upon. This class encodes the black box objective function,
 #' that a [Tuner] has to optimize. It allows the basic operations of querying the objective
-#' at design points (see `$eval_batch()`), storing the evaluations in an internal archive
-#' and querying the archive (see `$archive()`).
+#' at design points (`$eval_batch()`), storing the evaluations in an internal archive
+#' and querying the archive (`$archive()`).
 #'
 #' Evaluations of hyperparameter configurations are performed in batches by calling [mlr3::benchmark()] internally.
-#' After a batch is evaluated, the [Terminator] is queried for the remaining budget.
+#' Before and after a batch is evaluated, the [Terminator] is queried for the remaining budget.
 #' If the available budget is exhausted, an exception is raised, and no further evaluations can be performed from this point on.
 #'
-#' A list of multiple measures can be passed to the instance, and they will always be all evaluated.
-#' But single-criteria tuners always optimize the first measure in the passed list.
+#' A list of measures can be passed to the instance, and they will always be all evaluated.
+#' However, single-criteria tuners optimize only the first measure.
 #'
-#' The tuner is also supposed to store its final result, consisting of a selected hyperparameter configuration,
+#' The tuner is also supposed to store its final result, consisting of a selected hyperparameter configuration
 #' and associated estimated performance values, by calling the method `instance$assign_result`.
 #'
 #' @section Construction:
 #' ```
-#' inst = TuningInstance$new(task, learner, resampling, measures, param_set, terminator, bm_args = list())
+#' inst = TuningInstance$new(task, learner, resampling, measures,
+#'   param_set, terminator, bm_args = list())
 #' ```
 #' This defines the resampled performance of a learner on a task, a feasibility region
 #' for the parameters the tuner is supposed to optimize, and a termination criterion.
 #'
-#' * `task` :: [mlr3::Task] | [mlr3::mlr_sugar].
-#' * `learner` :: [mlr3::Learner] | [mlr3::mlr_sugar].
-#' * `resampling` :: [mlr3::Resampling] | [mlr3::mlr_sugar].
+#' * `task` :: [mlr3::Task].
+#' * `learner` :: [mlr3::Learner].
+#' * `resampling` :: [mlr3::Resampling]\cr
 #'   Note that the resampling is instantiated at the beginning so that all configurations
 #'   are evaluated on the same data splits.
-#' * `measures` :: list of [mlr3::Measure] | [mlr3::mlr_sugar].
-#' * `param_set` :: [paradox::ParamSet]\cr
-#'   Hyperparameter search space.
+#' * `measures` :: list of [mlr3::Measure].
+#' * `param_set` :: [paradox::ParamSet].
 #' * `terminator` :: [Terminator].
 #' * `bm_args` :: named `list()`\cr
 #'   Further arguments for [mlr3::benchmark()].
@@ -51,27 +51,28 @@
 #' * `n_evals` :: `integer(1)`\cr
 #'   Number of configuration evaluations stored in the container.
 #' * `start_time` :: `POSIXct(1)`\cr
-#'   Time the tuning / evaluations were started.
+#'   Time the tuning was started.
 #'   This is set in the beginning of `$tune()` of [Tuner].
-#' * `result` :: named `list`\cr
-#'   Access result of the tuning, i.e., the optimal configuration and its estimated performance. Elements:\cr
-#'   * `"perf"`: Named vector of estimated performance values of optimal configuration.
-#'   * `"tune_x"`: Named list of optimal hyperparameter settings, without potential `trafo` applied.
-#'   * `"params"`: Named list of optimal hyperparameter settings, similar to `tune_x`, but with potential `trafo` applied.
+#' * `result` :: named `list()`\cr
+#'   Result of the tuning, i.e., the optimal configuration and its estimated performance:
+#'   * `"perf"`: Named vector of estimated performance values of the best configuration found.
+#'   * `"tune_x"`: Named list of optimal hyperparameter settings, without potential `trafo` function applied.
+#'   * `"params"`: Named list of optimal hyperparameter settings, similar to `tune_x`, but with potential `trafo` function applied.
 #'     Also, if the learner had some extra parameters statically set before tuning, these are included here.
 #'
 #' @section Methods:
 #' * `eval_batch(dt)`\cr
 #'   [data.table::data.table()] -> named `list()`\cr
 #'   Evaluates all hyperparameter configurations in `dt` through resampling, where each configuration is a row, and columns are scalar parameters.
-#'   Updates the internal [BenchmarkResult] `$bmr` by reference, and returns a named list with two elements:
+#'   Updates the internal [BenchmarkResult] `$bmr` by reference, and returns a named list with the following elements:
 #'   * `"batch_nr"`: Number of the new batch.
-#'     This number is calculated in an auto-increment fashion and stored also stored inside the [BenchmarkResult] as column `batch_nr`
-#'   * `"uhashes"`: hashes of the added [ResampleResult]s.
-#'   * `"perf"`: A data.table of evaluated performances for `dt`. Has the same nr of rows as `dt`, and the same nr of columns as `measures`. Columns are named with measure-IDs.
-#'     A cell entry is the (aggregated) performance of that configuration for that measure.
+#'     This number is calculated in an auto-increment fashion and also stored inside the [BenchmarkResult] as column `batch_nr`
+#'   * `"uhashes"`: unique hashes of the added [ResampleResult]s.
+#'   * `"perf"`: A [data.table::data.table()] of evaluated performances for each row of the `dt`.
+#'     Has the same number of rows as `dt`, and the same number of columns as length of `measures`.
+#'     Columns are named with measure-IDs. A cell entry is the (aggregated) performance of that configuration for that measure.
 #'
-#'   After a batch-evaluation the [Terminator] is checked, if it is positive, an exception of class `terminated_error` is raised.
+#'   Before and after each batch-evaluation, the [Terminator] is checked, and if it is positive, an exception of class `terminated_error` is raised.
 #'   This function should be internally called by the tuner.
 #'
 #' * `tuner_objective(x)`\cr
@@ -82,8 +83,8 @@
 #'   This function serves as a objective function for tuners of numeric spaces - which should always be minimized.
 #'
 #' * `best(measure = NULL)`\cr
-#'   ([mlr3::Measure] | [mlr3::mlr_sugar], `character(1)`) -> [mlr3::ResampleResult]\cr
-#'   Queries the [mlr3::BenchmarkResult] for the best [mlr3::ResampleResult] according `measure` (default is the first measure in `$measures`).
+#'   ([mlr3::Measure], `character(1)`) -> [mlr3::ResampleResult]\cr
+#'   Queries the [mlr3::BenchmarkResult] for the best [mlr3::ResampleResult] according to `measure` (default is the first measure in `$measures`).
 #'   In case of ties, one of the tied values is selected randomly.
 #'
 #' * `archive(unnest = "no")`\cr
@@ -95,7 +96,7 @@
 #'   * `params`: A list column that contains the parameter settings that were actually used in the learner.
 #'      Similar to `tune_x`, but with potential `trafo` applied.
 #'      Also, if the learner had some extra parameters statically set before tuning, these are included here.
-#'   `unnest` can have the values "no", "tune_x" or "params". If it is not set to "no", settings of the respective list-column
+#'   `unnest` can have the values `"no"`, `"tune_x"` or `"params"`. If it is not set to `"no"`, settings of the respective list-column
 #'   are stored in separate columns instead of the list-column, and dependent, inactive parameters are encoded with `NA`.
 #'
 #' * `assign_result(tune_x, perf)`\cr
@@ -136,13 +137,14 @@
 #' inst$eval_batch(design)
 #' inst$archive()
 #'
-#' # try more points, catch the eventually raised terminated message
+#' # try more points, catch the raised terminated message
 #' tryCatch(
 #'   inst$eval_batch(data.table(cp = 0.01, minsplit = 7)),
 #'   terminated_error = function(e) message(as.character(e))
 #' )
 #'
 #' # try another point although the budget is now exhausted
+#' # -> no extra evaluations
 #' tryCatch(
 #'   inst$eval_batch(data.table(cp = 0.01, minsplit = 9)),
 #'   terminated_error = function(e) message(as.character(e))
@@ -200,7 +202,7 @@ TuningInstance = R6Class("TuningInstance",
       self$terminator = assert_terminator(terminator)
       self$bm_args = assert_list(bm_args, names = "unique")
       self$bmr = BenchmarkResult$new(data.table())
-      self$bmr$rr_data[, ("batch_nr") := integer()]
+      self$bmr$rr_data[, c("batch_nr", "tune_x") := list(integer(), list())]
       self$resampling$instantiate(self$task)
     },
 
@@ -294,11 +296,13 @@ TuningInstance = R6Class("TuningInstance",
     archive = function(unnest = "no") {
       assert_choice(unnest, c("no", "params", "tune_x"))
       dt = self$bmr$aggregate(measures = self$measures, params = TRUE, conditions = TRUE)
+      # TODO: column reordering should become a mlr3misc function
+      setcolorder(dt, c("nr", "batch_nr"))
+      setcolorder(dt, c(head(names(dt), which(names(dt) == "params")), "tune_x"))
       if (unnest != "no") {
         dt = mlr3misc::unnest(dt, unnest)
       }
-      setcolorder(dt, c("nr", "batch_nr"))
-      return(dt)
+      dt[]
     },
 
     best = function(measure = NULL) {

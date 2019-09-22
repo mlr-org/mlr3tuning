@@ -37,7 +37,8 @@ Maximum number of configurations to try in a batch.
 \seealso{
 Other Tuner: \code{\link{TunerGenSA}},
   \code{\link{TunerGridSearch}},
-  \code{\link{TunerRandomSearch}}, \code{\link{Tuner}}
+  \code{\link{TunerRandomSearch}}, \code{\link{Tuner}},
+  \code{\link{mlr_tuners}}
 }
 \concept{Tuner}
 \keyword{datasets}

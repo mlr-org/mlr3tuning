@@ -18,10 +18,13 @@
 #' * `level` :: `numeric(1)`\cr
 #'   Performance level that needs to be reached, default is 0.
 #'   Terminates if the performance exceeds (respective measure has to be maximized) or
-#'   falls below (respective measure has to be minimized).
+#'   falls below (respective measure has to be minimized) this value.
 #'
 #' @family Terminator
 #' @export
+#' @examples
+#' TerminatorPerfReached$new()
+#' term("perf_reached")
 TerminatorPerfReached = R6Class("TerminatorPerfReached",
   inherit = Terminator,
   public = list(
@@ -33,10 +36,10 @@ TerminatorPerfReached = R6Class("TerminatorPerfReached",
       super$initialize(param_set = ps)
     },
 
-    is_terminated = function(inst) {
+    is_terminated = function(instance) {
       pv = self$param_set$values
-      m = inst$measures[[1L]]
-      aggr = inst$archive(unnest = "no")
+      m = instance$measures[[1L]]
+      aggr = instance$archive(unnest = "no")
       if (m$minimize) {
         any(aggr[[m$id]] <= pv$level)
       } else {

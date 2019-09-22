@@ -34,11 +34,11 @@ TerminatorModelTime = R6Class("TerminatorModelTime",
       super$initialize(param_set = ps)
     },
 
-    is_terminated = function(inst) {
-      if (is.null(inst$bmr))
+    is_terminated = function(instance) {
+      if (is.null(instance$bmr))
         return(FALSE)
       # extract train and predict timings and sum them up
-      t_all = sum(map_dbl(inst$bmr$data$learner, function(x) sum(x$timings)))
+      t_all = sum(map_dbl(instance$bmr$data$learner, function(x) sum(x$timings)))
       return(t_all >= self$param_set$values$secs)
     }
   )

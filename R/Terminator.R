@@ -5,18 +5,18 @@
 #' @include mlr_terminators.R
 #'
 #' @description
-#' Abstract `Terminator` class that implements the main functionality each terminator must have.
+#' Abstract `Terminator` class that implements the base functionality each terminator must provide.
 #' A terminator is an object that determines when to stop the tuning.
 #'
 #' Termination of tuning works as follows:
 #' * Evaluations in a tuner are performed in batches.
-#' * Before and after a batch evaluation the [Terminator] is checked, if it is positive, we stop.
+#' * Before and after each batch evaluation, the [Terminator] is checked, and if it is positive, we stop.
 #' * The tuning algorithm itself might decide not to produce any more points, or even might decide to do a smaller batch in its last evaluation.
 #'
 #' Therefore the following note seems in order:
 #' While it is definitely possible to execute a fine-grained control for termination, and for many tuners we can specify exactly when to stop,
-#' it might happen that a few too many or even a few too few evaluations are performed, especially if the batch size is larger than 1.
-#' So better check the size of the returned archive.
+#' it might happen that too few or even too many evaluations are performed, especially if multiple points are evaluated in a single batch (c.f. batch size parameter of many tuners).
+#' So it is advised to check the size of the returned archive, in particular if you are benchmarking multiple tuners.
 #'
 #' @section Construction:
 #' ```
@@ -27,13 +27,13 @@
 #'
 #' @section Fields:
 #'
-#' * `param_set` :: [paradox::ParamSet]\cr
+#' * `param_set` :: [paradox::ParamSet]; from construction.
 #'
 #' @section Methods:
-#' * `is_terminated(inst)`\cr
+#' * `is_terminated(instance)`\cr
 #'   [TuningInstance] -> `logical(1)`\cr
-#'   Is `TRUE` iff the termination criterion is positive.
-#'   Must be implemented in a subclass.
+#'   Is `TRUE` iff the termination criterion is positive, and `FALSE` otherwise.
+#'   Must be implemented in each subclass.
 #'
 #' @family Terminator
 #' @export
@@ -54,6 +54,6 @@ Terminator = R6Class("Terminator",
       catf(str_indent("* Parameters:", as_short_string(self$param_set$values)))
     },
 
-    is_terminated = function(inst) TRUE # overwrite in subclasses
+    is_terminated = function(instance) TRUE # overwrite in subclasses
   )
 )

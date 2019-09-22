@@ -14,11 +14,11 @@
 #' ```
 #' at = AutoTuner$new(learner, resampling, measures, tune_ps, terminator, tuner, bm_args = list())
 #' ```
-#' * `learner` :: [mlr3::Learner] | [mlr3::mlr_sugar]\cr
+#' * `learner` :: [mlr3::Learner]\cr
 #'   Learner to tune, see [TuningInstance].
-#' * `resampling` :: [mlr3::Resampling] | [mlr3::mlr_sugar]\cr
+#' * `resampling` :: [mlr3::Resampling]\cr
 #'   Resampling strategy during tuning, see [TuningInstance].
-#' * `measures` :: list of [mlr3::Measure] | [mlr3::mlr_sugar]\cr
+#' * `measures` :: list of [mlr3::Measure]\cr
 #'   Performance measures. The first one is optimized, see [TuningInstance].
 #' * `tune_ps` :: [paradox::ParamSet]\cr
 #'   Hyperparameter search space, see [TuningInstance].
