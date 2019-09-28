@@ -1,14 +1,15 @@
-#' @title TunerRandomSearch
+#' @title TunerDesignPoints
 #'
-#' @aliases mlr_tuners_random_search
+#' @aliases mlr_tuners_design_points
 #' @include Tuner.R
 #' @usage NULL
 #' @format [R6::R6Class] object inheriting from [Tuner].
 #'
 #' @description
-#' Subclass for random search tuning.
+#' Subclass for tuning w.r.t. fixed design points.
 #'
-#' The random points are sampled by [paradox::generate_design_random()].
+#' We simply search over a set of points fully specified by the user.
+#' The points in the design are evaluated in order as given.
 #'
 #' In order to support general termination criteria and parallelization,
 #' we evaluate points in a batch-fashion of size `batch_size`.
@@ -17,27 +18,28 @@
 #'
 #' @section Construction:
 #' ```
-#' TunerRandomSearch$new(batch_size = 1L)
-#' tnr("random_search")
+#' TunerDesignPoints$new()
+#' tnr("design_points")
 #' ```
 #'
 #' @section Parameters:
 #' * `batch_size` :: `integer(1)`\cr
 #'   Maximum number of configurations to try in a batch.
 #'
+#'
 #' @family Tuner
 #' @export
 #' @examples
 #' # see ?Tuner
-TunerRandomSearch = R6Class("TunerRandomSearch",
+TunerDesignPoints = R6Class("TunerDesignPoints",
   inherit = Tuner,
   public = list(
     initialize = function() {
       ps = ParamSet$new(list(
-        ParamInt$new("batch_size", lower = 1L, tags = "required")
+        ParamInt$new("batch_size", lower = 1L, tags = "required"),
+        ParamUty$new("design", tags = "required")
       ))
-      ps$values = list(batch_size = 1L)
-
+      ps$values = list(batch_size = 1L, design = NULL)
       super$initialize(
         param_set = ps,
         param_classes = c("ParamLgl", "ParamInt", "ParamDbl", "ParamFct"),
@@ -48,13 +50,17 @@ TunerRandomSearch = R6Class("TunerRandomSearch",
 
   private = list(
     tune_internal = function(instance) {
-      batch_size = self$param_set$values$batch_size
-      repeat { # iterate until we have an exception from eval_batch
-        design = generate_design_random(instance$param_set, batch_size)
-        instance$eval_batch(design$data)
+      pv = self$param_set$values
+      if (is.null(pv$design))
+        stopf("Please set design datatable!")
+      d = Design$new(pv$design, param_set = instance$param_set, remove_dupl = FALSE) # does assert for us
+      ch = chunk_vector(seq_row(d$data), chunk_size = pv$batch_size, shuffle = FALSE)
+      for (inds in ch) {
+        instance$eval_batch(d$data[inds, ])
       }
     }
   )
 )
 
-mlr_tuners$add("random_search", TunerRandomSearch)
+mlr_tuners$add("design_points", TunerDesignPoints)
+

@@ -23,6 +23,9 @@
 #'
 #' @family Terminator
 #' @export
+#' @examples
+#' TerminatorStagnation$new()
+#' term("stagnation", iters = 5, threshold = 1e-5)
 TerminatorStagnation = R6Class("TerminatorStagnation",
   inherit = Terminator,
   public = list(
@@ -35,16 +38,16 @@ TerminatorStagnation = R6Class("TerminatorStagnation",
       super$initialize(param_set = ps)
     },
 
-    is_terminated = function(inst) {
+    is_terminated = function(instance) {
       pv = self$param_set$values
       iters = pv$iters
 
-      aggr = inst$archive(unnest = FALSE)
+      aggr = instance$archive(unnest = "no")
       if (nrow(aggr) <= iters) {
         return(FALSE)
       }
 
-      m = inst$measures[[1L]]
+      m = instance$measures[[1L]]
 
       perf_before = head(aggr[[m$id]], -iters)
       perf_window = tail(aggr[[m$id]],  iters)

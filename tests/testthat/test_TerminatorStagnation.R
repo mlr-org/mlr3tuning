@@ -2,7 +2,7 @@ context("TerminatorStagnation")
 
 test_that("TerminatorStagnation", {
   te = term("stagnation", iters = 3)
-  m = mlr_measures$get("dummy.cp")
+  m = mlr_measures$get("dummy.cp.classif")
 
   m$minimize = TRUE
   inst = TEST_MAKE_INST1(measures = m, term_evals = 100)
@@ -15,7 +15,7 @@ test_that("TerminatorStagnation", {
   expect_false(te$is_terminated(inst))
 
   ####
-  m = msr("dummy.cp", minimize = TRUE)
+  m = msr("dummy.cp.classif", minimize = TRUE)
 
   # never stagnate
   inst = TEST_MAKE_INST1(measures = m, term_evals = 100)
@@ -32,7 +32,7 @@ test_that("TerminatorStagnation", {
   # last improvement in step 10
 
   # make sure cp values define different exps, but the scores are the same (so we stagnate)
-  m = msr("dummy.cp", minimize = TRUE, fun = function(x) round(x, digits = 2))
+  m = msr("dummy.cp.classif", minimize = TRUE, fun = function(x) round(x, digits = 2))
   design = data.table(cp = c(seq(from = 0.5, to = 0.3, length.out = 10),
     seq(from = 0.2999, to = 0.299, length.out = 10)))
   inst = TEST_MAKE_INST1(measures = m, term_evals = 100)

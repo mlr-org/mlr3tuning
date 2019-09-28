@@ -21,10 +21,14 @@ term("perf_reached")
 \item \code{level} :: \code{numeric(1)}\cr
 Performance level that needs to be reached, default is 0.
 Terminates if the performance exceeds (respective measure has to be maximized) or
-falls below (respective measure has to be minimized).
+falls below (respective measure has to be minimized) this value.
 }
 }
 
+\examples{
+TerminatorPerfReached$new()
+term("perf_reached")
+}
 \seealso{
 Other Terminator: \code{\link{TerminatorClockTime}},
   \code{\link{TerminatorCombo}},
@@ -32,8 +36,7 @@ Other Terminator: \code{\link{TerminatorClockTime}},
   \code{\link{TerminatorModelTime}},
   \code{\link{TerminatorNone}},
   \code{\link{TerminatorStagnation}},
-  \code{\link{Terminator}}, \code{\link{mlr_terminators}},
-  \code{\link{mlr_tuners}}
+  \code{\link{Terminator}}, \code{\link{mlr_terminators}}
 }
 \concept{Terminator}
 \keyword{datasets}
