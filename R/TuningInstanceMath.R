@@ -55,15 +55,16 @@ LearnerMathTestFun = R6Class(
       super$initialize(
         id = "regr.mtf",
         feature_types = c("logical", "integer", "numeric", "character", "factor", "ordered"),
-        predict_types = c("response"),
+        predict_types = "response",
         param_set = ps,
-        properties = c("missings")
+        properties = "missings"
       )
     },
 
     train_internal = function(task) {
       n = length(task$row_roles$use)
       self$param_set$values$budget = n / length(task$row_ids)
+
       return(list())
     },
 
@@ -79,8 +80,8 @@ LearnerMathTestFun = R6Class(
 # function_name: character of a valid mathematical function
 # terminator: mlr3tuning terminator object responsible for termination of a 
 # tuning run
-MathTuningInstance = R6Class(
-  "MathTuningInstance",
+TuningInstanceMath = R6Class(
+  "TuningInstanceMath",
   inherit = TuningInstance,
 
   public = list(
@@ -102,7 +103,7 @@ MathTuningInstance = R6Class(
   )
 )
 
-# a vector of valid function names for MathTuningInstance
+# a vector of valid function names for TuningInstanceMath
 valid_math_functions = function() {
   c(
     "Ackleys", "AluffiPentini", "BeckerLago","Bohachevsky1", "Bohachevsky2", 

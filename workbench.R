@@ -7,7 +7,7 @@ lg$set_threshold("info")
 valid_math_functions()
 
 # init new tuning instance for test function
-inst = MathTuningInstance$new(
+inst = TuningInstanceMath$new(
   "Branin",
   term("evals", n_evals = 10)
 )
