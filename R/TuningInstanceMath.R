@@ -20,9 +20,14 @@ MeasureMathTestFun = R6Class("MeasureMathTestfun",
     # evaluate test function (ignore "prediction" argument) based on
     # hyperparameter values
     score_internal = function(prediction, learner, ...) {
+
       v = learner$param_set$values
-      v$budget = NULL
-      globalOptTests::goTest(unlist(v), self$test_fun)
+      # extract input for the function
+      x = unlist(v[names(v) != "budget"])
+      # sample epsilon error based on budget
+      eps = rgamma(1, shape = 1, scale = 1/v$budget)
+      # FIXME: how should we scale the error?
+      globalOptTests::goTest(x, self$test_fun) + eps
     }
   )
 )
@@ -30,8 +35,8 @@ MeasureMathTestFun = R6Class("MeasureMathTestfun",
 # Modified learner class, now responsible for defining the domain of the math
 # function
 # tfun: character name of valid mathematical function
-# budget is currently unused
-# TODO: budget reduces noise
+# budget is currently treated like a normal learner hyperparameter, that adds
+# error to the function value
 LearnerMathTestFun = R6Class(
   "LearnerMathTestFun",
   inherit = LearnerRegr,
@@ -48,8 +53,8 @@ LearnerMathTestFun = R6Class(
         seq_len(k)
       )
       ps = ParamSet$new(ps)
-      # add budget parameter; TODO: do something with it
-      ps$add(ParamDbl$new("budget", lower = 0, upper = 100))
+      # add budget parameter 
+      ps$add(ParamDbl$new("budget", lower = 1, upper = 100, tags = "budget"))
 
       # init superclass
       super$initialize(
@@ -62,8 +67,9 @@ LearnerMathTestFun = R6Class(
     },
 
     train_internal = function(task) {
-      n = length(task$row_roles$use)
-      self$param_set$values$budget = n / length(task$row_ids)
+      # let's not change the budget DURING training - discuss!
+      #n = length(task$row_roles$use)
+      #self$param_set$values$budget = n / length(task$row_ids)
 
       return(list())
     },
@@ -87,8 +93,8 @@ TuningInstanceMath = R6Class(
   public = list(
     initialize = function(function_name, terminator) {
       # init class instances for function domain and evaluation
-      m_learner = LearnerMathTestFun$new(function_name)
       m_measure = MeasureMathTestFun$new(function_name)
+      m_learner = LearnerMathTestFun$new(function_name)
 
       # init TuningInstance
       inst = super$initialize(
