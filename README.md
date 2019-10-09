@@ -12,13 +12,13 @@ Extends the [mlr3](https://mlr3.mlr-org.com) package with tuning.
 CRAN version
 
 ```{r eval = FALSE}
-install.packages("mlr3filters")
+install.packages("mlr3tuning")
 ```
 
 Development version
 
 ```{r, eval = FALSE}
-remotes::install_github("mlr-org/mlr3filters")
+remotes::install_github("mlr-org/mlr3tuning")
 ```
 
 ## Documentation
