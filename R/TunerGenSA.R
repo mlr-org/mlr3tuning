@@ -14,8 +14,6 @@
 #' tnr("gensa")
 #' ```
 #' @section Parameters:
-#' This tuner currently supports the following hyperparameters:
-#'
 #' * `smooth` :: `logical(1)`\cr
 #' * `temperature` :: `numeric(1)`\cr
 #' * `acceptance.param` :: `numeric(1)`\cr
