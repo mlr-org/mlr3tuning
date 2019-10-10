@@ -28,6 +28,8 @@ tnr("design_points")
 \itemize{
 \item \code{batch_size} :: \code{integer(1)}\cr
 Maximum number of configurations to try in a batch.
+\item \code{design} :: \code{[data.table]}\cr
+Design points to try in search, one per row.
 }
 }
 

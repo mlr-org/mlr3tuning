@@ -17,7 +17,6 @@ tnr("gensa")
 
 \section{Parameters}{
 
-This tuner currently supports the following hyperparameters:
 \itemize{
 \item \code{smooth} :: \code{logical(1)}\cr
 \item \code{temperature} :: \code{numeric(1)}\cr
