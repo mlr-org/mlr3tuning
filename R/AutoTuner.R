@@ -99,6 +99,8 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
         param_set = learner$param_set,
         properties = learner$properties
       )
+
+      self$predict_type = learner$predict_type
     },
 
     train_internal = function(task) {
