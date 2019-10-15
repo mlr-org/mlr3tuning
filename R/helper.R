@@ -21,23 +21,30 @@ get_by_id = function(xs, id) {
 }
 
 
-#' @description calculate pareto front of an all-numeric data frame (or matrix)
+#' @description calculate pareto front of a matrix
 #'   also works for >2D pareto front
-#' @example data_frame = data.frame(c(1, 0.25, 0.75, 0), c(0, 0.25, 0.75, 1))
-#'   calculate_pareto_front(data_frame)
-#'   data_frame = data.frame(c(1,1,0,1), c(1,1,0,0), c(1,0,1,0), c(1,1,1,1))
-#'   calculate_pareto_front(data_frame, maximize = FALSE)
-calculate_pareto_front = function(data_frame, maximize = TRUE) {
+#' @example data = rbind(c(1, 0.25, 0.75, 0), c(0, 0.25, 0.75, 1))
+#'   calculate_pareto_front(data)
+#'   data = rbind(c(1,1,0,1), c(1,1,0,0), c(1,0,1,0), c(1,1,1,1))
+#'   calculate_pareto_front(data, maximize = FALSE)
+calculate_pareto_front = function(points, maximize = TRUE) {
 
-  assert_data_frame(data_frame, types = "numeric")
+  assert_matrix(points, types = "numeric")
   assert_logical(maximize)
 
-  # sort the whole data.frame and go stepwise through the columns whenever
-  # entries are tied
-  sorted = do.call(order, c(as.list(data_frame), decreasing = maximize))
-  sorted_data = data_frame[sorted, ]
+  # temporarily transpose; re-transpose at the end of the function
+  points = t(points)
 
-# function for cummulative min or max of vector
+  # sort all the points and go stepwise through the rows whenever
+  # entries are tied; break ties in the end with noise data
+  sorted = do.call(
+    order,
+    c(as.data.frame(points), runif(nrow(points))),
+    list(decreasing = maximize)
+  )
+  sorted_data = points[sorted, ]
+
+  # function for cummulative min or max of vector
   cummaxmin = function(x, m) if (m) cummax(x) else cummin(x)
    
   # flag non-violations of strict monotony in each column
@@ -45,11 +52,11 @@ calculate_pareto_front = function(data_frame, maximize = TRUE) {
   # check for any flag in each row
   front = apply(bool_matrix, 1, any)
   # get original indices
-  revert_sort = as.numeric(rownames(sorted_data))
+  revert_sort = order(sorted)
 
   result = revert_sort[front]
   # stabilize algorithm by not switching up the order of the front members
-  result = result[order(result)]
+  result = t(sort(result))
 
   return(result)
 }

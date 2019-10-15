@@ -342,11 +342,7 @@ TuningInstance = R6Class("TuningInstance",
       }
       
       # check that we are only using contained measures
-      measure_ids = sapply(
-        map_chr(measures, "id"), 
-        assert_choice, 
-        map_chr(self$measures, "id")
-      )
+      measure_ids = assert_choice(ids(measures), ids(self$measures))
 
       # check that at leaste two measures are given as arguments (or NULL)
       assert_true(length(measure_ids) > 1)
