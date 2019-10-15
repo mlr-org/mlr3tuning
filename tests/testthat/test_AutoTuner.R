@@ -34,9 +34,10 @@ test_that("AutoTuner / resample", {
   param_set = TEST_MAKE_PS1()
   te = term("evals", n_evals = inner_evals)
   tuner = tnr("grid_search", resolution = 3)
-  at = AutoTuner$new(lrn("classif.rpart"), r_inner, ms, param_set, te, tuner)
+  at = AutoTuner$new(lrn("classif.rpart", predict_type = "prob"), r_inner, ms, param_set, te, tuner)
 
   expect_null(at$tuning_instance)
+  expect_equal(at$predict_type, "prob")
 
   rr = resample(tsk("iris"), at, r_outer, store_models = TRUE)
 
