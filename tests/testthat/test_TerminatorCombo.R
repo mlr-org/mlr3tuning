@@ -5,7 +5,7 @@ test_that("API", {
   t2 = term("perf_reached", level = 0)
 
   tt = term("combo", terminators = list(t1, t2), any = TRUE)
-  inst = TEST_MAKE_INST1(measures = msr("dummy.cp"))
+  inst = TEST_MAKE_INST1(measures = msr("dummy.cp.classif"))
   inst$eval_batch(data.table(cp = 0.2))
   expect_false(t1$is_terminated(inst))
   expect_false(t2$is_terminated(inst))
@@ -17,7 +17,7 @@ test_that("API", {
 
 
   tt = term("combo", terminators = list(t1, t2), any = FALSE)
-  inst = TEST_MAKE_INST1(measures = msr("dummy.cp"))
+  inst = TEST_MAKE_INST1(measures = msr("dummy.cp.classif"))
   inst$eval_batch(data.table(cp = 0.2))
   expect_false(t1$is_terminated(inst))
   expect_false(t2$is_terminated(inst))

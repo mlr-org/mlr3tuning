@@ -6,7 +6,7 @@
 #' @format [R6::R6Class] object inheriting from [Tuner].
 #'
 #' @description
-#' Subclass for generalized simulated annealing tuning with [GenSA::GenSA()].
+#' Subclass for generalized simulated annealing tuning calling [GenSA::GenSA()] from package \CRANpkg{GenSA}.
 #'
 #' @section Construction:
 #' ```
@@ -14,15 +14,15 @@
 #' tnr("gensa")
 #' ```
 #' @section Parameters:
-#' For the meaning of the control param see [GenSA::GenSA()].
-#' For consistency, we have removed all GenSA control parameters which refer to the stopping of the algorithm and
-#' where mlr3 terminators allow to obtain the same behavior.
-#'
 #' * `smooth` :: `logical(1)`\cr
 #' * `temperature` :: `numeric(1)`\cr
 #' * `acceptance.param` :: `numeric(1)`\cr
 #' * `verbose` :: `logical(1)`\cr
 #' * `trace.mat` :: `logical(1)`\cr
+#'
+#' For the meaning of the control parameters, see [GenSA::GenSA()].
+#' Note that we have removed all control parameters which refer to the termination of the algorithm and
+#' where our terminators allow to obtain the same behavior.
 #'
 #' @family Tuner
 #' @export
@@ -50,7 +50,7 @@ TunerGenSA = R6Class("TunerGenSA", inherit = Tuner,
   private = list(
     tune_internal = function(instance) {
       v = self$param_set$values
-      v$maxit = 1000000 # make sure GenSA does not stop
+      v$maxit = .Machine$integer.max # make sure GenSA does not stop
       GenSA::GenSA(fn = instance$tuner_objective, lower = instance$param_set$lower,
         upper = instance$param_set$upper, control = v)
     }

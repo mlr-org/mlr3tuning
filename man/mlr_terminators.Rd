@@ -31,7 +31,7 @@ Other Terminator: \code{\link{TerminatorClockTime}},
   \code{\link{TerminatorNone}},
   \code{\link{TerminatorPerfReached}},
   \code{\link{TerminatorStagnation}},
-  \code{\link{Terminator}}, \code{\link{mlr_tuners}}
+  \code{\link{Terminator}}
 }
 \concept{Terminator}
 \keyword{datasets}

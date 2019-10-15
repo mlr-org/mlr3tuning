@@ -7,7 +7,7 @@
 \title{TunerGenSA}
 \format{\link[R6:R6Class]{R6::R6Class} object inheriting from \link{Tuner}.}
 \description{
-Subclass for generalized simulated annealing tuning with \code{\link[GenSA:GenSA]{GenSA::GenSA()}}.
+Subclass for generalized simulated annealing tuning calling \code{\link[GenSA:GenSA]{GenSA::GenSA()}} from package \CRANpkg{GenSA}.
 }
 \section{Construction}{
 \preformatted{TunerGenSA$new()
@@ -17,9 +17,6 @@ tnr("gensa")
 
 \section{Parameters}{
 
-For the meaning of the control param see \code{\link[GenSA:GenSA]{GenSA::GenSA()}}.
-For consistency, we have removed all GenSA control parameters which refer to the stopping of the algorithm and
-where mlr3 terminators allow to obtain the same behavior.
 \itemize{
 \item \code{smooth} :: \code{logical(1)}\cr
 \item \code{temperature} :: \code{numeric(1)}\cr
@@ -27,14 +24,20 @@ where mlr3 terminators allow to obtain the same behavior.
 \item \code{verbose} :: \code{logical(1)}\cr
 \item \code{trace.mat} :: \code{logical(1)}\cr
 }
+
+For the meaning of the control parameters, see \code{\link[GenSA:GenSA]{GenSA::GenSA()}}.
+Note that we have removed all control parameters which refer to the termination of the algorithm and
+where our terminators allow to obtain the same behavior.
 }
 
 \examples{
 # see ?Tuner
 }
 \seealso{
-Other Tuner: \code{\link{TunerGridSearch}},
-  \code{\link{TunerRandomSearch}}, \code{\link{Tuner}}
+Other Tuner: \code{\link{TunerDesignPoints}},
+  \code{\link{TunerGridSearch}},
+  \code{\link{TunerRandomSearch}}, \code{\link{Tuner}},
+  \code{\link{mlr_tuners}}
 }
 \concept{Tuner}
 \keyword{datasets}

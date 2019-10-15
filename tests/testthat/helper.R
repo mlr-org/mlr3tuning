@@ -35,16 +35,16 @@ test_tuner = function(key, ..., n_dim = 1L, term_evals = 2L, real_evals = term_e
   term = term("evals", n_evals = term_evals)
   inst = TuningInstance$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), ps, term)
   tuner = tnr(key, ...)
-
-  expect_tuner(tuner$tune(inst))
-  # r = tuner$tune_result(inst)
+  expect_tuner(tuner)
+  tuner$tune(inst)
   bmr = inst$bmr
 
   expect_data_table(bmr$data, nrows = real_evals)
   expect_equal(inst$n_evals, real_evals)
 
-  sc = inst$result_config
-  sp = inst$result_perf
+  r = inst$result
+  sc = r$tune_x
+  sp = r$perf
   expect_list(sc, len = n_dim)
   if (n_dim == 1)
     expect_named(sc, c("cp"))
@@ -57,24 +57,23 @@ test_tuner = function(key, ..., n_dim = 1L, term_evals = 2L, real_evals = term_e
 
 # test an implemented subclass tuner by running a test with dependent params
 # returns: tune_result and instance
-test_tuner_dependencies = function(key, ..., n_evals = 2L) {
-  term = TerminatorEvals$new(n_evals)
+test_tuner_dependencies = function(key, ..., term_evals = 2L) {
+  term = term("evals", n_evals = term_evals)
   ll = LearnerRegrDepParams$new()
   inst = TuningInstance$new(tsk("boston_housing"), ll, rsmp("holdout"), msr("regr.mse"), ll$param_set, term)
   tuner = tnr(key, ...)
-
-  expect_tuner(tuner$tune(inst))
-  # r = tuner$tune_result(inst)
+  expect_tuner(tuner)
+  tuner$tune(inst)
   bmr = inst$bmr
 
-  expect_data_table(bmr$data, nrows = n_evals)
-  expect_equal(inst$n_evals, n_evals)
+  expect_data_table(bmr$data, nrows = term_evals)
+  expect_equal(inst$n_evals, term_evals)
 
-
-  sc = inst$result_config
-  sp = inst$result_perf
+  r = inst$result
+  sc = r$tune_x
+  sp = r$perf
   expect_list(sc)
-  expect_names(names(sc), subset.of = c("p1", "p2"))
+  expect_names(names(sc), subset.of = c("xx", "yy", "cp"))
   expect_numeric(sp, len = 1L)
   expect_numeric(sp, len = 1L)
   expect_names(names(sp), identical.to = "regr.mse")
@@ -84,7 +83,7 @@ test_tuner_dependencies = function(key, ..., n_evals = 2L) {
 
 # create a simple inst object for rpart with cp param and 2CV resampling
 TEST_MAKE_PS1 = function(n_dim = 1L) {
-  ps = if (n_dim == 1) {
+  if (n_dim == 1) {
     ParamSet$new(params = list(
       ParamDbl$new("cp", lower = 0.1, upper = 0.3)
     ))
@@ -107,45 +106,72 @@ TEST_MAKE_INST1 = function(values = NULL, folds = 2L, measures = msr("classif.ce
   return(inst)
 }
 
+# create inst object with dependencies
+TEST_MAKE_PS2 = function() {
+  ps = ParamSet$new(
+    params = list(
+      ParamFct$new("xx", levels = c("a", "b"), default = "a"),
+      ParamDbl$new("yy", lower = 0, upper = 1),
+      ParamDbl$new("cp", lower = 0, upper = 1)
+    )
+  )
+  ps$add_dep("yy", on = "xx", cond = CondEqual$new("a"))
+  return(ps)
+}
+TEST_MAKE_INST2 = function(measures = msr("dummy.cp.regr"), term_evals = 5L) {
+  ps = TEST_MAKE_PS2()
+  ll = LearnerRegrDepParams$new()
+  rs = rsmp("holdout")
+  term = term("evals", n_evals = term_evals)
+  inst = TuningInstance$new(tsk("boston_housing"), ll, rs, measures, ps, term)
+  return(inst)
+}
 
 # a dummy measure which simply returns the cp value of rpart
 # this allows us to 'fake' performance values in unit tests during tuning
-MeasureDummyCP = R6Class("MeasureDummyCP",
-  inherit = MeasureClassif,
-  public = list(
-    # allow a fun to transform cp to score, this allows further shenenigans
-    # to disentangle cp value and score
-    fun = NULL,
+make_dummy_cp_measure = function(type) {
+  if (type == "classif") {
+    id = "dummy.cp.classif"
+    inh = MeasureClassif
+    cl = "MeaureDummyCPClassif"
+  } else {
+    id = "dummy.cp.regr"
+    inh = MeasureRegr
+    cl = "MeaureDummyCPRegr"
+  }
+  m = R6Class(cl,
+    inherit = inh,
+    public = list(
+      # allow a fun to transform cp to score, this allows further shenenigans
+      # to disentangle cp value and score
+      fun = NULL,
 
-    initialize = function(fun = identity) {
-      super$initialize(
-        id = "dummy.cp",
-        range = c(0, Inf),
-        minimize = TRUE,
-        packages = "Metrics",
-        properties = "requires_learner"
-      )
-      self$fun = fun # allow a fun to transform cp to score
-    },
+      initialize = function(fun = identity) {
+        super$initialize(
+          id = id,
+          range = c(0, Inf),
+          minimize = TRUE,
+          packages = "Metrics",
+          properties = "requires_learner"
+        )
+        self$fun = fun # allow a fun to transform cp to score
+      },
 
-    score_internal = function(prediction, learner, ...) {
-      self$fun(learner$param_set$values$cp)
-    }
+      score_internal = function(prediction, learner, ...) {
+        self$fun(learner$param_set$values$cp)
+      }
+    )
   )
-)
-mlr3::mlr_measures$add("dummy.cp", MeasureDummyCP)
-
+}
+MeasureDummyCPClassif = make_dummy_cp_measure("classif")
+mlr3::mlr_measures$add("dummy.cp.classif", MeasureDummyCPClassif)
+MeasureDummyCPRegr = make_dummy_cp_measure("regr")
+mlr3::mlr_measures$add("dummy.cp.regr", MeasureDummyCPRegr)
 
 LearnerRegrDepParams = R6Class("LearnerRegrDepParams", inherit = LearnerRegr,
   public = list(
     initialize = function(id = "regr.depparams") {
-      param_set = ParamSet$new(
-          params = list(
-            ParamFct$new("p1", levels = c("a", "b"), default = "a"),
-            ParamDbl$new("p2", lower = 0, upper = 1)
-          )
-      )
-      param_set$add_dep("p2", on = "p1", cond = CondEqual$new("a"))
+      param_set = TEST_MAKE_PS2()
       super$initialize(
         id = id,
         feature_types = c("logical", "integer", "numeric", "character", "factor", "ordered"),

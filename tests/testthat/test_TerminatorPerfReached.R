@@ -3,7 +3,7 @@ context("TerminatorPerfReached")
 test_that("TerminatorPerfReached", {
   te = term("perf_reached", level = 0.5)
   inst = TEST_MAKE_INST1()
-  m = mlr_measures$get("dummy.cp")
+  m = mlr_measures$get("dummy.cp.classif")
 
   m$minimize = TRUE
   inst = TEST_MAKE_INST1(measures = m)

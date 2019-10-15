@@ -25,6 +25,10 @@ If the improvement is less than \code{threshold}, tuning is stopped, default is 
 }
 }
 
+\examples{
+TerminatorStagnation$new()
+term("stagnation", iters = 5, threshold = 1e-5)
+}
 \seealso{
 Other Terminator: \code{\link{TerminatorClockTime}},
   \code{\link{TerminatorCombo}},
@@ -32,8 +36,7 @@ Other Terminator: \code{\link{TerminatorClockTime}},
   \code{\link{TerminatorModelTime}},
   \code{\link{TerminatorNone}},
   \code{\link{TerminatorPerfReached}},
-  \code{\link{Terminator}}, \code{\link{mlr_terminators}},
-  \code{\link{mlr_tuners}}
+  \code{\link{Terminator}}, \code{\link{mlr_terminators}}
 }
 \concept{Terminator}
 \keyword{datasets}

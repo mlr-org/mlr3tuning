@@ -11,6 +11,7 @@
 #' @section Construction:
 #' ```
 #' t = TerminatorNone$new()
+#' term("none")
 #' ```
 #'
 #' @family Terminator
@@ -23,7 +24,7 @@ TerminatorNone = R6Class("TerminatorNone",
       super$initialize()
     },
 
-    is_terminated = function(inst) return(FALSE)
+    is_terminated = function(instance) return(FALSE)
   )
 )
 

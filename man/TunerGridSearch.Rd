@@ -10,7 +10,7 @@
 Subclass for grid search tuning.
 
 The grid is constructed as a Cartesian product over discretized values per parameter,
-see \link[paradox:generate_design_grid]{paradox::generate_design_grid}.
+see \code{\link[paradox:generate_design_grid]{paradox::generate_design_grid()}}.
 The points of the grid are evaluated in a random order.
 
 In order to support general termination criteria and parallelization,
@@ -40,8 +40,10 @@ Maximum number of configurations to try in a batch.
 # see ?Tuner
 }
 \seealso{
-Other Tuner: \code{\link{TunerGenSA}},
-  \code{\link{TunerRandomSearch}}, \code{\link{Tuner}}
+Other Tuner: \code{\link{TunerDesignPoints}},
+  \code{\link{TunerGenSA}},
+  \code{\link{TunerRandomSearch}}, \code{\link{Tuner}},
+  \code{\link{mlr_tuners}}
 }
 \concept{Tuner}
 \keyword{datasets}

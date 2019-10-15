@@ -1,11 +1,9 @@
 url: https://mlr3tuning.mlr-org.com
 
 template:
+  package: mlr3pkgdowntemplate
   params:
     bootswatch: cosmo
-  path: pkgdown/templates
-  assets: pkgdown/assets
-  default_assets: false
 
 development:
   mode: unreleased
@@ -36,9 +34,11 @@ reference:
       - TuningInstance
   - title: Tuners
     contents:
+      - mlr_tuners
       - starts_with("Tuner")
   - title: Terminators
     contents:
+      - mlr_terminators
       - starts_with("Terminator")
   - title: Auto-tuned Learner
     contents:

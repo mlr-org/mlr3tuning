@@ -5,16 +5,15 @@
 #' @include mlr_tuners.R
 #'
 #' @description
-#' Abstract `Tuner` class that implements the main functionality each tuner must have.
+#' Abstract `Tuner` class that implements the base functionality each tuner must provide.
 #' A tuner is an object that describes the tuning strategy, i.e. how to optimize the black-box
 #' function and its feasible set defined by the [TuningInstance] object.
 #'
-#' If the tuning instance contains multiple measures, they will always be all evaluated.
-#' But single-criteria tuners always optimize the first measure in the passed list.
+#' A list of measures can be passed to the instance, and they will always be all evaluated.
+#' However, single-criteria tuners optimize only the first measure.
 #'
-#' A tuner must at the end of its tuning write to the active bindings `result_config` and `result_perf`
-#' of the [Tuninginstance] where the best selected hyperparameter configuration and its estimated performance
-#' vector are then stored for result access.
+#' A tuner must write its result to the `assign_result` method of the [Tuninginstance] at the end of its tuning in
+#' order to store the best selected hyperparameter configuration and its estimated performance vector.
 #'
 #' @section Construction:
 #' ```
@@ -35,26 +34,22 @@
 #'   Note that these packages will be loaded via [requireNamespace()], and are not attached.
 #'
 #' @section Fields:
-#' * `param_set` :: [paradox::ParamSet]\cr
+#' * `param_set` :: [paradox::ParamSet]; from construction.
 #' * `param_classes` :: `character()`\cr
-#' * `properties` :: `character()`\cr
-#' * `packages` :: `character()`\cr
-#' * `result_config` :: named `list`\cr
-#'   Optimal configuration of settings, from the feasible `param_set`.
-#' * `result_config_complete` :: named `list`\cr
-#'   The same as `result_config`, but if the learner had some extra parameters statically set before tuning,
-#'   these are also included here.
-#' * `result_perf` :: named `numeric()`\cr
-#'   Vector of estimated performance values of optimal configuration.
+#' * `properties` :: `character(); from construction.
+#' * `packages` :: `character()`; from construction.
 #'
 #' @section Methods:
 #' * `tune(instance)`\cr
-#'   ([TuningInstance]) -> `self`\cr
+#'   [TuningInstance] -> `self`\cr
 #'   Performs the tuning on a [TuningInstance] until termination.
 #'
 #' @section Private Methods:
-#' * `tune_internal(instance)` -> `self`\cr
+#' * `tune_internal(instance)` -> `NULL`\cr
 #'   Abstract base method. Implement to specify tuning of your subclass.
+#'   See technical details sections.
+#' * `assign_result(instance)` -> `NULL`\cr
+#'   Abstract base method. Implement to specify how the final configuration is selected.
 #'   See technical details sections.
 #'
 #' @section Technical Details and Subclasses:
@@ -78,7 +73,7 @@
 #'  * Overwrite the private super-method `assign_result` if you want to decide yourself how to estimate
 #'    the final configuration in the instance and its estimated performance.
 #'    The default behavior is: We pick the best resample-experiment, regarding the first measure,
-#'    then assign its config and aggregated perf to the instance.
+#'    then assign its configuration and aggregated performance to the instance.
 #'
 #' @family Tuner
 #' @export
@@ -99,8 +94,7 @@
 #' )
 #' tt = tnr("random_search") # swap this line to use a different Tuner
 #' tt$tune(instance) # modifies the instance by reference
-#' instance$result_config # returns best configuration
-#' instance$result_perf # returns best performance
+#' instance$result # returns best configuration and best performance
 #' instance$archive() # allows access of data.table / benchmark result of full path of all evaluations
 Tuner = R6Class("Tuner",
   public = list(
@@ -148,7 +142,7 @@ Tuner = R6Class("Tuner",
       }, terminated_error = function(cond) {})
       lg$info("Finished tuning after %i evals", instance$n_evals)
       private$assign_result(instance)
-      invisible(self)
+      invisible(NULL)
     }
   ),
 
@@ -163,13 +157,19 @@ Tuner = R6Class("Tuner",
     # - then assign its config and aggregated perf to instance
     # --> a Tuner can overwrite this if it wants to do something more fancy
     assign_result = function(instance) {
-      assert_r6(instance, "TuningInstance")
-      rr = instance$best()
-      pv = rr$learners[[1L]]$param_set$values
-      pv = pv[names(pv) %in% instance$param_set$ids()] # only store values from the inst$ps
-      instance$result_config = pv
-      instance$result_perf = rr$aggregate(instance$measures)
-      return(self)
+      tuner_assign_result_default(instance)
     }
   )
 )
+
+tuner_assign_result_default = function(instance) {
+  assert_r6(instance, "TuningInstance")
+  # get best RR - best by mean perf value and extract perf values
+  rr = instance$best()
+  perf = rr$aggregate(instance$measures)
+  # get the untrafoed config that matches this RR
+  pv = instance$bmr$rr_data[rr$uhash, on = "uhash"]$tune_x[[1L]]
+  instance$assign_result(pv, perf)
+  invisible(NULL)
+}
+
