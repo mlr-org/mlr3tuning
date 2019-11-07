@@ -39,7 +39,7 @@ TunerDesignPoints = R6Class("TunerDesignPoints",
       ps = ParamSet$new(list(
         ParamInt$new("batch_size", lower = 1L, tags = "required"),
         ParamUty$new("design", tags = "required",
-          custom_check = function(x) check_data_table(x, min.rows = 1, min.col = 1, null.ok = TRUE))
+          custom_check = function(x) check_data_table(x, min.rows = 1, min.cols = 1, null.ok = TRUE))
       ))
       ps$values = list(batch_size = 1L, design = NULL)
       super$initialize(

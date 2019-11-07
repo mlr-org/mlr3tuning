@@ -36,7 +36,7 @@ test_that("predictions missing", {
 
   instance = TuningInstance$new(task = tsk("iris"), learner = learner, resampling = rsmp("holdout"),
     measures = msr("classif.ce"), param_set = param_set, terminator = term("evals", n_evals = 10))
-  expect_error(tt$tune(instance), "[Nn]o non-missing")
+  expect_error(tt$tune(instance), "missing")
 })
 
 
