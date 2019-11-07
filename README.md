@@ -11,13 +11,13 @@ Extends the [mlr3](https://mlr3.mlr-org.com) package with tuning.
 
 CRAN version
 
-```{r eval = FALSE}
+```{r}
 install.packages("mlr3tuning")
 ```
 
 Development version
 
-```{r, eval = FALSE}
+```{r}
 remotes::install_github("mlr-org/mlr3tuning")
 ```
 
