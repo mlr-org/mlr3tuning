@@ -107,7 +107,7 @@ test_that("tuning with custom resampling", {
   inst = TuningInstance$new(task, learner, resampling, measures, tune_ps, terminator)
   tuner$tune(inst)
   rr = inst$bmr$resamplings
-  expect_data_table(rr, nrow = 1)
+  expect_data_table(rr, nrows = 1)
   rr = rr$resampling[[1]]
   expect_equal(rr$iters, 2)
   expect_set_equal(rr$train_set(1), train_sets[[1]])

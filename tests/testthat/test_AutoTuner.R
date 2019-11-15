@@ -84,4 +84,12 @@ test_that("AutoTuner / param_set", {
 })
 
 
-
+test_that("Custom resampling is not allowed", {
+  measures = msr("classif.ce")
+  te = term("evals", n_evals = 3)
+  task = tsk("iris")
+  ps = TEST_MAKE_PS1()
+  tuner = TunerRandomSearch$new()
+  r = rsmp("holdout")$instantiate(task)
+  expect_error(AutoTuner$new(lrn("classif.rpart"), r, measures, ps, te, tuner), "instantiated")
+})

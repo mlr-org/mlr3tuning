@@ -20,6 +20,9 @@ or \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
 Learner to tune, see \link{TuningInstance}.
 \item \code{resampling} :: \link[mlr3:Resampling]{mlr3::Resampling}\cr
 Resampling strategy during tuning, see \link{TuningInstance}.
+This \link[mlr3:Resampling]{mlr3::Resampling} is meant to be the \strong{inner} resampling, operating on the training set
+of an arbitrary outer resampling.
+For this reason it is not feasible to pass an instantiated \link[mlr3:Resampling]{mlr3::Resampling} here.
 \item \code{measures} :: list of \link[mlr3:Measure]{mlr3::Measure}\cr
 Performance measures. The first one is optimized, see \link{TuningInstance}.
 \item \code{tune_ps} :: \link[paradox:ParamSet]{paradox::ParamSet}\cr
