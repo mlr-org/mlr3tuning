@@ -33,7 +33,7 @@ for the parameters the tuner is supposed to optimize, and a termination criterio
 \item \code{task} :: \link[mlr3:Task]{mlr3::Task}.
 \item \code{learner} :: \link[mlr3:Learner]{mlr3::Learner}.
 \item \code{resampling} :: \link[mlr3:Resampling]{mlr3::Resampling}\cr
-Note that the resampling is instantiated at the beginning so that all configurations
+Note that uninstantiated resamplings are instantiated during construction so that all configurations
 are evaluated on the same data splits.
 \item \code{measures} :: list of \link[mlr3:Measure]{mlr3::Measure}.
 \item \code{param_set} :: \link[paradox:ParamSet]{paradox::ParamSet}.
