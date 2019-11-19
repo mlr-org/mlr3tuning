@@ -324,11 +324,16 @@ TuningInstance = R6Class("TuningInstance",
       if (allMissing(y))
         stopf("No non-missing performance value stored")
 
+      which_best = if (measure$minimize) which_min else which_max
+      best_index = which_best(y, na_rm = TRUE)
+
       tab$resample_result[[best_index]]
     },
 
     # return pareto front of the resampling evaluations w.r.t. given measures
     pareto_front = function(measures = NULL) {
+
+      assert_character(measures, null.ok = TRUE, min.len = 2)
 
       if (length(self$measures) < 2) {
         stopf("Tuning instance was initialized with less than two measures.")
@@ -340,13 +345,12 @@ TuningInstance = R6Class("TuningInstance",
       
       } else {
         measures = lapply(measures, msr, task_type = self$task$task_type)
+        self_measures_ids = ids(self$measures)
+        # check that we are only using contained measures
+        assert_subset(measures, self_measures_ids)
+        measures = self$measures[match(measures, self_measures_ids)]
       }
       
-      # check that we are only using contained measures
-      measure_ids = assert_choice(ids(measures), ids(self$measures))
-
-      # check that at leaste two measures are given as arguments (or NULL)
-      assert_true(length(measure_ids) > 1)
       #assert_measure(measure, task = self$task, learner = self$learner)
       #if (is.na(measure$minimize))
       #  stopf("Measure '%s' has minimize = NA and hence cannot be tuned", measure$id)
@@ -360,7 +364,7 @@ TuningInstance = R6Class("TuningInstance",
       is_pareto = calculate_pareto_front(y, !minimize)
 
       tab$resample_result[is_pareto]
-    }
+    },
 
     assign_result = function(tune_x, perf) {
       # result tune_x must be feasible for paramset

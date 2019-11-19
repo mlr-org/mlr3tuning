@@ -21,26 +21,37 @@ get_by_id = function(xs, id) {
 }
 
 
+#' @title Return pareto front
 #' @description calculate pareto front of a matrix
 #'   also works for >2D pareto front
-#' @example data = rbind(c(1, 0.25, 0.75, 0), c(0, 0.25, 0.75, 1))
-#'   calculate_pareto_front(data)
-#'   data = rbind(c(1,1,0,1), c(1,1,0,0), c(1,0,1,0), c(1,1,1,1))
-#'   calculate_pareto_front(data, maximize = FALSE)
+#' @param points Numeric matrix with each column corresponding to a point
+#' @param maximize Bool vector of length one or nrow of points
+#' @examples
+#' \dontrun{
+#' data = rbind(c(1, 0.25, 0.75, 0), c(0, 0.25, 0.75, 1))
+#' calculate_pareto_front(data)
+#' data = rbind(c(1,1,0,1), c(1,1,0,0), c(1,0,1,0), c(1,1,1,1))
+#' calculate_pareto_front(data, maximize = FALSE)
+#' }
+#' @importFrom stats runif
 calculate_pareto_front = function(points, maximize = TRUE) {
 
-  assert_matrix(points, types = "numeric")
-  assert_logical(maximize)
+  assert_matrix(points, mode = "numeric")
+  assert(
+    check_logical(maximize, len = 1),
+    check_logical(maximize, len = ncol(points))
+  )
 
+  colnames(points) = seq_len(ncol(points))
   # temporarily transpose; re-transpose at the end of the function
   points = t(points)
 
-  # sort all the points and go stepwise through the rows whenever
+  # sort all the points and go stepwise through the dims whenever
   # entries are tied; break ties in the end with noise data
   sorted = do.call(
     order,
-    c(as.data.frame(points), runif(nrow(points))),
-    list(decreasing = maximize)
+    c(as.list(as.data.frame(points)), list(runif(nrow(points))),
+    list(decreasing = maximize))
   )
   sorted_data = points[sorted, ]
 
@@ -48,17 +59,19 @@ calculate_pareto_front = function(points, maximize = TRUE) {
   cummaxmin = function(x, m) if (m) cummax(x) else cummin(x)
    
   # flag non-violations of strict monotony in each column
-  bool_matrix = mapply(function(x, m) !duplicated(cummaxmin(x, m)), sorted_data, maximize)
+  bool_matrix = mapply(
+    function(x, m) !duplicated(cummaxmin(x, m)),
+    as.data.frame(sorted_data),
+    maximize
+  )
   # check for any flag in each row
   front = apply(bool_matrix, 1, any)
   # get original indices
-  revert_sort = order(sorted)
-
+  revert_sort = as.numeric(rownames(sorted_data))
+  # select the front in the original indices
   result = revert_sort[front]
   # stabilize algorithm by not switching up the order of the front members
-  result = t(sort(result))
-
-  return(result)
+  return(sort(result))
 }
 
  
