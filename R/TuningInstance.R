@@ -31,7 +31,7 @@
 #' * `task` :: [mlr3::Task].
 #' * `learner` :: [mlr3::Learner].
 #' * `resampling` :: [mlr3::Resampling]\cr
-#'   Note that the resampling is instantiated at the beginning so that all configurations
+#'   Note that uninstantiated resamplings are instantiated during construction so that all configurations
 #'   are evaluated on the same data splits.
 #' * `measures` :: list of [mlr3::Measure].
 #' * `param_set` :: [paradox::ParamSet].
@@ -203,7 +203,8 @@ TuningInstance = R6Class("TuningInstance",
       self$bm_args = assert_list(bm_args, names = "unique")
       self$bmr = BenchmarkResult$new(data.table())
       self$bmr$rr_data[, c("batch_nr", "tune_x") := list(integer(), list())]
-      self$resampling$instantiate(self$task)
+      if (!resampling$is_instantiated)
+        self$resampling$instantiate(self$task)
     },
 
     format = function() {

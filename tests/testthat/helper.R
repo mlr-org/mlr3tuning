@@ -151,7 +151,6 @@ make_dummy_cp_measure = function(type) {
           id = id,
           range = c(0, Inf),
           minimize = TRUE,
-          packages = "Metrics",
           properties = "requires_learner"
         )
         self$fun = fun # allow a fun to transform cp to score

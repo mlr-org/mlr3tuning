@@ -18,6 +18,9 @@
 #'   Learner to tune, see [TuningInstance].
 #' * `resampling` :: [mlr3::Resampling]\cr
 #'   Resampling strategy during tuning, see [TuningInstance].
+#'   This [mlr3::Resampling] is meant to be the **inner** resampling, operating on the training set
+#'   of an arbitrary outer resampling.
+#'   For this reason it is not feasible to pass an instantiated [mlr3::Resampling] here.
 #' * `measures` :: list of [mlr3::Measure]\cr
 #'   Performance measures. The first one is optimized, see [TuningInstance].
 #' * `tune_ps` :: [paradox::ParamSet]\cr
@@ -81,7 +84,7 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
     initialize = function(learner, resampling, measures, tune_ps, terminator, tuner, bm_args = list()) {
       ia = list()
       ia$learner = assert_learner(learner)$clone()
-      ia$resampling = assert_resampling(resampling)$clone()
+      ia$resampling = assert_resampling(resampling, instantiated = FALSE)$clone()
       ia$measures = assert_measures(as_measures(measures), learner = learner)
       ia$param_set = assert_param_set(tune_ps)$clone()
       ia$learner$param_set$set_id = "" # FIXME: i have no idea why we do this here?

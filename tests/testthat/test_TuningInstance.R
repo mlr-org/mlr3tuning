@@ -86,3 +86,32 @@ test_that("the same experiment can be added twice", {
   expect_data_table(tab, nrows = 2)
 })
 
+
+test_that("tuning with custom resampling", {
+  task = tsk("pima")
+  resampling = rsmp("custom")
+  train_sets = list(1:300 , 332:632)
+  test_sets = list(301:331, 633:663)
+  resampling$instantiate(task, train_sets, test_sets)
+
+  learner = lrn("classif.rpart")
+  #resampling = rsmp("holdout")
+  measures = msr("classif.ce")
+  tune_ps = ParamSet$new(list(
+    ParamDbl$new("cp", lower = 0.001, upper = 0.1),
+    ParamInt$new("minsplit", lower = 1, upper = 10)
+  ))
+  terminator = term("evals", n_evals = 10)
+  tuner = tnr("random_search")
+
+  inst = TuningInstance$new(task, learner, resampling, measures, tune_ps, terminator)
+  tuner$tune(inst)
+  rr = inst$bmr$resamplings
+  expect_data_table(rr, nrows = 1)
+  rr = rr$resampling[[1]]
+  expect_equal(rr$iters, 2)
+  expect_set_equal(rr$train_set(1), train_sets[[1]])
+  expect_set_equal(rr$train_set(2), train_sets[[2]])
+  expect_set_equal(rr$test_set(1), test_sets[[1]])
+  expect_set_equal(rr$test_set(2), test_sets[[2]])
+})

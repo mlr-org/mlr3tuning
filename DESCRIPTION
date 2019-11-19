@@ -37,7 +37,7 @@ Imports:
     checkmate (>= 1.9.4),
     data.table,
     lgr,
-    mlr3 (>= 0.1.3),
+    mlr3 (>= 0.1.4),
     mlr3misc (>= 0.1.5),
     paradox,
     R6
@@ -47,8 +47,8 @@ Suggests:
     testthat
 Encoding: UTF-8
 NeedsCompilation: no
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.1
+Roxygen: list(markdown = TRUE, r6 = FALSE)
+RoxygenNote: 7.0.0
 Collate:
     'AutoTuner.R'
     'mlr_terminators.R'

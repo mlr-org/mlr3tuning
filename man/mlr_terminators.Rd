@@ -24,14 +24,15 @@ term("evals", n_evals = 10)
 \seealso{
 Sugar function: \code{\link[=term]{term()}}
 
-Other Terminator: \code{\link{TerminatorClockTime}},
-  \code{\link{TerminatorCombo}},
-  \code{\link{TerminatorEvals}},
-  \code{\link{TerminatorModelTime}},
-  \code{\link{TerminatorNone}},
-  \code{\link{TerminatorPerfReached}},
-  \code{\link{TerminatorStagnation}},
-  \code{\link{Terminator}}
+Other Terminator: 
+\code{\link{TerminatorClockTime}},
+\code{\link{TerminatorCombo}},
+\code{\link{TerminatorEvals}},
+\code{\link{TerminatorModelTime}},
+\code{\link{TerminatorNone}},
+\code{\link{TerminatorPerfReached}},
+\code{\link{TerminatorStagnation}},
+\code{\link{Terminator}}
 }
 \concept{Terminator}
 \keyword{datasets}

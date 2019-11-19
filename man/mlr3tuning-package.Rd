@@ -22,13 +22,13 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Michel Lang \email{michellang@gmail.com} (0000-0001-9754-0393)
+\strong{Maintainer}: Michel Lang \email{michellang@gmail.com} (\href{https://orcid.org/0000-0001-9754-0393}{ORCID})
 
 Authors:
 \itemize{
-  \item Jakob Richter \email{jakob1richter@gmail.com} (0000-0003-4481-5554)
-  \item Bernd Bischl \email{bernd_bischl@gmx.net} (0000-0001-6002-6980)
-  \item Daniel Schalk \email{daniel.schalk@stat.uni-muenchen.de} (0000-0003-0950-1947)
+  \item Jakob Richter \email{jakob1richter@gmail.com} (\href{https://orcid.org/0000-0003-4481-5554}{ORCID})
+  \item Bernd Bischl \email{bernd_bischl@gmx.net} (\href{https://orcid.org/0000-0001-6002-6980}{ORCID})
+  \item Daniel Schalk \email{daniel.schalk@stat.uni-muenchen.de} (\href{https://orcid.org/0000-0003-0950-1947}{ORCID})
 }
 
 }
