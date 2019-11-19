@@ -94,7 +94,15 @@ TEST_MAKE_PS1 = function(n_dim = 1L) {
     ))
   }
 }
-TEST_MAKE_INST1 = function(values = NULL, folds = 2L, measures = msr("classif.ce"), n_dim = 1L, term_evals = 5L) {
+TEST_MAKE_INST1 = function(
+  values = NULL,
+  folds = 2L,
+  measures = msr("classif.ce"),
+  n_dim = 1L,
+  term_evals = 5L,
+  task = tsk("iris")
+) {
+
   ps = TEST_MAKE_PS1(n_dim = n_dim)
   lrn = mlr_learners$get("classif.rpart")
   if (!is.null(values)) {
@@ -102,7 +110,7 @@ TEST_MAKE_INST1 = function(values = NULL, folds = 2L, measures = msr("classif.ce
   }
   rs = rsmp("cv", folds = folds)
   term = term("evals", n_evals = term_evals)
-  inst = TuningInstance$new(tsk("iris"), lrn, rs, measures, ps, term)
+  inst = TuningInstance$new(task, lrn, rs, measures, ps, term)
   return(inst)
 }
 

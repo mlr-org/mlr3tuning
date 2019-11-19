@@ -39,7 +39,7 @@ calculate_pareto_front = function(points, maximize = TRUE) {
   assert_matrix(points, mode = "numeric")
   assert(
     check_logical(maximize, len = 1),
-    check_logical(maximize, len = ncol(points))
+    check_logical(maximize, len = nrow(points))
   )
 
   colnames(points) = seq_len(ncol(points))

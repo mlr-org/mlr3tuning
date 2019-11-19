@@ -115,3 +115,27 @@ test_that("tuning with custom resampling", {
   expect_set_equal(rr$test_set(1), test_sets[[1]])
   expect_set_equal(rr$test_set(2), test_sets[[2]])
 })
+
+
+test_that("tuning with multicrit result retrieval", {
+  set.seed(2)
+  inst = TEST_MAKE_INST1(
+    values = list(maxdepth = 10),
+    folds = 2L,
+    measures = list(msr("classif.tpr"), msr("classif.fpr")),
+    n_dim = 2,
+    task = tsk("pima")
+  )
+
+  tuner = TunerRandomSearch$new()
+  tuner$tune(inst)
+
+  # seed, because we sample if ties occure
+  set.seed(123)
+  results1 = inst$pareto_front()
+  set.seed(123)
+  results2 = inst$pareto_front(c("classif.tpr", "classif.fpr"))
+  expect_equal(results1, results2)
+  lapply(c(results1, results2), expect_resample_result)
+
+})
