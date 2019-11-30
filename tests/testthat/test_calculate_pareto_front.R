@@ -2,6 +2,10 @@ context("calculate_pareto_front")
 
 test_that("calculate_pareto_front", {
 
+  # 1 value matrix
+  pareto_front = calculate_pareto_front(matrix(1))
+  expect_equal(pareto_front, 1)
+
   # 2D example copied of ecr2 package
   data_matrix = matrix(
     c(# front 1

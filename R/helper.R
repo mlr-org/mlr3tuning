@@ -53,17 +53,17 @@ calculate_pareto_front = function(points, maximize = TRUE) {
     c(as.list(as.data.frame(points)), list(runif(nrow(points))),
     list(decreasing = maximize))
   )
-  sorted_data = points[sorted, ]
+  sorted_data = points[sorted, , drop = FALSE]
 
   # function for cummulative min or max of vector
   cummaxmin = function(x, m) if (m) cummax(x) else cummin(x)
    
   # flag non-violations of strict monotony in each column
-  bool_matrix = mapply(
+  bool_matrix = as.matrix(mapply(
     function(x, m) !duplicated(cummaxmin(x, m)),
     as.data.frame(sorted_data),
     maximize
-  )
+  ))
   # check for any flag in each row
   front = apply(bool_matrix, 1, any)
   # get original indices
