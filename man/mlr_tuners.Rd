@@ -26,11 +26,11 @@ tnr("random_search")
 Sugar function: \code{\link[=tnr]{tnr()}}
 
 Other Tuner: 
-\code{\link{TunerDesignPoints}},
-\code{\link{TunerGenSA}},
-\code{\link{TunerGridSearch}},
-\code{\link{TunerRandomSearch}},
-\code{\link{Tuner}}
+\code{\link{Tuner}},
+\code{\link{mlr_tuners_design_points}},
+\code{\link{mlr_tuners_gensa}},
+\code{\link{mlr_tuners_grid_search}},
+\code{\link{mlr_tuners_random_search}}
 }
 \concept{Tuner}
 \keyword{datasets}

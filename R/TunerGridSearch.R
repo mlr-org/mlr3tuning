@@ -1,6 +1,6 @@
 #' @title TunerGridSearch
 #'
-#' @aliases mlr_tuners_grid_search
+#' @name mlr_tuners_grid_search
 #' @include Tuner.R
 #' @usage NULL
 #' @format [R6::R6Class] object inheriting from [Tuner].

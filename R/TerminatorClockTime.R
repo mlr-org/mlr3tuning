@@ -1,6 +1,6 @@
 #' @title Terminator that stops according to the clock time
 #'
-#' @aliases mlr_terminators_clock_time
+#' @name mlr_terminators_clock_time
 #' @usage NULL
 #' @format [R6::R6Class] object inheriting from [Terminator].
 #' @include Terminator.R

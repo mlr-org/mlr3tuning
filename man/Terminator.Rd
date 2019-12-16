@@ -48,13 +48,13 @@ Must be implemented in each subclass.
 
 \seealso{
 Other Terminator: 
-\code{\link{TerminatorClockTime}},
-\code{\link{TerminatorCombo}},
-\code{\link{TerminatorEvals}},
-\code{\link{TerminatorModelTime}},
-\code{\link{TerminatorNone}},
-\code{\link{TerminatorPerfReached}},
-\code{\link{TerminatorStagnation}},
+\code{\link{mlr_terminators_clock_time}},
+\code{\link{mlr_terminators_combo}},
+\code{\link{mlr_terminators_evals}},
+\code{\link{mlr_terminators_model_time}},
+\code{\link{mlr_terminators_none}},
+\code{\link{mlr_terminators_perf_reached}},
+\code{\link{mlr_terminators_stagnation}},
 \code{\link{mlr_terminators}}
 }
 \concept{Terminator}

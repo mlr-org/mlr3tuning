@@ -1,6 +1,6 @@
 #' @title Terminator that stops after a number of evaluations
 #'
-#' @aliases mlr_terminators_evals
+#' @name mlr_terminators_evals
 #' @usage NULL
 #' @format [R6::R6Class] object inheriting from [Terminator].
 #' @include Terminator.R

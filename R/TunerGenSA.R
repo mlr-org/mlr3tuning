@@ -1,6 +1,6 @@
 #' @title TunerGenSA
 #'
-#' @aliases mlr_tuners_gensa
+#' @name mlr_tuners_gensa
 #' @include Tuner.R
 #' @usage NULL
 #' @format [R6::R6Class] object inheriting from [Tuner].

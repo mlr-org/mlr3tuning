@@ -1,6 +1,6 @@
 #' @title TunerDesignPoints
 #'
-#' @aliases mlr_tuners_design_points
+#' @name mlr_tuners_design_points
 #' @include Tuner.R
 #' @usage NULL
 #' @format [R6::R6Class] object inheriting from [Tuner].

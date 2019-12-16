@@ -1,6 +1,6 @@
 #' @title TunerRandomSearch
 #'
-#' @aliases mlr_tuners_random_search
+#' @name mlr_tuners_random_search
 #' @include Tuner.R
 #' @usage NULL
 #' @format [R6::R6Class] object inheriting from [Tuner].

@@ -1,6 +1,6 @@
 #' @title Terminator that stops when a performance level has been reached
 #'
-#' @aliases mlr_terminators_perf_reached
+#' @name mlr_terminators_perf_reached
 #' @usage NULL
 #' @format [R6::R6Class] object inheriting from [Terminator].
 #' @include Terminator.R

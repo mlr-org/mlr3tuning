@@ -1,6 +1,6 @@
 #' @title Terminator that stops when tuning does not improve
 #'
-#' @aliases mlr_terminators_stagnation
+#' @name mlr_terminators_stagnation
 #' @usage NULL
 #' @format [R6::R6Class] object inheriting from [Terminator].
 #' @include Terminator.R

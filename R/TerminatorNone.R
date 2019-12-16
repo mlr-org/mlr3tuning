@@ -1,6 +1,6 @@
 #' @title Terminator that never stops.
 #'
-#' @aliases mlr_terminators_none
+#' @name mlr_terminators_none
 #' @usage NULL
 #' @format [R6::R6Class] object inheriting from [Terminator].
 #' @include Terminator.R
