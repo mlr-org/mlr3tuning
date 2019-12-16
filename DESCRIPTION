@@ -48,7 +48,7 @@ Suggests:
 Encoding: UTF-8
 NeedsCompilation: no
 Roxygen: list(markdown = TRUE, r6 = FALSE)
-RoxygenNote: 7.0.1
+RoxygenNote: 7.0.2
 Collate:
     'AutoTuner.R'
     'mlr_terminators.R'

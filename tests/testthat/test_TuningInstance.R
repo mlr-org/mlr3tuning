@@ -59,23 +59,25 @@ test_that("archive one row (#40)", {
   expect_number(a$classif.ce)
 })
 
-test_that("budget", {
-  inst = TEST_MAKE_INST1()
-  design = generate_design_random(inst$param_set, 8)$data
-  expect_error(inst$eval_batch(design[1:6, ]), class = "terminated_error")
-  tab = inst$archive()
-  expect_data_table(tab, nrows = 6)
+test_that("eval_batch and termination", {
+  inst = TEST_MAKE_INST1(term_evals = 3L)
+  design = generate_design_random(inst$param_set, 2)$data
+  inst$eval_batch(design[1:2, ])
+  expect_data_table(inst$archive(), nrows = 2L)
+  inst$eval_batch(design[1, ])
+  expect_data_table(inst$archive(), nrows = 3L)
+  expect_error(inst$eval_batch(design[1, ]), class = "terminated_error")
+  expect_data_table(inst$archive(), nrows = 3L)
 
-  inst = TEST_MAKE_INST1()
-  tuner = tnr("random_search", batch_size = 6)
+  inst = TEST_MAKE_INST1(term_evals = 5L)
+  tuner = tnr("random_search", batch_size = 3L)
   tuner$tune(inst)
-  tab = inst$archive()
-  expect_data_table(tab, nrows = 6)
+  expect_data_table(inst$archive(), nrows = 6L)
 
   # second start should be a NOP
   tuner$tune(inst)
   tab = inst$archive()
-  expect_data_table(tab, nrows = 6)
+  expect_data_table(tab, nrows = 6L)
 })
 
 test_that("the same experiment can be added twice", {
