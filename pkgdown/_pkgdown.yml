@@ -41,12 +41,12 @@ reference:
       - TuningInstance
   - title: Tuners
     contents:
-      - mlr_tuners
-      - starts_with("Tuner")
+      - Tuner
+      - starts_with("mlr_tuners")
   - title: Terminators
     contents:
-      - mlr_terminators
-      - starts_with("Terminator")
+      - Terminator
+      - starts_with("mlr_terminators")
   - title: Auto-tuned Learner
     contents:
       - AutoTuner
