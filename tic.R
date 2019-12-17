@@ -1,7 +1,8 @@
 do_package_checks(error_on = "warning")
 
 if (ci_has_env("BUILD_PKGDOWN")) {
-  do_pkgdown()
+  get_stage("install") %>%
+    add_step(step_install_github("mlr-org/mlr3pkgdowntemplate"))
 }
 
 get_stage("after_success") %>%
