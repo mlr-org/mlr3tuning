@@ -23,4 +23,4 @@ Development version
 remotes::install_github("mlr-org/mlr3tuning")
 ```
 
-Further documentation can be found in the [mlr3book](https://mlr3book.mlr-org.com/).
+Further documentation can be found in the [mlr3book](https://mlr3book.mlr-org.com/tuning.html).
