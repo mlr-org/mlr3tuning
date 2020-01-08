@@ -276,10 +276,6 @@ TuningInstance = R6Class("TuningInstance",
         lg$info(capture.output(print(cbind(dt, a), class = FALSE, row.names = FALSE, print.keys = FALSE)))
       }
 
-      # if the terminator is positive throw condition of class "terminated_error" that we can tryCatch
-      # if (self$terminator$is_terminated(self)) {
-        # stop(terminated_error(self))
-      # }
       perf = bmr$aggregate(measures = self$measures, ids = FALSE)[, mids, with = FALSE]
       return(list(batch_nr = batch_nr, uhashes = bmr$uhashes, perf = perf))
     },
