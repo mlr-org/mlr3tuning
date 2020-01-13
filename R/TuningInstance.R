@@ -274,6 +274,7 @@ TuningInstance = R6Class("TuningInstance",
         a = bmr$aggregate(measures = self$measures, ids = FALSE)[, mids, with = FALSE]
         lg$info("Result:")
         lg$info(capture.output(print(cbind(dt, a), class = FALSE, row.names = FALSE, print.keys = FALSE)))
+        lg$info(paste("Number of configuration evaluations:", self$n_evals))
       }
 
       # if the terminator is positive throw condition of class "terminated_error" that we can tryCatch
