@@ -5,7 +5,7 @@ test_that("TuningInstance", {
   # test empty inst
   expect_data_table(inst$bmr$data, nrows = 0)
   expect_identical(inst$n_evals, 0L)
-  expect_output(print(inst), "Empty data.table")
+  expect_output(print(inst), "Not tuned")
 
   # add a couple of eval points and test the state of inst
   z = inst$eval_batch(data.table(cp = c(0.01, 0.02), minsplit = c(3, 4)))
@@ -17,7 +17,7 @@ test_that("TuningInstance", {
   expect_equal(inst$bmr$resample_result(2)$learners[[1]]$param_set$values$minsplit, 4)
   expect_equal(inst$bmr$resample_result(2)$learners[[1]]$param_set$values$maxdepth, 10)
   expect_identical(inst$n_evals, 2L)
-  expect_output(print(inst), "0.02")
+  expect_output(print(inst), "Tuned")
   expect_list(z, len = 3)
   expect_named(z, c("batch_nr", "uhashes", "perf"))
   expect_equal(z$batch_nr, 1L)
