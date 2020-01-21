@@ -272,9 +272,9 @@ TuningInstance = R6Class("TuningInstance",
         # - i dont know how to reference the current level as "info" instead of "400" for the threshold in lgr
         # - i only want to aggregate when "info" is set and we want to remove the aggregation in eval_batch later
         a = bmr$aggregate(measures = self$measures, ids = FALSE)[, mids, with = FALSE]
-        lg$info("Result:")
+        lg$info("Result of batch %i:", batch_nr)
         lg$info(capture.output(print(cbind(dt, a), class = FALSE, row.names = FALSE, print.keys = FALSE)))
-        lg$info(paste("Number of configuration evaluations:", self$n_evals))
+        lg$info("%i configurations evaluated", self$n_evals)
       }
 
       # if the terminator is positive throw condition of class "terminated_error" that we can tryCatch
