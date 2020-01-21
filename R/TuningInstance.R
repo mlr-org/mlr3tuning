@@ -213,7 +213,7 @@ TuningInstance = R6Class("TuningInstance",
 
     print = function() {
       catf(self$format())
-      catf(str_indent("* State: ", if(self$n_evals == 0) "Not tuned" else "Tuned"))
+      catf(str_indent("* State: ", if(is.null(self$result$perf)) "Not tuned" else "Tuned"))
       catf(str_indent("* Task:", format(self$task)))
       catf(str_indent("* Learner:", format(self$learner)))
       catf(str_indent("* Measures:", map_chr(self$measures, "id")))
@@ -221,7 +221,7 @@ TuningInstance = R6Class("TuningInstance",
       catf(str_indent("* Terminator:", format(self$terminator)))
       catf(str_indent("* bm_args:", as_short_string(self$bm_args)))
       catf(str_indent("* n_evals:", self$n_evals))
-      if(self$n_evals != 0) {
+      if(!is.null(self$result$perf)) {
         catf("* Result:")
         catf(strwrap("perf:", indent = 3))
         catf(strwrap(c(rbind(names(self$result$perf), self$result$perf)), indent = 4), sep = "\n")

@@ -17,7 +17,7 @@ test_that("TuningInstance", {
   expect_equal(inst$bmr$resample_result(2)$learners[[1]]$param_set$values$minsplit, 4)
   expect_equal(inst$bmr$resample_result(2)$learners[[1]]$param_set$values$maxdepth, 10)
   expect_identical(inst$n_evals, 2L)
-  expect_output(print(inst), "Tuned")
+  expect_output(print(inst), "Not tuned")
   expect_list(z, len = 3)
   expect_named(z, c("batch_nr", "uhashes", "perf"))
   expect_equal(z$batch_nr, 1L)
