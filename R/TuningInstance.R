@@ -222,17 +222,12 @@ TuningInstance = R6Class("TuningInstance",
       catf(str_indent("* bm_args:", as_short_string(self$bm_args)))
       catf(str_indent("* n_evals:", self$n_evals))
       if(!is.null(self$result$perf)) {
-        catf("* Result:")
-        catf("   perf:")
-        catf(paste0("   ", capture.output(as.data.table(rbind(self$result$perf)))), sep= "\n")
-        catf("   tune_x:")
-        catf(paste0("   ", capture.output(as.data.table(self$result$tune_x))), sep= "\n")
-        catf("   params:")
-        catf(paste0("   ", capture.output(as.data.table(self$result$params))), sep= "\n")
+        catf("* Result perf:")
+        print(as.data.table(rbind(self$result$perf)))
+        catf("* Result tune_x:")
+        print(as.data.table(rbind(self$result$tune_x)))
       }
-      pps = capture.output(self$param_set)
-      catf("* ParamSet:")
-      cat(paste("  ", pps[2:length(pps)]), sep = "\n")
+      print(self$param_set)
     },
 
     # evaluates all points in a design
