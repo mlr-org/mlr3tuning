@@ -117,3 +117,20 @@ test_that("tuning with custom resampling", {
   expect_set_equal(rr$test_set(1), test_sets[[1]])
   expect_set_equal(rr$test_set(2), test_sets[[2]])
 })
+
+test_that("non-scalar hyperpars (#201)", {
+  skip_if_not_installed("mlr3pipelines")
+
+  requireNamespace("mlr3pipelines")
+  `%>>%` = getFromNamespace("%>>%", asNamespace("mlr3pipelines"))
+
+  inst = TuningInstance$new(tsk("iris"),
+    mlr3pipelines::po("select") %>>% lrn("classif.rpart"),
+    rsmp("holdout"), msr("classif.ce"),
+    paradox::ParamSet$new(list(
+        paradox::ParamInt$new("classif.rpart.minsplit", 1, 1))),
+    term("evals", n_evals=1))
+
+  tnr("random_search")$tune(inst)
+  expect_data_table(inst$archive("params"), nrows = 1)
+})

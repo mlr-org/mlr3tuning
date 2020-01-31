@@ -43,6 +43,7 @@ Imports:
     R6
 Suggests:
     GenSA,
+    mlr3pipelines,
     rpart,
     testthat
 Encoding: UTF-8
