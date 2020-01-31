@@ -65,8 +65,6 @@ test_that("AutoTuner / param_set", {
   tuner = TunerRandomSearch$new()
   learner = lrn("classif.rpart", cp = 1, maxdepth = 1)
   at = AutoTuner$new(learner, rsmp("holdout"), measures, ps, te, tuner)
-  at$param_set$values$maxdepth = 1
-  at$param_set$values$cp = 1
   expect_equal(at$param_set$values[names(at$learner$param_set$values)], at$learner$param_set$values)
   at$train(task)
 
