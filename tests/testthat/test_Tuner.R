@@ -14,6 +14,7 @@ test_that("API", {
 })
 
 test_that("proper error if tuner cannot handle deps", {
+  skip_if_not_installed("GenSA")
   ps = ParamSet$new(params = list(
     ParamDbl$new("cp", lower = 0.001, upper = 0.1),
     ParamDbl$new("minsplit", lower = 1, upper = 10)
