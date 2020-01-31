@@ -213,15 +213,19 @@ TuningInstance = R6Class("TuningInstance",
 
     print = function() {
       catf(self$format())
+      catf(str_indent("* State: ", if(is.null(self$result$perf)) "Not tuned" else "Tuned"))
       catf(str_indent("* Task:", format(self$task)))
       catf(str_indent("* Learner:", format(self$learner)))
       catf(str_indent("* Measures:", map_chr(self$measures, "id")))
       catf(str_indent("* Resampling:", format(self$resampling)))
       catf(str_indent("* Terminator:", format(self$terminator)))
       catf(str_indent("* bm_args:", as_short_string(self$bm_args)))
+      catf(str_indent("* n_evals:", self$n_evals))
+      if(!is.null(self$result$perf)) {
+        catf(str_indent("* Result perf:", as_short_string(as.list(self$result$perf))) )
+        catf(str_indent("* Result tune_x:", as_short_string(self$result$tune_x)))
+      }
       print(self$param_set)
-      catf("Archive:")
-      print(self$archive())
     },
 
     # evaluates all points in a design
