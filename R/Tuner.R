@@ -142,6 +142,8 @@ Tuner = R6Class("Tuner",
       }, terminated_error = function(cond) {})
       lg$info("Finished tuning after %i evals", instance$n_evals)
       private$assign_result(instance)
+      lg$info("Tuned x: %s", as_short_string(instance$result$tune_x))
+      lg$info("Tuned y: %s", as_short_string(as.list(instance$result$perf)))
       invisible(NULL)
     }
   ),
