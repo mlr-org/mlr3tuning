@@ -222,10 +222,8 @@ TuningInstance = R6Class("TuningInstance",
       catf(str_indent("* bm_args:", as_short_string(self$bm_args)))
       catf(str_indent("* n_evals:", self$n_evals))
       if(!is.null(self$result$perf)) {
-        catf("* Result perf:")
-        print(as.data.table(rbind(self$result$perf)))
-        catf("* Result tune_x:")
-        print(as.data.table(rbind(self$result$tune_x)))
+        catf(str_indent("* Result perf:", as_short_string(as.list(instance$result$perf))) )
+        catf(str_indent("* Result tune_x:", as_short_string(instance$result$tune_x)))
       }
       print(self$param_set)
     },
