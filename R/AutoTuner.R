@@ -83,7 +83,7 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
 
     initialize = function(learner, resampling, measures, tune_ps, terminator, tuner, bm_args = list()) {
       ia = list()
-      ia$learner = assert_learner(learner)$clone()
+      ia$learner = assert_learner(learner)$clone(deep = TRUE)
       ia$resampling = assert_resampling(resampling, instantiated = FALSE)$clone()
       ia$measures = assert_measures(as_measures(measures), learner = learner)
       ia$param_set = assert_param_set(tune_ps)$clone()
@@ -114,7 +114,8 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
       self$tuner$tune(instance)
 
       # get learner, set params to optimal, then train
-      learner = ia$learner
+      # we REALLY need to clone here we write to the object and this would change instance_args
+      learner = ia$learner$clone(deep = TRUE)
       learner$param_set$values = instance$result$params
       learner$train(task)
 
