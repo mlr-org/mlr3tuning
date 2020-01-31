@@ -12,7 +12,7 @@ at design points (\verb{$eval_batch()}), storing the evaluations in an internal 
 and querying the archive (\verb{$archive()}).
 
 Evaluations of hyperparameter configurations are performed in batches by calling \code{\link[mlr3:benchmark]{mlr3::benchmark()}} internally.
-Before and after a batch is evaluated, the \link{Terminator} is queried for the remaining budget.
+Before a batch is evaluated, the \link{Terminator} is queried for the remaining budget.
 If the available budget is exhausted, an exception is raised, and no further evaluations can be performed from this point on.
 
 A list of measures can be passed to the instance, and they will always be all evaluated.
@@ -85,7 +85,7 @@ Has the same number of rows as \code{dt}, and the same number of columns as leng
 Columns are named with measure-IDs. A cell entry is the (aggregated) performance of that configuration for that measure.
 }
 
-Before and after each batch-evaluation, the \link{Terminator} is checked, and if it is positive, an exception of class \code{terminated_error} is raised.
+Before each batch-evaluation, the \link{Terminator} is checked, and if it is positive, an exception of class \code{terminated_error} is raised.
 This function should be internally called by the tuner.
 \item \code{tuner_objective(x)}\cr
 \code{numeric()} -> \code{numeric(1)}\cr

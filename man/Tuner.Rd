@@ -72,14 +72,14 @@ A subclass is implemented in the following way:
 \item The batch evaluation is requested at the \link{TuningInstance} object \code{instance},
 so each batch is possibly executed in parallel via \code{\link[mlr3:benchmark]{mlr3::benchmark()}},
 and all evaluations are stored inside of \code{instance$bmr}.
-\item Before and after the batch evaluation, the \link{Terminator} is checked, and if it is positive,
+\item Before the batch evaluation, the \link{Terminator} is checked, and if it is positive,
 an exception of class \code{"terminated_error"} is generated.
 In the later case the current batch of evaluations is still stored in \code{instance},
 but the numeric scores are not sent back to the handling optimizer as it has lost execution control.
 \item After such an exception was caught we select the best configuration from \code{instance$bmr} and
 return it.
 \item Note that therefore more points than specified by the \link{Terminator} may be evaluated,
-as the Terminator is only checked before and after a batch evaluation,
+as the Terminator is only checked before a batch evaluation,
 and not in-between evaluation in a batch.
 How many more depends on the setting of the batch size.
 \item Overwrite the private super-method \code{assign_result} if you want to decide yourself how to estimate
