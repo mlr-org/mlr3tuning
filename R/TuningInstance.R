@@ -11,7 +11,7 @@
 #' and querying the archive (`$archive()`).
 #'
 #' Evaluations of hyperparameter configurations are performed in batches by calling [mlr3::benchmark()] internally.
-#' Before and after a batch is evaluated, the [Terminator] is queried for the remaining budget.
+#' Before a batch is evaluated, the [Terminator] is queried for the remaining budget.
 #' If the available budget is exhausted, an exception is raised, and no further evaluations can be performed from this point on.
 #'
 #' A list of measures can be passed to the instance, and they will always be all evaluated.
@@ -72,7 +72,7 @@
 #'     Has the same number of rows as `dt`, and the same number of columns as length of `measures`.
 #'     Columns are named with measure-IDs. A cell entry is the (aggregated) performance of that configuration for that measure.
 #'
-#'   Before and after each batch-evaluation, the [Terminator] is checked, and if it is positive, an exception of class `terminated_error` is raised.
+#'   Before each batch-evaluation, the [Terminator] is checked, and if it is positive, an exception of class `terminated_error` is raised.
 #'   This function should be internally called by the tuner.
 #'
 #' * `tuner_objective(x)`\cr
@@ -277,10 +277,6 @@ TuningInstance = R6Class("TuningInstance",
         lg$info("%i configurations evaluated", self$n_evals)
       }
 
-      # if the terminator is positive throw condition of class "terminated_error" that we can tryCatch
-      if (self$terminator$is_terminated(self)) {
-        stop(terminated_error(self))
-      }
       perf = bmr$aggregate(measures = self$measures, ids = FALSE)[, mids, with = FALSE]
       return(list(batch_nr = batch_nr, uhashes = bmr$uhashes, perf = perf))
     },
