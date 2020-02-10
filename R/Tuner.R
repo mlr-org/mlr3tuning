@@ -144,7 +144,7 @@ Tuner = R6Class("Tuner",
       private$assign_result(instance)
       lg$info("Tuned x: %s", as_short_string(instance$result$tune_x))
       lg$info("Tuned y: %s", as_short_string(as.list(instance$result$perf)))
-      invisible(NULL)
+      invisible(self)
     }
   ),
 

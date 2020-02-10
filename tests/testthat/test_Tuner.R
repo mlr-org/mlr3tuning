@@ -6,6 +6,7 @@ test_that("API", {
     rs = TunerRandomSearch$new()
     inst = TEST_MAKE_INST1(measures = measures, term_evals = n_evals)
     r = rs$tune(inst)
+    expect_is(r, "Tuner")
     a = inst$archive(unnest = "params")
     expect_data_table(a, nrows = n_evals)
     expect_true("cp" %in% names(a))
