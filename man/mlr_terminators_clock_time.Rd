@@ -4,24 +4,17 @@
 \alias{mlr_terminators_clock_time}
 \alias{TerminatorClockTime}
 \title{Terminator that stops according to the clock time}
-\format{\link[R6:R6Class]{R6::R6Class} object inheriting from \link{Terminator}.}
 \description{
 Class to terminate the tuning either after the complete process took a number of seconds on the clock
 or a fixed time point has been reached (as reported by \code{\link[=Sys.time]{Sys.time()}}).
 }
-\section{Construction}{
-\preformatted{TerminatorClockTime$new()
-term("clock_time")
-}
-}
-
 \section{Parameters}{
 
 \itemize{
-\item \code{secs} :: \code{numeric(1)}\cr
+\item \code{secs} (\code{numeric(1)})\cr
 Maximum allowed time, in seconds, default is 100.
 Mutually exclusive with argument \code{stop_time}.
-\item \code{stop_time} :: \code{POSIXct(1)}\cr
+\item \code{stop_time} (\code{POSIXct(1)})\cr
 Terminator stops after this point in time.
 Mutually exclusive with argument \code{secs}.
 }
@@ -45,3 +38,67 @@ Other Terminator:
 \code{\link{mlr_terminators}}
 }
 \concept{Terminator}
+\section{Super class}{
+\code{\link[mlr3tuning:Terminator]{mlr3tuning::Terminator}} -> \code{TerminatorClockTime}
+}
+\section{Methods}{
+\subsection{Public methods}{
+\itemize{
+\item \href{#method-new}{\code{TerminatorClockTime$new()}}
+\item \href{#method-is_terminated}{\code{TerminatorClockTime$is_terminated()}}
+\item \href{#method-clone}{\code{TerminatorClockTime$clone()}}
+}
+}
+\if{html}{
+\out{<details open ><summary>Inherited methods</summary>}
+\itemize{
+\item \out{<span class="pkg-link" data-pkg="mlr3tuning" data-topic="Terminator" data-id="format">}\href{../../mlr3tuning/html/Terminator.html#method-format}{\code{mlr3tuning::Terminator$format()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="mlr3tuning" data-topic="Terminator" data-id="print">}\href{../../mlr3tuning/html/Terminator.html#method-print}{\code{mlr3tuning::Terminator$print()}}\out{</span>}
+}
+\out{</details>}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\subsection{Method \code{new()}}{
+Creates a new instance of this \link[R6:R6Class]{R6} class.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TerminatorClockTime$new()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-is_terminated"></a>}}
+\subsection{Method \code{is_terminated()}}{
+Is \code{TRUE} iff the termination criterion is positive, and \code{FALSE} otherwise.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TerminatorClockTime$is_terminated(instance)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{instance}}{(\link{TuningInstance}).}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\code{logical(1)}.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-clone"></a>}}
+\subsection{Method \code{clone()}}{
+The objects of this class are cloneable with this method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TerminatorClockTime$clone(deep = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{deep}}{Whether to make a deep clone.}
+}
+\if{html}{\out{</div>}}
+}
+}
+}

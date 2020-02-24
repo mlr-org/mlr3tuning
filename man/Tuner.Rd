@@ -3,7 +3,6 @@
 \name{Tuner}
 \alias{Tuner}
 \title{Tuner}
-\format{\link[R6:R6Class]{R6::R6Class} object.}
 \description{
 Abstract \code{Tuner} class that implements the base functionality each tuner must provide.
 A tuner is an object that describes the tuning strategy, i.e. how to optimize the black-box
@@ -15,41 +14,6 @@ However, single-criteria tuners optimize only the first measure.
 A tuner must write its result to the \code{assign_result} method of the \link[=TuningInstance]{Tuninginstance} at the end of its tuning in
 order to store the best selected hyperparameter configuration and its estimated performance vector.
 }
-\section{Construction}{
-\preformatted{tuner = Tuner$new(param_set, param_classes, properties, packages = character())
-}
-\itemize{
-\item \code{param_set} :: \link[paradox:ParamSet]{paradox::ParamSet}\cr
-Set of control parameters for tuner.
-\item \code{param_classes} :: \code{character()}\cr
-Supported parameter classes for learner hyperparameters that the tuner can optimize, subclasses of \link[paradox:Param]{paradox::Param}.
-\item \code{properties} :: \code{character()}\cr
-Set of properties of the tuner. Must be a subset of \code{\link[=mlr_reflections]{mlr_reflections$tuner_properties}}.
-\item \code{packages} :: \code{character()}\cr
-Set of required packages.
-Note that these packages will be loaded via \code{\link[=requireNamespace]{requireNamespace()}}, and are not attached.
-}
-}
-
-\section{Fields}{
-
-\itemize{
-\item \code{param_set} :: \link[paradox:ParamSet]{paradox::ParamSet}; from construction.
-\item \code{param_classes} :: \code{character()}\cr
-\item \code{properties} :: `character(); from construction.
-\item \code{packages} :: \code{character()}; from construction.
-}
-}
-
-\section{Methods}{
-
-\itemize{
-\item \code{tune(instance)}\cr
-\link{TuningInstance} -> \code{self}\cr
-Performs the tuning on a \link{TuningInstance} until termination.
-}
-}
-
 \section{Private Methods}{
 
 \itemize{
@@ -82,7 +46,7 @@ return it.
 as the Terminator is only checked before a batch evaluation,
 and not in-between evaluation in a batch.
 How many more depends on the setting of the batch size.
-\item Overwrite the private super-method \code{assign_result} if you want to decide yourself how to estimate
+\item Overwrite the private super-method \code{assign_result()} if you want to decide yourself how to estimate
 the final configuration in the instance and its estimated performance.
 The default behavior is: We pick the best resample-experiment, regarding the first measure,
 then assign its configuration and aggregated performance to the instance.
@@ -118,3 +82,119 @@ Other Tuner:
 \code{\link{mlr_tuners}}
 }
 \concept{Tuner}
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{param_set}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
+Set of control parameters for tuner.}
+
+\item{\code{param_classes}}{(\code{character()})\cr
+Supported parameter classes for learner hyperparameters that the tuner can optimize, subclasses of \link[paradox:Param]{paradox::Param}.}
+
+\item{\code{properties}}{(\code{character()})\cr
+Set of properties of the tuner. Must be a subset of \code{\link[mlr3:mlr_reflections]{mlr_reflections$tuner_properties}}.}
+
+\item{\code{packages}}{(\code{character()})\cr
+Set of required packages.
+Note that these packages will be loaded via \code{\link[=requireNamespace]{requireNamespace()}}, and are not attached.}
+}
+\if{html}{\out{</div>}}
+}
+\section{Methods}{
+\subsection{Public methods}{
+\itemize{
+\item \href{#method-new}{\code{Tuner$new()}}
+\item \href{#method-format}{\code{Tuner$format()}}
+\item \href{#method-print}{\code{Tuner$print()}}
+\item \href{#method-tune}{\code{Tuner$tune()}}
+\item \href{#method-clone}{\code{Tuner$clone()}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\subsection{Method \code{new()}}{
+Creates a new instance of this \link[R6:R6Class]{R6} class.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Tuner$new(param_set, param_classes, properties, packages = character())}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{param_set}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
+Set of control parameters for tuner.}
+
+\item{\code{param_classes}}{(\code{character()})\cr
+Supported parameter classes for learner hyperparameters that the tuner can optimize, subclasses of \link[paradox:Param]{paradox::Param}.}
+
+\item{\code{properties}}{(\code{character()})\cr
+Set of properties of the tuner. Must be a subset of \code{\link[mlr3:mlr_reflections]{mlr_reflections$tuner_properties}}.}
+
+\item{\code{packages}}{(\code{character()})\cr
+Set of required packages.
+Note that these packages will be loaded via \code{\link[=requireNamespace]{requireNamespace()}}, and are not attached.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-format"></a>}}
+\subsection{Method \code{format()}}{
+Helper for print outputs.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Tuner$format()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-print"></a>}}
+\subsection{Method \code{print()}}{
+Printer.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Tuner$print()}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{(ignored).}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-tune"></a>}}
+\subsection{Method \code{tune()}}{
+Performs the tuning on a \link{TuningInstance} until termination.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Tuner$tune(instance)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{instance}}{(TuningInstance].}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Modifed \code{self}.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-clone"></a>}}
+\subsection{Method \code{clone()}}{
+The objects of this class are cloneable with this method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Tuner$clone(deep = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{deep}}{Whether to make a deep clone.}
+}
+\if{html}{\out{</div>}}
+}
+}
+}

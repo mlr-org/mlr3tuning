@@ -1,8 +1,6 @@
 #' @title Terminator that stops after a budget of model evaluation time is depleted
 #'
 #' @name mlr_terminators_model_time
-#' @usage NULL
-#' @format [R6::R6Class] object inheriting from [Terminator].
 #' @include Terminator.R
 #'
 #' @description
@@ -10,14 +8,8 @@
 #' The terminator measures the used time to train and predict all models contained
 #' in the archive.
 #'
-#' @section Construction:
-#' ```
-#' TerminatorModelTime$new()
-#' term("model_time")
-#' ```
-#'
 #' @section Parameters:
-#' * `secs` :: `numeric(1)`\cr
+#' * `secs` (`numeric(1)`)\cr
 #'   Maximum allowed time, in seconds, default is 0.
 #'
 #' @family Terminator
@@ -28,12 +20,21 @@
 TerminatorModelTime = R6Class("TerminatorModelTime",
   inherit = Terminator,
   public = list(
+
+    #' @description
+    #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function() {
       ps = ParamSet$new(list(ParamDbl$new("secs", lower = 0, default = 0, tags = "required")))
       ps$values = list(secs = 0)
       super$initialize(param_set = ps)
     },
 
+    #' @description
+    #' Is `TRUE` iff the termination criterion is positive, and `FALSE` otherwise.
+    #'
+    #' @param instance ([TuningInstance]).
+    #'
+    #' @return `logical(1)`.
     is_terminated = function(instance) {
       if (is.null(instance$bmr))
         return(FALSE)

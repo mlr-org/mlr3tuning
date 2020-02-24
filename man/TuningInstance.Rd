@@ -196,3 +196,106 @@ archive = inst$archive()
 print(archive)
 }
 \concept{TuningInstance}
+\section{Methods}{
+\subsection{Public methods}{
+\itemize{
+\item \href{#method-new}{\code{TuningInstance$new()}}
+\item \href{#method-format}{\code{TuningInstance$format()}}
+\item \href{#method-print}{\code{TuningInstance$print()}}
+\item \href{#method-eval_batch}{\code{TuningInstance$eval_batch()}}
+\item \href{#method-tuner_objective}{\code{TuningInstance$tuner_objective()}}
+\item \href{#method-archive}{\code{TuningInstance$archive()}}
+\item \href{#method-best}{\code{TuningInstance$best()}}
+\item \href{#method-assign_result}{\code{TuningInstance$assign_result()}}
+\item \href{#method-clone}{\code{TuningInstance$clone()}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\subsection{Method \code{new()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TuningInstance$new(
+  task,
+  learner,
+  resampling,
+  measures,
+  param_set,
+  terminator,
+  bm_args = list()
+)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-format"></a>}}
+\subsection{Method \code{format()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TuningInstance$format()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-print"></a>}}
+\subsection{Method \code{print()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TuningInstance$print()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-eval_batch"></a>}}
+\subsection{Method \code{eval_batch()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TuningInstance$eval_batch(dt)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-tuner_objective"></a>}}
+\subsection{Method \code{tuner_objective()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TuningInstance$tuner_objective(x)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-archive"></a>}}
+\subsection{Method \code{archive()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TuningInstance$archive(unnest = "no")}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-best"></a>}}
+\subsection{Method \code{best()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TuningInstance$best(measure = NULL)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-assign_result"></a>}}
+\subsection{Method \code{assign_result()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TuningInstance$assign_result(tune_x, perf)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-clone"></a>}}
+\subsection{Method \code{clone()}}{
+The objects of this class are cloneable with this method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TuningInstance$clone(deep = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{deep}}{Whether to make a deep clone.}
+}
+\if{html}{\out{</div>}}
+}
+}
+}
