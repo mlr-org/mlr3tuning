@@ -51,7 +51,7 @@ TunerDesignPoints = R6Class("TunerDesignPoints",
   ),
 
   private = list(
-    tune_internal = function(instance) {
+    .tune = function(instance) {
       pv = self$param_set$values
       if (is.null(pv$design))
         stopf("Please set design datatable!")

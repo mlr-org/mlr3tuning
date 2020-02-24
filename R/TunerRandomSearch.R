@@ -47,7 +47,7 @@ TunerRandomSearch = R6Class("TunerRandomSearch",
   ),
 
   private = list(
-    tune_internal = function(instance) {
+    .tune = function(instance) {
       batch_size = self$param_set$values$batch_size
       repeat { # iterate until we have an exception from eval_batch
         design = generate_design_random(instance$param_set, batch_size)

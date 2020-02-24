@@ -48,7 +48,7 @@ TunerGenSA = R6Class("TunerGenSA", inherit = Tuner,
   ),
 
   private = list(
-    tune_internal = function(instance) {
+    .tune = function(instance) {
       v = self$param_set$values
       v$maxit = .Machine$integer.max # make sure GenSA does not stop
       GenSA::GenSA(fn = instance$tuner_objective, lower = instance$param_set$lower,

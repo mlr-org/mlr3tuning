@@ -45,7 +45,7 @@
 #'   Performs the tuning on a [TuningInstance] until termination.
 #'
 #' @section Private Methods:
-#' * `tune_internal(instance)` -> `NULL`\cr
+#' * `.tune(instance)` -> `NULL`\cr
 #'   Abstract base method. Implement to specify tuning of your subclass.
 #'   See technical details sections.
 #' * `assign_result(instance)` -> `NULL`\cr
@@ -55,7 +55,7 @@
 #' @section Technical Details and Subclasses:
 #' A subclass is implemented in the following way:
 #'  * Inherit from Tuner
-#'  * Specify the private abstract method `$tune_internal()` and use it to call into your optimizer.
+#'  * Specify the private abstract method `$.tune()` and use it to call into your optimizer.
 #'  * You need to call `instance$eval_batch()` to evaluate design points.
 #'  * The batch evaluation is requested at the [TuningInstance] object `instance`,
 #'    so each batch is possibly executed in parallel via [mlr3::benchmark()],
@@ -138,7 +138,7 @@ Tuner = R6Class("Tuner",
       # that will generate an exception when terminator is positive
       # we then catch that here and stop
       tryCatch({
-        private$tune_internal(instance)
+        private$.tune(instance)
       }, terminated_error = function(cond) {})
       lg$info("Finished tuning after %i evals", instance$n_evals)
       private$assign_result(instance)
@@ -149,7 +149,7 @@ Tuner = R6Class("Tuner",
   ),
 
   private = list(
-    tune_internal = function(instance) {
+    .tune = function(instance) {
       # every subclass has to implement this to call optimizer
       stop("abstract")
     },

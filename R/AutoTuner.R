@@ -106,33 +106,10 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
       self$predict_type = learner$predict_type
     },
 
-    train_internal = function(task) {
-      # construct instance from args; then tune
-      ia = self$instance_args
-      ia$task = task
-      instance = do.call(TuningInstance$new, ia)
-      self$tuner$tune(instance)
+    archive = function(unnest = "no") {
+      self$tuning_instance$archive(unnest)
 
-      # get learner, set params to optimal, then train
-      # we REALLY need to clone here we write to the object and this would change instance_args
-      learner = ia$learner$clone(deep = TRUE)
-      learner$param_set$values = instance$result$params
-      learner$train(task)
-
-      # the return model is a list of "learner" and "tuning_instance"
-      result_model = list()
-      result_model$learner = learner
-      if (isTRUE(self$store_tuning_instance)) {
-        result_model$tuning_instance = instance
-      }
-      return(result_model)
-    },
-
-    predict_internal = function(task) {
-      self$model$learner$predict(task)
-    },
-
-    archive = function(unnest = "no") self$tuning_instance$archive(unnest)
+    }
   ),
 
   active = list(
@@ -162,7 +139,34 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
       private$.param_set
     }
   ),
+
   private = list(
+    .train = function(task) {
+      # construct instance from args; then tune
+      ia = self$instance_args
+      ia$task = task
+      instance = do.call(TuningInstance$new, ia)
+      self$tuner$tune(instance)
+
+      # get learner, set params to optimal, then train
+      # we REALLY need to clone here we write to the object and this would change instance_args
+      learner = ia$learner$clone(deep = TRUE)
+      learner$param_set$values = instance$result$params
+      learner$train(task)
+
+      # the return model is a list of "learner" and "tuning_instance"
+      result_model = list()
+      result_model$learner = learner
+      if (isTRUE(self$store_tuning_instance)) {
+        result_model$tuning_instance = instance
+      }
+      return(result_model)
+    },
+
+    .predict = function(task) {
+      self$model$learner$predict(task)
+    },
+
     deep_clone = function(name, value) {
       if (!is.null(private$.param_set)) {
         private$.ps_id = private$.param_set$set_id
