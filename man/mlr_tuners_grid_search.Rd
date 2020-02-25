@@ -4,7 +4,6 @@
 \alias{mlr_tuners_grid_search}
 \alias{TunerGridSearch}
 \title{TunerGridSearch}
-\format{\link[R6:R6Class]{R6::R6Class} object inheriting from \link{Tuner}.}
 \description{
 Subclass for grid search tuning.
 
@@ -17,8 +16,9 @@ we evaluate points in a batch-fashion of size \code{batch_size}.
 Larger batches mean we can parallelize more, smaller batches imply a more fine-grained checking
 of termination criteria.
 }
-\section{Construction}{
-\preformatted{TunerGridSearch$new()
+\section{Dictionary}{
+
+This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary} \link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:\preformatted{mlr_tuners$get("grid_search")
 tnr("grid_search")
 }
 }
@@ -26,11 +26,11 @@ tnr("grid_search")
 \section{Parameters}{
 
 \itemize{
-\item \code{resolution} :: \code{integer(1)}\cr
+\item \code{resolution} (\code{integer(1)})\cr
 Resolution of the grid, see \code{\link[paradox:generate_design_grid]{paradox::generate_design_grid()}}.
-\item \code{param_resolutions} :: named \code{integer()} \cr
+\item \code{param_resolutions} (named \code{integer()} )\cr
 Resolution per parameter, named by parameter ID, see \code{\link[paradox:generate_design_grid]{paradox::generate_design_grid()}}.
-\item \code{batch_size} :: \code{integer(1)}\cr
+\item \code{batch_size} (\code{integer(1)})\cr
 Maximum number of configurations to try in a batch.
 }
 }
@@ -69,6 +69,7 @@ Other Tuner:
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
 \subsection{Method \code{new()}}{
+Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TunerGridSearch$new()}\if{html}{\out{</div>}}
 }

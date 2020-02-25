@@ -8,6 +8,13 @@
 Class to terminate the tuning depending on the number of evaluations.
 An evaluation is defined by one resampling of a parameter value.
 }
+\section{Dictionary}{
+
+This \link{Terminator} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary} \link{mlr_terminators} or with the associated sugar function \code{\link[=term]{term()}}:\preformatted{mlr_terminators$get("evals")
+term("evals")
+}
+}
+
 \section{Parameters}{
 
 \itemize{

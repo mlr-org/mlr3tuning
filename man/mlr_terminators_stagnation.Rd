@@ -8,6 +8,13 @@
 Class to terminate the tuning after the performance stagnates, i.e. does not improve more than
 \code{threshold} over the last \code{iters} iterations.
 }
+\section{Dictionary}{
+
+This \link{Terminator} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary} \link{mlr_terminators} or with the associated sugar function \code{\link[=term]{term()}}:\preformatted{mlr_terminators$get("stagnation")
+term("stagnation")
+}
+}
+
 \section{Parameters}{
 
 \itemize{

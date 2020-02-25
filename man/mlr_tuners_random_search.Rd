@@ -4,7 +4,6 @@
 \alias{mlr_tuners_random_search}
 \alias{TunerRandomSearch}
 \title{TunerRandomSearch}
-\format{\link[R6:R6Class]{R6::R6Class} object inheriting from \link{Tuner}.}
 \description{
 Subclass for random search tuning.
 
@@ -15,8 +14,9 @@ we evaluate points in a batch-fashion of size \code{batch_size}.
 Larger batches mean we can parallelize more, smaller batches imply a more fine-grained checking
 of termination criteria.
 }
-\section{Construction}{
-\preformatted{TunerRandomSearch$new(batch_size = 1L)
+\section{Dictionary}{
+
+This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary} \link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:\preformatted{mlr_tuners$get("random_search")
 tnr("random_search")
 }
 }
@@ -24,7 +24,7 @@ tnr("random_search")
 \section{Parameters}{
 
 \itemize{
-\item \code{batch_size} :: \code{integer(1)}\cr
+\item \code{batch_size} (\code{integer(1)})\cr
 Maximum number of configurations to try in a batch.
 }
 }
@@ -63,6 +63,7 @@ Other Tuner:
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
 \subsection{Method \code{new()}}{
+Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TunerRandomSearch$new()}\if{html}{\out{</div>}}
 }

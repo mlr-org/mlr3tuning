@@ -4,7 +4,6 @@
 \alias{mlr_tuners_design_points}
 \alias{TunerDesignPoints}
 \title{TunerDesignPoints}
-\format{\link[R6:R6Class]{R6::R6Class} object inheriting from \link{Tuner}.}
 \description{
 Subclass for tuning w.r.t. fixed design points.
 
@@ -16,8 +15,9 @@ we evaluate points in a batch-fashion of size \code{batch_size}.
 Larger batches mean we can parallelize more, smaller batches imply a more fine-grained checking
 of termination criteria.
 }
-\section{Construction}{
-\preformatted{TunerDesignPoints$new()
+\section{Dictionary}{
+
+This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary} \link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:\preformatted{mlr_tuners$get("design_points")
 tnr("design_points")
 }
 }
@@ -25,9 +25,9 @@ tnr("design_points")
 \section{Parameters}{
 
 \itemize{
-\item \code{batch_size} :: \code{integer(1)}\cr
+\item \code{batch_size} (\code{integer(1)})\cr
 Maximum number of configurations to try in a batch.
-\item \code{design} :: \verb{[data.table]}\cr
+\item \code{design} (\verb{[data.table]})\cr
 Design points to try in search, one per row.
 }
 }
@@ -66,6 +66,7 @@ Other Tuner:
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
 \subsection{Method \code{new()}}{
+Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TunerDesignPoints$new()}\if{html}{\out{</div>}}
 }

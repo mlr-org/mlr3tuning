@@ -6,6 +6,8 @@
 #' @description
 #' Class to terminate the tuning after a performance level has been hit.
 #'
+#' @templateVar id perf_reached
+#' @template section_dictionary_terminator
 #'
 #' @section Parameters:
 #' * `level` (`numeric(1)`)\cr

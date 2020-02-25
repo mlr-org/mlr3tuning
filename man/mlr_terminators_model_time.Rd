@@ -9,6 +9,13 @@ Class to terminate the tuning after a given model evaluation budget is exceeded.
 The terminator measures the used time to train and predict all models contained
 in the archive.
 }
+\section{Dictionary}{
+
+This \link{Terminator} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary} \link{mlr_terminators} or with the associated sugar function \code{\link[=term]{term()}}:\preformatted{mlr_terminators$get("model_time")
+term("model_time")
+}
+}
+
 \section{Parameters}{
 
 \itemize{

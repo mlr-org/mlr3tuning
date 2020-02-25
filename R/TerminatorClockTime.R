@@ -7,6 +7,9 @@
 #' Class to terminate the tuning either after the complete process took a number of seconds on the clock
 #' or a fixed time point has been reached (as reported by [Sys.time()]).
 #'
+#' @templateVar id clock_time
+#' @template section_dictionary_terminator
+#'
 #' @section Parameters:
 #' * `secs` (`numeric(1)`)\cr
 #'   Maximum allowed time, in seconds, default is 100.

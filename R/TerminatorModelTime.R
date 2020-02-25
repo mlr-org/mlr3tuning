@@ -8,6 +8,9 @@
 #' The terminator measures the used time to train and predict all models contained
 #' in the archive.
 #'
+#' @templateVar id model_time
+#' @template section_dictionary_terminator
+#'
 #' @section Parameters:
 #' * `secs` (`numeric(1)`)\cr
 #'   Maximum allowed time, in seconds, default is 0.

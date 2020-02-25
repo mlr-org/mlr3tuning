@@ -181,4 +181,3 @@ tuner_assign_result_default = function(instance) {
   instance$assign_result(pv, perf)
   invisible(NULL)
 }
-

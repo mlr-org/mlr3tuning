@@ -8,6 +8,13 @@
 Class to terminate the tuning either after the complete process took a number of seconds on the clock
 or a fixed time point has been reached (as reported by \code{\link[=Sys.time]{Sys.time()}}).
 }
+\section{Dictionary}{
+
+This \link{Terminator} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary} \link{mlr_terminators} or with the associated sugar function \code{\link[=term]{term()}}:\preformatted{mlr_terminators$get("clock_time")
+term("clock_time")
+}
+}
+
 \section{Parameters}{
 
 \itemize{

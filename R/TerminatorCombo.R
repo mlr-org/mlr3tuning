@@ -6,6 +6,8 @@
 #' @description
 #' This class takes multiple [Terminator]s and terminates as soon as one or all of the included terminators are positive.
 #'
+#' @templateVar id combo
+#' @template section_dictionary_terminator
 #'
 #' @section Parameters:
 #' * `any` (`logical(1)`)\cr

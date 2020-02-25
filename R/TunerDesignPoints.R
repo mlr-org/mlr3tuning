@@ -2,8 +2,6 @@
 #'
 #' @name mlr_tuners_design_points
 #' @include Tuner.R
-#' @usage NULL
-#' @format [R6::R6Class] object inheriting from [Tuner].
 #'
 #' @description
 #' Subclass for tuning w.r.t. fixed design points.
@@ -16,16 +14,13 @@
 #' Larger batches mean we can parallelize more, smaller batches imply a more fine-grained checking
 #' of termination criteria.
 #'
-#' @section Construction:
-#' ```
-#' TunerDesignPoints$new()
-#' tnr("design_points")
-#' ```
+#' @templateVar id design_points
+#' @template section_dictionary_tuners
 #'
 #' @section Parameters:
-#' * `batch_size` :: `integer(1)`\cr
+#' * `batch_size` (`integer(1)`)\cr
 #'   Maximum number of configurations to try in a batch.
-#' * `design` :: `[data.table]`\cr
+#' * `design` (`[data.table]`)\cr
 #'   Design points to try in search, one per row.
 #'
 #' @family Tuner
@@ -35,6 +30,9 @@
 TunerDesignPoints = R6Class("TunerDesignPoints",
   inherit = Tuner,
   public = list(
+
+    #' @description
+    #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function() {
       ps = ParamSet$new(list(
         ParamInt$new("batch_size", lower = 1L, tags = "required"),
@@ -65,4 +63,3 @@ TunerDesignPoints = R6Class("TunerDesignPoints",
 )
 
 mlr_tuners$add("design_points", TunerDesignPoints)
-

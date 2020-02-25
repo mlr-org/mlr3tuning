@@ -6,6 +6,9 @@
 #' @description
 #' Mainly useful for grid search, or maybe other tuners, where the stopping is inherently controlled by the tuner itself.
 #'
+#' @templateVar id none
+#' @template section_dictionary_terminator
+#'
 #' @family Terminator
 #' @export
 TerminatorNone = R6Class("TerminatorNone",

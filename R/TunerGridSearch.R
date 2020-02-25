@@ -2,8 +2,6 @@
 #'
 #' @name mlr_tuners_grid_search
 #' @include Tuner.R
-#' @usage NULL
-#' @format [R6::R6Class] object inheriting from [Tuner].
 #'
 #' @description
 #' Subclass for grid search tuning.
@@ -17,20 +15,16 @@
 #' Larger batches mean we can parallelize more, smaller batches imply a more fine-grained checking
 #' of termination criteria.
 #'
-#' @section Construction:
-#' ```
-#' TunerGridSearch$new()
-#' tnr("grid_search")
-#' ```
+#' @templateVar id grid_search
+#' @template section_dictionary_tuners
 #'
 #' @section Parameters:
-#' * `resolution` :: `integer(1)`\cr
+#' * `resolution` (`integer(1)`)\cr
 #'   Resolution of the grid, see [paradox::generate_design_grid()].
-#' * `param_resolutions` :: named `integer()` \cr
+#' * `param_resolutions` (named `integer()` )\cr
 #'   Resolution per parameter, named by parameter ID, see [paradox::generate_design_grid()].
-#' * `batch_size` :: `integer(1)`\cr
+#' * `batch_size` (`integer(1)`)\cr
 #'   Maximum number of configurations to try in a batch.
-#'
 #'
 #' @family Tuner
 #' @export
@@ -39,6 +33,9 @@
 TunerGridSearch = R6Class("TunerGridSearch",
   inherit = Tuner,
   public = list(
+
+    #' @description
+    #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function() {
       ps = ParamSet$new(list(
         ParamInt$new("batch_size", lower = 1L, tags = "required"),

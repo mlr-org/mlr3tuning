@@ -7,6 +7,9 @@
 #' Class to terminate the tuning depending on the number of evaluations.
 #' An evaluation is defined by one resampling of a parameter value.
 #'
+#' @templateVar id evals
+#' @template section_dictionary_terminator
+#'
 #' @section Parameters:
 #' * `n_evals` (`integer(1)`)\cr
 #'   Number of allowed evaluations, default is 100L

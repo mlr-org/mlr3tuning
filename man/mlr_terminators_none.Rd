@@ -7,6 +7,13 @@
 \description{
 Mainly useful for grid search, or maybe other tuners, where the stopping is inherently controlled by the tuner itself.
 }
+\section{Dictionary}{
+
+This \link{Terminator} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary} \link{mlr_terminators} or with the associated sugar function \code{\link[=term]{term()}}:\preformatted{mlr_terminators$get("none")
+term("none")
+}
+}
+
 \seealso{
 Other Terminator: 
 \code{\link{Terminator}},

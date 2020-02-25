@@ -7,6 +7,13 @@
 \description{
 This class takes multiple \link{Terminator}s and terminates as soon as one or all of the included terminators are positive.
 }
+\section{Dictionary}{
+
+This \link{Terminator} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary} \link{mlr_terminators} or with the associated sugar function \code{\link[=term]{term()}}:\preformatted{mlr_terminators$get("combo")
+term("combo")
+}
+}
+
 \section{Parameters}{
 
 \itemize{

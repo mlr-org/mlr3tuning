@@ -7,6 +7,9 @@
 #' Class to terminate the tuning after the performance stagnates, i.e. does not improve more than
 #' `threshold` over the last `iters` iterations.
 #'
+#' @templateVar id stagnation
+#' @template section_dictionary_terminator
+#'
 #' @section Parameters:
 #' * `iters` (`integer(1)`)\cr
 #'   Number of iterations to evaluate the performance improvement on, default is 10.
