@@ -2,8 +2,6 @@
 #'
 #' @name mlr_tuners_random_search
 #' @include Tuner.R
-#' @usage NULL
-#' @format [R6::R6Class] object inheriting from [Tuner].
 #'
 #' @description
 #' Subclass for random search tuning.
@@ -15,14 +13,11 @@
 #' Larger batches mean we can parallelize more, smaller batches imply a more fine-grained checking
 #' of termination criteria.
 #'
-#' @section Construction:
-#' ```
-#' TunerRandomSearch$new(batch_size = 1L)
-#' tnr("random_search")
-#' ```
+#' @templateVar id random_search
+#' @template section_dictionary_tuners
 #'
 #' @section Parameters:
-#' * `batch_size` :: `integer(1)`\cr
+#' * `batch_size` (`integer(1)`)\cr
 #'   Maximum number of configurations to try in a batch.
 #'
 #' @family Tuner
@@ -32,6 +27,9 @@
 TunerRandomSearch = R6Class("TunerRandomSearch",
   inherit = Tuner,
   public = list(
+
+    #' @description
+    #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function() {
       ps = ParamSet$new(list(
         ParamInt$new("batch_size", lower = 1L, tags = "required")

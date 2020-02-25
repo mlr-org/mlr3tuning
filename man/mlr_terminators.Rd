@@ -11,7 +11,7 @@ Each terminator has an associated help page, see \code{mlr_terminators_[id]}.
 
 This dictionary can get populated with additional terminators by add-on packages.
 
-For a more convenient way to retrieve and construct terminator, see \code{\link[=term]{term()}}.
+For a more convenient way to retrieve and construct terminator, see \code{\link[=term]{term()}}/\code{\link[=terms]{terms()}}.
 }
 \section{Methods}{
 
@@ -22,7 +22,7 @@ See \link[mlr3misc:Dictionary]{mlr3misc::Dictionary}.
 term("evals", n_evals = 10)
 }
 \seealso{
-Sugar function: \code{\link[=term]{term()}}
+Sugar functions: \code{\link[=term]{term()}}, \code{\link[=terms]{terms()}}
 
 Other Terminator: 
 \code{\link{Terminator}},

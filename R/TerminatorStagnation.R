@@ -1,24 +1,20 @@
 #' @title Terminator that stops when tuning does not improve
 #'
 #' @name mlr_terminators_stagnation
-#' @usage NULL
-#' @format [R6::R6Class] object inheriting from [Terminator].
 #' @include Terminator.R
 #'
 #' @description
 #' Class to terminate the tuning after the performance stagnates, i.e. does not improve more than
 #' `threshold` over the last `iters` iterations.
 #'
-#' @section Construction:
-#' ```
-#' t = TerminatorStagnation$new()
-#' ```
+#' @templateVar id stagnation
+#' @template section_dictionary_terminator
 #'
 #' @section Parameters:
-#' * `iters` :: `integer(1)`\cr
+#' * `iters` (`integer(1)`)\cr
 #'   Number of iterations to evaluate the performance improvement on, default is 10.
 #'
-#' * `threshold` :: `numeric(1)`\cr
+#' * `threshold` (`numeric(1)`)\cr
 #'   If the improvement is less than `threshold`, tuning is stopped, default is `0`.
 #'
 #' @family Terminator
@@ -29,6 +25,9 @@
 TerminatorStagnation = R6Class("TerminatorStagnation",
   inherit = Terminator,
   public = list(
+
+    #' @description
+    #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function() {
       ps = ParamSet$new(list(
         ParamInt$new("iters", lower = 1L, default = 10, tags = "required"),
@@ -38,6 +37,12 @@ TerminatorStagnation = R6Class("TerminatorStagnation",
       super$initialize(param_set = ps)
     },
 
+    #' @description
+    #' Is `TRUE` iff the termination criterion is positive, and `FALSE` otherwise.
+    #'
+    #' @param instance ([TuningInstance]).
+    #'
+    #' @return `logical(1)`.
     is_terminated = function(instance) {
       pv = self$param_set$values
       iters = pv$iters

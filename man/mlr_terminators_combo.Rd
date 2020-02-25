@@ -4,24 +4,20 @@
 \alias{mlr_terminators_combo}
 \alias{TerminatorCombo}
 \title{Combine Terminators}
-\format{\link[R6:R6Class]{R6::R6Class} object inheriting from \link{Terminator}.}
 \description{
 This class takes multiple \link{Terminator}s and terminates as soon as one or all of the included terminators are positive.
 }
-\section{Construction}{
-\preformatted{TerminatorCombo$new(terminators = list(TerminatorNone$new()))
+\section{Dictionary}{
+
+This \link{Terminator} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary} \link{mlr_terminators} or with the associated sugar function \code{\link[=term]{term()}}:\preformatted{mlr_terminators$get("combo")
 term("combo")
-}
-\itemize{
-\item \code{terminators} :: \code{list()}\cr
-List of objects of class \link{Terminator}.
 }
 }
 
 \section{Parameters}{
 
 \itemize{
-\item \code{any} :: \code{logical(1)}\cr
+\item \code{any} (\code{logical(1)})\cr
 Terminate iff any included terminator is positive? (not all), default is `TRUE.
 }
 }
@@ -44,3 +40,83 @@ Other Terminator:
 \code{\link{mlr_terminators}}
 }
 \concept{Terminator}
+\section{Super class}{
+\code{\link[mlr3tuning:Terminator]{mlr3tuning::Terminator}} -> \code{TerminatorCombo}
+}
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{terminators}}{(\code{list()})\cr
+List of objects of class \link{Terminator}.}
+}
+\if{html}{\out{</div>}}
+}
+\section{Methods}{
+\subsection{Public methods}{
+\itemize{
+\item \href{#method-new}{\code{TerminatorCombo$new()}}
+\item \href{#method-is_terminated}{\code{TerminatorCombo$is_terminated()}}
+\item \href{#method-clone}{\code{TerminatorCombo$clone()}}
+}
+}
+\if{html}{
+\out{<details open ><summary>Inherited methods</summary>}
+\itemize{
+\item \out{<span class="pkg-link" data-pkg="mlr3tuning" data-topic="Terminator" data-id="format">}\href{../../mlr3tuning/html/Terminator.html#method-format}{\code{mlr3tuning::Terminator$format()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="mlr3tuning" data-topic="Terminator" data-id="print">}\href{../../mlr3tuning/html/Terminator.html#method-print}{\code{mlr3tuning::Terminator$print()}}\out{</span>}
+}
+\out{</details>}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\subsection{Method \code{new()}}{
+Creates a new instance of this \link[R6:R6Class]{R6} class.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TerminatorCombo$new(terminators = list(TerminatorNone$new()))}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{terminators}}{(\code{list()})\cr
+List of objects of class \link{Terminator}.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-is_terminated"></a>}}
+\subsection{Method \code{is_terminated()}}{
+Is \code{TRUE} iff the termination criterion is positive, and \code{FALSE} otherwise.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TerminatorCombo$is_terminated(instance)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{instance}}{(\link{TuningInstance}).}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\code{logical(1)}.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-clone"></a>}}
+\subsection{Method \code{clone()}}{
+The objects of this class are cloneable with this method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TerminatorCombo$clone(deep = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{deep}}{Whether to make a deep clone.}
+}
+\if{html}{\out{</div>}}
+}
+}
+}

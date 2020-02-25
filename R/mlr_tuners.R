@@ -9,14 +9,14 @@
 #'
 #' This dictionary can get populated with additional tuners by add-on packages.
 #'
-#' For a more convenient way to retrieve and construct tuner, see [tnr()].
+#' For a more convenient way to retrieve and construct tuner, see [tnr()]/[tnrs()].
 #'
 #' @section Methods:
 #' See [mlr3misc::Dictionary].
 #'
 #' @family Tuner
 #' @seealso
-#' Sugar function: [tnr()]
+#' Sugar functions: [tnr()], [tnrs()]
 #' @export
 #' @examples
 #' mlr_tuners$get("grid_search")

@@ -1,7 +1,5 @@
 #' @title Tuner
 #'
-#' @usage NULL
-#' @format [R6::R6Class] object.
 #' @include mlr_tuners.R
 #'
 #' @description
@@ -14,35 +12,6 @@
 #'
 #' A tuner must write its result to the `assign_result` method of the [Tuninginstance] at the end of its tuning in
 #' order to store the best selected hyperparameter configuration and its estimated performance vector.
-#'
-#' @section Construction:
-#' ```
-#' tuner = Tuner$new(param_set, param_classes, properties, packages = character())
-#' ```
-#'
-#' * `param_set` :: [paradox::ParamSet]\cr
-#'   Set of control parameters for tuner.
-#'
-#' * `param_classes` :: `character()`\cr
-#'   Supported parameter classes for learner hyperparameters that the tuner can optimize, subclasses of [paradox::Param].
-#'
-#' * `properties` :: `character()`\cr
-#'   Set of properties of the tuner. Must be a subset of [`mlr_reflections$tuner_properties`][mlr_reflections].
-#'
-#' * `packages` :: `character()`\cr
-#'   Set of required packages.
-#'   Note that these packages will be loaded via [requireNamespace()], and are not attached.
-#'
-#' @section Fields:
-#' * `param_set` :: [paradox::ParamSet]; from construction.
-#' * `param_classes` :: `character()`\cr
-#' * `properties` :: `character(); from construction.
-#' * `packages` :: `character()`; from construction.
-#'
-#' @section Methods:
-#' * `tune(instance)`\cr
-#'   [TuningInstance] -> `self`\cr
-#'   Performs the tuning on a [TuningInstance] until termination.
 #'
 #' @section Private Methods:
 #' * `.tune(instance)` -> `NULL`\cr
@@ -70,7 +39,7 @@
 #'    as the Terminator is only checked before a batch evaluation,
 #'    and not in-between evaluation in a batch.
 #'    How many more depends on the setting of the batch size.
-#'  * Overwrite the private super-method `assign_result` if you want to decide yourself how to estimate
+#'  * Overwrite the private super-method `assign_result()` if you want to decide yourself how to estimate
 #'    the final configuration in the instance and its estimated performance.
 #'    The default behavior is: We pick the best resample-experiment, regarding the first measure,
 #'    then assign its configuration and aggregated performance to the instance.
@@ -98,11 +67,38 @@
 #' instance$archive() # allows access of data.table / benchmark result of full path of all evaluations
 Tuner = R6Class("Tuner",
   public = list(
+    #' @field param_set ([paradox::ParamSet])\cr
+    #'   Set of control parameters for tuner.
     param_set = NULL,
+
+    #' @field param_classes (`character()`)\cr
+    #'   Supported parameter classes for learner hyperparameters that the tuner can optimize, subclasses of [paradox::Param].
     param_classes = NULL,
+
+    #' @field properties (`character()`)\cr
+    #'   Set of properties of the tuner. Must be a subset of [`mlr_reflections$tuner_properties`][mlr3::mlr_reflections].
     properties = NULL,
+
+    #' @field packages (`character()`)\cr
+    #'   Set of required packages.
+    #'   Note that these packages will be loaded via [requireNamespace()], and are not attached.
     packages = NULL,
 
+    #' @description
+    #' Creates a new instance of this [R6][R6::R6Class] class.
+    #'
+    #' @param param_set ([paradox::ParamSet])\cr
+    #'   Set of control parameters for tuner.
+    #'
+    #' @param param_classes (`character()`)\cr
+    #'   Supported parameter classes for learner hyperparameters that the tuner can optimize, subclasses of [paradox::Param].
+    #'
+    #' @param properties (`character()`)\cr
+    #'   Set of properties of the tuner. Must be a subset of [`mlr_reflections$tuner_properties`][mlr3::mlr_reflections].
+    #'
+    #' @param packages (`character()`)\cr
+    #'   Set of required packages.
+    #'   Note that these packages will be loaded via [requireNamespace()], and are not attached.
     initialize = function(param_set, param_classes, properties, packages = character()) {
       self$param_set = assert_param_set(param_set)
       self$param_classes = param_classes
@@ -110,10 +106,15 @@ Tuner = R6Class("Tuner",
       self$packages = assert_set(packages)
     },
 
+    #' @description
+    #' Helper for print outputs.
     format = function() {
       sprintf("<%s>", class(self)[1L])
     },
 
+    #' @description
+    #' Printer.
+    #' @param ... (ignored).
     print = function() {
       catf(format(self))
       catf(str_indent("* Parameters:", as_short_string(self$param_set$values)))
@@ -121,6 +122,12 @@ Tuner = R6Class("Tuner",
       catf(str_indent("* Properties:", self$properties))
     },
 
+    #' @description
+    #' Performs the tuning on a [TuningInstance] until termination.
+    #'
+    #' @param instance (TuningInstance].
+    #'
+    #' @return Modifed `self`.
     tune = function(instance) {
       assert_r6(instance, "TuningInstance")
       require_namespaces(self$packages)
@@ -174,4 +181,3 @@ tuner_assign_result_default = function(instance) {
   instance$assign_result(pv, perf)
   invisible(NULL)
 }
-
