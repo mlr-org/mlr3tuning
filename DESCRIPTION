@@ -43,6 +43,7 @@ Imports:
     R6
 Suggests:
     GenSA,
+    irace,
     mlr3pipelines,
     rpart,
     testthat
@@ -66,9 +67,11 @@ Collate:
     'TunerDesignPoints.R'
     'TunerGenSA.R'
     'TunerGridSearch.R'
+    'TunerIrace.R'
     'TunerRandomSearch.R'
     'TuningInstance.R'
     'assertions.R'
     'helper.R'
+    'irace_helpers.R'
     'sugar.R'
     'zzz.R'
