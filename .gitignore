@@ -32,6 +32,5 @@ vignettes/*.pdf
 *.utf8.md
 *.knit.md
 
-inst/doc
 .DS_Store
 .Rproj.user

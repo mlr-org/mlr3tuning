@@ -5,8 +5,9 @@ Package website: [release](https://mlr3tuning.mlr-org.com/) | [dev](https://mlr3
 Extends the [mlr3](https://mlr3.mlr-org.com) package with tuning.
 
 <!-- badges: start -->
-[![Build Status](https://img.shields.io/travis/mlr-org/mlr3tuning/master?label=Linux&logo=travis&style=flat-square)](https://travis-ci.org/mlr-org/mlr3tuning)
+[![R build status](https://github.com/mlr-org/mlr3tuning/workflows/R-CMD-check/badge.svg)](https://github.com/mlr-org/mlr3tuning/actions)
 [![CRAN Status Badge](https://www.r-pkg.org/badges/version-ago/mlr3tuning)](https://cran.r-project.org/package=mlr3tuning)
+[![Cran Checks](https://cranchecks.info/badges/worst/mlr3tuning)](https://cran.r-project.org/web/checks/check_results_mlr3tuning.html)
 [![codecov](https://codecov.io/gh/mlr-org/mlr3tuning/branch/master/graph/badge.svg)](https://codecov.io/gh/mlr-org/mlr3tuning)
 [![StackOverflow](https://img.shields.io/badge/stackoverflow-mlr3-orange.svg)](https://stackoverflow.com/questions/tagged/mlr3)
 <!-- badges: end -->
