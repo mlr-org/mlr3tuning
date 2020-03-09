@@ -37,6 +37,11 @@
 #' @templateVar id irace
 #' @template section_dictionary_tuners
 #'
+#' @references
+#' Birattari, M., Stützle, T., Paquete, L., & Varrentrapp, K. (2002).
+#' A Racing Algorithm for Configuring Metaheuristics.
+#' In Gecco (Vol. 2).
+#'
 #' @family Tuner
 #' @export
 #' @examples

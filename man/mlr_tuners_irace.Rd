@@ -50,6 +50,11 @@ tnr("irace")
 \examples{
 # see ?Tuner
 }
+\references{
+Birattari, M., Stützle, T., Paquete, L., & Varrentrapp, K. (2002).
+A Racing Algorithm for Configuring Metaheuristics.
+In Gecco (Vol. 2).
+}
 \seealso{
 Other Tuner: 
 \code{\link{Tuner}},
