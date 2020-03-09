@@ -1,10 +1,10 @@
 paradoxToIrace = function(ps){
   assertClass(ps, "ParamSet")
   # what about ParamUty = vector numeric/real
-  class_lookup = data.frame(paradox = c("ParamLgl","ParamInt","ParamDbl","ParamFct"),
+  class_lookup = data.table(paradox = c("ParamLgl","ParamInt","ParamDbl","ParamFct"),
                             irace = c("c","i","r","c"), stringsAsFactors = FALSE)
-  name <- ps$ids()
-  type <- class_lookup[match(ps$class, class_lookup$paradox), 2]
+
+  type <- as.character(subset(merge(class_lookup, data.table(paradox = ps$class)), select = "irace"))
   range <- getIraceRange(ps)
   if(ps$has_deps){
     condition <- getIraceCondition(ps)
@@ -12,33 +12,33 @@ paradoxToIrace = function(ps){
     condition = NULL
   }
 
-  # does mlr3tuning deal with trafo internally or passed to irace? irace only handle log
-  par.tab <- paste(name, '""', type, range, condition, collapse = "\n")
+  par.tab <- paste(ps$ids(), '""', type, range, condition, collapse = "\n")
   irace::readParameters(text = par.tab)
 }
 getIraceRange = function(ps){
   rng = data.table(lower = ps$lower, upper = ps$upper, lvl = ps$levels)
 
   apply(rng, 1, function(x){
-    if(is.na(x[[1]]))
+    if (is.na(x[[1]])) {
       return(paste0("(",paste0(x[[3]], collapse = ","),")"))
-    else
+    } else {
       return(paste0("(",x[[1]],",",x[[2]],")"))
+    }
   })
 }
 getIraceCondition = function(ps){
-  cond = apply(ps$deps, 1, function(x){
-    if(class(x[[3]])[1] == "CondEqual"){
+  cond = rbindlist(apply(ps$deps, 1, function(x){
+    if(x[[3]]$type == "equal"){
       condition = paste("|",x[[2]], "==", x[[3]]$rhs)
     } else {
       condition = paste("|",x[[2]],"%in%", paste0("c(",paste0(x[[3]]$rhs, collapse = ","),")"))
     }
-  })
+    data.table(id = x[[1]], cond = condition)
+  }))
 
-  condition = data.table(id = ps$ids(), cond = "")
-  ind = match(ps$deps$id, condition$id)
-  condition$cond[ind] = cond
-  condition$cond
+  tab = merge(data.frame(id = ps$ids()), cond, by = "id", all.x = TRUE)
+  tab[is.na(tab)] = ""
+  tab
 }
 
 makeScenario = function(instance){
@@ -47,12 +47,8 @@ makeScenario = function(instance){
     logFile = tempfile(),
     instances = list(instance),
     debugLevel = 0,
-    maxExperiments = ifelse(class(instance$terminator)[1] == "TerminatorEvals",
-                                       instance$terminator$param_set$values$n_evals,
-                                       0),
-    maxTime = ifelse(class(instance$terminator)[1] == "TerminatorClockTime",
-                     instance$terminator$param_set$values$secs,
-                     0)
+    maxExperiments = if(class(instance$terminator)[1] == "TerminatorEvals") instance$terminator$param_set$values$n_evals else 0,
+    maxTime = if(class(instance$terminator)[1] == "TerminatorClockTime") instance$terminator$param_set$values$secs else 0
   )
 }
 
