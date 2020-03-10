@@ -174,7 +174,7 @@ test_that("TunerIrace uses digits", {
 
 test_that("Error in hyperparameter tuning with scientific notation for lower/upper boundaries", {
   ps = ParamSet$new(params = list(
-    ParamDbl$new("cp", lower = 1e-5, upper = 1e-4)
+    ParamDbl$new("cp", lower = 1e-3, upper = 1e-1)
   ))
   inst = TuningInstance$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), ps, term("evals", n_evals = 30))
   tt = tnr("irace", nbIterations = 1L)
