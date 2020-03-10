@@ -89,9 +89,9 @@ TunerIrace = R6Class("TunerIrace", inherit = Tuner,
   private = list(
     .tune = function(instance) {
       g = if (self$param_set$values$show.irace.output) identity else capture.output
-      g(irace::irace(scenario = c(makeScenario(instance),
+      g(irace::irace(scenario = c(make_scenario(instance),
                                   self$param_set$values[names(self$param_set$values) %nin% "show.irace.output"]),
-                     parameters = paradoxToIrace(instance$param_set)))
+                     parameters = paradox_to_irace(instance$param_set)))
     }
   )
 )
