@@ -42,8 +42,11 @@ Imports:
     paradox,
     R6
 Suggests:
+    e1071,
     GenSA,
+    glmnet,
     irace,
+    mlr3learners,
     mlr3pipelines,
     rpart,
     testthat

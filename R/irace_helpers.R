@@ -4,7 +4,7 @@ paradox_to_irace = function(ps){
   class_lookup = data.table(paradox = c("ParamLgl","ParamInt","ParamDbl","ParamFct"),
                             irace = c("c","i","r","c"), stringsAsFactors = FALSE)
 
-  type = unlist(subset(merge(class_lookup, data.table(paradox = ps$class)), select = "irace"))
+  type = unlist(subset(merge(data.table(paradox = ps$class), class_lookup, sort = FALSE), select = "irace"))
   range = get_irace_range(ps)
   if (ps$has_deps) {
     condition = get_irace_condition(ps)
@@ -12,7 +12,7 @@ paradox_to_irace = function(ps){
     condition = NULL
   }
 
-  par.tab = paste(ps$ids(), '""', type, range, condition, collapse = "\n")
+  par.tab = paste(ps$ids(), '""', type, range, condition$cond, collapse = "\n")
 
   return(irace::readParameters(text = par.tab))
 }
@@ -29,15 +29,21 @@ get_irace_range = function(ps){
 }
 get_irace_condition = function(ps){
   cond = rbindlist(apply(ps$deps, 1, function(x){
+    on = x[[2]]
+    cond = x[[3]]$rhs
+    if (is.character(cond)) {
+      cond = paste0("'", cond ,"'")
+    }
     if (x[[3]]$type == "equal") {
-      condition = paste("|",x[[2]], "==", x[[3]]$rhs)
+      condition = paste("|",x[[2]], "==", cond)
     } else {
-      condition = paste("|",x[[2]],"%in%", paste0("c(",paste0(x[[3]]$rhs, collapse = ","),")"))
+      condition = paste("|",x[[2]],"%in%", paste0("c(",paste0(cond, collapse = ","),")"))
     }
     data.table(id = x[[1]], cond = condition)
   }))
 
-  tab = merge(data.frame(id = ps$ids()), cond, by = "id", all.x = TRUE)
+  # coercion back and forth from frame/table is due to data.frame sorting even when sort = FALSE
+  tab = data.frame(merge(data.table(id = ps$ids()), cond, by = "id", all.x = TRUE, sort = FALSE))
   tab[is.na(tab)] = ""
 
   return(tab)
@@ -55,7 +61,14 @@ make_scenario = function(instance){
 
 targetRunner = function(experiment, scenario){
   t0 = Sys.time()
-  cost = scenario$instances[[1]]$eval_batch(as.data.table(experiment$configuration))$perf
+  config = as.data.table(lapply(experiment$configuration, function(x){
+    if (x %in% c("TRUE", "FALSE")) {
+      return(as.logical(x))
+    } else {
+      return(x)
+    }
+  }))
+  cost = scenario$instances[[1]]$eval_batch(config)$perf
   t1 = Sys.time()
 
   return(list(cost = cost, time = as.numeric(t1-t0)))

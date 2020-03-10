@@ -13,6 +13,10 @@
 #' * `postselection` (`numeric(1)`)
 #' * `elitist` (`integer(1)`)
 #' * `elitistLimit` (`integer(1)`)
+#' * `nbIterations` (`integer(1)`)
+#' * `nbExperimentsPerIteration` (`integer(1)`)
+#' * `minNbSurvival` (`integer(1)`)
+#' * `nbConfigurations` (`integer(1)`)
 #' * `mu` (`integer(1)`)
 #' * `softRestart` (`integer(1)`)
 #' * `softRestartThreshold` (`numeric(1)`)
@@ -58,10 +62,14 @@ TunerIrace = R6Class("TunerIrace", inherit = Tuner,
         ParamDbl$new("postselection",default=0,lower=0,upper=1),
         ParamInt$new("elitist",default=1,lower=0,upper=1),
         ParamInt$new("elitistLimit",default=2,lower=0),
+        ParamInt$new("nbIterations",default=0,lower=0),
+        ParamInt$new("nbExperimentsPerIteration",default=0,lower=0),
+        ParamInt$new("minNbSurvival",default=0,lower=0),
+        ParamInt$new("nbConfigurations",default=0,lower=0),
         ParamInt$new("mu",default=5,lower=1),
         ParamInt$new("softRestart",default=1,lower=0,upper=1),
         ParamDbl$new("softRestartThreshold"),
-        ParamInt$new("digits", default = 4, lower = 0),
+        ParamInt$new("digits", default = 4, lower = 1, upper = 15),
         ParamFct$new("testType", default = "F-test", levels = c("F-test","t-test","t-test-bonferroni","t-test-holm")),
         ParamInt$new("firstTest", default = 5, lower = 0),
         ParamInt$new("eachTest",default = 1, lower = 1),
