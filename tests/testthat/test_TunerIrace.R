@@ -35,7 +35,7 @@ test_that("TunerIrace with dependencies",{
                             rsmp("holdout"), msr("classif.ce"), ps, term("clock_time", secs = 8))
   tt = tnr("irace")
   # should it possible to return kernel = linear...?
-  expect_silent(tt$tune(inst))
+  expect_silent(suppressWarnings(tt$tune(inst)))
 })
 
 test_that("minimize time",{
@@ -177,7 +177,7 @@ test_that("Error in hyperparameter tuning with scientific notation for lower/upp
     ParamDbl$new("cp", lower = 1e-5, upper = 1e-4)
   ))
   inst = TuningInstance$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), ps, term("evals", n_evals = 30))
-  tt = tnr("irace", nbIterations = 1L, digits = 6L)
+  tt = tnr("irace", nbIterations = 1L)
   expect_silent(tt$tune(inst))
 })
 
