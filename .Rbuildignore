@@ -6,3 +6,6 @@
 ^\.Rproj\.user$
 ^man-roxygen$
 ^pkgdown$
+^\.ccache$
+^\.github$
+^clang-.*

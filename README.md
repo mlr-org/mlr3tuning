@@ -5,6 +5,7 @@ Package website: [release](https://mlr3tuning.mlr-org.com/) | [dev](https://mlr3
 Extends the [mlr3](https://mlr3.mlr-org.com) package with tuning.
 
 <!-- badges: start -->
+[![R CMD Check via {tic}](https://img.shields.io/github/workflow/status/mlr-org/mlr3tuning/R%20CMD%20Check%20via%20%7Btic%7D?logo=github&label=R%20CMD%20Check%20via%20{tic}&style=flat-square)](https://github.com/mlr-org/mlr3tuning/actions)
 [![R build status](https://github.com/mlr-org/mlr3tuning/workflows/R-CMD-check/badge.svg)](https://github.com/mlr-org/mlr3tuning/actions)
 [![CRAN Status Badge](https://www.r-pkg.org/badges/version-ago/mlr3tuning)](https://cran.r-project.org/package=mlr3tuning)
 [![Cran Checks](https://cranchecks.info/badges/worst/mlr3tuning)](https://cran.r-project.org/web/checks/check_results_mlr3tuning.html)
