@@ -189,7 +189,7 @@ test_that("irace works with unnamed discrete values", {
   inst = TuningInstance$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"),
                             ps, term("evals", n_evals = 50))
   tt = tnr("irace")
-  expect_silent(tt$tune(inst))
+  expect_silent(suppressWarnings(tt$tune(inst)))
 })
 
 # shouldn't paradox check this?
