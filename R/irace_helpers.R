@@ -4,7 +4,7 @@ paradoxToIrace = function(ps){
   class_lookup = data.table(paradox = c("ParamLgl","ParamInt","ParamDbl","ParamFct"),
                             irace = c("c","i","r","c"), stringsAsFactors = FALSE)
 
-  type <- as.character(subset(merge(class_lookup, data.table(paradox = ps$class)), select = "irace"))
+  type <- unlist(subset(merge(class_lookup, data.table(paradox = ps$class)), select = "irace"))
   range <- getIraceRange(ps)
   if(ps$has_deps){
     condition <- getIraceCondition(ps)
