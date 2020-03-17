@@ -3,7 +3,6 @@
 \name{Terminator}
 \alias{Terminator}
 \title{Abstract Terminator Class}
-\format{\link[R6:R6Class]{R6::R6Class} object.}
 \description{
 Abstract \code{Terminator} class that implements the base functionality each terminator must provide.
 A terminator is an object that determines when to stop the tuning.
@@ -11,7 +10,7 @@ A terminator is an object that determines when to stop the tuning.
 Termination of tuning works as follows:
 \itemize{
 \item Evaluations in a tuner are performed in batches.
-\item Before and after each batch evaluation, the \link{Terminator} is checked, and if it is positive, we stop.
+\item Before each batch evaluation, the \link{Terminator} is checked, and if it is positive, we stop.
 \item The tuning algorithm itself might decide not to produce any more points, or even might decide to do a smaller batch in its last evaluation.
 }
 
@@ -20,41 +19,112 @@ While it is definitely possible to execute a fine-grained control for terminatio
 it might happen that too few or even too many evaluations are performed, especially if multiple points are evaluated in a single batch (c.f. batch size parameter of many tuners).
 So it is advised to check the size of the returned archive, in particular if you are benchmarking multiple tuners.
 }
-\section{Construction}{
-\preformatted{t = Terminator$new(param_set = ParamSet$new())
-}
-\itemize{
-\item \code{param_set} :: \link[paradox:ParamSet]{paradox::ParamSet}\cr
-Set of control parameters for terminator.
-}
-}
-
-\section{Fields}{
-
-\itemize{
-\item \code{param_set} :: \link[paradox:ParamSet]{paradox::ParamSet}; from construction.
-}
-}
-
-\section{Methods}{
-
-\itemize{
-\item \code{is_terminated(instance)}\cr
-\link{TuningInstance} -> \code{logical(1)}\cr
-Is \code{TRUE} iff the termination criterion is positive, and \code{FALSE} otherwise.
-Must be implemented in each subclass.
-}
-}
-
 \seealso{
 Other Terminator: 
-\code{\link{TerminatorClockTime}},
-\code{\link{TerminatorCombo}},
-\code{\link{TerminatorEvals}},
-\code{\link{TerminatorModelTime}},
-\code{\link{TerminatorNone}},
-\code{\link{TerminatorPerfReached}},
-\code{\link{TerminatorStagnation}},
+\code{\link{mlr_terminators_clock_time}},
+\code{\link{mlr_terminators_combo}},
+\code{\link{mlr_terminators_evals}},
+\code{\link{mlr_terminators_model_time}},
+\code{\link{mlr_terminators_none}},
+\code{\link{mlr_terminators_perf_reached}},
+\code{\link{mlr_terminators_stagnation}},
 \code{\link{mlr_terminators}}
 }
 \concept{Terminator}
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{param_set}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
+Set of control parameters for terminator.}
+}
+\if{html}{\out{</div>}}
+}
+\section{Methods}{
+\subsection{Public methods}{
+\itemize{
+\item \href{#method-new}{\code{Terminator$new()}}
+\item \href{#method-format}{\code{Terminator$format()}}
+\item \href{#method-print}{\code{Terminator$print()}}
+\item \href{#method-is_terminated}{\code{Terminator$is_terminated()}}
+\item \href{#method-clone}{\code{Terminator$clone()}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\subsection{Method \code{new()}}{
+Creates a new instance of this \link[R6:R6Class]{R6} class.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Terminator$new(param_set = ParamSet$new())}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{param_set}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
+Set of control parameters for terminator.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-format"></a>}}
+\subsection{Method \code{format()}}{
+Helper for print outputs.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Terminator$format()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-print"></a>}}
+\subsection{Method \code{print()}}{
+Printer.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Terminator$print(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{(ignored).}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-is_terminated"></a>}}
+\subsection{Method \code{is_terminated()}}{
+Is \code{TRUE} iff the termination criterion is positive, and \code{FALSE} otherwise.
+Must be implemented in each subclass.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Terminator$is_terminated(instance)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{instance}}{(\link{TuningInstance}).}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\code{logical(1)}.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-clone"></a>}}
+\subsection{Method \code{clone()}}{
+The objects of this class are cloneable with this method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Terminator$clone(deep = FALSE)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{deep}}{Whether to make a deep clone.}
+}
+\if{html}{\out{</div>}}
+}
+}
+}

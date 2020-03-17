@@ -5,7 +5,11 @@
 #' of [mlr3::mlr_sugar].
 #'
 #' @inheritParams mlr3::mlr_sugar
-#' @return [Tuner] for `tnr()` and [Terminator] for `term()`.
+#' @return
+#' * [Tuner] for `tnr()`
+#' * list of [Tuner] for `tnrs()`
+#' * [Terminator] for `term()`.
+#' * list of [Terminator] for `terms()`.
 #' @export
 #' @examples
 #' term("evals", n_evals = 10)
@@ -16,6 +20,18 @@ tnr = function(.key, ...) {
 
 #' @rdname tnr
 #' @export
+tnrs = function(.keys, ...) {
+  dictionary_sugar_mget(mlr_tuners, .keys, ...)
+}
+
+#' @rdname tnr
+#' @export
 term = function(.key, ...) {
   dictionary_sugar(mlr_terminators, .key, ...)
+}
+
+#' @rdname tnr
+#' @export
+terms = function(.key, ...) {
+  dictionary_sugar_mget(mlr_terminators, .key, ...)
 }

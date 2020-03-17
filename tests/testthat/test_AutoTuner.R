@@ -63,13 +63,14 @@ test_that("AutoTuner / param_set", {
   task = tsk("iris")
   ps = TEST_MAKE_PS1()
   tuner = TunerRandomSearch$new()
-  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), measures, ps, te, tuner)
-  at$param_set$values$maxdepth = 1
-  at$param_set$values$cp = 1
+  learner = lrn("classif.rpart", cp = 1, maxdepth = 1)
+  at = AutoTuner$new(learner, rsmp("holdout"), measures, ps, te, tuner)
   expect_equal(at$param_set$values[names(at$learner$param_set$values)], at$learner$param_set$values)
   at$train(task)
 
   # parameter that is not in training ps was used
+  expect_equal(at$param_set$values$maxdepth, 1)
+  expect_equal(at$learner$param_set$values$maxdepth, 1)
   expect_equal(at$learner$model$control$maxdepth, 1)
   # parameter that *is* in training ps was changed (to inside training range)
   expect_lt(at$learner$model$control$cp, ps$params$cp$upper)
@@ -92,4 +93,46 @@ test_that("Custom resampling is not allowed", {
   tuner = TunerRandomSearch$new()
   r = rsmp("holdout")$instantiate(task)
   expect_error(AutoTuner$new(lrn("classif.rpart"), r, measures, ps, te, tuner), "instantiated")
+})
+
+
+
+test_that("nested resamppling results are consistent ", {
+  # we had a bad pointer bug due to missing cloning here
+  # https://github.com/mlr-org/mlr3/issues/428
+  # this resulted in different tuning results stored in models than used in final training
+
+  ps = ParamSet$new(list(
+    ParamDbl$new("cp", lower = 0.001, upper = 0.1),
+    ParamInt$new("minsplit", lower = 1, upper = 10)))
+
+
+  lrn = AutoTuner$new(
+    learner = lrn("classif.rpart"),
+    resampling = rsmp("holdout"),
+    tune_ps = ps,
+    measures = msr("classif.ce"),
+    terminator = term("evals", n_evals = 3),
+    tuner = tnr("random_search")
+  )
+
+  cv2 = rsmp("cv", folds = 2)
+  rr = resample(tsk("iris"), lrn, cv2, store_models = TRUE)
+  ll1 = rr$learners[[1]]
+  ll2 = rr$learners[[2]]
+  tr1 = ll1$tuning_result
+  tr2 = ll2$tuning_result
+  expect_equal(tr1$tune_x, ll1$model$learner$model$control[c("cp", "minsplit")])
+  expect_equal(tr2$tune_x, ll2$model$learner$model$control[c("cp", "minsplit")])
+})
+
+test_that("AT training does not change learner in instance args", {
+  # we had a bad pointer bug due to missing cloning here
+  #https://github.com/mlr-org/mlr3/issues/428
+  task = tsk("iris")
+  ps = TEST_MAKE_PS1()
+  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), ps, term("evals", n_evals = 3), TunerRandomSearch$new())
+  expect_equal(at$instance_args$learner$param_set$values, list(xval = 0))
+  at$train(task)
+  expect_equal(at$instance_args$learner$param_set$values, list(xval = 0))
 })

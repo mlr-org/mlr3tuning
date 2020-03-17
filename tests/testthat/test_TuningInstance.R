@@ -5,7 +5,7 @@ test_that("TuningInstance", {
   # test empty inst
   expect_data_table(inst$bmr$data, nrows = 0)
   expect_identical(inst$n_evals, 0L)
-  expect_output(print(inst), "Empty data.table")
+  expect_output(print(inst), "Not tuned")
 
   # add a couple of eval points and test the state of inst
   z = inst$eval_batch(data.table(cp = c(0.01, 0.02), minsplit = c(3, 4)))
@@ -17,7 +17,7 @@ test_that("TuningInstance", {
   expect_equal(inst$bmr$resample_result(2)$learners[[1]]$param_set$values$minsplit, 4)
   expect_equal(inst$bmr$resample_result(2)$learners[[1]]$param_set$values$maxdepth, 10)
   expect_identical(inst$n_evals, 2L)
-  expect_output(print(inst), "0.02")
+  expect_output(print(inst), "Not tuned")
   expect_list(z, len = 3)
   expect_named(z, c("batch_nr", "uhashes", "perf"))
   expect_equal(z$batch_nr, 1L)
@@ -59,23 +59,25 @@ test_that("archive one row (#40)", {
   expect_number(a$classif.ce)
 })
 
-test_that("budget", {
-  inst = TEST_MAKE_INST1()
-  design = generate_design_random(inst$param_set, 8)$data
-  expect_error(inst$eval_batch(design[1:6, ]), class = "terminated_error")
-  tab = inst$archive()
-  expect_data_table(tab, nrows = 6)
+test_that("eval_batch and termination", {
+  inst = TEST_MAKE_INST1(term_evals = 3L)
+  design = generate_design_random(inst$param_set, 2)$data
+  inst$eval_batch(design[1:2, ])
+  expect_data_table(inst$archive(), nrows = 2L)
+  inst$eval_batch(design[1, ])
+  expect_data_table(inst$archive(), nrows = 3L)
+  expect_error(inst$eval_batch(design[1, ]), class = "terminated_error")
+  expect_data_table(inst$archive(), nrows = 3L)
 
-  inst = TEST_MAKE_INST1()
-  tuner = tnr("random_search", batch_size = 6)
+  inst = TEST_MAKE_INST1(term_evals = 5L)
+  tuner = tnr("random_search", batch_size = 3L)
   tuner$tune(inst)
-  tab = inst$archive()
-  expect_data_table(tab, nrows = 6)
+  expect_data_table(inst$archive(), nrows = 6L)
 
   # second start should be a NOP
   tuner$tune(inst)
   tab = inst$archive()
-  expect_data_table(tab, nrows = 6)
+  expect_data_table(tab, nrows = 6L)
 })
 
 test_that("the same experiment can be added twice", {
@@ -116,7 +118,6 @@ test_that("tuning with custom resampling", {
   expect_set_equal(rr$test_set(2), test_sets[[2]])
 })
 
-
 test_that("tuning with multicrit result retrieval", {
   set.seed(2)
   inst = TEST_MAKE_INST1(
@@ -138,4 +139,19 @@ test_that("tuning with multicrit result retrieval", {
   expect_equal(results1, results2)
   lapply(c(results1, results2), expect_resample_result)
 
+test_that("non-scalar hyperpars (#201)", {
+  skip_if_not_installed("mlr3pipelines")
+
+  requireNamespace("mlr3pipelines")
+  `%>>%` = getFromNamespace("%>>%", asNamespace("mlr3pipelines"))
+
+  inst = TuningInstance$new(tsk("iris"),
+    mlr3pipelines::po("select") %>>% lrn("classif.rpart"),
+    rsmp("holdout"), msr("classif.ce"),
+    paradox::ParamSet$new(list(
+        paradox::ParamInt$new("classif.rpart.minsplit", 1, 1))),
+    term("evals", n_evals=1))
+
+  tnr("random_search")$tune(inst)
+  expect_data_table(inst$archive("params"), nrows = 1)
 })

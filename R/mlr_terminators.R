@@ -9,14 +9,14 @@
 #'
 #' This dictionary can get populated with additional terminators by add-on packages.
 #'
-#' For a more convenient way to retrieve and construct terminator, see [term()].
+#' For a more convenient way to retrieve and construct terminator, see [term()]/[terms()].
 #'
 #' @section Methods:
 #' See [mlr3misc::Dictionary].
 #'
 #' @family Terminator
 #' @seealso
-#' Sugar function: [term()]
+#' Sugar functions: [term()], [terms()]
 #' @export
 #' @examples
 #' term("evals", n_evals = 10)

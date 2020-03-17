@@ -3,7 +3,7 @@ lapply(list.files(system.file("testthat", package = "mlr3"), pattern = "^helper.
 expect_tuner = function(tuner) {
   expect_r6(tuner, "Tuner",
     public = c("tune", "param_set"),
-    private = "tune_internal"
+    private = ".tune"
   )
   expect_is(tuner$param_set, "ParamSet")
   expect_function(tuner$tune, args = "instance")
@@ -162,9 +162,11 @@ make_dummy_cp_measure = function(type) {
           properties = "requires_learner"
         )
         self$fun = fun # allow a fun to transform cp to score
-      },
+      }
+    ),
 
-      score_internal = function(prediction, learner, ...) {
+    private = list(
+      .score = function(prediction, learner, ...) {
         self$fun(learner$param_set$values$cp)
       }
     )
@@ -186,14 +188,16 @@ LearnerRegrDepParams = R6Class("LearnerRegrDepParams", inherit = LearnerRegr,
         param_set = param_set,
         properties = c("missings")
       )
-    },
+    }
+  ),
 
-    train_internal = function(task) {
+  private = list(
+    .train = function(task) {
       tn = task$target_names
       return(list())
     },
 
-    predict_internal = function(task) {
+    .predict = function(task) {
       n = task$nrow
       response = rep(99, n)
       PredictionRegr$new(task, response = response)

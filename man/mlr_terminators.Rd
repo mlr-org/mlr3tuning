@@ -11,7 +11,7 @@ Each terminator has an associated help page, see \code{mlr_terminators_[id]}.
 
 This dictionary can get populated with additional terminators by add-on packages.
 
-For a more convenient way to retrieve and construct terminator, see \code{\link[=term]{term()}}.
+For a more convenient way to retrieve and construct terminator, see \code{\link[=term]{term()}}/\code{\link[=terms]{terms()}}.
 }
 \section{Methods}{
 
@@ -22,17 +22,17 @@ See \link[mlr3misc:Dictionary]{mlr3misc::Dictionary}.
 term("evals", n_evals = 10)
 }
 \seealso{
-Sugar function: \code{\link[=term]{term()}}
+Sugar functions: \code{\link[=term]{term()}}, \code{\link[=terms]{terms()}}
 
 Other Terminator: 
-\code{\link{TerminatorClockTime}},
-\code{\link{TerminatorCombo}},
-\code{\link{TerminatorEvals}},
-\code{\link{TerminatorModelTime}},
-\code{\link{TerminatorNone}},
-\code{\link{TerminatorPerfReached}},
-\code{\link{TerminatorStagnation}},
-\code{\link{Terminator}}
+\code{\link{Terminator}},
+\code{\link{mlr_terminators_clock_time}},
+\code{\link{mlr_terminators_combo}},
+\code{\link{mlr_terminators_evals}},
+\code{\link{mlr_terminators_model_time}},
+\code{\link{mlr_terminators_none}},
+\code{\link{mlr_terminators_perf_reached}},
+\code{\link{mlr_terminators_stagnation}}
 }
 \concept{Terminator}
 \keyword{datasets}

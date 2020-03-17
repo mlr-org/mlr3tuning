@@ -6,6 +6,7 @@ test_that("API", {
     rs = TunerRandomSearch$new()
     inst = TEST_MAKE_INST1(measures = measures, term_evals = n_evals)
     r = rs$tune(inst)
+    expect_is(r, "Tuner")
     a = inst$archive(unnest = "params")
     expect_data_table(a, nrows = n_evals)
     expect_true("cp" %in% names(a))
@@ -14,6 +15,7 @@ test_that("API", {
 })
 
 test_that("proper error if tuner cannot handle deps", {
+  skip_if_not_installed("GenSA")
   ps = ParamSet$new(params = list(
     ParamDbl$new("cp", lower = 0.001, upper = 0.1),
     ParamDbl$new("minsplit", lower = 1, upper = 10)

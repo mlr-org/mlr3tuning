@@ -1,26 +1,21 @@
 #' @title Terminator that stops according to the clock time
 #'
-#' @aliases mlr_terminators_clock_time
-#' @usage NULL
-#' @format [R6::R6Class] object inheriting from [Terminator].
+#' @name mlr_terminators_clock_time
 #' @include Terminator.R
 #'
 #' @description
 #' Class to terminate the tuning either after the complete process took a number of seconds on the clock
 #' or a fixed time point has been reached (as reported by [Sys.time()]).
 #'
-#' @section Construction:
-#' ```
-#' TerminatorClockTime$new()
-#' term("clock_time")
-#' ```
+#' @templateVar id clock_time
+#' @template section_dictionary_terminator
 #'
 #' @section Parameters:
-#' * `secs` :: `numeric(1)`\cr
+#' * `secs` (`numeric(1)`)\cr
 #'   Maximum allowed time, in seconds, default is 100.
 #'   Mutually exclusive with argument `stop_time`.
 #'
-#' * `stop_time` :: `POSIXct(1)`\cr
+#' * `stop_time` (`POSIXct(1)`)\cr
 #'   Terminator stops after this point in time.
 #'   Mutually exclusive with argument `secs`.
 #'
@@ -34,6 +29,8 @@
 TerminatorClockTime = R6Class("TerminatorClockTime",
   inherit = Terminator,
   public = list(
+    #' @description
+    #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function() {
       ps = ParamSet$new(list(
         ParamDbl$new("secs", lower = 0, default = 100),
@@ -42,6 +39,12 @@ TerminatorClockTime = R6Class("TerminatorClockTime",
       super$initialize(param_set = ps)
     },
 
+    #' @description
+    #' Is `TRUE` iff the termination criterion is positive, and `FALSE` otherwise.
+    #'
+    #' @param instance ([TuningInstance]).
+    #'
+    #' @return `logical(1)`.
     is_terminated = function(instance) {
       pv = self$param_set$values
       #FIXME: actually this should be done in the assert of the paramset?
