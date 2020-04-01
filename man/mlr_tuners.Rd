@@ -4,7 +4,9 @@
 \name{mlr_tuners}
 \alias{mlr_tuners}
 \title{Dictionary of Tuners}
-\format{\link[R6:R6Class]{R6::R6Class} object inheriting from \link[mlr3misc:Dictionary]{mlr3misc::Dictionary}.}
+\format{
+\link[R6:R6Class]{R6::R6Class} object inheriting from \link[mlr3misc:Dictionary]{mlr3misc::Dictionary}.
+}
 \description{
 A simple \link[mlr3misc:Dictionary]{mlr3misc::Dictionary} storing objects of class \link{Tuner}.
 Each tuner has an associated help page, see \code{mlr_tuners_[id]}.

@@ -3,17 +3,11 @@
 \name{tnr}
 \alias{tnr}
 \alias{tnrs}
-\alias{term}
-\alias{terms}
-\title{Syntactic Sugar for Tuner and Terminator Construction}
+\title{Syntactic Sugar for Tuner Construction}
 \usage{
 tnr(.key, ...)
 
 tnrs(.keys, ...)
-
-term(.key, ...)
-
-terms(.key, ...)
 }
 \arguments{
 \item{.key}{(\code{character(1)})\cr
@@ -30,15 +24,12 @@ Keys passed to the respective \link[mlr3misc:Dictionary]{dictionary} to retrieve
 \itemize{
 \item \link{Tuner} for \code{tnr()}
 \item list of \link{Tuner} for \code{tnrs()}
-\item \link{Terminator} for \code{term()}.
-\item list of \link{Terminator} for \code{terms()}.
 }
 }
 \description{
-This function complements \link{mlr_tuners} and \link{mlr_terminators} with functions in the spirit
+This function complements \link{mlr_tuners} with functions in the spirit
 of \link[mlr3:mlr_sugar]{mlr3::mlr_sugar}.
 }
 \examples{
-term("evals", n_evals = 10)
 tnr("random_search")
 }

@@ -84,6 +84,7 @@ Short-cut to \code{result} from \link{TuningInstance}.}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
@@ -131,6 +132,7 @@ Further arguments for \code{\link[mlr3:benchmark]{mlr3::benchmark()}}, see \link
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-archive"></a>}}
+\if{latex}{\out{\hypertarget{method-archive}{}}}
 \subsection{Method \code{archive()}}{
 Access the tuning archive (a.k.a. the optimization path).
 \subsection{Usage}{
@@ -148,6 +150,7 @@ Passed to \verb{$archive} of \link{TuningInstance}, defaulting to \code{"no"}.}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

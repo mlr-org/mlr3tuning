@@ -95,7 +95,6 @@
 #' print(archive)
 TuningInstance = R6Class("TuningInstance",
   public = list(
-
     #' @field task ([mlr3::Task]).
     task = NULL,
 
@@ -114,19 +113,11 @@ TuningInstance = R6Class("TuningInstance",
     #' @field terminator ([Terminator]).
     terminator = NULL,
 
-    #' @field bm_args (named `list()`)\cr
-    #'   Further arguments for [mlr3::benchmark()].
-    bm_args = NULL,
+    #' @field objective ([bbotk::Objective]).
+    objective = NULL,
 
-    #' @field bmr ([mlr3::BenchmarkResult])\cr
-    #'   A benchmark result, container object for all performed [mlr3::ResampleResult]s
-    #'   when evaluating hyperparameter configurations.
-    bmr = NULL,
-
-    #' @field start_time (`POSIXct(1)`)\cr
-    #'   Time the tuning was started.
-    #'   This is set in the beginning of `$tune()` of [Tuner].
-    start_time = NULL,
+    #' @field store_models (`logical(1)`).
+    store_models = FALSE,
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
@@ -147,21 +138,47 @@ TuningInstance = R6Class("TuningInstance",
     #' @param param_set ([paradox::ParamSet]).
     #'
     #' @param terminator ([Terminator]).
-    #'
-    #' @param bm_args (named `list()`)\cr
-    #'   Further arguments for [mlr3::benchmark()].
-    initialize = function(task, learner, resampling, measures, param_set, terminator, bm_args = list()) {
+    initialize = function(task, learner, resampling, measures, param_set, terminator) {
       self$task = assert_task(as_task(task, clone = TRUE))
       self$learner = assert_learner(as_learner(learner, clone = TRUE), task = self$task)
       self$resampling = assert_resampling(as_resampling(resampling, clone = TRUE))
       self$measures = assert_measures(as_measures(measures, clone = TRUE), task = self$task, learner = self$learner)
       self$param_set = assert_param_set(param_set, must_bounded = TRUE, no_untyped = TRUE)
       self$terminator = assert_terminator(terminator)
-      self$bm_args = assert_list(bm_args, names = "unique")
-      self$bmr = BenchmarkResult$new(data.table())
-      self$bmr$rr_data[, c("batch_nr", "tune_x") := list(integer(), list())]
-      if (!resampling$is_instantiated)
+      if (!resampling$is_instantiated) {
         self$resampling$instantiate(self$task)
+      }
+
+      fun = function(xss) {
+        learners = map(xss, function(x) {
+          learner = self$learner$clone(deep = TRUE)
+          learner$param_set$values = insert_named(learner$param_set$values, x)
+          return(lrn)
+        })
+
+        design = benchmark_grid(task, learners, resampling)
+        bmr = benchmar(design, store_models = self$store_models)
+        bmr_data = split(bmr$data, by = "uhash")
+        aggr = bmr$aggregate(self$measures)
+
+        y = map_chr(self$measures, function(s) s$id)
+
+        cbind(aggr[, y, with = FALSE], bmr_data = bmr_data)
+      }
+
+      minimize = map_lgl(self$measures, function(s) s$minimize)
+      names(minimize) = map_chr(self$measures, function(s) s$id)
+
+      codomain = ParamSet$new(list(
+        map(self$measures, function(s) ParamDbl$new(id = s$id))))
+
+      self$objective = Objective$new(
+        id = "tuning",
+        fun = fun,
+        domain = param_set,
+        codomain = codomain,
+        minimize = minimize,
+        terminator = terminator)
     },
 
     #' @description
@@ -175,172 +192,18 @@ TuningInstance = R6Class("TuningInstance",
     #' @param ... (ignored).
     print = function() {
       catf(self$format())
-      catf(str_indent("* State: ", if(is.null(self$result$perf)) "Not tuned" else "Tuned"))
+      catf(str_indent("* State: ", if (is.null(self$result$perf)) "Not tuned" else "Tuned"))
       catf(str_indent("* Task:", format(self$task)))
       catf(str_indent("* Learner:", format(self$learner)))
       catf(str_indent("* Measures:", map_chr(self$measures, "id")))
       catf(str_indent("* Resampling:", format(self$resampling)))
       catf(str_indent("* Terminator:", format(self$terminator)))
-      catf(str_indent("* bm_args:", as_short_string(self$bm_args)))
       catf(str_indent("* n_evals:", self$n_evals))
-      if(!is.null(self$result$perf)) {
-        catf(str_indent("* Result perf:", as_short_string(as.list(self$result$perf))) )
+      if (!is.null(self$result$perf)) {
+        catf(str_indent("* Result perf:", as_short_string(as.list(self$result$perf))))
         catf(str_indent("* Result tune_x:", as_short_string(self$result$tune_x)))
       }
       print(self$param_set)
-    },
-
-    #' @description
-    #' Evaluates all hyperparameter configurations in `dt` through resampling and updates the internal [BenchmarkResult] `$bmr` by reference.
-    #'
-    #' Before each batch-evaluation, the [Terminator] is checked, and if it is positive, an exception of class `terminated_error` is raised.
-    #' This function is intended to be internally called by a [Tuner].
-    #'
-    #' @param dt ([data.table::data.table()])\cr
-    #'  Table of hyperparameter configurations where each configuration is a row, and columns are scalar parameters.
-    #'
-    #' @return Named `list()` with the following elements:
-    #' * `"batch_nr"` (`integer(1)`):\cr
-    #'   Number of the new batch.
-    #'   This number is calculated in an auto-increment fashion and also stored inside the [BenchmarkResult] as column `batch_nr`.
-    #' * `"uhashes"` (`character()`):\cr
-    #'   Unique hashes of the added [ResampleResult]s.
-    #' * `"perf"` ([data.table::data.table()]):\cr
-    #'   Table of evaluated performances for each row of `dt`.
-    #'   Has the same number of rows as `dt`, and the same number of columns as length of `measures`.
-    #'   Columns are named with measure-IDs.
-    #'   A cell entry is the (aggregated) performance of that configuration for that measure.
-    eval_batch = function(dt) {
-      if (self$terminator$is_terminated(self)) {
-        stop(terminated_error(self))
-      }
-
-      # dt can contain missings because of non-fulfilled dependencies
-      assert_data_table(dt, any.missing = TRUE, min.rows = 1L, min.cols = 1L)
-
-      # this checks the validity of dt lines in the paramset
-      design = Design$new(self$param_set, dt, remove_dupl = FALSE)
-
-      lg$info("Evaluating %i configurations", nrow(dt))
-      lg$info(capture.output(print(dt, class = FALSE, row.names = FALSE, print.keys = FALSE)))
-
-      # convert configs to lists and remove non-satisfied deps
-      parlist_trafoed = design$transpose(trafo = TRUE, filter_na = TRUE)
-      parlist_untrafoed = design$transpose(trafo = FALSE, filter_na = TRUE)
-
-      # clone learners same length as parlist and set the configs (trafoed)
-      lrns = lapply(parlist_trafoed, function(xs) {
-        lrn = self$learner$clone(deep = TRUE)
-        lrn$param_set$values = insert_named(lrn$param_set$values, xs)
-        return(lrn)
-      })
-
-      # eval via benchmark and check terminator
-      d = data.table(task = list(self$task), learner = lrns, resampling = list(self$resampling))
-      bmr = invoke(benchmark, design = d, .args = self$bm_args)
-
-      # rr_data: add column "batch_nr"
-      batch_nr = self$bmr$rr_data$batch_nr
-      batch_nr = if (length(batch_nr)) max(batch_nr) + 1L else 1L
-      bmr$rr_data[, ("batch_nr") := batch_nr]
-
-      # rr_data: add column "tune_x"
-      bmr$rr_data[, ("tune_x") := list(parlist_untrafoed)]
-
-      # store evaluated results
-      self$bmr$combine(bmr)
-
-      mids = ids(self$measures)
-      if (lg$threshold >= 400) {
-        # somewhat bad code, but
-        # - i dont know how to reference the current level as "info" instead of "400" for the threshold in lgr
-        # - i only want to aggregate when "info" is set and we want to remove the aggregation in eval_batch later
-        a = bmr$aggregate(measures = self$measures, ids = FALSE)[, mids, with = FALSE]
-        lg$info("Result of batch %i:", batch_nr)
-        lg$info(capture.output(print(cbind(dt, a), class = FALSE, row.names = FALSE, print.keys = FALSE)))
-        lg$info("%i configurations evaluated", self$n_evals)
-      }
-
-      perf = bmr$aggregate(measures = self$measures, ids = FALSE)[, mids, with = FALSE]
-      return(list(batch_nr = batch_nr, uhashes = bmr$uhashes, perf = perf))
-    },
-
-    #' @description
-    #' Evaluates a (untransformed) hyperparameter configuration of only numeric values, and returns a scalar objective value,
-    #' where the return value is negated if the measure is maximized.
-    #' Internally, `$eval_batch()` is called with a single row.
-    #' This function serves as a objective function for tuners of numeric spaces - which should always be minimized.
-    #'
-    #' @param x (`numeric()`)\cr
-    #'   Untransformed hyperparameter configuration.
-    #'
-    #' @return Objective value as `numeric(1)`.
-    tuner_objective = function(x) {
-      assert_numeric(x, len = self$param_set$length)
-      self$param_set$assert(as.list(x))
-      m = self$measures[[1L]]
-      d = setnames(setDT(as.list(x)), self$param_set$ids())
-      z = self$eval_batch(d)
-      y = z$perf[[m$id]]
-      if (m$minimize) y else -y
-    },
-
-    #' @description
-    #'   Returns a table of contained resample results, similar to the one returned by [mlr3::benchmark()]'s `$aggregate()` method.
-    #'
-    #'   Some important columns of this table are:
-    #'   * All evaluated measures are included as numeric columns, named with their measure ID.
-    #'   * `tune_x`: A list column that contains the parameter settings the tuner evaluated, without potential `trafo` applied.
-    #'   * `params`: A list column that contains the parameter settings that were actually used in the learner.
-    #'      Similar to column `tune_x`, but with potential `trafo` applied.
-    #'      Also, if the learner had some extra parameters statically set before tuning, these are included here.
-    #'   * `tune_x`: A named list of settings of feasible and untransformed parameters from `param_set`.
-    #'
-    #' @param unnest (`character(1)`)\cr
-    #'   Can have the values `"no"`, `"tune_x"` or `"params"`.
-    #'   If it is not set to `"no"`, settings of the respective list-column are stored in
-    #'   separate columns instead of the list-column, and dependent, inactive parameters are encoded with `NA`.
-    #'
-    #' @return [data.table::data.table()].
-    archive = function(unnest = "no") {
-      assert_choice(unnest, c("no", "params", "tune_x"))
-      dt = self$bmr$aggregate(measures = self$measures, params = TRUE, conditions = TRUE)
-      # TODO: column reordering should become a mlr3misc function
-      setcolorder(dt, c("nr", "batch_nr"))
-      setcolorder(dt, c(head(names(dt), which(names(dt) == "params")), "tune_x"))
-      if (unnest != "no") {
-        dt = mlr3misc::unnest(dt, unnest)
-      }
-      dt[]
-    },
-
-    #' @description
-    #' Queries the [mlr3::BenchmarkResult] for the best [mlr3::ResampleResult] according to [mlr3::Measure] `measure` (default is the first measure in `$measures`).
-    #' In case of ties, one of the tied values is selected randomly.
-    #'
-    #' @param measure [mlr3::Measure].
-    #'
-    #' @return [mlr3::ResampleResult].
-    best = function(measure = NULL) {
-      if (is.null(measure)) {
-        measure = self$measures[[1L]]
-      } else {
-        measure = as_measure(measure, task_type = self$task$task_type)
-        # check that we are only using contained measures
-        assert_choice(measure$id, map_chr(self$measures, "id"))
-      }
-      assert_measure(measure, task = self$task, learner = self$learner)
-      if (is.na(measure$minimize))
-        stopf("Measure '%s' has minimize = NA and hence cannot be tuned", measure$id)
-
-      tab = self$bmr$aggregate(measure, ids = FALSE)
-      y = tab[[measure$id]]
-      if (allMissing(y))
-        stopf("No non-missing performance value stored")
-
-      which_best = if (measure$minimize) which_min else which_max
-      best_index = which_best(y, na_rm = TRUE)
-      tab$resample_result[[best_index]]
     },
 
     #' @description
@@ -364,10 +227,6 @@ TuningInstance = R6Class("TuningInstance",
   ),
 
   active = list(
-    #' @field n_evals (`integer(1)`)\cr
-    #'   Number of configuration evaluations stored in the container.
-    n_evals = function() self$bmr$n_resample_results,
-
     #' @field result (named `list()`)\cr
     #'   Result of the tuning, i.e., the optimal configuration and its estimated performance:
     result = function() {
