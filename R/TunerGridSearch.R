@@ -57,7 +57,7 @@ TunerGridSearch = R6Class("TunerGridSearch",
       g = generate_design_grid(instance$param_set, resolution = pv$resolution, param_resolutions = pv$param_resolutions)
       ch = chunk_vector(seq_row(g$data), chunk_size = pv$batch_size, shuffle = TRUE)
       for (inds in ch) {
-        instance$eval_batch(g$data[inds])
+        instance$objective$eval_batch(g$data[inds])
       }
     }
   )

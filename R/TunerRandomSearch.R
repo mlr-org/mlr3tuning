@@ -49,7 +49,7 @@ TunerRandomSearch = R6Class("TunerRandomSearch",
       batch_size = self$param_set$values$batch_size
       repeat { # iterate until we have an exception from eval_batch
         design = generate_design_random(instance$param_set, batch_size)
-        instance$eval_batch(design$data)
+        instance$objective$eval_batch(design$data)
       }
     }
   )
