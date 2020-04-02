@@ -174,10 +174,12 @@ Tuner = R6Class("Tuner",
 tuner_assign_result_default = function(instance) {
   assert_r6(instance, "TuningInstance")
   # get best RR - best by mean perf value and extract perf values
-  rr = instance$best()
-  perf = rr$aggregate(instance$measures)
+
+  res = instance$objective$archive$get_best()
+  perf = as.matrix(res[,instance$objective$codomain$ids(),with=FALSE])[1,]
   # get the untrafoed config that matches this RR
-  pv = instance$bmr$rr_data[rr$uhash, on = "uhash"]$tune_x[[1L]]
+  pv = as.matrix(res[,instance$objective$domain$ids(),with=FALSE])[1,]
+
   instance$assign_result(pv, perf)
   invisible(NULL)
 }
