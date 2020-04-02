@@ -169,14 +169,11 @@ TuningInstance = R6Class("TuningInstance",
       minimize = map_lgl(self$measures, function(s) s$minimize)
       names(minimize) = map_chr(self$measures, function(s) s$id)
 
-      codomain = ParamSet$new(list(
-        map(self$measures, function(s) ParamDbl$new(id = s$id))))
-
       self$objective = Objective$new(
         id = "tuning",
         fun = fun,
         domain = param_set,
-        codomain = codomain,
+        ydim = length(minimize),
         minimize = minimize,
         terminator = terminator)
     },
