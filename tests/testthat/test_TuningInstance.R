@@ -43,7 +43,7 @@ test_that("TuningInstance", {
 
   # test archive
   a = inst$archive$data
-  expect_data_table(a, nrows = 4L)
+  expect_data_table(a, nrows = 2L)
   #a = inst$archive(unnest = "params")
   #expect_data_table(a, nrows = 4L)
   #expect_true("cp" %in% colnames(a))
@@ -61,7 +61,7 @@ test_that("archive one row (#40)", {
 
 test_that("eval_batch and termination", {
   inst = TEST_MAKE_INST1(term_evals = 3L)
-  design = generate_design_random(inst$param_set, 2)$data
+  design = generate_design_random(inst$search_space, 2)$data
   inst$eval_batch(design[1:2, ])
   expect_data_table(inst$archive$data, nrows = 2L)
   inst$eval_batch(design[1, ])
