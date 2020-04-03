@@ -1,8 +1,8 @@
 terminated_error = function(instance) {
   msg = sprintf(
     fmt = "TuningInstance (tsk:%s, lrn:%s, term:%s) terminated",
-    instance$task$id,
-    instance$learner$id,
+    instance$objective$task$id,
+    instance$objective$learner$id,
     format(instance$terminator)
   )
 
