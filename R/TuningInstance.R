@@ -40,7 +40,7 @@
 #'   learner = learner,
 #'   resampling = resampling,
 #'   measures = measures,
-#'   param_set = param_set,
+#'   search_space = param_set,
 #'   terminator = terminator
 #' )
 #'
@@ -80,7 +80,7 @@
 #'   learner = learner,
 #'   resampling = rsmp("cv", folds = 3),
 #'   measures = msr("classif.ce"),
-#'   param_set = param_set,
+#'   search_space = param_set,
 #'   terminator = term("evals", n_evals = 5)
 #' )
 #'
@@ -113,15 +113,15 @@ TuningInstance = R6Class("TuningInstance",
     #'
     #' @param measures (list of [mlr3::Measure]).
     #'
-    #' @param param_set ([paradox::ParamSet]).
+    #' @param search_space ([paradox::ParamSet]).
     #'
     #' @param terminator ([Terminator]).
     #' @param store_models `logical(1)`.
-    initialize = function(task, learner, resampling, measures, param_set, terminator, store_models = FALSE) {
-      obj = ObjectiveFSelect$new(task = task, learner = learner,
-        resampling = resampling, measures = measures, param_set = param_set,
+    initialize = function(task, learner, resampling, measures, search_space, terminator, store_models = FALSE) {
+      obj = ObjectiveTuning$new(task = task, learner = learner,
+        resampling = resampling, measures = measures,
         store_models = store_models)
-      super$initialize(obj, param_set, terminator)
+      super$initialize(obj, search_space, terminator)
     },
 
     #' @description
@@ -136,7 +136,7 @@ TuningInstance = R6Class("TuningInstance",
     #' @return Nothing.
     assign_result = function(tune_x, perf) {
       # result tune_x must be feasible for paramset
-      self$param_set$assert(tune_x)
+      self$search_space$assert(tune_x)
       # result perf must be numeric and cover all measures
       assert_numeric(perf)
       assert_names(names(perf), permutation.of = ids(self$objective$measures))
@@ -151,7 +151,7 @@ TuningInstance = R6Class("TuningInstance",
       tune_x = private$.result$tune_x
       perf = private$.result$perf
       # if ps has no trafo, just use the normal config
-      trafo = if (is.null(self$objective$domain$trafo)) identity else self$param_set$trafo
+      trafo = if (is.null(self$search_space$trafo)) identity else self$search_space$trafo
       params = trafo(tune_x)
       params = insert_named(self$objective$learner$param_set$values, params)
       list(tune_x = tune_x, params = params, perf = perf)

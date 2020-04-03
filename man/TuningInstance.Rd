@@ -41,7 +41,7 @@ inst = TuningInstance$new(
   learner = learner,
   resampling = resampling,
   measures = measures,
-  param_set = param_set,
+  search_space = param_set,
   terminator = terminator
 )
 
@@ -81,7 +81,7 @@ inst = TuningInstance$new(
   learner = learner,
   resampling = rsmp("cv", folds = 3),
   measures = msr("classif.ce"),
-  param_set = param_set,
+  search_space = param_set,
   terminator = term("evals", n_evals = 5)
 )
 
@@ -137,7 +137,7 @@ for the parameters the tuner is supposed to optimize, and a termination criterio
   learner,
   resampling,
   measures,
-  param_set,
+  search_space,
   terminator,
   store_models = FALSE
 )}\if{html}{\out{</div>}}
@@ -156,7 +156,7 @@ are evaluated on the same data splits.}
 
 \item{\code{measures}}{(list of \link[mlr3:Measure]{mlr3::Measure}).}
 
-\item{\code{param_set}}{(\link[paradox:ParamSet]{paradox::ParamSet}).}
+\item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet}).}
 
 \item{\code{terminator}}{(\link{Terminator}).}
 

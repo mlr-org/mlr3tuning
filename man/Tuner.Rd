@@ -65,7 +65,7 @@ instance = TuningInstance$new(
   learner = lrn("classif.rpart"),
   resampling = rsmp("holdout"),
   measures = msr("classif.ce"),
-  param_set = param_set,
+  search_space = search_space,
   terminator = terminator
 )
 tt = tnr("random_search") # swap this line to use a different Tuner
@@ -76,6 +76,7 @@ instance$archive() # allows access of data.table / benchmark result of full path
 \seealso{
 Other Tuner: 
 \code{\link{mlr_tuners_design_points}},
+\code{\link{mlr_tuners_ecr}},
 \code{\link{mlr_tuners_gensa}},
 \code{\link{mlr_tuners_grid_search}},
 \code{\link{mlr_tuners_random_search}},
