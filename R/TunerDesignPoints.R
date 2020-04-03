@@ -43,20 +43,20 @@ TunerDesignPoints = R6Class("TunerDesignPoints",
       super$initialize(
         param_set = ps,
         param_classes = c("ParamLgl", "ParamInt", "ParamDbl", "ParamFct"),
-        properties = "dependencies"
+        properties = character(0) #"dependencies"
       )
     }
   ),
 
   private = list(
-    .tune = function(instance) {
+    .optimize = function(instance) {
       pv = self$param_set$values
       if (is.null(pv$design))
         stopf("Please set design datatable!")
       d = Design$new(pv$design, param_set = instance$param_set, remove_dupl = FALSE) # does assert for us
       ch = chunk_vector(seq_row(d$data), chunk_size = pv$batch_size, shuffle = FALSE)
       for (inds in ch) {
-        instance$objective$eval_batch(d$data[inds, ])
+        instance$eval_batch(d$data[inds, ])
       }
     }
   )
