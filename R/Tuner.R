@@ -66,23 +66,8 @@
 #' instance$result # returns best configuration and best performance
 #' instance$archive() # allows access of data.table / benchmark result of full path of all evaluations
 Tuner = R6Class("Tuner",
+  inherit = Optimizer,
   public = list(
-    #' @field param_set ([paradox::ParamSet])\cr
-    #'   Set of control parameters for tuner.
-    param_set = NULL,
-
-    #' @field param_classes (`character()`)\cr
-    #'   Supported parameter classes for learner hyperparameters that the tuner can optimize, subclasses of [paradox::Param].
-    param_classes = NULL,
-
-    #' @field properties (`character()`)\cr
-    #'   Set of properties of the tuner. Must be a subset of [`mlr_reflections$tuner_properties`][mlr3::mlr_reflections].
-    properties = NULL,
-
-    #' @field packages (`character()`)\cr
-    #'   Set of required packages.
-    #'   Note that these packages will be loaded via [requireNamespace()], and are not attached.
-    packages = NULL,
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
@@ -100,10 +85,8 @@ Tuner = R6Class("Tuner",
     #'   Set of required packages.
     #'   Note that these packages will be loaded via [requireNamespace()], and are not attached.
     initialize = function(param_set, param_classes, properties, packages = character()) {
-      self$param_set = assert_param_set(param_set)
-      self$param_classes = param_classes
-      self$properties = assert_subset(properties, mlr_reflections$tuner_properties)
-      self$packages = assert_set(packages)
+      super$initialize(param_set = param_set, param_classes = param_classes,
+                       properties = properties)
     },
 
     #' @description
@@ -128,58 +111,40 @@ Tuner = R6Class("Tuner",
     #' @param instance (TuningInstance].
     #'
     #' @return Modifed `self`.
-    tune = function(instance) {
-      assert_r6(instance, "TuningInstance")
+    optimize = function(inst) {
+      assert_r6(inst, "TuningInstance")
       require_namespaces(self$packages)
-      if ("dependencies" %nin% self$properties && instance$param_set$has_deps)
+      if ("dependencies" %nin% self$properties && inst$param_set$has_deps)
         stopf("Tuner '%s' does not support param sets with dependencies!", self$format())
-      not_supported_pclasses = setdiff(unique(instance$param_set$class), self$param_classes)
+      not_supported_pclasses = setdiff(unique(inst$param_set$class), self$param_classes)
       if (length(not_supported_pclasses) > 0L)
         stopf("Tuner '%s' does not support param types: '%s'", class(self)[1L], paste0(not_supported_pclasses, collapse = ","))
-      instance$start_time = Sys.time()
-      lg$info("Starting to tune %i parameters with '%s' and '%s'" ,
-        instance$param_set$length, self$format(), instance$terminator$format())
-      lg$info("Terminator settings: %s", as_short_string(instance$terminator$param_set$values))
-      # run internal tune function which calls the optimizer
-      # the optimizer will call eval_batch,
-      # that will generate an exception when terminator is positive
-      # we then catch that here and stop
+
       tryCatch({
-        private$.tune(instance)
+        private$.optimize(inst)
       }, terminated_error = function(cond) {})
-      lg$info("Finished tuning after %i evals", instance$n_evals)
-      private$assign_result(instance)
-      lg$info("Tuned x: %s", as_short_string(instance$result$tune_x))
-      lg$info("Tuned y: %s", as_short_string(as.list(instance$result$perf)))
+
+      private$assign_result(inst)
       invisible(self)
     }
   ),
 
   private = list(
-    .tune = function(instance) {
-      # every subclass has to implement this to call optimizer
-      stop("abstract")
-    },
-
-    # the default super-method to assign results for a Tuner at the end
-    # - pick the best resample-experiment, regarding the first measure
-    # - then assign its config and aggregated perf to instance
-    # --> a Tuner can overwrite this if it wants to do something more fancy
-    assign_result = function(instance) {
-      tuner_assign_result_default(instance)
+    assign_result = function(inst) {
+      tuner_assign_result_default(inst)
     }
   )
 )
 
-tuner_assign_result_default = function(instance) {
-  assert_r6(instance, "TuningInstance")
+tuner_assign_result_default = function(inst) {
+  assert_r6(inst, "TuningInstance")
   # get best RR - best by mean perf value and extract perf values
 
-  res = instance$objective$archive$get_best()
-  perf = as.matrix(res[,instance$objective$codomain$ids(),with=FALSE])[1,]
+  res = inst$archive$get_best()
+  perf = as.matrix(res[,inst$objective$codomain$ids(),with=FALSE])[1,]
   # get the untrafoed config that matches this RR
-  pv = as.matrix(res[,instance$objective$domain$ids(),with=FALSE])[1,]
+  pv = as.list(as.matrix(res[,inst$objective$domain$ids(),with=FALSE])[1,])
 
-  instance$assign_result(pv, perf)
+  inst$assign_result(pv, perf)
   invisible(NULL)
 }

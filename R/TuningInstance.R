@@ -94,30 +94,8 @@
 #' # column errors: multiple errors recorded
 #' print(archive)
 TuningInstance = R6Class("TuningInstance",
-  public = list(
-    #' @field task ([mlr3::Task]).
-    task = NULL,
-
-    #' @field learner ([mlr3::Learner]).
-    learner = NULL,
-
-    #' @field resampling ([mlr3::Resampling])\cr
-    resampling = NULL,
-
-    #' @field measures (list of [mlr3::Measure]).
-    measures = NULL,
-
-    #' @field param_set ([paradox::ParamSet]).
-    param_set = NULL,
-
-    #' @field terminator ([Terminator]).
-    terminator = NULL,
-
-    #' @field objective ([bbotk::Objective]).
-    objective = NULL,
-
-    #' @field store_models (`logical(1)`).
-    store_models = FALSE,
+   inherit = OptimInstance,
+   public = list(
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
@@ -138,69 +116,13 @@ TuningInstance = R6Class("TuningInstance",
     #' @param param_set ([paradox::ParamSet]).
     #'
     #' @param terminator ([Terminator]).
-    initialize = function(task, learner, resampling, measures, param_set, terminator) {
-      self$task = assert_task(as_task(task, clone = TRUE))
-      self$learner = assert_learner(as_learner(learner, clone = TRUE), task = self$task)
-      self$resampling = assert_resampling(as_resampling(resampling, clone = TRUE))
-      self$measures = assert_measures(as_measures(measures, clone = TRUE), task = self$task, learner = self$learner)
-      self$param_set = assert_param_set(param_set, must_bounded = TRUE, no_untyped = TRUE)
-      self$terminator = assert_terminator(terminator)
-      if (!resampling$is_instantiated) {
-        self$resampling$instantiate(self$task)
-      }
-
-      fun = function(xss) {
-        learners = map(xss, function(x) {
-          learner = self$learner$clone(deep = TRUE)
-          learner$param_set$values = insert_named(learner$param_set$values, x)
-          return(lrn)
-        })
-
-        design = benchmark_grid(task, learners, resampling)
-        bmr = benchmar(design, store_models = self$store_models)
-        bmr_data = split(bmr$data, by = "uhash")
-        aggr = bmr$aggregate(self$measures)
-
-        y = map_chr(self$measures, function(s) s$id)
-
-        cbind(aggr[, y, with = FALSE], bmr_data = bmr_data)
-      }
-
-      minimize = map_lgl(self$measures, function(s) s$minimize)
-      names(minimize) = map_chr(self$measures, function(s) s$id)
-
-      self$objective = Objective$new(
-        id = "tuning",
-        fun = fun,
-        domain = param_set,
-        ydim = length(minimize),
-        minimize = minimize,
-        terminator = terminator)
-    },
-
-    #' @description
-    #' Helper for print outputs.
-    format = function() {
-      sprintf("<%s>", class(self)[1L])
-    },
-
-    #' @description
-    #' Printer.
-    #' @param ... (ignored).
-    print = function() {
-      catf(self$format())
-      catf(str_indent("* State: ", if (is.null(self$result$perf)) "Not tuned" else "Tuned"))
-      catf(str_indent("* Task:", format(self$task)))
-      catf(str_indent("* Learner:", format(self$learner)))
-      catf(str_indent("* Measures:", map_chr(self$measures, "id")))
-      catf(str_indent("* Resampling:", format(self$resampling)))
-      catf(str_indent("* Terminator:", format(self$terminator)))
-      catf(str_indent("* n_evals:", self$n_evals))
-      if (!is.null(self$result$perf)) {
-        catf(str_indent("* Result perf:", as_short_string(as.list(self$result$perf))))
-        catf(str_indent("* Result tune_x:", as_short_string(self$result$tune_x)))
-      }
-      print(self$param_set)
+    #' @param terminator [Terminator].
+    #' @param store_models `logical(1)`.
+    initialize = function(task, learner, resampling, measures, param_set, terminator, store_models = FALSE) {
+      obj = ObjectiveFSelect$new(task = task, learner = learner,
+        resampling = resampling, measures = measures, param_set = param_set,
+        store_models = store_models)
+      super$initialize(obj, param_set, terminator)
     },
 
     #' @description
@@ -218,7 +140,7 @@ TuningInstance = R6Class("TuningInstance",
       self$param_set$assert(tune_x)
       # result perf must be numeric and cover all measures
       assert_numeric(perf)
-      assert_names(names(perf), permutation.of = ids(self$measures))
+      assert_names(names(perf), permutation.of = ids(self$objective$measures))
       private$.result = list(tune_x = tune_x, perf = perf)
     }
   ),
@@ -230,9 +152,9 @@ TuningInstance = R6Class("TuningInstance",
       tune_x = private$.result$tune_x
       perf = private$.result$perf
       # if ps has no trafo, just use the normal config
-      trafo = if (is.null(self$param_set$trafo)) identity else self$param_set$trafo
+      trafo = if (is.null(self$objective$domain$trafo)) identity else self$param_set$trafo
       params = trafo(tune_x)
-      params = insert_named(self$learner$param_set$values, params)
+      params = insert_named(self$objective$learner$param_set$values, params)
       list(tune_x = tune_x, params = params, perf = perf)
     }
   ),

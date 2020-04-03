@@ -39,17 +39,17 @@ TunerRandomSearch = R6Class("TunerRandomSearch",
       super$initialize(
         param_set = ps,
         param_classes = c("ParamLgl", "ParamInt", "ParamDbl", "ParamFct"),
-        properties = "dependencies"
+        properties = character(0) #"dependencies"
       )
     }
   ),
 
   private = list(
-    .tune = function(instance) {
+    .optimize = function(instance) {
       batch_size = self$param_set$values$batch_size
       repeat { # iterate until we have an exception from eval_batch
         design = generate_design_random(instance$param_set, batch_size)
-        instance$objective$eval_batch(design$data)
+        instance$eval_batch(design$data)
       }
     }
   )

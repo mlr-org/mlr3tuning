@@ -46,18 +46,18 @@ TunerGridSearch = R6Class("TunerGridSearch",
       super$initialize(
         param_set = ps,
         param_classes = c("ParamLgl", "ParamInt", "ParamDbl", "ParamFct"),
-        properties = "dependencies"
+        properties =  character(0) #"dependencies"
       )
     }
   ),
 
   private = list(
-    .tune = function(instance) {
+    .optimize = function(instance) {
       pv = self$param_set$values
       g = generate_design_grid(instance$param_set, resolution = pv$resolution, param_resolutions = pv$param_resolutions)
       ch = chunk_vector(seq_row(g$data), chunk_size = pv$batch_size, shuffle = TRUE)
       for (inds in ch) {
-        instance$objective$eval_batch(g$data[inds])
+        instance$eval_batch(g$data[inds])
       }
     }
   )
