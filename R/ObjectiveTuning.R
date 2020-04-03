@@ -33,6 +33,7 @@ ObjectiveFSelect = R6Class("ObjectiveFSelect",
     #' @param learner [mlr3::Learner]
     #' @param resampling [mlr3::Resampling]
     #' @param measures list of [mlr3::Measure]
+    #' @param param_set ([paradox::ParamSet]).
     #' @param terminator [Terminator]
     #' @param store_models `logical(1)`
     initialize = function(task, learner, resampling, measures, param_set, store_models = FALSE) {

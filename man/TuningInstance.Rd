@@ -96,26 +96,8 @@ archive = inst$archive()
 print(archive)
 }
 \concept{TuningInstance}
-\section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{task}}{(\link[mlr3:Task]{mlr3::Task}).}
-
-\item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner}).}
-
-\item{\code{resampling}}{(\link[mlr3:Resampling]{mlr3::Resampling})\cr}
-
-\item{\code{measures}}{(list of \link[mlr3:Measure]{mlr3::Measure}).}
-
-\item{\code{param_set}}{(\link[paradox:ParamSet]{paradox::ParamSet}).}
-
-\item{\code{terminator}}{(\link{Terminator}).}
-
-\item{\code{objective}}{(\link[bbotk:Objective]{bbotk::Objective}).}
-
-\item{\code{store_models}}{(\code{logical(1)}).}
-}
-\if{html}{\out{</div>}}
+\section{Super class}{
+\code{\link[bbotk:OptimInstance]{bbotk::OptimInstance}} -> \code{TuningInstance}
 }
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
@@ -129,11 +111,17 @@ Result of the tuning, i.e., the optimal configuration and its estimated performa
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{TuningInstance$new()}}
-\item \href{#method-format}{\code{TuningInstance$format()}}
-\item \href{#method-print}{\code{TuningInstance$print()}}
 \item \href{#method-assign_result}{\code{TuningInstance$assign_result()}}
 \item \href{#method-clone}{\code{TuningInstance$clone()}}
 }
+}
+\if{html}{
+\out{<details open ><summary>Inherited methods</summary>}
+\itemize{
+\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="eval_batch">}\href{../../bbotk/html/OptimInstance.html#method-eval_batch}{\code{bbotk::OptimInstance$eval_batch()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="format">}\href{../../bbotk/html/OptimInstance.html#method-format}{\code{bbotk::OptimInstance$format()}}\out{</span>}
+}
+\out{</details>}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
@@ -144,7 +132,15 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
 This defines the resampled performance of a learner on a task, a feasibility region
 for the parameters the tuner is supposed to optimize, and a termination criterion.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TuningInstance$new(task, learner, resampling, measures, param_set, terminator)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TuningInstance$new(
+  task,
+  learner,
+  resampling,
+  measures,
+  param_set,
+  terminator,
+  store_models = FALSE
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -163,33 +159,8 @@ are evaluated on the same data splits.}
 \item{\code{param_set}}{(\link[paradox:ParamSet]{paradox::ParamSet}).}
 
 \item{\code{terminator}}{(\link{Terminator}).}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-format"></a>}}
-\if{latex}{\out{\hypertarget{method-format}{}}}
-\subsection{Method \code{format()}}{
-Helper for print outputs.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TuningInstance$format()}\if{html}{\out{</div>}}
-}
 
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-print"></a>}}
-\if{latex}{\out{\hypertarget{method-print}{}}}
-\subsection{Method \code{print()}}{
-Printer.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TuningInstance$print()}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{(ignored).}
+\item{\code{store_models}}{\code{logical(1)}.}
 }
 \if{html}{\out{</div>}}
 }

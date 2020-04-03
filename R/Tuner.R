@@ -108,7 +108,7 @@ Tuner = R6Class("Tuner",
     #' @description
     #' Performs the tuning on a [TuningInstance] until termination.
     #'
-    #' @param instance (TuningInstance].
+    #' @param inst (TuningInstance].
     #'
     #' @return Modifed `self`.
     optimize = function(inst) {

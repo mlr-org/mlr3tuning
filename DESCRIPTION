@@ -59,6 +59,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
 Collate:
     'AutoTuner.R'
+    'ObjectiveTuning.R'
     'mlr_tuners.R'
     'Tuner.R'
     'TunerDesignPoints.R'

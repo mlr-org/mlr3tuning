@@ -116,7 +116,6 @@ TuningInstance = R6Class("TuningInstance",
     #' @param param_set ([paradox::ParamSet]).
     #'
     #' @param terminator ([Terminator]).
-    #' @param terminator [Terminator].
     #' @param store_models `logical(1)`.
     initialize = function(task, learner, resampling, measures, param_set, terminator, store_models = FALSE) {
       obj = ObjectiveFSelect$new(task = task, learner = learner,

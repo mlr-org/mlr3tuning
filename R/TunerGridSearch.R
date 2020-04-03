@@ -52,12 +52,12 @@ TunerGridSearch = R6Class("TunerGridSearch",
   ),
 
   private = list(
-    .optimize = function(instance) {
+    .optimize = function(inst) {
       pv = self$param_set$values
-      g = generate_design_grid(instance$param_set, resolution = pv$resolution, param_resolutions = pv$param_resolutions)
+      g = generate_design_grid(inst$param_set, resolution = pv$resolution, param_resolutions = pv$param_resolutions)
       ch = chunk_vector(seq_row(g$data), chunk_size = pv$batch_size, shuffle = TRUE)
       for (inds in ch) {
-        instance$eval_batch(g$data[inds])
+        inst$eval_batch(g$data[inds])
       }
     }
   )

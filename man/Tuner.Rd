@@ -82,23 +82,8 @@ Other Tuner:
 \code{\link{mlr_tuners}}
 }
 \concept{Tuner}
-\section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{param_set}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
-Set of control parameters for tuner.}
-
-\item{\code{param_classes}}{(\code{character()})\cr
-Supported parameter classes for learner hyperparameters that the tuner can optimize, subclasses of \link[paradox:Param]{paradox::Param}.}
-
-\item{\code{properties}}{(\code{character()})\cr
-Set of properties of the tuner. Must be a subset of \code{\link[mlr3:mlr_reflections]{mlr_reflections$tuner_properties}}.}
-
-\item{\code{packages}}{(\code{character()})\cr
-Set of required packages.
-Note that these packages will be loaded via \code{\link[=requireNamespace]{requireNamespace()}}, and are not attached.}
-}
-\if{html}{\out{</div>}}
+\section{Super class}{
+\code{\link[bbotk:Optimizer]{bbotk::Optimizer}} -> \code{Tuner}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -106,9 +91,15 @@ Note that these packages will be loaded via \code{\link[=requireNamespace]{requi
 \item \href{#method-new}{\code{Tuner$new()}}
 \item \href{#method-format}{\code{Tuner$format()}}
 \item \href{#method-print}{\code{Tuner$print()}}
-\item \href{#method-tune}{\code{Tuner$tune()}}
+\item \href{#method-optimize}{\code{Tuner$optimize()}}
 \item \href{#method-clone}{\code{Tuner$clone()}}
 }
+}
+\if{html}{
+\out{<details open ><summary>Inherited methods</summary>}
+\itemize{
+}
+\out{</details>}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
@@ -166,18 +157,18 @@ Printer.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-tune"></a>}}
-\if{latex}{\out{\hypertarget{method-tune}{}}}
-\subsection{Method \code{tune()}}{
+\if{html}{\out{<a id="method-optimize"></a>}}
+\if{latex}{\out{\hypertarget{method-optimize}{}}}
+\subsection{Method \code{optimize()}}{
 Performs the tuning on a \link{TuningInstance} until termination.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Tuner$tune(instance)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Tuner$optimize(inst)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{instance}}{(TuningInstance].}
+\item{\code{inst}}{(TuningInstance].}
 }
 \if{html}{\out{</div>}}
 }
