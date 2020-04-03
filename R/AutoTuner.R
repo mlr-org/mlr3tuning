@@ -68,7 +68,7 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
     #'
     #' @param bm_args (named `list()`)\cr
     #'   Further arguments for [mlr3::benchmark()], see [TuningInstance].
-    initialize = function(learner, resampling, measures, tune_ps, terminator, tuner, bm_args = list()) {
+    initialize = function(learner, resampling, measures, tune_ps, terminator, tuner) {
       ia = list()
       ia$learner = assert_learner(learner)$clone(deep = TRUE)
       ia$resampling = assert_resampling(resampling, instantiated = FALSE)$clone()
@@ -76,7 +76,6 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
       ia$param_set = assert_param_set(tune_ps)$clone()
       ia$learner$param_set$set_id = "" # FIXME: i have no idea why we do this here?
       ia$terminator = assert_terminator(terminator)$clone()
-      ia$bm_args = assert_list(bm_args, names = "unique")
       self$instance_args = ia
       self$tuner = assert_tuner(tuner)$clone()
 
@@ -91,20 +90,15 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
       )
 
       self$predict_type = learner$predict_type
-    },
-
-    #' @description
-    #' Access the tuning archive (a.k.a. the optimization path).
-    #'
-    #' @param unnest (`character(1)`).
-    #'   Passed to `$archive` of [TuningInstance], defaulting to `"no"`.
-    archive = function(unnest = "no") {
-      self$tuning_instance$archive(unnest)
-
     }
   ),
 
   active = list(
+
+    #' @field archive Returns TuningInstance archive
+    archive = function()  {
+      self$tuning_instance$archive
+    },
 
     #' @field learner ([mlr3::Learner])\cr
     #'   Trained learner
@@ -148,7 +142,7 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
       ia = self$instance_args
       ia$task = task
       instance = do.call(TuningInstance$new, ia)
-      self$tuner$tune(instance)
+      self$tuner$optimize(instance)
 
       # get learner, set params to optimal, then train
       # we REALLY need to clone here we write to the object and this would change instance_args
