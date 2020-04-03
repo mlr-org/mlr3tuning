@@ -11,7 +11,7 @@ test_that("TunerGenSA", {
   te = term("evals", n_evals = 2)
   inst = TuningInstance$new(tsk("iris"), lrn("classif.debug"), rsmp("holdout"), msr("classif.ce"), ps, te)
   tt = TunerGenSA$new()
-  expect_error(tt$tune(inst), "support")
+  expect_error(tt$optimize(inst), "support")
 })
 
 test_that("TunerGenSA with int params and trafo", {
@@ -26,7 +26,7 @@ test_that("TunerGenSA with int params and trafo", {
   te = term("evals", n_evals = 2)
   inst = TuningInstance$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), ps, te)
   tt = TunerGenSA$new()
-  tt$tune(inst)
-  d = inst$archive(unnest = "params")
+  tt$optimize(inst)
+  d = inst$archive$data
   expect_integer(d$minsplit)
 })

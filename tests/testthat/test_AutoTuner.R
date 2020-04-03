@@ -12,8 +12,7 @@ test_that("AutoTuner / train+predict", {
   expect_learner(at)
   expect_equal(at$learner$param_set$values, list(xval = 0, cp = 0.2))
   inst = at$tuning_instance
-  expect_benchmark_result(inst$bmr)
-  a = at$archive()
+  a = at$archive$data
   expect_data_table(a, nrows = 3L)
   r = at$tuning_result
   expect_equal(r$tune_x, list(cp = 0.2))
@@ -49,8 +48,7 @@ test_that("AutoTuner / resample", {
     inst = ll$tuning_instance
     assert_r6(inst, "TuningInstance")
     r = inst$result
-    expect_data_table(inst$bmr$data, nrows = inner_evals * inner_folds)
-    expect_data_table(inst$archive(), nrows = inner_evals)
+    expect_data_table(inst$archive$data, nrows = inner_evals)
     expect_numeric(r$perf, len = 1L)
   })
 })

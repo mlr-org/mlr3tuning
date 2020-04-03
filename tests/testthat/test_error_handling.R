@@ -11,14 +11,14 @@ test_that("failing learner", {
 
   instance = TuningInstance$new(task = tsk("iris"), learner = learner, resampling = rsmp("holdout"),
     measures = msr("classif.ce"), param_set = param_set, terminator = term("evals", n_evals = 10))
-  expect_error(tt$tune(instance), "classif.debug->train")
+  expect_error(tt$optimize(instance), "classif.debug->train")
 
   learner$fallback = lrn("classif.featureless")
   learner$encapsulate = c (train = "evaluate", predict = "evaluate")
 
   instance = TuningInstance$new(task = tsk("iris"), learner = learner, resampling = rsmp("holdout"),
     measures = msr("classif.ce"), param_set = param_set, terminator = term("evals", n_evals = 10))
-  tt$tune(instance)
+  tt$optimize(instance)
   rc = expect_list(instance$result$tune_x)
   expect_list(rc, len = 1)
   expect_named(rc, c("x"))
@@ -36,7 +36,7 @@ test_that("predictions missing", {
 
   instance = TuningInstance$new(task = tsk("iris"), learner = learner, resampling = rsmp("holdout"),
     measures = msr("classif.ce"), param_set = param_set, terminator = term("evals", n_evals = 10))
-  expect_error(tt$tune(instance), "missing")
+  expect_error(tt$optimize(instance), "missing")
 })
 
 
@@ -49,12 +49,12 @@ test_that("faulty measure", {
 
   instance = TuningInstance$new(task = tsk("iris"), learner = learner, resampling = rsmp("holdout"),
     measures = msr("debug", na_ratio = 0.5, minimize = TRUE), param_set = param_set, terminator = term("evals", n_evals = 10))
-  tt$tune(instance)
-  tab = instance$archive()
+  tt$optimize(instance)
+  tab = instance$archive$data
   expect_data_table(tab, nrows = 10)
   expect_numeric(tab$debug)
   expect_gt(sum(is.na(tab$debug)), 0)
 
-  rr = instance$best()
-  expect_resample_result(rr)
+  res = instance$archive$get_best()
+  expect_data_table(res)
 })
