@@ -143,7 +143,7 @@ tuner_assign_result_default = function(inst) {
   res = inst$archive$get_best()
   perf = as.matrix(res[,inst$objective$codomain$ids(),with=FALSE])[1,]
   # get the untrafoed config that matches this RR
-  pv = as.list(as.matrix(res[,inst$objective$domain$ids(),with=FALSE])[1,])
+  pv = as.list(res[,inst$objective$domain$ids(),with=FALSE][1,])
 
   inst$assign_result(pv, perf)
   invisible(NULL)
