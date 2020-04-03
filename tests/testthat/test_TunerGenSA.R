@@ -28,5 +28,5 @@ test_that("TunerGenSA with int params and trafo", {
   tt = TunerGenSA$new()
   tt$optimize(inst)
   d = inst$archive$data
-  expect_integer(d$minsplit)
+  expect_integer(d$opt_x[[1]]$minsplit)
 })
