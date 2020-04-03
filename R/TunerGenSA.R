@@ -47,13 +47,20 @@ TunerGenSA = R6Class("TunerGenSA", inherit = Tuner,
   ),
 
   private = list(
-    .tune = function(instance) {
+    .optimize = function(inst) {
       v = self$param_set$values
       v$maxit = .Machine$integer.max # make sure GenSA does not stop
-      GenSA::GenSA(fn = instance$tuner_objective, lower = instance$param_set$lower,
-        upper = instance$param_set$upper, control = v)
+      GenSA::GenSA(par = NULL, fn = objective_fun, lower = inst$param_set$lower,
+        upper = inst$param_set$upper, control = v, inst)
     }
   )
 )
+
+objective_fun = function(x, inst) {
+  x = as.data.table(as.list(x))
+  res = inst$eval_batch(x)
+  y = as.numeric(res[, inst$objective$codomain$ids()[1], with=FALSE])
+  if(inst$objective$codomain$tags[[1]] == "minimize") y else -y
+}
 
 mlr_tuners$add("gensa", TunerGenSA)
