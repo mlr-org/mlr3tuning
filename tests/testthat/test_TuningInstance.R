@@ -17,7 +17,7 @@ test_that("TuningInstance", {
   expect_equal(inst$archive$data$resample_result[[2]]$learners[[1]]$param_set$values$minsplit, 4)
   expect_equal(inst$archive$data$resample_result[[2]]$learners[[1]]$param_set$values$maxdepth, 10)
   expect_identical(inst$archive$n_evals, 2L)
-  expect_data_table(z, nrow = 2)
+  expect_data_table(z, nrows = 2)
   expect_named(z, c("dummy.cp.classif", "resample_result"))
 
   z = inst$eval_batch(data.table(cp = c(0.001, 0.001), minsplit = c(3, 4)))
@@ -29,7 +29,7 @@ test_that("TuningInstance", {
   expect_equal(inst$archive$data$resample_result[[4]]$learners[[1]]$param_set$values$minsplit, 4)
   expect_equal(inst$archive$data$resample_result[[4]]$learners[[1]]$param_set$values$maxdepth, 10)
   expect_identical(inst$archive$n_evals, 4L)
-  expect_data_table(z, nrow = 2L)
+  expect_data_table(z, nrows = 2L)
   expect_named(z, c("dummy.cp.classif", "resample_result"))
 
   # test archive
