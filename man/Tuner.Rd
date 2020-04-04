@@ -76,7 +76,6 @@ instance$archive() # allows access of data.table / benchmark result of full path
 \seealso{
 Other Tuner: 
 \code{\link{mlr_tuners_design_points}},
-\code{\link{mlr_tuners_ecr}},
 \code{\link{mlr_tuners_gensa}},
 \code{\link{mlr_tuners_grid_search}},
 \code{\link{mlr_tuners_random_search}},

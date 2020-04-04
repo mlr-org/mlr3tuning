@@ -38,7 +38,6 @@ Design points to try in search, one per row.
 \seealso{
 Other Tuner: 
 \code{\link{Tuner}},
-\code{\link{mlr_tuners_ecr}},
 \code{\link{mlr_tuners_gensa}},
 \code{\link{mlr_tuners_grid_search}},
 \code{\link{mlr_tuners_random_search}},
