@@ -19,7 +19,7 @@ test_that("simple exp trafo works", {
   expect_equal(r$params, list(xval = 0, cp = 2^-7))
   expect_equal(r$perf, c(dummy.cp.classif = 2^-7))
   a = inst$archive$data
-  expect_equal(a$opt_x, list(2^-7, 2^-3))
+  expect_equal(a$opt_x, list(list(cp = 2^-7), list(cp = 2^-3)))
 })
 
 test_that("trafo where param names change", {
@@ -44,6 +44,6 @@ test_that("trafo where param names change", {
   expect_equal(r$params, list(xval = 0, cp = 0.11))
   expect_equal(r$perf, c(dummy.cp.classif = 0.11))
   a = inst$archive$data
-  expect_set_equal(a$cp, c(0.11, 0.22)) # NB: grid search randomly permutes order
+  expect_equal(a$opt_x, list(list(cp = 0.11), list(cp = 0.22))) # Maybe the order changes? FIXME: If this errors, it (probably) has to be fixed in bbotk
 })
 

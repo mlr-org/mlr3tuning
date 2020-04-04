@@ -108,7 +108,7 @@ test_that("nested resamppling results are consistent ", {
   lrn = AutoTuner$new(
     learner = lrn("classif.rpart"),
     resampling = rsmp("holdout"),
-    tune_ps = ps,
+    search_space = ps,
     measures = msr("classif.ce"),
     terminator = term("evals", n_evals = 3),
     tuner = tnr("random_search")

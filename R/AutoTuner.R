@@ -16,12 +16,12 @@
 #' learner = lrn("classif.rpart")
 #' resampling = rsmp("holdout")
 #' measures = msr("classif.ce")
-#' param_set = ParamSet$new(
+#' search_space = ParamSet$new(
 #'   params = list(ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 #'
 #' terminator = term("evals", n_evals = 5)
 #' tuner = tnr("grid_search")
-#' at = AutoTuner$new(learner, resampling, measures, param_set, terminator, tuner)
+#' at = AutoTuner$new(learner, resampling, measures, search_space, terminator, tuner)
 #' at$store_tuning_instance = TRUE
 #'
 #' at$train(task)
@@ -57,7 +57,7 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
     #'   Performance measures.
     #'   The first one is optimized, see [TuningInstance].
     #'
-    #' @param tune_ps ([paradox::ParamSet])\cr
+    #' @param search_space ([paradox::ParamSet])\cr
     #'   Hyperparameter search space, see [TuningInstance].
     #'
     #' @param terminator ([Terminator])\cr
@@ -68,12 +68,12 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
     #'
     #' @param bm_args (named `list()`)\cr
     #'   Further arguments for [mlr3::benchmark()], see [TuningInstance].
-    initialize = function(learner, resampling, measures, tune_ps, terminator, tuner) {
+    initialize = function(learner, resampling, measures, search_space, terminator, tuner) {
       ia = list()
       ia$learner = assert_learner(learner)$clone(deep = TRUE)
       ia$resampling = assert_resampling(resampling, instantiated = FALSE)$clone()
       ia$measures = assert_measures(as_measures(measures), learner = learner)
-      ia$param_set = assert_param_set(tune_ps)$clone()
+      ia$search_space = assert_param_set(search_space)$clone()
       ia$learner$param_set$set_id = "" # FIXME: i have no idea why we do this here?
       ia$terminator = assert_terminator(terminator)$clone()
       self$instance_args = ia

@@ -1,11 +1,11 @@
-#' @title ObjectiveFSelect
+#' @title ObjectiveTuning
 #'
 #' @description
 #' Describes the objective function that estimates the performance of feature
 #' sets.
 #'
 #' @export
-ObjectiveFSelect = R6Class("ObjectiveFSelect",
+ObjectiveTuning = R6Class("ObjectiveTuning",
   inherit = Objective,
 
   #' @description
@@ -33,10 +33,9 @@ ObjectiveFSelect = R6Class("ObjectiveFSelect",
     #' @param learner [mlr3::Learner]
     #' @param resampling [mlr3::Resampling]
     #' @param measures list of [mlr3::Measure]
-    #' @param param_set ([paradox::ParamSet]).
     #' @param terminator [Terminator]
     #' @param store_models `logical(1)`
-    initialize = function(task, learner, resampling, measures, param_set, store_models = FALSE) {
+    initialize = function(task, learner, resampling, measures, store_models = FALSE) {
       self$task = assert_task(as_task(task, clone = TRUE))
       self$learner = assert_learner(as_learner(learner, clone = TRUE), task = self$task)
       self$resampling = assert_resampling(as_resampling(resampling, clone = TRUE))
@@ -54,7 +53,7 @@ ObjectiveFSelect = R6Class("ObjectiveFSelect",
             tags = ifelse(s$minimize, "minimize", "maximize"))
         }))
 
-      super$initialize(id = "feature_selection", domain = param_set, codomain = codomain)
+      super$initialize(id = "feature_selection", domain = learner$param_set, codomain = codomain)
     },
 
     #' @description

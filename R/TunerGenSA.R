@@ -50,8 +50,8 @@ TunerGenSA = R6Class("TunerGenSA", inherit = Tuner,
     .optimize = function(inst) {
       v = self$param_set$values
       v$maxit = .Machine$integer.max # make sure GenSA does not stop
-      GenSA::GenSA(par = NULL, fn = objective_fun, lower = inst$param_set$lower,
-        upper = inst$param_set$upper, control = v, inst)
+      GenSA::GenSA(par = NULL, fn = objective_fun, lower = inst$search_space$lower,
+        upper = inst$search_space$upper, control = v, inst)
     }
   )
 )

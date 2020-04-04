@@ -58,7 +58,7 @@
 #'   learner = lrn("classif.rpart"),
 #'   resampling = rsmp("holdout"),
 #'   measures = msr("classif.ce"),
-#'   param_set = param_set,
+#'   search_space = search_space,
 #'   terminator = terminator
 #' )
 #' tt = tnr("random_search") # swap this line to use a different Tuner
@@ -114,9 +114,9 @@ Tuner = R6Class("Tuner",
     optimize = function(inst) {
       assert_r6(inst, "TuningInstance")
       require_namespaces(self$packages)
-      if ("dependencies" %nin% self$properties && inst$param_set$has_deps)
+      if ("dependencies" %nin% self$properties && inst$search_space$has_deps)
         stopf("Tuner '%s' does not support param sets with dependencies!", self$format())
-      not_supported_pclasses = setdiff(unique(inst$param_set$class), self$param_classes)
+      not_supported_pclasses = setdiff(unique(inst$search_space$class), self$param_classes)
       if (length(not_supported_pclasses) > 0L)
         stopf("Tuner '%s' does not support param types: '%s'", class(self)[1L], paste0(not_supported_pclasses, collapse = ","))
 
@@ -139,12 +139,11 @@ Tuner = R6Class("Tuner",
 tuner_assign_result_default = function(inst) {
   assert_r6(inst, "TuningInstance")
   # get best RR - best by mean perf value and extract perf values
-
   res = inst$archive$get_best()
   perf = as.matrix(res[,inst$objective$codomain$ids(),with=FALSE])[1,]
   # get the untrafoed config that matches this RR
-  pv = as.list(res[,inst$objective$domain$ids(),with=FALSE][1,])
-
+  pv = as.list(res[,inst$search_space$ids(),with=FALSE][1,])
+  pv = pv[!map_lgl(pv, is.na)] #FIXME We have to remove NAs here (and hopefully just the NAs that are created because of unfulfilled requirements)
   inst$assign_result(pv, perf)
   invisible(NULL)
 }
