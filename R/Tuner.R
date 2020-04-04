@@ -49,7 +49,7 @@
 #' @examples
 #' library(mlr3)
 #' library(paradox)
-#' param_set = ParamSet$new(list(
+#' search_space = ParamSet$new(list(
 #'   ParamDbl$new("cp", lower = 0.001, upper = 0.1)
 #' ))
 #' terminator = term("evals", n_evals = 3)
@@ -62,9 +62,9 @@
 #'   terminator = terminator
 #' )
 #' tt = tnr("random_search") # swap this line to use a different Tuner
-#' tt$tune(instance) # modifies the instance by reference
+#' tt$optimize(instance) # modifies the instance by reference
 #' instance$result # returns best configuration and best performance
-#' instance$archive() # allows access of data.table / benchmark result of full path of all evaluations
+#' instance$archive # allows access of data.table / benchmark result of full path of all evaluations
 Tuner = R6Class("Tuner",
   inherit = Optimizer,
   public = list(

@@ -48,7 +48,7 @@ inst = TuningInstance$new(
 # first 4 points as cross product
 design = CJ(cp = c(0.05, 0.01), minsplit = c(5, 3))
 inst$eval_batch(design)
-inst$archive()
+inst$archive
 
 # try more points, catch the raised terminated message
 tryCatch(
@@ -63,7 +63,7 @@ tryCatch(
   terminated_error = function(e) message(as.character(e))
 )
 
-inst$archive()
+inst$archive
 
 ### Error handling
 # get a learner which breaks with 50\% probability
@@ -90,7 +90,7 @@ tryCatch(
   terminated_error = function(e) message(as.character(e))
 )
 
-archive = inst$archive()
+archive = inst$archive
 
 # column errors: multiple errors recorded
 print(archive)
