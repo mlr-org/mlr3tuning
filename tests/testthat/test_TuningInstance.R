@@ -88,7 +88,6 @@ test_that("tuning with custom resampling", {
   resampling$instantiate(task, train_sets, test_sets)
 
   learner = lrn("classif.rpart")
-  #resampling = rsmp("holdout")
   measures = msr("classif.ce")
   tune_ps = ParamSet$new(list(
     ParamDbl$new("cp", lower = 0.001, upper = 0.1),
@@ -99,14 +98,14 @@ test_that("tuning with custom resampling", {
 
   inst = TuningInstance$new(task, learner, resampling, measures, tune_ps, terminator)
   tuner$optimize(inst)
-  #rr = inst$bmr$resamplings
-  #expect_data_table(rr, nrows = 1)
-  #rr = rr$resampling[[1]]
-  #expect_equal(rr$iters, 2)
-  #expect_set_equal(rr$train_set(1), train_sets[[1]])
-  #expect_set_equal(rr$train_set(2), train_sets[[2]])
-  #expect_set_equal(rr$test_set(1), test_sets[[1]])
-  #expect_set_equal(rr$test_set(2), test_sets[[2]])
+  rr = inst$archive$data$resample_result
+  expect_list(rr, len = 10)
+  rr = inst$archive$data$resample_result[[1]]$resampling
+  expect_equal(rr$iters, 2)
+  expect_set_equal(rr$train_set(1), train_sets[[1]])
+  expect_set_equal(rr$train_set(2), train_sets[[2]])
+  expect_set_equal(rr$test_set(1), test_sets[[1]])
+  expect_set_equal(rr$test_set(2), test_sets[[2]])
 })
 
 test_that("non-scalar hyperpars (#201)", {
