@@ -13,5 +13,7 @@ test_that("TunerDesignPoints", {
   expect_data_table(a, nrows = 2)
   expect_set_equal(a$cp, c(0.1, 0.3))
   expect_set_equal(a$minsplit, c(1, 2))
+
+  expect_error(test_tuner("design_points", term_evals = 2L, real_evals = 2, n_dim = 1L))
 })
 

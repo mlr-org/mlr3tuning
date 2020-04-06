@@ -90,22 +90,6 @@ Tuner = R6Class("Tuner",
     },
 
     #' @description
-    #' Helper for print outputs.
-    format = function() {
-      sprintf("<%s>", class(self)[1L])
-    },
-
-    #' @description
-    #' Printer.
-    #' @param ... (ignored).
-    print = function() {
-      catf(format(self))
-      catf(str_indent("* Parameters:", as_short_string(self$param_set$values)))
-      catf(str_indent("* Packages:", self$packages))
-      catf(str_indent("* Properties:", self$properties))
-    },
-
-    #' @description
     #' Performs the tuning on a [TuningInstance] until termination.
     #'
     #' @param inst (TuningInstance].
