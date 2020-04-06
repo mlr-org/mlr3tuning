@@ -50,13 +50,13 @@ TunerGenSA = R6Class("TunerGenSA", inherit = Tuner,
     .optimize = function(inst) {
       v = self$param_set$values
       v$maxit = .Machine$integer.max # make sure GenSA does not stop
-      GenSA::GenSA(par = NULL, fn = objective_fun, lower = inst$search_space$lower,
+      GenSA::GenSA(par = NULL, fn = objective_wrapper, lower = inst$search_space$lower,
         upper = inst$search_space$upper, control = v, inst)
     }
   )
 )
 
-objective_fun = function(x, inst) {
+objective_wrapper = function(x, inst) {
   x = as.data.table(as.list(x))
   res = inst$eval_batch(x)
   y = as.numeric(res[, inst$objective$codomain$ids()[1], with=FALSE])
