@@ -129,7 +129,7 @@ TEST_MAKE_INST2 = function(measures = msr("dummy.cp.regr"), term_evals = 5L) {
 
 # a dummy measure which simply returns the cp value of rpart
 # this allows us to 'fake' performance values in unit tests during tuning
-make_dummy_cp_measure = function(type) {
+make_dummy_cp_measure = function(type, minimize = TRUE) {
   if (type == "classif") {
     id = "dummy.cp.classif"
     inh = MeasureClassif
@@ -150,7 +150,7 @@ make_dummy_cp_measure = function(type) {
         super$initialize(
           id = id,
           range = c(0, Inf),
-          minimize = TRUE,
+          minimize = minimize,
           properties = "requires_learner"
         )
         self$fun = fun # allow a fun to transform cp to score
@@ -168,6 +168,8 @@ MeasureDummyCPClassif = make_dummy_cp_measure("classif")
 mlr3::mlr_measures$add("dummy.cp.classif", MeasureDummyCPClassif)
 MeasureDummyCPRegr = make_dummy_cp_measure("regr")
 mlr3::mlr_measures$add("dummy.cp.regr", MeasureDummyCPRegr)
+MeasureDummyCPMaximizeClassif = make_dummy_cp_measure("classif", minimize = FALSE)
+mlr3::mlr_measures$add("dummy.cp.maximize.classif", MeasureDummyCPMaximizeClassif)
 
 LearnerRegrDepParams = R6Class("LearnerRegrDepParams", inherit = LearnerRegr,
   public = list(

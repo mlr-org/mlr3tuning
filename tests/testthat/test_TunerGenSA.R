@@ -30,3 +30,13 @@ test_that("TunerGenSA with int params and trafo", {
   d = inst$archive$data
   expect_integer(d$opt_x[[1]]$minsplit)
 })
+
+test_that("TunerGenSA - Optimize wrapper with maximize measure", {
+  inst = TEST_MAKE_INST1(measures = msr("dummy.cp.maximize.classif"), n_dim = 1)
+  tt = TunerGenSA$new()
+  tt$optimize(inst)
+
+  res = inst$archive$get_best()
+  expect_equal(res$cp, max(inst$archive$data$cp))
+})
+
