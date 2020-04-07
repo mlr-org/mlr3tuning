@@ -4,10 +4,12 @@
 \alias{AutoTuner}
 \title{AutoTuner}
 \description{
-The \code{AutoTuner} is a \link[mlr3:Learner]{mlr3::Learner} which auto-tunes by first tuning the hyperparameters of its encapsulated learner
-on the training data, then setting the optimal configuration in the learner, then finally
-fitting the model on the complete training data.
-This class allows to perform nested resampling by passing an \link{AutoTuner} object to \code{\link[mlr3:resample]{mlr3::resample()}} or \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
+The \code{AutoTuner} is a \link[mlr3:Learner]{mlr3::Learner} which auto-tunes by first tuning the
+hyperparameters of its encapsulated learner on the training data, then
+setting the optimal configuration in the learner, then finally fitting the
+model on the complete training data. This class allows to perform nested
+resampling by passing an \link{AutoTuner} object to \code{\link[mlr3:resample]{mlr3::resample()}} or
+\code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
 }
 \examples{
 library(mlr3)
@@ -21,14 +23,15 @@ search_space = ParamSet$new(
 
 terminator = term("evals", n_evals = 5)
 tuner = tnr("grid_search")
-at = AutoTuner$new(learner, resampling, measures, search_space, terminator, tuner)
+at = AutoTuner$new(
+  learner, resampling, measures, search_space, terminator,
+  tuner)
 at$store_tuning_instance = TRUE
 
 at$train(task)
 at$model
 at$learner
 }
-\concept{Learner}
 \section{Super class}{
 \code{\link[mlr3:Learner]{mlr3::Learner}} -> \code{AutoTuner}
 }
@@ -41,7 +44,8 @@ All arguments from construction to create the \link{TuningInstance}.}
 \item{\code{tuner}}{(\link{Tuner}).}
 
 \item{\code{store_tuning_instance}}{(\code{logical(1)})\cr
-If \code{TRUE} (default), stores the internally created \link{TuningInstance} with all intermediate results in slot \verb{$tuning_instance}.}
+If \code{TRUE} (default), stores the internally created \link{TuningInstance}
+with all intermediate results in slot \verb{$tuning_instance}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -99,14 +103,13 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
 Learner to tune, see \link{TuningInstance}.}
 
 \item{\code{resampling}}{(\link[mlr3:Resampling]{mlr3::Resampling})\cr
-Resampling strategy during tuning, see \link{TuningInstance}.
-This \link[mlr3:Resampling]{mlr3::Resampling} is meant to be the \strong{inner} resampling, operating on the training set
-of an arbitrary outer resampling.
-For this reason it is not feasible to pass an instantiated \link[mlr3:Resampling]{mlr3::Resampling} here.}
+Resampling strategy during tuning, see \link{TuningInstance}. This
+\link[mlr3:Resampling]{mlr3::Resampling} is meant to be the \strong{inner} resampling, operating
+on the training set of an arbitrary outer resampling. For this reason
+it is not feasible to pass an instantiated \link[mlr3:Resampling]{mlr3::Resampling} here.}
 
 \item{\code{measures}}{(list of \link[mlr3:Measure]{mlr3::Measure})\cr
-Performance measures.
-The first one is optimized, see \link{TuningInstance}.}
+Performance measures. The first one is optimized, see \link{TuningInstance}.}
 
 \item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
 Hyperparameter search space, see \link{TuningInstance}.}

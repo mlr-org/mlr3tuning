@@ -5,23 +5,9 @@
 \alias{TunerGenSA}
 \title{TunerGenSA}
 \description{
-Subclass for generalized simulated annealing tuning calling \code{\link[GenSA:GenSA]{GenSA::GenSA()}} from package \CRANpkg{GenSA}.
+Subclass for generalized simulated annealing tuning calling \code{\link[GenSA:GenSA]{GenSA::GenSA()}}
+from package \CRANpkg{GenSA}.
 }
-\section{Parameters}{
-
-\itemize{
-\item \code{smooth} (\code{logical(1)}).
-\item \code{temperature} (\code{numeric(1)}).
-\item \code{acceptance.param} (\code{numeric(1)}).
-\item \code{verbose} (\code{logical(1)}).
-\item \code{trace.mat} (\code{logical(1)}).
-}
-
-For the meaning of the control parameters, see \code{\link[GenSA:GenSA]{GenSA::GenSA()}}.
-Note that we have removed all control parameters which refer to the termination of the algorithm and
-where our terminators allow to obtain the same behavior.
-}
-
 \section{Dictionary}{
 
 This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary} \link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:\preformatted{mlr_tuners$get("gensa")
@@ -29,18 +15,44 @@ tnr("gensa")
 }
 }
 
+\section{Parameters}{
+
+\describe{
+\item{\code{smooth}}{\code{logical(1)}}
+\item{\code{temperature}}{[numeric(1)}
+\item{\code{acceptance.param}}{\code{numeric(1)}}
+\item{\code{verbose}}{\code{logical(1)}}
+\item{\code{trace.mat}}{\code{logical(1)}}
+}
+
+For the meaning of the control parameters, see \code{\link[GenSA:GenSA]{GenSA::GenSA()}}. Note that we
+have removed all control parameters which refer to the termination of the
+algorithm and where our terminators allow to obtain the same behavior.
+}
+
 \examples{
-# see ?Tuner
+library(mlr3)
+library(paradox)
+search_space = ParamSet$new(list(
+  ParamDbl$new("cp", lower = 0.001, upper = 0.1)
+))
+terminator = term("evals", n_evals = 3)
+instance = TuningInstance$new(
+  task = tsk("iris"),
+  learner = lrn("classif.rpart"),
+  resampling = rsmp("holdout"),
+  measures = msr("classif.ce"),
+  search_space = search_space,
+  terminator = terminator
+)
+tt = tnr("gensa")
+# modifies the instance by reference
+tt$optimize(instance)
+# returns best configuration and best performance
+instance$result
+# allows access of data.table of full path of all evaluations
+instance$archive
 }
-\seealso{
-Other Tuner: 
-\code{\link{Tuner}},
-\code{\link{mlr_tuners_design_points}},
-\code{\link{mlr_tuners_grid_search}},
-\code{\link{mlr_tuners_random_search}},
-\code{\link{mlr_tuners}}
-}
-\concept{Tuner}
 \section{Super classes}{
 \code{\link[bbotk:Optimizer]{bbotk::Optimizer}} -> \code{\link[mlr3tuning:Tuner]{mlr3tuning::Tuner}} -> \code{TunerGenSA}
 }

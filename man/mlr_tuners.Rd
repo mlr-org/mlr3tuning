@@ -13,7 +13,8 @@ Each tuner has an associated help page, see \code{mlr_tuners_[id]}.
 
 This dictionary can get populated with additional tuners by add-on packages.
 
-For a more convenient way to retrieve and construct tuner, see \code{\link[=tnr]{tnr()}}/\code{\link[=tnrs]{tnrs()}}.
+For a more convenient way to retrieve and construct tuner, see
+\code{\link[=tnr]{tnr()}}/\code{\link[=tnrs]{tnrs()}}.
 }
 \section{Methods}{
 
@@ -26,13 +27,6 @@ tnr("random_search")
 }
 \seealso{
 Sugar functions: \code{\link[=tnr]{tnr()}}, \code{\link[=tnrs]{tnrs()}}
-
-Other Tuner: 
-\code{\link{Tuner}},
-\code{\link{mlr_tuners_design_points}},
-\code{\link{mlr_tuners_gensa}},
-\code{\link{mlr_tuners_grid_search}},
-\code{\link{mlr_tuners_random_search}}
 }
 \concept{Tuner}
 \keyword{datasets}

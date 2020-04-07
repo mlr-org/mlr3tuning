@@ -1,29 +1,29 @@
 #' @title TunerGenSA
 #'
 #' @name mlr_tuners_gensa
-#' @include Tuner.R
 #'
 #' @description
-#' Subclass for generalized simulated annealing tuning calling [GenSA::GenSA()] from package \CRANpkg{GenSA}.
-#'
-#' @section Parameters:
-#' * `smooth` (`logical(1)`).
-#' * `temperature` (`numeric(1)`).
-#' * `acceptance.param` (`numeric(1)`).
-#' * `verbose` (`logical(1)`).
-#' * `trace.mat` (`logical(1)`).
-#'
-#' For the meaning of the control parameters, see [GenSA::GenSA()].
-#' Note that we have removed all control parameters which refer to the termination of the algorithm and
-#' where our terminators allow to obtain the same behavior.
+#' Subclass for generalized simulated annealing tuning calling [GenSA::GenSA()]
+#' from package \CRANpkg{GenSA}.
 #'
 #' @templateVar id gensa
 #' @template section_dictionary_tuners
 #'
-#' @family Tuner
+#' @section Parameters:
+#' \describe{
+#' \item{`smooth`}{`logical(1)`}
+#' \item{`temperature`}{`numeric(1)`}
+#' \item{`acceptance.param`}{`numeric(1)`}
+#' \item{`verbose`}{`logical(1)`}
+#' \item{`trace.mat`}{`logical(1)`}
+#' }
+#'
+#' For the meaning of the control parameters, see [GenSA::GenSA()]. Note that we
+#' have removed all control parameters which refer to the termination of the
+#' algorithm and where our terminators allow to obtain the same behavior.
+#'
 #' @export
-#' @examples
-#' # see ?Tuner
+#' @template example
 TunerGenSA = R6Class("TunerGenSA", inherit = Tuner,
   public = list(
 
@@ -50,8 +50,9 @@ TunerGenSA = R6Class("TunerGenSA", inherit = Tuner,
     .optimize = function(inst) {
       v = self$param_set$values
       v$maxit = .Machine$integer.max # make sure GenSA does not stop
-      GenSA::GenSA(par = NULL, fn = objective_wrapper, lower = inst$search_space$lower,
-        upper = inst$search_space$upper, control = v, inst)
+      GenSA::GenSA(par = NULL, fn = objective_wrapper,
+        lower = inst$search_space$lower, upper = inst$search_space$upper,
+        control = v, inst)
     }
   )
 )

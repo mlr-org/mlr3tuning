@@ -6,7 +6,8 @@ terminated_error = function(instance) {
     format(instance$terminator)
   )
 
-  set_class(list(message = msg, call = NULL), c("terminated_error", "error", "condition"))
+  set_class(list(message = msg, call = NULL), c(
+    "terminated_error", "error", "condition"))
 }
 
 # get an object from a list of id-able-objects, like many from mlr3

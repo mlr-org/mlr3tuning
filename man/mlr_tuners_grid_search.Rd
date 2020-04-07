@@ -7,13 +7,13 @@
 \description{
 Subclass for grid search tuning.
 
-The grid is constructed as a Cartesian product over discretized values per parameter,
-see \code{\link[paradox:generate_design_grid]{paradox::generate_design_grid()}}.
-The points of the grid are evaluated in a random order.
+The grid is constructed as a Cartesian product over discretized values per
+parameter, see \code{\link[paradox:generate_design_grid]{paradox::generate_design_grid()}}. The points of the grid are
+evaluated in a random order.
 
-In order to support general termination criteria and parallelization,
-we evaluate points in a batch-fashion of size \code{batch_size}.
-Larger batches mean we can parallelize more, smaller batches imply a more fine-grained checking
+In order to support general termination criteria and parallelization, we
+evaluate points in a batch-fashion of size \code{batch_size}. Larger batches mean
+we can parallelize more, smaller batches imply a more fine-grained checking
 of termination criteria.
 }
 \section{Dictionary}{
@@ -25,28 +25,40 @@ tnr("grid_search")
 
 \section{Parameters}{
 
-\itemize{
-\item \code{resolution} (\code{integer(1)})\cr
-Resolution of the grid, see \code{\link[paradox:generate_design_grid]{paradox::generate_design_grid()}}.
-\item \code{param_resolutions} (named \code{integer()} )\cr
-Resolution per parameter, named by parameter ID, see \code{\link[paradox:generate_design_grid]{paradox::generate_design_grid()}}.
-\item \code{batch_size} (\code{integer(1)})\cr
-Maximum number of configurations to try in a batch.
+\describe{
+\item{\code{resolution}}{\code{integer(1)}\cr
+Resolution of the grid, see \code{\link[paradox:generate_design_grid]{paradox::generate_design_grid()}}.}
+\item{\code{param_resolutions}}{named \code{integer()}\cr
+Resolution per parameter, named by parameter ID, see
+\code{\link[paradox:generate_design_grid]{paradox::generate_design_grid()}}.}
+\item{\code{batch_size}}{\code{integer(1)}\cr
+Maximum number of configurations to try in a batch..}
 }
 }
 
 \examples{
-# see ?Tuner
+library(mlr3)
+library(paradox)
+search_space = ParamSet$new(list(
+  ParamDbl$new("cp", lower = 0.001, upper = 0.1)
+))
+terminator = term("evals", n_evals = 3)
+instance = TuningInstance$new(
+  task = tsk("iris"),
+  learner = lrn("classif.rpart"),
+  resampling = rsmp("holdout"),
+  measures = msr("classif.ce"),
+  search_space = search_space,
+  terminator = terminator
+)
+tt = tnr("grid_search")
+# modifies the instance by reference
+tt$optimize(instance)
+# returns best configuration and best performance
+instance$result
+# allows access of data.table of full path of all evaluations
+instance$archive
 }
-\seealso{
-Other Tuner: 
-\code{\link{Tuner}},
-\code{\link{mlr_tuners_design_points}},
-\code{\link{mlr_tuners_gensa}},
-\code{\link{mlr_tuners_random_search}},
-\code{\link{mlr_tuners}}
-}
-\concept{Tuner}
 \section{Super classes}{
 \code{\link[bbotk:Optimizer]{bbotk::Optimizer}} -> \code{\link[mlr3tuning:Tuner]{mlr3tuning::Tuner}} -> \code{TunerGridSearch}
 }

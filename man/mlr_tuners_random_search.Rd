@@ -9,9 +9,9 @@ Subclass for random search tuning.
 
 The random points are sampled by \code{\link[paradox:generate_design_random]{paradox::generate_design_random()}}.
 
-In order to support general termination criteria and parallelization,
-we evaluate points in a batch-fashion of size \code{batch_size}.
-Larger batches mean we can parallelize more, smaller batches imply a more fine-grained checking
+In order to support general termination criteria and parallelization, we
+evaluate points in a batch-fashion of size \code{batch_size}. Larger batches mean
+we can parallelize more, smaller batches imply a more fine-grained checking
 of termination criteria.
 }
 \section{Dictionary}{
@@ -23,24 +23,35 @@ tnr("random_search")
 
 \section{Parameters}{
 
-\itemize{
-\item \code{batch_size} (\code{integer(1)})\cr
-Maximum number of configurations to try in a batch.
+\describe{
+\item{\code{batch_size}}{\code{integer(1)}\cr
+Maximum number of configurations to try in a batch.}
 }
 }
 
 \examples{
-# see ?Tuner
+library(mlr3)
+library(paradox)
+search_space = ParamSet$new(list(
+  ParamDbl$new("cp", lower = 0.001, upper = 0.1)
+))
+terminator = term("evals", n_evals = 3)
+instance = TuningInstance$new(
+  task = tsk("iris"),
+  learner = lrn("classif.rpart"),
+  resampling = rsmp("holdout"),
+  measures = msr("classif.ce"),
+  search_space = search_space,
+  terminator = terminator
+)
+tt = tnr("random_search")
+# modifies the instance by reference
+tt$optimize(instance)
+# returns best configuration and best performance
+instance$result
+# allows access of data.table of full path of all evaluations
+instance$archive
 }
-\seealso{
-Other Tuner: 
-\code{\link{Tuner}},
-\code{\link{mlr_tuners_design_points}},
-\code{\link{mlr_tuners_gensa}},
-\code{\link{mlr_tuners_grid_search}},
-\code{\link{mlr_tuners}}
-}
-\concept{Tuner}
 \section{Super classes}{
 \code{\link[bbotk:Optimizer]{bbotk::Optimizer}} -> \code{\link[mlr3tuning:Tuner]{mlr3tuning::Tuner}} -> \code{TunerRandomSearch}
 }

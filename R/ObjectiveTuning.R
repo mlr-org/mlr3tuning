@@ -35,14 +35,18 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     #' @param measures list of [mlr3::Measure]
     #' @param terminator [Terminator]
     #' @param store_models `logical(1)`
-    initialize = function(task, learner, resampling, measures, store_models = FALSE) {
-      self$task = assert_task(as_task(task, clone = TRUE))
-      self$learner = assert_learner(as_learner(learner, clone = TRUE), task = self$task)
-      self$resampling = assert_resampling(as_resampling(resampling, clone = TRUE))
-      self$measures = assert_measures(as_measures(measures, clone = TRUE), task = self$task, learner = self$learner)
-      self$store_models = assert_logical(store_models)
-      if (!resampling$is_instantiated) {
-        self$resampling$instantiate(self$task)
+    initialize = function(task, learner, resampling, measures,
+      store_models = FALSE) {
+        self$task = assert_task(as_task(task, clone = TRUE))
+        self$learner = assert_learner(as_learner(learner, clone = TRUE),
+          task = self$task)
+        self$resampling = assert_resampling(as_resampling(
+          resampling, clone = TRUE))
+        self$measures = assert_measures(as_measures(measures, clone = TRUE),
+          task = self$task, learner = self$learner)
+        self$store_models = assert_logical(store_models)
+        if (!resampling$is_instantiated) {
+          self$resampling$instantiate(self$task)
       }
 
       codomain = ParamSet$new(map(
@@ -53,12 +57,15 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
             tags = ifelse(s$minimize, "minimize", "maximize"))
         }))
 
-      super$initialize(id = "feature_selection", domain = learner$param_set, codomain = codomain)
+      super$initialize(
+        id = "feature_selection", domain = learner$param_set,
+        codomain = codomain)
     },
 
     #' @description
-    #' Evaluates multiple feature sets on the objective function
-    #' @param xss `list()` A list of lists that contains multiple feature sets
+    #' Evaluates multiple hyperparameter sets on the objective function
+    #' @param xss `list()`\cr
+    #' A list of lists that contains multiple hyperparameter sets
     eval_many = function(xss) {
       learners = map(xss, function(x) {
         learner = self$learner$clone(deep = TRUE)

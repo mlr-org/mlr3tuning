@@ -7,12 +7,12 @@
 \description{
 Subclass for tuning w.r.t. fixed design points.
 
-We simply search over a set of points fully specified by the user.
-The points in the design are evaluated in order as given.
+We simply search over a set of points fully specified by the user. The points
+in the design are evaluated in order as given.
 
-In order to support general termination criteria and parallelization,
-we evaluate points in a batch-fashion of size \code{batch_size}.
-Larger batches mean we can parallelize more, smaller batches imply a more fine-grained checking
+In order to support general termination criteria and parallelization, we
+evaluate points in a batch-fashion of size \code{batch_size}. Larger batches mean
+we can parallelize more, smaller batches imply a more fine-grained checking
 of termination criteria.
 }
 \section{Dictionary}{
@@ -24,26 +24,39 @@ tnr("design_points")
 
 \section{Parameters}{
 
-\itemize{
-\item \code{batch_size} (\code{integer(1)})\cr
-Maximum number of configurations to try in a batch.
-\item \code{design} (\verb{[data.table]})\cr
-Design points to try in search, one per row.
+\describe{
+\item{\code{batch_size}}{\code{integer(1)}\cr
+Maximum number of configurations to try in a batch.}
+\item{\code{design}}{\link[data.table:data.table]{data.table::data.table}\cr
+Design points to try in search, one per row.}
 }
 }
 
 \examples{
-# see ?Tuner
+library(mlr3)
+library(paradox)
+library(data.table)
+search_space = ParamSet$new(list(
+  ParamDbl$new("cp", lower = 0.001, upper = 0.1)
+))
+terminator = term("evals", n_evals = 3)
+instance = TuningInstance$new(
+  task = tsk("iris"),
+  learner = lrn("classif.rpart"),
+  resampling = rsmp("holdout"),
+  measures = msr("classif.ce"),
+  search_space = search_space,
+  terminator = terminator
+)
+design = data.table(cp = c(0.1, 0.3))
+tt = tnr("design_points", design = design)
+# modifies the instance by reference
+tt$optimize(instance)
+# returns best configuration and best performance
+instance$result
+# allows access of data.table of full path of all evaluations
+instance$archive
 }
-\seealso{
-Other Tuner: 
-\code{\link{Tuner}},
-\code{\link{mlr_tuners_gensa}},
-\code{\link{mlr_tuners_grid_search}},
-\code{\link{mlr_tuners_random_search}},
-\code{\link{mlr_tuners}}
-}
-\concept{Tuner}
 \section{Super classes}{
 \code{\link[bbotk:Optimizer]{bbotk::Optimizer}} -> \code{\link[mlr3tuning:Tuner]{mlr3tuning::Tuner}} -> \code{TunerDesignPoints}
 }
