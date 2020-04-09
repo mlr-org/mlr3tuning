@@ -48,6 +48,7 @@ Imports:
     R6
 Suggests:
     GenSA,
+    cmaes,
     mlr3pipelines,
     rpart,
     testthat
@@ -62,6 +63,7 @@ Collate:
     'ObjectiveTuning.R'
     'mlr_tuners.R'
     'Tuner.R'
+    'TunerCMAES.R'
     'TunerDesignPoints.R'
     'TunerGenSA.R'
     'TunerGridSearch.R'

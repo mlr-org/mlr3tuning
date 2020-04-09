@@ -3,6 +3,7 @@
 export(AutoTuner)
 export(ObjectiveTuning)
 export(Tuner)
+export(TunerCMAES)
 export(TunerDesignPoints)
 export(TunerGenSA)
 export(TunerGridSearch)
