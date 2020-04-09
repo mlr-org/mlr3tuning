@@ -17,7 +17,8 @@ of termination criteria.
 }
 \section{Dictionary}{
 
-This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary} \link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:\preformatted{mlr_tuners$get("design_points")
+This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary}
+\link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:\preformatted{mlr_tuners$get("design_points")
 tnr("design_points")
 }
 }

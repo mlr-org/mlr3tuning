@@ -4,21 +4,25 @@
 \alias{TuningInstance}
 \title{TuningInstance Class}
 \description{
-Specifies a general tuning scenario, including performance evaluator and archive for Tuners to
-act upon. This class encodes the black box objective function,
-that a \link{Tuner} has to optimize. It allows the basic operations of querying the objective
-at design points (\verb{$eval_batch()}), storing the evaluations in an internal archive
-and querying the archive (\verb{$archive()}).
+Specifies a general tuning scenario, including objective function
+and archive for Tuners to act upon. This class stores an \code{ObjectiveTuning}
+object that encodes the black box objective function which a \link{Tuner} has to
+optimize. It allows the basic operations of querying the objective
+at design points (\verb{$eval_batch()}), storing the evaluations in the internal
+\code{Archive} and accessing the final result (\verb{$result}).
 
-Evaluations of hyperparameter configurations are performed in batches by calling \code{\link[mlr3:benchmark]{mlr3::benchmark()}} internally.
-Before a batch is evaluated, the \link{Terminator} is queried for the remaining budget.
-If the available budget is exhausted, an exception is raised, and no further evaluations can be performed from this point on.
+Evaluations of hyperparameter configurations are performed in batches by
+calling \code{\link[mlr3:benchmark]{mlr3::benchmark()}} internally. Before a batch is evaluated, the
+\link{Terminator} is queried for the remaining budget. If the available budget is
+exhausted, an exception is raised, and no further evaluations can be
+performed from this point on.
 
-A list of measures can be passed to the instance, and they will always be all evaluated.
-However, single-criteria tuners optimize only the first measure.
+A list of measures can be passed to the instance, and they will always be all
+evaluated. However, single-criteria tuners optimize only the first measure.
 
-The tuner is also supposed to store its final result, consisting of a selected hyperparameter configuration
-and associated estimated performance values, by calling the method \code{instance$assign_result}.
+The tuner is also supposed to store its final result, consisting of a
+selected hyperparameter configuration and associated estimated performance
+values, by calling the method \code{instance$assign_result}.
 }
 \examples{
 library(data.table)
@@ -90,20 +94,20 @@ tryCatch(
   terminated_error = function(e) message(as.character(e))
 )
 
-archive = inst$archive
+archive = inst$archive$data
 
 # column errors: multiple errors recorded
 print(archive)
 }
-\concept{TuningInstance}
 \section{Super class}{
 \code{\link[bbotk:OptimInstance]{bbotk::OptimInstance}} -> \code{TuningInstance}
 }
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
-\item{\code{result}}{(named \code{list()})\cr
-Result of the tuning, i.e., the optimal configuration and its estimated performance:}
+\item{\code{result}}{named \code{list()}\cr
+Result of the tuning, i.e., the optimal configuration and its estimated
+performance.}
 }
 \if{html}{\out{</div>}}
 }
@@ -129,8 +133,9 @@ Result of the tuning, i.e., the optimal configuration and its estimated performa
 \subsection{Method \code{new()}}{
 Creates a new instance of this \link[R6:R6Class]{R6} class.
 
-This defines the resampled performance of a learner on a task, a feasibility region
-for the parameters the tuner is supposed to optimize, and a termination criterion.
+This defines the resampled performance of a learner on a task, a
+feasibility region for the parameters the tuner is supposed to optimize,
+and a termination criterion.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TuningInstance$new(
   task,
@@ -146,21 +151,21 @@ for the parameters the tuner is supposed to optimize, and a termination criterio
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{task}}{(\link[mlr3:Task]{mlr3::Task}).}
+\item{\code{task}}{(\link[mlr3:Task]{mlr3::Task})}
 
-\item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner}).}
+\item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner})}
 
 \item{\code{resampling}}{(\link[mlr3:Resampling]{mlr3::Resampling})\cr
-Note that uninstantiated resamplings are instantiated during construction so that all configurations
-are evaluated on the same data splits.}
+Note that uninstantiated resamplings are instantiated during construction
+so that all configurations are evaluated on the same data splits.}
 
-\item{\code{measures}}{(list of \link[mlr3:Measure]{mlr3::Measure}).}
+\item{\code{measures}}{(list of \link[mlr3:Measure]{mlr3::Measure})}
 
-\item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet}).}
+\item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})}
 
-\item{\code{terminator}}{(\link{Terminator}).}
+\item{\code{terminator}}{(\link{Terminator})}
 
-\item{\code{store_models}}{\code{logical(1)}.}
+\item{\code{store_models}}{\code{logical(1)}}
 }
 \if{html}{\out{</div>}}
 }
@@ -169,7 +174,8 @@ are evaluated on the same data splits.}
 \if{html}{\out{<a id="method-assign_result"></a>}}
 \if{latex}{\out{\hypertarget{method-assign_result}{}}}
 \subsection{Method \code{assign_result()}}{
-The tuner writes the best found list of settings and estimated performance values here. For internal use.
+The tuner writes the best found list of settings and estimated
+performance values here. For internal use.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TuningInstance$assign_result(tune_x, perf)}\if{html}{\out{</div>}}
 }
@@ -177,16 +183,13 @@ The tuner writes the best found list of settings and estimated performance value
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{tune_x}}{(named \code{list()})\cr
+\item{\code{tune_x}}{named \code{list()}\cr
 Hyperparameter configuration.}
 
-\item{\code{perf}}{(\code{numeric()})\cr
+\item{\code{perf}}{\code{numeric()}\cr
 Performance score for \code{tune_x}.}
 }
 \if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Nothing.
 }
 }
 \if{html}{\out{<hr>}}

@@ -1,23 +1,26 @@
 #' @title TuningInstance Class
 #'
 #' @description
-#' Specifies a general tuning scenario, including performance evaluator and archive for Tuners to
-#' act upon. This class encodes the black box objective function,
-#' that a [Tuner] has to optimize. It allows the basic operations of querying the objective
-#' at design points (`$eval_batch()`), storing the evaluations in an internal archive
-#' and querying the archive (`$archive()`).
+#' Specifies a general tuning scenario, including objective function
+#' and archive for Tuners to act upon. This class stores an `ObjectiveTuning`
+#' object that encodes the black box objective function which a [Tuner] has to
+#' optimize. It allows the basic operations of querying the objective
+#' at design points (`$eval_batch()`), storing the evaluations in the internal
+#' `Archive` and accessing the final result (`$result`).
 #'
-#' Evaluations of hyperparameter configurations are performed in batches by calling [mlr3::benchmark()] internally.
-#' Before a batch is evaluated, the [Terminator] is queried for the remaining budget.
-#' If the available budget is exhausted, an exception is raised, and no further evaluations can be performed from this point on.
+#' Evaluations of hyperparameter configurations are performed in batches by
+#' calling [mlr3::benchmark()] internally. Before a batch is evaluated, the
+#' [Terminator] is queried for the remaining budget. If the available budget is
+#' exhausted, an exception is raised, and no further evaluations can be
+#' performed from this point on.
 #'
-#' A list of measures can be passed to the instance, and they will always be all evaluated.
-#' However, single-criteria tuners optimize only the first measure.
+#' A list of measures can be passed to the instance, and they will always be all
+#' evaluated. However, single-criteria tuners optimize only the first measure.
 #'
-#' The tuner is also supposed to store its final result, consisting of a selected hyperparameter configuration
-#' and associated estimated performance values, by calling the method `instance$assign_result`.
+#' The tuner is also supposed to store its final result, consisting of a
+#' selected hyperparameter configuration and associated estimated performance
+#' values, by calling the method `instance$assign_result`.
 #'
-#' @family TuningInstance
 #' @export
 #' @examples
 #' library(data.table)
@@ -89,51 +92,52 @@
 #'   terminated_error = function(e) message(as.character(e))
 #' )
 #'
-#' archive = inst$archive
+#' archive = inst$archive$data
 #'
 #' # column errors: multiple errors recorded
 #' print(archive)
 TuningInstance = R6Class("TuningInstance",
-   inherit = OptimInstance,
-   public = list(
+  inherit = OptimInstance,
+  public = list(
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #'
-    #' This defines the resampled performance of a learner on a task, a feasibility region
-    #' for the parameters the tuner is supposed to optimize, and a termination criterion.
+    #' This defines the resampled performance of a learner on a task, a
+    #' feasibility region for the parameters the tuner is supposed to optimize,
+    #' and a termination criterion.
     #'
-    #' @param task ([mlr3::Task]).
+    #' @param task ([mlr3::Task])
     #'
-    #' @param learner ([mlr3::Learner]).
+    #' @param learner ([mlr3::Learner])
     #'
     #' @param resampling ([mlr3::Resampling])\cr
-    #'   Note that uninstantiated resamplings are instantiated during construction so that all configurations
-    #'   are evaluated on the same data splits.
+    #' Note that uninstantiated resamplings are instantiated during construction
+    #' so that all configurations are evaluated on the same data splits.
     #'
-    #' @param measures (list of [mlr3::Measure]).
+    #' @param measures (list of [mlr3::Measure])
     #'
-    #' @param search_space ([paradox::ParamSet]).
+    #' @param search_space ([paradox::ParamSet])
     #'
-    #' @param terminator ([Terminator]).
-    #' @param store_models `logical(1)`.
-    initialize = function(task, learner, resampling, measures, search_space, terminator, store_models = FALSE) {
-      obj = ObjectiveTuning$new(task = task, learner = learner,
-        resampling = resampling, measures = measures,
-        store_models = store_models)
-      super$initialize(obj, search_space, terminator)
+    #' @param terminator ([Terminator])
+    #' @param store_models `logical(1)`
+    initialize = function(task, learner, resampling, measures, search_space,
+      terminator, store_models = FALSE) {
+        obj = ObjectiveTuning$new(task = task, learner = learner,
+          resampling = resampling, measures = measures,
+          store_models = store_models)
+        super$initialize(obj, search_space, terminator)
     },
 
     #' @description
-    #' The tuner writes the best found list of settings and estimated performance values here. For internal use.
+    #' The tuner writes the best found list of settings and estimated
+    #' performance values here. For internal use.
     #'
-    #' @param tune_x (named `list()`)\cr
-    #'   Hyperparameter configuration.
+    #' @param tune_x named `list()`\cr
+    #' Hyperparameter configuration.
     #'
-    #' @param perf (`numeric()`)\cr
-    #'   Performance score for `tune_x`.
-    #'
-    #' @return Nothing.
+    #' @param perf `numeric()`\cr
+    #' Performance score for `tune_x`.
     assign_result = function(tune_x, perf) {
       # result tune_x must be feasible for paramset
       self$search_space$assert(tune_x)
@@ -145,13 +149,19 @@ TuningInstance = R6Class("TuningInstance",
   ),
 
   active = list(
-    #' @field result (named `list()`)\cr
-    #'   Result of the tuning, i.e., the optimal configuration and its estimated performance:
+    #' @field result named `list()`\cr
+    #' Result of the tuning, i.e., the optimal configuration and its estimated
+    #' performance.
     result = function() {
       tune_x = private$.result$tune_x
       perf = private$.result$perf
       # if ps has no trafo, just use the normal config
-      trafo = if (is.null(self$search_space$trafo)) identity else self$search_space$trafo
+      trafo = if (is.null(self$search_space$trafo)) {
+        identity
+      }
+      else {
+        self$search_space$trafo
+      }
       params = trafo(tune_x)
       params = insert_named(self$objective$learner$param_set$values, params)
       list(tune_x = tune_x, params = params, perf = perf)

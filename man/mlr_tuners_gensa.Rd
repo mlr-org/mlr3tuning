@@ -10,7 +10,8 @@ from package \CRANpkg{GenSA}.
 }
 \section{Dictionary}{
 
-This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary} \link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:\preformatted{mlr_tuners$get("gensa")
+This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary}
+\link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:\preformatted{mlr_tuners$get("gensa")
 tnr("gensa")
 }
 }
@@ -19,7 +20,7 @@ tnr("gensa")
 
 \describe{
 \item{\code{smooth}}{\code{logical(1)}}
-\item{\code{temperature}}{[numeric(1)}
+\item{\code{temperature}}{\code{numeric(1)}}
 \item{\code{acceptance.param}}{\code{numeric(1)}}
 \item{\code{verbose}}{\code{logical(1)}}
 \item{\code{trace.mat}}{\code{logical(1)}}

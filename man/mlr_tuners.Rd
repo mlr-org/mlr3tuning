@@ -7,6 +7,9 @@
 \format{
 \link[R6:R6Class]{R6::R6Class} object inheriting from \link[mlr3misc:Dictionary]{mlr3misc::Dictionary}.
 }
+\usage{
+mlr_tuners
+}
 \description{
 A simple \link[mlr3misc:Dictionary]{mlr3misc::Dictionary} storing objects of class \link{Tuner}.
 Each tuner has an associated help page, see \code{mlr_tuners_[id]}.
@@ -28,5 +31,4 @@ tnr("random_search")
 \seealso{
 Sugar functions: \code{\link[=tnr]{tnr()}}, \code{\link[=tnrs]{tnrs()}}
 }
-\concept{Tuner}
 \keyword{datasets}
