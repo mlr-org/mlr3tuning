@@ -1,8 +1,9 @@
 #' @title ObjectiveTuning
 #'
 #' @description
-#' Describes the objective function that estimates the performance of feature
-#' sets.
+#' Stores the objective function that estimates the performance of
+#' hyperparameter configurations. This class is usually constructed internally
+#' by the [TuningInstance].
 #'
 #' @export
 ObjectiveTuning = R6Class("ObjectiveTuning",
@@ -63,9 +64,9 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     },
 
     #' @description
-    #' Evaluates multiple hyperparameter sets on the objective function
+    #' Evaluates multiple hyperparameter sets on the objective function.
     #' @param xss `list()`\cr
-    #' A list of lists that contains multiple hyperparameter sets
+    #' A list of lists that contains multiple hyperparameter sets.
     eval_many = function(xss) {
       learners = map(xss, function(x) {
         learner = self$learner$clone(deep = TRUE)

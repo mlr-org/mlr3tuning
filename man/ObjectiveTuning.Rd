@@ -4,8 +4,9 @@
 \alias{ObjectiveTuning}
 \title{ObjectiveTuning}
 \description{
-Describes the objective function that estimates the performance of feature
-sets.
+Stores the objective function that estimates the performance of
+hyperparameter configurations. This class is usually constructed internally
+by the \link{TuningInstance}.
 }
 \section{Super class}{
 \code{\link[bbotk:Objective]{bbotk::Objective}} -> \code{ObjectiveTuning}
@@ -78,7 +79,7 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
 \if{html}{\out{<a id="method-eval_many"></a>}}
 \if{latex}{\out{\hypertarget{method-eval_many}{}}}
 \subsection{Method \code{eval_many()}}{
-Evaluates multiple hyperparameter sets on the objective function
+Evaluates multiple hyperparameter sets on the objective function.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ObjectiveTuning$eval_many(xss)}\if{html}{\out{</div>}}
 }
@@ -87,7 +88,7 @@ Evaluates multiple hyperparameter sets on the objective function
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{xss}}{\code{list()}\cr
-A list of lists that contains multiple hyperparameter sets}
+A list of lists that contains multiple hyperparameter sets.}
 }
 \if{html}{\out{</div>}}
 }
