@@ -1,4 +1,4 @@
-#' @title TuningInstance Class
+#' @title TuningInstance
 #'
 #' @description
 #' Specifies a general tuning scenario, including objective function

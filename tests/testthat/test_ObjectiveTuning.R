@@ -10,6 +10,8 @@ test_that("ObjectiveTuning", {
     task = task, learner = learner,
     resampling = resampling, measures = measures)
 
+  expect_equal(obj$id, "classif.rpart_on_iris")
+
   xss = list(list("cp" = 0.01), list("cp" = 0.02))
   z = obj$eval_many(xss)
   expect_data_table(z, nrows = 2, ncols = 2)

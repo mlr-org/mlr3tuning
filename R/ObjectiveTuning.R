@@ -59,7 +59,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
         }))
 
       super$initialize(
-        id = "feature_selection", domain = learner$param_set,
+        id = sprintf("%s_on_%s", self$learner$id, self$task$id), domain = self$learner$param_set,
         codomain = codomain)
     },
 

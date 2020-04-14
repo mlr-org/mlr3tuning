@@ -2,7 +2,7 @@
 % Please edit documentation in R/TuningInstance.R
 \name{TuningInstance}
 \alias{TuningInstance}
-\title{TuningInstance Class}
+\title{TuningInstance}
 \description{
 Specifies a general tuning scenario, including objective function
 and archive for Tuners to act upon. This class stores an \code{ObjectiveTuning}
