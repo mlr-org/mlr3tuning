@@ -3,50 +3,41 @@ context("TuningInstance")
 test_that("TuningInstance", {
   inst = TEST_MAKE_INST1(values = list(maxdepth = 10), folds = 2L, measures = msr("dummy.cp.classif"), n_dim = 2)
   # test empty inst
-  expect_data_table(inst$bmr$data, nrows = 0)
-  expect_identical(inst$n_evals, 0L)
-  expect_output(print(inst), "Not tuned")
+  expect_data_table(inst$archive$data, nrows = 0)
+  expect_identical(inst$archive$n_evals, 0L)
+  #expect_output(print(inst), "Not tuned")
 
   # add a couple of eval points and test the state of inst
   z = inst$eval_batch(data.table(cp = c(0.01, 0.02), minsplit = c(3, 4)))
-  expect_data_table(inst$bmr$data, nrows = 4L)
-  expect_equal(inst$bmr$resample_result(1)$learners[[1]]$param_set$values$cp, 0.01)
-  expect_equal(inst$bmr$resample_result(1)$learners[[1]]$param_set$values$minsplit, 3)
-  expect_equal(inst$bmr$resample_result(1)$learners[[1]]$param_set$values$maxdepth, 10)
-  expect_equal(inst$bmr$resample_result(2)$learners[[1]]$param_set$values$cp, 0.02)
-  expect_equal(inst$bmr$resample_result(2)$learners[[1]]$param_set$values$minsplit, 4)
-  expect_equal(inst$bmr$resample_result(2)$learners[[1]]$param_set$values$maxdepth, 10)
-  expect_identical(inst$n_evals, 2L)
-  expect_output(print(inst), "Not tuned")
-  expect_list(z, len = 3)
-  expect_named(z, c("batch_nr", "uhashes", "perf"))
-  expect_equal(z$batch_nr, 1L)
-  expect_character(z$uhashes, len = 2L)
-  expect_data_table(z$perf, nrows = 2L, ncols = 1L)
-  expect_named(z$perf, "dummy.cp.classif")
+  expect_data_table(inst$archive$data, nrows = 2L)
+  expect_equal(inst$archive$data$resample_result[[1]]$learners[[1]]$param_set$values$cp, 0.01)
+  expect_equal(inst$archive$data$resample_result[[1]]$learners[[1]]$param_set$values$minsplit, 3)
+  expect_equal(inst$archive$data$resample_result[[1]]$learners[[1]]$param_set$values$maxdepth, 10)
+  expect_equal(inst$archive$data$resample_result[[2]]$learners[[1]]$param_set$values$cp, 0.02)
+  expect_equal(inst$archive$data$resample_result[[2]]$learners[[1]]$param_set$values$minsplit, 4)
+  expect_equal(inst$archive$data$resample_result[[2]]$learners[[1]]$param_set$values$maxdepth, 10)
+  expect_identical(inst$archive$n_evals, 2L)
+  expect_data_table(z, nrows = 2)
+  expect_named(z, c("dummy.cp.classif", "resample_result"))
 
-  inst$eval_batch(data.table(cp = c(0.001, 0.001), minsplit = c(3, 4)))
-  expect_data_table(inst$bmr$data, nrows = 8L)
-  expect_equal(inst$bmr$resample_result(3)$learners[[1]]$param_set$values$cp, 0.001)
-  expect_equal(inst$bmr$resample_result(3)$learners[[1]]$param_set$values$minsplit, 3)
-  expect_equal(inst$bmr$resample_result(3)$learners[[1]]$param_set$values$maxdepth, 10)
-  expect_equal(inst$bmr$resample_result(4)$learners[[1]]$param_set$values$cp, 0.001)
-  expect_equal(inst$bmr$resample_result(4)$learners[[1]]$param_set$values$minsplit, 4)
-  expect_equal(inst$bmr$resample_result(4)$learners[[1]]$param_set$values$maxdepth, 10)
-  expect_identical(inst$n_evals, 4L)
-  expect_list(z, len = 3)
-  expect_named(z, c("batch_nr", "uhashes", "perf"))
-  expect_equal(z$batch_nr, 1L)
-  expect_character(z$uhashes, len = 2L)
-  expect_data_table(z$perf, nrows = 2L, ncols = 1L)
-  expect_named(z$perf, "dummy.cp.classif")
+  z = inst$eval_batch(data.table(cp = c(0.001, 0.001), minsplit = c(3, 4)))
+  expect_data_table(inst$archive$data, nrows = 4L)
+  expect_equal(inst$archive$data$resample_result[[3]]$learners[[1]]$param_set$values$cp, 0.001)
+  expect_equal(inst$archive$data$resample_result[[3]]$learners[[1]]$param_set$values$minsplit, 3)
+  expect_equal(inst$archive$data$resample_result[[3]]$learners[[1]]$param_set$values$maxdepth, 10)
+  expect_equal(inst$archive$data$resample_result[[4]]$learners[[1]]$param_set$values$cp, 0.001)
+  expect_equal(inst$archive$data$resample_result[[4]]$learners[[1]]$param_set$values$minsplit, 4)
+  expect_equal(inst$archive$data$resample_result[[4]]$learners[[1]]$param_set$values$maxdepth, 10)
+  expect_identical(inst$archive$n_evals, 4L)
+  expect_data_table(z, nrows = 2L)
+  expect_named(z, c("dummy.cp.classif", "resample_result"))
 
   # test archive
-  a = inst$archive(unnest = "no")
+  a = inst$archive$data
   expect_data_table(a, nrows = 4L)
-  a = inst$archive(unnest = "params")
+  a = inst$archive$get_data(unnest = "opt_x")
   expect_data_table(a, nrows = 4L)
-  expect_true("cp" %in% colnames(a))
+  expect_true("opt_x_cp" %in% colnames(a))
   expect_true("dummy.cp.classif" %in% colnames(a))
 })
 
@@ -54,29 +45,29 @@ test_that("TuningInstance", {
 test_that("archive one row (#40)", {
   inst = TEST_MAKE_INST1()
   inst$eval_batch(data.table(cp = c(0.01)))
-  a = inst$archive()
+  a = inst$archive$data
   expect_data_table(a, nrows = 1)
   expect_number(a$classif.ce)
 })
 
 test_that("eval_batch and termination", {
   inst = TEST_MAKE_INST1(term_evals = 3L)
-  design = generate_design_random(inst$param_set, 2)$data
+  design = generate_design_random(inst$search_space, 2)$data
   inst$eval_batch(design[1:2, ])
-  expect_data_table(inst$archive(), nrows = 2L)
+  expect_data_table(inst$archive$data, nrows = 2L)
   inst$eval_batch(design[1, ])
-  expect_data_table(inst$archive(), nrows = 3L)
+  expect_data_table(inst$archive$data, nrows = 3L)
   expect_error(inst$eval_batch(design[1, ]), class = "terminated_error")
-  expect_data_table(inst$archive(), nrows = 3L)
+  expect_data_table(inst$archive$data, nrows = 3L)
 
   inst = TEST_MAKE_INST1(term_evals = 5L)
   tuner = tnr("random_search", batch_size = 3L)
-  tuner$tune(inst)
-  expect_data_table(inst$archive(), nrows = 6L)
+  tuner$optimize(inst)
+  expect_data_table(inst$archive$data, nrows = 6L)
 
   # second start should be a NOP
-  tuner$tune(inst)
-  tab = inst$archive()
+  tuner$optimize(inst)
+  tab = inst$archive$data
   expect_data_table(tab, nrows = 6L)
 })
 
@@ -84,7 +75,7 @@ test_that("the same experiment can be added twice", {
   inst = TEST_MAKE_INST1()
   d = data.table(cp = c(0.1, 0.1))
   inst$eval_batch(d)
-  tab = inst$archive()
+  tab = inst$archive$data
   expect_data_table(tab, nrows = 2)
 })
 
@@ -97,7 +88,6 @@ test_that("tuning with custom resampling", {
   resampling$instantiate(task, train_sets, test_sets)
 
   learner = lrn("classif.rpart")
-  #resampling = rsmp("holdout")
   measures = msr("classif.ce")
   tune_ps = ParamSet$new(list(
     ParamDbl$new("cp", lower = 0.001, upper = 0.1),
@@ -107,10 +97,10 @@ test_that("tuning with custom resampling", {
   tuner = tnr("random_search")
 
   inst = TuningInstance$new(task, learner, resampling, measures, tune_ps, terminator)
-  tuner$tune(inst)
-  rr = inst$bmr$resamplings
-  expect_data_table(rr, nrows = 1)
-  rr = rr$resampling[[1]]
+  tuner$optimize(inst)
+  rr = inst$archive$data$resample_result
+  expect_list(rr, len = 10)
+  rr = inst$archive$data$resample_result[[1]]$resampling
   expect_equal(rr$iters, 2)
   expect_set_equal(rr$train_set(1), train_sets[[1]])
   expect_set_equal(rr$train_set(2), train_sets[[2]])
@@ -131,6 +121,6 @@ test_that("non-scalar hyperpars (#201)", {
         paradox::ParamInt$new("classif.rpart.minsplit", 1, 1))),
     term("evals", n_evals=1))
 
-  tnr("random_search")$tune(inst)
-  expect_data_table(inst$archive("params"), nrows = 1)
+  tnr("random_search")$optimize(inst)
+  expect_data_table(inst$archive$data, nrows = 1)
 })

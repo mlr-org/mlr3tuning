@@ -5,12 +5,11 @@ test_that("API", {
   for (n_evals in c(1, 5)) {
     rs = TunerRandomSearch$new()
     inst = TEST_MAKE_INST1(measures = measures, term_evals = n_evals)
-    r = rs$tune(inst)
+    r = rs$optimize(inst)
     expect_is(r, "Tuner")
-    a = inst$archive(unnest = "params")
+    a = inst$archive$data
     expect_data_table(a, nrows = n_evals)
     expect_true("cp" %in% names(a))
-    expect_true("params" %in% names(inst$archive(unnest = "no")))
   }
 })
 
@@ -24,7 +23,7 @@ test_that("proper error if tuner cannot handle deps", {
   te = term("evals", n_evals = 2)
   inst = TuningInstance$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), ps, te)
   tt = TunerGenSA$new()
-  expect_error(tt$tune(inst), "dependencies")
+  expect_error(tt$optimize(inst), "dependencies")
 })
 
 test_that("we get a result when some subordinate params are not fulfilled", {

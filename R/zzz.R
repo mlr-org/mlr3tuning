@@ -3,9 +3,9 @@
 #' @import paradox
 #' @import mlr3
 #' @import mlr3misc
+#' @import bbotk
 #' @importFrom R6 R6Class
 "_PACKAGE"
-
 
 .onLoad = function(libname, pkgname) {
   # nocov start

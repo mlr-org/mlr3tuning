@@ -1,35 +1,35 @@
 #' @title TunerGridSearch
 #'
 #' @name mlr_tuners_grid_search
-#' @include Tuner.R
 #'
 #' @description
 #' Subclass for grid search tuning.
 #'
-#' The grid is constructed as a Cartesian product over discretized values per parameter,
-#' see [paradox::generate_design_grid()].
-#' The points of the grid are evaluated in a random order.
+#' The grid is constructed as a Cartesian product over discretized values per
+#' parameter, see [paradox::generate_design_grid()]. The points of the grid are
+#' evaluated in a random order.
 #'
-#' In order to support general termination criteria and parallelization,
-#' we evaluate points in a batch-fashion of size `batch_size`.
-#' Larger batches mean we can parallelize more, smaller batches imply a more fine-grained checking
+#' In order to support general termination criteria and parallelization, we
+#' evaluate points in a batch-fashion of size `batch_size`. Larger batches mean
+#' we can parallelize more, smaller batches imply a more fine-grained checking
 #' of termination criteria.
 #'
 #' @templateVar id grid_search
 #' @template section_dictionary_tuners
 #'
 #' @section Parameters:
-#' * `resolution` (`integer(1)`)\cr
-#'   Resolution of the grid, see [paradox::generate_design_grid()].
-#' * `param_resolutions` (named `integer()` )\cr
-#'   Resolution per parameter, named by parameter ID, see [paradox::generate_design_grid()].
-#' * `batch_size` (`integer(1)`)\cr
-#'   Maximum number of configurations to try in a batch.
+#' \describe{
+#' \item{`resolution`}{`integer(1)`\cr
+#' Resolution of the grid, see [paradox::generate_design_grid()].}
+#' \item{`param_resolutions`}{named `integer()`\cr
+#' Resolution per parameter, named by parameter ID, see
+#' [paradox::generate_design_grid()].}
+#' \item{`batch_size`}{`integer(1)`\cr
+#' Maximum number of configurations to try in a batch..}
+#' }
 #'
-#' @family Tuner
 #' @export
-#' @examples
-#' # see ?Tuner
+#' @template example
 TunerGridSearch = R6Class("TunerGridSearch",
   inherit = Tuner,
   public = list(
@@ -52,12 +52,14 @@ TunerGridSearch = R6Class("TunerGridSearch",
   ),
 
   private = list(
-    .tune = function(instance) {
+    .optimize = function(inst) {
       pv = self$param_set$values
-      g = generate_design_grid(instance$param_set, resolution = pv$resolution, param_resolutions = pv$param_resolutions)
-      ch = chunk_vector(seq_row(g$data), chunk_size = pv$batch_size, shuffle = TRUE)
+      g = generate_design_grid(inst$search_space, resolution = pv$resolution,
+        param_resolutions = pv$param_resolutions)
+      ch = chunk_vector(seq_row(g$data), chunk_size = pv$batch_size,
+        shuffle = TRUE)
       for (inds in ch) {
-        instance$eval_batch(g$data[inds])
+        inst$eval_batch(g$data[inds])
       }
     }
   )

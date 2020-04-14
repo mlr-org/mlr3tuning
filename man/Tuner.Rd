@@ -4,15 +4,17 @@
 \alias{Tuner}
 \title{Tuner}
 \description{
-Abstract \code{Tuner} class that implements the base functionality each tuner must provide.
-A tuner is an object that describes the tuning strategy, i.e. how to optimize the black-box
-function and its feasible set defined by the \link{TuningInstance} object.
+Abstract \code{Tuner} class that implements the base functionality each tuner must
+provide. A tuner is an object that describes the tuning strategy, i.e. how to
+optimize the black-box function and its feasible set defined by the
+\link{TuningInstance} object.
 
-A list of measures can be passed to the instance, and they will always be all evaluated.
-However, single-criteria tuners optimize only the first measure.
+A list of measures can be passed to the instance, and they will always be all
+evaluated. However, single-criteria tuners optimize only the first measure.
 
-A tuner must write its result to the \code{assign_result} method of the \link[=TuningInstance]{Tuninginstance} at the end of its tuning in
-order to store the best selected hyperparameter configuration and its estimated performance vector.
+A tuner must write its result to the \code{assign_result} method of the
+\link[=TuningInstance]{Tuninginstance} at the end of its tuning in order to store the best selected
+hyperparameter configuration and its estimated performance vector.
 }
 \section{Private Methods}{
 
@@ -21,8 +23,8 @@ order to store the best selected hyperparameter configuration and its estimated 
 Abstract base method. Implement to specify tuning of your subclass.
 See technical details sections.
 \item \code{assign_result(instance)} -> \code{NULL}\cr
-Abstract base method. Implement to specify how the final configuration is selected.
-See technical details sections.
+Abstract base method. Implement to specify how the final configuration is
+selected. See technical details sections.
 }
 }
 
@@ -31,32 +33,36 @@ See technical details sections.
 A subclass is implemented in the following way:
 \itemize{
 \item Inherit from Tuner
-\item Specify the private abstract method \verb{$.tune()} and use it to call into your optimizer.
+\item Specify the private abstract method \verb{$.tune()} and use it to call into
+your optimizer.
 \item You need to call \code{instance$eval_batch()} to evaluate design points.
-\item The batch evaluation is requested at the \link{TuningInstance} object \code{instance},
-so each batch is possibly executed in parallel via \code{\link[mlr3:benchmark]{mlr3::benchmark()}},
-and all evaluations are stored inside of \code{instance$bmr}.
-\item Before the batch evaluation, the \link{Terminator} is checked, and if it is positive,
-an exception of class \code{"terminated_error"} is generated.
-In the later case the current batch of evaluations is still stored in \code{instance},
-but the numeric scores are not sent back to the handling optimizer as it has lost execution control.
-\item After such an exception was caught we select the best configuration from \code{instance$bmr} and
-return it.
-\item Note that therefore more points than specified by the \link{Terminator} may be evaluated,
-as the Terminator is only checked before a batch evaluation,
-and not in-between evaluation in a batch.
-How many more depends on the setting of the batch size.
-\item Overwrite the private super-method \code{assign_result()} if you want to decide yourself how to estimate
-the final configuration in the instance and its estimated performance.
-The default behavior is: We pick the best resample-experiment, regarding the first measure,
-then assign its configuration and aggregated performance to the instance.
+\item The batch evaluation is requested at the \link{TuningInstance} object
+\code{instance}, so each batch is possibly executed in parallel via
+\code{\link[mlr3:benchmark]{mlr3::benchmark()}}, and all evaluations are stored inside of
+\code{instance$archive}.
+\item Before the batch evaluation, the \link{Terminator} is checked, and if it is
+positive, an exception of class \code{"terminated_error"} is generated. In the
+later case the current batch of evaluations is still stored in \code{instance},
+but the numeric scores are not sent back to the handling optimizer as it has
+lost execution control.
+\item After such an exception was caught we select the best configuration from
+\code{instance$archive} and return it.
+\item Note that therefore more points than specified by the \link{Terminator} may be
+evaluated, as the Terminator is only checked before a batch evaluation, and
+not in-between evaluation in a batch. How many more depends on the setting
+of the batch size.
+\item Overwrite the private super-method \code{assign_result()} if you want to decide
+yourself how to estimate the final configuration in the instance and its
+estimated performance. The default behavior is: We pick the best
+resample-experiment, regarding the first measure, then assign its
+configuration and aggregated performance to the instance.
 }
 }
 
 \examples{
 library(mlr3)
 library(paradox)
-param_set = ParamSet$new(list(
+search_space = ParamSet$new(list(
   ParamDbl$new("cp", lower = 0.001, upper = 0.1)
 ))
 terminator = term("evals", n_evals = 3)
@@ -65,53 +71,40 @@ instance = TuningInstance$new(
   learner = lrn("classif.rpart"),
   resampling = rsmp("holdout"),
   measures = msr("classif.ce"),
-  param_set = param_set,
+  search_space = search_space,
   terminator = terminator
 )
-tt = tnr("random_search") # swap this line to use a different Tuner
-tt$tune(instance) # modifies the instance by reference
-instance$result # returns best configuration and best performance
-instance$archive() # allows access of data.table / benchmark result of full path of all evaluations
+# swap this line to use a different Tuner
+tt = tnr("random_search")
+# modifies the instance by reference
+tt$optimize(instance)
+# returns best configuration and best performance
+instance$result
+# allows access of data.table / benchmark result of full path of all evaluations
+instance$archive
 }
-\seealso{
-Other Tuner: 
-\code{\link{mlr_tuners_design_points}},
-\code{\link{mlr_tuners_gensa}},
-\code{\link{mlr_tuners_grid_search}},
-\code{\link{mlr_tuners_random_search}},
-\code{\link{mlr_tuners}}
-}
-\concept{Tuner}
-\section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{param_set}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
-Set of control parameters for tuner.}
-
-\item{\code{param_classes}}{(\code{character()})\cr
-Supported parameter classes for learner hyperparameters that the tuner can optimize, subclasses of \link[paradox:Param]{paradox::Param}.}
-
-\item{\code{properties}}{(\code{character()})\cr
-Set of properties of the tuner. Must be a subset of \code{\link[mlr3:mlr_reflections]{mlr_reflections$tuner_properties}}.}
-
-\item{\code{packages}}{(\code{character()})\cr
-Set of required packages.
-Note that these packages will be loaded via \code{\link[=requireNamespace]{requireNamespace()}}, and are not attached.}
-}
-\if{html}{\out{</div>}}
+\section{Super class}{
+\code{\link[bbotk:Optimizer]{bbotk::Optimizer}} -> \code{Tuner}
 }
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{Tuner$new()}}
-\item \href{#method-format}{\code{Tuner$format()}}
-\item \href{#method-print}{\code{Tuner$print()}}
-\item \href{#method-tune}{\code{Tuner$tune()}}
+\item \href{#method-optimize}{\code{Tuner$optimize()}}
 \item \href{#method-clone}{\code{Tuner$clone()}}
 }
 }
+\if{html}{
+\out{<details open ><summary>Inherited methods</summary>}
+\itemize{
+\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Optimizer" data-id="format">}\href{../../bbotk/html/Optimizer.html#method-format}{\code{bbotk::Optimizer$format()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Optimizer" data-id="print">}\href{../../bbotk/html/Optimizer.html#method-print}{\code{bbotk::Optimizer$print()}}\out{</span>}
+}
+\out{</details>}
+}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
@@ -121,59 +114,37 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{param_set}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
+\item{\code{param_set}}{\link[paradox:ParamSet]{paradox::ParamSet}\cr
 Set of control parameters for tuner.}
 
-\item{\code{param_classes}}{(\code{character()})\cr
-Supported parameter classes for learner hyperparameters that the tuner can optimize, subclasses of \link[paradox:Param]{paradox::Param}.}
+\item{\code{param_classes}}{\code{character()}\cr
+Supported parameter classes for learner hyperparameters that the tuner
+can optimize, subclasses of \link[paradox:Param]{paradox::Param}.}
 
-\item{\code{properties}}{(\code{character()})\cr
-Set of properties of the tuner. Must be a subset of \code{\link[mlr3:mlr_reflections]{mlr_reflections$tuner_properties}}.}
+\item{\code{properties}}{\code{character()}\cr
+Set of properties of the tuner. Must be a subset of
+\code{\link[mlr3:mlr_reflections]{mlr_reflections$tuner_properties}}.}
 
-\item{\code{packages}}{(\code{character()})\cr
-Set of required packages.
-Note that these packages will be loaded via \code{\link[=requireNamespace]{requireNamespace()}}, and are not attached.}
+\item{\code{packages}}{\code{character()}\cr
+Set of required packages. Note that these packages will be loaded via
+\code{\link[=requireNamespace]{requireNamespace()}}, and are not attached.}
 }
 \if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-format"></a>}}
-\subsection{Method \code{format()}}{
-Helper for print outputs.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Tuner$format()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-print"></a>}}
-\subsection{Method \code{print()}}{
-Printer.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Tuner$print()}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{(ignored).}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-tune"></a>}}
-\subsection{Method \code{tune()}}{
+\if{html}{\out{<a id="method-optimize"></a>}}
+\if{latex}{\out{\hypertarget{method-optimize}{}}}
+\subsection{Method \code{optimize()}}{
 Performs the tuning on a \link{TuningInstance} until termination.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Tuner$tune(instance)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Tuner$optimize(inst)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{instance}}{(TuningInstance].}
+\item{\code{inst}}{\link{TuningInstance}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -183,6 +154,7 @@ Modifed \code{self}.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

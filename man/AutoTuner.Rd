@@ -4,10 +4,12 @@
 \alias{AutoTuner}
 \title{AutoTuner}
 \description{
-The \code{AutoTuner} is a \link[mlr3:Learner]{mlr3::Learner} which auto-tunes by first tuning the hyperparameters of its encapsulated learner
-on the training data, then setting the optimal configuration in the learner, then finally
-fitting the model on the complete training data.
-This class allows to perform nested resampling by passing an \link{AutoTuner} object to \code{\link[mlr3:resample]{mlr3::resample()}} or \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
+The \code{AutoTuner} is a \link[mlr3:Learner]{mlr3::Learner} which auto-tunes by first tuning the
+hyperparameters of its encapsulated learner on the training data, then
+setting the optimal configuration in the learner, then finally fitting the
+model on the complete training data. This class allows to perform nested
+resampling by passing an \link{AutoTuner} object to \code{\link[mlr3:resample]{mlr3::resample()}} or
+\code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
 }
 \examples{
 library(mlr3)
@@ -16,19 +18,20 @@ task = tsk("iris")
 learner = lrn("classif.rpart")
 resampling = rsmp("holdout")
 measures = msr("classif.ce")
-param_set = ParamSet$new(
+search_space = ParamSet$new(
   params = list(ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 
 terminator = term("evals", n_evals = 5)
 tuner = tnr("grid_search")
-at = AutoTuner$new(learner, resampling, measures, param_set, terminator, tuner)
+at = AutoTuner$new(
+  learner, resampling, measures, search_space, terminator,
+  tuner)
 at$store_tuning_instance = TRUE
 
 at$train(task)
 at$model
 at$learner
 }
-\concept{Learner}
 \section{Super class}{
 \code{\link[mlr3:Learner]{mlr3::Learner}} -> \code{AutoTuner}
 }
@@ -41,13 +44,16 @@ All arguments from construction to create the \link{TuningInstance}.}
 \item{\code{tuner}}{(\link{Tuner}).}
 
 \item{\code{store_tuning_instance}}{(\code{logical(1)})\cr
-If \code{TRUE} (default), stores the internally created \link{TuningInstance} with all intermediate results in slot \verb{$tuning_instance}.}
+If \code{TRUE} (default), stores the internally created \link{TuningInstance}
+with all intermediate results in slot \verb{$tuning_instance}.}
 }
 \if{html}{\out{</div>}}
 }
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
+\item{\code{archive}}{Returns TuningInstance archive}
+
 \item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner})\cr
 Trained learner}
 
@@ -65,7 +71,6 @@ Short-cut to \code{result} from \link{TuningInstance}.}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{AutoTuner$new()}}
-\item \href{#method-archive}{\code{AutoTuner$archive()}}
 \item \href{#method-clone}{\code{AutoTuner$clone()}}
 }
 }
@@ -84,18 +89,11 @@ Short-cut to \code{result} from \link{TuningInstance}.}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AutoTuner$new(
-  learner,
-  resampling,
-  measures,
-  tune_ps,
-  terminator,
-  tuner,
-  bm_args = list()
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AutoTuner$new(learner, resampling, measures, search_space, terminator, tuner)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -105,16 +103,15 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
 Learner to tune, see \link{TuningInstance}.}
 
 \item{\code{resampling}}{(\link[mlr3:Resampling]{mlr3::Resampling})\cr
-Resampling strategy during tuning, see \link{TuningInstance}.
-This \link[mlr3:Resampling]{mlr3::Resampling} is meant to be the \strong{inner} resampling, operating on the training set
-of an arbitrary outer resampling.
-For this reason it is not feasible to pass an instantiated \link[mlr3:Resampling]{mlr3::Resampling} here.}
+Resampling strategy during tuning, see \link{TuningInstance}. This
+\link[mlr3:Resampling]{mlr3::Resampling} is meant to be the \strong{inner} resampling, operating
+on the training set of an arbitrary outer resampling. For this reason
+it is not feasible to pass an instantiated \link[mlr3:Resampling]{mlr3::Resampling} here.}
 
 \item{\code{measures}}{(list of \link[mlr3:Measure]{mlr3::Measure})\cr
-Performance measures.
-The first one is optimized, see \link{TuningInstance}.}
+Performance measures. The first one is optimized, see \link{TuningInstance}.}
 
-\item{\code{tune_ps}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
+\item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
 Hyperparameter search space, see \link{TuningInstance}.}
 
 \item{\code{terminator}}{(\link{Terminator})\cr
@@ -130,24 +127,8 @@ Further arguments for \code{\link[mlr3:benchmark]{mlr3::benchmark()}}, see \link
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-archive"></a>}}
-\subsection{Method \code{archive()}}{
-Access the tuning archive (a.k.a. the optimization path).
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AutoTuner$archive(unnest = "no")}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{unnest}}{(\code{character(1)}).
-Passed to \verb{$archive} of \link{TuningInstance}, defaulting to \code{"no"}.}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

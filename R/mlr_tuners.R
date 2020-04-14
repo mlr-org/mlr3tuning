@@ -1,6 +1,5 @@
 #' @title Dictionary of Tuners
 #'
-#' @usage NULL
 #' @format [R6::R6Class] object inheriting from [mlr3misc::Dictionary].
 #'
 #' @description
@@ -9,12 +8,12 @@
 #'
 #' This dictionary can get populated with additional tuners by add-on packages.
 #'
-#' For a more convenient way to retrieve and construct tuner, see [tnr()]/[tnrs()].
+#' For a more convenient way to retrieve and construct tuner, see
+#' [tnr()]/[tnrs()].
 #'
 #' @section Methods:
 #' See [mlr3misc::Dictionary].
 #'
-#' @family Tuner
 #' @seealso
 #' Sugar functions: [tnr()], [tnrs()]
 #' @export

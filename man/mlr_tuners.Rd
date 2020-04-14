@@ -4,14 +4,20 @@
 \name{mlr_tuners}
 \alias{mlr_tuners}
 \title{Dictionary of Tuners}
-\format{\link[R6:R6Class]{R6::R6Class} object inheriting from \link[mlr3misc:Dictionary]{mlr3misc::Dictionary}.}
+\format{
+\link[R6:R6Class]{R6::R6Class} object inheriting from \link[mlr3misc:Dictionary]{mlr3misc::Dictionary}.
+}
+\usage{
+mlr_tuners
+}
 \description{
 A simple \link[mlr3misc:Dictionary]{mlr3misc::Dictionary} storing objects of class \link{Tuner}.
 Each tuner has an associated help page, see \code{mlr_tuners_[id]}.
 
 This dictionary can get populated with additional tuners by add-on packages.
 
-For a more convenient way to retrieve and construct tuner, see \code{\link[=tnr]{tnr()}}/\code{\link[=tnrs]{tnrs()}}.
+For a more convenient way to retrieve and construct tuner, see
+\code{\link[=tnr]{tnr()}}/\code{\link[=tnrs]{tnrs()}}.
 }
 \section{Methods}{
 
@@ -24,13 +30,5 @@ tnr("random_search")
 }
 \seealso{
 Sugar functions: \code{\link[=tnr]{tnr()}}, \code{\link[=tnrs]{tnrs()}}
-
-Other Tuner: 
-\code{\link{Tuner}},
-\code{\link{mlr_tuners_design_points}},
-\code{\link{mlr_tuners_gensa}},
-\code{\link{mlr_tuners_grid_search}},
-\code{\link{mlr_tuners_random_search}}
 }
-\concept{Tuner}
 \keyword{datasets}

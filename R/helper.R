@@ -1,12 +1,13 @@
 terminated_error = function(instance) {
   msg = sprintf(
     fmt = "TuningInstance (tsk:%s, lrn:%s, term:%s) terminated",
-    instance$task$id,
-    instance$learner$id,
+    instance$objective$task$id,
+    instance$objective$learner$id,
     format(instance$terminator)
   )
 
-  set_class(list(message = msg, call = NULL), c("terminated_error", "error", "condition"))
+  set_class(list(message = msg, call = NULL), c(
+    "terminated_error", "error", "condition"))
 }
 
 # get an object from a list of id-able-objects, like many from mlr3

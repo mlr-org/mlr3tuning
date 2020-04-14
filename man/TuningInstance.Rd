@@ -4,21 +4,25 @@
 \alias{TuningInstance}
 \title{TuningInstance Class}
 \description{
-Specifies a general tuning scenario, including performance evaluator and archive for Tuners to
-act upon. This class encodes the black box objective function,
-that a \link{Tuner} has to optimize. It allows the basic operations of querying the objective
-at design points (\verb{$eval_batch()}), storing the evaluations in an internal archive
-and querying the archive (\verb{$archive()}).
+Specifies a general tuning scenario, including objective function
+and archive for Tuners to act upon. This class stores an \code{ObjectiveTuning}
+object that encodes the black box objective function which a \link{Tuner} has to
+optimize. It allows the basic operations of querying the objective
+at design points (\verb{$eval_batch()}), storing the evaluations in the internal
+\code{Archive} and accessing the final result (\verb{$result}).
 
-Evaluations of hyperparameter configurations are performed in batches by calling \code{\link[mlr3:benchmark]{mlr3::benchmark()}} internally.
-Before a batch is evaluated, the \link{Terminator} is queried for the remaining budget.
-If the available budget is exhausted, an exception is raised, and no further evaluations can be performed from this point on.
+Evaluations of hyperparameter configurations are performed in batches by
+calling \code{\link[mlr3:benchmark]{mlr3::benchmark()}} internally. Before a batch is evaluated, the
+\link{Terminator} is queried for the remaining budget. If the available budget is
+exhausted, an exception is raised, and no further evaluations can be
+performed from this point on.
 
-A list of measures can be passed to the instance, and they will always be all evaluated.
-However, single-criteria tuners optimize only the first measure.
+A list of measures can be passed to the instance, and they will always be all
+evaluated. However, single-criteria tuners optimize only the first measure.
 
-The tuner is also supposed to store its final result, consisting of a selected hyperparameter configuration
-and associated estimated performance values, by calling the method \code{instance$assign_result}.
+The tuner is also supposed to store its final result, consisting of a
+selected hyperparameter configuration and associated estimated performance
+values, by calling the method \code{instance$assign_result}.
 }
 \examples{
 library(data.table)
@@ -41,14 +45,14 @@ inst = TuningInstance$new(
   learner = learner,
   resampling = resampling,
   measures = measures,
-  param_set = param_set,
+  search_space = param_set,
   terminator = terminator
 )
 
 # first 4 points as cross product
 design = CJ(cp = c(0.05, 0.01), minsplit = c(5, 3))
 inst$eval_batch(design)
-inst$archive()
+inst$archive
 
 # try more points, catch the raised terminated message
 tryCatch(
@@ -63,7 +67,7 @@ tryCatch(
   terminated_error = function(e) message(as.character(e))
 )
 
-inst$archive()
+inst$archive
 
 ### Error handling
 # get a learner which breaks with 50\% probability
@@ -81,7 +85,7 @@ inst = TuningInstance$new(
   learner = learner,
   resampling = rsmp("cv", folds = 3),
   measures = msr("classif.ce"),
-  param_set = param_set,
+  search_space = param_set,
   terminator = term("evals", n_evals = 5)
 )
 
@@ -90,48 +94,20 @@ tryCatch(
   terminated_error = function(e) message(as.character(e))
 )
 
-archive = inst$archive()
+archive = inst$archive$data
 
 # column errors: multiple errors recorded
 print(archive)
 }
-\concept{TuningInstance}
-\section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{task}}{(\link[mlr3:Task]{mlr3::Task}).}
-
-\item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner}).}
-
-\item{\code{resampling}}{(\link[mlr3:Resampling]{mlr3::Resampling})\cr}
-
-\item{\code{measures}}{(list of \link[mlr3:Measure]{mlr3::Measure}).}
-
-\item{\code{param_set}}{(\link[paradox:ParamSet]{paradox::ParamSet}).}
-
-\item{\code{terminator}}{(\link{Terminator}).}
-
-\item{\code{bm_args}}{(named \code{list()})\cr
-Further arguments for \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.}
-
-\item{\code{bmr}}{(\link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult})\cr
-A benchmark result, container object for all performed \link[mlr3:ResampleResult]{mlr3::ResampleResult}s
-when evaluating hyperparameter configurations.}
-
-\item{\code{start_time}}{(\code{POSIXct(1)})\cr
-Time the tuning was started.
-This is set in the beginning of \verb{$tune()} of \link{Tuner}.}
-}
-\if{html}{\out{</div>}}
+\section{Super class}{
+\code{\link[bbotk:OptimInstance]{bbotk::OptimInstance}} -> \code{TuningInstance}
 }
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
-\item{\code{n_evals}}{(\code{integer(1)})\cr
-Number of configuration evaluations stored in the container.}
-
-\item{\code{result}}{(named \code{list()})\cr
-Result of the tuning, i.e., the optimal configuration and its estimated performance:}
+\item{\code{result}}{named \code{list()}\cr
+Result of the tuning, i.e., the optimal configuration and its estimated
+performance.}
 }
 \if{html}{\out{</div>}}
 }
@@ -139,197 +115,67 @@ Result of the tuning, i.e., the optimal configuration and its estimated performa
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{TuningInstance$new()}}
-\item \href{#method-format}{\code{TuningInstance$format()}}
-\item \href{#method-print}{\code{TuningInstance$print()}}
-\item \href{#method-eval_batch}{\code{TuningInstance$eval_batch()}}
-\item \href{#method-tuner_objective}{\code{TuningInstance$tuner_objective()}}
-\item \href{#method-archive}{\code{TuningInstance$archive()}}
-\item \href{#method-best}{\code{TuningInstance$best()}}
 \item \href{#method-assign_result}{\code{TuningInstance$assign_result()}}
 \item \href{#method-clone}{\code{TuningInstance$clone()}}
 }
 }
+\if{html}{
+\out{<details open ><summary>Inherited methods</summary>}
+\itemize{
+\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="eval_batch">}\href{../../bbotk/html/OptimInstance.html#method-eval_batch}{\code{bbotk::OptimInstance$eval_batch()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="format">}\href{../../bbotk/html/OptimInstance.html#method-format}{\code{bbotk::OptimInstance$format()}}\out{</span>}
+}
+\out{</details>}
+}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 Creates a new instance of this \link[R6:R6Class]{R6} class.
 
-This defines the resampled performance of a learner on a task, a feasibility region
-for the parameters the tuner is supposed to optimize, and a termination criterion.
+This defines the resampled performance of a learner on a task, a
+feasibility region for the parameters the tuner is supposed to optimize,
+and a termination criterion.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TuningInstance$new(
   task,
   learner,
   resampling,
   measures,
-  param_set,
+  search_space,
   terminator,
-  bm_args = list()
+  store_models = FALSE
 )}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{task}}{(\link[mlr3:Task]{mlr3::Task}).}
+\item{\code{task}}{(\link[mlr3:Task]{mlr3::Task})}
 
-\item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner}).}
+\item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner})}
 
 \item{\code{resampling}}{(\link[mlr3:Resampling]{mlr3::Resampling})\cr
-Note that uninstantiated resamplings are instantiated during construction so that all configurations
-are evaluated on the same data splits.}
+Note that uninstantiated resamplings are instantiated during construction
+so that all configurations are evaluated on the same data splits.}
 
-\item{\code{measures}}{(list of \link[mlr3:Measure]{mlr3::Measure}).}
+\item{\code{measures}}{(list of \link[mlr3:Measure]{mlr3::Measure})}
 
-\item{\code{param_set}}{(\link[paradox:ParamSet]{paradox::ParamSet}).}
+\item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})}
 
-\item{\code{terminator}}{(\link{Terminator}).}
+\item{\code{terminator}}{(\link{Terminator})}
 
-\item{\code{bm_args}}{(named \code{list()})\cr
-Further arguments for \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.}
+\item{\code{store_models}}{\code{logical(1)}}
 }
 \if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-format"></a>}}
-\subsection{Method \code{format()}}{
-Helper for print outputs.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TuningInstance$format()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-print"></a>}}
-\subsection{Method \code{print()}}{
-Printer.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TuningInstance$print()}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{(ignored).}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-eval_batch"></a>}}
-\subsection{Method \code{eval_batch()}}{
-Evaluates all hyperparameter configurations in \code{dt} through resampling and updates the internal \link{BenchmarkResult} \verb{$bmr} by reference.
-
-Before each batch-evaluation, the \link{Terminator} is checked, and if it is positive, an exception of class \code{terminated_error} is raised.
-This function is intended to be internally called by a \link{Tuner}.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TuningInstance$eval_batch(dt)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{dt}}{(\code{\link[data.table:data.table]{data.table::data.table()}})\cr
-Table of hyperparameter configurations where each configuration is a row, and columns are scalar parameters.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Named \code{list()} with the following elements:
-\itemize{
-\item \code{"batch_nr"} (\code{integer(1)}):\cr
-Number of the new batch.
-This number is calculated in an auto-increment fashion and also stored inside the \link{BenchmarkResult} as column \code{batch_nr}.
-\item \code{"uhashes"} (\code{character()}):\cr
-Unique hashes of the added \link{ResampleResult}s.
-\item \code{"perf"} (\code{\link[data.table:data.table]{data.table::data.table()}}):\cr
-Table of evaluated performances for each row of \code{dt}.
-Has the same number of rows as \code{dt}, and the same number of columns as length of \code{measures}.
-Columns are named with measure-IDs.
-A cell entry is the (aggregated) performance of that configuration for that measure.
-}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-tuner_objective"></a>}}
-\subsection{Method \code{tuner_objective()}}{
-Evaluates a (untransformed) hyperparameter configuration of only numeric values, and returns a scalar objective value,
-where the return value is negated if the measure is maximized.
-Internally, \verb{$eval_batch()} is called with a single row.
-This function serves as a objective function for tuners of numeric spaces - which should always be minimized.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TuningInstance$tuner_objective(x)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{x}}{(\code{numeric()})\cr
-Untransformed hyperparameter configuration.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-Objective value as \code{numeric(1)}.
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-archive"></a>}}
-\subsection{Method \code{archive()}}{
-Returns a table of contained resample results, similar to the one returned by \code{\link[mlr3:benchmark]{mlr3::benchmark()}}'s \verb{$aggregate()} method.
-
-Some important columns of this table are:
-\itemize{
-\item All evaluated measures are included as numeric columns, named with their measure ID.
-\item \code{tune_x}: A list column that contains the parameter settings the tuner evaluated, without potential \code{trafo} applied.
-\item \code{params}: A list column that contains the parameter settings that were actually used in the learner.
-Similar to column \code{tune_x}, but with potential \code{trafo} applied.
-Also, if the learner had some extra parameters statically set before tuning, these are included here.
-\item \code{tune_x}: A named list of settings of feasible and untransformed parameters from \code{param_set}.
-}
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TuningInstance$archive(unnest = "no")}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{unnest}}{(\code{character(1)})\cr
-Can have the values \code{"no"}, \code{"tune_x"} or \code{"params"}.
-If it is not set to \code{"no"}, settings of the respective list-column are stored in
-separate columns instead of the list-column, and dependent, inactive parameters are encoded with \code{NA}.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-\code{\link[data.table:data.table]{data.table::data.table()}}.
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-best"></a>}}
-\subsection{Method \code{best()}}{
-Queries the \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} for the best \link[mlr3:ResampleResult]{mlr3::ResampleResult} according to \link[mlr3:Measure]{mlr3::Measure} \code{measure} (default is the first measure in \verb{$measures}).
-In case of ties, one of the tied values is selected randomly.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TuningInstance$best(measure = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{measure}}{\link[mlr3:Measure]{mlr3::Measure}.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-\link[mlr3:ResampleResult]{mlr3::ResampleResult}.
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-assign_result"></a>}}
+\if{latex}{\out{\hypertarget{method-assign_result}{}}}
 \subsection{Method \code{assign_result()}}{
-The tuner writes the best found list of settings and estimated performance values here. For internal use.
+The tuner writes the best found list of settings and estimated
+performance values here. For internal use.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TuningInstance$assign_result(tune_x, perf)}\if{html}{\out{</div>}}
 }
@@ -337,20 +183,18 @@ The tuner writes the best found list of settings and estimated performance value
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{tune_x}}{(named \code{list()})\cr
+\item{\code{tune_x}}{named \code{list()}\cr
 Hyperparameter configuration.}
 
-\item{\code{perf}}{(\code{numeric()})\cr
+\item{\code{perf}}{\code{numeric()}\cr
 Performance score for \code{tune_x}.}
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Returns}{
-Nothing.
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{
