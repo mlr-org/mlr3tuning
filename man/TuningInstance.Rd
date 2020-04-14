@@ -151,6 +151,7 @@ Result of the tuning, i.e., the optimal configuration and its estimated performa
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 Creates a new instance of this \link[R6:R6Class]{R6} class.
 
@@ -193,6 +194,7 @@ Further arguments for \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-format"></a>}}
+\if{latex}{\out{\hypertarget{method-format}{}}}
 \subsection{Method \code{format()}}{
 Helper for print outputs.
 \subsection{Usage}{
@@ -202,6 +204,7 @@ Helper for print outputs.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-print"></a>}}
+\if{latex}{\out{\hypertarget{method-print}{}}}
 \subsection{Method \code{print()}}{
 Printer.
 \subsection{Usage}{
@@ -218,6 +221,7 @@ Printer.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-eval_batch"></a>}}
+\if{latex}{\out{\hypertarget{method-eval_batch}{}}}
 \subsection{Method \code{eval_batch()}}{
 Evaluates all hyperparameter configurations in \code{dt} through resampling and updates the internal \link{BenchmarkResult} \verb{$bmr} by reference.
 
@@ -253,6 +257,7 @@ A cell entry is the (aggregated) performance of that configuration for that meas
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-tuner_objective"></a>}}
+\if{latex}{\out{\hypertarget{method-tuner_objective}{}}}
 \subsection{Method \code{tuner_objective()}}{
 Evaluates a (untransformed) hyperparameter configuration of only numeric values, and returns a scalar objective value,
 where the return value is negated if the measure is maximized.
@@ -276,6 +281,7 @@ Objective value as \code{numeric(1)}.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-archive"></a>}}
+\if{latex}{\out{\hypertarget{method-archive}{}}}
 \subsection{Method \code{archive()}}{
 Returns a table of contained resample results, similar to the one returned by \code{\link[mlr3:benchmark]{mlr3::benchmark()}}'s \verb{$aggregate()} method.
 
@@ -308,6 +314,7 @@ separate columns instead of the list-column, and dependent, inactive parameters 
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-best"></a>}}
+\if{latex}{\out{\hypertarget{method-best}{}}}
 \subsection{Method \code{best()}}{
 Queries the \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} for the best \link[mlr3:ResampleResult]{mlr3::ResampleResult} according to \link[mlr3:Measure]{mlr3::Measure} \code{measure} (default is the first measure in \verb{$measures}).
 In case of ties, one of the tied values is selected randomly.
@@ -328,6 +335,7 @@ In case of ties, one of the tied values is selected randomly.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-assign_result"></a>}}
+\if{latex}{\out{\hypertarget{method-assign_result}{}}}
 \subsection{Method \code{assign_result()}}{
 The tuner writes the best found list of settings and estimated performance values here. For internal use.
 \subsection{Usage}{
@@ -351,6 +359,7 @@ Nothing.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

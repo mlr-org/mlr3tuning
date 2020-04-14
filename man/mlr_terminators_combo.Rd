@@ -69,6 +69,7 @@ List of objects of class \link{Terminator}.}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
@@ -86,6 +87,7 @@ List of objects of class \link{Terminator}.}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-is_terminated"></a>}}
+\if{latex}{\out{\hypertarget{method-is_terminated}{}}}
 \subsection{Method \code{is_terminated()}}{
 Is \code{TRUE} iff the termination criterion is positive, and \code{FALSE} otherwise.
 \subsection{Usage}{
@@ -105,6 +107,7 @@ Is \code{TRUE} iff the termination criterion is positive, and \code{FALSE} other
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

@@ -4,7 +4,9 @@
 \name{mlr_terminators}
 \alias{mlr_terminators}
 \title{Dictionary of Terminators}
-\format{\link[R6:R6Class]{R6::R6Class} object inheriting from \link[mlr3misc:Dictionary]{mlr3misc::Dictionary}.}
+\format{
+\link[R6:R6Class]{R6::R6Class} object inheriting from \link[mlr3misc:Dictionary]{mlr3misc::Dictionary}.
+}
 \description{
 A simple \link[mlr3misc:Dictionary]{mlr3misc::Dictionary} storing objects of class \link{Terminator}.
 Each terminator has an associated help page, see \code{mlr_terminators_[id]}.
