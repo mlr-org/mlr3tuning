@@ -27,7 +27,6 @@ TunerECRSimpleEA = R6Class("TunerECRSimpleEA", inherit = Tuner,
     .optimize = function(inst) {
       ss = inst$search_space
       v = self$param_set$values
-      require_namespaces(c("ecr", "smoof"))
       ffps = ParamHelpers::makeNumericParamSet(len = ss$length,
         lower = ss$lower, upper = ss$upper)
       ff = smoof::makeSingleObjectiveFunction(objective_wrapper_ecr, par.set = ffps,
