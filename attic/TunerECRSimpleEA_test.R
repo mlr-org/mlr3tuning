@@ -1,16 +1,17 @@
-setwd("~/cos/mlr3tuning")
 library(mlr3)
 library(paradox)
 library(mlr3learners)
+library(mlr3tuning)
+source("~/cos/mlr3tuning/attic/TunerECRSimpleEA.R")
 
-learner = lrn("classif.svm")
+learner = lrn("classif.svm", type = "C-classification", kernel = "radial")
 
 ps = ParamSet$new(params = list(
   ParamDbl$new("cost", lower = -10, upper = 10),
   ParamDbl$new("gamma", lower = -10, upper = 10)
 ))
 
-ps$trafo = function(x, ps) {
+ps$trafo = function(x, param_set) {
     x$cost= 2^x$cost
     x$gamma = 2^x$gamma
     return(x)
