@@ -114,9 +114,10 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{param_set}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
+\item{\code{param_set}}{\link[paradox:ParamSet]{paradox::ParamSet}\cr
 Set of control parameters for tuner.}
 
+<<<<<<< HEAD
 \item{\code{param_classes}}{(\code{character()})\cr
 Supported parameter classes for learner hyperparameters that the tuner
 can optimize, subclasses of \link[paradox:Param]{paradox::Param}.}
@@ -126,6 +127,17 @@ Set of properties of the tuner. Must be a subset of
 \code{\link[mlr3:mlr_reflections]{mlr_reflections$tuner_properties}}.}
 
 \item{\code{packages}}{(\code{character()})\cr
+=======
+\item{\code{param_classes}}{\code{character()}\cr
+Supported parameter classes for learner hyperparameters that the tuner
+can optimize, subclasses of \link[paradox:Param]{paradox::Param}.}
+
+\item{\code{properties}}{\code{character()}\cr
+Set of properties of the tuner. Must be a subset of
+\code{\link[mlr3:mlr_reflections]{mlr_reflections$tuner_properties}}.}
+
+\item{\code{packages}}{\code{character()}\cr
+>>>>>>> master
 Set of required packages. Note that these packages will be loaded via
 \code{\link[=requireNamespace]{requireNamespace()}}, and are not attached.}
 }
