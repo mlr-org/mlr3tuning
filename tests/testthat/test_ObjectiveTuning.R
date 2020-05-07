@@ -30,7 +30,7 @@ test_that("ObjectiveTuning", {
     4)
 })
 
-test_that("ObjectiveFSelect - Multiple measures", {
+test_that("ObjectiveTuning - Multiple measures", {
   task = tsk("iris")
   learner = lrn("classif.rpart")
   resampling = rsmp("holdout")
@@ -45,7 +45,7 @@ test_that("ObjectiveFSelect - Multiple measures", {
   expect_data_table(z, nrows = 2, ncols = 3)
 })
 
-test_that("ObjectiveFSelect - Store models", {
+test_that("ObjectiveTuning - Store models", {
   task = tsk("iris")
   learner = lrn("classif.rpart")
   resampling = rsmp("holdout")
