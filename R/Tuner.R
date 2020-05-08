@@ -130,13 +130,13 @@ Tuner = R6Class("Tuner",
       }, terminated_error = function(cond) {
       })
 
-      private$assign_result(inst)
+      private$.assign_result(inst)
       invisible(self)
     }
   ),
 
   private = list(
-    assign_result = function(inst) {
+    .assign_result = function(inst) {
       tuner_assign_result_default(inst)
     }
   )
