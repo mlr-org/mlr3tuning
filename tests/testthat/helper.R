@@ -1,5 +1,6 @@
 lapply(list.files(system.file("testthat", package = "mlr3"), pattern = "^helper.*\\.[rR]$", full.names = TRUE), source)
 
+#FIXME: This function should be exported so it can be used for tests in other packages
 expect_tuner = function(tuner) {
   expect_r6(tuner, "Tuner",
     public = c("optimize", "param_set"),
@@ -16,6 +17,7 @@ expect_terminator = function(term) {
   expect_is(term$param_set, "ParamSet")
 }
 
+#FIXME: This function should be exported so it can be used for tests in other packages
 # test an implemented subclass tuner by running a couple of standard tests
 # on a simple example
 # term_evals: how we configure the Terminator

@@ -108,34 +108,14 @@ Tuner = R6Class("Tuner",
     #'
     #' @return Modifed `self`.
     optimize = function(inst) {
-
       assert_r6(inst, "TuningInstance")
-      require_namespaces(self$packages)
-      if ("dependencies" %nin% self$properties && inst$search_space$has_deps) {
-        stopf(
-          "Tuner '%s' does not support param sets with dependencies!",
-          self$format())
-      }
-      not_supported_pclasses = setdiff(
-        unique(inst$search_space$class),
-        self$param_classes)
-      if (length(not_supported_pclasses) > 0L) {
-        stopf(
-          "Tuner '%s' does not support param types: '%s'", class(self)[1L],
-          paste0(not_supported_pclasses, collapse = ","))
-      }
-
-      tryCatch({
-        private$.optimize(inst)
-      }, terminated_error = function(cond) {
-      })
-
-      private$.assign_result(inst)
-      invisible(self)
+      super$optimize()
     }
   ),
 
   private = list(
+    .optimize = function(inst) stop("abstract"),
+
     .assign_result = function(inst) {
       tuner_assign_result_default(inst)
     }
