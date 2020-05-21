@@ -9,3 +9,4 @@
 .github
 ^\.ccache$
 ^\.github$
+^tic\.R$
