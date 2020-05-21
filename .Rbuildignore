@@ -7,3 +7,5 @@
 ^man-roxygen$
 ^pkgdown$
 .github
+^\.ccache$
+^\.github$
