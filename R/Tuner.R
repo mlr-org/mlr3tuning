@@ -109,27 +109,7 @@ Tuner = R6Class("Tuner",
     #' @return Modifed `self`.
     optimize = function(inst) {
       assert_r6(inst, "TuningInstance")
-      super$optimize()
-    }
-  ),
-
-  private = list(
-    .optimize = function(inst) stop("abstract"),
-
-    .assign_result = function(inst) {
-      tuner_assign_result_default(inst)
+      super$optimize(inst)
     }
   )
 )
-
-tuner_assign_result_default = function(inst) {
-  assert_r6(inst, "TuningInstance")
-  # get best RR - best by mean perf value and extract perf values
-  res = inst$archive$get_best()
-  perf = as.matrix(res[, inst$objective$codomain$ids(), with = FALSE])[1, ]
-  # get the untrafoed config that matches this RR
-  pv = as.list(res[, inst$search_space$ids(), with = FALSE][1, ])
-  pv = pv[!map_lgl(pv, is.na)] # FIXME We have to remove NAs here (and hopefully just the NAs that are created because of unfulfilled requirements)
-  inst$assign_result(pv, perf)
-  invisible(NULL)
-}
