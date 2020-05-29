@@ -17,9 +17,6 @@ calling \code{\link[mlr3:benchmark]{mlr3::benchmark()}} internally. Before a bat
 exhausted, an exception is raised, and no further evaluations can be
 performed from this point on.
 
-A list of measures can be passed to the instance, and they will always be all
-evaluated. However, single-criteria tuners optimize only the first measure.
-
 The tuner is also supposed to store its final result, consisting of a
 selected hyperparameter configuration and associated estimated performance
 values, by calling the method \code{instance$assign_result}.
@@ -33,7 +30,7 @@ library(mlr3)
 task = tsk("iris")
 learner = lrn("classif.rpart")
 resampling = rsmp("holdout")
-measures = msr("classif.ce")
+measure = msr("classif.ce")
 param_set = ParamSet$new(list(
   ParamDbl$new("cp", lower = 0.001, upper = 0.1),
   ParamInt$new("minsplit", lower = 1, upper = 10))
@@ -44,7 +41,7 @@ inst = TuningInstance$new(
   task = task,
   learner = learner,
   resampling = resampling,
-  measures = measures,
+  measure = measure,
   search_space = param_set,
   terminator = terminator
 )
@@ -84,7 +81,7 @@ inst = TuningInstance$new(
   task = tsk("wine"),
   learner = learner,
   resampling = rsmp("cv", folds = 3),
-  measures = msr("classif.ce"),
+  measure = msr("classif.ce"),
   search_space = param_set,
   terminator = term("evals", n_evals = 5)
 )
@@ -105,9 +102,8 @@ print(archive)
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
-\item{\code{result}}{named \code{list()}\cr
-Result of the tuning, i.e., the optimal configuration and its estimated
-performance.}
+\item{\code{result_learner_param_vals}}{(\code{list()})
+Param values for the optimal learner call.}
 }
 \if{html}{\out{</div>}}
 }
@@ -142,7 +138,7 @@ and a termination criterion.
   task,
   learner,
   resampling,
-  measures,
+  measure,
   search_space,
   terminator,
   store_models = FALSE
@@ -160,7 +156,8 @@ and a termination criterion.
 Note that uninstantiated resamplings are instantiated during construction
 so that all configurations are evaluated on the same data splits.}
 
-\item{\code{measures}}{(list of \link[mlr3:Measure]{mlr3::Measure})}
+\item{\code{measure}}{(\link[mlr3:Measure]{mlr3::Measure})\cr
+Measure to optimize.}
 
 \item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})}
 
@@ -175,20 +172,29 @@ so that all configurations are evaluated on the same data splits.}
 \if{html}{\out{<a id="method-assign_result"></a>}}
 \if{latex}{\out{\hypertarget{method-assign_result}{}}}
 \subsection{Method \code{assign_result()}}{
-The tuner writes the best found list of settings and estimated
-performance values here. For internal use.
+The \link{Tuner} object writes the best found point
+and estimated performance value here. For internal use.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TuningInstance$assign_result(tune_x, perf)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TuningInstance$assign_result(xdt, y, opt_x = NULL, learner_param_vals = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{tune_x}}{named \code{list()}\cr
-Hyperparameter configuration.}
+\item{\code{xdt}}{(\code{data.table})\cr
+x values as \code{data.table} with one row.
+Contains the value in the \emph{search space} of the \link{TuningInstance} object.
+Can contain additional columns for extra information.}
 
-\item{\code{perf}}{\code{numeric()}\cr
-Performance score for \code{tune_x}.}
+\item{\code{y}}{(\code{numeric(1)})\cr
+Optimal outcome.}
+
+\item{\code{opt_x}}{(\code{list()})\cr
+Transformed x value / point from the \emph{domain} of the \link{Objective} as a named list.
+Corresponds to the point in \code{xdt}.}
+
+\item{\code{learner_param_vals}}{(\code{list()})\cr
+Fixed parameter values of the learner that are neither part of the \emph{search space} nor the domain.}
 }
 \if{html}{\out{</div>}}
 }

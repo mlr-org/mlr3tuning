@@ -1,12 +1,10 @@
 context("Tuner")
 
 test_that("API", {
-  measures = mlr_measures$mget(c("classif.ce", "time_train", "time_both"))
   for (n_evals in c(1, 5)) {
     rs = TunerRandomSearch$new()
-    inst = TEST_MAKE_INST1(measures = measures, term_evals = n_evals)
-    r = rs$optimize(inst)
-    expect_is(r, "Tuner")
+    inst = TEST_MAKE_INST1(measure = msr("classif.ce"), term_evals = n_evals)
+    rs$optimize(inst)
     a = inst$archive$data
     expect_data_table(a, nrows = n_evals)
     expect_true("cp" %in% names(a))
@@ -27,12 +25,27 @@ test_that("proper error if tuner cannot handle deps", {
 })
 
 test_that("we get a result when some subordinate params are not fulfilled", {
-  inst = TEST_MAKE_INST2(measures = msr("dummy.cp.regr"))
+  TunerManual = R6Class("TunerManual",
+    inherit = Tuner,
+    public = list(
+      initialize = function() {
+        super$initialize(
+          param_set = ParamSet$new(),
+          param_classes = c("ParamFct", "ParamDbl"),
+          properties = "dependencies")
+      }
+    ),
+    private = list(
+      .optimize = function(inst) {}
+    )
+  )
+  tuner_manual = TunerManual$new()
+  inst = TEST_MAKE_INST2(measure = msr("dummy.cp.regr"))
   d = data.table(xx = c("a", "b"), yy = c(1, NA), cp = c(0.2, 0.1))
   inst$eval_batch(d)
-  tuner_assign_result_default(inst)
-  r = inst$result
-  expect_equal(r$perf, c(dummy.cp.regr = 0.1))
-  expect_equal(r$tune_x, list(xx = "b", cp = 0.1))
+  tuner_manual$optimize(inst)
+  expect_equal(inst$result_y, c(dummy.cp.regr = 0.1))
+  expect_equal(inst$result_opt_x, list(xx = "b", cp = 0.1))
+  expect_equal(inst$result_opt_x, inst$result_learner_param_vals)
 })
 

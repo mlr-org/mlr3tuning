@@ -67,6 +67,7 @@ Collate:
     'TunerGridSearch.R'
     'TunerRandomSearch.R'
     'TuningInstance.R'
+    'TuningInstanceMulticrit.R'
     'assertions.R'
     'helper.R'
     'reexport.R'

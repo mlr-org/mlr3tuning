@@ -44,16 +44,15 @@ test_tuner = function(key, ..., n_dim = 1L, term_evals = 2L, real_evals = term_e
   expect_data_table(archive$data, nrows = real_evals)
   expect_equal(inst$archive$n_evals, real_evals)
 
-  r = inst$result
-  sc = r$tune_x
-  sp = r$perf
-  expect_list(sc, len = n_dim)
+  x_opt = inst$result_opt_x
+  y_opt = inst$result_y
+  expect_list(x_opt, len = n_dim)
   if (n_dim == 1)
-    expect_named(sc, c("cp"))
+    expect_named(x_opt, c("cp"))
   else
-    expect_named(sc, c("cp", "minsplit"))
-  expect_numeric(sp, len = 1L)
-  expect_named(sp, "classif.ce")
+    expect_named(x_opt, c("cp", "minsplit"))
+  expect_numeric(y_opt, len = 1L)
+  expect_named(y_opt, "classif.ce")
   list(tuner = tuner, inst = inst)
 }
 
@@ -71,14 +70,13 @@ test_tuner_dependencies = function(key, ..., term_evals = 2L) {
   expect_data_table(archive$data, nrows = term_evals)
   expect_equal(inst$archive$n_evals, term_evals)
 
-  r = inst$result
-  sc = r$tune_x
-  sp = r$perf
-  expect_list(sc)
-  expect_names(names(sc), subset.of = c("xx", "yy", "cp"))
-  expect_numeric(sp, len = 1L)
-  expect_numeric(sp, len = 1L)
-  expect_names(names(sp), identical.to = "regr.mse")
+  x_opt = inst$result_opt_x
+  y_opt = inst$result_y
+  expect_list(x_opt)
+  expect_names(names(x_opt), subset.of = c("xx", "yy", "cp"))
+  expect_numeric(y_opt, len = 1L)
+  expect_numeric(y_opt, len = 1L)
+  expect_names(names(y_opt), identical.to = "regr.mse")
   list(tuner = tuner, inst = inst)
 }
 
@@ -96,7 +94,7 @@ TEST_MAKE_PS1 = function(n_dim = 1L) {
     ))
   }
 }
-TEST_MAKE_INST1 = function(values = NULL, folds = 2L, measures = msr("classif.ce"), n_dim = 1L, term_evals = 5L) {
+TEST_MAKE_INST1 = function(values = NULL, folds = 2L, measure = msr("classif.ce"), n_dim = 1L, term_evals = 5L) {
   ps = TEST_MAKE_PS1(n_dim = n_dim)
   lrn = mlr_learners$get("classif.rpart")
   if (!is.null(values)) {
@@ -104,7 +102,7 @@ TEST_MAKE_INST1 = function(values = NULL, folds = 2L, measures = msr("classif.ce
   }
   rs = rsmp("cv", folds = folds)
   term = term("evals", n_evals = term_evals)
-  inst = TuningInstance$new(tsk("iris"), lrn, rs, measures, ps, term)
+  inst = TuningInstance$new(tsk("iris"), lrn, rs, measure, ps, term)
   return(inst)
 }
 
@@ -120,12 +118,12 @@ TEST_MAKE_PS2 = function() {
   ps$add_dep("yy", on = "xx", cond = CondEqual$new("a"))
   return(ps)
 }
-TEST_MAKE_INST2 = function(measures = msr("dummy.cp.regr"), term_evals = 5L) {
+TEST_MAKE_INST2 = function(measure = msr("dummy.cp.regr"), term_evals = 5L) {
   ps = TEST_MAKE_PS2()
   ll = LearnerRegrDepParams$new()
   rs = rsmp("holdout")
   term = term("evals", n_evals = term_evals)
-  inst = TuningInstance$new(tsk("boston_housing"), ll, rs, measures, ps, term)
+  inst = TuningInstance$new(tsk("boston_housing"), ll, rs, measure, ps, term)
   return(inst)
 }
 

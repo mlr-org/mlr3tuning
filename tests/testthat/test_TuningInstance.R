@@ -1,7 +1,7 @@
 context("TuningInstance")
 
 test_that("TuningInstance", {
-  inst = TEST_MAKE_INST1(values = list(maxdepth = 10), folds = 2L, measures = msr("dummy.cp.classif"), n_dim = 2)
+  inst = TEST_MAKE_INST1(values = list(maxdepth = 10), folds = 2L, measure = msr("dummy.cp.classif"), n_dim = 2)
   # test empty inst
   expect_data_table(inst$archive$data, nrows = 0)
   expect_identical(inst$archive$n_evals, 0L)
@@ -88,7 +88,7 @@ test_that("tuning with custom resampling", {
   resampling$instantiate(task, train_sets, test_sets)
 
   learner = lrn("classif.rpart")
-  measures = msr("classif.ce")
+  measure = msr("classif.ce")
   tune_ps = ParamSet$new(list(
     ParamDbl$new("cp", lower = 0.001, upper = 0.1),
     ParamInt$new("minsplit", lower = 1, upper = 10)
@@ -96,7 +96,7 @@ test_that("tuning with custom resampling", {
   terminator = term("evals", n_evals = 10)
   tuner = tnr("random_search")
 
-  inst = TuningInstance$new(task, learner, resampling, measures, tune_ps, terminator)
+  inst = TuningInstance$new(task, learner, resampling, measure, tune_ps, terminator)
   tuner$optimize(inst)
   rr = inst$archive$data$resample_result
   expect_list(rr, len = 10)

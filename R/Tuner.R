@@ -11,15 +11,16 @@
 #' A list of measures can be passed to the instance, and they will always be all
 #' evaluated. However, single-criteria tuners optimize only the first measure.
 #'
-#' A tuner must write its result to the `assign_result` method of the
-#' [Tuninginstance] at the end of its tuning in order to store the best selected
-#' hyperparameter configuration and its estimated performance vector.
+#' A tuner must write its result into the [TuningInstance] using the
+#' `assign_result` method of the [bbotk::OptimInstance] at the end of its tuning
+#' in order to store the best selected hyperparameter configuration and its
+#' estimated performance vector.
 #'
 #' @section Private Methods:
-#' * `.tune(instance)` -> `NULL`\cr
+#' * `.optimize(instance)` -> `NULL`\cr
 #'   Abstract base method. Implement to specify tuning of your subclass.
 #'   See technical details sections.
-#' * `assign_result(instance)` -> `NULL`\cr
+#' * `.assign_result(instance)` -> `NULL`\cr
 #'   Abstract base method. Implement to specify how the final configuration is
 #'   selected. See technical details sections.
 #'
@@ -44,10 +45,10 @@
 #'  evaluated, as the Terminator is only checked before a batch evaluation, and
 #'  not in-between evaluation in a batch. How many more depends on the setting
 #'  of the batch size.
-#'  * Overwrite the private super-method `assign_result()` if you want to decide
+#'  * Overwrite the private super-method `.assign_result()` if you want to decide
 #'  yourself how to estimate the final configuration in the instance and its
 #'  estimated performance. The default behavior is: We pick the best
-#'  resample-experiment, regarding the first measure, then assign its
+#'  resample-experiment, regarding the given measure, then assign its
 #'  configuration and aggregated performance to the instance.
 #'
 #' @export
@@ -62,7 +63,7 @@
 #'   task = tsk("iris"),
 #'   learner = lrn("classif.rpart"),
 #'   resampling = rsmp("holdout"),
-#'   measures = msr("classif.ce"),
+#'   measure = msr("classif.ce"),
 #'   search_space = search_space,
 #'   terminator = terminator
 #' )
@@ -97,7 +98,7 @@ Tuner = R6Class("Tuner",
     #' [requireNamespace()], and are not attached.
     initialize = function(param_set, param_classes, properties,
       packages = character()) {
-        super$initialize( param_set = param_set, param_classes = param_classes,
+        super$initialize(param_set = param_set, param_classes = param_classes,
           properties = properties)
     },
 
