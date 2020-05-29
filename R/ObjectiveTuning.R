@@ -25,6 +25,9 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     #' @field measures list of [mlr3::Measure]
     measures = NULL,
 
+    #' @field additional measures list of [mlr3::Measure]
+    additional_measures = NULL,
+
     #' @field store_models `logical(1)`
     store_models = NULL,
 
@@ -34,16 +37,19 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     #' @param learner [mlr3::Learner]
     #' @param resampling [mlr3::Resampling]
     #' @param measures list of [mlr3::Measure]
+    #' @param additional_measures list of [mlr3::Measure]
     #' @param terminator [Terminator]
     #' @param store_models `logical(1)`
     initialize = function(task, learner, resampling, measures,
-      store_models = FALSE) {
+      store_models = FALSE, additional_measures = list()) {
         self$task = assert_task(as_task(task, clone = TRUE))
         self$learner = assert_learner(as_learner(learner, clone = TRUE),
           task = self$task)
         self$resampling = assert_resampling(as_resampling(
           resampling, clone = TRUE))
         self$measures = assert_measures(as_measures(measures, clone = TRUE),
+          task = self$task, learner = self$learner)
+        self$additional_measures = assert_measures(as_measures(additional_measures, clone = TRUE),
           task = self$task, learner = self$learner)
         self$store_models = assert_logical(store_models)
         if (!resampling$is_instantiated) {
@@ -77,7 +83,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       design = benchmark_grid(self$task, learners, self$resampling)
       bmr = benchmark(design, store_models = self$store_models)
       rr = map(seq(bmr$n_resample_results), function(x) bmr$resample_result(x))
-      aggr = bmr$aggregate(self$measures)
+      aggr = bmr$aggregate(c(self$measures, self$additional_measures))
       y = map_chr(self$measures, function(s) s$id)
 
       cbind(aggr[, y, with = FALSE], resample_result = rr)
