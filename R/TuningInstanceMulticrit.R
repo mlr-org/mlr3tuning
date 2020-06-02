@@ -50,13 +50,10 @@ TuningInstanceMulticrit = R6Class("TuningInstanceMulticrit",
     #'   Can contain additional columns for extra information.
     #' @param ydt (`numeric(1)`)\cr
     #'   Optimal outcomes, e.g. the Pareto front.
-    #' @param opt_x (`list()`)\cr
-    #'   Transformed x values / points from the *domain* of the [Objective] as a named list.
-    #'   Corresponds to the points in `xdt`.
     #' @param learner_param_vals (`list()`)\cr
     #'   Fixed parameter values of the learner that are neither part of the *search space* nor the domain.
     #    List of named lists.
-    assign_result = function(xdt, ydt, opt_x = NULL, learner_param_vals = NULL) {
+    assign_result = function(xdt, ydt, learner_param_vals = NULL) {
       # set the column with the learner param_vals that were not optimized over but set implicitly
 
       if (is.null(learner_param_vals)) {
@@ -64,11 +61,9 @@ TuningInstanceMulticrit = R6Class("TuningInstanceMulticrit",
         learner_param_vals = replicate(nrow(xdt), learner_param_values, simplify = FALSE)
       }
       assert_list(learner_param_vals, len = nrow(xdt))
-      if (is.null(opt_x)) {
-        opt_x = transform_xdt_to_xss(xdt, self$search_space)
-      }
+      opt_x = transform_xdt_to_xss(xdt, self$search_space)
       xdt$learner_param_vals = Map(insert_named, learner_param_vals, opt_x)
-      super$assign_result(xdt, ydt, opt_x)
+      super$assign_result(xdt, ydt)
     }
   ),
 

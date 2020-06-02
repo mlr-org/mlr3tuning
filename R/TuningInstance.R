@@ -138,28 +138,23 @@ TuningInstance = R6Class("TuningInstance",
     #'   Can contain additional columns for extra information.
     #' @param y (`numeric(1)`)\cr
     #'   Optimal outcome.
-    #' @param opt_x (`list()`)\cr
-    #'   Transformed x value / point from the *domain* of the [Objective] as a named list.
-    #'   Corresponds to the point in `xdt`.
     #' @param learner_param_vals (`list()`)\cr
     #'   Fixed parameter values of the learner that are neither part of the *search space* nor the domain.
     #    Named list.
-    assign_result = function(xdt, y, opt_x = NULL, learner_param_vals = NULL) {
+    assign_result = function(xdt, y, learner_param_vals = NULL) {
       # set the column with the learner param_vals that were not optimized over but set implicitly
       assert_list(learner_param_vals, null.ok = TRUE, names = "named")
       if (is.null(learner_param_vals)) {
         learner_param_vals = self$objective$learner$param_set$values
       }
-      if (is.null(opt_x)) {
-        opt_x = transform_xdt_to_xss(xdt, self$search_space)[[1]]
-      }
+      opt_x = transform_xdt_to_xss(xdt, self$search_space)[[1]]
       learner_param_vals = insert_named(learner_param_vals, opt_x)
       # ugly but necessary to maintain list column correctly
       if (length(learner_param_vals) == 1) {
         learner_param_vals = list(learner_param_vals)
       }
       xdt[, learner_param_vals := list(learner_param_vals)]
-      super$assign_result(xdt, y, opt_x)
+      super$assign_result(xdt, y)
     }
   ),
 
