@@ -12,10 +12,10 @@ test_that("AutoTuner / train+predict", {
   expect_learner(at)
   expect_equal(at$learner$param_set$values, list(xval = 0, cp = 0.2))
   inst = at$tuning_instance
-  a = at$archive$data
+  a = at$archive$data()
   expect_data_table(a, nrows = 3L)
   r = at$tuning_result
-  expect_equal(r$opt_x[[1]], list(cp = 0.2))
+  expect_equal(r$x_domain[[1]], list(cp = 0.2))
   expect_equal(r$learner_param_vals[[1]], list(xval = 0, cp = 0.2))
   prd = at$predict(task)
   expect_prediction(prd)
@@ -48,7 +48,7 @@ test_that("AutoTuner / resample", {
     expect_equal(ll$learner$param_set$values, list(xval = 0, cp = 0.2))
     inst = ll$tuning_instance
     assert_r6(inst, "TuningInstance")
-    expect_data_table(inst$archive$data, nrows = inner_evals)
+    expect_data_table(inst$archive$data(), nrows = inner_evals)
     expect_numeric(inst$result_y, len = 1L)
   })
 })
@@ -120,8 +120,8 @@ test_that("nested resamppling results are consistent ", {
   ll2 = rr$learners[[2]]
   tr1 = ll1$tuning_result
   tr2 = ll2$tuning_result
-  expect_equal(tr1$opt_x[[1]], ll1$model$learner$model$control[c("cp", "minsplit")])
-  expect_equal(tr2$opt_x[[1]], ll2$model$learner$model$control[c("cp", "minsplit")])
+  expect_equal(tr1$x_domain[[1]], ll1$model$learner$model$control[c("cp", "minsplit")])
+  expect_equal(tr2$x_domain[[1]], ll2$model$learner$model$control[c("cp", "minsplit")])
 })
 
 test_that("AT training does not change learner in instance args", {

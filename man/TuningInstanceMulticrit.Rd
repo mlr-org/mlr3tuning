@@ -86,12 +86,7 @@ Measures to optimize.}
 The \link{Tuner} object writes the best found points
 and estimated performance values here. For internal use.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TuningInstanceMulticrit$assign_result(
-  xdt,
-  ydt,
-  opt_x = NULL,
-  learner_param_vals = NULL
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TuningInstanceMulticrit$assign_result(xdt, ydt, learner_param_vals = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -105,10 +100,6 @@ Can contain additional columns for extra information.}
 
 \item{\code{ydt}}{(\code{numeric(1)})\cr
 Optimal outcomes, e.g. the Pareto front.}
-
-\item{\code{opt_x}}{(\code{list()})\cr
-Transformed x values / points from the \emph{domain} of the \link{Objective} as a named list.
-Corresponds to the points in \code{xdt}.}
 
 \item{\code{learner_param_vals}}{(\code{list()})\cr
 Fixed parameter values of the learner that are neither part of the \emph{search space} nor the domain.}

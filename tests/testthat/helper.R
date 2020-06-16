@@ -41,10 +41,10 @@ test_tuner = function(key, ..., n_dim = 1L, term_evals = 2L, real_evals = term_e
   tuner$optimize(inst)
   archive = inst$archive
 
-  expect_data_table(archive$data, nrows = real_evals)
+  expect_data_table(archive$data(), nrows = real_evals)
   expect_equal(inst$archive$n_evals, real_evals)
 
-  x_opt = inst$result_opt_x
+  x_opt = inst$result_x_domain
   y_opt = inst$result_y
   expect_list(x_opt, len = n_dim)
   if (n_dim == 1)
@@ -67,10 +67,10 @@ test_tuner_dependencies = function(key, ..., term_evals = 2L) {
   tuner$optimize(inst)
   archive = inst$archive
 
-  expect_data_table(archive$data, nrows = term_evals)
+  expect_data_table(archive$data(), nrows = term_evals)
   expect_equal(inst$archive$n_evals, term_evals)
 
-  x_opt = inst$result_opt_x
+  x_opt = inst$result_x_domain
   y_opt = inst$result_y
   expect_list(x_opt)
   expect_names(names(x_opt), subset.of = c("xx", "yy", "cp"))

@@ -91,7 +91,7 @@ tryCatch(
   terminated_error = function(e) message(as.character(e))
 )
 
-archive = inst$archive$data
+archive = inst$archive$data()
 
 # column errors: multiple errors recorded
 print(archive)
@@ -175,7 +175,7 @@ Measure to optimize.}
 The \link{Tuner} object writes the best found point
 and estimated performance value here. For internal use.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TuningInstance$assign_result(xdt, y, opt_x = NULL, learner_param_vals = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TuningInstance$assign_result(xdt, y, learner_param_vals = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -188,10 +188,6 @@ Can contain additional columns for extra information.}
 
 \item{\code{y}}{(\code{numeric(1)})\cr
 Optimal outcome.}
-
-\item{\code{opt_x}}{(\code{list()})\cr
-Transformed x value / point from the \emph{domain} of the \link{Objective} as a named list.
-Corresponds to the point in \code{xdt}.}
 
 \item{\code{learner_param_vals}}{(\code{list()})\cr
 Fixed parameter values of the learner that are neither part of the \emph{search space} nor the domain.}

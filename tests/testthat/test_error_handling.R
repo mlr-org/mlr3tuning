@@ -19,7 +19,7 @@ test_that("failing learner", {
   instance = TuningInstance$new(task = tsk("iris"), learner = learner, resampling = rsmp("holdout"),
     measure = msr("classif.ce"), search_space = param_set, terminator = term("evals", n_evals = 10))
   tt$optimize(instance)
-  rc = expect_list(instance$result_opt_x)
+  rc = expect_list(instance$result_x_domain)
   expect_list(rc, len = 1)
   expect_named(rc, c("x"))
 })
@@ -49,12 +49,5 @@ test_that("faulty measure", {
 
   instance = TuningInstance$new(task = tsk("iris"), learner = learner, resampling = rsmp("holdout"),
     measure = msr("debug", na_ratio = 0.5, minimize = TRUE), search_space = param_set, terminator = term("evals", n_evals = 10))
-  tt$optimize(instance)
-  tab = instance$archive$data
-  expect_data_table(tab, nrows = 10)
-  expect_numeric(tab$debug)
-  expect_gt(sum(is.na(tab$debug)), 0)
-
-  res = instance$archive$get_best()
-  expect_data_table(res)
+  expect_error(tt$optimize(instance), "Contains missing values")
 })

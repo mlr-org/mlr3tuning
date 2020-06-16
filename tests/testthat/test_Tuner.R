@@ -5,7 +5,7 @@ test_that("API", {
     rs = TunerRandomSearch$new()
     inst = TEST_MAKE_INST1(measure = msr("classif.ce"), term_evals = n_evals)
     rs$optimize(inst)
-    a = inst$archive$data
+    a = inst$archive$data()
     expect_data_table(a, nrows = n_evals)
     expect_true("cp" %in% names(a))
   }
@@ -45,7 +45,7 @@ test_that("we get a result when some subordinate params are not fulfilled", {
   inst$eval_batch(d)
   tuner_manual$optimize(inst)
   expect_equal(inst$result_y, c(dummy.cp.regr = 0.1))
-  expect_equal(inst$result_opt_x, list(xx = "b", cp = 0.1))
-  expect_equal(inst$result_opt_x, inst$result_learner_param_vals)
+  expect_equal(inst$result_x_domain, list(xx = "b", cp = 0.1))
+  expect_equal(inst$result_x_domain, inst$result_learner_param_vals)
 })
 

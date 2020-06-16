@@ -89,7 +89,7 @@
 #'   terminated_error = function(e) message(as.character(e))
 #' )
 #'
-#' archive = inst$archive$data
+#' archive = inst$archive$data()
 #'
 #' # column errors: multiple errors recorded
 #' print(archive)
