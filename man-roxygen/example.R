@@ -9,7 +9,7 @@
 #'   task = tsk("iris"),
 #'   learner = lrn("classif.rpart"),
 #'   resampling = rsmp("holdout"),
-#'   measures = msr("classif.ce"),
+#'   measure = msr("classif.ce"),
 #'   search_space = search_space,
 #'   terminator = terminator
 #' )

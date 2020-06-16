@@ -12,10 +12,11 @@ test_that("AutoTuner / train+predict", {
   expect_learner(at)
   expect_equal(at$learner$param_set$values, list(xval = 0, cp = 0.2))
   inst = at$tuning_instance
-  a = at$archive$data
+  a = at$archive$data()
   expect_data_table(a, nrows = 3L)
   r = at$tuning_result
-  expect_equal(r$tune_x, list(cp = 0.2))
+  expect_equal(r$x_domain[[1]], list(cp = 0.2))
+  expect_equal(r$learner_param_vals[[1]], list(xval = 0, cp = 0.2))
   prd = at$predict(task)
   expect_prediction(prd)
   expect_is(at$learner$model, "rpart")
@@ -47,22 +48,21 @@ test_that("AutoTuner / resample", {
     expect_equal(ll$learner$param_set$values, list(xval = 0, cp = 0.2))
     inst = ll$tuning_instance
     assert_r6(inst, "TuningInstance")
-    r = inst$result
-    expect_data_table(inst$archive$data, nrows = inner_evals)
-    expect_numeric(r$perf, len = 1L)
+    expect_data_table(inst$archive$data(), nrows = inner_evals)
+    expect_numeric(inst$result_y, len = 1L)
   })
 })
 
 # we had an issue that the AutoTuner did not return statically configured param in its result
 # see issue #51
 test_that("AutoTuner / param_set", {
-  measures = msr("classif.ce")
+  measure = msr("classif.ce")
   te = term("evals", n_evals = 3)
   task = tsk("iris")
   ps = TEST_MAKE_PS1()
   tuner = TunerRandomSearch$new()
   learner = lrn("classif.rpart", cp = 1, maxdepth = 1)
-  at = AutoTuner$new(learner, rsmp("holdout"), measures, ps, te, tuner)
+  at = AutoTuner$new(learner, rsmp("holdout"), measure, ps, te, tuner)
   expect_equal(at$param_set$values[names(at$learner$param_set$values)], at$learner$param_set$values)
   at$train(task)
 
@@ -84,13 +84,13 @@ test_that("AutoTuner / param_set", {
 
 
 test_that("Custom resampling is not allowed", {
-  measures = msr("classif.ce")
+  measure = msr("classif.ce")
   te = term("evals", n_evals = 3)
   task = tsk("iris")
   ps = TEST_MAKE_PS1()
   tuner = TunerRandomSearch$new()
   r = rsmp("holdout")$instantiate(task)
-  expect_error(AutoTuner$new(lrn("classif.rpart"), r, measures, ps, te, tuner), "instantiated")
+  expect_error(AutoTuner$new(lrn("classif.rpart"), r, measure, ps, te, tuner), "instantiated")
 })
 
 
@@ -109,7 +109,7 @@ test_that("nested resamppling results are consistent ", {
     learner = lrn("classif.rpart"),
     resampling = rsmp("holdout"),
     search_space = ps,
-    measures = msr("classif.ce"),
+    measure = msr("classif.ce"),
     terminator = term("evals", n_evals = 3),
     tuner = tnr("random_search")
   )
@@ -120,8 +120,8 @@ test_that("nested resamppling results are consistent ", {
   ll2 = rr$learners[[2]]
   tr1 = ll1$tuning_result
   tr2 = ll2$tuning_result
-  expect_equal(tr1$tune_x, ll1$model$learner$model$control[c("cp", "minsplit")])
-  expect_equal(tr2$tune_x, ll2$model$learner$model$control[c("cp", "minsplit")])
+  expect_equal(tr1$x_domain[[1]], ll1$model$learner$model$control[c("cp", "minsplit")])
+  expect_equal(tr2$x_domain[[1]], ll2$model$learner$model$control[c("cp", "minsplit")])
 })
 
 test_that("AT training does not change learner in instance args", {

@@ -17,14 +17,14 @@ library(paradox)
 task = tsk("iris")
 learner = lrn("classif.rpart")
 resampling = rsmp("holdout")
-measures = msr("classif.ce")
+measure = msr("classif.ce")
 search_space = ParamSet$new(
   params = list(ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 
 terminator = term("evals", n_evals = 5)
 tuner = tnr("grid_search")
 at = AutoTuner$new(
-  learner, resampling, measures, search_space, terminator,
+  learner, resampling, measure, search_space, terminator,
   tuner)
 at$store_tuning_instance = TRUE
 
@@ -93,7 +93,7 @@ Short-cut to \code{result} from \link{TuningInstance}.}
 \subsection{Method \code{new()}}{
 Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AutoTuner$new(learner, resampling, measures, search_space, terminator, tuner)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AutoTuner$new(learner, resampling, measure, search_space, terminator, tuner)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -108,8 +108,8 @@ Resampling strategy during tuning, see \link{TuningInstance}. This
 on the training set of an arbitrary outer resampling. For this reason
 it is not feasible to pass an instantiated \link[mlr3:Resampling]{mlr3::Resampling} here.}
 
-\item{\code{measures}}{(list of \link[mlr3:Measure]{mlr3::Measure})\cr
-Performance measures. The first one is optimized, see \link{TuningInstance}.}
+\item{\code{measure}}{(list of \link[mlr3:Measure]{mlr3::Measure})\cr
+Performance measure to optimize.}
 
 \item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
 Hyperparameter search space, see \link{TuningInstance}.}

@@ -14,9 +14,6 @@
 #' exhausted, an exception is raised, and no further evaluations can be
 #' performed from this point on.
 #'
-#' A list of measures can be passed to the instance, and they will always be all
-#' evaluated. However, single-criteria tuners optimize only the first measure.
-#'
 #' The tuner is also supposed to store its final result, consisting of a
 #' selected hyperparameter configuration and associated estimated performance
 #' values, by calling the method `instance$assign_result`.
@@ -31,7 +28,7 @@
 #' task = tsk("iris")
 #' learner = lrn("classif.rpart")
 #' resampling = rsmp("holdout")
-#' measures = msr("classif.ce")
+#' measure = msr("classif.ce")
 #' param_set = ParamSet$new(list(
 #'   ParamDbl$new("cp", lower = 0.001, upper = 0.1),
 #'   ParamInt$new("minsplit", lower = 1, upper = 10))
@@ -42,7 +39,7 @@
 #'   task = task,
 #'   learner = learner,
 #'   resampling = resampling,
-#'   measures = measures,
+#'   measure = measure,
 #'   search_space = param_set,
 #'   terminator = terminator
 #' )
@@ -82,7 +79,7 @@
 #'   task = tsk("wine"),
 #'   learner = learner,
 #'   resampling = rsmp("cv", folds = 3),
-#'   measures = msr("classif.ce"),
+#'   measure = msr("classif.ce"),
 #'   search_space = param_set,
 #'   terminator = term("evals", n_evals = 5)
 #' )
@@ -92,7 +89,7 @@
 #'   terminated_error = function(e) message(as.character(e))
 #' )
 #'
-#' archive = inst$archive$data
+#' archive = inst$archive$data()
 #'
 #' # column errors: multiple errors recorded
 #' print(archive)
@@ -115,60 +112,57 @@ TuningInstance = R6Class("TuningInstance",
     #' Note that uninstantiated resamplings are instantiated during construction
     #' so that all configurations are evaluated on the same data splits.
     #'
-    #' @param measures (list of [mlr3::Measure])
+    #' @param measure ([mlr3::Measure])\cr
+    #' Measure to optimize.
     #'
     #' @param search_space ([paradox::ParamSet])
     #'
     #' @param terminator ([Terminator])
     #' @param store_models `logical(1)`
-    initialize = function(task, learner, resampling, measures, search_space,
+    initialize = function(task, learner, resampling, measure, search_space,
       terminator, store_models = FALSE) {
+        measure = as_measure(measure)
         obj = ObjectiveTuning$new(task = task, learner = learner,
-          resampling = resampling, measures = measures,
+          resampling = resampling, measures = list(measure),
           store_models = store_models)
         super$initialize(obj, search_space, terminator)
     },
 
     #' @description
-    #' The tuner writes the best found list of settings and estimated
-    #' performance values here. For internal use.
+    #' The [Tuner] object writes the best found point
+    #' and estimated performance value here. For internal use.
     #'
-    #' @param tune_x named `list()`\cr
-    #' Hyperparameter configuration.
-    #'
-    #' @param perf `numeric()`\cr
-    #' Performance score for `tune_x`.
-    assign_result = function(tune_x, perf) {
-      # result tune_x must be feasible for paramset
-      self$search_space$assert(tune_x)
-      # result perf must be numeric and cover all measures
-      assert_numeric(perf)
-      assert_names(names(perf), permutation.of = ids(self$objective$measures))
-      private$.result = list(tune_x = tune_x, perf = perf)
+    #' @param xdt (`data.table`)\cr
+    #'   x values as `data.table` with one row.
+    #'   Contains the value in the *search space* of the [TuningInstance] object.
+    #'   Can contain additional columns for extra information.
+    #' @param y (`numeric(1)`)\cr
+    #'   Optimal outcome.
+    #' @param learner_param_vals (`list()`)\cr
+    #'   Fixed parameter values of the learner that are neither part of the *search space* nor the domain.
+    #    Named list.
+    assign_result = function(xdt, y, learner_param_vals = NULL) {
+      # set the column with the learner param_vals that were not optimized over but set implicitly
+      assert_list(learner_param_vals, null.ok = TRUE, names = "named")
+      if (is.null(learner_param_vals)) {
+        learner_param_vals = self$objective$learner$param_set$values
+      }
+      opt_x = transform_xdt_to_xss(xdt, self$search_space)[[1]]
+      learner_param_vals = insert_named(learner_param_vals, opt_x)
+      # ugly but necessary to maintain list column correctly
+      if (length(learner_param_vals) == 1) {
+        learner_param_vals = list(learner_param_vals)
+      }
+      xdt[, learner_param_vals := list(learner_param_vals)]
+      super$assign_result(xdt, y)
     }
   ),
 
   active = list(
-    #' @field result named `list()`\cr
-    #' Result of the tuning, i.e., the optimal configuration and its estimated
-    #' performance.
-    result = function() {
-      tune_x = private$.result$tune_x
-      perf = private$.result$perf
-      # if ps has no trafo, just use the normal config
-      trafo = if (is.null(self$search_space$trafo)) {
-        identity
-      }
-      else {
-        self$search_space$trafo
-      }
-      params = trafo(tune_x)
-      params = insert_named(self$objective$learner$param_set$values, params)
-      list(tune_x = tune_x, params = params, perf = perf)
+    #' @field result_learner_param_vals (`list()`)
+    #'   Param values for the optimal learner call.
+    result_learner_param_vals = function() {
+      private$.result$learner_param_vals[[1]]
     }
-  ),
-
-  private = list(
-    .result = NULL
   )
 )

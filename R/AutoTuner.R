@@ -15,14 +15,14 @@
 #' task = tsk("iris")
 #' learner = lrn("classif.rpart")
 #' resampling = rsmp("holdout")
-#' measures = msr("classif.ce")
+#' measure = msr("classif.ce")
 #' search_space = ParamSet$new(
 #'   params = list(ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 #'
 #' terminator = term("evals", n_evals = 5)
 #' tuner = tnr("grid_search")
 #' at = AutoTuner$new(
-#'   learner, resampling, measures, search_space, terminator,
+#'   learner, resampling, measure, search_space, terminator,
 #'   tuner)
 #' at$store_tuning_instance = TRUE
 #'
@@ -57,8 +57,8 @@ AutoTuner = R6Class("AutoTuner",
     #' on the training set of an arbitrary outer resampling. For this reason
     #' it is not feasible to pass an instantiated [mlr3::Resampling] here.
     #'
-    #' @param measures (list of [mlr3::Measure])\cr
-    #'   Performance measures. The first one is optimized, see [TuningInstance].
+    #' @param measure (list of [mlr3::Measure])\cr
+    #' Performance measure to optimize.
     #'
     #' @param search_space ([paradox::ParamSet])\cr
     #' Hyperparameter search space, see [TuningInstance].
@@ -71,13 +71,13 @@ AutoTuner = R6Class("AutoTuner",
     #'
     #' @param bm_args (named `list()`)\cr
     #' Further arguments for [mlr3::benchmark()], see [TuningInstance].
-    initialize = function(learner, resampling, measures, search_space,
+    initialize = function(learner, resampling, measure, search_space,
       terminator, tuner) {
       ia = list()
       ia$learner = assert_learner(learner)$clone(deep = TRUE)
       ia$resampling = assert_resampling(resampling,
         instantiated = FALSE)$clone()
-      ia$measures = assert_measures(as_measures(measures), learner = learner)
+      ia$measure = assert_measure(as_measure(measure), learner = learner)
       ia$search_space = assert_param_set(search_space)$clone()
       # FIXME: i have no idea why we do this here?
       ia$learner$param_set$set_id = ""
@@ -152,7 +152,7 @@ AutoTuner = R6Class("AutoTuner",
       # get learner, set params to optimal, then train we REALLY need to clone
       # here we write to the object and this would change instance_args
       learner = ia$learner$clone(deep = TRUE)
-      learner$param_set$values = instance$result$params
+      learner$param_set$values = instance$result_learner_param_vals
       learner$train(task)
 
       # the return model is a list of "learner" and "tuning_instance"

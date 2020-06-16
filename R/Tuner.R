@@ -11,15 +11,16 @@
 #' A list of measures can be passed to the instance, and they will always be all
 #' evaluated. However, single-criteria tuners optimize only the first measure.
 #'
-#' A tuner must write its result to the `assign_result` method of the
-#' [Tuninginstance] at the end of its tuning in order to store the best selected
-#' hyperparameter configuration and its estimated performance vector.
+#' A tuner must write its result into the [TuningInstance] using the
+#' `assign_result` method of the [bbotk::OptimInstance] at the end of its tuning
+#' in order to store the best selected hyperparameter configuration and its
+#' estimated performance vector.
 #'
 #' @section Private Methods:
-#' * `.tune(instance)` -> `NULL`\cr
+#' * `.optimize(instance)` -> `NULL`\cr
 #'   Abstract base method. Implement to specify tuning of your subclass.
 #'   See technical details sections.
-#' * `assign_result(instance)` -> `NULL`\cr
+#' * `.assign_result(instance)` -> `NULL`\cr
 #'   Abstract base method. Implement to specify how the final configuration is
 #'   selected. See technical details sections.
 #'
@@ -44,10 +45,10 @@
 #'  evaluated, as the Terminator is only checked before a batch evaluation, and
 #'  not in-between evaluation in a batch. How many more depends on the setting
 #'  of the batch size.
-#'  * Overwrite the private super-method `assign_result()` if you want to decide
+#'  * Overwrite the private super-method `.assign_result()` if you want to decide
 #'  yourself how to estimate the final configuration in the instance and its
 #'  estimated performance. The default behavior is: We pick the best
-#'  resample-experiment, regarding the first measure, then assign its
+#'  resample-experiment, regarding the given measure, then assign its
 #'  configuration and aggregated performance to the instance.
 #'
 #' @export
@@ -62,7 +63,7 @@
 #'   task = tsk("iris"),
 #'   learner = lrn("classif.rpart"),
 #'   resampling = rsmp("holdout"),
-#'   measures = msr("classif.ce"),
+#'   measure = msr("classif.ce"),
 #'   search_space = search_space,
 #'   terminator = terminator
 #' )
@@ -97,7 +98,7 @@ Tuner = R6Class("Tuner",
     #' [requireNamespace()], and are not attached.
     initialize = function(param_set, param_classes, properties,
       packages = character()) {
-        super$initialize( param_set = param_set, param_classes = param_classes,
+        super$initialize(param_set = param_set, param_classes = param_classes,
           properties = properties)
     },
 
@@ -108,48 +109,8 @@ Tuner = R6Class("Tuner",
     #'
     #' @return Modifed `self`.
     optimize = function(inst) {
-
       assert_r6(inst, "TuningInstance")
-      require_namespaces(self$packages)
-      if ("dependencies" %nin% self$properties && inst$search_space$has_deps) {
-        stopf(
-          "Tuner '%s' does not support param sets with dependencies!",
-          self$format())
-      }
-      not_supported_pclasses = setdiff(
-        unique(inst$search_space$class),
-        self$param_classes)
-      if (length(not_supported_pclasses) > 0L) {
-        stopf(
-          "Tuner '%s' does not support param types: '%s'", class(self)[1L],
-          paste0(not_supported_pclasses, collapse = ","))
-      }
-
-      tryCatch({
-        private$.optimize(inst)
-      }, terminated_error = function(cond) {
-      })
-
-      private$.assign_result(inst)
-      invisible(self)
-    }
-  ),
-
-  private = list(
-    .assign_result = function(inst) {
-      tuner_assign_result_default(inst)
+      super$optimize(inst)
     }
   )
 )
-
-tuner_assign_result_default = function(inst) {
-  assert_r6(inst, "TuningInstance")
-  # get best RR - best by mean perf value and extract perf values
-  res = inst$archive$get_best()
-  perf = as.matrix(res[, inst$objective$codomain$ids(), with = FALSE])[1, ]
-  # get the untrafoed config that matches this RR
-  pv = as.list(res[, inst$search_space$ids(), with = FALSE][1, ])
-  pv = pv[!map_lgl(pv, is.na)] # FIXME We have to remove NAs here (and hopefully just the NAs that are created because of unfulfilled requirements)
-  inst$assign_result(pv, perf)
-  invisible(NULL)
-}

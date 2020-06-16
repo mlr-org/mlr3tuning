@@ -6,8 +6,3 @@ test_that("mlr_tuners", {
     expect_tuner(tnr(key))
   }
 })
-
-test_that("mlr_tuners sugar", {
-  tuner = tnr("random_search")
-  expect_tuner(tuner)
-})
