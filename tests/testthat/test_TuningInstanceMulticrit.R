@@ -6,7 +6,8 @@ test_that("tuning with multiple objectives", {
   resampling = rsmp("holdout")
   learner = lrn("classif.rpart")
 
-  measures = list(mlr3::msr("classif.fpr"), mlr3::msr("classif.tpr"))
+  measure_ids = c("classif.fpr", "classif.tpr")
+  measures = lapply(measure_ids, mlr3::msr)
   
   tune_ps = ParamSet$new(list(
     ParamDbl$new("cp", lower = 0.001, upper = 0.1),
@@ -21,4 +22,10 @@ test_that("tuning with multiple objectives", {
   # This still triggers an error 
   tuner$optimize(inst)
 
+  sp = inst$result_x_seach_space
+  obj = inst$result_y
+
+  expect_names(names(sc), identical.to = tune_ps$ids())
+  expect_data_table(sp, min.rows = 1, ncols = length(measures))
+  expect_names(names(obj), identical.to = measure_ids)
 })
