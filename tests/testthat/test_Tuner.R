@@ -32,7 +32,8 @@ test_that("we get a result when some subordinate params are not fulfilled", {
         super$initialize(
           param_set = ParamSet$new(),
           param_classes = c("ParamFct", "ParamDbl"),
-          properties = "dependencies")
+          properties = c("dependencies", "single-crit")
+        )
       }
     ),
     private = list(

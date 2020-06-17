@@ -66,7 +66,7 @@ TunerDesignPoints = R6Class("TunerDesignPoints",
       super$initialize(
         param_set = ps,
         param_classes = c("ParamLgl", "ParamInt", "ParamDbl", "ParamFct"),
-        properties = "dependencies"
+        properties = c("dependencies", "single-crit", "multi-crit")
       )
     }
   ),
