@@ -109,7 +109,10 @@ Tuner = R6Class("Tuner",
     #'
     #' @return Modifed `self`.
     optimize = function(inst) {
-      assert_r6(inst, "TuningInstance")
+      # TuningInstanceMulticrit actually does not inherit from TuningInstance but from OptimInstanceMulticrit
+      # in the same way as TuningInstance inherits from OptimInstance. Unfortunately multi-inheritance is not
+      # in R6.
+      assert_multi_class(inst, c("TuningInstance", "TuningInstanceMulticrit"))
       super$optimize(inst)
     }
   )
