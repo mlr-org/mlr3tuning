@@ -58,7 +58,7 @@ TuningInstanceMulticrit = R6Class("TuningInstanceMulticrit",
 
       if (is.null(learner_param_vals)) {
         learner_param_vals = self$objective$learner$param_set$values
-        learner_param_vals = replicate(nrow(xdt), learner_param_values, simplify = FALSE)
+        learner_param_vals = replicate(nrow(xdt), learner_param_vals, simplify = FALSE)
       }
       assert_list(learner_param_vals, len = nrow(xdt))
       opt_x = transform_xdt_to_xss(xdt, self$search_space)
