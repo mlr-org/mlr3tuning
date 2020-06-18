@@ -50,16 +50,9 @@ OptimizerGenSA = R6Class("OptimizerGenSA", inherit = Optimizer,
     .optimize = function(inst) {
       v = self$param_set$values
       v$maxit = .Machine$integer.max # make sure GenSA does not stop
-      GenSA::GenSA(par = NULL, fn = objective_wrapper,
+      GenSA::GenSA(par = NULL, fn = inst$objective_function,
         lower = inst$search_space$lower, upper = inst$search_space$upper,
-        control = v, inst)
+        control = v)
     }
   )
 )
-
-objective_wrapper = function(x, inst) {
-  x = as.data.table(as.list(x))
-  res = inst$eval_batch(x)
-  y = as.numeric(res[, inst$objective$codomain$ids()[1], with=FALSE])
-  if(inst$objective$codomain$tags[[1]] == "minimize") y else -y
-}
