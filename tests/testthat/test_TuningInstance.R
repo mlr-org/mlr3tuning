@@ -124,3 +124,9 @@ test_that("non-scalar hyperpars (#201)", {
   opt("random_search")$optimize(inst)
   expect_data_table(inst$archive$data(), nrows = 1)
 })
+
+test_that("objective_function works", {
+  inst = TEST_MAKE_INST1(values = list(maxdepth = 10), folds = 2L, measure = msr("dummy.cp.classif"), n_dim = 2)
+  y = inst$objective_function(c(0.1, 1))
+  expect_equal(y, 0.1)
+})

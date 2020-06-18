@@ -112,6 +112,7 @@ Param values for the optimal learner call.}
 \itemize{
 \item \href{#method-new}{\code{TuningInstance$new()}}
 \item \href{#method-assign_result}{\code{TuningInstance$assign_result()}}
+\item \href{#method-objective_function}{\code{TuningInstance$objective_function()}}
 \item \href{#method-clone}{\code{TuningInstance$clone()}}
 }
 }
@@ -193,6 +194,31 @@ Optimal outcome.}
 Fixed parameter values of the learner that are neither part of the \emph{search space} nor the domain.}
 }
 \if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-objective_function"></a>}}
+\if{latex}{\out{\hypertarget{method-objective_function}{}}}
+\subsection{Method \code{objective_function()}}{
+Evaluates a (untransformed) hyperparameter configuration of only numeric
+values, and returns a scalar objective value, where the return value is
+negated if the measure is maximized. Internally, \verb{$eval_batch()} is
+called with a single row. This function serves as a objective function
+for optimizers of numeric spaces - which should always be minimized.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TuningInstance$objective_function(x)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{x}}{(\code{numeric()})\cr
+Untransformed hyperparameter configuration.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Objective value as \code{numeric(1)}.
 }
 }
 \if{html}{\out{<hr>}}

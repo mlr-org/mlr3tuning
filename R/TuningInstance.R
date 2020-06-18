@@ -155,6 +155,27 @@ TuningInstance = R6Class("TuningInstance",
       }
       xdt[, learner_param_vals := list(learner_param_vals)]
       super$assign_result(xdt, y)
+    },
+
+    #' @description
+    #' Evaluates a (untransformed) hyperparameter configuration of only numeric
+    #' values, and returns a scalar objective value, where the return value is
+    #' negated if the measure is maximized. Internally, `$eval_batch()` is
+    #' called with a single row. This function serves as a objective function
+    #' for optimizers of numeric spaces - which should always be minimized.
+    #'
+    #' @param x (`numeric()`)\cr
+    #' Untransformed hyperparameter configuration.
+    #'
+    #' @return Objective value as `numeric(1)`.
+    objective_function = function(x) {
+      assert_numeric(x, len = self$search_space$length)
+      xs = set_names(as.list(x), self$search_space$ids())
+      self$search_space$assert(xs)
+      xdt = as.data.table(xs)
+      res = self$eval_batch(xdt)
+      y = as.numeric(res[, self$objective$codomain$ids()[1], with=FALSE])
+      if(self$objective$codomain$tags[[1]] == "minimize") y else -y
     }
   ),
 
