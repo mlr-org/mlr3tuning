@@ -62,7 +62,6 @@ Collate:
     'ObjectiveTuning.R'
     'TuningInstance.R'
     'TuningInstanceMulticrit.R'
-    'assertions.R'
     'helper.R'
     'reexport.R'
     'OptimizerDesignPoints.R'

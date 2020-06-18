@@ -7,7 +7,7 @@ test_that("failing learner", {
   ))
   learner$param_set$values$error_train = 0.5
 
-  tt = tnr("random_search")
+  tt = opt("random_search")
 
   instance = TuningInstance$new(task = tsk("iris"), learner = learner, resampling = rsmp("holdout"),
     measure = msr("classif.ce"), search_space = param_set, terminator = term("evals", n_evals = 10))
@@ -32,7 +32,7 @@ test_that("predictions missing", {
   ))
   learner$param_set$values$predict_missing = 0.5
 
-  tt = tnr("random_search")
+  tt = opt("random_search")
 
   instance = TuningInstance$new(task = tsk("iris"), learner = learner, resampling = rsmp("holdout"),
     measure = msr("classif.ce"), search_space = param_set, terminator = term("evals", n_evals = 10))
@@ -42,7 +42,7 @@ test_that("predictions missing", {
 
 test_that("faulty measure", {
   learner = lrn("classif.debug")
-  tt = tnr("random_search")
+  tt = opt("random_search")
   param_set = ParamSet$new(list(
       ParamDbl$new("x", lower = 0, upper = 1)
   ))

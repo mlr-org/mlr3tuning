@@ -11,7 +11,7 @@ test_that("simple exp trafo works", {
   }
   te = term("evals", n_evals = 3)
   d = data.table(cp = c(-7, -3))
-  tuner = tnr("design_points", design = d)
+  tuner = opt("design_points", design = d)
   inst = TuningInstance$new(tsk("iris"), ll, rsmp("holdout"), msr("dummy.cp.classif"), ps, te)
   tuner$optimize(inst)
   expect_equal(inst$result_x_seach_space, data.table(cp = -7))
@@ -35,7 +35,7 @@ test_that("trafo where param names change", {
     return(x)
   }
   te = term("evals", n_evals = 3)
-  tuner = tnr("grid_search", resolution = 2)
+  tuner = opt("grid_search", resolution = 2)
   inst = TuningInstance$new(tsk("iris"), ll, rsmp("holdout"), msr("dummy.cp.classif"), ps, te)
   tuner$optimize(inst)
   expect_equal(inst$result_x_seach_space, data.table(foo = "a"))

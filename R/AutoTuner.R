@@ -83,7 +83,7 @@ AutoTuner = R6Class("AutoTuner",
       ia$learner$param_set$set_id = ""
       ia$terminator = assert_terminator(terminator)$clone()
       self$instance_args = ia
-      self$tuner = assert_tuner(tuner)$clone()
+      self$tuner = assert_optimizer(tuner)$clone()
 
       super$initialize(
         id = paste0(learner$id, ".tuned"),

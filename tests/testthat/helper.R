@@ -36,7 +36,7 @@ test_tuner = function(key, ..., n_dim = 1L, term_evals = 2L, real_evals = term_e
   }
   term = term("evals", n_evals = term_evals)
   inst = TuningInstance$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), ps, term)
-  tuner = tnr(key, ...)
+  tuner = opt(key, ...)
   expect_optimizer(tuner)
   tuner$optimize(inst)
   archive = inst$archive
@@ -62,7 +62,7 @@ test_tuner_dependencies = function(key, ..., term_evals = 2L) {
   term = term("evals", n_evals = term_evals)
   ll = LearnerRegrDepParams$new()
   inst = TuningInstance$new(tsk("boston_housing"), ll, rsmp("holdout"), msr("regr.mse"), ll$param_set, term)
-  tuner = tnr(key, ...)
+  tuner = opt(key, ...)
   expect_optimizer(tuner)
   tuner$optimize(inst)
   archive = inst$archive

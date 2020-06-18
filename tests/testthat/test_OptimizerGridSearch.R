@@ -1,6 +1,6 @@
-context("TunerGridSearch")
+context("OptimizerGridSearch")
 
-test_that("TunerGridSearch", {
+test_that("OptimizerGridSearch", {
   test_tuner("grid_search", resolution = 7, term_evals = 5L, real_evals = 5, n_dim = 1L)
   test_tuner_dependencies("grid_search")
 
@@ -20,7 +20,7 @@ test_that("TunerGridSearch", {
 test_that("TunerGridSearch with TerminatorNone", {
   inst = TEST_MAKE_INST1(n_dim = 2L)
   term = TerminatorNone$new()
-  tuner = tnr("grid_search", resolution = 2L)
+  tuner = opt("grid_search", resolution = 2L)
   r = tuner$optimize(inst)
   archive = inst$archive
   expect_data_table(archive$data(), nrows = 4L)

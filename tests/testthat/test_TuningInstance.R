@@ -61,7 +61,7 @@ test_that("eval_batch and termination", {
   expect_data_table(inst$archive$data(), nrows = 3L)
 
   inst = TEST_MAKE_INST1(term_evals = 5L)
-  tuner = tnr("random_search", batch_size = 3L)
+  tuner = opt("random_search", batch_size = 3L)
   tuner$optimize(inst)
   expect_data_table(inst$archive$data(), nrows = 6L)
 
@@ -94,7 +94,7 @@ test_that("tuning with custom resampling", {
     ParamInt$new("minsplit", lower = 1, upper = 10)
   ))
   terminator = term("evals", n_evals = 10)
-  tuner = tnr("random_search")
+  tuner = opt("random_search")
 
   inst = TuningInstance$new(task, learner, resampling, measure, tune_ps, terminator)
   tuner$optimize(inst)
@@ -121,6 +121,6 @@ test_that("non-scalar hyperpars (#201)", {
         paradox::ParamInt$new("classif.rpart.minsplit", 1, 1))),
     term("evals", n_evals=1))
 
-  tnr("random_search")$optimize(inst)
+  opt("random_search")$optimize(inst)
   expect_data_table(inst$archive$data(), nrows = 1)
 })

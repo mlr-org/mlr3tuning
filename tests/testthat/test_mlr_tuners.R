@@ -1,8 +1,8 @@
-context("mlr_tuners")
+context("mlr_optimizers")
 
 test_that("mlr_tuners", {
-  expect_dictionary(mlr_tuners)
-  for (key in mlr_tuners$keys()) {
-    expect_optimizer(tnr(key))
+  expect_dictionary(mlr_optimizers)
+  for (key in mlr_optimizers$keys()) {
+    expect_optimizer(opt(key))
   }
 })
