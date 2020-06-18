@@ -7,8 +7,8 @@ test_that("tuning with multiple objectives", {
   learner = lrn("classif.rpart")
 
   measure_ids = c("classif.fpr", "classif.tpr")
-  measures = lapply(measure_ids, mlr3::msr)
-  
+  measures = msrs(measure_ids)
+
   tune_ps = ParamSet$new(list(
     ParamDbl$new("cp", lower = 0.001, upper = 0.1),
     ParamInt$new("minsplit", lower = 1, upper = 10)
@@ -19,13 +19,18 @@ test_that("tuning with multiple objectives", {
 
   inst = TuningInstanceMulticrit$new(task, learner, resampling, measures, tune_ps, terminator)
 
-  # This still triggers an error 
   tuner$optimize(inst)
 
-  sp = inst$result_x_seach_space
+  sp = inst$result_x_search_space
   obj = inst$result_y
 
   expect_names(names(sp), identical.to = tune_ps$ids())
   expect_data_table(sp, min.rows = 1, ncols = length(measures))
   expect_names(names(obj), identical.to = measure_ids)
+  expect_data_table(inst$archive$data(), nrows = 10L)
+  expect_equal(inst$archive$cols_y, measure_ids)
+  expect_data_table(inst$archive$best())
+  expect_list(inst$result_x_domain)
 })
+
+
