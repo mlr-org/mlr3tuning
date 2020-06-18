@@ -15,7 +15,7 @@ test_that("tuning with multiple objectives", {
   ))
 
   terminator = term("evals", n_evals = 10)
-  tuner = tnr("random_search")
+  tuner = opt("random_search")
 
   inst = TuningInstanceMulticrit$new(task, learner, resampling, measures, tune_ps, terminator)
 
