@@ -25,7 +25,7 @@ test_that("tuning with multiple objectives", {
   sp = inst$result_x_seach_space
   obj = inst$result_y
 
-  expect_names(names(sc), identical.to = tune_ps$ids())
+  expect_names(names(sp), identical.to = tune_ps$ids())
   expect_data_table(sp, min.rows = 1, ncols = length(measures))
   expect_names(names(obj), identical.to = measure_ids)
 })
