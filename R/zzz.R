@@ -30,9 +30,9 @@ register_bbotk = function() {
   }
 } # nocov end
 
-.onUnload = function(libpath) { # nolint
-  event = packageEvent("bbotk", "onLoad")
-  hooks = getHook(event)
-  pkgname = vapply(hooks, function(x) environment(x)$pkgname, NA_character_)
-  setHook(event, hooks[pkgname != "mlr3tuning"], action = "replace")
-} # nocov end
+#.onUnload = function(libpath) { # nolint
+#  event = packageEvent("bbotk", "onLoad")
+#  hooks = getHook(event)
+#  pkgname = vapply(hooks, function(x) environment(x)$pkgname, NA_character_)
+#  setHook(event, hooks[pkgname != "mlr3tuning"], action = "replace")
+#} # nocov end
