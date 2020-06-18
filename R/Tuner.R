@@ -107,7 +107,7 @@ Tuner = R6Class("Tuner",
     #'
     #' @param inst [TuningInstance].
     #'
-    #' @return Modifed `self`.
+    #' @return Modified `self`.
     optimize = function(inst) {
       # TuningInstanceMulticrit actually does not inherit from TuningInstance but from OptimInstanceMulticrit
       # in the same way as TuningInstance inherits from OptimInstance. Unfortunately multi-inheritance is not

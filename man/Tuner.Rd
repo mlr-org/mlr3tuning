@@ -150,7 +150,7 @@ Performs the tuning on a \link{TuningInstance} until termination.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Modifed \code{self}.
+Modified \code{self}.
 }
 }
 \if{html}{\out{<hr>}}
