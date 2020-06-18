@@ -17,9 +17,9 @@ of termination criteria.
 }
 \section{Dictionary}{
 
-This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary}
-\link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:\preformatted{mlr_tuners$get("design_points")
-tnr("design_points")
+This \link[bbotk:Optimizer]{bbotk::Optimizer} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary}
+\link{mlr_optimizers} or with the associated sugar function \code{\link[=opt]{opt()}}:\preformatted{mlr_optimizers$get("design_points")
+opt("design_points")
 }
 }
 
@@ -50,7 +50,7 @@ instance = TuningInstance$new(
   terminator = terminator
 )
 design = data.table(cp = c(0.1, 0.3))
-tt = tnr("design_points", design = design)
+tt = opt("design_points", design = design)
 # modifies the instance by reference
 tt$optimize(instance)
 # returns best configuration and best performance

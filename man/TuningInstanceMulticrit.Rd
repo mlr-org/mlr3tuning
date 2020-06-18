@@ -83,7 +83,7 @@ Measures to optimize.}
 \if{html}{\out{<a id="method-assign_result"></a>}}
 \if{latex}{\out{\hypertarget{method-assign_result}{}}}
 \subsection{Method \code{assign_result()}}{
-The \link{Tuner} object writes the best found points
+The \link[bbotk:Optimizer]{bbotk::Optimizer} object writes the best found points
 and estimated performance values here. For internal use.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TuningInstanceMulticrit$assign_result(xdt, ydt, learner_param_vals = NULL)}\if{html}{\out{</div>}}

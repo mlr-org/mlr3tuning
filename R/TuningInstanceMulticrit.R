@@ -40,7 +40,7 @@ TuningInstanceMulticrit = R6Class("TuningInstanceMulticrit",
     },
 
     #' @description
-    #' The [Tuner] object writes the best found points
+    #' The [bbotk::Optimizer] object writes the best found points
     #' and estimated performance values here. For internal use.
     #'
     #' @param xdt (`data.table`)\cr

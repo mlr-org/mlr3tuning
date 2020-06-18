@@ -20,7 +20,7 @@
 #'   params = list(ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 #'
 #' terminator = term("evals", n_evals = 5)
-#' tuner = tnr("grid_search")
+#' tuner = opt("grid_search")
 #' at = AutoTuner$new(
 #'   learner, resampling, measure, search_space, terminator,
 #'   tuner)
@@ -37,7 +37,7 @@ AutoTuner = R6Class("AutoTuner",
     #' All arguments from construction to create the [TuningInstance].
     instance_args = NULL,
 
-    #' @field tuner ([Tuner]).
+    #' @field tuner ([bbotk::Optimizer]).
     tuner = NULL,
 
     #' @field store_tuning_instance (`logical(1)`)\cr
@@ -66,7 +66,7 @@ AutoTuner = R6Class("AutoTuner",
     #' @param terminator ([Terminator])\cr
     #' When to stop tuning, see [TuningInstance].
     #'
-    #' @param tuner ([Tuner])\cr
+    #' @param tuner ([bbotk::Optimizer])\cr
     #' Tuning algorithm to run.
     #'
     #' @param bm_args (named `list()`)\cr

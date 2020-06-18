@@ -14,7 +14,7 @@
 #' of termination criteria.
 #'
 #' @templateVar id design_points
-#' @template section_dictionary_tuners
+#' @template section_dictionary_optimizers
 #'
 #' @section Parameters:
 #' \describe{
@@ -42,7 +42,7 @@
 #'   terminator = terminator
 #' )
 #' design = data.table(cp = c(0.1, 0.3))
-#' tt = tnr("design_points", design = design)
+#' tt = opt("design_points", design = design)
 #' # modifies the instance by reference
 #' tt$optimize(instance)
 #' # returns best configuration and best performance

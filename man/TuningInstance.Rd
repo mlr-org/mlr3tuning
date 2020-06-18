@@ -6,7 +6,7 @@
 \description{
 Specifies a general tuning scenario, including objective function
 and archive for Tuners to act upon. This class stores an \code{ObjectiveTuning}
-object that encodes the black box objective function which a \link{Optimizer} has to
+object that encodes the black box objective function which a \link[bbotk:Optimizer]{bbotk::Optimizer} has to
 optimize. It allows the basic operations of querying the objective
 at design points (\verb{$eval_batch()}), storing the evaluations in the internal
 \code{Archive} and accessing the final result (\verb{$result}).
@@ -172,7 +172,7 @@ Measure to optimize.}
 \if{html}{\out{<a id="method-assign_result"></a>}}
 \if{latex}{\out{\hypertarget{method-assign_result}{}}}
 \subsection{Method \code{assign_result()}}{
-The \link{Tuner} object writes the best found point
+The \link[bbotk:Optimizer]{bbotk::Optimizer} object writes the best found point
 and estimated performance value here. For internal use.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TuningInstance$assign_result(xdt, y, learner_param_vals = NULL)}\if{html}{\out{</div>}}

@@ -22,7 +22,7 @@ search_space = ParamSet$new(
   params = list(ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 
 terminator = term("evals", n_evals = 5)
-tuner = tnr("grid_search")
+tuner = opt("grid_search")
 at = AutoTuner$new(
   learner, resampling, measure, search_space, terminator,
   tuner)
@@ -41,7 +41,7 @@ at$learner
 \item{\code{instance_args}}{(\code{list()})\cr
 All arguments from construction to create the \link{TuningInstance}.}
 
-\item{\code{tuner}}{(\link{Tuner}).}
+\item{\code{tuner}}{(\link[bbotk:Optimizer]{bbotk::Optimizer}).}
 
 \item{\code{store_tuning_instance}}{(\code{logical(1)})\cr
 If \code{TRUE} (default), stores the internally created \link{TuningInstance}
@@ -117,7 +117,7 @@ Hyperparameter search space, see \link{TuningInstance}.}
 \item{\code{terminator}}{(\link{Terminator})\cr
 When to stop tuning, see \link{TuningInstance}.}
 
-\item{\code{tuner}}{(\link{Tuner})\cr
+\item{\code{tuner}}{(\link[bbotk:Optimizer]{bbotk::Optimizer})\cr
 Tuning algorithm to run.}
 
 \item{\code{bm_args}}{(named \code{list()})\cr

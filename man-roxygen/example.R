@@ -13,7 +13,7 @@
 #'   search_space = search_space,
 #'   terminator = terminator
 #' )
-#' tt = tnr("<%= id %>")
+#' tt = opt("<%= id %>")
 #' # modifies the instance by reference
 #' tt$optimize(instance)
 #' # returns best configuration and best performance

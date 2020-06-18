@@ -1,6 +1,6 @@
-#' @title TunerGridSearch
+#' @title OptimizerGridSearch
 #'
-#' @name mlr_tuners_grid_search
+#' @name mlr_optimizers_grid_search
 #'
 #' @description
 #' Subclass for grid search tuning.
@@ -15,7 +15,7 @@
 #' of termination criteria.
 #'
 #' @templateVar id grid_search
-#' @template section_dictionary_tuners
+#' @template section_dictionary_optimizers
 #'
 #' @section Parameters:
 #' \describe{

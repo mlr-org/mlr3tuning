@@ -1,13 +1,13 @@
-#' @title TunerGenSA
+#' @title OptimizerGenSA
 #'
-#' @name mlr_tuners_gensa
+#' @name mlr_optimizers_gensa
 #'
 #' @description
 #' Subclass for generalized simulated annealing tuning calling [GenSA::GenSA()]
 #' from package \CRANpkg{GenSA}.
 #'
 #' @templateVar id gensa
-#' @template section_dictionary_tuners
+#' @template section_dictionary_optimizers
 #'
 #' @section Parameters:
 #' \describe{
