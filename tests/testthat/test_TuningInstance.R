@@ -126,7 +126,12 @@ test_that("non-scalar hyperpars (#201)", {
 })
 
 test_that("objective_function works", {
-  inst = TEST_MAKE_INST1(values = list(maxdepth = 10), folds = 2L, measure = msr("dummy.cp.classif"), n_dim = 2)
-  y = inst$objective_function(c(0.1, 1))
+  inst = TEST_MAKE_INST1(values = list(maxdepth = 10), folds = 2L, measure = msr("dummy.cp.classif"), n_dim = 1)
+  expect_numeric(inst$objective_lower(), names = "named", len = inst$search_space$length)
+  expect_numeric(inst$objective_upper(), names = "named", len = inst$search_space$length)
+  y = inst$objective_function(c(0.1))
   expect_equal(y, 0.1)
+
+  inst = TEST_MAKE_INST1(values = list(maxdepth = 10), folds = 2L, measure = msr("dummy.cp.classif"), n_dim = 1)
+  expect_error(optimize(inst$objective_function, lower = inst$objective_lower(), upper = inst$objective_upper()), class = "terminated_error")
 })

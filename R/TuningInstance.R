@@ -176,6 +176,20 @@ TuningInstance = R6Class("TuningInstance",
       res = self$eval_batch(xdt)
       y = as.numeric(res[, self$objective$codomain$ids()[1], with=FALSE])
       if(self$objective$codomain$tags[[1]] == "minimize") y else -y
+    },
+
+    #' @description
+    #' Returns lower bounds of search space.
+    #' @return `numeric(1)`
+    objective_lower = function() {
+      self$search_space$lower
+    },
+
+    #' @description
+    #' Returns upper bounds of search space.
+    #' @return `numeric(1)`
+    objective_upper = function() {
+      self$search_space$upper
     }
   ),
 
