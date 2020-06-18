@@ -1,6 +1,6 @@
 #' @title TunerDesignPoints
 #'
-#' @name mlr_tuners_design_points
+#' @name mlr_optimizers_design_points
 #'
 #' @description
 #' Subclass for tuning w.r.t. fixed design points.
@@ -49,8 +49,8 @@
 #' instance$result
 #' # allows access of data.table of full path of all evaluations
 #' instance$archive
-TunerDesignPoints = R6Class("TunerDesignPoints",
-  inherit = Tuner,
+OptimizerDesignPoints = R6Class("OptimizerDesignPoints",
+  inherit = Optimizer,
   public = list(
 
     #' @description
@@ -86,5 +86,3 @@ TunerDesignPoints = R6Class("TunerDesignPoints",
     }
   )
 )
-
-mlr_tuners$add("design_points", TunerDesignPoints)

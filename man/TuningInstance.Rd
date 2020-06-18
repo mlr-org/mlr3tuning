@@ -6,7 +6,7 @@
 \description{
 Specifies a general tuning scenario, including objective function
 and archive for Tuners to act upon. This class stores an \code{ObjectiveTuning}
-object that encodes the black box objective function which a \link{Tuner} has to
+object that encodes the black box objective function which a \link{Optimizer} has to
 optimize. It allows the basic operations of querying the objective
 at design points (\verb{$eval_batch()}), storing the evaluations in the internal
 \code{Archive} and accessing the final result (\verb{$result}).

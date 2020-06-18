@@ -30,8 +30,7 @@
 #'
 #' @export
 #' @template example
-TunerGridSearch = R6Class("TunerGridSearch",
-  inherit = Tuner,
+OptimizerGridSearch = R6Class("OptimizerGridSearch", inherit = Optimizer,
   public = list(
 
     #' @description
@@ -64,5 +63,3 @@ TunerGridSearch = R6Class("TunerGridSearch",
     }
   )
 )
-
-mlr_tuners$add("grid_search", TunerGridSearch)

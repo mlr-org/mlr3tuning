@@ -3,7 +3,7 @@
 #' @description
 #' Specifies a general tuning scenario, including objective function
 #' and archive for Tuners to act upon. This class stores an `ObjectiveTuning`
-#' object that encodes the black box objective function which a [Tuner] has to
+#' object that encodes the black box objective function which a [Optimizer] has to
 #' optimize. It allows the basic operations of querying the objective
 #' at design points (`$eval_batch()`), storing the evaluations in the internal
 #' `Archive` and accessing the final result (`$result`).

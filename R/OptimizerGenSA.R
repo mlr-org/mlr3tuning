@@ -24,7 +24,7 @@
 #'
 #' @export
 #' @template example
-TunerGenSA = R6Class("TunerGenSA", inherit = Tuner,
+OptimizerGenSA = R6Class("OptimizerGenSA", inherit = Optimizer,
   public = list(
 
     #' @description
@@ -63,5 +63,3 @@ objective_wrapper = function(x, inst) {
   y = as.numeric(res[, inst$objective$codomain$ids()[1], with=FALSE])
   if(inst$objective$codomain$tags[[1]] == "minimize") y else -y
 }
-
-mlr_tuners$add("gensa", TunerGenSA)

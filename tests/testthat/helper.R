@@ -1,13 +1,13 @@
 lapply(list.files(system.file("testthat", package = "mlr3"), pattern = "^helper.*\\.[rR]$", full.names = TRUE), source)
 
 #FIXME: This function should be exported so it can be used for tests in other packages
-expect_tuner = function(tuner) {
-  expect_r6(tuner, "Tuner",
+expect_optimizer = function(optimizer) {
+  expect_r6(optimizer, "Optimizer",
     public = c("optimize", "param_set"),
     private = ".optimize"
   )
-  expect_is(tuner$param_set, "ParamSet")
-  expect_function(tuner$optimize, args = "inst")
+  expect_is(optimizer$param_set, "ParamSet")
+  expect_function(optimizer$optimize, args = "inst")
 }
 
 expect_terminator = function(term) {
@@ -37,7 +37,7 @@ test_tuner = function(key, ..., n_dim = 1L, term_evals = 2L, real_evals = term_e
   term = term("evals", n_evals = term_evals)
   inst = TuningInstance$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), ps, term)
   tuner = tnr(key, ...)
-  expect_tuner(tuner)
+  expect_optimizer(tuner)
   tuner$optimize(inst)
   archive = inst$archive
 
@@ -63,7 +63,7 @@ test_tuner_dependencies = function(key, ..., term_evals = 2L) {
   ll = LearnerRegrDepParams$new()
   inst = TuningInstance$new(tsk("boston_housing"), ll, rsmp("holdout"), msr("regr.mse"), ll$param_set, term)
   tuner = tnr(key, ...)
-  expect_tuner(tuner)
+  expect_optimizer(tuner)
   tuner$optimize(inst)
   archive = inst$archive
 
