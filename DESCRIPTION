@@ -63,6 +63,7 @@ Collate:
     'mlr_tuners.R'
     'Tuner.R'
     'TunerDesignPoints.R'
+    'TunerFromOptimizer.R'
     'TunerGenSA.R'
     'TunerGridSearch.R'
     'TunerRandomSearch.R'

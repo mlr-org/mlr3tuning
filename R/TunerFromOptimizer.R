@@ -10,6 +10,9 @@ TunerFromOptimizer = R6Class("TunerFromOptimizer",
       #' @description
       #' Creates a new instance of this [R6][R6::R6Class] class.
       #'
+      #' @param optimizer [bbotk::Optimizer]\cr
+      #' Optimizer that is called.
+      #'
       #' @param param_set [paradox::ParamSet]\cr
       #' Set of control parameters for tuner.
       #'
