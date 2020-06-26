@@ -52,7 +52,7 @@ Suggests:
     rpart,
     testthat
 Remotes:
-    mlr-org/bbotk@optimizer_to_tuner
+    mlr-org/bbotk
 Encoding: UTF-8
 NeedsCompilation: no
 Roxygen: list(markdown = TRUE)
