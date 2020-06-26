@@ -31,13 +31,7 @@ Internally used to transform \link[bbotk:Optimizer]{bbotk::Optimizer} to \link{T
 \subsection{Method \code{new()}}{
 Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TunerFromOptimizer$new(
-  optimizer,
-  param_set,
-  param_classes,
-  properties,
-  packages = character()
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TunerFromOptimizer$new(optimizer)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -45,21 +39,6 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
 \describe{
 \item{\code{optimizer}}{\link[bbotk:Optimizer]{bbotk::Optimizer}\cr
 Optimizer that is called.}
-
-\item{\code{param_set}}{\link[paradox:ParamSet]{paradox::ParamSet}\cr
-Set of control parameters for tuner.}
-
-\item{\code{param_classes}}{\code{character()}\cr
-Supported parameter classes for learner hyperparameters that the tuner
-can optimize, subclasses of \link[paradox:Param]{paradox::Param}.}
-
-\item{\code{properties}}{\code{character()}\cr
-Set of properties of the tuner. Must be a subset of
-\code{\link[mlr3:mlr_reflections]{mlr_reflections$tuner_properties}}.}
-
-\item{\code{packages}}{\code{character()}\cr
-Set of required packages. Note that these packages will be loaded via
-\code{\link[=requireNamespace]{requireNamespace()}}, and are not attached.}
 }
 \if{html}{\out{</div>}}
 }

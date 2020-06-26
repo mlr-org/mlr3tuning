@@ -12,26 +12,11 @@ TunerFromOptimizer = R6Class("TunerFromOptimizer",
       #'
       #' @param optimizer [bbotk::Optimizer]\cr
       #' Optimizer that is called.
-      #'
-      #' @param param_set [paradox::ParamSet]\cr
-      #' Set of control parameters for tuner.
-      #'
-      #' @param param_classes `character()`\cr
-      #' Supported parameter classes for learner hyperparameters that the tuner
-      #' can optimize, subclasses of [paradox::Param].
-      #'
-      #' @param properties `character()`\cr
-      #' Set of properties of the tuner. Must be a subset of
-      #' [`mlr_reflections$tuner_properties`][mlr3::mlr_reflections].
-      #'
-      #' @param packages `character()`\cr
-      #' Set of required packages. Note that these packages will be loaded via
-      #' [requireNamespace()], and are not attached.
-      initialize = function(optimizer, param_set, param_classes, properties,
-                            packages = character()) {
+      initialize = function(optimizer) {
         private$.optimizer = optimizer
-        super$initialize(param_set = param_set, param_classes = param_classes,
-                         properties = properties)
+        super$initialize(param_set = optimizer$param_set,
+                         param_classes = optimizer$param_classes,
+                         properties = optimizer$properties)
       },
 
       #' @description
