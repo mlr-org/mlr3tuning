@@ -165,12 +165,12 @@ Tuner = R6Class("Tuner",
     .optimize = function(inst) stop("abstract"),
 
     .assign_result = function(inst) {
-      assert_r6(inst, "OptimInstance")
+      assert_r6(inst, "TuningInstance")
       res = inst$archive$best()
 
       xdt = res[, inst$search_space$ids(), with = FALSE]
 
-      if (inherits(inst, "OptimInstanceMulticrit")) {
+      if (inherits(inst, "TuningInstanceMulticrit")) {
         ydt = res[, inst$objective$codomain$ids(), with = FALSE]
         inst$assign_result(xdt, ydt)
       } else {
