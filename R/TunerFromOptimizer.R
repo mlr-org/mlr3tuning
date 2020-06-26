@@ -13,7 +13,7 @@ TunerFromOptimizer = R6Class("TunerFromOptimizer",
       #' @param optimizer [bbotk::Optimizer]\cr
       #' Optimizer that is called.
       initialize = function(optimizer) {
-        private$.optimizer = optimizer
+        private$.optimizer = assert_optimizer(optimizer)
         super$initialize(param_set = optimizer$param_set,
                          param_classes = optimizer$param_classes,
                          properties = optimizer$properties)
@@ -26,9 +26,10 @@ TunerFromOptimizer = R6Class("TunerFromOptimizer",
       #'
       #' @return Modified `self`.
       optimize = function(inst) {
-        # TuningInstanceMulticrit actually does not inherit from TuningInstance but from OptimInstanceMulticrit
-        # in the same way as TuningInstance inherits from OptimInstance. Unfortunately multi-inheritance is not
-        # in R6.
+        # TuningInstanceMulticrit actually does not inherit from TuningInstance
+        # but from OptimInstanceMulticrit in the same way as TuningInstance
+        # inherits from OptimInstance. Unfortunately multi-inheritance is not in
+        # R6.
         assert_multi_class(inst, c("TuningInstance", "TuningInstanceMulticrit"))
         private$.optimizer$optimize(inst)
       }
