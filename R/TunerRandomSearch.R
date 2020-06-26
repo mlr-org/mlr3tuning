@@ -33,7 +33,7 @@ TunerRandomSearch = R6Class("TunerRandomSearch",
     initialize = function() {
       optimizer = OptimizerRandomSearch$new()
       super$initialize(
-        optimizer = optimizer
+        optimizer = OptimizerRandomSearch$new()
       )
     }
   )
