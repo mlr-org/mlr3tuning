@@ -49,7 +49,7 @@ instance = TuningInstanceSingleCrit$new(
   search_space = search_space,
   terminator = terminator
 )
-design = data.table(cp = c(0.1, 0.3))
+design = data.table(cp = c(0.1, 0.01))
 tt = tnr("design_points", design = design)
 # modifies the instance by reference
 tt$optimize(instance)
