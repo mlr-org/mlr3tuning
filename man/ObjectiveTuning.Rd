@@ -6,7 +6,7 @@
 \description{
 Stores the objective function that estimates the performance of
 hyperparameter configurations. This class is usually constructed internally
-by the \link{TuningInstance}.
+by the \link{TuningInstanceSingleCrit} / \link{TuningInstanceMultiCrit}.
 }
 \section{Super class}{
 \code{\link[bbotk:Objective]{bbotk::Objective}} -> \code{ObjectiveTuning}

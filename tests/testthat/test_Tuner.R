@@ -19,7 +19,7 @@ test_that("proper error if tuner cannot handle deps", {
   ))
   ps$add_dep("minsplit", on = "cp", cond = CondEqual$new(0.1))
   te = term("evals", n_evals = 2)
-  inst = TuningInstance$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), ps, te)
+  inst = TuningInstanceSingleCrit$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), ps, te)
   tt = TunerGenSA$new()
   expect_error(tt$optimize(inst), "dependencies")
 })
@@ -48,5 +48,37 @@ test_that("we get a result when some subordinate params are not fulfilled", {
   expect_equal(inst$result_y, c(dummy.cp.regr = 0.1))
   expect_equal(inst$result_x_domain, list(xx = "b", cp = 0.1))
   expect_equal(inst$result_x_domain, inst$result_learner_param_vals)
+})
+
+test_that("print method workds", {
+  param_set = ParamSet$new(list(ParamLgl$new("p1")))
+  param_set$values$p1 = TRUE
+  param_classes = "ParamLgl"
+  properties = "single-crit"
+  packages = "ecr"
+
+  tuner = Tuner$new(param_set = param_set,
+                    param_classes = param_classes,
+                    properties = "single-crit",
+                    packages = packages)
+  expect_output(print(tuner), "p1=TRUE")
+  expect_output(print(tuner), "ParamLgl")
+  expect_output(print(tuner), "single-crit")
+  expect_output(print(tuner), "ecr")
+})
+
+test_that("optimize does not work in abstract class", {
+  param_set = ParamSet$new(list(ParamLgl$new("p1")))
+  param_set$values$p1 = TRUE
+  param_classes = "ParamDbl"
+  properties = "single-crit"
+  packages = character(0)
+
+  tuner = Tuner$new(param_set = param_set,
+                    param_classes = param_classes,
+                    properties = "single-crit",
+                    packages = packages)
+  inst = TEST_MAKE_INST1()
+  expect_error(tuner$optimize(inst), "abstract")
 })
 

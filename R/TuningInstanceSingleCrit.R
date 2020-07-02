@@ -1,4 +1,4 @@
-#' @title TuningInstance
+#' @title TuningInstanceSingleCrit
 #'
 #' @description
 #' Specifies a general tuning scenario, including objective function
@@ -35,7 +35,7 @@
 #' )
 #'
 #' terminator = term("evals", n_evals = 5)
-#' inst = TuningInstance$new(
+#' inst = TuningInstanceSingleCrit$new(
 #'   task = task,
 #'   learner = learner,
 #'   resampling = resampling,
@@ -75,7 +75,7 @@
 #'   ParamDbl$new("x", lower = 0, upper = 1)
 #' ))
 #'
-#' inst = TuningInstance$new(
+#' inst = TuningInstanceSingleCrit$new(
 #'   task = tsk("wine"),
 #'   learner = learner,
 #'   resampling = rsmp("cv", folds = 3),
@@ -93,8 +93,8 @@
 #'
 #' # column errors: multiple errors recorded
 #' print(archive)
-TuningInstance = R6Class("TuningInstance",
-  inherit = OptimInstance,
+TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
+  inherit = OptimInstanceSingleCrit,
   public = list(
 
     #' @description
@@ -133,14 +133,14 @@ TuningInstance = R6Class("TuningInstance",
     #' and estimated performance value here. For internal use.
     #'
     #' @param xdt (`data.table`)\cr
-    #'   x values as `data.table` with one row.
-    #'   Contains the value in the *search space* of the [TuningInstance] object.
-    #'   Can contain additional columns for extra information.
+    #'   x values as `data.table` with one row. Contains the value in the
+    #'   *search space* of the [TuningInstanceSingleCrit] object. Can contain
+    #'   additional columns for extra information.
     #' @param y (`numeric(1)`)\cr
     #'   Optimal outcome.
     #' @param learner_param_vals (`list()`)\cr
-    #'   Fixed parameter values of the learner that are neither part of the *search space* nor the domain.
-    #    Named list.
+    #'   Fixed parameter values of the learner that are neither part of the
+    #    *search space* nor the domain. Named list.
     assign_result = function(xdt, y, learner_param_vals = NULL) {
       # set the column with the learner param_vals that were not optimized over but set implicitly
       assert_list(learner_param_vals, null.ok = TRUE, names = "named")

@@ -5,7 +5,7 @@
 #'   ParamDbl$new("cp", lower = 0.001, upper = 0.1)
 #' ))
 #' terminator = term("evals", n_evals = 3)
-#' instance = TuningInstance$new(
+#' instance = TuningInstanceSingleCrit$new(
 #'   task = tsk("iris"),
 #'   learner = lrn("classif.rpart"),
 #'   resampling = rsmp("holdout"),

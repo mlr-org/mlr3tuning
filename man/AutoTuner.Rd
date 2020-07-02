@@ -39,12 +39,12 @@ at$learner
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
 \item{\code{instance_args}}{(\code{list()})\cr
-All arguments from construction to create the \link{TuningInstance}.}
+All arguments from construction to create the \link{TuningInstanceSingleCrit}.}
 
 \item{\code{tuner}}{(\link{Tuner}).}
 
 \item{\code{store_tuning_instance}}{(\code{logical(1)})\cr
-If \code{TRUE} (default), stores the internally created \link{TuningInstance}
+If \code{TRUE} (default), stores the internally created \link{TuningInstanceSingleCrit}
 with all intermediate results in slot \verb{$tuning_instance}.}
 }
 \if{html}{\out{</div>}}
@@ -52,16 +52,16 @@ with all intermediate results in slot \verb{$tuning_instance}.}
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
-\item{\code{archive}}{Returns TuningInstance archive}
+\item{\code{archive}}{Returns TuningInstanceSingleCrit archive}
 
 \item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner})\cr
 Trained learner}
 
-\item{\code{tuning_instance}}{(\link{TuningInstance})\cr
+\item{\code{tuning_instance}}{(\link{TuningInstanceSingleCrit})\cr
 Internally created tuning instance with all intermediate results.}
 
 \item{\code{tuning_result}}{(named \code{list()})\cr
-Short-cut to \code{result} from \link{TuningInstance}.}
+Short-cut to \code{result} from \link{TuningInstanceSingleCrit}.}
 
 \item{\code{param_set}}{(paradox::ParamSet].}
 }
@@ -100,10 +100,10 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner})\cr
-Learner to tune, see \link{TuningInstance}.}
+Learner to tune, see \link{TuningInstanceSingleCrit}.}
 
 \item{\code{resampling}}{(\link[mlr3:Resampling]{mlr3::Resampling})\cr
-Resampling strategy during tuning, see \link{TuningInstance}. This
+Resampling strategy during tuning, see \link{TuningInstanceSingleCrit}. This
 \link[mlr3:Resampling]{mlr3::Resampling} is meant to be the \strong{inner} resampling, operating
 on the training set of an arbitrary outer resampling. For this reason
 it is not feasible to pass an instantiated \link[mlr3:Resampling]{mlr3::Resampling} here.}
@@ -112,16 +112,16 @@ it is not feasible to pass an instantiated \link[mlr3:Resampling]{mlr3::Resampli
 Performance measure to optimize.}
 
 \item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
-Hyperparameter search space, see \link{TuningInstance}.}
+Hyperparameter search space, see \link{TuningInstanceSingleCrit}.}
 
 \item{\code{terminator}}{(\link{Terminator})\cr
-When to stop tuning, see \link{TuningInstance}.}
+When to stop tuning, see \link{TuningInstanceSingleCrit}.}
 
 \item{\code{tuner}}{(\link{Tuner})\cr
 Tuning algorithm to run.}
 
 \item{\code{bm_args}}{(named \code{list()})\cr
-Further arguments for \code{\link[mlr3:benchmark]{mlr3::benchmark()}}, see \link{TuningInstance}.}
+Further arguments for \code{\link[mlr3:benchmark]{mlr3::benchmark()}}, see \link{TuningInstanceSingleCrit}.}
 }
 \if{html}{\out{</div>}}
 }

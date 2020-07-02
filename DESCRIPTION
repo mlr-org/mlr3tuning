@@ -52,7 +52,8 @@ Suggests:
     rpart,
     testthat
 Remotes:
-    mlr-org/bbotk
+    mlr-org/bbotk,
+    mlr-org/paradox
 Encoding: UTF-8
 NeedsCompilation: no
 Roxygen: list(markdown = TRUE)
@@ -63,11 +64,12 @@ Collate:
     'mlr_tuners.R'
     'Tuner.R'
     'TunerDesignPoints.R'
+    'TunerFromOptimizer.R'
     'TunerGenSA.R'
     'TunerGridSearch.R'
     'TunerRandomSearch.R'
-    'TuningInstance.R'
     'TuningInstanceMulticrit.R'
+    'TuningInstanceSingleCrit.R'
     'assertions.R'
     'helper.R'
     'reexport.R'

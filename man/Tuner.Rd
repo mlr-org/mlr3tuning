@@ -7,15 +7,15 @@
 Abstract \code{Tuner} class that implements the base functionality each tuner must
 provide. A tuner is an object that describes the tuning strategy, i.e. how to
 optimize the black-box function and its feasible set defined by the
-\link{TuningInstance} object.
+\link{TuningInstanceSingleCrit} / \link{TuningInstanceMultiCrit} object.
 
 A list of measures can be passed to the instance, and they will always be all
 evaluated. However, single-criteria tuners optimize only the first measure.
 
-A tuner must write its result into the \link{TuningInstance} using the
-\code{assign_result} method of the \link[bbotk:OptimInstance]{bbotk::OptimInstance} at the end of its tuning
-in order to store the best selected hyperparameter configuration and its
-estimated performance vector.
+A tuner must write its result into the \link{TuningInstanceSingleCrit} /
+\link{TuningInstanceMultiCrit} using the \code{assign_result} method of the
+\link[bbotk:OptimInstance]{bbotk::OptimInstance} at the end of its tuning in order to store the best
+selected hyperparameter configuration and its estimated performance vector.
 }
 \section{Private Methods}{
 
@@ -37,10 +37,10 @@ A subclass is implemented in the following way:
 \item Specify the private abstract method \verb{$.tune()} and use it to call into
 your optimizer.
 \item You need to call \code{instance$eval_batch()} to evaluate design points.
-\item The batch evaluation is requested at the \link{TuningInstance} object
-\code{instance}, so each batch is possibly executed in parallel via
-\code{\link[mlr3:benchmark]{mlr3::benchmark()}}, and all evaluations are stored inside of
-\code{instance$archive}.
+\item The batch evaluation is requested at the \link{TuningInstanceSingleCrit} /
+\link{TuningInstanceMultiCrit} object \code{instance}, so each batch is possibly
+executed in parallel via \code{\link[mlr3:benchmark]{mlr3::benchmark()}}, and all evaluations are stored
+inside of \code{instance$archive}.
 \item Before the batch evaluation, the \link{Terminator} is checked, and if it is
 positive, an exception of class \code{"terminated_error"} is generated. In the
 later case the current batch of evaluations is still stored in \code{instance},
@@ -67,7 +67,7 @@ search_space = ParamSet$new(list(
   ParamDbl$new("cp", lower = 0.001, upper = 0.1)
 ))
 terminator = term("evals", n_evals = 3)
-instance = TuningInstance$new(
+instance = TuningInstanceSingleCrit$new(
   task = tsk("iris"),
   learner = lrn("classif.rpart"),
   resampling = rsmp("holdout"),
@@ -81,27 +81,32 @@ tt = tnr("random_search")
 tt$optimize(instance)
 # returns best configuration and best performance
 instance$result
-# allows access of data.table / benchmark result of full path of all evaluations
+# allows access of data.table / benchmark result of full path of all
+# evaluations
 instance$archive
 }
-\section{Super class}{
-\code{\link[bbotk:Optimizer]{bbotk::Optimizer}} -> \code{Tuner}
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{param_set}}{(\link[paradox:ParamSet]{paradox::ParamSet}).}
+
+\item{\code{param_classes}}{(\code{character()}).}
+
+\item{\code{properties}}{(\code{character()}).}
+
+\item{\code{packages}}{(\code{character()}).}
+}
+\if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{Tuner$new()}}
+\item \href{#method-format}{\code{Tuner$format()}}
+\item \href{#method-print}{\code{Tuner$print()}}
 \item \href{#method-optimize}{\code{Tuner$optimize()}}
 \item \href{#method-clone}{\code{Tuner$clone()}}
 }
-}
-\if{html}{
-\out{<details open ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Optimizer" data-id="format">}\href{../../bbotk/html/Optimizer.html#method-format}{\code{bbotk::Optimizer$format()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Optimizer" data-id="print">}\href{../../bbotk/html/Optimizer.html#method-print}{\code{bbotk::Optimizer$print()}}\out{</span>}
-}
-\out{</details>}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
@@ -134,10 +139,34 @@ Set of required packages. Note that these packages will be loaded via
 }
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-format"></a>}}
+\if{latex}{\out{\hypertarget{method-format}{}}}
+\subsection{Method \code{format()}}{
+Helper for print outputs.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Tuner$format()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-print"></a>}}
+\if{latex}{\out{\hypertarget{method-print}{}}}
+\subsection{Method \code{print()}}{
+Print method.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Tuner$print()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+(\code{character()}).
+}
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-optimize"></a>}}
 \if{latex}{\out{\hypertarget{method-optimize}{}}}
 \subsection{Method \code{optimize()}}{
-Performs the tuning on a \link{TuningInstance} until termination.
+Performs the tuning on a \link{TuningInstanceSingleCrit} or
+\link{TuningInstanceMultiCrit} until termination.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Tuner$optimize(inst)}\if{html}{\out{</div>}}
 }
@@ -145,7 +174,7 @@ Performs the tuning on a \link{TuningInstance} until termination.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{inst}}{\link{TuningInstance}.}
+\item{\code{inst}}{(\link{TuningInstanceSingleCrit} | \link{TuningInstanceMultiCrit}).}
 }
 \if{html}{\out{</div>}}
 }

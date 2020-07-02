@@ -5,7 +5,7 @@ test_that("AutoTuner / train+predict", {
   task = tsk("iris")
   ps = TEST_MAKE_PS1(n_dim = 1)
   ms = MeasureDummyCPClassif$new(fun = function(cp) if (cp == 0.2) 0 else 1) # lets fake a measure, so we control the best config
-  tuner = tnr("grid_search", resolution = 3)
+  tuner = tnr("grid_search", resolution = 4)
   at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, ps, te, tuner = tuner)
   expect_learner(at)
   at$train(task)
@@ -28,12 +28,12 @@ test_that("AutoTuner / resample", {
   inner_evals = 3L
 
   ms = MeasureDummyCPClassif$new(fun = function(cp) if (cp == 0.2) 0 else 1) # lets fake a measure, so we control the best config
-  tuner = tnr("grid_search", resolution = 3)
+  tuner = tnr("grid_search", resolution = 4)
   r_inner = rsmp("holdout")
   r_outer = rsmp("cv", folds = 2)
   param_set = TEST_MAKE_PS1()
   te = term("evals", n_evals = inner_evals)
-  tuner = tnr("grid_search", resolution = 3)
+  tuner = tnr("grid_search", resolution = 4)
   at = AutoTuner$new(lrn("classif.rpart", predict_type = "prob"), r_inner, ms, param_set, te, tuner)
 
   expect_null(at$tuning_instance)
@@ -47,7 +47,7 @@ test_that("AutoTuner / resample", {
     assert_r6(ll, "AutoTuner")
     expect_equal(ll$learner$param_set$values, list(xval = 0, cp = 0.2))
     inst = ll$tuning_instance
-    assert_r6(inst, "TuningInstance")
+    assert_r6(inst, "TuningInstanceSingleCrit")
     expect_data_table(inst$archive$data(), nrows = inner_evals)
     expect_numeric(inst$result_y, len = 1L)
   })
