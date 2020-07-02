@@ -51,7 +51,7 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
     #'   Optimal outcomes, e.g. the Pareto front.
     #' @param learner_param_vals (`list()`)\cr
     #'   Fixed parameter values of the learner that are neither part of the
-    #*search space* nor the domain. List of named lists.
+    #`   *search space* nor the domain. List of named lists.
     assign_result = function(xdt, ydt, learner_param_vals = NULL) {
       # set the column with the learner param_vals that were not optimized over but set implicitly
 
