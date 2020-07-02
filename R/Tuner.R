@@ -170,7 +170,7 @@ Tuner = R6Class("Tuner",
     .optimize = function(inst) stop("abstract"),
 
     .assign_result = function(inst) {
-      assert_r6(inst, "OptimInstance")
+      assert_multi_class(inst, c("TuningInstanceSingleCrit", "TuningInstanceMultiCrit"))
       res = inst$archive$best()
 
       xdt = res[, inst$search_space$ids(), with = FALSE]

@@ -47,7 +47,7 @@ test_that("AutoTuner / resample", {
     assert_r6(ll, "AutoTuner")
     expect_equal(ll$learner$param_set$values, list(xval = 0, cp = 0.2))
     inst = ll$tuning_instance
-    assert_r6(inst, "OptimInstance")
+    assert_r6(inst, "TuningInstanceSingleCrit")
     expect_data_table(inst$archive$data(), nrows = inner_evals)
     expect_numeric(inst$result_y, len = 1L)
   })
