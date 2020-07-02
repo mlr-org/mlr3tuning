@@ -145,19 +145,23 @@ Tuner = R6Class("Tuner",
     #'
     #' @return Modified `self`.
     optimize = function(inst) {
-      # TuningInstanceMulticrit actually does not inherit from TuningInstance
-      # but from OptimInstanceMulticrit in the same way as TuningInstance
-      # inherits from OptimInstance. Unfortunately multi-inheritance is not in
-      # R6.
       assert_multi_class(inst, c("TuningInstanceSingleCrit", "TuningInstanceMultiCrit"))
       assert_instance_properties(self, inst)
       inst$archive$start_time = Sys.time()
 
+      lg$info("Starting to optimize %i parameter(s) with '%s' and '%s'",
+              inst$search_space$length, self$format(), inst$terminator$format())
       tryCatch({
         private$.optimize(inst)
       }, terminated_error = function(cond) {
       })
       private$.assign_result(inst)
+      invisible(NULL)
+      lg$info("Finished optimizing after %i evaluation(s)",
+              inst$archive$n_evals)
+      lg$info("Result:")
+      lg$info(capture.output(print(
+        inst$result, lass = FALSE, row.names = FALSE, print.keys = FALSE)))
       invisible(NULL)
     }
   ),
