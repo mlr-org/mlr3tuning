@@ -1,4 +1,4 @@
-context("TuningInstanceMulticrit")
+context("TuningInstanceMultiCrit")
 
 test_that("tuning with multiple objectives", {
 
@@ -17,7 +17,7 @@ test_that("tuning with multiple objectives", {
   terminator = term("evals", n_evals = 10)
   tuner = tnr("random_search")
 
-  inst = TuningInstanceMulticrit$new(task, learner, resampling, measures, tune_ps, terminator)
+  inst = TuningInstanceMultiCrit$new(task, learner, resampling, measures, tune_ps, terminator)
 
   tuner$optimize(inst)
 

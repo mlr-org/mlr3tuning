@@ -34,14 +34,14 @@ AutoTuner = R6Class("AutoTuner",
   public = list(
 
     #' @field instance_args (`list()`)\cr
-    #' All arguments from construction to create the [TuningInstance].
+    #' All arguments from construction to create the [TuningInstanceSingleCrit].
     instance_args = NULL,
 
     #' @field tuner ([Tuner]).
     tuner = NULL,
 
     #' @field store_tuning_instance (`logical(1)`)\cr
-    #' If `TRUE` (default), stores the internally created [TuningInstance]
+    #' If `TRUE` (default), stores the internally created [TuningInstanceSingleCrit]
     #' with all intermediate results in slot `$tuning_instance`.
     store_tuning_instance = TRUE,
 
@@ -49,10 +49,10 @@ AutoTuner = R6Class("AutoTuner",
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #'
     #' @param learner ([mlr3::Learner])\cr
-    #' Learner to tune, see [TuningInstance].
+    #' Learner to tune, see [TuningInstanceSingleCrit].
     #'
     #' @param resampling ([mlr3::Resampling])\cr
-    #' Resampling strategy during tuning, see [TuningInstance]. This
+    #' Resampling strategy during tuning, see [TuningInstanceSingleCrit]. This
     #' [mlr3::Resampling] is meant to be the **inner** resampling, operating
     #' on the training set of an arbitrary outer resampling. For this reason
     #' it is not feasible to pass an instantiated [mlr3::Resampling] here.
@@ -61,16 +61,16 @@ AutoTuner = R6Class("AutoTuner",
     #' Performance measure to optimize.
     #'
     #' @param search_space ([paradox::ParamSet])\cr
-    #' Hyperparameter search space, see [TuningInstance].
+    #' Hyperparameter search space, see [TuningInstanceSingleCrit].
     #'
     #' @param terminator ([Terminator])\cr
-    #' When to stop tuning, see [TuningInstance].
+    #' When to stop tuning, see [TuningInstanceSingleCrit].
     #'
     #' @param tuner ([Tuner])\cr
     #' Tuning algorithm to run.
     #'
     #' @param bm_args (named `list()`)\cr
-    #' Further arguments for [mlr3::benchmark()], see [TuningInstance].
+    #' Further arguments for [mlr3::benchmark()], see [TuningInstanceSingleCrit].
     initialize = function(learner, resampling, measure, search_space,
       terminator, tuner) {
       ia = list()
@@ -101,7 +101,7 @@ AutoTuner = R6Class("AutoTuner",
 
   active = list(
 
-    #' @field archive Returns TuningInstance archive
+    #' @field archive Returns TuningInstanceSingleCrit archive
     archive = function() self$tuning_instance$archive,
 
     #' @field learner ([mlr3::Learner])\cr
@@ -115,12 +115,12 @@ AutoTuner = R6Class("AutoTuner",
       }
     },
 
-    #' @field tuning_instance ([TuningInstance])\cr
+    #' @field tuning_instance ([TuningInstanceSingleCrit])\cr
     #'   Internally created tuning instance with all intermediate results.
     tuning_instance = function() self$model$tuning_instance,
 
     #' @field tuning_result (named `list()`)\cr
-    #'   Short-cut to `result` from [TuningInstance].
+    #'   Short-cut to `result` from [TuningInstanceSingleCrit].
     tuning_result = function() self$tuning_instance$result,
 
     #' @field param_set (paradox::ParamSet].
@@ -146,7 +146,7 @@ AutoTuner = R6Class("AutoTuner",
       # construct instance from args; then tune
       ia = self$instance_args
       ia$task = task
-      instance = do.call(TuningInstance$new, ia)
+      instance = do.call(TuningInstanceSingleCrit$new, ia)
       self$tuner$optimize(instance)
 
       # get learner, set params to optimal, then train we REALLY need to clone

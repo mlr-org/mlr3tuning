@@ -3,7 +3,7 @@
 #' @description
 #' Stores the objective function that estimates the performance of
 #' hyperparameter configurations. This class is usually constructed internally
-#' by the [TuningInstance].
+#' by the [TuningInstanceSingleCrit] / [TuningInstanceMultiCrit].
 #'
 #' @export
 ObjectiveTuning = R6Class("ObjectiveTuning",

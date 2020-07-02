@@ -1,6 +1,6 @@
-context("TuningInstance")
+context("TuningInstanceSingleCrit")
 
-test_that("TuningInstance", {
+test_that("TuningInstanceSingleCrit", {
   inst = TEST_MAKE_INST1(values = list(maxdepth = 10), folds = 2L, measure = msr("dummy.cp.classif"), n_dim = 2)
   # test empty inst
   expect_data_table(inst$archive$data(), nrows = 0)
@@ -96,7 +96,7 @@ test_that("tuning with custom resampling", {
   terminator = term("evals", n_evals = 10)
   tuner = tnr("random_search")
 
-  inst = TuningInstance$new(task, learner, resampling, measure, tune_ps, terminator)
+  inst = TuningInstanceSingleCrit$new(task, learner, resampling, measure, tune_ps, terminator)
   tuner$optimize(inst)
   rr = inst$archive$data()$resample_result
   expect_list(rr, len = 10)
@@ -114,7 +114,7 @@ test_that("non-scalar hyperpars (#201)", {
   requireNamespace("mlr3pipelines")
   `%>>%` = getFromNamespace("%>>%", asNamespace("mlr3pipelines"))
 
-  inst = TuningInstance$new(tsk("iris"),
+  inst = TuningInstanceSingleCrit$new(tsk("iris"),
     mlr3pipelines::po("select") %>>% lrn("classif.rpart"),
     rsmp("holdout"), msr("classif.ce"),
     paradox::ParamSet$new(list(

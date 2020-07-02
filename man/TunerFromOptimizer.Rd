@@ -47,7 +47,8 @@ Optimizer that is called.}
 \if{html}{\out{<a id="method-optimize"></a>}}
 \if{latex}{\out{\hypertarget{method-optimize}{}}}
 \subsection{Method \code{optimize()}}{
-Performs the tuning on a \link{TuningInstance} until termination.
+Performs the tuning on a \link{TuningInstanceSingleCrit} /
+\link{TuningInstanceMultiCrit} until termination.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TunerFromOptimizer$optimize(inst)}\if{html}{\out{</div>}}
 }
@@ -55,7 +56,7 @@ Performs the tuning on a \link{TuningInstance} until termination.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{inst}}{\link{TuningInstance}.}
+\item{\code{inst}}{(\link{TuningInstanceSingleCrit} | \link{TuningInstanceMultiCrit}).}
 }
 \if{html}{\out{</div>}}
 }

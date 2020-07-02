@@ -6,15 +6,15 @@
 #' Abstract `Tuner` class that implements the base functionality each tuner must
 #' provide. A tuner is an object that describes the tuning strategy, i.e. how to
 #' optimize the black-box function and its feasible set defined by the
-#' [TuningInstance] object.
+#' [TuningInstanceSingleCrit] / [TuningInstanceMultiCrit] object.
 #'
 #' A list of measures can be passed to the instance, and they will always be all
 #' evaluated. However, single-criteria tuners optimize only the first measure.
 #'
-#' A tuner must write its result into the [TuningInstance] using the
-#' `assign_result` method of the [bbotk::OptimInstance] at the end of its tuning
-#' in order to store the best selected hyperparameter configuration and its
-#' estimated performance vector.
+#' A tuner must write its result into the [TuningInstanceSingleCrit] /
+#' [TuningInstanceMultiCrit] using the `assign_result` method of the
+#' [bbotk::OptimInstance] at the end of its tuning in order to store the best
+#' selected hyperparameter configuration and its estimated performance vector.
 #'
 #' @section Private Methods:
 #' * `.optimize(instance)` -> `NULL`\cr
@@ -30,10 +30,10 @@
 #'  * Specify the private abstract method `$.tune()` and use it to call into
 #'  your optimizer.
 #'  * You need to call `instance$eval_batch()` to evaluate design points.
-#'  * The batch evaluation is requested at the [TuningInstance] object
-#'  `instance`, so each batch is possibly executed in parallel via
-#'  [mlr3::benchmark()], and all evaluations are stored inside of
-#'  `instance$archive`.
+#'  * The batch evaluation is requested at the [TuningInstanceSingleCrit] /
+#'  [TuningInstanceMultiCrit] object `instance`, so each batch is possibly
+#'  executed in parallel via [mlr3::benchmark()], and all evaluations are stored
+#'  inside of `instance$archive`.
 #'  * Before the batch evaluation, the [Terminator] is checked, and if it is
 #'  positive, an exception of class `"terminated_error"` is generated. In the
 #'  later case the current batch of evaluations is still stored in `instance`,
@@ -59,7 +59,7 @@
 #'   ParamDbl$new("cp", lower = 0.001, upper = 0.1)
 #' ))
 #' terminator = term("evals", n_evals = 3)
-#' instance = TuningInstance$new(
+#' instance = TuningInstanceSingleCrit$new(
 #'   task = tsk("iris"),
 #'   learner = lrn("classif.rpart"),
 #'   resampling = rsmp("holdout"),
@@ -138,9 +138,10 @@ Tuner = R6Class("Tuner",
     },
 
     #' @description
-    #' Performs the tuning on a [TuningInstance] until termination.
+    #' Performs the tuning on a [TuningInstanceSingleCrit] or
+    #' [TuningInstanceMultiCrit] until termination.
     #'
-    #' @param inst [TuningInstance].
+    #' @param inst ([TuningInstanceSingleCrit] | [TuningInstanceMultiCrit]).
     #'
     #' @return Modified `self`.
     optimize = function(inst) {
@@ -148,8 +149,7 @@ Tuner = R6Class("Tuner",
       # but from OptimInstanceMulticrit in the same way as TuningInstance
       # inherits from OptimInstance. Unfortunately multi-inheritance is not in
       # R6.
-
-      assert_multi_class(inst, c("TuningInstance", "TuningInstanceMulticrit"))
+      assert_multi_class(inst, c("TuningInstanceSingleCrit", "TuningInstanceMultiCrit"))
       assert_instance_properties(self, inst)
 
       tryCatch({
@@ -165,7 +165,7 @@ Tuner = R6Class("Tuner",
     .optimize = function(inst) stop("abstract"),
 
     .assign_result = function(inst) {
-      assert_r6(inst, "TuningInstance")
+      assert_r6(inst, "OptimInstance")
       res = inst$archive$best()
 
       xdt = res[, inst$search_space$ids(), with = FALSE]

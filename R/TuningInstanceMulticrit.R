@@ -1,12 +1,12 @@
-#' @title TuningInstanceMulticrit
+#' @title TuningInstanceMultiCrit
 #'
 #' @description
 #' Specifies a general multi-criteria tuning scenario.
-#' Inherits from [OptimInstanceMulticrit]
+#' Inherits from [bbotk::OptimInstanceMultiCrit]
 #'
 #' @export
-TuningInstanceMulticrit = R6Class("TuningInstanceMulticrit",
-  inherit = OptimInstanceMulticrit,
+TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
+  inherit = OptimInstanceMultiCrit,
   public = list(
 
     #' @description
@@ -44,15 +44,14 @@ TuningInstanceMulticrit = R6Class("TuningInstanceMulticrit",
     #' and estimated performance values here. For internal use.
     #'
     #' @param xdt (`data.table`)\cr
-    #'   x values as `data.table`.
-    #'   Each row is one point.
-    #'   Contains the value in the *search space* of the [TuningInstance] object.
-    #'   Can contain additional columns for extra information.
+    #'   x values as `data.table`. Each row is one point. Contains the value in
+    #'   the *search space* of the [TuningInstanceMultiCrit] object. Can contain
+    #'   additional columns for extra information.
     #' @param ydt (`numeric(1)`)\cr
     #'   Optimal outcomes, e.g. the Pareto front.
     #' @param learner_param_vals (`list()`)\cr
-    #'   Fixed parameter values of the learner that are neither part of the *search space* nor the domain.
-    #    List of named lists.
+    #'   Fixed parameter values of the learner that are neither part of the
+    #*search space* nor the domain. List of named lists.
     assign_result = function(xdt, ydt, learner_param_vals = NULL) {
       # set the column with the learner param_vals that were not optimized over but set implicitly
 

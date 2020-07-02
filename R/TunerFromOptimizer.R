@@ -20,9 +20,10 @@ TunerFromOptimizer = R6Class("TunerFromOptimizer",
       },
 
       #' @description
-      #' Performs the tuning on a [TuningInstance] until termination.
+      #' Performs the tuning on a [TuningInstanceSingleCrit] /
+      #' [TuningInstanceMultiCrit] until termination.
       #'
-      #' @param inst [TuningInstance].
+      #' @param inst ([TuningInstanceSingleCrit] | [TuningInstanceMultiCrit]).
       #'
       #' @return Modified `self`.
       optimize = function(inst) {
@@ -30,7 +31,7 @@ TunerFromOptimizer = R6Class("TunerFromOptimizer",
         # but from OptimInstanceMulticrit in the same way as TuningInstance
         # inherits from OptimInstance. Unfortunately multi-inheritance is not in
         # R6.
-        assert_multi_class(inst, c("TuningInstance", "TuningInstanceMulticrit"))
+        assert_multi_class(inst, c("TuningInstanceSingleCrit", "TuningInstanceMultiCrit"))
         private$.optimizer$optimize(inst)
       }
     ),
