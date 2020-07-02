@@ -98,7 +98,7 @@ x values as \code{data.table}. Each row is one point. Contains the value in
 the \emph{search space} of the \link{TuningInstanceMultiCrit} object. Can contain
 additional columns for extra information.}
 
-\item{\code{ydt}}{(\code{numeric(1)})\cr
+\item{\code{ydt}}{(\code{data.table})\cr
 Optimal outcomes, e.g. the Pareto front.}
 
 \item{\code{learner_param_vals}}{(\code{list()})\cr
