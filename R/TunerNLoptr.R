@@ -34,6 +34,7 @@
 #'
 #' @export
 #' @examples
+#' \dontrun{
 #' library(mlr3)
 #' library(paradox)
 #' library(data.table)
@@ -57,6 +58,7 @@
 #' instance$result
 #' # allows access of data.table of full path of all evaluations
 #' instance$archive
+#' }
 TunerNLoptr = R6Class("TunerNLoptr",
   inherit = TunerFromOptimizer,
   public = list(

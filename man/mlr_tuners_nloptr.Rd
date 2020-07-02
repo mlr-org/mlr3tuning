@@ -41,6 +41,7 @@ tnr("nloptr")
 }
 
 \examples{
+\dontrun{
 library(mlr3)
 library(paradox)
 library(data.table)
@@ -64,6 +65,7 @@ tt$optimize(instance)
 instance$result
 # allows access of data.table of full path of all evaluations
 instance$archive
+}
 }
 \section{Super classes}{
 \code{\link[mlr3tuning:Tuner]{mlr3tuning::Tuner}} -> \code{\link[mlr3tuning:TunerFromOptimizer]{mlr3tuning::TunerFromOptimizer}} -> \code{TunerNLoptr}
