@@ -151,6 +151,7 @@ Tuner = R6Class("Tuner",
       # R6.
       assert_multi_class(inst, c("TuningInstanceSingleCrit", "TuningInstanceMultiCrit"))
       assert_instance_properties(self, inst)
+      inst$archive$start_time = Sys.time()
 
       tryCatch({
         private$.optimize(inst)
