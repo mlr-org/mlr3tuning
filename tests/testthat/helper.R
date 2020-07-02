@@ -85,11 +85,11 @@ test_tuner_dependencies = function(key, ..., term_evals = 2L) {
 TEST_MAKE_PS1 = function(n_dim = 1L) {
   if (n_dim == 1) {
     ParamSet$new(params = list(
-      ParamDbl$new("cp", lower = 0.1, upper = 0.3)
+      ParamDbl$new("cp", lower = 0.1, upper = 0.4)
     ))
   } else if (n_dim == 2) {
     ParamSet$new(params = list(
-      ParamDbl$new("cp", lower = 0.1, upper = 0.3),
+      ParamDbl$new("cp", lower = 0.1, upper = 0.4),
       ParamInt$new("minsplit", lower = 1, upper = 9)
     ))
   }
