@@ -44,7 +44,7 @@ test_that("TuningInstanceSingleCrit", {
 
 test_that("archive one row (#40)", {
   inst = TEST_MAKE_INST1()
-  inst$eval_batch(data.table(cp = c(0.01)))
+  inst$eval_batch(data.table(cp = 0.01))
   a = inst$archive$data()
   expect_data_table(a, nrows = 1)
   expect_number(a$classif.ce)
