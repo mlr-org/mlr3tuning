@@ -47,7 +47,7 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
     #'   x values as `data.table`. Each row is one point. Contains the value in
     #'   the *search space* of the [TuningInstanceMultiCrit] object. Can contain
     #'   additional columns for extra information.
-    #' @param ydt (`numeric(1)`)\cr
+    #' @param ydt (`data.table`)\cr
     #'   Optimal outcomes, e.g. the Pareto front.
     #' @param learner_param_vals (`list()`)\cr
     #'   Fixed parameter values of the learner that are neither part of the
