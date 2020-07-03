@@ -146,22 +146,7 @@ Tuner = R6Class("Tuner",
     #' @return Modified `self`.
     optimize = function(inst) {
       assert_multi_class(inst, c("TuningInstanceSingleCrit", "TuningInstanceMultiCrit"))
-      assert_instance_properties(self, inst)
-      inst$archive$start_time = Sys.time()
-
-      lg$info("Starting to optimize %i parameter(s) with '%s' and '%s'",
-              inst$search_space$length, self$format(), inst$terminator$format())
-      tryCatch({
-        private$.optimize(inst)
-      }, terminated_error = function(cond) {
-      })
-      private$.assign_result(inst)
-      lg$info("Finished optimizing after %i evaluation(s)",
-              inst$archive$n_evals)
-      lg$info("Result:")
-      lg$info(capture.output(print(
-        inst$result, lass = FALSE, row.names = FALSE, print.keys = FALSE)))
-      invisible(NULL)
+      optimize_default(inst, self, private)
     }
   ),
 
@@ -170,20 +155,7 @@ Tuner = R6Class("Tuner",
 
     .assign_result = function(inst) {
       assert_multi_class(inst, c("TuningInstanceSingleCrit", "TuningInstanceMultiCrit"))
-      res = inst$archive$best()
-
-      xdt = res[, inst$search_space$ids(), with = FALSE]
-
-      if (inherits(inst, "TuningInstanceMultiCrit")) {
-        ydt = res[, inst$objective$codomain$ids(), with = FALSE]
-        inst$assign_result(xdt, ydt)
-      } else {
-        # unlist keeps name!
-        y = unlist(res[, inst$objective$codomain$ids(), with = FALSE])
-        inst$assign_result(xdt, y)
-      }
-
-      invisible(NULL)
+      assign_result_default(inst)
     }
   )
 )
