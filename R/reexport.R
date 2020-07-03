@@ -18,8 +18,8 @@ NULL
 
 #' @title Re-export of `terms`
 #'
-#' See [bbotk::terms].
+#' See [bbotk::term].
 #'
 #' @name terms
-#' @rdname terms
+#' @rdname term
 NULL
