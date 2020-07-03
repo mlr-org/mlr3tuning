@@ -156,7 +156,6 @@ Tuner = R6Class("Tuner",
       }, terminated_error = function(cond) {
       })
       private$.assign_result(inst)
-      invisible(NULL)
       lg$info("Finished optimizing after %i evaluation(s)",
               inst$archive$n_evals)
       lg$info("Result:")
@@ -175,7 +174,7 @@ Tuner = R6Class("Tuner",
 
       xdt = res[, inst$search_space$ids(), with = FALSE]
 
-      if (inherits(inst, "TuningInstanceMulticrit")) {
+      if (inherits(inst, "TuningInstanceMultiCrit")) {
         ydt = res[, inst$objective$codomain$ids(), with = FALSE]
         inst$assign_result(xdt, ydt)
       } else {
