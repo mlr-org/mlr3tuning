@@ -2,11 +2,16 @@
 % Please edit documentation in R/reexport.R
 \name{term}
 \alias{term}
+\alias{terms}
 \title{Re-export of \code{term}
 
 See \link[bbotk:term]{bbotk::term}.}
 \description{
 Re-export of \code{term}
+
+See \link[bbotk:term]{bbotk::term}.
+
+Re-export of \code{terms}
 
 See \link[bbotk:term]{bbotk::term}.
 }
