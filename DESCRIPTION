@@ -53,7 +53,7 @@ Suggests:
     rpart,
     testthat
 Remotes:
-    mlr-org/bbotk,
+    mlr-org/bbotk@optimizer_helper,
     mlr-org/paradox
 Encoding: UTF-8
 NeedsCompilation: no

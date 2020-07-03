@@ -4,9 +4,9 @@
 \alias{terms}
 \title{Re-export of \code{terms}
 
-See \link[bbotk:terms]{bbotk::terms}.}
+See \link[bbotk:term]{bbotk::terms}.}
 \description{
 Re-export of \code{terms}
 
-See \link[bbotk:terms]{bbotk::terms}.
+See \link[bbotk:term]{bbotk::terms}.
 }
