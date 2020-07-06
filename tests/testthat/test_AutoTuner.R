@@ -134,3 +134,29 @@ test_that("AT training does not change learner in instance args", {
   at$train(task)
   expect_equal(at$instance_args$learner$param_set$values, list(xval = 0))
 })
+
+test_that("AutoTuner works with pipeop", {
+  skip_if_not_installed("mlr3pipelines")
+  requireNamespace("mlr3pipelines")
+
+  task = tsk("iris")
+  te = term("evals", n_evals = 3)
+  ps = TEST_MAKE_PS1(n_dim = 1)
+  ms = MeasureDummyCPClassif$new(fun = function(cp) if (cp == 0.2) 0 else 1)
+  tuner = tnr("grid_search", resolution = 4)
+  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, ps, te, tuner = tuner)
+  op_lrn = mlr3pipelines::PipeOpLearner$new(at)
+  op_lrn$train(list(task))
+
+  learner = op_lrn$state$model$learner
+  inst = op_lrn$state$model$tuning_instance
+  a = inst$archive$data()
+
+  expect_r6(learner, "LearnerClassifRpart")
+  expect_is(learner$model, "rpart")
+  expect_r6(inst, "TuningInstanceSingleCrit")
+  expect_equal(learner$param_set$values, list(xval = 0, cp = 0.2))
+  expect_data_table(a, nrows = 3L)
+  prd = learner$predict(task)
+  expect_prediction(prd)
+})
