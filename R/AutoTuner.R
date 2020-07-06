@@ -4,9 +4,13 @@
 #' The `AutoTuner` is a [mlr3::Learner] which auto-tunes by first tuning the
 #' hyperparameters of its encapsulated learner on the training data, then
 #' setting the optimal configuration in the learner, then finally fitting the
-#' model on the complete training data. This class allows to perform nested
-#' resampling by passing an [AutoTuner] object to [mlr3::resample()] or
-#' [mlr3::benchmark()].
+#' model on the complete training data.
+#'
+#' This class allows to perform nested resampling by passing an [AutoTuner]
+#' object to [mlr3::resample()] or [mlr3::benchmark()]. To access the inner
+#' resampling results set `store_tuning_instance = TRUE` and execute
+#' [mlr3::resample()] or [mlr3::benchmark()] with `store_models = TRUE` (s.
+#' examples).
 #'
 #' @export
 #' @examples
@@ -29,6 +33,21 @@
 #' at$train(task)
 #' at$model
 #' at$learner
+#'
+#' # Nested resampling
+#' at = AutoTuner$new(learner, resampling, measure, search_space, terminator,
+#'   tuner)
+#' at$store_tuning_instance = TRUE
+#'
+#' resampling_outer = rsmp("cv", folds = 2)
+#' rr = resample(task, at, resampling_outer, store_models = TRUE)
+#'
+#' # Aggregate performance of outer results
+#' rr$aggregate()
+#'
+#' # Retrieve inner tuning results.
+#' rr$data$learner[[1]]$tuning_result
+#'
 AutoTuner = R6Class("AutoTuner",
   inherit = Learner,
   public = list(
