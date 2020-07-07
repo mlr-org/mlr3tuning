@@ -113,3 +113,32 @@ test_that("Tuner works with graphlearner", {
   expect_equal(inst$result_x_domain, list(classif.rpart.cp = 0.2))
   expect_equal(inst$result_y, c(dummy.cp.classif = 0))
 })
+
+test_that("Tuner works with instantiated resampling", {
+  task = tsk("iris")
+  resampling = rsmp("custom")
+  train_sets = list(1:75)
+  test_sets = list(76:150)
+  resampling$instantiate(task, train_sets, test_sets)
+
+  expect_true(resampling$is_instantiated)
+
+  te = term("evals", n_evals = 4)
+  ps = ParamSet$new(list(
+    ParamDbl$new("cp", lower = 0.1, upper = 0.3)
+  ))
+  inst = TuningInstanceSingleCrit$new(
+    task = task,
+    learner = lrn("classif.rpart"),
+    resampling = resampling,
+    measure = msr("classif.ce"),
+    search_space = ps,
+    terminator = te)
+
+  rs = TunerRandomSearch$new()
+  rs$optimize(inst)
+
+  expect_r6(inst$objective$resampling, "ResamplingCustom")
+  expect_equal(inst$objective$resampling$instance$train[[1]], 1:75)
+  expect_equal(inst$objective$resampling$instance$test[[1]], 76:150)
+})
