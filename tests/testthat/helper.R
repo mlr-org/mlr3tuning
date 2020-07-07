@@ -85,11 +85,11 @@ test_tuner_dependencies = function(key, ..., term_evals = 2L) {
 TEST_MAKE_PS1 = function(n_dim = 1L) {
   if (n_dim == 1) {
     ParamSet$new(params = list(
-      ParamDbl$new("cp", lower = 0.1, upper = 0.4)
+      ParamDbl$new("cp", lower = 0.1, upper = 0.3)
     ))
   } else if (n_dim == 2) {
     ParamSet$new(params = list(
-      ParamDbl$new("cp", lower = 0.1, upper = 0.4),
+      ParamDbl$new("cp", lower = 0.1, upper = 0.3),
       ParamInt$new("minsplit", lower = 1, upper = 9)
     ))
   }
@@ -159,7 +159,7 @@ make_dummy_cp_measure = function(type, minimize = TRUE) {
 
     private = list(
       .score = function(prediction, learner, ...) {
-        self$fun(learner$param_set$values$cp)
+        self$fun(learner$param_set$values)
       }
     )
   )
@@ -198,5 +198,15 @@ LearnerRegrDepParams = R6Class("LearnerRegrDepParams", inherit = LearnerRegr,
     }
   )
 )
+
+MAKE_GL = function() {
+  g = mlr3pipelines::Graph$new()
+  op_ds = mlr3pipelines::PipeOpSubsample$new()
+  op_lrn = mlr3pipelines::PipeOpLearner$new(lrn("classif.rpart"))
+  g$add_pipeop(op_ds)
+  g$add_pipeop(op_lrn)
+  g$add_edge("subsample", "classif.rpart")
+  mlr3pipelines::GraphLearner$new(g)
+}
 
 # mlr3::mlr_learners$add("regr.depparams", LearnerRegrDepParams)

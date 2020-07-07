@@ -12,7 +12,7 @@ test_that("simple exp trafo works", {
   te = term("evals", n_evals = 3)
   d = data.table(cp = c(-7, -3))
   tuner = tnr("design_points", design = d)
-  inst = TuningInstanceSingleCrit$new(tsk("iris"), ll, rsmp("holdout"), msr("dummy.cp.classif"), ps, te)
+  inst = TuningInstanceSingleCrit$new(tsk("iris"), ll, rsmp("holdout"), msr("dummy.cp.classif", fun = function(pv) pv$cp), ps, te)
   tuner$optimize(inst)
   expect_equal(inst$result_x_search_space, data.table(cp = -7))
   expect_equal(inst$result_learner_param_vals, list(xval = 0, cp = 2^-7))
@@ -36,7 +36,7 @@ test_that("trafo where param names change", {
   }
   te = term("evals", n_evals = 3)
   tuner = tnr("grid_search", resolution = 2)
-  inst = TuningInstanceSingleCrit$new(tsk("iris"), ll, rsmp("holdout"), msr("dummy.cp.classif"), ps, te)
+  inst = TuningInstanceSingleCrit$new(tsk("iris"), ll, rsmp("holdout"), msr("dummy.cp.classif", fun = function(pv) pv$cp), ps, te)
   tuner$optimize(inst)
   expect_equal(inst$result_x_search_space, data.table(foo = "a"))
   expect_equal(inst$result_learner_param_vals, list(xval = 0, cp = 0.11))
