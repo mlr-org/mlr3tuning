@@ -98,7 +98,9 @@ AutoTuner = R6Class("AutoTuner",
         instantiated = FALSE)$clone()
       ia$measure = assert_measure(as_measure(measure), learner = learner)
       ia$search_space = assert_param_set(search_space)$clone()
-      # FIXME: i have no idea why we do this here?
+      # We create a ParamSetColellection from the tuning ps and learner ps.
+      # Without setting the ps id to "", the parameter would be prefixed with
+      # the learner id in the ParamSetColellection.
       ia$learner$param_set$set_id = ""
       ia$terminator = assert_terminator(terminator)$clone()
       self$instance_args = ia
