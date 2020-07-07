@@ -37,11 +37,12 @@ test_that("we get a result when some subordinate params are not fulfilled", {
       }
     ),
     private = list(
-      .optimize = function(inst) {}
+      .optimize = function(inst) {
+      }
     )
   )
   tuner_manual = TunerManual$new()
-  inst = TEST_MAKE_INST2(measure = msr("dummy.cp.regr"))
+  inst = TEST_MAKE_INST2(measure = msr("dummy.cp.regr", fun = function(pv) pv$cp))
   d = data.table(xx = c("a", "b"), yy = c(1, NA), cp = c(0.2, 0.1))
   inst$eval_batch(d)
   tuner_manual$optimize(inst)
@@ -57,10 +58,11 @@ test_that("print method workds", {
   properties = "single-crit"
   packages = "ecr"
 
-  tuner = Tuner$new(param_set = param_set,
-                    param_classes = param_classes,
-                    properties = "single-crit",
-                    packages = packages)
+  tuner = Tuner$new(
+    param_set = param_set,
+    param_classes = param_classes,
+    properties = "single-crit",
+    packages = packages)
   expect_output(print(tuner), "p1=TRUE")
   expect_output(print(tuner), "ParamLgl")
   expect_output(print(tuner), "single-crit")
@@ -74,11 +76,40 @@ test_that("optimize does not work in abstract class", {
   properties = "single-crit"
   packages = character(0)
 
-  tuner = Tuner$new(param_set = param_set,
-                    param_classes = param_classes,
-                    properties = "single-crit",
-                    packages = packages)
+  tuner = Tuner$new(
+    param_set = param_set,
+    param_classes = param_classes,
+    properties = "single-crit",
+    packages = packages)
   inst = TEST_MAKE_INST1()
   expect_error(tuner$optimize(inst), "abstract")
 })
 
+test_that("Tuner works with graphlearner", {
+  skip_if_not_installed("mlr3pipelines")
+  requireNamespace("mlr3pipelines")
+
+  gl = MAKE_GL()
+  task = tsk("iris")
+  ms = MeasureDummyCPClassif$new(fun = function(pv) if (pv$classif.rpart.cp == 0.2) 0 else 1)
+  te = term("evals", n_evals = 4)
+  ps = ParamSet$new(list(
+    ParamDbl$new("classif.rpart.cp", lower = 0.1, upper = 0.3)
+  ))
+  inst = TuningInstanceSingleCrit$new(
+    task = task,
+    learner = gl,
+    resampling = rsmp("holdout"),
+    measure = ms,
+    search_space = ps,
+    terminator = te)
+
+  tuner = tnr("grid_search", resolution = 3)
+  tuner$optimize(inst)
+  archive = inst$archive
+
+  expect_data_table(archive$data(), nrows = 3)
+  expect_equal(inst$archive$n_evals, 3)
+  expect_equal(inst$result_x_domain, list(classif.rpart.cp = 0.2))
+  expect_equal(inst$result_y, c(dummy.cp.classif = 0))
+})

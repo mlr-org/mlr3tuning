@@ -1,19 +1,19 @@
 context("TuningInstanceSingleCrit")
 
 test_that("TuningInstanceSingleCrit", {
-  inst = TEST_MAKE_INST1(values = list(maxdepth = 10), folds = 2L, measure = msr("dummy.cp.classif"), n_dim = 2)
+  inst = TEST_MAKE_INST1(values = list(maxdepth = 10), folds = 2L, measure = msr("dummy.cp.classif", fun = function(pv) pv$cp), n_dim = 2)
   # test empty inst
   expect_data_table(inst$archive$data(), nrows = 0)
   expect_identical(inst$archive$n_evals, 0L)
   #expect_output(print(inst), "Not tuned")
 
   # add a couple of eval points and test the state of inst
-  z = inst$eval_batch(data.table(cp = c(0.3, 0.4), minsplit = c(3, 4)))
+  z = inst$eval_batch(data.table(cp = c(0.3, 0.25), minsplit = c(3, 4)))
   expect_data_table(inst$archive$data(), nrows = 2L)
   expect_equal(inst$archive$data()$resample_result[[1]]$learners[[1]]$param_set$values$cp, 0.3)
   expect_equal(inst$archive$data()$resample_result[[1]]$learners[[1]]$param_set$values$minsplit, 3)
   expect_equal(inst$archive$data()$resample_result[[1]]$learners[[1]]$param_set$values$maxdepth, 10)
-  expect_equal(inst$archive$data()$resample_result[[2]]$learners[[1]]$param_set$values$cp, 0.4)
+  expect_equal(inst$archive$data()$resample_result[[2]]$learners[[1]]$param_set$values$cp, 0.25)
   expect_equal(inst$archive$data()$resample_result[[2]]$learners[[1]]$param_set$values$minsplit, 4)
   expect_equal(inst$archive$data()$resample_result[[2]]$learners[[1]]$param_set$values$maxdepth, 10)
   expect_identical(inst$archive$n_evals, 2L)

@@ -1,11 +1,11 @@
 context("AutoTuner")
 
 test_that("AutoTuner / train+predict", {
-  te = term("evals", n_evals = 3)
+  te = term("evals", n_evals = 4)
   task = tsk("iris")
   ps = TEST_MAKE_PS1(n_dim = 1)
-  ms = MeasureDummyCPClassif$new(fun = function(cp) if (cp == 0.2) 0 else 1) # lets fake a measure, so we control the best config
-  tuner = tnr("grid_search", resolution = 4)
+  ms = MeasureDummyCPClassif$new(fun = function(pv) if (pv$cp == 0.2) 0 else 1) # lets fake a measure, so we control the best config
+  tuner = tnr("grid_search", resolution = 3)
   at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, ps, te, tuner = tuner)
   expect_learner(at)
   at$train(task)
@@ -27,13 +27,13 @@ test_that("AutoTuner / resample", {
   inner_folds = 1L
   inner_evals = 3L
 
-  ms = MeasureDummyCPClassif$new(fun = function(cp) if (cp == 0.2) 0 else 1) # lets fake a measure, so we control the best config
-  tuner = tnr("grid_search", resolution = 4)
+  ms = MeasureDummyCPClassif$new(fun = function(pv) if (pv$cp == 0.2) 0 else 1) # lets fake a measure, so we control the best config
+  tuner = tnr("grid_search", resolution = 3)
   r_inner = rsmp("holdout")
   r_outer = rsmp("cv", folds = 2)
   param_set = TEST_MAKE_PS1()
   te = term("evals", n_evals = inner_evals)
-  tuner = tnr("grid_search", resolution = 4)
+  tuner = tnr("grid_search", resolution = 3)
   at = AutoTuner$new(lrn("classif.rpart", predict_type = "prob"), r_inner, ms, param_set, te, tuner)
 
   expect_null(at$tuning_instance)
@@ -85,7 +85,7 @@ test_that("AutoTuner / param_set", {
 
 test_that("Custom resampling is not allowed", {
   measure = msr("classif.ce")
-  te = term("evals", n_evals = 3)
+  te = term("evals", n_evals = 4)
   task = tsk("iris")
   ps = TEST_MAKE_PS1()
   tuner = TunerRandomSearch$new()
@@ -110,7 +110,7 @@ test_that("nested resamppling results are consistent ", {
     resampling = rsmp("holdout"),
     search_space = ps,
     measure = msr("classif.ce"),
-    terminator = term("evals", n_evals = 3),
+    terminator = term("evals", n_evals = 4),
     tuner = tnr("random_search")
   )
 
@@ -126,11 +126,48 @@ test_that("nested resamppling results are consistent ", {
 
 test_that("AT training does not change learner in instance args", {
   # we had a bad pointer bug due to missing cloning here
-  #https://github.com/mlr-org/mlr3/issues/428
+  # https://github.com/mlr-org/mlr3/issues/428
   task = tsk("iris")
   ps = TEST_MAKE_PS1()
   at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), ps, term("evals", n_evals = 3), TunerRandomSearch$new())
   expect_equal(at$instance_args$learner$param_set$values, list(xval = 0))
   at$train(task)
   expect_equal(at$instance_args$learner$param_set$values, list(xval = 0))
+})
+
+test_that("AutoTuner works with graphlearner", {
+  skip_if_not_installed("mlr3pipelines")
+  requireNamespace("mlr3pipelines")
+
+  gl = MAKE_GL()
+  task = tsk("iris")
+  ms = MeasureDummyCPClassif$new(fun = function(pv) if (pv$classif.rpart.cp == 0.2) 0 else 1)
+  te = term("evals", n_evals = 4)
+  ps = ParamSet$new(list(
+    ParamDbl$new("classif.rpart.cp", lower = 0.1, upper = 0.3)
+  ))
+  tuner = tnr("grid_search", resolution = 3)
+  at = AutoTuner$new(
+    learner = gl,
+    resampling = rsmp("holdout"),
+    measure = ms,
+    search_space = ps,
+    terminator = te,
+    tuner = tuner)
+
+  expect_learner(at)
+  at$train(task)
+  expect_learner(at)
+  expect_equal(at$learner$param_set$values$classif.rpart.xval, 0)
+  expect_equal(at$learner$param_set$values$classif.rpart.cp, 0.2)
+  inst = at$tuning_instance
+  a = at$archive$data()
+  expect_data_table(a, nrows = 3L)
+  r = at$tuning_result
+  expect_equal(r$x_domain[[1]], list(classif.rpart.cp = 0.2))
+  expect_equal(r$learner_param_vals[[1]]$classif.rpart.xval, 0)
+  expect_equal(r$learner_param_vals[[1]]$classif.rpart.cp, 0.2)
+  prd = at$predict(task)
+  expect_prediction(prd)
+  expect_is(at$learner$model$classif.rpart$model, "rpart")
 })
