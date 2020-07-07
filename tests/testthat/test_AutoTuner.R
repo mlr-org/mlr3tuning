@@ -171,3 +171,43 @@ test_that("AutoTuner works with graphlearner", {
   expect_prediction(prd)
   expect_is(at$learner$model$classif.rpart$model, "rpart")
 })
+
+test_that("Nested resampling works with graphlearner", {
+  skip_if_not_installed("mlr3pipelines")
+  requireNamespace("mlr3pipelines")
+
+  gl = MAKE_GL()
+  task = tsk("iris")
+  ms = MeasureDummyCPClassif$new(fun = function(pv) if (pv$classif.rpart.cp == 0.2) 0 else 1)
+  te = term("evals", n_evals = 4)
+  ps = ParamSet$new(list(
+    ParamDbl$new("classif.rpart.cp", lower = 0.1, upper = 0.3)
+  ))
+  tuner = tnr("grid_search", resolution = 3)
+  at = AutoTuner$new(
+    learner = gl,
+    resampling = rsmp("holdout"),
+    measure = ms,
+    search_space = ps,
+    terminator = te,
+    tuner = tuner)
+  at$store_tuning_instance = TRUE
+
+  resampling_outer = rsmp("cv", folds = 2)
+  rr = resample(task, at, resampling_outer, store_models = TRUE)
+
+  expect_learner(rr$data$learner[[1]])
+  expect_learner(rr$data$learner[[2]])
+
+  expect_equal(rr$data$learner[[1]]$tuning_result$classif.rpart.cp, 0.2)
+  expect_equal(rr$data$learner[[2]]$tuning_result$classif.rpart.cp, 0.2)
+
+  expect_equal(rr$data$learner[[1]]$learner$param_set$values$classif.rpart.cp, 0.2)
+  expect_equal(rr$data$learner[[2]]$learner$param_set$values$classif.rpart.cp, 0.2)
+
+  expect_data_table(rr$data$learner[[1]]$archive$data(), nrows = 3L)
+  expect_data_table(rr$data$learner[[2]]$archive$data(), nrows = 3L)
+
+  expect_is(rr$data$learner[[1]]$model$learner$model$classif.rpart$model, "rpart")
+  expect_is(rr$data$learner[[1]]$model$learner$model$classif.rpart$model, "rpart")
+})
