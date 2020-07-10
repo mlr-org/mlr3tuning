@@ -34,6 +34,45 @@ Development version
 remotes::install_github("mlr-org/mlr3tuning")
 ```
 
+## Example
+
+```{r}
+library("mlr3")
+library("mlr3tuning")
+library("paradox")
+
+task = tsk("pima")
+learner = lrn("classif.rpart")
+resampling = rsmp("holdout")
+measure = msr("classif.ce")
+
+# Create the search space with lower and upper bounds 
+search_space = ParamSet$new(list(
+  ParamDbl$new("cp", lower = 0.001, upper = 0.1),
+  ParamInt$new("minsplit", lower = 1, upper = 10)
+))
+
+# Define termination criterion
+terminator = term("evals", n_evals = 20)
+
+# Create tuning instance
+instance = TuningInstanceSingleCrit$new(task = task, 
+  learner = learner, 
+  resampling = resampling, 
+  measure = measure, 
+  search_space = search_space, 
+  terminator = terminator)
+
+# Load tuner
+tuner = tnr("grid_search", resolution = 5)
+
+# Trigger optimization
+tuner$optimize(instance)
+
+# View results
+instance$result
+```
+
 ## Resources
 
 Further documentation can be found in the
