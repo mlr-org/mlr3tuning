@@ -25,7 +25,8 @@ Authors@R:
       person(given = "Marc",
              family = "Becker",
              role = "aut",
-             email = "marcbecker@posteo.de"))
+             email = "marcbecker@posteo.de",
+             comment = c(ORCID = "0000-0002-8115-0400")))
 Description: Implements methods for hyperparameter tuning with
     'mlr3', e.g. Grid Search, Random Search, or Simulated Annealing.
     Various termination criteria can be set and combined.  The class

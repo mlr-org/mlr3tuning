@@ -12,6 +12,14 @@ Extends the [mlr3](https://mlr3.mlr-org.com) package with tuning.
 [![StackOverflow](https://img.shields.io/badge/stackoverflow-mlr3-orange.svg)](https://stackoverflow.com/questions/tagged/mlr3)
 <!-- badges: end -->
 
+This package provides hyperparameter tuning for
+[mlr3](https://mlr3.mlr-org.com). It offers various tuning methods e.g. grid
+search, random search and generalized simulated annealing and different
+termination criteria can be set and combined. 'AutoTuner' provides a convenient
+way to perform nested resampling in combination with 'mlr3'. The package is
+build on [bbotk](https://github.com/mlr-org/bbotk) which provides a common
+framework for optimization.
+
 ## Installation
 
 CRAN version
@@ -26,4 +34,10 @@ Development version
 remotes::install_github("mlr-org/mlr3tuning")
 ```
 
-Further documentation can be found in the [mlr3book](https://mlr3book.mlr-org.com/tuning.html).
+## Resources
+
+Further documentation can be found in the
+[mlr3book](https://mlr3book.mlr-org.com/tuning.html) and the [mlr3tuning
+cheatsheet](https://cheatsheets.mlr-org.com/mlr3tuning.pdf). Tutorials are
+available in the [mlr3gallery](https://mlr3gallery.mlr-org.com/).
+
