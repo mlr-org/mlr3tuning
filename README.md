@@ -2,8 +2,6 @@
 
 Package website: [release](https://mlr3tuning.mlr-org.com/) | [dev](https://mlr3tuning.mlr-org.com/dev)
 
-Extends the [mlr3](https://mlr3.mlr-org.com) package with tuning.
-
 <!-- badges: start -->
 [![tic](https://github.com/mlr-org/mlr3tuning/workflows/tic/badge.svg?branch=master)](https://github.com/mlr-org/mlr3tuning/actions)
 [![CRAN Status Badge](https://www.r-pkg.org/badges/version-ago/mlr3tuning)](https://cran.r-project.org/package=mlr3tuning)
