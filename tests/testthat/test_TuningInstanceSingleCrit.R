@@ -119,7 +119,7 @@ test_that("non-scalar hyperpars (#201)", {
     rsmp("holdout"), msr("classif.ce"),
     paradox::ParamSet$new(list(
         paradox::ParamInt$new("classif.rpart.minsplit", 1, 1))),
-    term("evals", n_evals=1))
+    term("evals", n_evals=1), check_values = FALSE)
 
   tnr("random_search")$optimize(inst)
   expect_data_table(inst$archive$data(), nrows = 1)
