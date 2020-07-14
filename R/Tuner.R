@@ -140,7 +140,7 @@ Tuner = R6Class("Tuner",
     #' @description
     #' Performs the tuning on a [TuningInstanceSingleCrit] or
     #' [TuningInstanceMultiCrit] until termination.
-    #' The results will be stored in the [bbotk::Archive] that resides in the [TuningInstanceSingleCrit]/[TuningInstanceMultiCrit].
+    #' The single evaluations and the final results will be written into the [bbotk::Archive] that resides in the [TuningInstanceSingleCrit]/[TuningInstanceMultiCrit].
     #'
     #' @param inst ([TuningInstanceSingleCrit] | [TuningInstanceMultiCrit]).
     #'
