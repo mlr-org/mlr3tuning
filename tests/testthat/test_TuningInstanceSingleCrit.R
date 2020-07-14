@@ -114,6 +114,9 @@ test_that("non-scalar hyperpars (#201)", {
   requireNamespace("mlr3pipelines")
   `%>>%` = getFromNamespace("%>>%", asNamespace("mlr3pipelines"))
 
+
+  learner = mlr3pipelines::po("select") %>>% lrn("classif.rpart")
+
   search_space = ParamSet$new(list(
     ParamInt$new("classif.rpart.minsplit", 1, 1)))
   search_space$trafo = function(x, param_set) {
