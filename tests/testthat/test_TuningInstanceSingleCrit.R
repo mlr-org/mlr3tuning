@@ -114,12 +114,21 @@ test_that("non-scalar hyperpars (#201)", {
   requireNamespace("mlr3pipelines")
   `%>>%` = getFromNamespace("%>>%", asNamespace("mlr3pipelines"))
 
+
+  learner = mlr3pipelines::po("select") %>>% lrn("classif.rpart")
+
+  search_space = ParamSet$new(list(
+    ParamInt$new("classif.rpart.minsplit", 1, 1)))
+  search_space$trafo = function(x, param_set) {
+    x$select.selector = mlr3pipelines::selector_all()
+    return(x)
+  }
+
   inst = TuningInstanceSingleCrit$new(tsk("iris"),
-    mlr3pipelines::po("select") %>>% lrn("classif.rpart"),
+    learner,
     rsmp("holdout"), msr("classif.ce"),
-    paradox::ParamSet$new(list(
-        paradox::ParamInt$new("classif.rpart.minsplit", 1, 1))),
-    term("evals", n_evals=1))
+    search_space,
+    term("evals", n_evals = 1), check_values = TRUE)
 
   tnr("random_search")$optimize(inst)
   expect_data_table(inst$archive$data(), nrows = 1)

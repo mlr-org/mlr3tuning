@@ -53,7 +53,8 @@ and a termination criterion.
   measures,
   search_space,
   terminator,
-  store_models = FALSE
+  store_models = FALSE,
+  check_values = TRUE
 )}\if{html}{\out{</div>}}
 }
 
@@ -76,6 +77,10 @@ Measures to optimize.}
 \item{\code{terminator}}{(\link{Terminator})}
 
 \item{\code{store_models}}{\code{logical(1)}}
+
+\item{\code{check_values}}{(\code{logical(1)})
+Should parameters before the evaluation and the results be checked for
+validity?}
 }
 \if{html}{\out{</div>}}
 }

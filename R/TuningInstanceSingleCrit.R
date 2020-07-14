@@ -119,12 +119,15 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     #'
     #' @param terminator ([Terminator])
     #' @param store_models `logical(1)`
+    #' @param check_values (`logical(1)`)
+    #' Should parameters before the evaluation and the results be checked for
+    #' validity?
     initialize = function(task, learner, resampling, measure, search_space,
-      terminator, store_models = FALSE) {
+      terminator, store_models = FALSE, check_values = TRUE) {
         measure = as_measure(measure)
         obj = ObjectiveTuning$new(task = task, learner = learner,
           resampling = resampling, measures = list(measure),
-          store_models = store_models)
+          store_models = store_models, check_values = check_values)
         super$initialize(obj, search_space, terminator)
     },
 

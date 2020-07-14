@@ -36,8 +36,11 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     #' @param measures list of [mlr3::Measure]
     #' @param terminator [Terminator]
     #' @param store_models `logical(1)`
+    #' @param check_values ('logical(1)')\cr
+    #' Should parameters before the evaluation and the results be checked for
+    #' validity?
     initialize = function(task, learner, resampling, measures,
-      store_models = FALSE) {
+      store_models = FALSE, check_values = TRUE) {
         self$task = assert_task(as_task(task, clone = TRUE))
         self$learner = assert_learner(as_learner(learner, clone = TRUE),
           task = self$task)
@@ -60,14 +63,12 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
 
       super$initialize(
         id = sprintf("%s_on_%s", self$learner$id, self$task$id), domain = self$learner$param_set,
-        codomain = codomain)
-    },
+        codomain = codomain, check_values = check_values)
+    }
+  ),
 
-    #' @description
-    #' Evaluates multiple hyperparameter sets on the objective function.
-    #' @param xss `list()`\cr
-    #' A list of lists that contains multiple hyperparameter sets.
-    eval_many = function(xss) {
+  private = list(
+    .eval_many = function(xss) {
       learners = map(xss, function(x) {
         learner = self$learner$clone(deep = TRUE)
         learner$param_set$values = insert_named(learner$param_set$values, x)
