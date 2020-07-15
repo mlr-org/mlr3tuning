@@ -1,8 +1,8 @@
-#' @title TuningInstanceMultiCrit
+#' @title Multi Criteria Tuning Instance
 #'
 #' @description
 #' Specifies a general multi-criteria tuning scenario.
-#' Inherits from [bbotk::OptimInstanceMultiCrit]
+#' Inherits from [bbotk::OptimInstanceMultiCrit].
 #'
 #' @export
 TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
@@ -16,9 +16,9 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
     #' feasibility region for the parameters the tuner is supposed to optimize,
     #' and a termination criterion.
     #'
-    #' @param task ([mlr3::Task])
+    #' @param task ([mlr3::Task]).
     #'
-    #' @param learner ([mlr3::Learner])
+    #' @param learner ([mlr3::Learner]).
     #'
     #' @param resampling ([mlr3::Resampling])\cr
     #' Note that uninstantiated resamplings are instantiated during construction
@@ -27,12 +27,12 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
     #' @param measures (list of [mlr3::Measure])\cr
     #' Measures to optimize.
     #'
-    #' @param search_space ([paradox::ParamSet])
+    #' @param search_space ([paradox::ParamSet]).
     #'
-    #' @param terminator ([Terminator])
-    #' @param store_models `logical(1)`
+    #' @param terminator ([Terminator]).
+    #' @param store_models (`logical(1)`).
     #'
-    #' @param check_values (`logical(1)`)
+    #' @param check_values (`logical(1)`).
     #' Should parameters before the evaluation and the results be checked for
     #' validity?
     initialize = function(task, learner, resampling, measures, search_space,
@@ -47,11 +47,11 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
     #' The [Tuner] object writes the best found points
     #' and estimated performance values here. For internal use.
     #'
-    #' @param xdt (`data.table`)\cr
+    #' @param xdt (`data.table::data.table()`)\cr
     #'   x values as `data.table`. Each row is one point. Contains the value in
     #'   the *search space* of the [TuningInstanceMultiCrit] object. Can contain
     #'   additional columns for extra information.
-    #' @param ydt (`data.table`)\cr
+    #' @param ydt (`data.table::data.table()`)\cr
     #'   Optimal outcomes, e.g. the Pareto front.
     #' @param learner_param_vals (`list()`)\cr
     #'   Fixed parameter values of the learner that are neither part of the
@@ -71,7 +71,7 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
   ),
 
   active = list(
-    #' @field result_learner_param_vals (`list()`)
+    #' @field result_learner_param_vals (`list()`)\cr
     #'   List of param values for the optimal learner call.
     result_learner_param_vals = function() {
       private$.result$learner_param_vals

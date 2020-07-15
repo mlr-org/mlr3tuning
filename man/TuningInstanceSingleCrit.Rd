@@ -2,7 +2,7 @@
 % Please edit documentation in R/TuningInstanceSingleCrit.R
 \name{TuningInstanceSingleCrit}
 \alias{TuningInstanceSingleCrit}
-\title{TuningInstanceSingleCrit}
+\title{Single Criterion Tuning Instance}
 \description{
 Specifies a general tuning scenario, including objective function
 and archive for Tuners to act upon. This class stores an \code{ObjectiveTuning}
@@ -102,7 +102,7 @@ print(archive)
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
-\item{\code{result_learner_param_vals}}{(\code{list()})
+\item{\code{result_learner_param_vals}}{(\code{list()})\cr
 Param values for the optimal learner call.}
 }
 \if{html}{\out{</div>}}
@@ -150,9 +150,9 @@ and a termination criterion.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{task}}{(\link[mlr3:Task]{mlr3::Task})}
+\item{\code{task}}{(\link[mlr3:Task]{mlr3::Task}).}
 
-\item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner})}
+\item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner}).}
 
 \item{\code{resampling}}{(\link[mlr3:Resampling]{mlr3::Resampling})\cr
 Note that uninstantiated resamplings are instantiated during construction
@@ -161,11 +161,11 @@ so that all configurations are evaluated on the same data splits.}
 \item{\code{measure}}{(\link[mlr3:Measure]{mlr3::Measure})\cr
 Measure to optimize.}
 
-\item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})}
+\item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet}).}
 
-\item{\code{terminator}}{(\link{Terminator})}
+\item{\code{terminator}}{(\link{Terminator}).}
 
-\item{\code{store_models}}{\code{logical(1)}}
+\item{\code{store_models}}{(\code{logical(1)}).}
 
 \item{\code{check_values}}{(\code{logical(1)})
 Should parameters before the evaluation and the results be checked for
@@ -187,7 +187,7 @@ and estimated performance value here. For internal use.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{xdt}}{(\code{data.table})\cr
+\item{\code{xdt}}{\code{\link[data.table:data.table]{data.table::data.table()}}\cr
 x values as \code{data.table} with one row. Contains the value in the
 \emph{search space} of the \link{TuningInstanceSingleCrit} object. Can contain
 additional columns for extra information.}

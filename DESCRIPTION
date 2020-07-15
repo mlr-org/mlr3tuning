@@ -48,11 +48,14 @@ Imports:
     paradox (>= 0.3.0),
     R6
 Suggests:
+    bibtex,
     GenSA,
     mlr3pipelines,
     nloptr,
     rpart,
     testthat
+RdMacros:
+    mlr3misc
 Remotes:
     mlr-org/bbotk
 Encoding: UTF-8

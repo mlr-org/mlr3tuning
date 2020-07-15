@@ -4,16 +4,28 @@
 \alias{AutoTuner}
 \title{AutoTuner}
 \description{
-The \code{AutoTuner} is a \link[mlr3:Learner]{mlr3::Learner} which auto-tunes by first tuning the
-hyperparameters of its encapsulated learner on the training data, then
-setting the optimal configuration in the learner, then finally fitting the
-model on the complete training data.
+The \code{AutoTuner} is a \link[mlr3:Learner]{mlr3::Learner} which wraps another \link[mlr3:Learner]{mlr3::Learner}
+and performs the following steps during \verb{$train()}:
+\enumerate{
+\item The hyperparameters of the wrapped (inner) learner are trained on the
+training data via resampling.
+The tuning can be specified by providing a \link{Tuner}, a \link[bbotk:Terminator]{bbotk::Terminator},
+a search space as \link[paradox:ParamSet]{paradox::ParamSet}, a \link[mlr3:Resampling]{mlr3::Resampling} and a
+\link[mlr3:Measure]{mlr3::Measure}.
+\item The best found hyperparameter configuration is set as hyperparameters
+for the wrapped (inner) learner.
+\item A final model is fit on the complete training data using the now
+parametrized wrapped learner.
+}
 
-This class allows to perform nested resampling by passing an \link{AutoTuner}
-object to \code{\link[mlr3:resample]{mlr3::resample()}} or \code{\link[mlr3:benchmark]{mlr3::benchmark()}}. To access the inner
-resampling results set \code{store_tuning_instance = TRUE} and execute
-\code{\link[mlr3:resample]{mlr3::resample()}} or \code{\link[mlr3:benchmark]{mlr3::benchmark()}} with \code{store_models = TRUE} (s.
-examples).
+During \verb{$predict()} the \code{AutoTuner} just calls the predict method of the
+wrapped (inner) learner.
+
+Note that this approach allows to perform nested resampling by passing an
+\link{AutoTuner} object to \code{\link[mlr3:resample]{mlr3::resample()}} or \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
+To access the inner resampling results, set \code{store_tuning_instance = TRUE}
+and execute \code{\link[mlr3:resample]{mlr3::resample()}} or \code{\link[mlr3:benchmark]{mlr3::benchmark()}} with
+\code{store_models = TRUE} (see examples).
 }
 \examples{
 library(mlr3)
@@ -71,7 +83,8 @@ with all intermediate results in slot \verb{$tuning_instance}.}
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
-\item{\code{archive}}{Returns TuningInstanceSingleCrit archive}
+\item{\code{archive}}{\link[bbotk:Archive]{bbotk::Archive}\cr
+Archive of the \link{TuningInstanceSingleCrit}.}
 
 \item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner})\cr
 Trained learner}

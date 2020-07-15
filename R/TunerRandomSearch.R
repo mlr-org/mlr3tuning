@@ -16,11 +16,9 @@
 #' @templateVar id random_search
 #' @template section_dictionary_tuners
 #'
-#' @section Parameters:
-#' \describe{
-#' \item{`batch_size`}{`integer(1)`\cr
-#' Maximum number of configurations to try in a batch.}
-#' }
+#' @inheritSection bbotk::OptimizerRandomSearch Parameters
+#'
+#' @inherit bbotk::OptimizerRandomSearch source
 #'
 #' @export
 #' @template example

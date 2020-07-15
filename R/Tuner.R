@@ -26,7 +26,7 @@
 #'
 #' @section Technical Details and Subclasses:
 #' A subclass is implemented in the following way:
-#'  * Inherit from Tuner
+#'  * Inherit from Tuner.
 #'  * Specify the private abstract method `$.tune()` and use it to call into
 #'  your optimizer.
 #'  * You need to call `instance$eval_batch()` to evaluate design points.
@@ -96,15 +96,15 @@ Tuner = R6Class("Tuner",
     #' @param param_set [paradox::ParamSet]\cr
     #' Set of control parameters for tuner.
     #'
-    #' @param param_classes `character()`\cr
+    #' @param param_classes (`character()`)\cr
     #' Supported parameter classes for learner hyperparameters that the tuner
     #' can optimize, subclasses of [paradox::Param].
     #'
-    #' @param properties `character()`\cr
+    #' @param properties (`character()`)\cr
     #' Set of properties of the tuner. Must be a subset of
     #' [`mlr_reflections$tuner_properties`][mlr3::mlr_reflections].
     #'
-    #' @param packages `character()`\cr
+    #' @param packages (`character()`)\cr
     #' Set of required packages. Note that these packages will be loaded via
     #' [requireNamespace()], and are not attached.
     initialize = function(param_set, param_classes, properties,

@@ -33,7 +33,7 @@ selected. See technical details sections.
 
 A subclass is implemented in the following way:
 \itemize{
-\item Inherit from Tuner
+\item Inherit from Tuner.
 \item Specify the private abstract method \verb{$.tune()} and use it to call into
 your optimizer.
 \item You need to call \code{instance$eval_batch()} to evaluate design points.
@@ -123,15 +123,15 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
 \item{\code{param_set}}{\link[paradox:ParamSet]{paradox::ParamSet}\cr
 Set of control parameters for tuner.}
 
-\item{\code{param_classes}}{\code{character()}\cr
+\item{\code{param_classes}}{(\code{character()})\cr
 Supported parameter classes for learner hyperparameters that the tuner
 can optimize, subclasses of \link[paradox:Param]{paradox::Param}.}
 
-\item{\code{properties}}{\code{character()}\cr
+\item{\code{properties}}{(\code{character()})\cr
 Set of properties of the tuner. Must be a subset of
 \code{\link[mlr3:mlr_reflections]{mlr_reflections$tuner_properties}}.}
 
-\item{\code{packages}}{\code{character()}\cr
+\item{\code{packages}}{(\code{character()})\cr
 Set of required packages. Note that these packages will be loaded via
 \code{\link[=requireNamespace]{requireNamespace()}}, and are not attached.}
 }

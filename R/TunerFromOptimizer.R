@@ -2,6 +2,8 @@
 #'
 #' @description
 #' Internally used to transform [bbotk::Optimizer] to [Tuner]
+#'
+#' @keywords internal
 #' @export
 TunerFromOptimizer = R6Class("TunerFromOptimizer",
     inherit = Tuner,

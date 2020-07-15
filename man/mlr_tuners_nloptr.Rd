@@ -4,6 +4,12 @@
 \alias{mlr_tuners_nloptr}
 \alias{TunerNLoptr}
 \title{TuneNLoptr}
+\source{
+{Johnson SG (2020).
+\dQuote{The NLopt nonlinear-optimization package.}
+\url{http://github.com/stevengj/nlopt}.
+}
+}
 \description{
 \code{TunerNLoptr} class that implements non-linear optimization. Calls
 \link[nloptr:nloptr]{nloptr::nloptr} from package \CRANpkg{nloptr}.
@@ -16,7 +22,16 @@ subclasses. The x and function value tolerance termination conditions
 \code{ftol_rel = 0.0} and \code{ftol_abs = 0.0}) are still available and implemented with
 their package defaults. To deactivate these conditions, set them to \code{-1}.
 }
+\section{Dictionary}{
+
+This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary}
+\link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:\preformatted{mlr_tuners$get("nloptr")
+tnr("nloptr")
+}
+}
+
 \section{Parameters}{
+
 
 \describe{
 \item{\code{algorithm}}{\code{character(1)}}
@@ -30,14 +45,14 @@ their package defaults. To deactivate these conditions, set them to \code{-1}.
 
 For the meaning of the control parameters, see \code{\link[nloptr:nloptr]{nloptr::nloptr()}} and
 \code{\link[nloptr:nloptr.print.options]{nloptr::nloptr.print.options()}}.
-}
 
-\section{Dictionary}{
+The termination conditions \code{stopval}, \code{maxtime} and \code{maxeval} of
+\code{\link[nloptr:nloptr]{nloptr::nloptr()}} are deactivated and replaced by the \link[bbotk]{Terminator}
+subclasses. The x and function value tolerance termination conditions
+(\code{xtol_rel = 10^-4}, \code{xtol_abs = rep(0.0, length(x0))}, \code{ftol_rel = 0.0} and
+\code{ftol_abs = 0.0}) are still available and implemented with their package
+defaults. To deactivate these conditions, set them to \code{-1}.
 
-This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary}
-\link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:\preformatted{mlr_tuners$get("nloptr")
-tnr("nloptr")
-}
 }
 
 \examples{

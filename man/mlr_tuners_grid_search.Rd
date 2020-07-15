@@ -26,6 +26,7 @@ tnr("grid_search")
 
 \section{Parameters}{
 
+
 \describe{
 \item{\code{resolution}}{\code{integer(1)}\cr
 Resolution of the grid, see \code{\link[paradox:generate_design_grid]{paradox::generate_design_grid()}}.}
@@ -33,8 +34,9 @@ Resolution of the grid, see \code{\link[paradox:generate_design_grid]{paradox::g
 Resolution per parameter, named by parameter ID, see
 \code{\link[paradox:generate_design_grid]{paradox::generate_design_grid()}}.}
 \item{\code{batch_size}}{\code{integer(1)}\cr
-Maximum number of configurations to try in a batch..}
+Maximum number of points to try in a batch.}
 }
+
 }
 
 \examples{

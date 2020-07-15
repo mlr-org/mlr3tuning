@@ -30,13 +30,12 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
-    #' @param task [mlr3::Task]
-    #' @param learner [mlr3::Learner]
-    #' @param resampling [mlr3::Resampling]
-    #' @param measures list of [mlr3::Measure]
-    #' @param terminator [Terminator]
-    #' @param store_models `logical(1)`
-    #' @param check_values ('logical(1)')\cr
+    #' @param task ([mlr3::Task]).
+    #' @param learner ([mlr3::Learner]).
+    #' @param resampling ([mlr3::Resampling]).
+    #' @param measures list of ([mlr3::Measure]).
+    #' @param store_models (`logical(1)`).
+    #' @param check_values (`logical(1)`)\cr
     #' Should parameters before the evaluation and the results be checked for
     #' validity?
     initialize = function(task, learner, resampling, measures,

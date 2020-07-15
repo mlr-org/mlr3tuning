@@ -1,4 +1,4 @@
-#' @title TuningInstanceSingleCrit
+#' @title Single Criterion Tuning Instance
 #'
 #' @description
 #' Specifies a general tuning scenario, including objective function
@@ -104,9 +104,9 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     #' feasibility region for the parameters the tuner is supposed to optimize,
     #' and a termination criterion.
     #'
-    #' @param task ([mlr3::Task])
+    #' @param task ([mlr3::Task]).
     #'
-    #' @param learner ([mlr3::Learner])
+    #' @param learner ([mlr3::Learner]).
     #'
     #' @param resampling ([mlr3::Resampling])\cr
     #' Note that uninstantiated resamplings are instantiated during construction
@@ -115,10 +115,10 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     #' @param measure ([mlr3::Measure])\cr
     #' Measure to optimize.
     #'
-    #' @param search_space ([paradox::ParamSet])
+    #' @param search_space ([paradox::ParamSet]).
     #'
-    #' @param terminator ([Terminator])
-    #' @param store_models `logical(1)`
+    #' @param terminator ([Terminator]).
+    #' @param store_models (`logical(1)`).
     #' @param check_values (`logical(1)`)
     #' Should parameters before the evaluation and the results be checked for
     #' validity?
@@ -135,7 +135,7 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     #' The [Tuner] object writes the best found point
     #' and estimated performance value here. For internal use.
     #'
-    #' @param xdt (`data.table`)\cr
+    #' @param xdt [`data.table::data.table()`]\cr
     #'   x values as `data.table` with one row. Contains the value in the
     #'   *search space* of the [TuningInstanceSingleCrit] object. Can contain
     #'   additional columns for extra information.
@@ -162,8 +162,8 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
   ),
 
   active = list(
-    #' @field result_learner_param_vals (`list()`)
-    #'   Param values for the optimal learner call.
+    #' @field result_learner_param_vals (`list()`)\cr
+    #' Param values for the optimal learner call.
     result_learner_param_vals = function() {
       private$.result$learner_param_vals[[1]]
     }

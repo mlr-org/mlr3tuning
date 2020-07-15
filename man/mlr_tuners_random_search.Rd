@@ -4,6 +4,13 @@
 \alias{mlr_tuners_random_search}
 \alias{TunerRandomSearch}
 \title{TunerRandomSearch}
+\source{
+{Bergstra J, Bengio Y (2012).
+\dQuote{Random Search for Hyper-Parameter Optimization.}
+\emph{Journal of Machine Learning Research}, \bold{13}(10), 281--305.
+\url{http://jmlr.org/papers/v13/bergstra12a.html}.
+}
+}
 \description{
 Subclass for random search tuning.
 
@@ -24,10 +31,12 @@ tnr("random_search")
 
 \section{Parameters}{
 
+
 \describe{
 \item{\code{batch_size}}{\code{integer(1)}\cr
-Maximum number of configurations to try in a batch.}
+Maximum number of points to try in a batch.}
 }
+
 }
 
 \examples{

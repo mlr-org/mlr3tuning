@@ -52,8 +52,8 @@ reference:
   - title: Terminators
     contents:
       - mlr_terminators
-      - term
-      - terms
+      - trm
+      - trms
   - title: Auto-tuned Learner
     contents:
       - AutoTuner

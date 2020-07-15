@@ -25,12 +25,14 @@ tnr("design_points")
 
 \section{Parameters}{
 
+
 \describe{
 \item{\code{batch_size}}{\code{integer(1)}\cr
 Maximum number of configurations to try in a batch.}
 \item{\code{design}}{\link[data.table:data.table]{data.table::data.table}\cr
 Design points to try in search, one per row.}
 }
+
 }
 
 \examples{

@@ -17,16 +17,7 @@
 #' @templateVar id grid_search
 #' @template section_dictionary_tuners
 #'
-#' @section Parameters:
-#' \describe{
-#' \item{`resolution`}{`integer(1)`\cr
-#' Resolution of the grid, see [paradox::generate_design_grid()].}
-#' \item{`param_resolutions`}{named `integer()`\cr
-#' Resolution per parameter, named by parameter ID, see
-#' [paradox::generate_design_grid()].}
-#' \item{`batch_size`}{`integer(1)`\cr
-#' Maximum number of configurations to try in a batch..}
-#' }
+#' @inheritSection bbotk::OptimizerGridSearch Parameters
 #'
 #' @export
 #' @template example

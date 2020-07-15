@@ -7,20 +7,6 @@
 #' `TunerNLoptr` class that implements non-linear optimization. Calls
 #' [nloptr::nloptr] from package \CRANpkg{nloptr}.
 #'
-#' @section Parameters:
-#' \describe{
-#' \item{`algorithm`}{`character(1)`}
-#' \item{`x0`}{`numeric()`}
-#' \item{`eval_g_ineq`}{`function()`}
-#' \item{`xtol_rel`}{`numeric(1)`}
-#' \item{`xtol_abs`}{`numeric(1)`}
-#' \item{`ftol_rel`}{`numeric(1)`}
-#' \item{`ftol_abs`}{`numeric(1)`}
-#' }
-#'
-#' For the meaning of the control parameters, see [nloptr::nloptr()] and
-#' [nloptr::nloptr.print.options()].
-#'
 #' @details
 #' The termination conditions `stopval`, `maxtime` and `maxeval` of
 #' [nloptr::nloptr()] are deactivated and replaced by the [Terminator]
@@ -31,6 +17,10 @@
 #'
 #' @templateVar id nloptr
 #' @template section_dictionary_tuners
+#'
+#' @inheritSection bbotk::OptimizerNLoptr Parameters
+#'
+#' @inherit bbotk::OptimizerNLoptr source
 #'
 #' @export
 #' @examples

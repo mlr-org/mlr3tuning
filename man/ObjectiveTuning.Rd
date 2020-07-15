@@ -66,21 +66,19 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{task}}{\link[mlr3:Task]{mlr3::Task}}
+\item{\code{task}}{(\link[mlr3:Task]{mlr3::Task}).}
 
-\item{\code{learner}}{\link[mlr3:Learner]{mlr3::Learner}}
+\item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner}).}
 
-\item{\code{resampling}}{\link[mlr3:Resampling]{mlr3::Resampling}}
+\item{\code{resampling}}{(\link[mlr3:Resampling]{mlr3::Resampling}).}
 
-\item{\code{measures}}{list of \link[mlr3:Measure]{mlr3::Measure}}
+\item{\code{measures}}{list of (\link[mlr3:Measure]{mlr3::Measure}).}
 
-\item{\code{store_models}}{\code{logical(1)}}
+\item{\code{store_models}}{(\code{logical(1)}).}
 
-\item{\code{check_values}}{('logical(1)')\cr
+\item{\code{check_values}}{(\code{logical(1)})\cr
 Should parameters before the evaluation and the results be checked for
 validity?}
-
-\item{\code{terminator}}{\link{Terminator}}
 }
 \if{html}{\out{</div>}}
 }

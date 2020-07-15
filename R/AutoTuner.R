@@ -1,16 +1,27 @@
 #' @title AutoTuner
 #'
 #' @description
-#' The `AutoTuner` is a [mlr3::Learner] which auto-tunes by first tuning the
-#' hyperparameters of its encapsulated learner on the training data, then
-#' setting the optimal configuration in the learner, then finally fitting the
-#' model on the complete training data.
+#' The `AutoTuner` is a [mlr3::Learner] which wraps another [mlr3::Learner]
+#' and performs the following steps during `$train()`:
 #'
-#' This class allows to perform nested resampling by passing an [AutoTuner]
-#' object to [mlr3::resample()] or [mlr3::benchmark()]. To access the inner
-#' resampling results set `store_tuning_instance = TRUE` and execute
-#' [mlr3::resample()] or [mlr3::benchmark()] with `store_models = TRUE` (s.
-#' examples).
+#' 1. The hyperparameters of the wrapped (inner) learner are trained on the
+#'    training data via resampling.
+#'    The tuning can be specified by providing a [Tuner], a [bbotk::Terminator],
+#'    a search space as [paradox::ParamSet], a [mlr3::Resampling] and a
+#'    [mlr3::Measure].
+#' 2. The best found hyperparameter configuration is set as hyperparameters
+#'    for the wrapped (inner) learner.
+#' 3. A final model is fit on the complete training data using the now
+#'    parametrized wrapped learner.
+#'
+#' During `$predict()` the `AutoTuner` just calls the predict method of the
+#' wrapped (inner) learner.
+#'
+#' Note that this approach allows to perform nested resampling by passing an
+#' [AutoTuner] object to [mlr3::resample()] or [mlr3::benchmark()].
+#' To access the inner resampling results, set `store_tuning_instance = TRUE`
+#' and execute [mlr3::resample()] or [mlr3::benchmark()] with
+#' `store_models = TRUE` (see examples).
 #'
 #' @export
 #' @examples
@@ -122,11 +133,12 @@ AutoTuner = R6Class("AutoTuner",
 
   active = list(
 
-    #' @field archive Returns TuningInstanceSingleCrit archive
+    #' @field archive [bbotk::Archive]\cr
+    #' Archive of the [TuningInstanceSingleCrit].
     archive = function() self$tuning_instance$archive,
 
     #' @field learner ([mlr3::Learner])\cr
-    #'   Trained learner
+    #' Trained learner
     learner = function() {
       # if there is no trained learner, we return the one in instance args
       if (is.null(self$model)) {
@@ -137,11 +149,11 @@ AutoTuner = R6Class("AutoTuner",
     },
 
     #' @field tuning_instance ([TuningInstanceSingleCrit])\cr
-    #'   Internally created tuning instance with all intermediate results.
+    #' Internally created tuning instance with all intermediate results.
     tuning_instance = function() self$model$tuning_instance,
 
     #' @field tuning_result (named `list()`)\cr
-    #'   Short-cut to `result` from [TuningInstanceSingleCrit].
+    #' Short-cut to `result` from [TuningInstanceSingleCrit].
     tuning_result = function() self$tuning_instance$result,
 
     #' @field param_set (paradox::ParamSet].

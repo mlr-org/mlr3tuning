@@ -6,6 +6,7 @@
 \description{
 Internally used to transform \link[bbotk:Optimizer]{bbotk::Optimizer} to \link{Tuner}
 }
+\keyword{internal}
 \section{Super class}{
 \code{\link[mlr3tuning:Tuner]{mlr3tuning::Tuner}} -> \code{TunerFromOptimizer}
 }

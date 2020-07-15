@@ -9,18 +9,9 @@
 #' @templateVar id gensa
 #' @template section_dictionary_tuners
 #'
-#' @section Parameters:
-#' \describe{
-#' \item{`smooth`}{`logical(1)`}
-#' \item{`temperature`}{`numeric(1)`}
-#' \item{`acceptance.param`}{`numeric(1)`}
-#' \item{`verbose`}{`logical(1)`}
-#' \item{`trace.mat`}{`logical(1)`}
-#' }
+#' @inheritSection bbotk::OptimizerGenSA Parameters
 #'
-#' For the meaning of the control parameters, see [GenSA::GenSA()]. Note that we
-#' have removed all control parameters which refer to the termination of the
-#' algorithm and where our terminators allow to obtain the same behavior.
+#' @inherit bbotk::OptimizerGenSA source
 #'
 #' @export
 #' @template example
