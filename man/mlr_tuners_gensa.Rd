@@ -5,17 +5,9 @@
 \alias{TunerGenSA}
 \title{TunerGenSA}
 \source{
-{Tsallis C, Stariolo DA (1996).
-\dQuote{Generalized simulated annealing.}
-\emph{Physica A: Statistical Mechanics and its Applications}, \bold{233}(1-2), 395--406.
-\ifelse{{text}{doi: 10.1016/s0378-4371(96)00271-3 (URL: https://doi.org/10.1016/s0378-4371(96)00271-3)}{\ifelse{{latex}{doi:\out{\\nobreakspace{}}\href{https://doi.org/10.1016/s0378-4371(96)00271-3}{10.1016\out{\\slash{}}s0378\out{\\-}4371(96)00271\out{\\-}3}}{doi: \href{https://doi.org/10.1016/s0378-4371(96)00271-3}{10.1016/s0378-4371(96)00271-3}}}}}.
-}
+\cite{bbotk}{tsallis_1996}
 
-{Xiang Y, Gubian S, Suomela B, Hoeng J (2013).
-\dQuote{Generalized Simulated Annealing for Global Optimization: The GenSA Package.}
-\emph{The R Journal}, \bold{5}(1), 13.
-\ifelse{{text}{doi: 10.32614/rj-2013-002 (URL: https://doi.org/10.32614/rj-2013-002)}{\ifelse{{latex}{doi:\out{\\nobreakspace{}}\href{https://doi.org/10.32614/rj-2013-002}{10.32614\out{\\slash{}}rj\out{\\-}2013\out{\\-}002}}{doi: \href{https://doi.org/10.32614/rj-2013-002}{10.32614/rj-2013-002}}}}}.
-}
+\cite{bbotk}{xiang_2013}
 }
 \description{
 Subclass for generalized simulated annealing tuning calling \code{\link[GenSA:GenSA]{GenSA::GenSA()}}

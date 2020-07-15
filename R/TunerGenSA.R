@@ -11,7 +11,10 @@
 #'
 #' @inheritSection bbotk::OptimizerGenSA Parameters
 #'
-#' @inherit bbotk::OptimizerGenSA source
+#' @source
+#' \cite{bbotk}{tsallis_1996}
+#'
+#' \cite{bbotk}{xiang_2013}
 #'
 #' @export
 #' @template example

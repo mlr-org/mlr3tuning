@@ -20,7 +20,8 @@
 #'
 #' @inheritSection bbotk::OptimizerNLoptr Parameters
 #'
-#' @inherit bbotk::OptimizerNLoptr source
+#' @source
+#' \cite{bbotk}{johnson_2014}
 #'
 #' @export
 #' @examples

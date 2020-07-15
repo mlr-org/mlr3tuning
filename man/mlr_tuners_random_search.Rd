@@ -5,11 +5,7 @@
 \alias{TunerRandomSearch}
 \title{TunerRandomSearch}
 \source{
-{Bergstra J, Bengio Y (2012).
-\dQuote{Random Search for Hyper-Parameter Optimization.}
-\emph{Journal of Machine Learning Research}, \bold{13}(10), 281--305.
-\url{http://jmlr.org/papers/v13/bergstra12a.html}.
-}
+\cite{bbotk}{bergstra_2012}
 }
 \description{
 Subclass for random search tuning.
@@ -33,9 +29,24 @@ tnr("random_search")
 
 
 \describe{
-\item{\code{batch_size}}{\code{integer(1)}\cr
-Maximum number of points to try in a batch.}
+\item{\code{algorithm}}{\code{character(1)}}
+\item{\code{x0}}{\code{numeric()}}
+\item{\code{eval_g_ineq}}{\verb{function()}}
+\item{\code{xtol_rel}}{\code{numeric(1)}}
+\item{\code{xtol_abs}}{\code{numeric(1)}}
+\item{\code{ftol_rel}}{\code{numeric(1)}}
+\item{\code{ftol_abs}}{\code{numeric(1)}}
 }
+
+For the meaning of the control parameters, see \code{\link[nloptr:nloptr]{nloptr::nloptr()}} and
+\code{\link[nloptr:nloptr.print.options]{nloptr::nloptr.print.options()}}.
+
+The termination conditions \code{stopval}, \code{maxtime} and \code{maxeval} of
+\code{\link[nloptr:nloptr]{nloptr::nloptr()}} are deactivated and replaced by the \link[bbotk]{Terminator}
+subclasses. The x and function value tolerance termination conditions
+(\code{xtol_rel = 10^-4}, \code{xtol_abs = rep(0.0, length(x0))}, \code{ftol_rel = 0.0} and
+\code{ftol_abs = 0.0}) are still available and implemented with their package
+defaults. To deactivate these conditions, set them to \code{-1}.
 
 }
 

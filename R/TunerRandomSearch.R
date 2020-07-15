@@ -16,9 +16,10 @@
 #' @templateVar id random_search
 #' @template section_dictionary_tuners
 #'
-#' @inheritSection bbotk::OptimizerRandomSearch Parameters
+#' @inheritSection bbotk::OptimizerNLoptr Parameters
 #'
-#' @inherit bbotk::OptimizerRandomSearch source
+#' @source
+#' \cite{bbotk}{bergstra_2012}
 #'
 #' @export
 #' @template example
