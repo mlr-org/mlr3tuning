@@ -66,7 +66,7 @@ library(paradox)
 search_space = ParamSet$new(list(
   ParamDbl$new("cp", lower = 0.001, upper = 0.1)
 ))
-terminator = term("evals", n_evals = 3)
+terminator = trm("evals", n_evals = 3)
 instance = TuningInstanceSingleCrit$new(
   task = tsk("iris"),
   learner = lrn("classif.rpart"),
@@ -167,6 +167,7 @@ Print method.
 \subsection{Method \code{optimize()}}{
 Performs the tuning on a \link{TuningInstanceSingleCrit} or
 \link{TuningInstanceMultiCrit} until termination.
+The single evaluations and the final results will be written into the \link[bbotk:Archive]{bbotk::Archive} that resides in the \link{TuningInstanceSingleCrit}/\link{TuningInstanceMultiCrit}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Tuner$optimize(inst)}\if{html}{\out{</div>}}
 }

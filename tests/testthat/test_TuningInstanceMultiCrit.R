@@ -14,7 +14,7 @@ test_that("tuning with multiple objectives", {
     ParamInt$new("minsplit", lower = 1, upper = 10)
   ))
 
-  terminator = term("evals", n_evals = 10)
+  terminator = trm("evals", n_evals = 10)
   tuner = tnr("random_search")
 
   inst = TuningInstanceMultiCrit$new(task, learner, resampling, measures, tune_ps, terminator)

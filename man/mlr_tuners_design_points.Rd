@@ -40,7 +40,7 @@ library(data.table)
 search_space = ParamSet$new(list(
   ParamDbl$new("cp", lower = 0.001, upper = 0.1)
 ))
-terminator = term("evals", n_evals = 3)
+terminator = trm("evals", n_evals = 3)
 instance = TuningInstanceSingleCrit$new(
   task = tsk("iris"),
   learner = lrn("classif.rpart"),

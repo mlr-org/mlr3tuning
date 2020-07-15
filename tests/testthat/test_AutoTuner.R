@@ -1,7 +1,7 @@
 context("AutoTuner")
 
 test_that("AutoTuner / train+predict", {
-  te = term("evals", n_evals = 4)
+  te = trm("evals", n_evals = 4)
   task = tsk("iris")
   ps = TEST_MAKE_PS1(n_dim = 1)
   ms = MeasureDummyCPClassif$new(fun = function(pv) if (pv$cp == 0.2) 0 else 1) # lets fake a measure, so we control the best config
@@ -32,7 +32,7 @@ test_that("AutoTuner / resample", {
   r_inner = rsmp("holdout")
   r_outer = rsmp("cv", folds = 2)
   param_set = TEST_MAKE_PS1()
-  te = term("evals", n_evals = inner_evals)
+  te = trm("evals", n_evals = inner_evals)
   tuner = tnr("grid_search", resolution = 3)
   at = AutoTuner$new(lrn("classif.rpart", predict_type = "prob"), r_inner, ms, param_set, te, tuner)
 
@@ -57,7 +57,7 @@ test_that("AutoTuner / resample", {
 # see issue #51
 test_that("AutoTuner / param_set", {
   measure = msr("classif.ce")
-  te = term("evals", n_evals = 3)
+  te = trm("evals", n_evals = 3)
   task = tsk("iris")
   ps = TEST_MAKE_PS1()
   tuner = TunerRandomSearch$new()
@@ -85,7 +85,7 @@ test_that("AutoTuner / param_set", {
 
 test_that("Custom resampling is not allowed", {
   measure = msr("classif.ce")
-  te = term("evals", n_evals = 4)
+  te = trm("evals", n_evals = 4)
   task = tsk("iris")
   ps = TEST_MAKE_PS1()
   tuner = TunerRandomSearch$new()
@@ -110,7 +110,7 @@ test_that("nested resamppling results are consistent ", {
     resampling = rsmp("holdout"),
     search_space = ps,
     measure = msr("classif.ce"),
-    terminator = term("evals", n_evals = 4),
+    terminator = trm("evals", n_evals = 4),
     tuner = tnr("random_search")
   )
 
@@ -129,7 +129,7 @@ test_that("AT training does not change learner in instance args", {
   # https://github.com/mlr-org/mlr3/issues/428
   task = tsk("iris")
   ps = TEST_MAKE_PS1()
-  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), ps, term("evals", n_evals = 3), TunerRandomSearch$new())
+  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), ps, trm("evals", n_evals = 3), TunerRandomSearch$new())
   expect_equal(at$instance_args$learner$param_set$values, list(xval = 0))
   at$train(task)
   expect_equal(at$instance_args$learner$param_set$values, list(xval = 0))
@@ -142,7 +142,7 @@ test_that("AutoTuner works with graphlearner", {
   gl = MAKE_GL()
   task = tsk("iris")
   ms = MeasureDummyCPClassif$new(fun = function(pv) if (pv$classif.rpart.cp == 0.2) 0 else 1)
-  te = term("evals", n_evals = 4)
+  te = trm("evals", n_evals = 4)
   ps = ParamSet$new(list(
     ParamDbl$new("classif.rpart.cp", lower = 0.1, upper = 0.3)
   ))
@@ -179,7 +179,7 @@ test_that("Nested resampling works with graphlearner", {
   gl = MAKE_GL()
   task = tsk("iris")
   ms = MeasureDummyCPClassif$new(fun = function(pv) if (pv$classif.rpart.cp == 0.2) 0 else 1)
-  te = term("evals", n_evals = 4)
+  te = trm("evals", n_evals = 4)
   ps = ParamSet$new(list(
     ParamDbl$new("classif.rpart.cp", lower = 0.1, upper = 0.3)
   ))

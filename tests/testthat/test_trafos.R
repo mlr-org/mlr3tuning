@@ -9,7 +9,7 @@ test_that("simple exp trafo works", {
     x$cp = 2^x$cp
     return(x)
   }
-  te = term("evals", n_evals = 3)
+  te = trm("evals", n_evals = 3)
   d = data.table(cp = c(-7, -3))
   tuner = tnr("design_points", design = d)
   inst = TuningInstanceSingleCrit$new(tsk("iris"), ll, rsmp("holdout"), msr("dummy.cp.classif", fun = function(pv) pv$cp), ps, te)
@@ -34,7 +34,7 @@ test_that("trafo where param names change", {
     x$foo = NULL
     return(x)
   }
-  te = term("evals", n_evals = 3)
+  te = trm("evals", n_evals = 3)
   tuner = tnr("grid_search", resolution = 2)
   inst = TuningInstanceSingleCrit$new(tsk("iris"), ll, rsmp("holdout"), msr("dummy.cp.classif", fun = function(pv) pv$cp), ps, te)
   tuner$optimize(inst)

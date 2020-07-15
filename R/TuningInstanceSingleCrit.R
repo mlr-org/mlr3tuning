@@ -34,7 +34,7 @@
 #'   ParamInt$new("minsplit", lower = 1, upper = 10))
 #' )
 #'
-#' terminator = term("evals", n_evals = 5)
+#' terminator = trm("evals", n_evals = 5)
 #' inst = TuningInstanceSingleCrit$new(
 #'   task = task,
 #'   learner = learner,
@@ -81,7 +81,7 @@
 #'   resampling = rsmp("cv", folds = 3),
 #'   measure = msr("classif.ce"),
 #'   search_space = param_set,
-#'   terminator = term("evals", n_evals = 5)
+#'   terminator = trm("evals", n_evals = 5)
 #' )
 #'
 #' tryCatch(

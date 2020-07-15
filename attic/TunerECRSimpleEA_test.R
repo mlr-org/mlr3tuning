@@ -17,7 +17,7 @@ ps$trafo = function(x, param_set) {
     return(x)
 }
 
-te = term("evals", n_evals = 10)
+te = trm("evals", n_evals = 10)
 
 inst = TuningInstance$new(tsk("iris"), learner, rsmp("holdout"), msr("classif.ce"), ps, te)
 tuner = tnr("ecr", mu = 1, lambda = 1, sdev = 1)

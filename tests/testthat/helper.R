@@ -34,7 +34,7 @@ test_tuner = function(key, ..., n_dim = 1L, term_evals = 2L, real_evals = term_e
       ParamInt$new("minsplit", lower = 1, upper = 9)
     ))
   }
-  term = term("evals", n_evals = term_evals)
+  term = trm("evals", n_evals = term_evals)
   inst = TuningInstanceSingleCrit$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), ps, term)
   tuner = tnr(key, ...)
   expect_tuner(tuner)
@@ -59,7 +59,7 @@ test_tuner = function(key, ..., n_dim = 1L, term_evals = 2L, real_evals = term_e
 # test an implemented subclass tuner by running a test with dependent params
 # returns: tune_result and instance
 test_tuner_dependencies = function(key, ..., term_evals = 2L) {
-  term = term("evals", n_evals = term_evals)
+  term = trm("evals", n_evals = term_evals)
   ll = LearnerRegrDepParams$new()
   inst = TuningInstanceSingleCrit$new(tsk("boston_housing"), ll, rsmp("holdout"), msr("regr.mse"), ll$param_set, term)
   tuner = tnr(key, ...)
@@ -101,7 +101,7 @@ TEST_MAKE_INST1 = function(values = NULL, folds = 2L, measure = msr("classif.ce"
     lrn$param_set$values = values
   }
   rs = rsmp("cv", folds = folds)
-  term = term("evals", n_evals = term_evals)
+  term = trm("evals", n_evals = term_evals)
   inst = TuningInstanceSingleCrit$new(tsk("iris"), lrn, rs, measure, ps, term)
   return(inst)
 }
@@ -122,7 +122,7 @@ TEST_MAKE_INST2 = function(measure = msr("dummy.cp.regr"), term_evals = 5L) {
   ps = TEST_MAKE_PS2()
   ll = LearnerRegrDepParams$new()
   rs = rsmp("holdout")
-  term = term("evals", n_evals = term_evals)
+  term = trm("evals", n_evals = term_evals)
   inst = TuningInstanceSingleCrit$new(tsk("boston_housing"), ll, rs, measure, ps, term)
   return(inst)
 }

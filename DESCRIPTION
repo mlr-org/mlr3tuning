@@ -40,12 +40,12 @@ Depends:
     R (>= 3.1.0)
 Imports:
     bbotk,
-    checkmate (>= 1.9.4),
+    checkmate (>= 2.0.0),
     data.table,
     lgr,
-    mlr3 (>= 0.1.7),
-    mlr3misc (>= 0.1.7),
-    paradox,
+    mlr3,
+    mlr3misc,
+    paradox (>= 0.3.0),
     R6
 Suggests:
     GenSA,
@@ -54,8 +54,7 @@ Suggests:
     rpart,
     testthat
 Remotes:
-    mlr-org/bbotk,
-    mlr-org/paradox
+    mlr-org/bbotk
 Encoding: UTF-8
 NeedsCompilation: no
 Roxygen: list(markdown = TRUE)

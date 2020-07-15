@@ -18,7 +18,7 @@ test_that("proper error if tuner cannot handle deps", {
     ParamDbl$new("minsplit", lower = 1, upper = 10)
   ))
   ps$add_dep("minsplit", on = "cp", cond = CondEqual$new(0.1))
-  te = term("evals", n_evals = 2)
+  te = trm("evals", n_evals = 2)
   inst = TuningInstanceSingleCrit$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), ps, te)
   tt = TunerGenSA$new()
   expect_error(tt$optimize(inst), "dependencies")
@@ -92,7 +92,7 @@ test_that("Tuner works with graphlearner", {
   gl = MAKE_GL()
   task = tsk("iris")
   ms = MeasureDummyCPClassif$new(fun = function(pv) if (pv$classif.rpart.cp == 0.2) 0 else 1)
-  te = term("evals", n_evals = 4)
+  te = trm("evals", n_evals = 4)
   ps = ParamSet$new(list(
     ParamDbl$new("classif.rpart.cp", lower = 0.1, upper = 0.3)
   ))
@@ -123,7 +123,7 @@ test_that("Tuner works with instantiated resampling", {
 
   expect_true(resampling$is_instantiated)
 
-  te = term("evals", n_evals = 4)
+  te = trm("evals", n_evals = 4)
   ps = ParamSet$new(list(
     ParamDbl$new("cp", lower = 0.1, upper = 0.3)
   ))

@@ -44,21 +44,21 @@ learner = lrn("classif.rpart")
 resampling = rsmp("holdout")
 measure = msr("classif.ce")
 
-# Create the search space with lower and upper bounds 
+# Create the search space with lower and upper bounds
 search_space = ParamSet$new(list(
   ParamDbl$new("cp", lower = 0.001, upper = 0.1),
   ParamInt$new("minsplit", lower = 1, upper = 10)
 ))
 
 # Define termination criterion
-terminator = term("evals", n_evals = 20)
+terminator = trm("evals", n_evals = 20)
 
 # Create tuning instance
-instance = TuningInstanceSingleCrit$new(task = task, 
-  learner = learner, 
-  resampling = resampling, 
-  measure = measure, 
-  search_space = search_space, 
+instance = TuningInstanceSingleCrit$new(task = task,
+  learner = learner,
+  resampling = resampling,
+  measure = measure,
+  search_space = search_space,
   terminator = terminator)
 
 # Load tuner

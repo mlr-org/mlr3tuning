@@ -93,7 +93,7 @@ test_that("tuning with custom resampling", {
     ParamDbl$new("cp", lower = 0.001, upper = 0.1),
     ParamInt$new("minsplit", lower = 1, upper = 10)
   ))
-  terminator = term("evals", n_evals = 10)
+  terminator = trm("evals", n_evals = 10)
   tuner = tnr("random_search")
 
   inst = TuningInstanceSingleCrit$new(task, learner, resampling, measure, tune_ps, terminator)
@@ -128,7 +128,7 @@ test_that("non-scalar hyperpars (#201)", {
     learner,
     rsmp("holdout"), msr("classif.ce"),
     search_space,
-    term("evals", n_evals = 1), check_values = TRUE)
+    trm("evals", n_evals = 1), check_values = TRUE)
 
   tnr("random_search")$optimize(inst)
   expect_data_table(inst$archive$data(), nrows = 1)

@@ -49,7 +49,7 @@ search_space = ParamSet$new(list(
   ParamDbl$new("cp", lower = 0.001, upper = 0.1)
 ))
 # We use the internal termination criterion xtol_rel
-terminator = term("none")
+terminator = trm("none")
 instance = TuningInstanceSingleCrit$new(
   task = tsk("iris"),
   learner = lrn("classif.rpart"),

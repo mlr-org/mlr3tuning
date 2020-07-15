@@ -10,14 +10,14 @@ test_that("failing learner", {
   tt = tnr("random_search")
 
   instance = TuningInstanceSingleCrit$new(task = tsk("iris"), learner = learner, resampling = rsmp("holdout"),
-    measure = msr("classif.ce"), search_space = param_set, terminator = term("evals", n_evals = 10))
+    measure = msr("classif.ce"), search_space = param_set, terminator = trm("evals", n_evals = 10))
   expect_error(tt$optimize(instance), "classif.debug->train")
 
   learner$fallback = lrn("classif.featureless")
   learner$encapsulate = c (train = "evaluate", predict = "evaluate")
 
   instance = TuningInstanceSingleCrit$new(task = tsk("iris"), learner = learner, resampling = rsmp("holdout"),
-    measure = msr("classif.ce"), search_space = param_set, terminator = term("evals", n_evals = 10))
+    measure = msr("classif.ce"), search_space = param_set, terminator = trm("evals", n_evals = 10))
   tt$optimize(instance)
   rc = expect_list(instance$result_x_domain)
   expect_list(rc, len = 1)
@@ -35,7 +35,7 @@ test_that("predictions missing", {
   tt = tnr("random_search")
 
   instance = TuningInstanceSingleCrit$new(task = tsk("iris"), learner = learner, resampling = rsmp("holdout"),
-    measure = msr("classif.ce"), search_space = param_set, terminator = term("evals", n_evals = 10))
+    measure = msr("classif.ce"), search_space = param_set, terminator = trm("evals", n_evals = 10))
   expect_error(tt$optimize(instance), "missing")
 })
 
@@ -48,6 +48,6 @@ test_that("faulty measure", {
   ))
 
   instance = TuningInstanceSingleCrit$new(task = tsk("iris"), learner = learner, resampling = rsmp("holdout"),
-    measure = msr("debug", na_ratio = 0.5, minimize = TRUE), search_space = param_set, terminator = term("evals", n_evals = 10))
+    measure = msr("debug", na_ratio = 0.5, minimize = TRUE), search_space = param_set, terminator = trm("evals", n_evals = 10))
   expect_error(tt$optimize(instance), "Contains missing values")
 })
