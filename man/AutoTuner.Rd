@@ -61,7 +61,6 @@ rr$aggregate()
 
 # Retrieve inner tuning results.
 rr$data$learner[[1]]$tuning_result
-
 }
 \section{Super class}{
 \code{\link[mlr3:Learner]{mlr3::Learner}} -> \code{AutoTuner}

@@ -14,15 +14,15 @@ by the \link{TuningInstanceSingleCrit} / \link{TuningInstanceMultiCrit}.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{task}}{\link[mlr3:Task]{mlr3::Task}}
+\item{\code{task}}{(\link[mlr3:Task]{mlr3::Task}).}
 
-\item{\code{learner}}{\link[mlr3:Learner]{mlr3::Learner}}
+\item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner}).}
 
-\item{\code{resampling}}{\link[mlr3:Resampling]{mlr3::Resampling}}
+\item{\code{resampling}}{(\link[mlr3:Resampling]{mlr3::Resampling}).}
 
-\item{\code{measures}}{list of \link[mlr3:Measure]{mlr3::Measure}}
+\item{\code{measures}}{(list of \link[mlr3:Measure]{mlr3::Measure}).}
 
-\item{\code{store_models}}{\code{logical(1)}}
+\item{\code{store_models}}{(\code{logical(1)}).}
 }
 \if{html}{\out{</div>}}
 }
@@ -72,7 +72,7 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
 
 \item{\code{resampling}}{(\link[mlr3:Resampling]{mlr3::Resampling}).}
 
-\item{\code{measures}}{list of (\link[mlr3:Measure]{mlr3::Measure}).}
+\item{\code{measures}}{(list of \link[mlr3:Measure]{mlr3::Measure}).}
 
 \item{\code{store_models}}{(\code{logical(1)}).}
 
