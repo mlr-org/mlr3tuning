@@ -13,27 +13,28 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
   #' Creates a new instance of this [R6][R6::R6Class] class.
   public = list(
 
-    #' @field task [mlr3::Task]
+    #' @field task ([mlr3::Task]).
     task = NULL,
 
-    #' @field learner [mlr3::Learner]
+    #' @field learner ([mlr3::Learner]).
     learner = NULL,
 
-    #' @field resampling [mlr3::Resampling]
+    #' @field resampling ([mlr3::Resampling]).
     resampling = NULL,
 
-    #' @field measures list of [mlr3::Measure]
+    #' @field measures (list of [mlr3::Measure]).
     measures = NULL,
 
-    #' @field store_models `logical(1)`
+    #' @field store_models (`logical(1)`).
     store_models = NULL,
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
+    #'
     #' @param task ([mlr3::Task]).
     #' @param learner ([mlr3::Learner]).
     #' @param resampling ([mlr3::Resampling]).
-    #' @param measures list of ([mlr3::Measure]).
+    #' @param measures (list of [mlr3::Measure]).
     #' @param store_models (`logical(1)`).
     #' @param check_values (`logical(1)`)\cr
     #' Should parameters before the evaluation and the results be checked for
@@ -76,9 +77,9 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
 
       design = benchmark_grid(self$task, learners, self$resampling)
       bmr = benchmark(design, store_models = self$store_models)
-      rr = map(seq(bmr$n_resample_results), function(x) bmr$resample_result(x))
+      rr = map(seq_len(bmr$n_resample_results), function(i) bmr$resample_result(i))
       aggr = bmr$aggregate(self$measures)
-      y = map_chr(self$measures, function(s) s$id)
+      y = map_chr(self$measures, "id")
 
       cbind(aggr[, y, with = FALSE], resample_result = rr)
     }

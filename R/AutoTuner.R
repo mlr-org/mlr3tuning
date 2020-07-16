@@ -58,7 +58,6 @@
 #'
 #' # Retrieve inner tuning results.
 #' rr$data$learner[[1]]$tuning_result
-#'
 AutoTuner = R6Class("AutoTuner",
   inherit = Learner,
   public = list(

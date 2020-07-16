@@ -24,4 +24,3 @@ mlr_tuners = R6Class("DictionaryTuner",
   inherit = Dictionary,
   cloneable = FALSE
 )$new()
-
