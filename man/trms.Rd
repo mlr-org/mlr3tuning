@@ -4,9 +4,9 @@
 \alias{trms}
 \title{Re-export of \code{trms}
 
-See \link[bbotk:trm]{bbotk::trm}.}
+See \link[bbotk:trm]{bbotk::trms}.}
 \description{
 Re-export of \code{trms}
 
-See \link[bbotk:trm]{bbotk::trm}.
+See \link[bbotk:trm]{bbotk::trms}.
 }

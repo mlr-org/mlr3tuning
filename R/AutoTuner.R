@@ -70,8 +70,9 @@ AutoTuner = R6Class("AutoTuner",
     tuner = NULL,
 
     #' @field store_tuning_instance (`logical(1)`)\cr
-    #' If `TRUE` (default), stores the internally created [TuningInstanceSingleCrit]
-    #' with all intermediate results in slot `$tuning_instance`.
+    #' If `TRUE` (default), stores the internally created
+    #' [TuningInstanceSingleCrit] with all intermediate results in slot
+    #' `$tuning_instance`.
     store_tuning_instance = TRUE,
 
     #' @description
@@ -92,14 +93,11 @@ AutoTuner = R6Class("AutoTuner",
     #' @param search_space ([paradox::ParamSet])\cr
     #' Hyperparameter search space, see [TuningInstanceSingleCrit].
     #'
-    #' @param terminator ([Terminator])\cr
+    #' @param terminator ([bbotk::Terminator])\cr
     #' When to stop tuning, see [TuningInstanceSingleCrit].
     #'
     #' @param tuner ([Tuner])\cr
     #' Tuning algorithm to run.
-    #'
-    #' @param bm_args (named `list()`)\cr
-    #' Further arguments for [mlr3::benchmark()], see [TuningInstanceSingleCrit].
     initialize = function(learner, resampling, measure, search_space,
       terminator, tuner) {
       ia = list()
@@ -155,7 +153,7 @@ AutoTuner = R6Class("AutoTuner",
     #' Short-cut to `result` from [TuningInstanceSingleCrit].
     tuning_result = function() self$tuning_instance$result,
 
-    #' @field param_set (paradox::ParamSet].
+    #' @field param_set [paradox::ParamSet].
     param_set = function(rhs) {
       if (is.null(private$.param_set)) {
         private$.param_set = ParamSetCollection$new(list(

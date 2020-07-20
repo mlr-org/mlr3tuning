@@ -1,18 +1,18 @@
 #' @title Single Criterion Tuning Instance
 #'
 #' @description
-#' Specifies a general tuning scenario, including objective function
-#' and archive for Tuners to act upon. This class stores an `ObjectiveTuning`
-#' object that encodes the black box objective function which a [Tuner] has to
-#' optimize. It allows the basic operations of querying the objective
-#' at design points (`$eval_batch()`), storing the evaluations in the internal
-#' `Archive` and accessing the final result (`$result`).
+#' Specifies a general single-criteria tuning scenario, including objective
+#' function and archive for Tuners to act upon. This class stores an
+#' `ObjectiveTuning` object that encodes the black box objective function which
+#' a [Tuner] has to optimize. It allows the basic operations of querying the
+#' objective at design points (`$eval_batch()`), storing the evaluations in the
+#' internal `Archive` and accessing the final result (`$result`).
 #'
 #' Evaluations of hyperparameter configurations are performed in batches by
 #' calling [mlr3::benchmark()] internally. Before a batch is evaluated, the
-#' [Terminator] is queried for the remaining budget. If the available budget is
-#' exhausted, an exception is raised, and no further evaluations can be
-#' performed from this point on.
+#' [bbotk::Terminator] is queried for the remaining budget. If the available
+#' budget is exhausted, an exception is raised, and no further evaluations can
+#' be performed from this point on.
 #'
 #' The tuner is also supposed to store its final result, consisting of a
 #' selected hyperparameter configuration and associated estimated performance
@@ -117,10 +117,10 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     #'
     #' @param search_space ([paradox::ParamSet]).
     #'
-    #' @param terminator ([Terminator]).
+    #' @param terminator ([bbotk::Terminator]).
     #' @param store_models (`logical(1)`).
     #' @param check_values (`logical(1)`)
-    #' Should parameters before the evaluation and the results be checked for
+    #' Check the parameters before the evaluation and the results for
     #' validity?
     initialize = function(task, learner, resampling, measure, search_space,
       terminator, store_models = FALSE, check_values = TRUE) {
@@ -136,14 +136,14 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     #' and estimated performance value here. For internal use.
     #'
     #' @param xdt [`data.table::data.table()`]\cr
-    #'   x values as `data.table` with one row. Contains the value in the
-    #'   *search space* of the [TuningInstanceSingleCrit] object. Can contain
-    #'   additional columns for extra information.
+    #' x values as `data.table` with one row. Contains the value in the
+    #' *search space* of the [TuningInstanceSingleCrit] object. Can contain
+    #' additional columns for extra information.
     #' @param y (`numeric(1)`)\cr
-    #'   Optimal outcome.
+    #'  Optimal outcome.
     #' @param learner_param_vals (`list()`)\cr
-    #'   Fixed parameter values of the learner that are neither part of the
-    #    *search space* nor the domain. Named list.
+    #' Fixed parameter values of the learner that are neither part of the
+    #  *search space* nor the domain. Named list.
     assign_result = function(xdt, y, learner_param_vals = NULL) {
       # set the column with the learner param_vals that were not optimized over but set implicitly
       assert_list(learner_param_vals, null.ok = TRUE, names = "named")

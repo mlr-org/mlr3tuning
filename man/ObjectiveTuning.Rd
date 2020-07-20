@@ -49,9 +49,6 @@ by the \link{TuningInstanceSingleCrit} / \link{TuningInstanceMultiCrit}.
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 Creates a new instance of this \link[R6:R6Class]{R6} class.
-
-
-Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ObjectiveTuning$new(
   task,
@@ -77,7 +74,7 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
 \item{\code{store_models}}{(\code{logical(1)}).}
 
 \item{\code{check_values}}{(\code{logical(1)})\cr
-Should parameters before the evaluation and the results be checked for
+Check the parameters before the evaluation and the results for
 validity?}
 }
 \if{html}{\out{</div>}}

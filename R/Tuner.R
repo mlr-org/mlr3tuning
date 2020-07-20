@@ -8,9 +8,6 @@
 #' optimize the black-box function and its feasible set defined by the
 #' [TuningInstanceSingleCrit] / [TuningInstanceMultiCrit] object.
 #'
-#' A list of measures can be passed to the instance, and they will always be all
-#' evaluated. However, single-criteria tuners optimize only the first measure.
-#'
 #' A tuner must write its result into the [TuningInstanceSingleCrit] /
 #' [TuningInstanceMultiCrit] using the `assign_result` method of the
 #' [bbotk::OptimInstance] at the end of its tuning in order to store the best
@@ -34,17 +31,17 @@
 #'  [TuningInstanceMultiCrit] object `instance`, so each batch is possibly
 #'  executed in parallel via [mlr3::benchmark()], and all evaluations are stored
 #'  inside of `instance$archive`.
-#'  * Before the batch evaluation, the [Terminator] is checked, and if it is
+#'  * Before the batch evaluation, the [bbotk::Terminator] is checked, and if it is
 #'  positive, an exception of class `"terminated_error"` is generated. In the
 #'  later case the current batch of evaluations is still stored in `instance`,
 #'  but the numeric scores are not sent back to the handling optimizer as it has
 #'  lost execution control.
 #'  * After such an exception was caught we select the best configuration from
 #'  `instance$archive` and return it.
-#'  * Note that therefore more points than specified by the [Terminator] may be
-#'  evaluated, as the Terminator is only checked before a batch evaluation, and
-#'  not in-between evaluation in a batch. How many more depends on the setting
-#'  of the batch size.
+#'  * Note that therefore more points than specified by the [bbotk::Terminator]
+#'  may be evaluated, as the Terminator is only checked before a batch
+#'  evaluation, and not in-between evaluation in a batch. How many more depends
+#'  on the setting of the batch size.
 #'  * Overwrite the private super-method `.assign_result()` if you want to decide
 #'  yourself how to estimate the final configuration in the instance and its
 #'  estimated performance. The default behavior is: We pick the best
@@ -139,12 +136,14 @@ Tuner = R6Class("Tuner",
 
     #' @description
     #' Performs the tuning on a [TuningInstanceSingleCrit] or
-    #' [TuningInstanceMultiCrit] until termination.
-    #' The single evaluations and the final results will be written into the [bbotk::Archive] that resides in the [TuningInstanceSingleCrit]/[TuningInstanceMultiCrit].
+    #' [TuningInstanceMultiCrit] until termination. The single evaluations and
+    #' the final results will be written into the [bbotk::Archive] that resides
+    #' in the [TuningInstanceSingleCrit]/[TuningInstanceMultiCrit]. The final
+    #' result is returned.
     #'
     #' @param inst ([TuningInstanceSingleCrit] | [TuningInstanceMultiCrit]).
     #'
-    #' @return Modified `self`.
+    #' @return [data.table::data.table].
     optimize = function(inst) {
       assert_multi_class(inst, c("TuningInstanceSingleCrit", "TuningInstanceMultiCrit"))
       optimize_default(inst, self, private)

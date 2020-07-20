@@ -4,7 +4,7 @@
 \alias{TunerFromOptimizer}
 \title{TunerFromOptimizer}
 \description{
-Internally used to transform \link[bbotk:Optimizer]{bbotk::Optimizer} to \link{Tuner}
+Internally used to transform \link[bbotk:Optimizer]{bbotk::Optimizer} to \link{Tuner}.
 }
 \keyword{internal}
 \section{Super class}{
@@ -49,7 +49,10 @@ Optimizer that is called.}
 \if{latex}{\out{\hypertarget{method-optimize}{}}}
 \subsection{Method \code{optimize()}}{
 Performs the tuning on a \link{TuningInstanceSingleCrit} /
-\link{TuningInstanceMultiCrit} until termination.
+\link{TuningInstanceMultiCrit} until termination. The single evaluations and
+the final results will be written into the \link[bbotk:Archive]{bbotk::Archive} that
+resides in the \link{TuningInstanceSingleCrit}/\link{TuningInstanceMultiCrit}.
+The final result is returned.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TunerFromOptimizer$optimize(inst)}\if{html}{\out{</div>}}
 }
@@ -62,7 +65,7 @@ Performs the tuning on a \link{TuningInstanceSingleCrit} /
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Modified \code{self}.
+\link[data.table:data.table]{data.table::data.table}.
 }
 }
 \if{html}{\out{<hr>}}

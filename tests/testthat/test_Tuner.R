@@ -4,7 +4,7 @@ test_that("API", {
   for (n_evals in c(1, 5)) {
     rs = TunerRandomSearch$new()
     inst = TEST_MAKE_INST1(measure = msr("classif.ce"), term_evals = n_evals)
-    rs$optimize(inst)
+    expect_data_table(rs$optimize(inst), nrows = 1)
     a = inst$archive$data()
     expect_data_table(a, nrows = n_evals)
     expect_true("cp" %in% names(a))

@@ -18,7 +18,7 @@ NULL
 
 #' @title Re-export of `trms`
 #'
-#' See [bbotk::trm].
+#' See [bbotk::trms].
 #'
 #' @name trms
 #' @rdname trms

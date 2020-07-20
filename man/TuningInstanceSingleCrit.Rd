@@ -4,18 +4,18 @@
 \alias{TuningInstanceSingleCrit}
 \title{Single Criterion Tuning Instance}
 \description{
-Specifies a general tuning scenario, including objective function
-and archive for Tuners to act upon. This class stores an \code{ObjectiveTuning}
-object that encodes the black box objective function which a \link{Tuner} has to
-optimize. It allows the basic operations of querying the objective
-at design points (\verb{$eval_batch()}), storing the evaluations in the internal
-\code{Archive} and accessing the final result (\verb{$result}).
+Specifies a general single-criteria tuning scenario, including objective
+function and archive for Tuners to act upon. This class stores an
+\code{ObjectiveTuning} object that encodes the black box objective function which
+a \link{Tuner} has to optimize. It allows the basic operations of querying the
+objective at design points (\verb{$eval_batch()}), storing the evaluations in the
+internal \code{Archive} and accessing the final result (\verb{$result}).
 
 Evaluations of hyperparameter configurations are performed in batches by
 calling \code{\link[mlr3:benchmark]{mlr3::benchmark()}} internally. Before a batch is evaluated, the
-\link{Terminator} is queried for the remaining budget. If the available budget is
-exhausted, an exception is raised, and no further evaluations can be
-performed from this point on.
+\link[bbotk:Terminator]{bbotk::Terminator} is queried for the remaining budget. If the available
+budget is exhausted, an exception is raised, and no further evaluations can
+be performed from this point on.
 
 The tuner is also supposed to store its final result, consisting of a
 selected hyperparameter configuration and associated estimated performance
@@ -163,12 +163,12 @@ Measure to optimize.}
 
 \item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet}).}
 
-\item{\code{terminator}}{(\link{Terminator}).}
+\item{\code{terminator}}{(\link[bbotk:Terminator]{bbotk::Terminator}).}
 
 \item{\code{store_models}}{(\code{logical(1)}).}
 
 \item{\code{check_values}}{(\code{logical(1)})
-Should parameters before the evaluation and the results be checked for
+Check the parameters before the evaluation and the results for
 validity?}
 }
 \if{html}{\out{</div>}}

@@ -9,7 +9,7 @@
 #'
 #' @details
 #' The termination conditions `stopval`, `maxtime` and `maxeval` of
-#' [nloptr::nloptr()] are deactivated and replaced by the [Terminator]
+#' [nloptr::nloptr()] are deactivated and replaced by the [bbotk::Terminator]
 #' subclasses. The x and function value tolerance termination conditions
 #' (`xtol_rel = 10^-4`, `xtol_abs = rep(0.0, length(x0))`,
 #' `ftol_rel = 0.0` and `ftol_abs = 0.0`) are still available and implemented with

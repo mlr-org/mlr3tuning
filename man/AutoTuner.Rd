@@ -74,8 +74,9 @@ All arguments from construction to create the \link{TuningInstanceSingleCrit}.}
 \item{\code{tuner}}{(\link{Tuner}).}
 
 \item{\code{store_tuning_instance}}{(\code{logical(1)})\cr
-If \code{TRUE} (default), stores the internally created \link{TuningInstanceSingleCrit}
-with all intermediate results in slot \verb{$tuning_instance}.}
+If \code{TRUE} (default), stores the internally created
+\link{TuningInstanceSingleCrit} with all intermediate results in slot
+\verb{$tuning_instance}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -94,7 +95,7 @@ Internally created tuning instance with all intermediate results.}
 \item{\code{tuning_result}}{(named \code{list()})\cr
 Short-cut to \code{result} from \link{TuningInstanceSingleCrit}.}
 
-\item{\code{param_set}}{(paradox::ParamSet].}
+\item{\code{param_set}}{\link[paradox:ParamSet]{paradox::ParamSet}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -145,14 +146,11 @@ Performance measure to optimize.}
 \item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
 Hyperparameter search space, see \link{TuningInstanceSingleCrit}.}
 
-\item{\code{terminator}}{(\link{Terminator})\cr
+\item{\code{terminator}}{(\link[bbotk:Terminator]{bbotk::Terminator})\cr
 When to stop tuning, see \link{TuningInstanceSingleCrit}.}
 
 \item{\code{tuner}}{(\link{Tuner})\cr
 Tuning algorithm to run.}
-
-\item{\code{bm_args}}{(named \code{list()})\cr
-Further arguments for \code{\link[mlr3:benchmark]{mlr3::benchmark()}}, see \link{TuningInstanceSingleCrit}.}
 }
 \if{html}{\out{</div>}}
 }

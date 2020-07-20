@@ -9,9 +9,6 @@ provide. A tuner is an object that describes the tuning strategy, i.e. how to
 optimize the black-box function and its feasible set defined by the
 \link{TuningInstanceSingleCrit} / \link{TuningInstanceMultiCrit} object.
 
-A list of measures can be passed to the instance, and they will always be all
-evaluated. However, single-criteria tuners optimize only the first measure.
-
 A tuner must write its result into the \link{TuningInstanceSingleCrit} /
 \link{TuningInstanceMultiCrit} using the \code{assign_result} method of the
 \link[bbotk:OptimInstance]{bbotk::OptimInstance} at the end of its tuning in order to store the best
@@ -41,17 +38,17 @@ your optimizer.
 \link{TuningInstanceMultiCrit} object \code{instance}, so each batch is possibly
 executed in parallel via \code{\link[mlr3:benchmark]{mlr3::benchmark()}}, and all evaluations are stored
 inside of \code{instance$archive}.
-\item Before the batch evaluation, the \link{Terminator} is checked, and if it is
+\item Before the batch evaluation, the \link[bbotk:Terminator]{bbotk::Terminator} is checked, and if it is
 positive, an exception of class \code{"terminated_error"} is generated. In the
 later case the current batch of evaluations is still stored in \code{instance},
 but the numeric scores are not sent back to the handling optimizer as it has
 lost execution control.
 \item After such an exception was caught we select the best configuration from
 \code{instance$archive} and return it.
-\item Note that therefore more points than specified by the \link{Terminator} may be
-evaluated, as the Terminator is only checked before a batch evaluation, and
-not in-between evaluation in a batch. How many more depends on the setting
-of the batch size.
+\item Note that therefore more points than specified by the \link[bbotk:Terminator]{bbotk::Terminator}
+may be evaluated, as the Terminator is only checked before a batch
+evaluation, and not in-between evaluation in a batch. How many more depends
+on the setting of the batch size.
 \item Overwrite the private super-method \code{.assign_result()} if you want to decide
 yourself how to estimate the final configuration in the instance and its
 estimated performance. The default behavior is: We pick the best
@@ -166,8 +163,10 @@ Print method.
 \if{latex}{\out{\hypertarget{method-optimize}{}}}
 \subsection{Method \code{optimize()}}{
 Performs the tuning on a \link{TuningInstanceSingleCrit} or
-\link{TuningInstanceMultiCrit} until termination.
-The single evaluations and the final results will be written into the \link[bbotk:Archive]{bbotk::Archive} that resides in the \link{TuningInstanceSingleCrit}/\link{TuningInstanceMultiCrit}.
+\link{TuningInstanceMultiCrit} until termination. The single evaluations and
+the final results will be written into the \link[bbotk:Archive]{bbotk::Archive} that resides
+in the \link{TuningInstanceSingleCrit}/\link{TuningInstanceMultiCrit}. The final
+result is returned.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Tuner$optimize(inst)}\if{html}{\out{</div>}}
 }
@@ -180,7 +179,7 @@ The single evaluations and the final results will be written into the \link[bbot
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-Modified \code{self}.
+\link[data.table:data.table]{data.table::data.table}.
 }
 }
 \if{html}{\out{<hr>}}

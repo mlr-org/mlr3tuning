@@ -8,9 +8,6 @@
 #' @export
 ObjectiveTuning = R6Class("ObjectiveTuning",
   inherit = Objective,
-
-  #' @description
-  #' Creates a new instance of this [R6][R6::R6Class] class.
   public = list(
 
     #' @field task ([mlr3::Task]).
@@ -37,7 +34,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     #' @param measures (list of [mlr3::Measure]).
     #' @param store_models (`logical(1)`).
     #' @param check_values (`logical(1)`)\cr
-    #' Should parameters before the evaluation and the results be checked for
+    #' Check the parameters before the evaluation and the results for
     #' validity?
     initialize = function(task, learner, resampling, measures,
       store_models = FALSE, check_values = TRUE) {
@@ -53,11 +50,8 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
           self$resampling$instantiate(self$task)
       }
 
-      codomain = ParamSet$new(map(
-        self$measures,
-        function(s) {
-          ParamDbl$new(
-            id = s$id,
+      codomain = ParamSet$new(map(self$measures, function(s) {
+          ParamDbl$new(id = s$id,
             tags = ifelse(s$minimize, "minimize", "maximize"))
         }))
 

@@ -13,7 +13,7 @@
 }
 \details{
 The termination conditions \code{stopval}, \code{maxtime} and \code{maxeval} of
-\code{\link[nloptr:nloptr]{nloptr::nloptr()}} are deactivated and replaced by the \link{Terminator}
+\code{\link[nloptr:nloptr]{nloptr::nloptr()}} are deactivated and replaced by the \link[bbotk:Terminator]{bbotk::Terminator}
 subclasses. The x and function value tolerance termination conditions
 (\code{xtol_rel = 10^-4}, \code{xtol_abs = rep(0.0, length(x0))},
 \code{ftol_rel = 0.0} and \code{ftol_abs = 0.0}) are still available and implemented with

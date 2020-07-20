@@ -1,7 +1,7 @@
 #' @title TunerFromOptimizer
 #'
 #' @description
-#' Internally used to transform [bbotk::Optimizer] to [Tuner]
+#' Internally used to transform [bbotk::Optimizer] to [Tuner].
 #'
 #' @keywords internal
 #' @export
@@ -23,11 +23,14 @@ TunerFromOptimizer = R6Class("TunerFromOptimizer",
 
       #' @description
       #' Performs the tuning on a [TuningInstanceSingleCrit] /
-      #' [TuningInstanceMultiCrit] until termination.
+      #' [TuningInstanceMultiCrit] until termination. The single evaluations and
+      #' the final results will be written into the [bbotk::Archive] that
+      #' resides in the [TuningInstanceSingleCrit]/[TuningInstanceMultiCrit].
+      #' The final result is returned.
       #'
       #' @param inst ([TuningInstanceSingleCrit] | [TuningInstanceMultiCrit]).
       #'
-      #' @return Modified `self`.
+      #' @return [data.table::data.table].
       optimize = function(inst) {
         # We check for both classes since there is no TuningInstance super
         # class anymore and OptimInstance would not ensure that we are in the
