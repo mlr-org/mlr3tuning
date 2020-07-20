@@ -17,6 +17,7 @@
 #'
 #' @templateVar id nloptr
 #' @template section_dictionary_tuners
+#' @template section_logging
 #'
 #' @inheritSection bbotk::OptimizerNLoptr Parameters
 #'

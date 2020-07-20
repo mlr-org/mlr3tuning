@@ -14,9 +14,12 @@
 #'   terminator = terminator
 #' )
 #' tt = tnr("<%= id %>")
+#'
 #' # modifies the instance by reference
 #' tt$optimize(instance)
+#'
 #' # returns best configuration and best performance
 #' instance$result
+#'
 #' # allows access of data.table of full path of all evaluations
 #' instance$archive

@@ -39,4 +39,3 @@ test_that("TunerGenSA - Optimize wrapper with maximize measure", {
   res = inst$archive$best()
   expect_equal(res$cp, max(inst$archive$data()$cp))
 })
-

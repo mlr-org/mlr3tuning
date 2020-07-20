@@ -8,13 +8,10 @@
 #' We simply search over a set of points fully specified by the user. The points
 #' in the design are evaluated in order as given.
 #'
-#' In order to support general termination criteria and parallelization, we
-#' evaluate points in a batch-fashion of size `batch_size`. Larger batches mean
-#' we can parallelize more, smaller batches imply a more fine-grained checking
-#' of termination criteria.
-#'
 #' @templateVar id design_points
 #' @template section_dictionary_tuners
+#' @template section_parallelization
+#' @template section_logging
 #'
 #' @inheritSection bbotk::OptimizerDesignPoints Parameters
 #'

@@ -21,6 +21,14 @@ tnr("gensa")
 }
 }
 
+\section{Logging}{
+
+
+All \link{Tuner}s use a logger (as implemented in \CRANpkg{lgr}) from package
+\CRANpkg{bbotk}.
+Use \code{lgr::get_logger("bbotk")} to access and control the logger.
+}
+
 \section{Parameters}{
 
 
@@ -54,10 +62,13 @@ instance = TuningInstanceSingleCrit$new(
   terminator = terminator
 )
 tt = tnr("gensa")
+
 # modifies the instance by reference
 tt$optimize(instance)
+
 # returns best configuration and best performance
 instance$result
+
 # allows access of data.table of full path of all evaluations
 instance$archive
 }

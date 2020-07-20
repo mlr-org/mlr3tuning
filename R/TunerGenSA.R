@@ -8,6 +8,7 @@
 #'
 #' @templateVar id gensa
 #' @template section_dictionary_tuners
+#' @template section_logging
 #'
 #' @inheritSection bbotk::OptimizerGenSA Parameters
 #'

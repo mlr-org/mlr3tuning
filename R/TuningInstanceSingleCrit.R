@@ -18,6 +18,17 @@
 #' selected hyperparameter configuration and associated estimated performance
 #' values, by calling the method `instance$assign_result`.
 #'
+#' @template param_task
+#' @template param_learner
+#' @template param_resampling
+#' @template param_measure
+#' @template param_search_space
+#' @template param_terminator
+#' @template param_store_models
+#' @template param_check_values
+#' @template param_xdt
+#' @template param_learner_param_vals
+#'
 #' @export
 #' @examples
 #' library(data.table)
@@ -103,25 +114,6 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     #' This defines the resampled performance of a learner on a task, a
     #' feasibility region for the parameters the tuner is supposed to optimize,
     #' and a termination criterion.
-    #'
-    #' @param task ([mlr3::Task]).
-    #'
-    #' @param learner ([mlr3::Learner]).
-    #'
-    #' @param resampling ([mlr3::Resampling])\cr
-    #' Note that uninstantiated resamplings are instantiated during construction
-    #' so that all configurations are evaluated on the same data splits.
-    #'
-    #' @param measure ([mlr3::Measure])\cr
-    #' Measure to optimize.
-    #'
-    #' @param search_space ([paradox::ParamSet]).
-    #'
-    #' @param terminator ([bbotk::Terminator]).
-    #' @param store_models (`logical(1)`).
-    #' @param check_values (`logical(1)`)
-    #' Check the parameters before the evaluation and the results for
-    #' validity?
     initialize = function(task, learner, resampling, measure, search_space,
       terminator, store_models = FALSE, check_values = TRUE) {
         measure = as_measure(measure)
@@ -135,15 +127,8 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     #' The [Tuner] object writes the best found point
     #' and estimated performance value here. For internal use.
     #'
-    #' @param xdt [`data.table::data.table()`]\cr
-    #' x values as `data.table` with one row. Contains the value in the
-    #' *search space* of the [TuningInstanceSingleCrit] object. Can contain
-    #' additional columns for extra information.
     #' @param y (`numeric(1)`)\cr
-    #'  Optimal outcome.
-    #' @param learner_param_vals (`list()`)\cr
-    #' Fixed parameter values of the learner that are neither part of the
-    #  *search space* nor the domain. Named list.
+    #'   Optimal outcome.
     assign_result = function(xdt, y, learner_param_vals = NULL) {
       # set the column with the learner param_vals that were not optimized over but set implicitly
       assert_list(learner_param_vals, null.ok = TRUE, names = "named")

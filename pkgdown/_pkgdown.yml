@@ -39,24 +39,22 @@ navbar:
       href: https://mlr-org.com/
 
 reference:
-  - title: Define the Tuning Problem
+  - title: Tuning Instances
     contents:
-      - ObjectiveTuning
       - starts_with("TuningInstance")
-  - title: Define the Tuners
+  - title: Tuners
     contents:
-      - tnr
+      - AutoTuner
       - Tuner
-      - starts_with("mlr_tuners")
       - TunerFromOptimizer
+      - starts_with("mlr_tuners")
+      - tnr
   - title: Terminators
     contents:
       - mlr_terminators
       - trm
       - trms
-  - title: Auto-tuned Learner
+  - title: Misc
     contents:
-      - AutoTuner
-  - title: General
-    contents:
+      - ObjectiveTuning
       - mlr3tuning-package

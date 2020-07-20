@@ -90,7 +90,7 @@ Tuner = R6Class("Tuner",
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #'
-    #' @param param_set [paradox::ParamSet]\cr
+    #' @param param_set ([paradox::ParamSet])\cr
     #' Set of control parameters for tuner.
     #'
     #' @param param_classes (`character()`)\cr

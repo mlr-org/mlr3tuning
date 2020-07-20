@@ -75,25 +75,27 @@ and a termination criterion.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{task}}{(\link[mlr3:Task]{mlr3::Task}).}
+\item{\code{task}}{(\link[mlr3:Task]{mlr3::Task})\cr
+Task to operate on.}
 
 \item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner}).}
 
 \item{\code{resampling}}{(\link[mlr3:Resampling]{mlr3::Resampling})\cr
-Note that uninstantiated resamplings are instantiated during construction
+Uninstantiated resamplings are instantiated during construction
 so that all configurations are evaluated on the same data splits.}
 
 \item{\code{measures}}{(list of \link[mlr3:Measure]{mlr3::Measure})\cr
-Measures to optimize.}
+Measures to optimize.
+If \code{NULL}, \CRANpkg{mlr3}'s default measure is used.}
 
 \item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet}).}
 
-\item{\code{terminator}}{(\link[bbotk:Terminator]{bbotk::Terminator}).}
+\item{\code{terminator}}{(\link{Terminator}).}
 
 \item{\code{store_models}}{(\code{logical(1)}).}
 
-\item{\code{check_values}}{(\code{logical(1)}).
-Check the parameters before the evaluation and the results for
+\item{\code{check_values}}{(\code{logical(1)})\cr
+Should parameters before the evaluation and the results be checked for
 validity?}
 }
 \if{html}{\out{</div>}}

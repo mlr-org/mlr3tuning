@@ -10,11 +10,6 @@ Subclass for grid search tuning.
 The grid is constructed as a Cartesian product over discretized values per
 parameter, see \code{\link[paradox:generate_design_grid]{paradox::generate_design_grid()}}. The points of the grid are
 evaluated in a random order.
-
-In order to support general termination criteria and parallelization, we
-evaluate points in a batch-fashion of size \code{batch_size}. Larger batches mean
-we can parallelize more, smaller batches imply a more fine-grained checking
-of termination criteria.
 }
 \section{Dictionary}{
 
@@ -22,6 +17,27 @@ This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{diction
 \link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:\preformatted{mlr_tuners$get("grid_search")
 tnr("grid_search")
 }
+}
+
+\section{Parallelization}{
+
+In order to support general termination criteria and parallelization, we
+evaluate points in a batch-fashion of size \code{batch_size}. Larger batches mean
+we can parallelize more, smaller batches imply a more fine-grained checking
+of termination criteria. A batch contains of \code{batch_size} times \code{resampling$iters} jobs.
+E.g., if you set a batch size of 10 points and do a 5-fold cross validation, you can
+utilize up to 50 cores.
+
+Parallelization is supported via package \CRANpkg{future} (see \code{\link[mlr3:benchmark]{mlr3::benchmark()}}'s
+section on parallelization for more details).
+}
+
+\section{Logging}{
+
+
+All \link{Tuner}s use a logger (as implemented in \CRANpkg{lgr}) from package
+\CRANpkg{bbotk}.
+Use \code{lgr::get_logger("bbotk")} to access and control the logger.
 }
 
 \section{Parameters}{
@@ -55,10 +71,13 @@ instance = TuningInstanceSingleCrit$new(
   terminator = terminator
 )
 tt = tnr("grid_search")
+
 # modifies the instance by reference
 tt$optimize(instance)
+
 # returns best configuration and best performance
 instance$result
+
 # allows access of data.table of full path of all evaluations
 instance$archive
 }

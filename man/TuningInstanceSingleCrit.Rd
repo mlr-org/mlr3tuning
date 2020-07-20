@@ -150,12 +150,13 @@ and a termination criterion.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{task}}{(\link[mlr3:Task]{mlr3::Task}).}
+\item{\code{task}}{(\link[mlr3:Task]{mlr3::Task})\cr
+Task to operate on.}
 
 \item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner}).}
 
 \item{\code{resampling}}{(\link[mlr3:Resampling]{mlr3::Resampling})\cr
-Note that uninstantiated resamplings are instantiated during construction
+Uninstantiated resamplings are instantiated during construction
 so that all configurations are evaluated on the same data splits.}
 
 \item{\code{measure}}{(\link[mlr3:Measure]{mlr3::Measure})\cr
@@ -163,12 +164,12 @@ Measure to optimize.}
 
 \item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet}).}
 
-\item{\code{terminator}}{(\link[bbotk:Terminator]{bbotk::Terminator}).}
+\item{\code{terminator}}{(\link{Terminator}).}
 
 \item{\code{store_models}}{(\code{logical(1)}).}
 
-\item{\code{check_values}}{(\code{logical(1)})
-Check the parameters before the evaluation and the results for
+\item{\code{check_values}}{(\code{logical(1)})\cr
+Should parameters before the evaluation and the results be checked for
 validity?}
 }
 \if{html}{\out{</div>}}
@@ -187,9 +188,9 @@ and estimated performance value here. For internal use.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{xdt}}{\code{\link[data.table:data.table]{data.table::data.table()}}\cr
-x values as \code{data.table} with one row. Contains the value in the
-\emph{search space} of the \link{TuningInstanceSingleCrit} object. Can contain
+\item{\code{xdt}}{(\code{data.table::data.table()})\cr
+x values as \code{data.table}. Each row is one point. Contains the value in
+the \emph{search space} of the \link{TuningInstanceMultiCrit} object. Can contain
 additional columns for extra information.}
 
 \item{\code{y}}{(\code{numeric(1)})\cr

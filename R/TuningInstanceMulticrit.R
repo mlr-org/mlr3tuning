@@ -18,6 +18,17 @@
 #' selected hyperparameter configuration and associated estimated performance
 #' values, by calling the method `instance$assign_result`.
 #'
+#' @template param_task
+#' @template param_learner
+#' @template param_resampling
+#' @template param_measures
+#' @template param_search_space
+#' @template param_terminator
+#' @template param_store_models
+#' @template param_check_values
+#' @template param_xdt
+#' @template param_learner_param_vals
+#'
 #' @export
 TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
   inherit = OptimInstanceMultiCrit,
@@ -29,26 +40,6 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
     #' This defines the resampled performance of a learner on a task, a
     #' feasibility region for the parameters the tuner is supposed to optimize,
     #' and a termination criterion.
-    #'
-    #' @param task ([mlr3::Task]).
-    #'
-    #' @param learner ([mlr3::Learner]).
-    #'
-    #' @param resampling ([mlr3::Resampling])\cr
-    #' Note that uninstantiated resamplings are instantiated during construction
-    #' so that all configurations are evaluated on the same data splits.
-    #'
-    #' @param measures (list of [mlr3::Measure])\cr
-    #' Measures to optimize.
-    #'
-    #' @param search_space ([paradox::ParamSet]).
-    #'
-    #' @param terminator ([bbotk::Terminator]).
-    #' @param store_models (`logical(1)`).
-    #'
-    #' @param check_values (`logical(1)`).
-    #' Check the parameters before the evaluation and the results for
-    #' validity?
     initialize = function(task, learner, resampling, measures, search_space,
       terminator, store_models = FALSE, check_values = TRUE) {
         obj = ObjectiveTuning$new(task = task, learner = learner,
@@ -61,15 +52,8 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
     #' The [Tuner] object writes the best found points
     #' and estimated performance values here. For internal use.
     #'
-    #' @param xdt (`data.table::data.table()`)\cr
-    #' x values as `data.table`. Each row is one point. Contains the value in
-    #' the *search space* of the [TuningInstanceMultiCrit] object. Can contain
-    #' additional columns for extra information.
     #' @param ydt (`data.table::data.table()`)\cr
-    #' Optimal outcomes, e.g. the Pareto front.
-    #' @param learner_param_vals (`list()`)\cr
-    #' Fixed parameter values of the learner that are neither part of the
-    #` *search space* nor the domain. List of named lists.
+    #'   Optimal outcomes, e.g. the Pareto front.
     assign_result = function(xdt, ydt, learner_param_vals = NULL) {
       # set the column with the learner param_vals that were not optimized over but set implicitly
 

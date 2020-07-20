@@ -5,6 +5,13 @@
 #' hyperparameter configurations. This class is usually constructed internally
 #' by the [TuningInstanceSingleCrit] / [TuningInstanceMultiCrit].
 #'
+#' @template param_task
+#' @template param_learner
+#' @template param_resampling
+#' @template param_measures
+#' @template param_store_models
+#' @template param_check_values
+#'
 #' @export
 ObjectiveTuning = R6Class("ObjectiveTuning",
   inherit = Objective,
@@ -27,15 +34,6 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
-    #'
-    #' @param task ([mlr3::Task]).
-    #' @param learner ([mlr3::Learner]).
-    #' @param resampling ([mlr3::Resampling]).
-    #' @param measures (list of [mlr3::Measure]).
-    #' @param store_models (`logical(1)`).
-    #' @param check_values (`logical(1)`)\cr
-    #' Check the parameters before the evaluation and the results for
-    #' validity?
     initialize = function(task, learner, resampling, measures,
       store_models = FALSE, check_values = TRUE) {
         self$task = assert_task(as_task(task, clone = TRUE))
