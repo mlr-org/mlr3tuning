@@ -33,4 +33,8 @@ test_that("tuning with multiple objectives", {
   expect_list(inst$result_x_domain)
 })
 
-
+test_that("store_resample_results flag works", {
+  inst = TEST_MAKE_INST1_2D(store_resample_results = FALSE)
+  inst$eval_batch(data.table(cp = c(0.3, 0.25), minsplit = c(3, 4)))
+  expect_true("resample_result" %nin% colnames(inst$archive$data()))
+})

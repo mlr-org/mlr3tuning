@@ -143,7 +143,8 @@ and a termination criterion.
   search_space,
   terminator,
   store_models = FALSE,
-  check_values = TRUE
+  check_values = TRUE,
+  store_resample_results = TRUE
 )}\if{html}{\out{</div>}}
 }
 
@@ -171,6 +172,9 @@ Measure to optimize.}
 \item{\code{check_values}}{(\code{logical(1)})\cr
 Should parameters before the evaluation and the results be checked for
 validity?}
+
+\item{\code{store_resample_results}}{(\code{logical(1)})\cr
+Store resample results in archive?}
 }
 \if{html}{\out{</div>}}
 }

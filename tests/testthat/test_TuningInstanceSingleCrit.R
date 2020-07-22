@@ -133,3 +133,11 @@ test_that("non-scalar hyperpars (#201)", {
   tnr("random_search")$optimize(inst)
   expect_data_table(inst$archive$data(), nrows = 1)
 })
+
+test_that("store_resample_results flag works", {
+  inst = TEST_MAKE_INST1(values = list(maxdepth = 10), folds = 2L,
+    measure = msr("dummy.cp.classif", fun = function(pv) pv$cp), n_dim = 2,
+    store_resample_results = FALSE)
+  inst$eval_batch(data.table(cp = c(0.3, 0.25), minsplit = c(3, 4)))
+  expect_true("resample_result" %nin% colnames(inst$archive$data()))
+})

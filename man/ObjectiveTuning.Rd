@@ -23,6 +23,8 @@ by the \link{TuningInstanceSingleCrit} / \link{TuningInstanceMultiCrit}.
 \item{\code{measures}}{(list of \link[mlr3:Measure]{mlr3::Measure}).}
 
 \item{\code{store_models}}{(\code{logical(1)}).}
+
+\item{\code{store_resample_results}}{(\code{logical(1)}).}
 }
 \if{html}{\out{</div>}}
 }
@@ -56,7 +58,8 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   resampling,
   measures,
   store_models = FALSE,
-  check_values = TRUE
+  check_values = TRUE,
+  store_resample_results = TRUE
 )}\if{html}{\out{</div>}}
 }
 
@@ -81,6 +84,9 @@ If \code{NULL}, \CRANpkg{mlr3}'s default measure is used.}
 \item{\code{check_values}}{(\code{logical(1)})\cr
 Should parameters before the evaluation and the results be checked for
 validity?}
+
+\item{\code{store_resample_results}}{(\code{logical(1)})\cr
+Store resample results in archive?}
 }
 \if{html}{\out{</div>}}
 }

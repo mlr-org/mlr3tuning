@@ -26,6 +26,7 @@
 #' @template param_terminator
 #' @template param_store_models
 #' @template param_check_values
+#' @template param_store_resample_results
 #' @template param_xdt
 #' @template param_learner_param_vals
 #'
@@ -115,11 +116,13 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     #' feasibility region for the parameters the tuner is supposed to optimize,
     #' and a termination criterion.
     initialize = function(task, learner, resampling, measure, search_space,
-      terminator, store_models = FALSE, check_values = TRUE) {
+      terminator, store_models = FALSE, check_values = TRUE,
+      store_resample_results = TRUE) {
         measure = as_measure(measure)
         obj = ObjectiveTuning$new(task = task, learner = learner,
           resampling = resampling, measures = list(measure),
-          store_models = store_models, check_values = check_values)
+          store_models = store_models, check_values = check_values,
+          store_resample_results = store_resample_results)
         super$initialize(obj, search_space, terminator)
     },
 
