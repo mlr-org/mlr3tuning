@@ -143,7 +143,7 @@ and a termination criterion.
   search_space,
   terminator,
   store_models = FALSE,
-  check_values = TRUE,
+  check_values = FALSE,
   store_resample_results = TRUE
 )}\if{html}{\out{</div>}}
 }

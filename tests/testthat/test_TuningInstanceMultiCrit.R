@@ -38,3 +38,25 @@ test_that("store_resample_results flag works", {
   inst$eval_batch(data.table(cp = c(0.3, 0.25), minsplit = c(3, 4)))
   expect_true("resample_result" %nin% colnames(inst$archive$data()))
 })
+
+test_that("check_values flag with parameter set dependencies", {
+  learner = LearnerRegrDepParams$new()
+  learner$param_set$values$xx = "a"
+  search_space = ParamSet$new(list(
+    ParamDbl$new("cp", lower = 0.1, upper = 0.3),
+    ParamDbl$new("yy", lower = 0.1, upper = 0.3)
+  ))
+  terminator = trm("evals", n_evals = 20)
+  tuner = tnr("random_search")
+
+  inst = TuningInstanceMultiCrit$new(tsk("boston_housing"), learner,
+    rsmp("holdout"), msrs(c("regr.mse", "regr.rmse")), search_space, terminator)
+  tuner$optimize(inst)
+  expect_named(inst$result_learner_param_vals[[1]], c("xx", "cp", "yy"))
+
+  inst = TuningInstanceMultiCrit$new(tsk("boston_housing"), learner,
+                                      rsmp("holdout"), msr("regr.mse"), search_space, terminator,
+                                      check_values = TRUE)
+  expect_error(tuner$optimize(inst),
+    fixed = "The parameter 'yy' can only be set")
+})

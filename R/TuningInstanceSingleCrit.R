@@ -116,7 +116,7 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     #' feasibility region for the parameters the tuner is supposed to optimize,
     #' and a termination criterion.
     initialize = function(task, learner, resampling, measure, search_space,
-      terminator, store_models = FALSE, check_values = TRUE,
+      terminator, store_models = FALSE, check_values = FALSE,
       store_resample_results = TRUE) {
         measure = as_measure(measure)
         obj = ObjectiveTuning$new(task = task, learner = learner,
