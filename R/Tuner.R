@@ -136,14 +136,14 @@ Tuner = R6Class("Tuner",
 
     #' @description
     #' Performs the tuning on a [TuningInstanceSingleCrit] or
-    #' [TuningInstanceMultiCrit] until termination. The single evaluations and
-    #' the final results will be written into the [bbotk::Archive] that resides
-    #' in the [TuningInstanceSingleCrit]/[TuningInstanceMultiCrit]. The final
-    #' result is returned.
+    #' [TuningInstanceMultiCrit] until termination.
+    #' The single evaluations will be written into the [bbotk::Archive] that resides in the
+    #' [TuningInstanceSingleCrit]/[TuningInstanceMultiCrit].
+    #' The result will be written into the instance object.
     #'
     #' @param inst ([TuningInstanceSingleCrit] | [TuningInstanceMultiCrit]).
     #'
-    #' @return [data.table::data.table].
+    #' @return NULL
     optimize = function(inst) {
       assert_multi_class(inst, c("TuningInstanceSingleCrit", "TuningInstanceMultiCrit"))
       optimize_default(inst, self, private)
