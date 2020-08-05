@@ -1,3 +1,18 @@
+# mlr3tuning 0.2.0
+
+* `TuningInstance` is now `TuningInstanceSingleCrit`. `TuningInstanceMultiCrit`
+is still available for multi-criteria tuning.
+* Terminators are now accessible by `trm()` and `trms()` instead of `term()` and
+`terms()`.
+* Storing of resample results is optional now by using the
+`store_resample_result` flag in `TuningInstanceSingleCrit` and
+`TuningInstanceMultiCrit`
+* `TunerNLoptr` adds non-linear optimization from the nloptr package.
+* Logging is controlled by the `bbotk` logger now.
+* Proposed points and performance values can be checked for validity by
+activating the `check_values` flag in `TuningInstanceSingleCrit` and
+`TuningInstanceMultiCrit`.
+
 # mlr3tuning 0.1.3
 
 * mlr3tuning now depends on the `bbotk` package for basic tuning objects.
@@ -7,6 +22,7 @@
 * `TuningInstance$param_set` becomes `TuningInstance$search_space` to avoid
   confusion as the `param_set` usually contains the parameters that change the
   behaviour of an object.
+* Tuning is triggered by `$optimize()` instead of `$tune()`
 
 # mlr3tuning 0.1.2
 
