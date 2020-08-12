@@ -58,8 +58,8 @@ RdMacros:
     mlr3misc
 Remotes:
     mlr-org/mlr3misc,
-    mlr-org/paradox@leanify,
-    mlr-org/mlr3@leanify_with_misc,
+    mlr-org/paradox
+    mlr-org/mlr3
     mlr-org/bbotk@leanify
 Encoding: UTF-8
 NeedsCompilation: no
