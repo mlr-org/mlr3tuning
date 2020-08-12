@@ -137,7 +137,7 @@ Tuner = R6Class("Tuner",
     #' @description
     #' Performs the tuning on a [TuningInstanceSingleCrit] or
     #' [TuningInstanceMultiCrit] until termination.
-    #' The single evaluations will be written into the [bbotk::Archive] that resides in the
+    #' The single evaluations will be written into the [ArchiveTuning] that resides in the
     #' [TuningInstanceSingleCrit]/[TuningInstanceMultiCrit].
     #' The result will be written into the instance object.
     #'

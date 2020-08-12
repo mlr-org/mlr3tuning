@@ -66,6 +66,7 @@ NeedsCompilation: no
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Collate:
+    'ArchiveTuning.R'
     'AutoTuner.R'
     'ObjectiveTuning.R'
     'mlr_tuners.R'

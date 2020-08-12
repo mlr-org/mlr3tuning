@@ -142,9 +142,9 @@ and a termination criterion.
   measure,
   search_space,
   terminator,
+  store_benchmark_result = TRUE,
   store_models = FALSE,
-  check_values = FALSE,
-  store_resample_results = TRUE
+  check_values = FALSE
 )}\if{html}{\out{</div>}}
 }
 
@@ -167,14 +167,15 @@ Measure to optimize.}
 
 \item{\code{terminator}}{(\link{Terminator}).}
 
-\item{\code{store_models}}{(\code{logical(1)}).}
+\item{\code{store_benchmark_result}}{(\code{logical(1)})\cr
+Store benchmark result in archive?}
+
+\item{\code{store_models}}{(\code{logical(1)}).
+Store models in benchmark result?}
 
 \item{\code{check_values}}{(\code{logical(1)})\cr
 Should parameters before the evaluation and the results be checked for
 validity?}
-
-\item{\code{store_resample_results}}{(\code{logical(1)})\cr
-Store resample results in archive?}
 }
 \if{html}{\out{</div>}}
 }

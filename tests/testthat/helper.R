@@ -96,7 +96,7 @@ TEST_MAKE_PS1 = function(n_dim = 1L) {
 }
 TEST_MAKE_INST1 = function(values = NULL, folds = 2L,
   measure = msr("classif.ce"), n_dim = 1L, term_evals = 5L,
-  store_resample_results = TRUE) {
+  store_benchmark_result = TRUE) {
   ps = TEST_MAKE_PS1(n_dim = n_dim)
   lrn = mlr_learners$get("classif.rpart")
   if (!is.null(values)) {
@@ -105,13 +105,13 @@ TEST_MAKE_INST1 = function(values = NULL, folds = 2L,
   rs = rsmp("cv", folds = folds)
   term = trm("evals", n_evals = term_evals)
   inst = TuningInstanceSingleCrit$new(tsk("iris"), lrn, rs, measure, ps, term,
-    store_resample_results = store_resample_results)
+    store_benchmark_result = store_benchmark_result)
   return(inst)
 }
 
 TEST_MAKE_INST1_2D = function(values = NULL, folds = 2L,
   measures = msrs(c("classif.ce", "classif.acc")),  n_dim = 1L, term_evals = 5L,
-  store_resample_results = TRUE) {
+  store_benchmark_result = TRUE) {
   ps = TEST_MAKE_PS1(n_dim = n_dim)
   lrn = mlr_learners$get("classif.rpart")
   if (!is.null(values)) {
@@ -120,7 +120,7 @@ TEST_MAKE_INST1_2D = function(values = NULL, folds = 2L,
   rs = rsmp("cv", folds = folds)
   term = trm("evals", n_evals = term_evals)
   inst = TuningInstanceMultiCrit$new(tsk("iris"), lrn, rs, measures, ps, term,
-                                      store_resample_results = store_resample_results)
+    store_benchmark_result = store_benchmark_result)
   return(inst)
 }
 

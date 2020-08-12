@@ -11,7 +11,7 @@
 #' @template param_measures
 #' @template param_store_models
 #' @template param_check_values
-#' @template param_store_resample_results
+#' @template param_store_benchmark_result
 #'
 #' @export
 ObjectiveTuning = R6Class("ObjectiveTuning",
@@ -33,30 +33,40 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     #' @field store_models (`logical(1)`).
     store_models = NULL,
 
-    #' @field store_resample_results (`logical(1)`).
-    store_resample_results = NULL,
+    #' @field store_benchmark_result (`logical(1)`).
+    store_benchmark_result = NULL,
+
+    #' @field archive ([ArchiveTuning]).
+    archive = NULL,
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function(task, learner, resampling, measures,
-      store_models = FALSE, check_values = TRUE, store_resample_results = TRUE) {
-        self$task = assert_task(as_task(task, clone = TRUE))
-        self$learner = assert_learner(as_learner(learner, clone = TRUE),
-          task = self$task)
-        self$resampling = assert_resampling(as_resampling(
-          resampling, clone = TRUE))
-        self$measures = assert_measures(as_measures(measures, clone = TRUE),
-          task = self$task, learner = self$learner)
-        self$store_models = assert_logical(store_models)
-        self$store_resample_results = assert_logical(store_resample_results)
-        if (!resampling$is_instantiated) {
-          self$resampling$instantiate(self$task)
+      check_values = TRUE, store_benchmark_result = TRUE,
+      store_models = FALSE) {
+
+      self$task = assert_task(as_task(task, clone = TRUE))
+      self$learner = assert_learner(as_learner(learner, clone = TRUE),
+        task = self$task)
+      self$resampling = assert_resampling(as_resampling(
+        resampling,
+        clone = TRUE))
+      self$measures = assert_measures(as_measures(measures, clone = TRUE),
+        task = self$task, learner = self$learner)
+      self$store_benchmark_result = assert_logical(store_benchmark_result)
+      self$store_models = assert_logical(store_models)
+      if (self$store_models && !self$store_benchmark_result) {
+        stop("Models can only be stored if store_benchmark_result is set to TRUE")
+      }
+      if (!resampling$is_instantiated) {
+        self$resampling$instantiate(self$task)
       }
 
       codomain = ParamSet$new(map(self$measures, function(s) {
-          ParamDbl$new(id = s$id,
-            tags = ifelse(s$minimize, "minimize", "maximize"))
-        }))
+        ParamDbl$new(
+          id = s$id,
+          tags = ifelse(s$minimize, "minimize", "maximize"))
+      }))
 
       super$initialize(
         id = sprintf("%s_on_%s", self$learner$id, self$task$id), domain = self$learner$param_set,
@@ -77,9 +87,14 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       aggr = bmr$aggregate(self$measures)
       y = map_chr(self$measures, "id")
 
-      if(self$store_resample_results) {
-        rr = map(seq_len(bmr$n_resample_results), function(i) bmr$resample_result(i))
-        cbind(aggr[, y, with = FALSE], resample_result = rr)
+      if (self$store_benchmark_result) {
+        self$archive$benchmark_result =
+          if (is.null(self$archive$benchmark_result)) {
+            bmr
+          } else {
+            c(self$archive$benchmark_result, bmr)
+          }
+        cbind(aggr[, y, with = FALSE], uhash = bmr$uhashes)
       } else {
         aggr[, y, with = FALSE]
       }

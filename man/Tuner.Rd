@@ -163,10 +163,10 @@ Print method.
 \if{latex}{\out{\hypertarget{method-optimize}{}}}
 \subsection{Method \code{optimize()}}{
 Performs the tuning on a \link{TuningInstanceSingleCrit} or
-\link{TuningInstanceMultiCrit} until termination. The single evaluations and
-the final results will be written into the \link[bbotk:Archive]{bbotk::Archive} that resides
-in the \link{TuningInstanceSingleCrit}/\link{TuningInstanceMultiCrit}. The final
-result is returned.
+\link{TuningInstanceMultiCrit} until termination.
+The single evaluations will be written into the \link{ArchiveTuning} that resides in the
+\link{TuningInstanceSingleCrit}/\link{TuningInstanceMultiCrit}.
+The result will be written into the instance object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Tuner$optimize(inst)}\if{html}{\out{</div>}}
 }
@@ -179,7 +179,7 @@ result is returned.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-\link[data.table:data.table]{data.table::data.table}.
+NULL
 }
 }
 \if{html}{\out{<hr>}}
