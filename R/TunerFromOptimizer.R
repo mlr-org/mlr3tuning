@@ -24,7 +24,7 @@ TunerFromOptimizer = R6Class("TunerFromOptimizer",
       #' @description
       #' Performs the tuning on a [TuningInstanceSingleCrit] /
       #' [TuningInstanceMultiCrit] until termination. The single evaluations and
-      #' the final results will be written into the [bbotk::Archive] that
+      #' the final results will be written into the [ArchiveTuning] that
       #' resides in the [TuningInstanceSingleCrit]/[TuningInstanceMultiCrit].
       #' The final result is returned.
       #'

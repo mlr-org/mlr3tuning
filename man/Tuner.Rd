@@ -164,7 +164,7 @@ Print method.
 \subsection{Method \code{optimize()}}{
 Performs the tuning on a \link{TuningInstanceSingleCrit} or
 \link{TuningInstanceMultiCrit} until termination.
-The single evaluations will be written into the \link[bbotk:Archive]{bbotk::Archive} that resides in the
+The single evaluations will be written into the \link{ArchiveTuning} that resides in the
 \link{TuningInstanceSingleCrit}/\link{TuningInstanceMultiCrit}.
 The result will be written into the instance object.
 \subsection{Usage}{

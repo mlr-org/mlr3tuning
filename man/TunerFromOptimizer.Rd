@@ -50,7 +50,7 @@ Optimizer that is called.}
 \subsection{Method \code{optimize()}}{
 Performs the tuning on a \link{TuningInstanceSingleCrit} /
 \link{TuningInstanceMultiCrit} until termination. The single evaluations and
-the final results will be written into the \link[bbotk:Archive]{bbotk::Archive} that
+the final results will be written into the \link{ArchiveTuning} that
 resides in the \link{TuningInstanceSingleCrit}/\link{TuningInstanceMultiCrit}.
 The final result is returned.
 \subsection{Usage}{
