@@ -69,7 +69,7 @@ and a termination criterion.
   terminator,
   store_models = FALSE,
   check_values = FALSE,
-  store_resample_results = TRUE
+  store_benchmark_result = TRUE
 )}\if{html}{\out{</div>}}
 }
 
@@ -93,14 +93,15 @@ If \code{NULL}, \CRANpkg{mlr3}'s default measure is used.}
 
 \item{\code{terminator}}{(\link{Terminator}).}
 
-\item{\code{store_models}}{(\code{logical(1)}).}
+\item{\code{store_models}}{(\code{logical(1)}).
+Store models in benchmark result?}
 
 \item{\code{check_values}}{(\code{logical(1)})\cr
 Should parameters before the evaluation and the results be checked for
 validity?}
 
-\item{\code{store_resample_results}}{(\code{logical(1)})\cr
-Store resample results in archive?}
+\item{\code{store_benchmark_result}}{(\code{logical(1)})\cr
+Store benchmark result in archive?}
 }
 \if{html}{\out{</div>}}
 }

@@ -134,12 +134,18 @@ test_that("non-scalar hyperpars (#201)", {
   expect_data_table(inst$archive$data(), nrows = 1)
 })
 
-test_that("store_resample_results flag works", {
+test_that("store_benchmark_result flag works", {
   inst = TEST_MAKE_INST1(values = list(maxdepth = 10), folds = 2L,
     measure = msr("dummy.cp.classif", fun = function(pv) pv$cp), n_dim = 2,
-    store_resample_results = FALSE)
+    store_benchmark_result = FALSE)
   inst$eval_batch(data.table(cp = c(0.3, 0.25), minsplit = c(3, 4)))
-  expect_true("resample_result" %nin% colnames(inst$archive$data()))
+  expect_true("uhashes" %nin% colnames(inst$archive$data()))
+
+  inst = TEST_MAKE_INST1(values = list(maxdepth = 10), folds = 2L,
+    measure = msr("dummy.cp.classif", fun = function(pv) pv$cp), n_dim = 2,
+    store_benchmark_results = True)
+  inst$eval_batch(data.table(cp = c(0.3, 0.25), minsplit = c(3, 4)))
+  expect_r6(inst$archive$benchmark_result, "BenchmarkResult")
 })
 
 test_that("check_values flag with parameter set dependencies", {

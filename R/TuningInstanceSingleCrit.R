@@ -26,7 +26,7 @@
 #' @template param_terminator
 #' @template param_store_models
 #' @template param_check_values
-#' @template param_store_resample_results
+#' @template param_store_benchmark_result
 #' @template param_xdt
 #' @template param_learner_param_vals
 #'
@@ -116,14 +116,17 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     #' feasibility region for the parameters the tuner is supposed to optimize,
     #' and a termination criterion.
     initialize = function(task, learner, resampling, measure, search_space,
-      terminator, store_models = FALSE, check_values = FALSE,
-      store_resample_results = TRUE) {
+      terminator, store_benchmark_result = TRUE, store_models = FALSE,
+      check_values = FALSE) {
         measure = as_measure(measure)
         obj = ObjectiveTuning$new(task = task, learner = learner,
           resampling = resampling, measures = list(measure),
-          store_models = store_models, check_values = check_values,
-          store_resample_results = store_resample_results)
+          store_benchmark_result = store_benchmark_result,
+          store_models = store_models, check_values = check_values)
         super$initialize(obj, search_space, terminator)
+        self$archive = ArchiveTuning$new(search_space = search_space,
+          codomain = self$objective$codomain)
+        self$objective$archive = self$archive
     },
 
     #' @description
