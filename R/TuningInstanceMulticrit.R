@@ -44,8 +44,6 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
     initialize = function(task, learner, resampling, measures, search_space,
       terminator, store_models = FALSE, check_values = FALSE,
       store_benchmark_result = TRUE) {
-      archive = ArchiveTuning$new(search_space = self$search_space,
-        codomain = self$objective$codomain)
       obj = ObjectiveTuning$new(
         task = task, learner = learner,
         resampling = resampling, measures = measures,
