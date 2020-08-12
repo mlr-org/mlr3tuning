@@ -20,6 +20,8 @@
 #' @template param_search_space
 #' @template param_xdt
 #' @template param_ydt
+#' @template param_check_values
+#'
 #' @export
 ArchiveTuning = R6Class("ArchiveTuning",
   inherit = Archive,
@@ -32,10 +34,6 @@ ArchiveTuning = R6Class("ArchiveTuning",
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
-    #'
-    #' @param check_values (`logical(1)`)\cr
-    #' Should x-values that are added to the archive be checked for validity?
-    #' Search space that is logged into archive.
     initialize = function(search_space, codomain, check_values = TRUE) {
       super$initialize(search_space, codomain, check_values = TRUE)
     }
