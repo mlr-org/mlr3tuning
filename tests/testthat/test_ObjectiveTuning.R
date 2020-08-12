@@ -15,18 +15,20 @@ test_that("ObjectiveTuning", {
   xss = list(list("cp" = 0.01), list("cp" = 0.02))
   z = obj$eval_many(xss)
   expect_data_table(z, nrows = 2, ncols = 2)
-  expect_equal(z$resample_result[[1]]$learners[[1]]$param_set$values$cp, 0.01)
-  expect_equal(z$resample_result[[2]]$learners[[1]]$param_set$values$cp, 0.02)
+  expect_equal(obj$archive$benchmark_result$resample_result(1)$learners[[1]]$param_set$values$cp,
+    0.01)
+  expect_equal(obj$archive$benchmark_result$resample_result(2)$learners[[1]]$param_set$values$cp,
+    0.02)
 
   xss = list(list("cp" = 0.01, minsplit = 3), list("cp" = 0.02, minsplit = 4))
   z = obj$eval_many(xss)
-  expect_equal(z$resample_result[[1]]$learners[[1]]$param_set$values$cp, 0.01)
+  expect_equal(obj$archive$benchmark_result$resample_result(1)$learners[[1]]$param_set$values$cp, 0.01)
   expect_equal(
-    z$resample_result[[1]]$learners[[1]]$param_set$values$minsplit,
+    obj$archive$benchmark_result$resample_result(3)$learners[[1]]$param_set$values$minsplit,
     3)
-  expect_equal(z$resample_result[[2]]$learners[[1]]$param_set$values$cp, 0.02)
+  expect_equal(obj$archive$benchmark_result$resample_result(4)$learners[[1]]$param_set$values$cp, 0.02)
   expect_equal(
-    z$resample_result[[2]]$learners[[1]]$param_set$values$minsplit,
+    obj$archive$benchmark_result$resample_result(4)$learners[[1]]$param_set$values$minsplit,
     4)
 })
 
@@ -59,5 +61,5 @@ test_that("ObjectiveTuning - Store models", {
   xss = list(list("cp" = 0.01), list("cp" = 0.02))
 
   z = obj$eval_many(xss)
-  expect_class(z$resample_result[[1]]$learners[[1]]$model, "rpart")
+  expect_class(obj$archive$benchmark_result$data$learner[[1]]$model, "rpart")
 })

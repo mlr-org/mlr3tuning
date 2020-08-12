@@ -1,3 +1,9 @@
+# mlr3tuning 0.2.0.9000
+
+* `Archive` is `ArchiveTuning` now which stores the benchmark result in
+`$benchmark_result`. This change removed the resample results from the archive
+but they can be still accessed via the benchmark result.
+
 # mlr3tuning 0.2.0
 
 * `TuningInstance` is now `TuningInstanceSingleCrit`. `TuningInstanceMultiCrit`

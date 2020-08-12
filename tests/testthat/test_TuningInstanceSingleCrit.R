@@ -10,27 +10,28 @@ test_that("TuningInstanceSingleCrit", {
   # add a couple of eval points and test the state of inst
   z = inst$eval_batch(data.table(cp = c(0.3, 0.25), minsplit = c(3, 4)))
   expect_data_table(inst$archive$data(), nrows = 2L)
-  expect_equal(inst$archive$data()$resample_result[[1]]$learners[[1]]$param_set$values$cp, 0.3)
-  expect_equal(inst$archive$data()$resample_result[[1]]$learners[[1]]$param_set$values$minsplit, 3)
-  expect_equal(inst$archive$data()$resample_result[[1]]$learners[[1]]$param_set$values$maxdepth, 10)
-  expect_equal(inst$archive$data()$resample_result[[2]]$learners[[1]]$param_set$values$cp, 0.25)
-  expect_equal(inst$archive$data()$resample_result[[2]]$learners[[1]]$param_set$values$minsplit, 4)
-  expect_equal(inst$archive$data()$resample_result[[2]]$learners[[1]]$param_set$values$maxdepth, 10)
+
+  expect_equal(inst$archive$benchmark_result$resample_result(1)$learners[[1]]$param_set$values$cp, 0.3)
+  expect_equal(inst$archive$benchmark_result$resample_result(1)$learners[[1]]$param_set$values$minsplit, 3)
+  expect_equal(inst$archive$benchmark_result$resample_result(1)$learners[[1]]$param_set$values$maxdepth, 10)
+  expect_equal(inst$archive$benchmark_result$resample_result(2)$learners[[1]]$param_set$values$cp, 0.25)
+  expect_equal(inst$archive$benchmark_result$resample_result(2)$learners[[1]]$param_set$values$minsplit, 4)
+  expect_equal(inst$archive$benchmark_result$resample_result(2)$learners[[1]]$param_set$values$maxdepth, 10)
   expect_identical(inst$archive$n_evals, 2L)
   expect_data_table(z, nrows = 2)
-  expect_named(z, c("dummy.cp.classif", "resample_result"))
+  expect_named(z, c("dummy.cp.classif", "uhash"))
 
   z = inst$eval_batch(data.table(cp = c(0.2, 0.1), minsplit = c(3, 4)))
   expect_data_table(inst$archive$data(), nrows = 4L)
-  expect_equal(inst$archive$data()$resample_result[[3]]$learners[[1]]$param_set$values$cp, 0.2)
-  expect_equal(inst$archive$data()$resample_result[[3]]$learners[[1]]$param_set$values$minsplit, 3)
-  expect_equal(inst$archive$data()$resample_result[[3]]$learners[[1]]$param_set$values$maxdepth, 10)
-  expect_equal(inst$archive$data()$resample_result[[4]]$learners[[1]]$param_set$values$cp, 0.1)
-  expect_equal(inst$archive$data()$resample_result[[4]]$learners[[1]]$param_set$values$minsplit, 4)
-  expect_equal(inst$archive$data()$resample_result[[4]]$learners[[1]]$param_set$values$maxdepth, 10)
+  expect_equal(inst$archive$benchmark_result$resample_result(3)$learners[[1]]$param_set$values$cp, 0.2)
+  expect_equal(inst$archive$benchmark_result$resample_result(3)$learners[[1]]$param_set$values$minsplit, 3)
+  expect_equal(inst$archive$benchmark_result$resample_result(3)$learners[[1]]$param_set$values$maxdepth, 10)
+  expect_equal(inst$archive$benchmark_result$resample_result(4)$learners[[1]]$param_set$values$cp, 0.1)
+  expect_equal(inst$archive$benchmark_result$resample_result(4)$learners[[1]]$param_set$values$minsplit, 4)
+  expect_equal(inst$archive$benchmark_result$resample_result(4)$learners[[1]]$param_set$values$maxdepth, 10)
   expect_identical(inst$archive$n_evals, 4L)
   expect_data_table(z, nrows = 2L)
-  expect_named(z, c("dummy.cp.classif", "resample_result"))
+  expect_named(z, c("dummy.cp.classif", "uhash"))
 
   # test archive
   a = inst$archive$data()
@@ -98,9 +99,9 @@ test_that("tuning with custom resampling", {
 
   inst = TuningInstanceSingleCrit$new(task, learner, resampling, measure, tune_ps, terminator)
   tuner$optimize(inst)
-  rr = inst$archive$data()$resample_result
-  expect_list(rr, len = 10)
-  rr = inst$archive$data()$resample_result[[1]]$resampling
+  rr = inst$archive$benchmark_result$data$resampling
+  expect_list(rr, len = 20)
+  rr = inst$archive$benchmark_result$resample_result(1)$resampling
   expect_equal(rr$iters, 2)
   expect_set_equal(rr$train_set(1), train_sets[[1]])
   expect_set_equal(rr$train_set(2), train_sets[[2]])
@@ -134,12 +135,18 @@ test_that("non-scalar hyperpars (#201)", {
   expect_data_table(inst$archive$data(), nrows = 1)
 })
 
-test_that("store_resample_results flag works", {
+test_that("store_benchmark_result flag works", {
   inst = TEST_MAKE_INST1(values = list(maxdepth = 10), folds = 2L,
     measure = msr("dummy.cp.classif", fun = function(pv) pv$cp), n_dim = 2,
-    store_resample_results = FALSE)
+    store_benchmark_result = FALSE)
   inst$eval_batch(data.table(cp = c(0.3, 0.25), minsplit = c(3, 4)))
-  expect_true("resample_result" %nin% colnames(inst$archive$data()))
+  expect_true("uhashes" %nin% colnames(inst$archive$data()))
+
+  inst = TEST_MAKE_INST1(values = list(maxdepth = 10), folds = 2L,
+    measure = msr("dummy.cp.classif", fun = function(pv) pv$cp), n_dim = 2,
+    store_benchmark_result = TRUE)
+  inst$eval_batch(data.table(cp = c(0.3, 0.25), minsplit = c(3, 4)))
+  expect_r6(inst$archive$benchmark_result, "BenchmarkResult")
 })
 
 test_that("check_values flag with parameter set dependencies", {

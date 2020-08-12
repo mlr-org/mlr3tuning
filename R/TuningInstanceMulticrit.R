@@ -26,7 +26,7 @@
 #' @template param_terminator
 #' @template param_store_models
 #' @template param_check_values
-#' @template param_store_resample_results
+#' @template param_store_benchmark_result
 #' @template param_xdt
 #' @template param_learner_param_vals
 #'
@@ -43,12 +43,16 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
     #' and a termination criterion.
     initialize = function(task, learner, resampling, measures, search_space,
       terminator, store_models = FALSE, check_values = FALSE,
-      store_resample_results = TRUE) {
-        obj = ObjectiveTuning$new(task = task, learner = learner,
-          resampling = resampling, measures = measures,
-          store_models = store_models, check_values = check_values,
-          store_resample_results = store_resample_results)
-        super$initialize(obj, search_space, terminator)
+      store_benchmark_result = TRUE) {
+      obj = ObjectiveTuning$new(
+        task = task, learner = learner,
+        resampling = resampling, measures = measures,
+        store_benchmark_result = store_benchmark_result,
+        store_models = store_models, check_values = check_values)
+      super$initialize(obj, search_space, terminator)
+      self$archive = ArchiveTuning$new(search_space = search_space,
+        codomain = self$objective$codomain)
+      self$objective$archive = self$archive
     },
 
     #' @description
@@ -59,7 +63,6 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
     #'   Optimal outcomes, e.g. the Pareto front.
     assign_result = function(xdt, ydt, learner_param_vals = NULL) {
       # set the column with the learner param_vals that were not optimized over but set implicitly
-
       if (is.null(learner_param_vals)) {
         learner_param_vals = self$objective$learner$param_set$values
         learner_param_vals = replicate(nrow(xdt), learner_param_vals, simplify = FALSE)
