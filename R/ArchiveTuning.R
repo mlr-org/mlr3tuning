@@ -30,12 +30,6 @@ ArchiveTuning = R6Class("ArchiveTuning",
 
     #' @field benchmark_result ([mlr3::BenchmarkResult])\cr
     #' Stores benchmark result.
-    benchmark_result = NULL,
-
-    #' @description
-    #' Creates a new instance of this [R6][R6::R6Class] class.
-    initialize = function(search_space, codomain, check_values = TRUE) {
-      super$initialize(search_space, codomain, check_values = TRUE)
-    }
+    benchmark_result = NULL
   )
 )
