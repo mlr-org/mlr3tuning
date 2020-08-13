@@ -44,7 +44,7 @@ Imports:
     data.table,
     lgr,
     mlr3,
-    mlr3misc,
+    mlr3misc (>= 0.5.0),
     paradox (>= 0.3.0),
     R6
 Suggests:
@@ -57,10 +57,7 @@ Suggests:
 RdMacros:
     mlr3misc
 Remotes:
-    mlr-org/mlr3misc,
-    mlr-org/paradox
-    mlr-org/mlr3
-    mlr-org/bbotk@leanify
+    mlr-org/mlr3misc
 Encoding: UTF-8
 NeedsCompilation: no
 Roxygen: list(markdown = TRUE)
