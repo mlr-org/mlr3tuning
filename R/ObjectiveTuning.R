@@ -88,12 +88,11 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       y = map_chr(self$measures, "id")
 
       if (self$store_benchmark_result) {
-        self$archive$benchmark_result =
-          if (is.null(self$archive$benchmark_result)) {
-            bmr
-          } else {
-            c(self$archive$benchmark_result, bmr)
-          }
+        if (is.null(self$archive$benchmark_result)) {
+          self$archive$benchmark_result = bmr
+        } else {
+          self$archive$benchmark_result$combine(bmr)
+        }
         cbind(aggr[, y, with = FALSE], uhash = bmr$uhashes)
       } else {
         aggr[, y, with = FALSE]
