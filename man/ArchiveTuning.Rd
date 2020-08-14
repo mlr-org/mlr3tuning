@@ -7,8 +7,10 @@
 Container around a \link[data.table:data.table]{data.table::data.table} which stores all performed
 function calls of the Objective and the associated \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}.
 
-The \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} is connected to the \link[data.table:data.table]{data.table::data.table} via
-the \code{uhashes} column.
+\verb{$benchmark_result} stores a \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} which contains the
+\link[mlr3:ResampleResult]{mlr3::ResampleResult} of all performaned function calls. The
+\link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} is connected to the \link[data.table:data.table]{data.table::data.table} via the
+\code{uhash} column.
 }
 \section{Technical details}{
 
@@ -35,7 +37,6 @@ Stores benchmark result.}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{ArchiveTuning$new()}}
 \item \href{#method-clone}{\code{ArchiveTuning$clone()}}
 }
 }
@@ -47,35 +48,10 @@ Stores benchmark result.}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="clear">}\href{../../bbotk/html/Archive.html#method-clear}{\code{bbotk::Archive$clear()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="data">}\href{../../bbotk/html/Archive.html#method-data}{\code{bbotk::Archive$data()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="format">}\href{../../bbotk/html/Archive.html#method-format}{\code{bbotk::Archive$format()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="initialize">}\href{../../bbotk/html/Archive.html#method-initialize}{\code{bbotk::Archive$initialize()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="print">}\href{../../bbotk/html/Archive.html#method-print}{\code{bbotk::Archive$print()}}\out{</span>}
 }
 \out{</details>}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
-\subsection{Method \code{new()}}{
-Creates a new instance of this \link[R6:R6Class]{R6} class.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ArchiveTuning$new(search_space, codomain, check_values = TRUE)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet}).}
-
-\item{\code{codomain}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
-Specifies codomain of function.
-Most importantly the tags of each output "Parameter" define whether it should
-be minimized or maximized.  The default is to minimize each component.}
-
-\item{\code{check_values}}{(\code{logical(1)})\cr
-Should parameters before the evaluation and the results be checked for
-validity?}
-}
-\if{html}{\out{</div>}}
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
