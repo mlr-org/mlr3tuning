@@ -99,7 +99,7 @@ test_that("tuning with custom resampling", {
 
   inst = TuningInstanceSingleCrit$new(task, learner, resampling, measure, tune_ps, terminator)
   tuner$optimize(inst)
-  rr = inst$archive$benchmark_result$data$resampling
+  rr = as.data.table(inst$archive$benchmark_result)$resampling
   expect_list(rr, len = 20)
   rr = inst$archive$benchmark_result$resample_result(1)$resampling
   expect_equal(rr$iters, 2)
