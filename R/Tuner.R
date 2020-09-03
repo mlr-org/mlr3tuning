@@ -115,6 +115,8 @@ Tuner = R6Class("Tuner",
         bbotk_reflections$optimizer_properties,
         empty.ok = FALSE)
       self$packages = assert_set(packages)
+
+      check_packages_installed(self$packages, msg = sprintf("Package '%%s' required but not installed for Tuner '%s'", format(self)))
     },
 
     #' @description

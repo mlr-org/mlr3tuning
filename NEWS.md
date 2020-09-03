@@ -5,6 +5,8 @@
 * `Archive` is `ArchiveTuning` now which stores the benchmark result in
   `$benchmark_result`. This change removed the resample results from the archive
   but they can be still accessed via the benchmark result.
+* Warning message if external package for tuning is
+  not installed.
 
 # mlr3tuning 0.2.0
 
