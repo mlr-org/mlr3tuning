@@ -61,5 +61,5 @@ test_that("ObjectiveTuning - Store models", {
   xss = list(list("cp" = 0.01), list("cp" = 0.02))
 
   z = obj$eval_many(xss)
-  expect_class(obj$archive$benchmark_result$data$learner[[1]]$model, "rpart")
+  expect_class(as.data.table(obj$archive$benchmark_result)$learner[[1]]$model, "rpart")
 })

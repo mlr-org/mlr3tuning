@@ -195,19 +195,20 @@ test_that("Nested resampling works with graphlearner", {
 
   resampling_outer = rsmp("cv", folds = 2)
   rr = resample(task, at, resampling_outer, store_models = TRUE)
+  tab = as.data.table(rr)
 
-  expect_learner(rr$data$learner[[1]])
-  expect_learner(rr$data$learner[[2]])
+  expect_learner(tab$learner[[1]])
+  expect_learner(tab$learner[[2]])
 
-  expect_equal(rr$data$learner[[1]]$tuning_result$classif.rpart.cp, 0.2)
-  expect_equal(rr$data$learner[[2]]$tuning_result$classif.rpart.cp, 0.2)
+  expect_equal(tab$learner[[1]]$tuning_result$classif.rpart.cp, 0.2)
+  expect_equal(tab$learner[[2]]$tuning_result$classif.rpart.cp, 0.2)
 
-  expect_equal(rr$data$learner[[1]]$learner$param_set$values$classif.rpart.cp, 0.2)
-  expect_equal(rr$data$learner[[2]]$learner$param_set$values$classif.rpart.cp, 0.2)
+  expect_equal(tab$learner[[1]]$learner$param_set$values$classif.rpart.cp, 0.2)
+  expect_equal(tab$learner[[2]]$learner$param_set$values$classif.rpart.cp, 0.2)
 
-  expect_data_table(rr$data$learner[[1]]$archive$data(), nrows = 3L)
-  expect_data_table(rr$data$learner[[2]]$archive$data(), nrows = 3L)
+  expect_data_table(tab$learner[[1]]$archive$data(), nrows = 3L)
+  expect_data_table(tab$learner[[2]]$archive$data(), nrows = 3L)
 
-  expect_is(rr$data$learner[[1]]$model$learner$model$classif.rpart$model, "rpart")
-  expect_is(rr$data$learner[[1]]$model$learner$model$classif.rpart$model, "rpart")
+  expect_is(tab$learner[[1]]$model$learner$model$classif.rpart$model, "rpart")
+  expect_is(tab$learner[[1]]$model$learner$model$classif.rpart$model, "rpart")
 })
