@@ -1,3 +1,5 @@
+^renv$
+^renv\.lock$
 ^LICENSE$
 .ignore
 .editorconfig
@@ -12,3 +14,7 @@
 ^tic\.R$
 ^attic$
 ^docs$
+^\.lintr
+^\.travis\.yml
+^cran-comments\.md$
+^CRAN-RELEASE$
