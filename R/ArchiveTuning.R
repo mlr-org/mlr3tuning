@@ -18,12 +18,6 @@
 #' done through the evaluation of the [TuningInstanceSingleCrit] or
 #' [TuningInstanceMultiCrit] by the [Tuner].
 #'
-#' @template param_codomain
-#' @template param_search_space
-#' @template param_xdt
-#' @template param_ydt
-#' @template param_check_values
-#'
 #' @export
 ArchiveTuning = R6Class("ArchiveTuning",
   inherit = Archive,
