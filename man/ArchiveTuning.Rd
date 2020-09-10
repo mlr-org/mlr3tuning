@@ -8,7 +8,7 @@ Container around a \link[data.table:data.table]{data.table::data.table} which st
 function calls of the Objective and the associated \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}.
 
 \verb{$benchmark_result} stores a \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} which contains the
-\link[mlr3:ResampleResult]{mlr3::ResampleResult} of all performaned function calls. The
+\link[mlr3:ResampleResult]{mlr3::ResampleResult} of all performed function calls. The
 \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} is connected to the \link[data.table:data.table]{data.table::data.table} via the
 \code{uhash} column.
 }

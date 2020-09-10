@@ -5,7 +5,7 @@
 #' function calls of the Objective and the associated [mlr3::BenchmarkResult].
 #'
 #' `$benchmark_result` stores a [mlr3::BenchmarkResult] which contains the
-#' [mlr3::ResampleResult] of all performaned function calls. The
+#' [mlr3::ResampleResult] of all performed function calls. The
 #' [mlr3::BenchmarkResult] is connected to the [data.table::data.table] via the
 #' `uhash` column.
 #'
