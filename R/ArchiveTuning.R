@@ -26,6 +26,32 @@ ArchiveTuning = R6Class("ArchiveTuning",
 
     #' @field benchmark_result ([mlr3::BenchmarkResult])\cr
     #' Stores benchmark result.
-    benchmark_result = NULL
-  )
+    benchmark_result = NULL,
+
+    #' @description
+    #' Retrieve [mlr3::Learner] of the i-th evaluation, by position
+    #' or by unique hash `uhash`. `i` and `uhash` are mutually exclusive.
+    #'
+    #' @param i (`integer(1)`)\cr
+    #' The iteration value to filter for.
+    #'
+    #' @param uhash (`logical(1)`)\cr
+    #' The `uhash` value to filter for.
+    learner = function(i = NULL, uhash = NULL) {
+      self$benchmark_result$resample_result(i = i, uhash = uhash)$learner
+    },
+
+    #' @description
+    #' Retrieve [mlr3::ResampleResult] of the i-th evaluation, by position
+    #' or by unique hash `uhash`. `i` and `uhash` are mutually exclusive.
+    #'
+    #' @param i (`integer(1)`)\cr
+    #' The iteration value to filter for.
+    #'
+    #' @param uhash (`logical(1)`)\cr
+    #' The `uhash` value to filter for.
+    resample_result = function(i = NULL, uhash = NULL) {
+      self$benchmark_result$resample_result(i = i, uhash = uhash)
+    }
+  ),
 )
