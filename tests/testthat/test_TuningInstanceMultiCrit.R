@@ -48,11 +48,11 @@ test_that("store_benchmark_result and store_models flag works", {
 
   inst = TEST_MAKE_INST1_2D(store_benchmark_result = TRUE, store_models = FALSE)
   inst$eval_batch(data.table(cp = c(0.3, 0.25), minsplit = c(3, 4)))
-  expect_null(inst$archive$benchmark_result$data$learner[[1]]$model)
+  expect_null(inst$archive$benchmark_result$resample_result(1)$learners[[1]]$model)
 
   inst = TEST_MAKE_INST1_2D(store_benchmark_result = TRUE, store_models = TRUE)
   inst$eval_batch(data.table(cp = c(0.3, 0.25), minsplit = c(3, 4)))
-  expect_class(inst$archive$benchmark_result$data$learner[[1]]$model, "rpart")
+  expect_class(inst$archive$benchmark_result$resample_result(1)$learners[[1]]$model, "rpart")
 })
 
 test_that("check_values flag with parameter set dependencies", {
