@@ -1,7 +1,6 @@
 context("TuningInstanceMultiCrit")
 
 test_that("tuning with multiple objectives", {
-
   task = tsk("pima")
   resampling = rsmp("holdout")
   learner = lrn("classif.rpart")
@@ -33,7 +32,7 @@ test_that("tuning with multiple objectives", {
   expect_list(inst$result_x_domain)
 })
 
-test_that("store_benchmark_result flag works", {
+test_that("store_benchmark_result and store_models flag works", {
   inst = TEST_MAKE_INST1_2D(store_benchmark_result = FALSE)
   inst$eval_batch(data.table(cp = c(0.3, 0.25), minsplit = c(3, 4)))
   expect_true("uhashes" %nin% colnames(inst$archive$data()))
@@ -41,6 +40,19 @@ test_that("store_benchmark_result flag works", {
   inst = TEST_MAKE_INST1_2D(store_benchmark_result = TRUE)
   inst$eval_batch(data.table(cp = c(0.3, 0.25), minsplit = c(3, 4)))
   expect_r6(inst$archive$benchmark_result, "BenchmarkResult")
+
+  expect_error(TEST_MAKE_INST1_2D(store_benchmark_result = FALSE,
+    store_models = TRUE),
+  regexp = "Models can only be stored if store_benchmark_result is set to TRUE",
+  fixed = TRUE)
+
+  inst = TEST_MAKE_INST1_2D(store_benchmark_result = TRUE, store_models = FALSE)
+  inst$eval_batch(data.table(cp = c(0.3, 0.25), minsplit = c(3, 4)))
+  expect_null(inst$archive$benchmark_result$data$learner[[1]]$model)
+
+  inst = TEST_MAKE_INST1_2D(store_benchmark_result = TRUE, store_models = TRUE)
+  inst$eval_batch(data.table(cp = c(0.3, 0.25), minsplit = c(3, 4)))
+  expect_class(inst$archive$benchmark_result$data$learner[[1]]$model, "rpart")
 })
 
 test_that("check_values flag with parameter set dependencies", {
@@ -53,14 +65,15 @@ test_that("check_values flag with parameter set dependencies", {
   terminator = trm("evals", n_evals = 20)
   tuner = tnr("random_search")
 
-  inst = TuningInstanceMultiCrit$new(tsk("boston_housing"), learner,
+  inst = TuningInstanceMultiCrit$new(
+    tsk("boston_housing"), learner,
     rsmp("holdout"), msrs(c("regr.mse", "regr.rmse")), search_space, terminator)
   tuner$optimize(inst)
   expect_named(inst$result_learner_param_vals[[1]], c("xx", "cp", "yy"))
 
   inst = TuningInstanceMultiCrit$new(tsk("boston_housing"), learner,
-                                      rsmp("holdout"), msr("regr.mse"), search_space, terminator,
-                                      check_values = TRUE)
+    rsmp("holdout"), msr("regr.mse"), search_space, terminator,
+    check_values = TRUE)
   expect_error(tuner$optimize(inst),
     fixed = "The parameter 'yy' can only be set")
 })

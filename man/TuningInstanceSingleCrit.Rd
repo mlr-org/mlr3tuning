@@ -170,7 +170,7 @@ Measure to optimize.}
 \item{\code{store_benchmark_result}}{(\code{logical(1)})\cr
 Store benchmark result in archive?}
 
-\item{\code{store_models}}{(\code{logical(1)}).
+\item{\code{store_models}}{(\code{logical(1)})\cr
 Store models in benchmark result?}
 
 \item{\code{check_values}}{(\code{logical(1)})\cr

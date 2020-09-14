@@ -93,7 +93,7 @@ If \code{NULL}, \CRANpkg{mlr3}'s default measure is used.}
 
 \item{\code{terminator}}{(\link{Terminator}).}
 
-\item{\code{store_models}}{(\code{logical(1)}).
+\item{\code{store_models}}{(\code{logical(1)})\cr
 Store models in benchmark result?}
 
 \item{\code{check_values}}{(\code{logical(1)})\cr
