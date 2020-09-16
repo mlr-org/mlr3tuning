@@ -56,7 +56,7 @@ test_that("print method workds", {
   param_set$values$p1 = TRUE
   param_classes = "ParamLgl"
   properties = "single-crit"
-  packages = "ecr"
+  packages = "GenSA"
 
   tuner = Tuner$new(
     param_set = param_set,
@@ -66,7 +66,7 @@ test_that("print method workds", {
   expect_output(print(tuner), "p1=TRUE")
   expect_output(print(tuner), "ParamLgl")
   expect_output(print(tuner), "single-crit")
-  expect_output(print(tuner), "ecr")
+  expect_output(print(tuner), "GenSA")
 })
 
 test_that("optimize does not work in abstract class", {
