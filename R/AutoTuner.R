@@ -23,6 +23,10 @@
 #' and execute [mlr3::resample()] or [mlr3::benchmark()] with
 #' `store_models = TRUE` (see examples).
 #'
+#' @template param_store_models
+#' @template param_check_values
+#' @template param_store_benchmark_result
+#'
 #' @export
 #' @examples
 #' library(mlr3)
@@ -38,8 +42,7 @@
 #' tuner = tnr("grid_search")
 #' at = AutoTuner$new(
 #'   learner, resampling, measure, search_space, terminator,
-#'   tuner)
-#' at$store_tuning_instance = TRUE
+#'   tuner, store_tuning_instance = TRUE)
 #'
 #' at$train(task)
 #' at$model
@@ -47,8 +50,7 @@
 #'
 #' # Nested resampling
 #' at = AutoTuner$new(learner, resampling, measure, search_space, terminator,
-#'   tuner)
-#' at$store_tuning_instance = TRUE
+#'   tuner, store_tuning_instance = TRUE)
 #'
 #' resampling_outer = rsmp("cv", folds = 2)
 #' rr = resample(task, at, resampling_outer, store_models = TRUE)
@@ -68,12 +70,6 @@ AutoTuner = R6Class("AutoTuner",
 
     #' @field tuner ([Tuner]).
     tuner = NULL,
-
-    #' @field store_tuning_instance (`logical(1)`)\cr
-    #' If `TRUE` (default), stores the internally created
-    #' [TuningInstanceSingleCrit] with all intermediate results in slot
-    #' `$tuning_instance`.
-    store_tuning_instance = TRUE,
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
@@ -96,10 +92,17 @@ AutoTuner = R6Class("AutoTuner",
     #' @param terminator ([bbotk::Terminator])\cr
     #' When to stop tuning, see [TuningInstanceSingleCrit].
     #'
+    #' @param store_tuning_instance (`logical(1)`)\cr
+    #' If `TRUE` (default), stores the internally created
+    #' [TuningInstanceSingleCrit] with all intermediate results in slot
+    #' `$tuning_instance`.
+    #'
     #' @param tuner ([Tuner])\cr
     #' Tuning algorithm to run.
     initialize = function(learner, resampling, measure, search_space,
-      terminator, tuner) {
+      terminator, tuner, store_tuning_instance = TRUE,
+      store_benchmark_result = TRUE, store_models = FALSE,
+      check_values = FALSE) {
       ia = list()
       ia$learner = assert_learner(learner)$clone(deep = TRUE)
       ia$resampling = assert_resampling(resampling,
@@ -111,6 +114,19 @@ AutoTuner = R6Class("AutoTuner",
       # the learner id in the ParamSetColellection.
       ia$learner$param_set$set_id = ""
       ia$terminator = assert_terminator(terminator)$clone()
+
+      private$.store_tuning_instance = assert_flag(store_tuning_instance)
+      ia$store_benchmark_result = assert_flag(store_benchmark_result)
+      ia$store_models = assert_flag(store_models)
+
+      if (!private$.store_tuning_instance && ia$store_benchmark_result) {
+        stop("Benchmark results can only be stored if store_tuning_instance is set to TRUE")
+      }
+      if (ia$store_models && !ia$store_benchmark_result) {
+        stop("Models can only be stored if store_benchmark_result is set to TRUE")
+      }
+
+      ia$check_values = assert_flag(check_values)
       self$instance_args = ia
       self$tuner = assert_tuner(tuner)$clone()
 
@@ -188,7 +204,8 @@ AutoTuner = R6Class("AutoTuner",
       # the return model is a list of "learner" and "tuning_instance"
       result_model = list()
       result_model$learner = learner
-      if (isTRUE(self$store_tuning_instance)) {
+
+      if (isTRUE(private$.store_tuning_instance)) {
         result_model$tuning_instance = instance
       }
       return(result_model)
@@ -210,6 +227,8 @@ AutoTuner = R6Class("AutoTuner",
       }
       value
     },
-    .ps_id = ""
+    .ps_id = "",
+
+    .store_tuning_instance = NULL
   )
 )

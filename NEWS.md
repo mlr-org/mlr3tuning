@@ -1,3 +1,9 @@
+# mlr3tuning 0.3.0.9000
+
+* Option to control `store_benchmark_result`, `store_models` and `check_values`
+  in `AutoTuner`. `store_tuning_instance` must be set as a parameter during 
+  initialization.
+
 # mlr3tuning 0.3.0
 
 * Compact in-memory representation of R6 objects to save space when

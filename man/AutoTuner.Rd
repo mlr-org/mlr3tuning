@@ -41,8 +41,7 @@ terminator = trm("evals", n_evals = 5)
 tuner = tnr("grid_search")
 at = AutoTuner$new(
   learner, resampling, measure, search_space, terminator,
-  tuner)
-at$store_tuning_instance = TRUE
+  tuner, store_tuning_instance = TRUE)
 
 at$train(task)
 at$model
@@ -50,8 +49,7 @@ at$learner
 
 # Nested resampling
 at = AutoTuner$new(learner, resampling, measure, search_space, terminator,
-  tuner)
-at$store_tuning_instance = TRUE
+  tuner, store_tuning_instance = TRUE)
 
 resampling_outer = rsmp("cv", folds = 2)
 rr = resample(task, at, resampling_outer, store_models = TRUE)
@@ -72,11 +70,6 @@ as.data.table(rr)$learner[[1]]$tuning_result
 All arguments from construction to create the \link{TuningInstanceSingleCrit}.}
 
 \item{\code{tuner}}{(\link{Tuner}).}
-
-\item{\code{store_tuning_instance}}{(\code{logical(1)})\cr
-If \code{TRUE} (default), stores the internally created
-\link{TuningInstanceSingleCrit} with all intermediate results in slot
-\verb{$tuning_instance}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -125,7 +118,18 @@ Short-cut to \code{result} from \link{TuningInstanceSingleCrit}.}
 \subsection{Method \code{new()}}{
 Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AutoTuner$new(learner, resampling, measure, search_space, terminator, tuner)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AutoTuner$new(
+  learner,
+  resampling,
+  measure,
+  search_space,
+  terminator,
+  tuner,
+  store_tuning_instance = TRUE,
+  store_benchmark_result = TRUE,
+  store_models = FALSE,
+  check_values = FALSE
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -151,6 +155,21 @@ When to stop tuning, see \link{TuningInstanceSingleCrit}.}
 
 \item{\code{tuner}}{(\link{Tuner})\cr
 Tuning algorithm to run.}
+
+\item{\code{store_tuning_instance}}{(\code{logical(1)})\cr
+If \code{TRUE} (default), stores the internally created
+\link{TuningInstanceSingleCrit} with all intermediate results in slot
+\verb{$tuning_instance}.}
+
+\item{\code{store_benchmark_result}}{(\code{logical(1)})\cr
+Store benchmark result in archive?}
+
+\item{\code{store_models}}{(\code{logical(1)})\cr
+Store models in benchmark result?}
+
+\item{\code{check_values}}{(\code{logical(1)})\cr
+Should parameters before the evaluation and the results be checked for
+validity?}
 }
 \if{html}{\out{</div>}}
 }
