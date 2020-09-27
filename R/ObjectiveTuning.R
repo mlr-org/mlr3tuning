@@ -75,15 +75,42 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
   ),
 
   private = list(
-    .eval_many = function(xss) {
+    .eval_many = function(xss, c_hash = NULL) {
+
       learners = map(xss, function(x) {
         learner = self$learner$clone(deep = TRUE)
         learner$param_set$values = insert_named(learner$param_set$values, x)
         return(learner)
       })
 
-      design = benchmark_grid(self$task, learners, self$resampling)
-      bmr = benchmark(design, store_models = self$store_models)
+      if(!is.null(c_hash) && self$archive$n_evals != 0) {
+        archive = self$archive$data()[batch_nr == self$archive$n_batch,]
+        archive = archive[continue_hash %in% c_hash, ]
+
+        bmr = if(nrow(archive) > 0) {
+          uhash = archive$uhash
+          bmr = self$archive$benchmark_result
+
+          rrs = map(uhash, function(x){
+            bmr$resample_result(uhash = x)
+          })
+
+          resampling = self$resampling$instantiate(self$task)
+          design = data.table(task = list(self$task),
+                              learner = learners,
+                              resampling = list(resampling),
+                              resample_results = rrs)
+
+          bmr = benchmark_continue(design, self$store_models)
+        } else {
+          design = benchmark_grid(self$task, learners, self$resampling)
+          bmr = benchmark(design, store_models = self$store_models)
+        }
+      } else {
+        design = benchmark_grid(self$task, learners, self$resampling)
+        bmr = benchmark(design, store_models = self$store_models)
+      }
+
       aggr = bmr$aggregate(self$measures)
       y = map_chr(self$measures, "id")
 
