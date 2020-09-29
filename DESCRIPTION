@@ -50,10 +50,15 @@ Imports:
 Suggests:
     bibtex,
     GenSA,
+    mlr3learners,
     mlr3pipelines,
     nloptr,
     rpart,
     testthat
+Remotes:
+    mlr-org/bbotk@continue,
+    mlr-org/mlr3@continue,
+    mlr-org/mlr3learners@continue
 RdMacros:
     mlr3misc
 Encoding: UTF-8

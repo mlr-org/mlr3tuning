@@ -83,32 +83,30 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
         return(learner)
       })
 
-      if(!is.null(c_hash) && self$archive$n_evals != 0) {
-        archive = self$archive$data()[batch_nr == self$archive$n_batch,]
+      if(is.null(c_hash) || self$archive$n_evals == 0) {
+        # Benchmark without continuable models
+        design = benchmark_grid(self$task, learners, self$resampling)
+        bmr = benchmark(design, store_models = self$store_models)
+      } else {
+        # Benchmark with continuable model
+        archive = self$archive$data()
         archive = archive[continue_hash %in% c_hash, ]
 
-        bmr = if(nrow(archive) > 0) {
+        if(nrow(archive) > 0) {
+          # Continuable models found
+          # Use last model version
+          archive = archive[, .SD[which.max(batch_nr)], by = continue_hash]
+
           uhash = archive$uhash
-          bmr = self$archive$benchmark_result
+          bmr_filtered = self$archive$benchmark_result$clone(deep = TRUE)$filter(uhashes = uhash)
 
-          rrs = map(uhash, function(x){
-            bmr$resample_result(uhash = x)
-          })
+          bmr = benchmark_continue(learners, bmr_filtered, self$store_models)
 
-          resampling = self$resampling$instantiate(self$task)
-          design = data.table(task = list(self$task),
-                              learner = learners,
-                              resampling = list(resampling),
-                              resample_results = rrs)
-
-          bmr = benchmark_continue(design, self$store_models)
         } else {
+          # c_hash matches no continuable models
           design = benchmark_grid(self$task, learners, self$resampling)
           bmr = benchmark(design, store_models = self$store_models)
         }
-      } else {
-        design = benchmark_grid(self$task, learners, self$resampling)
-        bmr = benchmark(design, store_models = self$store_models)
       }
 
       aggr = bmr$aggregate(self$measures)
