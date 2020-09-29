@@ -42,7 +42,7 @@ test_that("AutoTuner / resample", {
   rr = resample(tsk("iris"), at, r_outer, store_models = TRUE)
 
   # check tuning results of all outer folds
-  expect_data_table(rr$data, nrows = outer_folds)
+  expect_equal(length(rr$learners), outer_folds)
   lapply(rr$learners, function(ll) {
     assert_r6(ll, "AutoTuner")
     expect_equal(ll$learner$param_set$values, list(xval = 0, cp = 0.2))
