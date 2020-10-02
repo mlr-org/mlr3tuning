@@ -76,36 +76,40 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
 
   private = list(
     .eval_many = function(xss, c_hash = NULL) {
-
       learners = map(xss, function(x) {
         learner = self$learner$clone(deep = TRUE)
         learner$param_set$values = insert_named(learner$param_set$values, x)
         return(learner)
       })
 
-      if(is.null(c_hash) || self$archive$n_evals == 0) {
-        # Benchmark without continuable models
+      if(is.null(c_hash) || "continue" %nin% self$learner$properties) {
         design = benchmark_grid(self$task, learners, self$resampling)
         bmr = benchmark(design, store_models = self$store_models)
       } else {
-        # Benchmark with continuable model
-        archive = self$archive$data()
-        archive = archive[continue_hash %in% c_hash, ]
-
-        if(nrow(archive) > 0) {
-          # Continuable models found
-          # Use last model version
-          archive = archive[, .SD[which.max(batch_nr)], by = continue_hash]
-
-          uhash = archive$uhash
-          bmr_filtered = self$archive$benchmark_result$clone(deep = TRUE)$filter(uhashes = uhash)
-
-          bmr = benchmark_continue(learners, bmr_filtered, self$store_models)
-
-        } else {
-          # c_hash matches no continuable models
+        if(self$archive$n_evals == 0) {
+          # No models can be continued since benchmark result is empty
           design = benchmark_grid(self$task, learners, self$resampling)
           bmr = benchmark(design, store_models = self$store_models)
+        } else {
+          # Search for continuable models by continue hash
+          archive = self$archive$data()
+          archive = archive[continue_hash %in% c_hash, ]
+
+          if(nrow(archive) == length(xss)) {
+            # All models are continuable
+            # Use last model version
+            archive = archive[, .SD[which.max(batch_nr)], by = continue_hash]
+
+            uhash = archive$uhash
+            bmr_filtered = self$archive$benchmark_result$clone(deep = TRUE)$filter(uhashes = uhash)
+
+            bmr = benchmark_continue(learners, bmr_filtered, self$store_models)
+
+          } else {
+            # No or not all models are continuable
+            design = benchmark_grid(self$task, learners, self$resampling)
+            bmr = benchmark(design, store_models = self$store_models)
+          }
         }
       }
 
