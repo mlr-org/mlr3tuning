@@ -82,7 +82,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
         return(learner)
       })
 
-      if(is.null(c_hash) || "continue" %nin% self$learner$properties) {
+      if(is.null(c_hash) || "continue" %nin% self$learner$properties || !self$store_models) {
         design = benchmark_grid(self$task, learners, self$resampling)
         bmr = benchmark(design, store_models = self$store_models)
       } else {
