@@ -16,7 +16,7 @@
 #' @inheritSection bbotk::OptimizerNLoptr Parameters
 #'
 #' @source
-#' \cite{bbotk}{bergstra_2012}
+#' `r tools::toRd(utils::getFromNamespace("bibentries", "bbotk")["bergstra_2012"])`
 #'
 #' @export
 #' @template example

@@ -5,7 +5,9 @@
 \alias{TunerNLoptr}
 \title{TuneNLoptr}
 \source{
-\cite{bbotk}{johnson_2014}
+Johnson, G S (2020).
+\dQuote{The NLopt nonlinear-optimization package.}
+\url{https://github.com/stevengj/nlopt}.
 }
 \description{
 \code{TunerNLoptr} class that implements non-linear optimization. Calls

@@ -48,14 +48,11 @@ Imports:
     paradox (>= 0.3.0),
     R6
 Suggests:
-    bibtex,
     GenSA,
     mlr3pipelines,
     nloptr,
     rpart,
     testthat
-RdMacros:
-    mlr3misc
 Encoding: UTF-8
 NeedsCompilation: no
 Roxygen: list(markdown = TRUE)

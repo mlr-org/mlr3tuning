@@ -5,7 +5,10 @@
 \alias{TunerRandomSearch}
 \title{TunerRandomSearch}
 \source{
-\cite{bbotk}{bergstra_2012}
+Bergstra J, Bengio Y (2012).
+\dQuote{Random Search for Hyper-Parameter Optimization.}
+\emph{Journal of Machine Learning Research}, \bold{13}(10), 281--305.
+\url{https://jmlr.csail.mit.edu/papers/v13/bergstra12a.html}.
 }
 \description{
 Subclass for random search tuning.
