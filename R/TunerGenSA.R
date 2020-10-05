@@ -13,7 +13,7 @@
 #' @inheritSection bbotk::OptimizerGenSA Parameters
 #'
 #' @source
-#' `r tools::toRd(utils::getFromNamespace("bibentries", "bbotk")[c("tsallis_1996", "xiang_2013")])`
+#' `r tools::toRd(bibentries[c("tsallis_1996", "xiang_2013")])`
 #'
 #' @export
 #' @template example

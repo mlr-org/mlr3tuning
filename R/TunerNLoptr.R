@@ -22,7 +22,7 @@
 #' @inheritSection bbotk::OptimizerNLoptr Parameters
 #'
 #' @source
-#' `r tools::toRd(utils::getFromNamespace("bibentries", "bbotk")["johnson_2014"])`
+#' `r tools::toRd(bibentries["johnson_2014"])`
 #'
 #' @export
 #' @examples
