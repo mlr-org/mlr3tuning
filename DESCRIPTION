@@ -1,6 +1,6 @@
 Package: mlr3tuning
 Title: Tuning for 'mlr3'
-Version: 0.4.0
+Version: 0.4.0.9000
 Authors@R:
     c(person(given = "Marc",
              family = "Becker",
@@ -43,7 +43,7 @@ Imports:
     checkmate (>= 2.0.0),
     data.table,
     lgr,
-    mlr3,
+    mlr3 (>= 0.7.0),
     mlr3misc (>= 0.5.0),
     paradox (>= 0.3.0),
     R6
