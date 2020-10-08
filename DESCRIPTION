@@ -1,6 +1,6 @@
 Package: mlr3tuning
 Title: Tuning for 'mlr3'
-Version: 0.4.0
+Version: 0.4.0.9000
 Authors@R:
     c(person(given = "Marc",
              family = "Becker",
@@ -48,6 +48,7 @@ Imports:
     paradox (>= 0.3.0),
     R6
 Suggests:
+    adagio,
     GenSA,
     mlr3pipelines,
     nloptr,
@@ -63,6 +64,7 @@ Collate:
     'ObjectiveTuning.R'
     'mlr_tuners.R'
     'Tuner.R'
+    'TunerCmaes.R'
     'TunerDesignPoints.R'
     'TunerFromOptimizer.R'
     'TunerGenSA.R'

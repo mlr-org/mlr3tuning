@@ -1,3 +1,7 @@
+# mlr3tuning 0.4.0.9000
+
+* Adds `TunerCmaes` from adagio package.
+
 # mlr3tuning 0.4.0
 
 * Option to control `store_benchmark_result`, `store_models` and `check_values`
