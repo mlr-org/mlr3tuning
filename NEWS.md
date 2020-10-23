@@ -1,3 +1,7 @@
+# mlr3tuning 0.4.0.9000
+
+* Fix `predict_type` in `AutoTuner`.
+
 # mlr3tuning 0.4.0
 
 * Option to control `store_benchmark_result`, `store_models` and `check_values`
