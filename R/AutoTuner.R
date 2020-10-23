@@ -184,6 +184,25 @@ AutoTuner = R6Class("AutoTuner",
         stop("param_set is read-only.")
       }
       private$.param_set
+    },
+
+    #' @field predict_type (`character(1)`)\cr
+    #' Stores the currently active predict type, e.g. `"response"`.
+    #' Must be an element of `$predict_types`.
+    predict_type = function(rhs) {
+      if (missing(rhs)) {
+        return(private$.predict_type)
+      }
+      if (rhs %nin% self$predict_types) {
+        stopf("Learner '%s' does not support predict type '%s'", self$id, rhs)
+      }
+
+      # Catches 'Error: Field/Binding is read-only' bug
+      tryCatch({
+        self$model$learner$predict_type = rhs
+      }, error = function(cond){})
+
+      private$.predict_type = rhs
     }
   ),
 

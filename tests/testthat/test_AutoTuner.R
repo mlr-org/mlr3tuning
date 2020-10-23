@@ -271,3 +271,22 @@ test_that("store_tuning_instance, store_benchmark_result and store_models flags 
     regexp = "Models can only be stored if store_benchmark_result is set to TRUE",
     fixed = TRUE)
 })
+
+test_that("predict_type works", {
+  te = trm("evals", n_evals = 4)
+  task = tsk("iris")
+  ps = TEST_MAKE_PS1(n_dim = 1)
+  ms = msr("classif.ce")
+  tuner = tnr("grid_search", resolution = 3)
+
+  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, ps, te,
+    tuner = tuner)
+
+  at$train(task)
+  expect_equal(at$predict_type, "response")  
+  expect_equal(at$model$learner$predict_type, "response")
+
+  at$predict_type = "prob"
+  expect_equal(at$predict_type, "prob")  
+  expect_equal(at$model$learner$predict_type, "prob")
+})
