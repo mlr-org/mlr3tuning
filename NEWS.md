@@ -1,5 +1,6 @@
 # mlr3tuning 0.4.0.9000
 
+* Adds `TunerCmaes` from adagio package.
 * Fix `predict_type` in `AutoTuner`.
 
 # mlr3tuning 0.4.0

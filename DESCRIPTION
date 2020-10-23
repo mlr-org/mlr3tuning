@@ -39,7 +39,7 @@ BugReports: https://github.com/mlr-org/mlr3tuning/issues
 Depends:
     R (>= 3.1.0)
 Imports:
-    bbotk (>= 0.2.0),
+    bbotk (>= 0.2.2),
     checkmate (>= 2.0.0),
     data.table,
     lgr,
@@ -48,11 +48,14 @@ Imports:
     paradox (>= 0.3.0),
     R6
 Suggests:
+    adagio,
     GenSA,
     mlr3pipelines,
     nloptr,
     rpart,
     testthat
+Remotes:
+    mlr-org/bbotk
 Encoding: UTF-8
 NeedsCompilation: no
 Roxygen: list(markdown = TRUE)
@@ -63,6 +66,7 @@ Collate:
     'ObjectiveTuning.R'
     'mlr_tuners.R'
     'Tuner.R'
+    'TunerCmaes.R'
     'TunerDesignPoints.R'
     'TunerFromOptimizer.R'
     'TunerGenSA.R'
