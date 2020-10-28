@@ -15,6 +15,8 @@
 #' @source
 #' `r tools::toRd(bibentries[c("tsallis_1996", "xiang_2013")])`
 #'
+#' @family Tuner
+#' @seealso Package \CRANpkg{mlr3hyperband} for hyperband tuning.
 #' @export
 #' @template example
 TunerGenSA = R6Class("TunerGenSA",

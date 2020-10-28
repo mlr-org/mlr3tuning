@@ -18,6 +18,8 @@
 #'
 #' @inheritSection bbotk::OptimizerGridSearch Parameters
 #'
+#' @family Tuner
+#' @seealso Package \CRANpkg{mlr3hyperband} for hyperband tuning.
 #' @export
 #' @template example
 TunerGridSearch = R6Class("TunerGridSearch",

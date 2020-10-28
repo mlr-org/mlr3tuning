@@ -15,6 +15,8 @@
 #'
 #' @inheritSection bbotk::OptimizerDesignPoints Parameters
 #'
+#' @family Tuner
+#' @seealso Package \CRANpkg{mlr3hyperband} for hyperband tuning.
 #' @export
 #' @examples
 #' library(mlr3)
