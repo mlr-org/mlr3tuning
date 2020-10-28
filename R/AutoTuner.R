@@ -141,6 +141,7 @@ AutoTuner = R6Class("AutoTuner",
       )
 
       self$predict_type = learner$predict_type
+      self$predict_sets = learner$predict_sets
     }
   ),
 
