@@ -76,6 +76,17 @@ instance$result
 # allows access of data.table of full path of all evaluations
 instance$archive
 }
+\seealso{
+Package \CRANpkg{mlr3hyperband} for hyperband tuning.
+
+Other Tuner: 
+\code{\link{mlr_tuners_cmaes}},
+\code{\link{mlr_tuners_gensa}},
+\code{\link{mlr_tuners_grid_search}},
+\code{\link{mlr_tuners_nloptr}},
+\code{\link{mlr_tuners_random_search}}
+}
+\concept{Tuner}
 \section{Super classes}{
 \code{\link[mlr3tuning:Tuner]{mlr3tuning::Tuner}} -> \code{\link[mlr3tuning:TunerFromOptimizer]{mlr3tuning::TunerFromOptimizer}} -> \code{TunerDesignPoints}
 }

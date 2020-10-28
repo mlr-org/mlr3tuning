@@ -1,8 +1,16 @@
-# mlr3tuning 0.3.0.9000
+# mlr3tuning 0.4.0.9000
+
+* Adds `TunerCmaes` from adagio package.
+* Fix `predict_type` in `AutoTuner`.
+
+# mlr3tuning 0.4.0
 
 * Option to control `store_benchmark_result`, `store_models` and `check_values`
-  in `AutoTuner`. `store_tuning_instance` must be set as a parameter during 
-  initialization.
+  in `AutoTuner`. `store_tuning_instance` must be set as a parameter during
+  initialization. 
+* Fixes `check_values` flag in `TuningInstanceSingleCrit` and
+  `TuningInstanceMultiCrit`.
+* Removed dependency on orphaned package `bibtex`.
 
 # mlr3tuning 0.3.0
 

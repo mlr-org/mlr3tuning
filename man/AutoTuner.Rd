@@ -89,6 +89,10 @@ Internally created tuning instance with all intermediate results.}
 Short-cut to \code{result} from \link{TuningInstanceSingleCrit}.}
 
 \item{\code{param_set}}{\link[paradox:ParamSet]{paradox::ParamSet}.}
+
+\item{\code{predict_type}}{(\code{character(1)})\cr
+Stores the currently active predict type, e.g. \code{"response"}.
+Must be an element of \verb{$predict_types}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -144,7 +148,7 @@ Resampling strategy during tuning, see \link{TuningInstanceSingleCrit}. This
 on the training set of an arbitrary outer resampling. For this reason
 it is not feasible to pass an instantiated \link[mlr3:Resampling]{mlr3::Resampling} here.}
 
-\item{\code{measure}}{(list of \link[mlr3:Measure]{mlr3::Measure})\cr
+\item{\code{measure}}{(\link[mlr3:Measure]{mlr3::Measure})\cr
 Performance measure to optimize.}
 
 \item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr

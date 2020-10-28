@@ -83,7 +83,7 @@ AutoTuner = R6Class("AutoTuner",
     #' on the training set of an arbitrary outer resampling. For this reason
     #' it is not feasible to pass an instantiated [mlr3::Resampling] here.
     #'
-    #' @param measure (list of [mlr3::Measure])\cr
+    #' @param measure ([mlr3::Measure])\cr
     #' Performance measure to optimize.
     #'
     #' @param search_space ([paradox::ParamSet])\cr
@@ -141,6 +141,7 @@ AutoTuner = R6Class("AutoTuner",
       )
 
       self$predict_type = learner$predict_type
+      self$predict_sets = learner$predict_sets
     }
   ),
 
@@ -184,6 +185,25 @@ AutoTuner = R6Class("AutoTuner",
         stop("param_set is read-only.")
       }
       private$.param_set
+    },
+
+    #' @field predict_type (`character(1)`)\cr
+    #' Stores the currently active predict type, e.g. `"response"`.
+    #' Must be an element of `$predict_types`.
+    predict_type = function(rhs) {
+      if (missing(rhs)) {
+        return(private$.predict_type)
+      }
+      if (rhs %nin% self$predict_types) {
+        stopf("Learner '%s' does not support predict type '%s'", self$id, rhs)
+      }
+
+      # Catches 'Error: Field/Binding is read-only' bug
+      tryCatch({
+        self$model$learner$predict_type = rhs
+      }, error = function(cond){})
+
+      private$.predict_type = rhs
     }
   ),
 

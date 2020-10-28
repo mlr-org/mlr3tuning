@@ -42,7 +42,7 @@ test_that("AutoTuner / resample", {
   rr = resample(tsk("iris"), at, r_outer, store_models = TRUE)
 
   # check tuning results of all outer folds
-  expect_data_table(rr$data, nrows = outer_folds)
+  expect_equal(length(rr$learners), outer_folds)
   lapply(rr$learners, function(ll) {
     assert_r6(ll, "AutoTuner")
     expect_equal(ll$learner$param_set$values, list(xval = 0, cp = 0.2))
@@ -270,4 +270,23 @@ test_that("store_tuning_instance, store_benchmark_result and store_models flags 
     store_models = TRUE),
     regexp = "Models can only be stored if store_benchmark_result is set to TRUE",
     fixed = TRUE)
+})
+
+test_that("predict_type works", {
+  te = trm("evals", n_evals = 4)
+  task = tsk("iris")
+  ps = TEST_MAKE_PS1(n_dim = 1)
+  ms = msr("classif.ce")
+  tuner = tnr("grid_search", resolution = 3)
+
+  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, ps, te,
+    tuner = tuner)
+
+  at$train(task)
+  expect_equal(at$predict_type, "response")  
+  expect_equal(at$model$learner$predict_type, "response")
+
+  at$predict_type = "prob"
+  expect_equal(at$predict_type, "prob")  
+  expect_equal(at$model$learner$predict_type, "prob")
 })

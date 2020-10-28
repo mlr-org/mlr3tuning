@@ -1,19 +1,16 @@
-#' @title TunerDesignPoints
+#' @title TunerCmaes
 #'
-#' @name mlr_tuners_design_points
+#' @name mlr_tuners_cmaes
 #'
 #' @description
-#' Subclass for tuning w.r.t. fixed design points.
+#' Subclass that implements CMA-ES calling [adagio::pureCMAES()]
+#' from package \CRANpkg{adagio}.
 #'
-#' We simply search over a set of points fully specified by the user. The points
-#' in the design are evaluated in order as given.
-#'
-#' @templateVar id design_points
+#' @templateVar id cmaes
 #' @template section_dictionary_tuners
-#' @template section_parallelization
 #' @template section_logging
 #'
-#' @inheritSection bbotk::OptimizerDesignPoints Parameters
+#' @inheritSection bbotk::OptimizerCmaes Parameters
 #'
 #' @family Tuner
 #' @seealso Package \CRANpkg{mlr3hyperband} for hyperband tuning.
@@ -25,7 +22,7 @@
 #' search_space = ParamSet$new(list(
 #'   ParamDbl$new("cp", lower = 0.001, upper = 0.1)
 #' ))
-#' terminator = trm("evals", n_evals = 3)
+#' terminator = trm("evals", n_evals = 10)
 #' instance = TuningInstanceSingleCrit$new(
 #'   task = tsk("iris"),
 #'   learner = lrn("classif.rpart"),
@@ -34,26 +31,25 @@
 #'   search_space = search_space,
 #'   terminator = terminator
 #' )
-#' design = data.table(cp = c(0.1, 0.01))
-#' tt = tnr("design_points", design = design)
+#' tt = tnr("cmaes", par = 0.1)
 #' # modifies the instance by reference
 #' tt$optimize(instance)
 #' # returns best configuration and best performance
 #' instance$result
 #' # allows access of data.table of full path of all evaluations
 #' instance$archive
-TunerDesignPoints = R6Class("TunerDesignPoints",
+TunerCmaes = R6Class("TunerCmaes",
   inherit = TunerFromOptimizer,
   public = list(
 
-    #' @description
-    #' Creates a new instance of this [R6][R6::R6Class] class.
-    initialize = function() {
-      super$initialize(
-        optimizer = OptimizerDesignPoints$new()
-      )
-    }
+   #' @description
+   #' Creates a new instance of this [R6][R6::R6Class] class.
+   initialize = function() {
+     super$initialize(
+       optimizer = OptimizerCmaes$new()
+     )
+   }
   )
 )
 
-mlr_tuners$add("design_points", TunerDesignPoints)
+mlr_tuners$add("cmaes", TunerCmaes)

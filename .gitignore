@@ -35,3 +35,6 @@ vignettes/*.pdf
 .DS_Store
 .Rproj.user
 docs/
+
+.Rprofile
+cran-comments.md
