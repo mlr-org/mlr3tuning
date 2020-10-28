@@ -83,7 +83,7 @@ AutoTuner = R6Class("AutoTuner",
     #' on the training set of an arbitrary outer resampling. For this reason
     #' it is not feasible to pass an instantiated [mlr3::Resampling] here.
     #'
-    #' @param measure (list of [mlr3::Measure])\cr
+    #' @param measure ([mlr3::Measure])\cr
     #' Performance measure to optimize.
     #'
     #' @param search_space ([paradox::ParamSet])\cr

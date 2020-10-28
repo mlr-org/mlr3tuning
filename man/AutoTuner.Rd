@@ -148,7 +148,7 @@ Resampling strategy during tuning, see \link{TuningInstanceSingleCrit}. This
 on the training set of an arbitrary outer resampling. For this reason
 it is not feasible to pass an instantiated \link[mlr3:Resampling]{mlr3::Resampling} here.}
 
-\item{\code{measure}}{(list of \link[mlr3:Measure]{mlr3::Measure})\cr
+\item{\code{measure}}{(\link[mlr3:Measure]{mlr3::Measure})\cr
 Performance measure to optimize.}
 
 \item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
