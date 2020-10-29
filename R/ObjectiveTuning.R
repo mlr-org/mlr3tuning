@@ -82,34 +82,25 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
         return(learner)
       })
 
-      if(is.null(c_hash) || "continue" %nin% self$learner$properties || !self$store_models) {
+      if(is.null(c_hash) || "continue" %nin% self$learner$properties || !self$store_models || self$archive$n_evals == 0 || "GraphLearner" %in% class(self$learner)) {
         design = benchmark_grid(self$task, learners, self$resampling)
         bmr = benchmark(design, store_models = self$store_models)
       } else {
-        if(self$archive$n_evals == 0) {
-          # No models can be continued since benchmark result is empty
+        # Search for continuable models by continue hash
+        archive = self$archive$data()
+        archive = archive[continue_hash %in% c_hash, ]
+        archive = archive[, .SD[which.max(batch_nr)], by = continue_hash]
+
+        if(nrow(archive) == length(xss)) {
+          # All models are continuable
+          uhash = archive$uhash
+          bmr_filtered = self$archive$benchmark_result$clone(deep = TRUE)$filter(uhashes = uhash)
+
+          bmr = benchmark_continue(learners, bmr_filtered, self$store_models)
+        } else {
+          # No or not all models are continuable
           design = benchmark_grid(self$task, learners, self$resampling)
           bmr = benchmark(design, store_models = self$store_models)
-        } else {
-          # Search for continuable models by continue hash
-          archive = self$archive$data()
-          archive = archive[continue_hash %in% c_hash, ]
-
-          if(nrow(archive) == length(xss)) {
-            # All models are continuable
-            # Use last model version
-            archive = archive[, .SD[which.max(batch_nr)], by = continue_hash]
-
-            uhash = archive$uhash
-            bmr_filtered = self$archive$benchmark_result$clone(deep = TRUE)$filter(uhashes = uhash)
-
-            bmr = benchmark_continue(learners, bmr_filtered, self$store_models)
-
-          } else {
-            # No or not all models are continuable
-            design = benchmark_grid(self$task, learners, self$resampling)
-            bmr = benchmark(design, store_models = self$store_models)
-          }
         }
       }
 
