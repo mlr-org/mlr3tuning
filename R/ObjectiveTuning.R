@@ -71,6 +71,32 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       super$initialize(
         id = sprintf("%s_on_%s", self$learner$id, self$task$id), domain = self$learner$param_set,
         codomain = codomain, check_values = check_values)
+    },
+
+    #' @description
+    #' Evaluates multiple input values on the objective function. If
+    #' `check_values = TRUE`, the validity of the points as well as the validity
+    #' of the results are checked.
+    #'
+    #' @param xss (`list()`)\cr
+    #'  A list of lists that contains multiple x values, e.g.
+    #'  `list(list(x1 = 1, x2 = 2), list(x1 = 3, x2 = 4))`.
+    #' @param c_hash (`character()`)\cr
+    #'  A vector of hashes matching models in the archive.
+    #'
+    #' @return data.table::data.table()] that contains one y-column for
+    #' single-criteria functions and multiple y-columns for multi-criteria functions,
+    #' e.g.  `data.table(y = 1:2)` or `data.table(y1 = 1:2, y2 = 3:4)`.
+    #' It may also contain additional columns that will be stored in the archive if
+    #' called through the [OptimInstance].
+    #' These extra columns are referred to as *extras*.
+    eval_many = function(xss, c_hash = NULL) {
+      if (self$check_values) lapply(xss, self$domain$assert)
+      res = private$.eval_many(xss, c_hash)
+      if (self$check_values) {
+        self$codomain$assert_dt(res[, self$codomain$ids(), with = FALSE])
+      }
+      return(res)
     }
   ),
 
