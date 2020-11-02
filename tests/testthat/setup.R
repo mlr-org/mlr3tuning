@@ -1,4 +1,5 @@
 library(mlr3)
+library(checkmate)
 old_opts = options(
   warnPartialMatchArgs = TRUE,
   warnPartialMatchAttr = TRUE,
