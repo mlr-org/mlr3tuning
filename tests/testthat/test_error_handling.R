@@ -1,5 +1,3 @@
-context("error handling")
-
 test_that("failing learner", {
   learner = lrn("classif.debug")
   param_set = ParamSet$new(list(

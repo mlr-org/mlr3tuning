@@ -1,5 +1,3 @@
-context("Tuner")
-
 test_that("API", {
   for (n_evals in c(1, 5)) {
     rs = TunerRandomSearch$new()

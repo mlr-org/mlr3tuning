@@ -1,5 +1,3 @@
-context("TuningInstanceSingleCrit")
-
 test_that("TuningInstanceSingleCrit", {
   inst = TEST_MAKE_INST1(values = list(maxdepth = 10), folds = 2L, measure = msr("dummy.cp.classif", fun = function(pv) pv$cp), n_dim = 2)
   # test empty inst
@@ -186,5 +184,5 @@ test_that("check_values flag with parameter set dependencies", {
     rsmp("holdout"), msr("regr.mse"), search_space, terminator,
     check_values = TRUE)
   expect_error(tuner$optimize(inst),
-    fixed = "The parameter 'yy' can only be set")
+    regexp = "The parameter 'yy' can only be set")
 })

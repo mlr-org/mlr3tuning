@@ -1,5 +1,3 @@
-context("TuningInstanceMultiCrit")
-
 test_that("tuning with multiple objectives", {
   task = tsk("pima")
   resampling = rsmp("holdout")
@@ -41,7 +39,8 @@ test_that("store_benchmark_result and store_models flag works", {
   inst$eval_batch(data.table(cp = c(0.3, 0.25), minsplit = c(3, 4)))
   expect_r6(inst$archive$benchmark_result, "BenchmarkResult")
 
-  expect_error(TEST_MAKE_INST1_2D(store_benchmark_result = FALSE,
+  expect_error(TEST_MAKE_INST1_2D(
+    store_benchmark_result = FALSE,
     store_models = TRUE),
   regexp = "Models can only be stored if store_benchmark_result is set to TRUE",
   fixed = TRUE)
@@ -75,5 +74,5 @@ test_that("check_values flag with parameter set dependencies", {
     rsmp("holdout"), msr("regr.mse"), search_space, terminator,
     check_values = TRUE)
   expect_error(tuner$optimize(inst),
-    fixed = "The parameter 'yy' can only be set")
+    regexp = "The parameter 'yy' can only be set")
 })

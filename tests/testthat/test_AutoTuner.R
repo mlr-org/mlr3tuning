@@ -1,5 +1,3 @@
-context("AutoTuner")
-
 test_that("AutoTuner / train+predict", {
   te = trm("evals", n_evals = 4)
   task = tsk("iris")
@@ -19,7 +17,7 @@ test_that("AutoTuner / train+predict", {
   expect_equal(r$learner_param_vals[[1]], list(xval = 0, cp = 0.2))
   prd = at$predict(task)
   expect_prediction(prd)
-  expect_is(at$learner$model, "rpart")
+  expect_s3_class(at$learner$model, "rpart")
 })
 
 test_that("AutoTuner / resample", {
@@ -169,7 +167,7 @@ test_that("AutoTuner works with graphlearner", {
   expect_equal(r$learner_param_vals[[1]]$classif.rpart.cp, 0.2)
   prd = at$predict(task)
   expect_prediction(prd)
-  expect_is(at$learner$model$classif.rpart$model, "rpart")
+  expect_s3_class(at$learner$model$classif.rpart$model, "rpart")
 })
 
 test_that("Nested resampling works with graphlearner", {
@@ -209,8 +207,8 @@ test_that("Nested resampling works with graphlearner", {
   expect_data_table(tab$learner[[1]]$archive$data(), nrows = 3L)
   expect_data_table(tab$learner[[2]]$archive$data(), nrows = 3L)
 
-  expect_is(tab$learner[[1]]$model$learner$model$classif.rpart$model, "rpart")
-  expect_is(tab$learner[[1]]$model$learner$model$classif.rpart$model, "rpart")
+  expect_s3_class(tab$learner[[1]]$model$learner$model$classif.rpart$model, "rpart")
+  expect_s3_class(tab$learner[[1]]$model$learner$model$classif.rpart$model, "rpart")
 })
 
 test_that("store_tuning_instance, store_benchmark_result and store_models flags work", {
@@ -283,10 +281,10 @@ test_that("predict_type works", {
     tuner = tuner)
 
   at$train(task)
-  expect_equal(at$predict_type, "response")  
+  expect_equal(at$predict_type, "response")
   expect_equal(at$model$learner$predict_type, "response")
 
   at$predict_type = "prob"
-  expect_equal(at$predict_type, "prob")  
+  expect_equal(at$predict_type, "prob")
   expect_equal(at$model$learner$predict_type, "prob")
 })

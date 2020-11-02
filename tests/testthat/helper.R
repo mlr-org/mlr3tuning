@@ -6,7 +6,7 @@ expect_tuner = function(tuner) {
     public = c("optimize", "param_set"),
     private = ".optimize"
   )
-  expect_is(tuner$param_set, "ParamSet")
+  expect_s3_class(tuner$param_set, "ParamSet")
   expect_function(tuner$optimize, args = "inst")
 }
 
@@ -14,7 +14,7 @@ expect_terminator = function(term) {
   expect_r6(term, "Terminator",
     public = c("is_terminated", "param_set")
   )
-  expect_is(term$param_set, "ParamSet")
+  expect_s3_class(term$param_set, "ParamSet")
 }
 
 #FIXME: This function should be exported so it can be used for tests in other packages
