@@ -53,7 +53,7 @@ Resolution per parameter, named by parameter ID, see
 
 \examples{
 library(mlr3)
-library(ml3learners)
+library(mlr3learners)
 library(paradox)
 search_space = ParamSet$new(list(
   ParamInt$new("nrounds", lower = 1, upper = 20, tag = "budget"),
