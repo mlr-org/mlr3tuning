@@ -34,6 +34,7 @@ by the \link{TuningInstanceSingleCrit} / \link{TuningInstanceMultiCrit}.
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{ObjectiveTuning$new()}}
+\item \href{#method-eval_many}{\code{ObjectiveTuning$eval_many()}}
 \item \href{#method-clone}{\code{ObjectiveTuning$clone()}}
 }
 }
@@ -42,7 +43,6 @@ by the \link{TuningInstanceSingleCrit} / \link{TuningInstanceMultiCrit}.
 \itemize{
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="eval">}\href{../../bbotk/html/Objective.html#method-eval}{\code{bbotk::Objective$eval()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="eval_dt">}\href{../../bbotk/html/Objective.html#method-eval_dt}{\code{bbotk::Objective$eval_dt()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="eval_many">}\href{../../bbotk/html/Objective.html#method-eval_many}{\code{bbotk::Objective$eval_many()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="format">}\href{../../bbotk/html/Objective.html#method-format}{\code{bbotk::Objective$format()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="print">}\href{../../bbotk/html/Objective.html#method-print}{\code{bbotk::Objective$print()}}\out{</span>}
 }
@@ -92,6 +92,38 @@ Store benchmark result in archive?}
 Store models in benchmark result?}
 }
 \if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-eval_many"></a>}}
+\if{latex}{\out{\hypertarget{method-eval_many}{}}}
+\subsection{Method \code{eval_many()}}{
+Evaluates multiple input values on the objective function. If
+\code{check_values = TRUE}, the validity of the points as well as the validity
+of the results are checked.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ObjectiveTuning$eval_many(xss, c_hash = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{xss}}{(\code{list()})\cr
+A list of lists that contains multiple x values, e.g.
+\code{list(list(x1 = 1, x2 = 2), list(x1 = 3, x2 = 4))}.}
+
+\item{\code{c_hash}}{(\code{character()})\cr
+A vector of hashes matching models in the archive.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+data.table::data.table()] that contains one y-column for
+single-criteria functions and multiple y-columns for multi-criteria functions,
+e.g.  \code{data.table(y = 1:2)} or \code{data.table(y1 = 1:2, y2 = 3:4)}.
+It may also contain additional columns that will be stored in the archive if
+called through the \link{OptimInstance}.
+These extra columns are referred to as \emph{extras}.
 }
 }
 \if{html}{\out{<hr>}}
