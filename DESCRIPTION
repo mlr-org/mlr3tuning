@@ -54,9 +54,9 @@ Suggests:
     mlr3pipelines,
     nloptr,
     rpart,
-    testthat
+    testthat,
+    xgboost
 Remotes:
-    mlr-org/bbotk@continue,
     mlr-org/mlr3@continue,
     mlr-org/mlr3learners@continue
 Encoding: UTF-8
