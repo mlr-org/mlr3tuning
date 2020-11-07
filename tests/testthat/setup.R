@@ -1,5 +1,5 @@
 library(mlr3)
-library(checkmate)
+attachNamespace("checkmate")
 old_opts = options(
   warnPartialMatchArgs = TRUE,
   warnPartialMatchAttr = TRUE,
