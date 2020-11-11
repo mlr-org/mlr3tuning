@@ -79,6 +79,9 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       learners = map(xss, function(x) {
         learner = self$learner$clone(deep = TRUE)
         learner$param_set$values = insert_named(learner$param_set$values, x)
+        learner$param_set$values = keep(learner$param_set$values, function(x) {
+          "TuneToken" %nin% class(x)
+        })
         return(learner)
       })
 
