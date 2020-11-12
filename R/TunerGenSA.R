@@ -13,7 +13,7 @@
 #' @inheritSection bbotk::OptimizerGenSA Parameters
 #'
 #' @source
-#' `r tools::toRd(bibentries[c("tsallis_1996", "xiang_2013")])`
+#' `r format_bib("tsallis_1996", "xiang_2013")`
 #'
 #' @family Tuner
 #' @seealso Package \CRANpkg{mlr3hyperband} for hyperband tuning.

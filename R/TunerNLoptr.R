@@ -24,7 +24,7 @@
 #' @family Tuner
 #' @seealso Package \CRANpkg{mlr3hyperband} for hyperband tuning.
 #' @source
-#' `r tools::toRd(bibentries["johnson_2014"])`
+#' `r format_bib("johnson_2014")`
 #'
 #' @export
 #' @examples
