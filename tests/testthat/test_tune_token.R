@@ -1,16 +1,16 @@
 context("tune_token")
 
 test_that("tune_token does not clash with dependencies", {
-  library(mlr3learners)
 
   task = tsk("iris")
-  learner = lrn("classif.svm", type = "C-classification")
+  learner = lrn("classif.rpart")
   resampling = rsmp("holdout")
   measure = msr("classif.ce")
   terminator = trm("none")
+  learner$param_set$add_dep("xval", "minsplit", CondEqual$new(3))
 
-  learner$param_set$values$kernel = to_tune(c("polynomial", "radial"))
-  learner$param_set$values$degree = to_tune(1, 3)
+  learner$param_set$values$minsplit = to_tune(2, 3)
+  learner$param_set$values$xval = to_tune(0, 1)
 
   search_space = learner$param_set$tune_ps()
 
