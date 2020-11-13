@@ -115,10 +115,24 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     #' This defines the resampled performance of a learner on a task, a
     #' feasibility region for the parameters the tuner is supposed to optimize,
     #' and a termination criterion.
-    initialize = function(task, learner, resampling, measure, search_space,
+    initialize = function(task, learner, resampling, measure, search_space = NULL,
       terminator, store_benchmark_result = TRUE, store_models = FALSE,
       check_values = FALSE) {
         measure = as_measure(measure)
+        # We might want to have the following in a function bc its used in MultiCrit as well
+        if (is.null(search_space)) {
+          # TODO: check if we can construct search space from learner$param_set using tune_tokens
+          tmp = learner$param_set$get_tune_pair() # return fixed_values (all but tune tokens) and search_space (from tune tokens),
+          # Question: If we have tune tokens in the learner$param_set the learner is practically "broken". So we have to clean it up in order to use it. Why not
+          # a) Don't use tune tokens at all (we can pass the info in get_tune_pair(tune_tokens = xxx))
+          # b) Use a second slot next to $param_vals, eg. $param_vals_to_tune. (++)
+          # c) Only use param_set$get_values() which can filter out TuneTokens, maybe param_set$values discards TuneTokens, on the other hand if I put a lot of effort here to always treat TuneTokens and real values I could jut go with solution b)
+          learner$param_set$values = tmp$fixed_values #ohne tune token / das könnte inplace passieren
+          search_space = tmp$search_space
+          # we dont allow a mix of search_space and tune tokens
+        } else {
+          # TODO: check that no tune tokens exist in learner$param_set$values
+        }
         obj = ObjectiveTuning$new(task = task, learner = learner,
           resampling = resampling, measures = list(measure),
           store_benchmark_result = store_benchmark_result,

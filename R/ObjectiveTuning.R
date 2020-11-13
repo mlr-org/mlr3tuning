@@ -76,6 +76,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
 
   private = list(
     .eval_many = function(xss) {
+      browser()
       learners = map(xss, function(x) {
         learner = self$learner$clone(deep = TRUE)
         learner$param_set$values = insert_named(learner$param_set$values, x)
