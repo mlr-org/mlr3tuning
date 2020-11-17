@@ -56,7 +56,7 @@ Suggests:
     testthat
 Remotes:
     mlr-org/bbotk,
-    mlr-org/paradox
+    mlr-org/paradox@totune_separation
 Encoding: UTF-8
 NeedsCompilation: no
 Roxygen: list(markdown = TRUE)
