@@ -55,7 +55,7 @@ Suggests:
     rpart,
     testthat
 Remotes:
-    mlr-org/bbotk
+    mlr-org/bbotk,
     mlr-org/mlr3
 Encoding: UTF-8
 NeedsCompilation: no
