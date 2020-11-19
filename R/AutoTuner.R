@@ -219,6 +219,7 @@ AutoTuner = R6Class("AutoTuner",
       # here we write to the object and this would change instance_args
       learner = ia$learner$clone(deep = TRUE)
       learner$param_set$values = instance$result_learner_param_vals
+      learner$timeout = c(train = Inf, predict = Inf)
       learner$train(task)
 
       # the return model is a list of "learner" and "tuning_instance"
