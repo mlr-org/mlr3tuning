@@ -1,5 +1,3 @@
-context("TunerGenSA")
-
 skip_if_not_installed("GenSA")
 
 test_that("TunerGenSA", {

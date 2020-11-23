@@ -1,5 +1,3 @@
-context("trafos")
-
 test_that("simple exp trafo works", {
   ll = lrn("classif.rpart")
   ps = ParamSet$new(params = list(
