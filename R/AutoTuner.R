@@ -109,10 +109,6 @@ AutoTuner = R6Class("AutoTuner",
         instantiated = FALSE)$clone()
       ia$measure = assert_measure(as_measure(measure), learner = learner)
       ia$search_space = assert_param_set(search_space)$clone()
-      # We create a ParamSetColellection from the tuning ps and learner ps.
-      # Without setting the ps id to "", the parameter would be prefixed with
-      # the learner id in the ParamSetColellection.
-      ia$learner$param_set$set_id = ""
       ia$terminator = assert_terminator(terminator)$clone()
 
       private$.store_tuning_instance = assert_flag(store_tuning_instance)
@@ -136,7 +132,6 @@ AutoTuner = R6Class("AutoTuner",
         packages = learner$packages,
         feature_types = learner$feature_types,
         predict_types = learner$predict_types,
-        param_set = learner$param_set,
         properties = learner$properties
       )
 
@@ -169,23 +164,6 @@ AutoTuner = R6Class("AutoTuner",
     #' @field tuning_result (named `list()`)\cr
     #' Short-cut to `result` from [TuningInstanceSingleCrit].
     tuning_result = function() self$tuning_instance$result,
-
-    #' @field param_set [paradox::ParamSet].
-    param_set = function(rhs) {
-      if (is.null(private$.param_set)) {
-        private$.param_set = ParamSetCollection$new(list(
-          # --> this is how we would insert the self$tuner_paramset:
-          # self$tuner$param_set,
-          self$learner$param_set
-        ))
-        private$.param_set$set_id = private$.ps_id
-      }
-
-      if (!missing(rhs) && !identical(rhs, private$.param_set)) {
-        stop("param_set is read-only.")
-      }
-      private$.param_set
-    },
 
     #' @field predict_type (`character(1)`)\cr
     #' Stores the currently active predict type, e.g. `"response"`.
@@ -234,20 +212,6 @@ AutoTuner = R6Class("AutoTuner",
     .predict = function(task) {
       self$model$learner$predict(task)
     },
-
-    deep_clone = function(name, value) {
-      if (!is.null(private$.param_set)) {
-        private$.ps_id = private$.param_set$set_id
-        # required to keep clone identical to original, otherwise tests get
-        # really ugly
-        private$.param_set = NULL
-      }
-      if (is.environment(value) && !is.null(value[[".__enclos_env__"]])) {
-        return(value$clone(deep = TRUE))
-      }
-      value
-    },
-    .ps_id = "",
 
     .store_tuning_instance = NULL
   )

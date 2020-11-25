@@ -51,36 +51,6 @@ test_that("AutoTuner / resample", {
   })
 })
 
-# we had an issue that the AutoTuner did not return statically configured param in its result
-# see issue #51
-test_that("AutoTuner / param_set", {
-  measure = msr("classif.ce")
-  te = trm("evals", n_evals = 3)
-  task = tsk("iris")
-  ps = TEST_MAKE_PS1()
-  tuner = TunerRandomSearch$new()
-  learner = lrn("classif.rpart", cp = 1, maxdepth = 1)
-  at = AutoTuner$new(learner, rsmp("holdout"), measure, ps, te, tuner)
-  expect_equal(at$param_set$values[names(at$learner$param_set$values)], at$learner$param_set$values)
-  at$train(task)
-
-  # parameter that is not in training ps was used
-  expect_equal(at$param_set$values$maxdepth, 1)
-  expect_equal(at$learner$param_set$values$maxdepth, 1)
-  expect_equal(at$learner$model$control$maxdepth, 1)
-  # parameter that *is* in training ps was changed (to inside training range)
-  expect_lt(at$learner$model$control$cp, ps$params$cp$upper)
-
-  expect_equal(at$param_set$values$maxdepth, 1)
-  # expect_equal(at$param_set$values$cp, 1)
-
-  # param set, including id, survives clone
-  at$param_set$set_id = "xyz"
-  at2 = at$clone(deep = TRUE)
-  expect_equal(at$param_set, at2$param_set)
-})
-
-
 test_that("Custom resampling is not allowed", {
   measure = msr("classif.ce")
   te = trm("evals", n_evals = 4)
@@ -90,8 +60,6 @@ test_that("Custom resampling is not allowed", {
   r = rsmp("holdout")$instantiate(task)
   expect_error(AutoTuner$new(lrn("classif.rpart"), r, measure, ps, te, tuner), "instantiated")
 })
-
-
 
 test_that("nested resamppling results are consistent ", {
   # we had a bad pointer bug due to missing cloning here
