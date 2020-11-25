@@ -76,3 +76,33 @@ test_that("check_values flag with parameter set dependencies", {
   expect_error(tuner$optimize(inst),
     regexp = "The parameter 'yy' can only be set")
 })
+
+test_that("search space from TuneToken works", {
+  learner = lrn("classif.rpart")
+  learner$param_set$values$cp = to_tune(0.1, 0.3)
+
+  instance = TuningInstanceMultiCrit$new(task = tsk("iris"), learner = learner,
+    resampling = rsmp("holdout"), measures = msrs(c("classif.acc", "classif.ce")),
+    terminator = trm("evals", n_evals = 1))
+
+  expect_r6(instance$search_space, "ParamSet")
+  expect_equal(instance$search_space$ids(), "cp")
+
+  ps = ParamSet$new(list(
+    ParamDbl$new("cp", lower = 0.1, upper = 0.3)
+  ))
+
+  expect_error(TuningInstanceMultiCrit$new(task = tsk("iris"), learner = learner,
+    resampling = rsmp("holdout"), measures = msrs(c("classif.acc", "classif.ce")),
+    search_space = ps, terminator = trm("evals", n_evals = 1)),
+    regexp = "TuneToken and search space supplied",
+    fixed = TRUE)
+
+  instance = TuningInstanceMultiCrit$new(task = tsk("iris"),
+    learner = lrn("classif.rpart"), resampling = rsmp("holdout"),
+    measures = msrs(c("classif.acc", "classif.ce")), search_space = ps,
+    terminator = trm("evals", n_evals = 1))
+
+  expect_r6(instance$search_space, "ParamSet")
+  expect_equal(instance$search_space$ids(), "cp")
+})
