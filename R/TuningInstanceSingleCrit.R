@@ -115,25 +115,26 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     #' This defines the resampled performance of a learner on a task, a
     #' feasibility region for the parameters the tuner is supposed to optimize,
     #' and a termination criterion.
-    initialize = function(task, learner, resampling, measure, 
-      search_space = NULL, terminator, store_benchmark_result = TRUE, 
+    initialize = function(task, learner, resampling, measure,
+      search_space = NULL, terminator, store_benchmark_result = TRUE,
       store_models = FALSE, check_values = FALSE) {
-        if (!is.null(search_space) && length(learner$param_set$get_values(tune_token = "only")) > 0) {
-          stop("TuneToken and search space supplied.")
-        } 
-        if (is.null(search_space)) {
-          search_space = learner$param_set$tune_ps()
-        } 
-        
-        measure = as_measure(measure)
-        obj = ObjectiveTuning$new(task = task, learner = learner,
-          resampling = resampling, measures = list(measure),
-          store_benchmark_result = store_benchmark_result,
-          store_models = store_models, check_values = check_values)
-        super$initialize(obj, search_space, terminator)
-        self$archive = ArchiveTuning$new(search_space = search_space,
-          codomain = self$objective$codomain, check_values = check_values)
-        self$objective$archive = self$archive
+
+      if (!is.null(search_space) && length(learner$param_set$get_values(tune_token = "only")) > 0) {
+        stop("TuneToken and search space supplied.")
+      }
+      if (is.null(search_space)) {
+        search_space = learner$param_set$tune_ps()
+      }
+
+      measure = as_measure(measure)
+      obj = ObjectiveTuning$new(task = task, learner = learner,
+        resampling = resampling, measures = list(measure),
+        store_benchmark_result = store_benchmark_result,
+        store_models = store_models, check_values = check_values)
+      super$initialize(obj, search_space, terminator)
+      self$archive = ArchiveTuning$new(search_space = search_space,
+        codomain = self$objective$codomain, check_values = check_values)
+      self$objective$archive = self$archive
     },
 
     #' @description
