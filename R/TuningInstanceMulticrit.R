@@ -41,9 +41,17 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
     #' This defines the resampled performance of a learner on a task, a
     #' feasibility region for the parameters the tuner is supposed to optimize,
     #' and a termination criterion.
-    initialize = function(task, learner, resampling, measures, search_space,
-      terminator, store_models = FALSE, check_values = FALSE,
-      store_benchmark_result = TRUE) {
+    initialize = function(task, learner, resampling, measures, 
+      search_space = NULL, terminator, store_models = FALSE, 
+      check_values = FALSE, store_benchmark_result = TRUE) {
+        
+      if (!is.null(search_space) && length(learner$param_set$get_values(tune_token = "only")) > 0) {
+        stop("TuneToken and search space supplied.")
+      } 
+      if (is.null(search_space)) {
+        search_space = learner$param_set$tune_ps()
+      } 
+
       obj = ObjectiveTuning$new(
         task = task, learner = learner,
         resampling = resampling, measures = measures,
