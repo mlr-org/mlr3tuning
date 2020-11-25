@@ -140,7 +140,7 @@ and a termination criterion.
   learner,
   resampling,
   measure,
-  search_space,
+  search_space = NULL,
   terminator,
   store_benchmark_result = TRUE,
   store_models = FALSE,

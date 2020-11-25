@@ -55,7 +55,7 @@ Suggests:
     rpart,
     testthat (>= 3.0.0)
 Remotes:
-    mlr-org/bbotk
+    mlr-org/bbotk,
     mlr-org/paradox@tune_token
 Encoding: UTF-8
 NeedsCompilation: no

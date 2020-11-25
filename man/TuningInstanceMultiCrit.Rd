@@ -65,7 +65,7 @@ and a termination criterion.
   learner,
   resampling,
   measures,
-  search_space,
+  search_space = NULL,
   terminator,
   store_models = FALSE,
   check_values = FALSE,
