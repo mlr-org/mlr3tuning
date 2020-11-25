@@ -9,6 +9,7 @@ Tsallis C, Stariolo DA (1996).
 \dQuote{Generalized simulated annealing.}
 \emph{Physica A: Statistical Mechanics and its Applications}, \bold{233}(1-2), 395--406.
 \doi{10.1016/s0378-4371(96)00271-3}.
+
 Xiang Y, Gubian S, Suomela B, Hoeng J (2013).
 \dQuote{Generalized Simulated Annealing for Global Optimization: The GenSA Package.}
 \emph{The R Journal}, \bold{5}(1), 13.

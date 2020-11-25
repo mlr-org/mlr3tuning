@@ -1,5 +1,3 @@
-context("ObjectiveTuning")
-
 test_that("ObjectiveTuning", {
   task = tsk("iris")
   learner = lrn("classif.rpart")
