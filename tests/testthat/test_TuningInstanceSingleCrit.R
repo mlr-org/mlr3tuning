@@ -95,7 +95,7 @@ test_that("tuning with custom resampling", {
   terminator = trm("evals", n_evals = 10)
   tuner = tnr("random_search")
 
-  inst = TuningInstanceSingleCrit$new(task, learner, resampling, measure, tune_ps, terminator)
+  inst = TuningInstanceSingleCrit$new(task, learner, resampling, measure, terminator, tune_ps)
   tuner$optimize(inst)
   rr = as.data.table(inst$archive$benchmark_result)$resampling
   expect_list(rr, len = 20)
@@ -123,11 +123,9 @@ test_that("non-scalar hyperpars (#201)", {
     return(x)
   }
 
-  inst = TuningInstanceSingleCrit$new(tsk("iris"),
-    learner,
-    rsmp("holdout"), msr("classif.ce"),
-    search_space,
-    trm("evals", n_evals = 1), check_values = TRUE)
+  inst = TuningInstanceSingleCrit$new(tsk("iris"), learner, rsmp("holdout"),
+    msr("classif.ce"), trm("evals", n_evals = 1), search_space,
+    check_values = TRUE)
 
   tnr("random_search")$optimize(inst)
   expect_data_table(inst$archive$data(), nrows = 1)
@@ -176,12 +174,12 @@ test_that("check_values flag with parameter set dependencies", {
   tuner = tnr("random_search")
 
   inst = TuningInstanceSingleCrit$new(tsk("boston_housing"), learner,
-    rsmp("holdout"), msr("regr.mse"), search_space, terminator)
+    rsmp("holdout"), msr("regr.mse"), terminator, search_space)
   tuner$optimize(inst)
   expect_named(inst$result_learner_param_vals, c("xx", "cp", "yy"))
 
   inst = TuningInstanceSingleCrit$new(tsk("boston_housing"), learner,
-    rsmp("holdout"), msr("regr.mse"), search_space, terminator,
+    rsmp("holdout"), msr("regr.mse"), terminator, search_space,
     check_values = TRUE)
   expect_error(tuner$optimize(inst),
     regexp = "The parameter 'yy' can only be set")
@@ -205,7 +203,7 @@ test_that("search space from TuneToken works", {
   expect_error(TuningInstanceSingleCrit$new(task = tsk("iris"), learner = learner,
     resampling = rsmp("holdout"), measure = msr("classif.ce"),
     search_space = ps, terminator = trm("evals", n_evals = 1)),
-    regexp = "TuneToken and search space supplied",
+    regexp = "If the values of the ParamSet of the Learner contain TuneTokens you cannot supply a search_space.",
     fixed = TRUE)
 
   instance = TuningInstanceSingleCrit$new(task = tsk("iris"),

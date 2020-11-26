@@ -17,7 +17,7 @@ test_that("proper error if tuner cannot handle deps", {
   ))
   ps$add_dep("minsplit", on = "cp", cond = CondEqual$new(0.1))
   te = trm("evals", n_evals = 2)
-  inst = TuningInstanceSingleCrit$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), ps, te)
+  inst = TuningInstanceSingleCrit$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), te, ps)
   tt = TunerGenSA$new()
   expect_error(tt$optimize(inst), "dependencies")
 })

@@ -116,14 +116,16 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     #' feasibility region for the parameters the tuner is supposed to optimize,
     #' and a termination criterion.
     initialize = function(task, learner, resampling, measure,
-      search_space = NULL, terminator, store_benchmark_result = TRUE,
+      terminator, search_space = NULL, store_benchmark_result = TRUE,
       store_models = FALSE, check_values = FALSE) {
+      learner = assert_learner(as_learner(learner, clone = TRUE))
 
-      if (!is.null(search_space) && length(learner$param_set$get_values(tune_token = "only")) > 0) {
+      if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token")) > 0) {
         stop("If the values of the ParamSet of the Learner contain TuneTokens you cannot supply a search_space.")
       }
       if (is.null(search_space)) {
         search_space = learner$param_set$tune_ps()
+        learner$param_set$values = learner$param_set$get_values(type = "without_token")
       }
 
       measure = as_measure(measure)
