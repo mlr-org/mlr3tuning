@@ -88,8 +88,6 @@ Internally created tuning instance with all intermediate results.}
 \item{\code{tuning_result}}{(named \code{list()})\cr
 Short-cut to \code{result} from \link{TuningInstanceSingleCrit}.}
 
-\item{\code{param_set}}{\link[paradox:ParamSet]{paradox::ParamSet}.}
-
 \item{\code{predict_type}}{(\code{character(1)})\cr
 Stores the currently active predict type, e.g. \code{"response"}.
 Must be an element of \verb{$predict_types}.}
@@ -126,9 +124,9 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   learner,
   resampling,
   measure,
-  search_space,
   terminator,
   tuner,
+  search_space = NULL,
   store_tuning_instance = TRUE,
   store_benchmark_result = TRUE,
   store_models = FALSE,
@@ -151,14 +149,14 @@ it is not feasible to pass an instantiated \link[mlr3:Resampling]{mlr3::Resampli
 \item{\code{measure}}{(\link[mlr3:Measure]{mlr3::Measure})\cr
 Performance measure to optimize.}
 
-\item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
-Hyperparameter search space, see \link{TuningInstanceSingleCrit}.}
-
 \item{\code{terminator}}{(\link[bbotk:Terminator]{bbotk::Terminator})\cr
 When to stop tuning, see \link{TuningInstanceSingleCrit}.}
 
 \item{\code{tuner}}{(\link{Tuner})\cr
 Tuning algorithm to run.}
+
+\item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
+Hyperparameter search space, see \link{TuningInstanceSingleCrit}.}
 
 \item{\code{store_tuning_instance}}{(\code{logical(1)})\cr
 If \code{TRUE} (default), stores the internally created

@@ -4,7 +4,7 @@ test_that("AutoTuner / train+predict", {
   ps = TEST_MAKE_PS1(n_dim = 1)
   ms = MeasureDummyCPClassif$new(fun = function(pv) if (pv$cp == 0.2) 0 else 1) # lets fake a measure, so we control the best config
   tuner = tnr("grid_search", resolution = 3)
-  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, ps, te, tuner = tuner)
+  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, ps)
   expect_learner(at)
   at$train(task)
   expect_learner(at)
@@ -32,7 +32,7 @@ test_that("AutoTuner / resample", {
   param_set = TEST_MAKE_PS1()
   te = trm("evals", n_evals = inner_evals)
   tuner = tnr("grid_search", resolution = 3)
-  at = AutoTuner$new(lrn("classif.rpart", predict_type = "prob"), r_inner, ms, param_set, te, tuner)
+  at = AutoTuner$new(lrn("classif.rpart", predict_type = "prob"), r_inner, ms, te, tuner, param_set)
 
   expect_null(at$tuning_instance)
   expect_equal(at$predict_type, "prob")
@@ -58,7 +58,7 @@ test_that("Custom resampling is not allowed", {
   ps = TEST_MAKE_PS1()
   tuner = TunerRandomSearch$new()
   r = rsmp("holdout")$instantiate(task)
-  expect_error(AutoTuner$new(lrn("classif.rpart"), r, measure, ps, te, tuner), "instantiated")
+  expect_error(AutoTuner$new(lrn("classif.rpart"), r, measure, te, tuner, ps), "instantiated")
 })
 
 test_that("nested resamppling results are consistent ", {
@@ -95,7 +95,7 @@ test_that("AT training does not change learner in instance args", {
   # https://github.com/mlr-org/mlr3/issues/428
   task = tsk("iris")
   ps = TEST_MAKE_PS1()
-  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), ps, trm("evals", n_evals = 3), TunerRandomSearch$new())
+  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), trm("evals", n_evals = 3), TunerRandomSearch$new(), ps)
   expect_equal(at$instance_args$learner$param_set$values, list(xval = 0))
   at$train(task)
   expect_equal(at$instance_args$learner$param_set$values, list(xval = 0))
@@ -186,8 +186,8 @@ test_that("store_tuning_instance, store_benchmark_result and store_models flags 
   ms = msr("classif.ce")
   tuner = tnr("grid_search", resolution = 3)
 
-  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, ps, te,
-    tuner = tuner, store_tuning_instance = TRUE, store_benchmark_result = TRUE,
+  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te,
+    tuner = tuner, ps, store_tuning_instance = TRUE, store_benchmark_result = TRUE,
     store_models = TRUE)
   at$train(task)
 
@@ -195,8 +195,8 @@ test_that("store_tuning_instance, store_benchmark_result and store_models flags 
   assert_benchmark_result(at$tuning_instance$archive$benchmark_result)
   assert_class(at$tuning_instance$archive$benchmark_result$resample_result(1)$learners[[1]]$model, "rpart")
 
-  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, ps, te,
-    tuner = tuner, store_tuning_instance = TRUE, store_benchmark_result = TRUE,
+  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te,
+    tuner = tuner, ps, store_tuning_instance = TRUE, store_benchmark_result = TRUE,
     store_models = FALSE)
   at$train(task)
 
@@ -204,35 +204,35 @@ test_that("store_tuning_instance, store_benchmark_result and store_models flags 
   assert_benchmark_result(at$tuning_instance$archive$benchmark_result)
   assert_null(at$tuning_instance$archive$benchmark_result$resample_result(1)$learners[[1]]$model)
 
-  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, ps, te,
-    tuner = tuner, store_tuning_instance = TRUE, store_benchmark_result = FALSE,
+  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te,
+    tuner = tuner, ps, store_tuning_instance = TRUE, store_benchmark_result = FALSE,
     store_models = FALSE)
   at$train(task)
 
   assert_r6(at$tuning_instance, "TuningInstanceSingleCrit")
   assert_null(at$tuning_instance$archive$benchmark_result)
 
-  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, ps, te,
-    tuner = tuner, store_tuning_instance = FALSE, store_benchmark_result = FALSE,
+  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te,
+    tuner = tuner, ps, store_tuning_instance = FALSE, store_benchmark_result = FALSE,
     store_models = FALSE)
   at$train(task)
 
   assert_null(at$tuning_instance)
 
-  expect_error(AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, ps, te,
-    tuner = tuner, store_tuning_instance = FALSE, store_benchmark_result = TRUE,
+  expect_error(AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te,
+    tuner = tuner, ps, store_tuning_instance = FALSE, store_benchmark_result = TRUE,
     store_models = FALSE),
     regexp = "Benchmark results can only be stored if store_tuning_instance is set to TRUE",
     fixed = TRUE)
 
-  expect_error(AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, ps, te,
-    tuner = tuner, store_tuning_instance = TRUE, store_benchmark_result = FALSE,
+  expect_error(AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te,
+    tuner = tuner, ps, store_tuning_instance = TRUE, store_benchmark_result = FALSE,
     store_models = TRUE),
     regexp = "Models can only be stored if store_benchmark_result is set to TRUE",
     fixed = TRUE)
 
-  expect_error(AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, ps, te,
-    tuner = tuner, store_tuning_instance = FALSE, store_benchmark_result = FALSE,
+  expect_error(AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te,
+    tuner = tuner, ps, store_tuning_instance = FALSE, store_benchmark_result = FALSE,
     store_models = TRUE),
     regexp = "Models can only be stored if store_benchmark_result is set to TRUE",
     fixed = TRUE)
@@ -245,8 +245,8 @@ test_that("predict_type works", {
   ms = msr("classif.ce")
   tuner = tnr("grid_search", resolution = 3)
 
-  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, ps, te,
-    tuner = tuner)
+  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te,
+    tuner = tuner, ps)
 
   at$train(task)
   expect_equal(at$predict_type, "response")
