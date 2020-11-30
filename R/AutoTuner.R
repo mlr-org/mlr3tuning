@@ -41,16 +41,27 @@
 #' terminator = trm("evals", n_evals = 5)
 #' tuner = tnr("grid_search")
 #' at = AutoTuner$new(
-#'   learner, resampling, measure, search_space, terminator,
-#'   tuner, store_tuning_instance = TRUE)
+#'   learner = learner,
+#'   resampling =  resampling,
+#'   measure =  measure,
+#'   terminator = terminator,
+#'   tuner = tuner,
+#'   search_space =search_space,
+#'   store_tuning_instance = TRUE)
 #'
 #' at$train(task)
 #' at$model
 #' at$learner
 #'
 #' # Nested resampling
-#' at = AutoTuner$new(learner, resampling, measure, search_space, terminator,
-#'   tuner, store_tuning_instance = TRUE)
+#' at = AutoTuner$new(
+#'   learner = learner,
+#'   resampling =  resampling,
+#'   measure =  measure,
+#'   terminator = terminator,
+#'   tuner = tuner,
+#'   search_space =search_space,
+#'   store_tuning_instance = TRUE)
 #'
 #' resampling_outer = rsmp("cv", folds = 2)
 #' rr = resample(task, at, resampling_outer, store_models = TRUE)

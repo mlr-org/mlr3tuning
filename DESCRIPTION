@@ -56,7 +56,7 @@ Suggests:
     testthat (>= 3.0.0)
 Remotes:
     mlr-org/bbotk,
-    mlr-org/paradox@tune_token
+    mlr-org/paradox
 Encoding: UTF-8
 NeedsCompilation: no
 Config/testthat/edition: 3
