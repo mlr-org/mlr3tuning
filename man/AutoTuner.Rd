@@ -45,7 +45,7 @@ at = AutoTuner$new(
   measure =  measure,
   terminator = terminator,
   tuner = tuner,
-  search_space =search_space,
+  search_space = search_space,
   store_tuning_instance = TRUE)
 
 at$train(task)
@@ -59,7 +59,7 @@ at = AutoTuner$new(
   measure =  measure,
   terminator = terminator,
   tuner = tuner,
-  search_space =search_space,
+  search_space = search_space,
   store_tuning_instance = TRUE)
 
 resampling_outer = rsmp("cv", folds = 2)

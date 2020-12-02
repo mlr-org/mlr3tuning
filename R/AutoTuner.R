@@ -120,7 +120,7 @@ AutoTuner = R6Class("AutoTuner",
         stop("If the values of the ParamSet of the Learner contain TuneTokens you cannot supply a search_space.")
       }
       if (is.null(search_space)) {
-        search_space = learner$param_set$tune_ps()
+        search_space = learner$param_set$search_space()
         learner$param_set$values = learner$param_set$get_values(type = "without_token")
       }
 
