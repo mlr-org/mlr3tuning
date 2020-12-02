@@ -22,19 +22,19 @@ framework for optimization.
 
 CRAN version
 
-```{r}
+```r
 install.packages("mlr3tuning")
 ```
 
 Development version
 
-```{r}
+```r
 remotes::install_github("mlr-org/mlr3tuning")
 ```
 
 ## Example
 
-```{r}
+```r
 library("mlr3")
 library("mlr3tuning")
 library("paradox")
