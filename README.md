@@ -58,8 +58,8 @@ instance = TuningInstanceSingleCrit$new(task = task,
   learner = learner,
   resampling = resampling,
   measure = measure,
-  search_space = search_space,
-  terminator = terminator)
+  terminator = terminator,
+  search_space = search_space)
 
 # Load tuner
 tuner = tnr("grid_search", resolution = 5)
