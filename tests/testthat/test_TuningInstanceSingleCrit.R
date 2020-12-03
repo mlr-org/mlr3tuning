@@ -214,3 +214,19 @@ test_that("search space from TuneToken works", {
   expect_r6(instance$search_space, "ParamSet")
   expect_equal(instance$search_space$ids(), "cp")
 })
+
+test_that("TuneToken and result_learner_param_vals works", {
+  learner = lrn("classif.rpart", xval = 0)
+  learner$param_set$values$cp = to_tune(0.1, 0.3)
+
+  instance = TuningInstanceSingleCrit$new(task = tsk("iris"), learner = learner,
+    resampling = rsmp("holdout"), measure = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 1))
+
+  xdt = data.table(cp = 0.1)
+  tuner = tnr("design_points", design = xdt)
+  tuner$optimize(instance)
+
+  expect_equal(instance$result_learner_param_vals$xval, 0)
+  expect_equal(instance$result_learner_param_vals$cp, 0.1)
+})
