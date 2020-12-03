@@ -31,21 +31,18 @@
 #' @examples
 #' library(mlr3)
 #' library(paradox)
-#' task = tsk("iris")
-#' learner = lrn("classif.rpart")
-#' resampling = rsmp("holdout")
-#' measure = msr("classif.ce")
-#' search_space = ParamSet$new(
-#'   params = list(ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 #'
-#' terminator = trm("evals", n_evals = 5)
-#' tuner = tnr("grid_search")
+#' task = tsk("iris")
+#' search_space = ParamSet$new(
+#'   params = list(ParamDbl$new("cp", lower = 0.001, upper = 0.1))
+#' )
+#'
 #' at = AutoTuner$new(
-#'   learner = learner,
-#'   resampling =  resampling,
-#'   measure =  measure,
-#'   terminator = terminator,
-#'   tuner = tuner,
+#'   learner = lrn("classif.rpart"),
+#'   resampling = rsmp("holdout"),
+#'   measure = msr("classif.ce"),
+#'   terminator = trm("evals", n_evals = 5),
+#'   tuner = tnr("grid_search"),
 #'   search_space = search_space,
 #'   store_tuning_instance = TRUE)
 #'
@@ -55,11 +52,11 @@
 #'
 #' # Nested resampling
 #' at = AutoTuner$new(
-#'   learner = learner,
-#'   resampling =  resampling,
-#'   measure =  measure,
-#'   terminator = terminator,
-#'   tuner = tuner,
+#'   learner = lrn("classif.rpart"),
+#'   resampling = rsmp("holdout"),
+#'   measure = msr("classif.ce"),
+#'   terminator = trm("evals", n_evals = 5),
+#'   tuner = tnr("grid_search"),
 #'   search_space = search_space,
 #'   store_tuning_instance = TRUE)
 #'
