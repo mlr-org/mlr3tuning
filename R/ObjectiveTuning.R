@@ -46,8 +46,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       store_models = FALSE) {
 
       self$task = assert_task(as_task(task, clone = TRUE))
-      self$learner = assert_learner(as_learner(learner, clone = TRUE),
-        task = self$task)
+      self$learner = assert_learner(as_learner(learner, clone = TRUE))
       self$resampling = assert_resampling(as_resampling(
         resampling,
         clone = TRUE))
@@ -78,10 +77,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     .eval_many = function(xss) {
       learners = map(xss, function(x) {
         learner = self$learner$clone(deep = TRUE)
-        learner$param_set$values = insert_named(learner$param_set$values, x)
-        learner$param_set$values = keep(learner$param_set$values, function(x) {
-          "TuneToken" %nin% class(x)
-        })
+        learner$param_set$values = insert_named(learner$param_set$get_values(type = "without_token"), x)
         return(learner)
       })
 

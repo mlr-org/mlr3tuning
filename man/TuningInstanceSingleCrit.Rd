@@ -140,8 +140,8 @@ and a termination criterion.
   learner,
   resampling,
   measure,
-  search_space,
   terminator,
+  search_space = NULL,
   store_benchmark_result = TRUE,
   store_models = FALSE,
   check_values = FALSE
@@ -163,9 +163,9 @@ so that all configurations are evaluated on the same data splits.}
 \item{\code{measure}}{(\link[mlr3:Measure]{mlr3::Measure})\cr
 Measure to optimize.}
 
-\item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet}).}
-
 \item{\code{terminator}}{(\link{Terminator}).}
+
+\item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet}).}
 
 \item{\code{store_benchmark_result}}{(\code{logical(1)})\cr
 Store benchmark result in archive?}

@@ -65,8 +65,8 @@ and a termination criterion.
   learner,
   resampling,
   measures,
-  search_space,
   terminator,
+  search_space = NULL,
   store_models = FALSE,
   check_values = FALSE,
   store_benchmark_result = TRUE
@@ -89,9 +89,9 @@ so that all configurations are evaluated on the same data splits.}
 Measures to optimize.
 If \code{NULL}, \CRANpkg{mlr3}'s default measure is used.}
 
-\item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet}).}
-
 \item{\code{terminator}}{(\link{Terminator}).}
+
+\item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet}).}
 
 \item{\code{store_models}}{(\code{logical(1)})\cr
 Store models in benchmark result?}
