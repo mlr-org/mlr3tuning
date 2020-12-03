@@ -77,8 +77,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     .eval_many = function(xss) {
       learners = map(xss, function(x) {
         learner = self$learner$clone(deep = TRUE)
-        learner$param_set$values = insert_named(learner$param_set$values, x)
-        learner$param_set$values = learner$param_set$get_values(type = "without_token")
+        learner$param_set$values = insert_named(learner$param_set$get_values(type = "without_token"), x)
         return(learner)
       })
 
