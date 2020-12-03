@@ -256,3 +256,25 @@ test_that("predict_type works", {
   expect_equal(at$predict_type, "prob")
   expect_equal(at$model$learner$predict_type, "prob")
 })
+
+test_that("search space from TuneToken works", {
+  learner = lrn("classif.rpart")
+  learner$param_set$values$cp = to_tune(0.1, 0.3)
+
+  at = AutoTuner$new(learner = learner, resampling = rsmp("holdout"),
+    measure = msr("classif.ce"), terminator = trm("evals", n_evals = 1),
+    tuner = tnr("random_search"))
+
+  at$train(tsk("iris"))
+  expect_equal(at$tuning_instance$search_space$ids(), "cp")
+
+  ps = ParamSet$new(list(
+    ParamDbl$new("cp", lower = 0.1, upper = 0.3)
+  ))
+
+  expect_error(AutoTuner$new(learner = learner, resampling = rsmp("holdout"),
+    measure = msr("classif.ce"), terminator = trm("evals", n_evals = 1),
+    tuner = tnr("random_search"), search_space = learner$param_set$search_space()),
+    regexp = "If the values of the ParamSet of the Learner contain TuneTokens you cannot supply a search_space.",
+    fixed = TRUE)
+})

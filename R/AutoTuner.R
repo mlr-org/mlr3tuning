@@ -119,15 +119,12 @@ AutoTuner = R6Class("AutoTuner",
       if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token")) > 0) {
         stop("If the values of the ParamSet of the Learner contain TuneTokens you cannot supply a search_space.")
       }
-      if (is.null(search_space)) {
-        search_space = learner$param_set$search_space()
-      }
 
       ia = list()
       ia$learner = learner
       ia$resampling = assert_resampling(resampling, instantiated = FALSE)$clone()
       ia$measure = assert_measure(as_measure(measure), learner = learner)
-      ia$search_space = assert_param_set(search_space)$clone()
+      if(!is.null(search_space)) ia$search_space = assert_param_set(search_space)$clone()
       ia$terminator = assert_terminator(terminator)$clone()
 
       private$.store_tuning_instance = assert_flag(store_tuning_instance)
