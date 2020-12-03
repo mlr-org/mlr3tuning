@@ -121,7 +121,6 @@ AutoTuner = R6Class("AutoTuner",
       }
       if (is.null(search_space)) {
         search_space = learner$param_set$search_space()
-        learner$param_set$values = learner$param_set$get_values(type = "without_token")
       }
 
       ia = list()
