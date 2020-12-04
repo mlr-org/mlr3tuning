@@ -1,8 +1,12 @@
-# mlr3tuning 0.4.0.9000
+# mlr3tuning 0.5.0
 
 * Adds `TunerCmaes` from adagio package.
 * Fix `predict_type` in `AutoTuner`.
-
+* Support to set `TuneToken` in `Learner$param_set` and create a search space
+  from it. 
+* The order of the parameters in `TuningInstanceSingleCrit` and 
+  `TuningInstanceSingleCrit` changed.
+  
 # mlr3tuning 0.4.0
 
 * Option to control `store_benchmark_result`, `store_models` and `check_values`
