@@ -32,6 +32,9 @@ vignettes/*.pdf
 *.utf8.md
 *.knit.md
 
-inst/doc
 .DS_Store
 .Rproj.user
+docs/
+
+.Rprofile
+cran-comments.md

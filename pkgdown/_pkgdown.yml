@@ -39,23 +39,22 @@ navbar:
       href: https://mlr-org.com/
 
 reference:
-  - title: Black Box Function
+  - title: Tuning Instances
     contents:
-      - TuningInstance
+      - starts_with("TuningInstance")
   - title: Tuners
     contents:
+      - AutoTuner
       - Tuner
+      - TunerFromOptimizer
       - starts_with("mlr_tuners")
+      - tnr
   - title: Terminators
     contents:
-      - Terminator
-      - starts_with("mlr_terminators")
-  - title: Auto-tuned Learner
+      - mlr_terminators
+      - trm
+      - trms
+  - title: Misc
     contents:
-      - AutoTuner
-  - title: Sugar
-    contents:
-      - tnr
-  - title: General
-    contents:
+      - ObjectiveTuning
       - mlr3tuning-package

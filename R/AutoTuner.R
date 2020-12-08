@@ -1,82 +1,141 @@
 #' @title AutoTuner
 #'
 #' @description
-#' The `AutoTuner` is a [mlr3::Learner] which auto-tunes by first tuning the hyperparameters of its encapsulated learner
-#' on the training data, then setting the optimal configuration in the learner, then finally
-#' fitting the model on the complete training data.
-#' This class allows to perform nested resampling by passing an [AutoTuner] object to [mlr3::resample()] or [mlr3::benchmark()].
+#' The `AutoTuner` is a [mlr3::Learner] which wraps another [mlr3::Learner]
+#' and performs the following steps during `$train()`:
 #'
+#' 1. The hyperparameters of the wrapped (inner) learner are trained on the
+#'    training data via resampling.
+#'    The tuning can be specified by providing a [Tuner], a [bbotk::Terminator],
+#'    a search space as [paradox::ParamSet], a [mlr3::Resampling] and a
+#'    [mlr3::Measure].
+#' 2. The best found hyperparameter configuration is set as hyperparameters
+#'    for the wrapped (inner) learner.
+#' 3. A final model is fit on the complete training data using the now
+#'    parametrized wrapped learner.
 #'
-#' @family Learner
+#' During `$predict()` the `AutoTuner` just calls the predict method of the
+#' wrapped (inner) learner.
+#'
+#' Note that this approach allows to perform nested resampling by passing an
+#' [AutoTuner] object to [mlr3::resample()] or [mlr3::benchmark()].
+#' To access the inner resampling results, set `store_tuning_instance = TRUE`
+#' and execute [mlr3::resample()] or [mlr3::benchmark()] with
+#' `store_models = TRUE` (see examples).
+#'
+#' @template param_store_models
+#' @template param_check_values
+#' @template param_store_benchmark_result
+#'
 #' @export
 #' @examples
 #' library(mlr3)
 #' library(paradox)
-#' task = tsk("iris")
-#' learner = lrn("classif.rpart")
-#' resampling = rsmp("holdout")
-#' measures = msr("classif.ce")
-#' param_set = ParamSet$new(
-#'   params = list(ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 #'
-#' terminator = term("evals", n_evals = 5)
-#' tuner = tnr("grid_search")
-#' at = AutoTuner$new(learner, resampling, measures, param_set, terminator, tuner)
-#' at$store_tuning_instance = TRUE
+#' task = tsk("iris")
+#' search_space = ParamSet$new(
+#'   params = list(ParamDbl$new("cp", lower = 0.001, upper = 0.1))
+#' )
+#'
+#' at = AutoTuner$new(
+#'   learner = lrn("classif.rpart"),
+#'   resampling = rsmp("holdout"),
+#'   measure = msr("classif.ce"),
+#'   terminator = trm("evals", n_evals = 5),
+#'   tuner = tnr("grid_search"),
+#'   search_space = search_space,
+#'   store_tuning_instance = TRUE)
 #'
 #' at$train(task)
 #' at$model
 #' at$learner
-AutoTuner = R6Class("AutoTuner", inherit = Learner,
+#'
+#' # Nested resampling
+#' at = AutoTuner$new(
+#'   learner = lrn("classif.rpart"),
+#'   resampling = rsmp("holdout"),
+#'   measure = msr("classif.ce"),
+#'   terminator = trm("evals", n_evals = 5),
+#'   tuner = tnr("grid_search"),
+#'   search_space = search_space,
+#'   store_tuning_instance = TRUE)
+#'
+#' resampling_outer = rsmp("cv", folds = 2)
+#' rr = resample(task, at, resampling_outer, store_models = TRUE)
+#'
+#' # Aggregate performance of outer results
+#' rr$aggregate()
+#'
+#' # Retrieve inner tuning results.
+#' as.data.table(rr)$learner[[1]]$tuning_result
+AutoTuner = R6Class("AutoTuner",
+  inherit = Learner,
   public = list(
 
     #' @field instance_args (`list()`)\cr
-    #'   All arguments from construction to create the [TuningInstance].
+    #' All arguments from construction to create the [TuningInstanceSingleCrit].
     instance_args = NULL,
 
     #' @field tuner ([Tuner]).
     tuner = NULL,
 
-    #' @field store_tuning_instance (`logical(1)`)\cr
-    #'   If `TRUE` (default), stores the internally created [TuningInstance] with all intermediate results in slot `$tuning_instance`.
-    store_tuning_instance = TRUE,
-
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #'
     #' @param learner ([mlr3::Learner])\cr
-    #'   Learner to tune, see [TuningInstance].
+    #' Learner to tune, see [TuningInstanceSingleCrit].
     #'
     #' @param resampling ([mlr3::Resampling])\cr
-    #'   Resampling strategy during tuning, see [TuningInstance].
-    #'   This [mlr3::Resampling] is meant to be the **inner** resampling, operating on the training set
-    #'   of an arbitrary outer resampling.
-    #'   For this reason it is not feasible to pass an instantiated [mlr3::Resampling] here.
+    #' Resampling strategy during tuning, see [TuningInstanceSingleCrit]. This
+    #' [mlr3::Resampling] is meant to be the **inner** resampling, operating
+    #' on the training set of an arbitrary outer resampling. For this reason
+    #' it is not feasible to pass an instantiated [mlr3::Resampling] here.
     #'
-    #' @param measures (list of [mlr3::Measure])\cr
-    #'   Performance measures.
-    #'   The first one is optimized, see [TuningInstance].
+    #' @param measure ([mlr3::Measure])\cr
+    #' Performance measure to optimize.
     #'
-    #' @param tune_ps ([paradox::ParamSet])\cr
-    #'   Hyperparameter search space, see [TuningInstance].
+    #' @param search_space ([paradox::ParamSet])\cr
+    #' Hyperparameter search space, see [TuningInstanceSingleCrit].
     #'
-    #' @param terminator ([Terminator])\cr
-    #'   When to stop tuning, see [TuningInstance].
+    #' @param terminator ([bbotk::Terminator])\cr
+    #' When to stop tuning, see [TuningInstanceSingleCrit].
+    #'
+    #' @param store_tuning_instance (`logical(1)`)\cr
+    #' If `TRUE` (default), stores the internally created
+    #' [TuningInstanceSingleCrit] with all intermediate results in slot
+    #' `$tuning_instance`.
     #'
     #' @param tuner ([Tuner])\cr
-    #'   Tuning algorithm to run.
-    #'
-    #' @param bm_args (named `list()`)\cr
-    #'   Further arguments for [mlr3::benchmark()], see [TuningInstance].
-    initialize = function(learner, resampling, measures, tune_ps, terminator, tuner, bm_args = list()) {
+    #' Tuning algorithm to run.
+    initialize = function(learner, resampling, measure, terminator, tuner,
+      search_space = NULL, store_tuning_instance = TRUE,
+      store_benchmark_result = TRUE, store_models = FALSE,
+      check_values = FALSE) {
+      learner = assert_learner(learner)$clone(deep = TRUE)
+
+      if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token")) > 0) {
+        stop("If the values of the ParamSet of the Learner contain TuneTokens you cannot supply a search_space.")
+      }
+
       ia = list()
-      ia$learner = assert_learner(learner)$clone(deep = TRUE)
+      ia$learner = learner
       ia$resampling = assert_resampling(resampling, instantiated = FALSE)$clone()
-      ia$measures = assert_measures(as_measures(measures), learner = learner)
-      ia$param_set = assert_param_set(tune_ps)$clone()
-      ia$learner$param_set$set_id = "" # FIXME: i have no idea why we do this here?
+      ia$measure = assert_measure(as_measure(measure), learner = learner)
+      if(!is.null(search_space)) ia$search_space = assert_param_set(search_space)$clone()
       ia$terminator = assert_terminator(terminator)$clone()
-      ia$bm_args = assert_list(bm_args, names = "unique")
+
+      private$.store_tuning_instance = assert_flag(store_tuning_instance)
+      ia$store_benchmark_result = assert_flag(store_benchmark_result)
+      ia$store_models = assert_flag(store_models)
+
+      if (!private$.store_tuning_instance && ia$store_benchmark_result) {
+        stop("Benchmark results can only be stored if store_tuning_instance is set to TRUE")
+      }
+      if (ia$store_models && !ia$store_benchmark_result) {
+        stop("Models can only be stored if store_benchmark_result is set to TRUE")
+      }
+
+      ia$check_values = assert_flag(check_values)
       self$instance_args = ia
       self$tuner = assert_tuner(tuner)$clone()
 
@@ -86,59 +145,56 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
         packages = learner$packages,
         feature_types = learner$feature_types,
         predict_types = learner$predict_types,
-        param_set = learner$param_set,
         properties = learner$properties
       )
 
       self$predict_type = learner$predict_type
-    },
-
-    #' @description
-    #' Access the tuning archive (a.k.a. the optimization path).
-    #'
-    #' @param unnest (`character(1)`).
-    #'   Passed to `$archive` of [TuningInstance], defaulting to `"no"`.
-    archive = function(unnest = "no") {
-      self$tuning_instance$archive(unnest)
-
+      self$predict_sets = learner$predict_sets
     }
   ),
 
   active = list(
 
+    #' @field archive [ArchiveTuning]\cr
+    #' Archive of the [TuningInstanceSingleCrit].
+    archive = function() self$tuning_instance$archive,
+
     #' @field learner ([mlr3::Learner])\cr
-    #'   Trained learner
-    learner = function()  {
+    #' Trained learner
+    learner = function() {
       # if there is no trained learner, we return the one in instance args
-      if (is.null(self$model))
+      if (is.null(self$model)) {
         self$instance_args$learner
-      else
+      } else {
         self$model$learner
+      }
     },
 
-    #' @field tuning_instance ([TuningInstance])\cr
-    #'   Internally created tuning instance with all intermediate results.
+    #' @field tuning_instance ([TuningInstanceSingleCrit])\cr
+    #' Internally created tuning instance with all intermediate results.
     tuning_instance = function() self$model$tuning_instance,
 
     #' @field tuning_result (named `list()`)\cr
-    #'   Short-cut to `result` from [TuningInstance].
+    #' Short-cut to `result` from [TuningInstanceSingleCrit].
     tuning_result = function() self$tuning_instance$result,
 
-    #' @field param_set (paradox::ParamSet].
-    param_set = function(rhs) {
-      if (is.null(private$.param_set)) {
-        private$.param_set = ParamSetCollection$new(list(
-          # --> this is how we would insert the self$tuner_paramset:
-          # self$tuner$param_set,
-          self$learner$param_set
-        ))
-        private$.param_set$set_id = private$.ps_id
+    #' @field predict_type (`character(1)`)\cr
+    #' Stores the currently active predict type, e.g. `"response"`.
+    #' Must be an element of `$predict_types`.
+    predict_type = function(rhs) {
+      if (missing(rhs)) {
+        return(private$.predict_type)
+      }
+      if (rhs %nin% self$predict_types) {
+        stopf("Learner '%s' does not support predict type '%s'", self$id, rhs)
       }
 
-      if (!missing(rhs) && !identical(rhs, private$.param_set)) {
-        stop("param_set is read-only.")
-      }
-      private$.param_set
+      # Catches 'Error: Field/Binding is read-only' bug
+      tryCatch({
+        self$model$learner$predict_type = rhs
+      }, error = function(cond){})
+
+      private$.predict_type = rhs
     }
   ),
 
@@ -147,19 +203,20 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
       # construct instance from args; then tune
       ia = self$instance_args
       ia$task = task
-      instance = do.call(TuningInstance$new, ia)
-      self$tuner$tune(instance)
+      instance = do.call(TuningInstanceSingleCrit$new, ia)
+      self$tuner$optimize(instance)
 
-      # get learner, set params to optimal, then train
-      # we REALLY need to clone here we write to the object and this would change instance_args
+      # get learner, set params to optimal, then train we REALLY need to clone
+      # here we write to the object and this would change instance_args
       learner = ia$learner$clone(deep = TRUE)
-      learner$param_set$values = instance$result$params
+      learner$param_set$values = instance$result_learner_param_vals
       learner$train(task)
 
       # the return model is a list of "learner" and "tuning_instance"
       result_model = list()
       result_model$learner = learner
-      if (isTRUE(self$store_tuning_instance)) {
+
+      if (isTRUE(private$.store_tuning_instance)) {
         result_model$tuning_instance = instance
       }
       return(result_model)
@@ -169,16 +226,6 @@ AutoTuner = R6Class("AutoTuner", inherit = Learner,
       self$model$learner$predict(task)
     },
 
-    deep_clone = function(name, value) {
-      if (!is.null(private$.param_set)) {
-        private$.ps_id = private$.param_set$set_id
-        private$.param_set = NULL # required to keep clone identical to original, otherwise tests get really ugly
-      }
-      if (is.environment(value) && !is.null(value[[".__enclos_env__"]])) {
-        return(value$clone(deep = TRUE))
-      }
-      value
-    },
-    .ps_id = ""
+    .store_tuning_instance = NULL
   )
 )

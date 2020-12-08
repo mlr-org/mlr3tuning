@@ -4,47 +4,93 @@
 \alias{mlr_tuners_gensa}
 \alias{TunerGenSA}
 \title{TunerGenSA}
+\source{
+Tsallis C, Stariolo DA (1996).
+\dQuote{Generalized simulated annealing.}
+\emph{Physica A: Statistical Mechanics and its Applications}, \bold{233}(1-2), 395--406.
+\doi{10.1016/s0378-4371(96)00271-3}.
+
+Xiang Y, Gubian S, Suomela B, Hoeng J (2013).
+\dQuote{Generalized Simulated Annealing for Global Optimization: The GenSA Package.}
+\emph{The R Journal}, \bold{5}(1), 13.
+\doi{10.32614/rj-2013-002}.
+}
 \description{
-Subclass for generalized simulated annealing tuning calling \code{\link[GenSA:GenSA]{GenSA::GenSA()}} from package \CRANpkg{GenSA}.
+Subclass for generalized simulated annealing tuning calling \code{\link[GenSA:GenSA]{GenSA::GenSA()}}
+from package \CRANpkg{GenSA}.
 }
-\section{Parameters}{
-
-\itemize{
-\item \code{smooth} (\code{logical(1)}).
-\item \code{temperature} (\code{numeric(1)}).
-\item \code{acceptance.param} (\code{numeric(1)}).
-\item \code{verbose} (\code{logical(1)}).
-\item \code{trace.mat} (\code{logical(1)}).
-}
-
-For the meaning of the control parameters, see \code{\link[GenSA:GenSA]{GenSA::GenSA()}}.
-Note that we have removed all control parameters which refer to the termination of the algorithm and
-where our terminators allow to obtain the same behavior.
-}
-
 \section{Dictionary}{
 
-This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary} \link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:\preformatted{TunerGenSA$new()
-mlr_tuners$get("gensa")
+This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary}
+\link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:\preformatted{mlr_tuners$get("gensa")
 tnr("gensa")
 }
 }
 
+\section{Logging}{
+
+
+All \link{Tuner}s use a logger (as implemented in \CRANpkg{lgr}) from package
+\CRANpkg{bbotk}.
+Use \code{lgr::get_logger("bbotk")} to access and control the logger.
+}
+
+\section{Parameters}{
+
+
+\describe{
+\item{\code{smooth}}{\code{logical(1)}}
+\item{\code{temperature}}{\code{numeric(1)}}
+\item{\code{acceptance.param}}{\code{numeric(1)}}
+\item{\code{verbose}}{\code{logical(1)}}
+\item{\code{trace.mat}}{\code{logical(1)}}
+}
+
+For the meaning of the control parameters, see \code{\link[GenSA:GenSA]{GenSA::GenSA()}}. Note that we
+have removed all control parameters which refer to the termination of the
+algorithm and where our terminators allow to obtain the same behavior.
+
+}
+
 \examples{
-# see ?Tuner
+library(mlr3)
+library(paradox)
+search_space = ParamSet$new(list(
+  ParamDbl$new("cp", lower = 0.001, upper = 0.1)
+))
+terminator = trm("evals", n_evals = 3)
+instance = TuningInstanceSingleCrit$new(
+  task = tsk("iris"),
+  learner = lrn("classif.rpart"),
+  resampling = rsmp("holdout"),
+  measure = msr("classif.ce"),
+  search_space = search_space,
+  terminator = terminator
+)
+tt = tnr("gensa")
+
+# modifies the instance by reference
+tt$optimize(instance)
+
+# returns best configuration and best performance
+instance$result
+
+# allows access of data.table of full path of all evaluations
+instance$archive
 }
 \seealso{
+Package \CRANpkg{mlr3hyperband} for hyperband tuning.
+
 Other Tuner: 
-\code{\link{Tuner}},
+\code{\link{mlr_tuners_cmaes}},
 \code{\link{mlr_tuners_design_points}},
 \code{\link{mlr_tuners_grid_search}},
-\code{\link{mlr_tuners_irace}},
-\code{\link{mlr_tuners_random_search}},
-\code{\link{mlr_tuners}}
+\code{\link{mlr_tuners_nloptr}},
+\code{\link{mlr_tuners_random_search}}
 }
 \concept{Tuner}
-\section{Super class}{
-\code{\link[mlr3tuning:Tuner]{mlr3tuning::Tuner}} -> \code{TunerGenSA}
+\section{Super classes}{
+\code{\link[mlr3tuning:Tuner]{mlr3tuning::Tuner}} -> \code{\link[mlr3tuning:TunerFromOptimizer]{mlr3tuning::TunerFromOptimizer}} -> \code{TunerGenSA}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -58,12 +104,13 @@ Other Tuner:
 \itemize{
 \item \out{<span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="format">}\href{../../mlr3tuning/html/Tuner.html#method-format}{\code{mlr3tuning::Tuner$format()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="print">}\href{../../mlr3tuning/html/Tuner.html#method-print}{\code{mlr3tuning::Tuner$print()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="tune">}\href{../../mlr3tuning/html/Tuner.html#method-tune}{\code{mlr3tuning::Tuner$tune()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="mlr3tuning" data-topic="TunerFromOptimizer" data-id="optimize">}\href{../../mlr3tuning/html/TunerFromOptimizer.html#method-optimize}{\code{mlr3tuning::TunerFromOptimizer$optimize()}}\out{</span>}
 }
 \out{</details>}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
@@ -73,6 +120,7 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

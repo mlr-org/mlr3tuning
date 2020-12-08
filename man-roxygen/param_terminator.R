@@ -1,0 +1,1 @@
+#' @param terminator ([Terminator]).
