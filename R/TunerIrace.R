@@ -71,7 +71,8 @@ TunerIrace = R6Class("TunerIrace",
         ParamInt$new("softRestart", default = 1, lower = 0, upper = 1),
         ParamDbl$new("softRestartThreshold"),
         ParamInt$new("digits", default = 4, lower = 1, upper = 15),
-        ParamFct$new("testType", default = "F-test", levels = c("F-test", "t-test", "t-test-bonferroni", "t-test-holm")),
+        ParamFct$new("testType", default = "F-test",
+                     levels = c("F-test", "t-test", "t-test-bonferroni", "t-test-holm")),
         ParamInt$new("firstTest", default = 5, lower = 0),
         ParamInt$new("eachTest", default = 1, lower = 1),
         ParamDbl$new("confidence", default = 0.95, lower = 0, upper = 1),
@@ -84,7 +85,7 @@ TunerIrace = R6Class("TunerIrace",
         ParamDbl$new("boundAsTimeout", default = 1)
       ))
 
-      ps$values$show.irace.output = FALSE
+      ps$values$show.irace.output = FALSE # nolint
 
       super$initialize(
         param_set = ps,

@@ -227,10 +227,10 @@ MAKE_GL = function() {
 
 # mlr3::mlr_learners$add("regr.depparams", LearnerRegrDepParams)
 expect_irace_parameters = function(parameters, names, types, domain, conditions, depends,
-                                   hierarchy){
+                                   hierarchy) {
   expect_list(parameters, len = 12, any.missing = FALSE)
-  expect_equal(names(parameters), c("names", "types", "switches", "domain", "conditions","isFixed",
-                                    "transform","depends", "hierarchy","nbParameters","nbFixed",
+  expect_equal(names(parameters), c("names", "types", "switches", "domain", "conditions", "isFixed",
+                                    "transform", "depends", "hierarchy", "nbParameters", "nbFixed",
                                     "nbVariable"))
   expect_equal(parameters$names, names)
   expect_equal(parameters$types, set_names(types, names))

@@ -15,9 +15,9 @@ paradox_to_irace = function(ps) {
     condition = NULL
   }
 
-  par.tab = paste(ps$ids(), '""', type, range, condition$cond, collapse = "\n")
+  par_tab = paste(ps$ids(), '""', type, range, condition$cond, collapse = "\n")
 
-  return(irace::readParameters(text = par.tab))
+  return(irace::readParameters(text = par_tab))
 }
 get_irace_range = function(ps) {
   rng = data.table(lower = ps$lower, upper = ps$upper, lvl = ps$levels)
@@ -57,12 +57,14 @@ make_scenario = function(inst) {
     logFile = tempfile(),
     instances = list(inst),
     debugLevel = 0,
-    maxExperiments = if (class(inst$terminator)[1] == "TerminatorEvals") inst$terminator$param_set$values$n_evals else 0,
-    maxTime = if (class(inst$terminator)[1] == "TerminatorRunTime") inst$terminator$param_set$values$secs else 0
+    maxExperiments = if (class(inst$terminator)[1] == "TerminatorEvals")
+      inst$terminator$param_set$values$n_evals else 0,
+    maxTime = if (class(inst$terminator)[1] == "TerminatorRunTime")
+      inst$terminator$param_set$values$secs else 0
   )
 }
 
-targetRunner = function(experiment, scenario) {
+targetRunner = function(experiment, scenario) { # nolint
   t0 = Sys.time()
   # fix logicals
   config = as.data.table(lapply(experiment$configuration, function(x) {
