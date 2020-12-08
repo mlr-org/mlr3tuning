@@ -45,7 +45,8 @@ where our terminators allow to obtain the same behavior.
 
 \section{Dictionary}{
 
-This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary} \link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:\preformatted{TunerIrace$new()
+This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary}
+\link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:\preformatted{TunerIrace$new()
 mlr_tuners$get("irace")
 tnr("irace")
 }
@@ -61,12 +62,12 @@ In Gecco (Vol. 2).
 }
 \seealso{
 Other Tuner: 
-\code{\link{Tuner}},
+\code{\link{mlr_tuners_cmaes}},
 \code{\link{mlr_tuners_design_points}},
 \code{\link{mlr_tuners_gensa}},
 \code{\link{mlr_tuners_grid_search}},
-\code{\link{mlr_tuners_random_search}},
-\code{\link{mlr_tuners}}
+\code{\link{mlr_tuners_nloptr}},
+\code{\link{mlr_tuners_random_search}}
 }
 \concept{Tuner}
 \section{Super class}{
@@ -83,13 +84,14 @@ Other Tuner:
 \out{<details open ><summary>Inherited methods</summary>}
 \itemize{
 \item \out{<span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="format">}\href{../../mlr3tuning/html/Tuner.html#method-format}{\code{mlr3tuning::Tuner$format()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="optimize">}\href{../../mlr3tuning/html/Tuner.html#method-optimize}{\code{mlr3tuning::Tuner$optimize()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="print">}\href{../../mlr3tuning/html/Tuner.html#method-print}{\code{mlr3tuning::Tuner$print()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="tune">}\href{../../mlr3tuning/html/Tuner.html#method-tune}{\code{mlr3tuning::Tuner$tune()}}\out{</span>}
 }
 \out{</details>}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
@@ -99,6 +101,7 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{
