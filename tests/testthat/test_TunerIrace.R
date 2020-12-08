@@ -20,7 +20,8 @@ test_that("TunerIrace with int params and trafo, clock terminator", {
     tsk("iris"), lrn("classif.rpart"), rsmp("holdout"),
     msr("classif.ce"), trm("run_time", secs = 24), ps)
   tt = tnr("irace")
-  tt$optimize(inst)
+  # suppressWarnings used throughout - looks like coming upstream
+  suppressWarnings(tt$optimize(inst))
   expect_double(inst$archive$best()$cp)
 })
 
@@ -35,7 +36,8 @@ test_that("TunerIrace with dependencies", {
     rsmp("holdout"), msr("classif.ce"),
     trm("evals", n_evals = 96), ps)
   tt = tnr("irace")
-  expect_output(tt$optimize(inst))
+  suppressWarnings(tt$optimize(inst))
+  expect_double(inst$archive$best()$cp)
 })
 
 test_that("minimize time", {
@@ -46,7 +48,7 @@ test_that("minimize time", {
     tsk("iris"), lrn("classif.rpart"), rsmp("holdout"),
     msr("classif.ce"), trm("run_time", secs = 20), ps)
   tt = tnr("irace", capping = 1, boundMax = 1, cappingType = "best", boundType = "instance")
-  tt$optimize(inst)
+  suppressWarnings(tt$optimize(inst))
   expect_double(inst$archive$best()$cp)
 })
 
@@ -157,7 +159,7 @@ test_that("TunerIrace works with logical params", {
     msr("regr.mse"),
     trm("evals", n_evals = 42), ps)
   tt = tnr("irace")
-  tt$optimize(inst)
+  suppressWarnings(tt$optimize(inst))
   expect_logical(inst$archive$best()$keep_model)
 })
 
@@ -170,7 +172,8 @@ test_that("TunerIrace works with tune.threshold", {
     tsk("iris"), lrn("classif.rpart"),
     rsmp("holdout", ratio = 0.1), msr("classif.ce"),
     trm("evals", n_evals = 50), ps)
-  expect_output(tt$optimize(inst))
+  suppressWarnings(tt$optimize(inst))
+  expect_double(inst$archive$best()$minsplit)
 })
 
 test_that("TunerIrace uses digits", {
@@ -181,7 +184,8 @@ test_that("TunerIrace uses digits", {
   inst = TuningInstanceSingleCrit$new(
     tsk("iris"), lrn("classif.rpart"), rsmp("holdout"),
     msr("classif.ce"), trm("evals", n_evals = 30), ps)
-  expect_output(tt$optimize(inst))
+  suppressWarnings(tt$optimize(inst))
+  expect_double(inst$archive$best()$cp)
 
 
   ps = ParamSet$new(params = list(
@@ -191,7 +195,7 @@ test_that("TunerIrace uses digits", {
   inst = TuningInstanceSingleCrit$new(
     tsk("iris"), lrn("classif.rpart"), rsmp("holdout"),
     msr("classif.ce"), trm("evals", n_evals = 40), ps)
-  expect_error(tt$optimize(inst))
+  expect_error(suppressWarnings(tt$optimize(inst)))
 })
 
 test_that("Error in hyperparameter tuning with scientific notation for lower/upper boundaries", {
@@ -202,7 +206,8 @@ test_that("Error in hyperparameter tuning with scientific notation for lower/upp
     tsk("iris"), lrn("classif.rpart"), rsmp("holdout"),
     msr("classif.ce"), trm("evals", n_evals = 30), ps)
   tt = tnr("irace", nbIterations = 1L)
-  expect_output(tt$optimize(inst))
+  suppressWarnings(tt$optimize(inst))
+  expect_double(inst$archive$best()$cp)
 })
 
 # we had a bug here, see (mlr) issue #627
@@ -214,5 +219,6 @@ test_that("irace works with unnamed discrete values", {
     tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"),
     trm("evals", n_evals = 50), ps)
   tt = tnr("irace")
-  expect_output(tt$optimize(inst))
+  suppressWarnings(tt$optimize(inst))
+  expect_double(inst$archive$best()$minsplit)
 })

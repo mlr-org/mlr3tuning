@@ -98,7 +98,7 @@ TunerIrace = R6Class("TunerIrace",
 
   private = list(
     .optimize = function(inst) {
-      g = if (self$param_set$values$show.irace.output) identity else capture.output
+      g = if (self$param_set$values$show.irace.output) identity else utils::capture.output
       g(irace::irace(
         scenario = c(
           make_scenario(inst),
