@@ -50,7 +50,8 @@
 #' @export
 #' @examples
 #' # see ?Tuner
-TunerIrace = R6Class("TunerIrace", inherit = Tuner,
+TunerIrace = R6Class("TunerIrace",
+  inherit = Tuner,
   public = list(
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
@@ -59,35 +60,35 @@ TunerIrace = R6Class("TunerIrace", inherit = Tuner,
         ParamLgl$new("show.irace.output", default = FALSE),
         ParamInt$new("debugLevel", default = 0, lower = 0),
         ParamInt$new("seed"),
-        ParamDbl$new("postselection",default=0,lower=0,upper=1),
-        ParamInt$new("elitist",default=1,lower=0,upper=1),
-        ParamInt$new("elitistLimit",default=2,lower=0),
-        ParamInt$new("nbIterations",default=0,lower=0),
-        ParamInt$new("nbExperimentsPerIteration",default=0,lower=0),
-        ParamInt$new("minNbSurvival",default=0,lower=0),
-        ParamInt$new("nbConfigurations",default=0,lower=0),
-        ParamInt$new("mu",default=5,lower=1),
-        ParamInt$new("softRestart",default=1,lower=0,upper=1),
+        ParamDbl$new("postselection", default = 0, lower = 0, upper = 1),
+        ParamInt$new("elitist", default = 1, lower = 0, upper = 1),
+        ParamInt$new("elitistLimit", default = 2, lower = 0),
+        ParamInt$new("nbIterations", default = 0, lower = 0),
+        ParamInt$new("nbExperimentsPerIteration", default = 0, lower = 0),
+        ParamInt$new("minNbSurvival", default = 0, lower = 0),
+        ParamInt$new("nbConfigurations", default = 0, lower = 0),
+        ParamInt$new("mu", default = 5, lower = 1),
+        ParamInt$new("softRestart", default = 1, lower = 0, upper = 1),
         ParamDbl$new("softRestartThreshold"),
         ParamInt$new("digits", default = 4, lower = 1, upper = 15),
-        ParamFct$new("testType", default = "F-test", levels = c("F-test","t-test","t-test-bonferroni","t-test-holm")),
+        ParamFct$new("testType", default = "F-test", levels = c("F-test", "t-test", "t-test-bonferroni", "t-test-holm")),
         ParamInt$new("firstTest", default = 5, lower = 0),
-        ParamInt$new("eachTest",default = 1, lower = 1),
-        ParamDbl$new("confidence",default=0.95,lower=0,upper=1),
-        ParamInt$new("capping",default = 0,lower=0,upper=1),
-        ParamFct$new("cappingType",default="median",levels=c("median","mean","best","worst")),
-        ParamFct$new("boundType",default="candidate",levels=c("candidate","instance")),
-        ParamDbl$new("boundMax",default=0),
-        ParamInt$new("boundDigits",default=0),
-        ParamDbl$new("boundPar",default=1),
-        ParamDbl$new("boundAsTimeout",default=1)
+        ParamInt$new("eachTest", default = 1, lower = 1),
+        ParamDbl$new("confidence", default = 0.95, lower = 0, upper = 1),
+        ParamInt$new("capping", default = 0, lower = 0, upper = 1),
+        ParamFct$new("cappingType", default = "median", levels = c("median", "mean", "best", "worst")),
+        ParamFct$new("boundType", default = "candidate", levels = c("candidate", "instance")),
+        ParamDbl$new("boundMax", default = 0),
+        ParamInt$new("boundDigits", default = 0),
+        ParamDbl$new("boundPar", default = 1),
+        ParamDbl$new("boundAsTimeout", default = 1)
       ))
 
       ps$values$show.irace.output = FALSE
 
       super$initialize(
         param_set = ps,
-        param_classes = c("ParamDbl","ParamInt","ParamFct","ParamLgl"),
+        param_classes = c("ParamDbl", "ParamInt", "ParamFct", "ParamLgl"),
         properties = c("dependencies", "single-crit"),
         packages = "irace"
       )
@@ -97,9 +98,11 @@ TunerIrace = R6Class("TunerIrace", inherit = Tuner,
   private = list(
     .optimize = function(inst) {
       g = if (self$param_set$values$show.irace.output) identity else capture.output
-      g(irace::irace(scenario = c(make_scenario(inst),
-                                  self$param_set$values[names(self$param_set$values) %nin% "show.irace.output"]),
-                     parameters = paradox_to_irace(inst$search_space)))
+      g(irace::irace(
+        scenario = c(
+          make_scenario(inst),
+          self$param_set$values[names(self$param_set$values) %nin% "show.irace.output"]),
+        parameters = paradox_to_irace(inst$search_space)))
     }
   )
 )
