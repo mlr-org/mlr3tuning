@@ -41,7 +41,7 @@ test_tuner = function(key, ..., n_dim = 1L, term_evals = 2L, real_evals = term_e
   tuner$optimize(inst)
   archive = inst$archive
 
-  expect_data_table(archive$data(), nrows = real_evals)
+  expect_data_table(archive$data, nrows = real_evals)
   expect_equal(inst$archive$n_evals, real_evals)
 
   x_opt = inst$result_x_domain
@@ -67,7 +67,7 @@ test_tuner_dependencies = function(key, ..., term_evals = 2L) {
   tuner$optimize(inst)
   archive = inst$archive
 
-  expect_data_table(archive$data(), nrows = term_evals)
+  expect_data_table(archive$data, nrows = term_evals)
   expect_equal(inst$archive$n_evals, term_evals)
 
   x_opt = inst$result_x_domain

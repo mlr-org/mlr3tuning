@@ -7,7 +7,7 @@ test_that("TunerDesignPoints", {
 
   d = data.table(cp = c(0.1, 0.3), minsplit = c(1, 2))
   z = test_tuner("design_points", design = d, term_evals = 999L, real_evals = 2L, n_dim = 2L)
-  a = z$inst$archive$data()
+  a = z$inst$archive$data
   expect_data_table(a, nrows = 2)
   expect_set_equal(a$cp, c(0.1, 0.3))
   expect_set_equal(a$minsplit, c(1, 2))

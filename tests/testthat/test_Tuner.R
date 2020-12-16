@@ -3,7 +3,7 @@ test_that("API", {
     rs = TunerRandomSearch$new()
     inst = TEST_MAKE_INST1(measure = msr("classif.ce"), term_evals = n_evals)
     expect_data_table(rs$optimize(inst), nrows = 1)
-    a = inst$archive$data()
+    a = inst$archive$data
     expect_data_table(a, nrows = n_evals)
     expect_true("cp" %in% names(a))
   }
@@ -106,7 +106,7 @@ test_that("Tuner works with graphlearner", {
   tuner$optimize(inst)
   archive = inst$archive
 
-  expect_data_table(archive$data(), nrows = 3)
+  expect_data_table(archive$data, nrows = 3)
   expect_equal(inst$archive$n_evals, 3)
   expect_equal(inst$result_x_domain, list(classif.rpart.cp = 0.2))
   expect_equal(inst$result_y, c(dummy.cp.classif = 0))

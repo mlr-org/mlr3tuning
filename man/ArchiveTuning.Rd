@@ -12,17 +12,6 @@ function calls of the Objective and the associated \link[mlr3:BenchmarkResult]{m
 \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} is connected to the \link[data.table:data.table]{data.table::data.table} via the
 \code{uhash} column.
 }
-\section{Technical details}{
-
-
-The data is stored in a private \code{.data} field that contains a
-\link[data.table:data.table]{data.table::data.table} which logs all performed function calls of the \link{ObjectiveTuning}.
-This \link[data.table:data.table]{data.table::data.table} is accessed with the public \verb{$data()} method. New
-values can be added with the \verb{$add_evals()} method. This however is usually
-done through the evaluation of the \link{TuningInstanceSingleCrit} or
-\link{TuningInstanceMultiCrit} by the \link{Tuner}.
-}
-
 \section{Super class}{
 \code{\link[bbotk:Archive]{bbotk::Archive}} -> \code{ArchiveTuning}
 }
@@ -46,7 +35,6 @@ Stores benchmark result.}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="add_evals">}\href{../../bbotk/html/Archive.html#method-add_evals}{\code{bbotk::Archive$add_evals()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="best">}\href{../../bbotk/html/Archive.html#method-best}{\code{bbotk::Archive$best()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="clear">}\href{../../bbotk/html/Archive.html#method-clear}{\code{bbotk::Archive$clear()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="data">}\href{../../bbotk/html/Archive.html#method-data}{\code{bbotk::Archive$data()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="format">}\href{../../bbotk/html/Archive.html#method-format}{\code{bbotk::Archive$format()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="initialize">}\href{../../bbotk/html/Archive.html#method-initialize}{\code{bbotk::Archive$initialize()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="print">}\href{../../bbotk/html/Archive.html#method-print}{\code{bbotk::Archive$print()}}\out{</span>}

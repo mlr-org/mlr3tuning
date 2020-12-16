@@ -25,7 +25,7 @@ test_that("TunerGenSA with int params and trafo", {
   inst = TuningInstanceSingleCrit$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), te, ps)
   tt = TunerGenSA$new()
   tt$optimize(inst)
-  d = inst$archive$data()
+  d = inst$archive$data
   expect_integer(d$x_domain[[1]]$minsplit)
 })
 
@@ -35,5 +35,5 @@ test_that("TunerGenSA - Optimize wrapper with maximize measure", {
   tt$optimize(inst)
 
   res = inst$archive$best()
-  expect_equal(res$cp, max(inst$archive$data()$cp))
+  expect_equal(res$cp, max(inst$archive$data$cp))
 })

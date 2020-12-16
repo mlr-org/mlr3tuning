@@ -10,7 +10,7 @@ test_that("AutoTuner / train+predict", {
   expect_learner(at)
   expect_equal(at$learner$param_set$values, list(xval = 0, cp = 0.2))
   inst = at$tuning_instance
-  a = at$archive$data()
+  a = at$archive$data
   expect_data_table(a, nrows = 3L)
   r = at$tuning_result
   expect_equal(r$x_domain[[1]], list(cp = 0.2))
@@ -46,7 +46,7 @@ test_that("AutoTuner / resample", {
     expect_equal(ll$learner$param_set$values, list(xval = 0, cp = 0.2))
     inst = ll$tuning_instance
     assert_r6(inst, "TuningInstanceSingleCrit")
-    expect_data_table(inst$archive$data(), nrows = inner_evals)
+    expect_data_table(inst$archive$data, nrows = inner_evals)
     expect_numeric(inst$result_y, len = 1L)
   })
 })
@@ -127,7 +127,7 @@ test_that("AutoTuner works with graphlearner", {
   expect_equal(at$learner$param_set$values$classif.rpart.xval, 0)
   expect_equal(at$learner$param_set$values$classif.rpart.cp, 0.2)
   inst = at$tuning_instance
-  a = at$archive$data()
+  a = at$archive$data
   expect_data_table(a, nrows = 3L)
   r = at$tuning_result
   expect_equal(r$x_domain[[1]], list(classif.rpart.cp = 0.2))
@@ -172,8 +172,8 @@ test_that("Nested resampling works with graphlearner", {
   expect_equal(tab$learner[[1]]$learner$param_set$values$classif.rpart.cp, 0.2)
   expect_equal(tab$learner[[2]]$learner$param_set$values$classif.rpart.cp, 0.2)
 
-  expect_data_table(tab$learner[[1]]$archive$data(), nrows = 3L)
-  expect_data_table(tab$learner[[2]]$archive$data(), nrows = 3L)
+  expect_data_table(tab$learner[[1]]$archive$data, nrows = 3L)
+  expect_data_table(tab$learner[[2]]$archive$data, nrows = 3L)
 
   expect_s3_class(tab$learner[[1]]$model$learner$model$classif.rpart$model, "rpart")
   expect_s3_class(tab$learner[[1]]$model$learner$model$classif.rpart$model, "rpart")
