@@ -33,8 +33,8 @@ test_that("tuning with multiple objectives", {
 test_that("store_benchmark_result and store_models flag works", {
   inst = TEST_MAKE_INST1_2D(store_benchmark_result = FALSE)
   inst$eval_batch(data.table(cp = c(0.3, 0.25), minsplit = c(3, 4)))
-  expect_true("uhashes" %nin% colnames(inst$archive$data)
-  
+  expect_true("uhashes" %nin% colnames(inst$archive$data))
+
   inst = TEST_MAKE_INST1_2D(store_benchmark_result = TRUE)
   inst$eval_batch(data.table(cp = c(0.3, 0.25), minsplit = c(3, 4)))
   expect_r6(inst$archive$benchmark_result, "BenchmarkResult")
