@@ -156,7 +156,7 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
       if (length(learner_param_vals) == 1) {
         learner_param_vals = list(learner_param_vals)
       }
-      xdt[, learner_param_vals := list(learner_param_vals)]
+      set(xdt, j = "learner_param_vals", value = list(learner_param_vals))
       super$assign_result(xdt, y)
     }
   ),
