@@ -18,6 +18,7 @@ TunerMbo = R6Class("TunerMbo",
     #' @param ... Parameter passed to [OptimizerMbo].
     initialize = function(...) {
       super$initialize(
+        require_packages("mlr3mbo")
         optimizer = mlr3mbo::OptimizerMbo$new(...)
       )
     }
