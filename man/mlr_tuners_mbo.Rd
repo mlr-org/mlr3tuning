@@ -6,8 +6,8 @@
 \title{TunerMbo}
 \description{
 Tune hyperparameters using Bayesian Optimization.
-This is a minimal interface internally passing on to \code{\link[mlr3mbo:mlr_optimizers_mbo]{mlr3mbo::OptimizerMbo()}}.
-For additional information and documentation see \code{\link[mlr3mbo:mlr_optimizers_mbo]{mlr3mbo::OptimizerMbo()}}.
+This is a minimal interface internally passing on to \link[mlr3mbo:mlr_optimizers_mbo]{mlr3mbo::OptimizerMbo}.
+For additional information and documentation see \link[mlr3mbo:mlr_optimizers_mbo]{mlr3mbo::OptimizerMbo}.
 }
 \section{Super classes}{
 \code{\link[mlr3tuning:Tuner]{mlr3tuning::Tuner}} -> \code{\link[mlr3tuning:TunerFromOptimizer]{mlr3tuning::TunerFromOptimizer}} -> \code{TunerMbo}
@@ -40,7 +40,7 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{...}}{Parameters passed to \link{OptimizerMbo}.}
+\item{\code{...}}{Parameters passed to \link[mlr3mbo:mlr_optimizers_mbo]{mlr3mbo::OptimizerMbo}.}
 }
 \if{html}{\out{</div>}}
 }
