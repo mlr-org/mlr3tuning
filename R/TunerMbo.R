@@ -15,12 +15,10 @@ TunerMbo = R6Class("TunerMbo",
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #'
-    #' @param ... Parameter passed to [OptimizerMbo].
+    #' @param ... Parameters passed to [OptimizerMbo].
     initialize = function(...) {
-      super$initialize(
-        require_packages("mlr3mbo")
-        optimizer = mlr3mbo::OptimizerMbo$new(...)
-      )
+      require_packages("mlr3mbo")
+      super$initialize(optimizer = mlr3mbo::OptimizerMbo$new(...))
     }
   )
 )
