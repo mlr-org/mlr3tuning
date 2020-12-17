@@ -4,8 +4,8 @@
 #'
 #' @description
 #' Tune hyperparameters using Bayesian Optimization.
-#' This is a minimal interface internally passing on to [`mlr3mbo::OptimizerMbo`].
-#' For additional information and documentation see [`mlr3mbo::OptimizerMbo`].
+#' This is a minimal interface internally passing on to [mlr3mbo::OptimizerMbo()].
+#' For additional information and documentation see [mlr3mbo::OptimizerMbo()].
 #'
 #' @export
 TunerMbo = R6Class("TunerMbo",
@@ -17,7 +17,7 @@ TunerMbo = R6Class("TunerMbo",
     #'
     #' @param ... Parameters passed to [OptimizerMbo].
     initialize = function(...) {
-      require_packages("mlr3mbo")
+      require_namespaces("mlr3mbo")
       super$initialize(optimizer = mlr3mbo::OptimizerMbo$new(...))
     }
   )
