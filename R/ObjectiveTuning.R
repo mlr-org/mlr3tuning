@@ -62,14 +62,11 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       }
 
       codomain = ParamSet$new(map(self$measures, function(s) {
-        ParamDbl$new(
-          id = s$id,
-          tags = ifelse(s$minimize, "minimize", "maximize"))
+        ParamDbl$new(id = s$id, tags = ifelse(s$minimize, "minimize", "maximize"))
       }))
 
-      super$initialize(
-        id = sprintf("%s_on_%s", self$learner$id, self$task$id), domain = self$learner$param_set,
-        codomain = codomain, check_values = check_values)
+      super$initialize(id = sprintf("%s_on_%s", self$learner$id, self$task$id), 
+        domain = self$learner$param_set, codomain = codomain, check_values = check_values)
     }
   ),
 
@@ -77,7 +74,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     .eval_many = function(xss) {
       learners = map(xss, function(x) {
         learner = self$learner$clone(deep = TRUE)
-        learner$param_set$values = insert_named(learner$param_set$get_values(type = "without_token"), x)
+        learner$param_set$values = insert_named(learner$param_set$values, x)
         return(learner)
       })
 

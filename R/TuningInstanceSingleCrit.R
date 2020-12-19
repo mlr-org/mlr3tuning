@@ -125,6 +125,7 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
       }
       if (is.null(search_space)) {
         search_space = learner$param_set$search_space()
+        learner$param_set$values = learner$param_set$get_values(type = "without_token")
       }
 
       measure = as_measure(measure)
