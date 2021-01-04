@@ -140,3 +140,38 @@ test_that("Tuner works with instantiated resampling", {
   expect_equal(inst$objective$resampling$instance$train[[1]], 1:75)
   expect_equal(inst$objective$resampling$instance$test[[1]], 76:150)
 })
+
+test_that("Tuner active bindings work", {
+  param_set = ParamSet$new(list(ParamLgl$new("p1")))
+  param_set$values$p1 = TRUE
+  param_classes = "ParamLgl"
+  properties = "single-crit"
+  packages = "GenSA"
+
+  tuner = Tuner$new(
+    param_set = param_set,
+    param_classes = param_classes,
+    properties = "single-crit",
+    packages = packages)
+
+  expect_equal(tuner$param_set, param_set)
+  expect_equal(tuner$param_classes, param_classes)
+  expect_equal(tuner$properties, properties)
+  expect_equal(tuner$packages, packages)
+  
+  expect_error({tuner$param_set = ParamSet$new(list(ParamLgl$new("p2")))},
+    regexp = "$param_set is read-only",
+    fixed = TRUE)
+
+  expect_error({tuner$param_classes = "foo"},
+    regexp = "$param_classes is read-only",
+    fixed = TRUE)
+  
+  expect_error({tuner$properties = "foo"},
+    regexp = "$properties is read-only",
+    fixed = TRUE)
+  
+  expect_error({tuner$packages = "foo"},
+    regexp = "$packages is read-only",
+    fixed = TRUE)
+})
