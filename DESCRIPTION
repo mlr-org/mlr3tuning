@@ -51,11 +51,13 @@ Suggests:
     adagio,
     GenSA,
     mlr3pipelines,
+    mlr3mbo,
     nloptr,
     rpart,
     testthat (>= 3.0.0)
 Remotes:
-    mlr-org/bbotk
+    mlr-org/bbotk,
+    mlr-org/mlr3mbo
 Encoding: UTF-8
 NeedsCompilation: no
 Config/testthat/edition: 3
@@ -73,6 +75,7 @@ Collate:
     'TunerFromOptimizer.R'
     'TunerGenSA.R'
     'TunerGridSearch.R'
+    'TunerMbo.R'
     'TunerNLoptr.R'
     'TunerRandomSearch.R'
     'TuningInstanceMulticrit.R'
