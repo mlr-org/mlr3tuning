@@ -31,7 +31,7 @@
 #'   search_space = search_space,
 #'   terminator = terminator
 #' )
-#' tt = tnr("cmaes", par = 0.1)
+#' tt = tnr("cmaes")
 #' # modifies the instance by reference
 #' tt$optimize(instance)
 #' # returns best configuration and best performance

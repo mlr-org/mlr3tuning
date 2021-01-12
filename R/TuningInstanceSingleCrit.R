@@ -101,7 +101,7 @@
 #'   terminated_error = function(e) message(as.character(e))
 #' )
 #'
-#' archive = inst$archive$data()
+#' archive = as.data.table(inst$archive)
 #'
 #' # column errors: multiple errors recorded
 #' print(archive)
@@ -125,6 +125,7 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
       }
       if (is.null(search_space)) {
         search_space = learner$param_set$search_space()
+        learner$param_set$values = learner$param_set$get_values(type = "without_token")
       }
 
       measure = as_measure(measure)
@@ -156,7 +157,7 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
       if (length(learner_param_vals) == 1) {
         learner_param_vals = list(learner_param_vals)
       }
-      xdt[, learner_param_vals := list(learner_param_vals)]
+      set(xdt, j = "learner_param_vals", value = list(learner_param_vals))
       super$assign_result(xdt, y)
     }
   ),

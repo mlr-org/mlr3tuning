@@ -91,7 +91,7 @@ tryCatch(
   terminated_error = function(e) message(as.character(e))
 )
 
-archive = inst$archive$data()
+archive = as.data.table(inst$archive)
 
 # column errors: multiple errors recorded
 print(archive)

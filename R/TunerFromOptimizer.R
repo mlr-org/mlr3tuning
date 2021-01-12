@@ -18,7 +18,8 @@ TunerFromOptimizer = R6Class("TunerFromOptimizer",
         private$.optimizer = assert_optimizer(optimizer)
         super$initialize(param_set = optimizer$param_set,
                          param_classes = optimizer$param_classes,
-                         properties = optimizer$properties)
+                         properties = optimizer$properties,
+                         packages = optimizer$packages)
       },
 
       #' @description

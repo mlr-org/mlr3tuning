@@ -24,7 +24,7 @@ test_that("tuning with multiple objectives", {
   expect_names(names(sp), identical.to = tune_ps$ids())
   expect_data_table(sp, min.rows = 1, ncols = length(measures))
   expect_names(names(obj), identical.to = measure_ids)
-  expect_data_table(inst$archive$data(), nrows = 10L)
+  expect_data_table(inst$archive$data, nrows = 10L)
   expect_equal(inst$archive$cols_y, measure_ids)
   expect_data_table(inst$archive$best())
   expect_list(inst$result_x_domain)
@@ -33,7 +33,7 @@ test_that("tuning with multiple objectives", {
 test_that("store_benchmark_result and store_models flag works", {
   inst = TEST_MAKE_INST1_2D(store_benchmark_result = FALSE)
   inst$eval_batch(data.table(cp = c(0.3, 0.25), minsplit = c(3, 4)))
-  expect_true("uhashes" %nin% colnames(inst$archive$data()))
+  expect_true("uhashes" %nin% colnames(inst$archive$data))
 
   inst = TEST_MAKE_INST1_2D(store_benchmark_result = TRUE)
   inst$eval_batch(data.table(cp = c(0.3, 0.25), minsplit = c(3, 4)))

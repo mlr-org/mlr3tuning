@@ -1,13 +1,13 @@
 test_that("TuningInstanceSingleCrit", {
   inst = TEST_MAKE_INST1(values = list(maxdepth = 10), folds = 2L, measure = msr("dummy.cp.classif", fun = function(pv) pv$cp), n_dim = 2)
   # test empty inst
-  expect_data_table(inst$archive$data(), nrows = 0)
+  expect_data_table(inst$archive$data, nrows = 0)
   expect_identical(inst$archive$n_evals, 0L)
   #expect_output(print(inst), "Not tuned")
 
   # add a couple of eval points and test the state of inst
   z = inst$eval_batch(data.table(cp = c(0.3, 0.25), minsplit = c(3, 4)))
-  expect_data_table(inst$archive$data(), nrows = 2L)
+  expect_data_table(inst$archive$data, nrows = 2L)
 
   expect_equal(inst$archive$benchmark_result$resample_result(1)$learners[[1]]$param_set$values$cp, 0.3)
   expect_equal(inst$archive$benchmark_result$resample_result(1)$learners[[1]]$param_set$values$minsplit, 3)
@@ -20,7 +20,7 @@ test_that("TuningInstanceSingleCrit", {
   expect_named(z, c("dummy.cp.classif", "uhash"))
 
   z = inst$eval_batch(data.table(cp = c(0.2, 0.1), minsplit = c(3, 4)))
-  expect_data_table(inst$archive$data(), nrows = 4L)
+  expect_data_table(inst$archive$data, nrows = 4L)
   expect_equal(inst$archive$benchmark_result$resample_result(3)$learners[[1]]$param_set$values$cp, 0.2)
   expect_equal(inst$archive$benchmark_result$resample_result(3)$learners[[1]]$param_set$values$minsplit, 3)
   expect_equal(inst$archive$benchmark_result$resample_result(3)$learners[[1]]$param_set$values$maxdepth, 10)
@@ -32,9 +32,9 @@ test_that("TuningInstanceSingleCrit", {
   expect_named(z, c("dummy.cp.classif", "uhash"))
 
   # test archive
-  a = inst$archive$data()
+  a = inst$archive$data
   expect_data_table(a, nrows = 4L)
-  a = inst$archive$data(unnest = "x_domain")
+  a = as.data.table(inst$archive)
   expect_data_table(a, nrows = 4L)
   expect_true("x_domain_cp" %in% colnames(a))
   expect_true("dummy.cp.classif" %in% colnames(a))
@@ -44,7 +44,7 @@ test_that("TuningInstanceSingleCrit", {
 test_that("archive one row (#40)", {
   inst = TEST_MAKE_INST1()
   inst$eval_batch(data.table(cp = 0.1))
-  a = inst$archive$data()
+  a = inst$archive$data
   expect_data_table(a, nrows = 1)
   expect_number(a$classif.ce)
 })
@@ -53,20 +53,20 @@ test_that("eval_batch and termination", {
   inst = TEST_MAKE_INST1(term_evals = 3L)
   design = generate_design_random(inst$search_space, 2)$data
   inst$eval_batch(design[1:2, ])
-  expect_data_table(inst$archive$data(), nrows = 2L)
+  expect_data_table(inst$archive$data, nrows = 2L)
   inst$eval_batch(design[1, ])
-  expect_data_table(inst$archive$data(), nrows = 3L)
+  expect_data_table(inst$archive$data, nrows = 3L)
   expect_error(inst$eval_batch(design[1, ]), class = "terminated_error")
-  expect_data_table(inst$archive$data(), nrows = 3L)
+  expect_data_table(inst$archive$data, nrows = 3L)
 
   inst = TEST_MAKE_INST1(term_evals = 5L)
   tuner = tnr("random_search", batch_size = 3L)
   tuner$optimize(inst)
-  expect_data_table(inst$archive$data(), nrows = 6L)
+  expect_data_table(inst$archive$data, nrows = 6L)
 
   # second start should be a NOP
   tuner$optimize(inst)
-  tab = inst$archive$data()
+  tab = inst$archive$data
   expect_data_table(tab, nrows = 6L)
 })
 
@@ -74,7 +74,7 @@ test_that("the same experiment can be added twice", {
   inst = TEST_MAKE_INST1()
   d = data.table(cp = c(0.1, 0.1))
   inst$eval_batch(d)
-  tab = inst$archive$data()
+  tab = inst$archive$data
   expect_data_table(tab, nrows = 2)
 })
 
@@ -128,7 +128,7 @@ test_that("non-scalar hyperpars (#201)", {
     check_values = TRUE)
 
   tnr("random_search")$optimize(inst)
-  expect_data_table(inst$archive$data(), nrows = 1)
+  expect_data_table(inst$archive$data, nrows = 1)
 })
 
 test_that("store_benchmark_result and store_models flag works", {
@@ -136,7 +136,7 @@ test_that("store_benchmark_result and store_models flag works", {
     measure = msr("dummy.cp.classif", fun = function(pv) pv$cp), n_dim = 2,
     store_benchmark_result = FALSE)
   inst$eval_batch(data.table(cp = c(0.3, 0.25), minsplit = c(3, 4)))
-  expect_true("uhashes" %nin% colnames(inst$archive$data()))
+  expect_true("uhashes" %nin% colnames(inst$archive$data))
 
   inst = TEST_MAKE_INST1(values = list(maxdepth = 10), folds = 2L,
     measure = msr("dummy.cp.classif", fun = function(pv) pv$cp), n_dim = 2,

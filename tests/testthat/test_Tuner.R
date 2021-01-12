@@ -3,7 +3,7 @@ test_that("API", {
     rs = TunerRandomSearch$new()
     inst = TEST_MAKE_INST1(measure = msr("classif.ce"), term_evals = n_evals)
     expect_data_table(rs$optimize(inst), nrows = 1)
-    a = inst$archive$data()
+    a = inst$archive$data
     expect_data_table(a, nrows = n_evals)
     expect_true("cp" %in% names(a))
   }
@@ -106,7 +106,7 @@ test_that("Tuner works with graphlearner", {
   tuner$optimize(inst)
   archive = inst$archive
 
-  expect_data_table(archive$data(), nrows = 3)
+  expect_data_table(archive$data, nrows = 3)
   expect_equal(inst$archive$n_evals, 3)
   expect_equal(inst$result_x_domain, list(classif.rpart.cp = 0.2))
   expect_equal(inst$result_y, c(dummy.cp.classif = 0))
@@ -139,4 +139,39 @@ test_that("Tuner works with instantiated resampling", {
   expect_r6(inst$objective$resampling, "ResamplingCustom")
   expect_equal(inst$objective$resampling$instance$train[[1]], 1:75)
   expect_equal(inst$objective$resampling$instance$test[[1]], 76:150)
+})
+
+test_that("Tuner active bindings work", {
+  param_set = ParamSet$new(list(ParamLgl$new("p1")))
+  param_set$values$p1 = TRUE
+  param_classes = "ParamLgl"
+  properties = "single-crit"
+  packages = "GenSA"
+
+  tuner = Tuner$new(
+    param_set = param_set,
+    param_classes = param_classes,
+    properties = "single-crit",
+    packages = packages)
+
+  expect_equal(tuner$param_set, param_set)
+  expect_equal(tuner$param_classes, param_classes)
+  expect_equal(tuner$properties, properties)
+  expect_equal(tuner$packages, packages)
+  
+  expect_error({tuner$param_set = ParamSet$new(list(ParamLgl$new("p2")))},
+    regexp = "$param_set is read-only",
+    fixed = TRUE)
+
+  expect_error({tuner$param_classes = "foo"},
+    regexp = "$param_classes is read-only",
+    fixed = TRUE)
+  
+  expect_error({tuner$properties = "foo"},
+    regexp = "$properties is read-only",
+    fixed = TRUE)
+  
+  expect_error({tuner$packages = "foo"},
+    regexp = "$packages is read-only",
+    fixed = TRUE)
 })
