@@ -74,7 +74,7 @@ targetRunner = function(experiment, scenario) { # nolint
       return(x)
     }
   }))
-  cost = scenario$instances[[1]]$eval_batch(config)[[1]]
+  cost = scenario$instances[[1]]$objective_function(config)#[[1]]
   t1 = Sys.time()
 
   return(list(cost = cost, time = as.numeric(t1 - t0)))
