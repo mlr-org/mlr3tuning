@@ -13,7 +13,7 @@
 #' @template section_parallelization
 #' @template section_logging
 #'
-#' @inheritSection bbotk::OptimizerNLoptr Parameters
+#' @inheritSection bbotk::OptimizerRandomSearch Parameters
 #'
 #' @source
 #' `r format_bib("bergstra_2012")`

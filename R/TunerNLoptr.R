@@ -45,7 +45,7 @@
 #'   search_space = search_space,
 #'   terminator = terminator
 #' )
-#' tt = tnr("nloptr", x0 = 0.1, algorithm = "NLOPT_LN_BOBYQA")
+#' tt = tnr("nloptr", algorithm = "NLOPT_LN_BOBYQA")
 #' # modifies the instance by reference
 #' tt$optimize(instance)
 #' # returns best configuration and best performance
