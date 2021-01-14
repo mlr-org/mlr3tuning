@@ -51,21 +51,12 @@ get_irace_condition = function(ps) {
 
   return(tab)
 }
-make_scenario = function(inst) {
-  list(
-    targetRunner = targetRunner,
-    logFile = tempfile(),
-    instances = list(inst),
-    debugLevel = 0,
-    maxExperiments = if (class(inst$terminator)[1] == "TerminatorEvals")
-      inst$terminator$param_set$values$n_evals else 0,
-    maxTime = if (class(inst$terminator)[1] == "TerminatorRunTime")
-      inst$terminator$param_set$values$secs else 0
-  )
-}
+
 
 targetRunner = function(experiment, scenario) { # nolint
   t0 = Sys.time()
+  tuning_instance = scenario$targetRunnerData$inst
+
   # fix logicals
   config = as.data.table(lapply(experiment$configuration, function(x) {
     if (x %in% c("TRUE", "FALSE")) {
@@ -74,7 +65,16 @@ targetRunner = function(experiment, scenario) { # nolint
       return(x)
     }
   }))
-  cost = scenario$instances[[1]]$eval_batch(config)[[1]]
+
+  # change resampling instance
+  tuning_instance$objective$resampling = experiment$instance
+
+  # add extra info to archive
+  extra = data.table(id_configuration = experiment$id.configuration, id_instance = experiment$id.instance)
+
+  # evaluate configuration
+  # objective_function cannot pass extra information
+  cost = as.numeric(tuning_instance$eval_batch(cbind(config, extra))) * tuning_instance$objective_multiplicator
   t1 = Sys.time()
 
   return(list(cost = cost, time = as.numeric(t1 - t0)))

@@ -57,6 +57,7 @@ TunerIrace = R6Class("TunerIrace",
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function() {
       ps = ParamSet$new(list(
+        ParamInt$new("n_instances", lower = 1, default = 10),
         ParamLgl$new("show.irace.output", default = FALSE),
         ParamInt$new("debugLevel", default = 0, lower = 0),
         ParamInt$new("seed"),
@@ -85,7 +86,7 @@ TunerIrace = R6Class("TunerIrace",
         ParamDbl$new("boundAsTimeout", default = 1)
       ))
 
-      ps$values$show.irace.output = FALSE # nolint
+      ps$values = list(n_instances = 10, show.irace.output = FALSE)  # nolint
 
       super$initialize(
         param_set = ps,
@@ -98,12 +99,35 @@ TunerIrace = R6Class("TunerIrace",
 
   private = list(
     .optimize = function(inst) {
-      g = if (self$param_set$values$show.irace.output) identity else utils::capture.output
-      g(irace::irace(
-        scenario = c(
-          make_scenario(inst),
-          self$param_set$values[names(self$param_set$values) %nin% "show.irace.output"]),
-        parameters = paradox_to_irace(inst$search_space)))
+      pv = self$param_set$values
+      terminator = inst$terminator
+      objective = inst$objective
+
+      # Hide irace output
+      g = if (pv$show.irace.output) identity else utils::capture.output
+
+      # Set resampling instances
+      ri = map(seq(pv$n_instances), function(n) {
+        r = objective$resampling$clone()
+        r$instantiate(objective$task)
+      })
+
+      # Clean pv
+      pv$show.irace.output = NULL
+      pv$n_instances = NULL
+
+      # Make scenario
+      scenario = c(list(
+        targetRunner = targetRunner,
+        logFile = tempfile(),
+        instances = ri,
+        debugLevel = 0,
+        maxExperiments = if (class(inst$terminator)[1] == "TerminatorEvals") terminator$param_set$values$n_evals else 0,
+        maxTime = if (class(inst$terminator)[1] == "TerminatorRunTime") terminator$param_set$values$secs else 0,
+        targetRunnerData = list(inst = inst)
+      ), pv)
+
+      g(irace::irace(scenario = scenario, parameters = paradox_to_irace(inst$search_space)))
     }
   )
 )
