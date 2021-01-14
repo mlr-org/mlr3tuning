@@ -7,7 +7,7 @@
 #' Subclass for iterated racing tuning calling [irace::irace()] from package \CRANpkg{irace}.
 #'
 #' @section Parameters:
-#' * `show.irace.output` (`logical(1)`)
+#' * `n_instances` (`interger(1)`)
 #' * `debugLevel` (`integer(1)`)
 #' * `seed` (`integer(1)`)
 #' * `postselection` (`numeric(1)`)
@@ -33,7 +33,6 @@
 #' * `boundPar` (`numeric(1)`)
 #' * `boundAsTimeout` (`numeric(1)`)
 #'
-#' `show.irace.output` suppresses the output from [irace::irace()] and only prints output from this package.
 #' For the meaning of all other parameters, see [irace::defaultScenario()].
 #' Note that we have removed all control parameters which refer to the termination of the algorithm and
 #' where our terminators allow to obtain the same behavior.
@@ -58,7 +57,6 @@ TunerIrace = R6Class("TunerIrace",
     initialize = function() {
       ps = ParamSet$new(list(
         ParamInt$new("n_instances", lower = 1, default = 10),
-        ParamLgl$new("show.irace.output", default = FALSE),
         ParamInt$new("debugLevel", default = 0, lower = 0),
         ParamInt$new("seed"),
         ParamDbl$new("postselection", default = 0, lower = 0, upper = 1),
@@ -86,7 +84,7 @@ TunerIrace = R6Class("TunerIrace",
         ParamDbl$new("boundAsTimeout", default = 1)
       ))
 
-      ps$values = list(n_instances = 10, show.irace.output = FALSE)  # nolint
+      ps$values = list(n_instances = 10)  # nolint
 
       super$initialize(
         param_set = ps,
@@ -102,18 +100,12 @@ TunerIrace = R6Class("TunerIrace",
       pv = self$param_set$values
       terminator = inst$terminator
       objective = inst$objective
-
-      # Hide irace output
-      g = if (pv$show.irace.output) identity else utils::capture.output
       
       # Set resampling instances
       ri = map(seq(pv$n_instances), function(n) {
         r = objective$resampling$clone()
         r$instantiate(objective$task)
       })
-
-      # Clean pv
-      pv$show.irace.output = NULL
       pv$n_instances = NULL
 
       # Make scenario
@@ -127,7 +119,7 @@ TunerIrace = R6Class("TunerIrace",
         targetRunnerData = list(inst = inst)
       ), pv)
 
-      g({res =irace::irace(scenario = scenario, parameters = paradox_to_irace(inst$search_space))})
+      res = irace::irace(scenario = scenario, parameters = paradox_to_irace(inst$search_space))
 
       # Temporarily store result
       private$.result_id = res$.ID.[1]
