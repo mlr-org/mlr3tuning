@@ -65,7 +65,6 @@ targetRunner = function(experiment, scenario) { # nolint
       return(x)
     }
   }))
-<<<<<<< HEAD
 
   # change resampling instance
   tuning_instance$objective$resampling = experiment$instance
@@ -76,9 +75,6 @@ targetRunner = function(experiment, scenario) { # nolint
   # evaluate configuration
   # objective_function cannot pass extra information
   cost = as.numeric(tuning_instance$eval_batch(cbind(config, extra))) * tuning_instance$objective_multiplicator
-=======
-  cost = scenario$instances[[1]]$objective_function(config)#[[1]]
->>>>>>> f84cb78ee9688cb108609c82b0132ee14dd6f901
   t1 = Sys.time()
 
   return(list(cost = cost, time = as.numeric(t1 - t0)))
