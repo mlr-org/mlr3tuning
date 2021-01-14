@@ -105,7 +105,7 @@ TunerIrace = R6Class("TunerIrace",
 
       # Hide irace output
       g = if (pv$show.irace.output) identity else utils::capture.output
-
+      
       # Set resampling instances
       ri = map(seq(pv$n_instances), function(n) {
         r = objective$resampling$clone()
