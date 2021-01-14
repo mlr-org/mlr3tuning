@@ -71,7 +71,7 @@ TunerIrace = R6Class("TunerIrace",
         ParamDbl$new("softRestartThreshold"),
         ParamInt$new("digits", default = 4, lower = 1, upper = 15),
         ParamFct$new("testType", default = "F-test",
-                     levels = c("F-test", "t-test", "t-test-bonferroni", "t-test-holm")),
+          levels = c("F-test", "t-test", "t-test-bonferroni", "t-test-holm")),
         ParamInt$new("firstTest", default = 5, lower = 0),
         ParamInt$new("eachTest", default = 1, lower = 1),
         ParamDbl$new("confidence", default = 0.95, lower = 0, upper = 1),
@@ -120,7 +120,7 @@ TunerIrace = R6Class("TunerIrace",
       ), pv)
 
       res = irace::irace(scenario = scenario, parameters = paradox_to_irace(inst$search_space))
-
+      
       # Temporarily store result
       private$.result_id = res$.ID.[1]
     },

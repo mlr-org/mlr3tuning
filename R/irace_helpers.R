@@ -1,13 +1,16 @@
 paradox_to_irace = function(ps) {
 
   assertClass(ps, "ParamSet")
+  if("ParamUty" %in% ps$class) {
+    stop("<ParamUty> not supported by <TunerIrace>")
+  }
+
   # what about ParamUty = vector numeric/real
   class_lookup = data.table(
     paradox = c("ParamLgl", "ParamInt", "ParamDbl", "ParamFct"),
     irace = c("c", "i", "r", "c"), stringsAsFactors = FALSE)
 
-  type = unlist(subset(merge(data.table(paradox = ps$class), class_lookup, sort = FALSE),
-    select = "irace"))
+  type = unlist(subset(merge(data.table(paradox = ps$class), class_lookup, sort = FALSE), select = "irace"))
   range = get_irace_range(ps)
   if (ps$has_deps) {
     condition = get_irace_condition(ps)
@@ -19,6 +22,7 @@ paradox_to_irace = function(ps) {
 
   return(irace::readParameters(text = par_tab))
 }
+
 get_irace_range = function(ps) {
   rng = data.table(lower = ps$lower, upper = ps$upper, lvl = ps$levels)
 
@@ -30,6 +34,7 @@ get_irace_range = function(ps) {
     }
   })
 }
+
 get_irace_condition = function(ps) {
   cond = rbindlist(apply(ps$deps, 1, function(x) {
     on = x[[2]]
@@ -51,7 +56,6 @@ get_irace_condition = function(ps) {
 
   return(tab)
 }
-
 
 targetRunner = function(experiment, scenario) { # nolint
   t0 = Sys.time()

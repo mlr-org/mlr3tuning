@@ -1,4 +1,3 @@
-library(mlr3learners)
 set.seed(1)
 
 skip_if_not_installed("irace")
@@ -20,8 +19,7 @@ test_that("TunerIrace with int params and trafo, clock terminator", {
     tsk("iris"), lrn("classif.rpart"), rsmp("holdout"),
     msr("classif.ce"), trm("run_time", secs = 24), ps)
   tt = tnr("irace")
-  # suppressWarnings used throughout - looks like coming upstream
-  suppressWarnings(tt$optimize(inst))
+  tt$optimize(inst)
   expect_double(inst$archive$best()$cp)
 })
 
@@ -36,7 +34,7 @@ test_that("TunerIrace with dependencies", {
     rsmp("holdout"), msr("classif.ce"),
     trm("evals", n_evals = 96), ps)
   tt = tnr("irace")
-  suppressWarnings(tt$optimize(inst))
+  tt$optimize(inst)
   expect_double(inst$archive$best()$cp)
 })
 
@@ -48,7 +46,7 @@ test_that("minimize time", {
     tsk("iris"), lrn("classif.rpart"), rsmp("holdout"),
     msr("classif.ce"), trm("run_time", secs = 20), ps)
   tt = tnr("irace", capping = 1, boundMax = 1, cappingType = "best", boundType = "instance")
-  suppressWarnings(tt$optimize(inst))
+  tt$optimize(inst)
   expect_double(inst$archive$best()$cp)
 })
 
@@ -63,7 +61,7 @@ test_that("paradox_to_irace no dependencies", {
   ps = ParamSet$new(params = list(
     ParamUty$new("uty")
   ))
-  expect_error(paradox_to_irace(ps))
+  expect_error(paradox_to_irace(ps), regex = "<ParamUty> not supported by <TunerIrace>", fixed = TRUE)
 
   ps = ParamSet$new(params = list(
     ParamDbl$new("dbl", lower = 0.1, upper = 0.3),
@@ -126,7 +124,6 @@ test_that("paradox_to_irace dependencies", {
     depends = list(a = character(0), c = "b", b = "a"),
     hierarchy = c(1, 3, 2))
 
-
   ps = ParamSet$new(params = list(
     ParamLgl$new("a"),
     ParamInt$new("b", lower = 1, upper = 9),
@@ -159,7 +156,7 @@ test_that("TunerIrace works with logical params", {
     msr("regr.mse"),
     trm("evals", n_evals = 42), ps)
   tt = tnr("irace")
-  suppressWarnings(tt$optimize(inst))
+  tt$optimize(inst)
   expect_logical(inst$archive$best()$keep_model)
 })
 
@@ -172,7 +169,7 @@ test_that("TunerIrace works with tune.threshold", {
     tsk("iris"), lrn("classif.rpart"),
     rsmp("holdout", ratio = 0.1), msr("classif.ce"),
     trm("evals", n_evals = 50), ps)
-  suppressWarnings(tt$optimize(inst))
+  tt$optimize(inst)
   expect_double(inst$archive$best()$minsplit)
 })
 
@@ -184,29 +181,7 @@ test_that("TunerIrace uses digits", {
   inst = TuningInstanceSingleCrit$new(
     tsk("iris"), lrn("classif.rpart"), rsmp("holdout"),
     msr("classif.ce"), trm("evals", n_evals = 30), ps)
-  suppressWarnings(tt$optimize(inst))
-  expect_double(inst$archive$best()$cp)
-
-
-  ps = ParamSet$new(params = list(
-    ParamDbl$new("cp", lower = 1e-5, upper = 1e-4)
-  ))
-  tt = tnr("irace", digits = 3L)
-  inst = TuningInstanceSingleCrit$new(
-    tsk("iris"), lrn("classif.rpart"), rsmp("holdout"),
-    msr("classif.ce"), trm("evals", n_evals = 40), ps)
-  expect_error(suppressWarnings(tt$optimize(inst)))
-})
-
-test_that("Error in hyperparameter tuning with scientific notation for lower/upper boundaries", {
-  ps = ParamSet$new(params = list(
-    ParamDbl$new("cp", lower = 1e-3, upper = 1e-1)
-  ))
-  inst = TuningInstanceSingleCrit$new(
-    tsk("iris"), lrn("classif.rpart"), rsmp("holdout"),
-    msr("classif.ce"), trm("evals", n_evals = 30), ps)
-  tt = tnr("irace", nbIterations = 1L)
-  suppressWarnings(tt$optimize(inst))
+  tt$optimize(inst)
   expect_double(inst$archive$best()$cp)
 })
 
