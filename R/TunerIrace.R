@@ -129,6 +129,7 @@ TunerIrace = R6Class("TunerIrace",
     # We store the best performing one.
     # The reported performance value is the average of all resampling iterations.
     .assign_result = function(inst) {
+      id_configuration = NULL
       res = inst$archive$data[id_configuration == private$.result_id, ]
       cols = c(inst$archive$cols_x, "id_configuration")
       xdt = res[1, cols, with = FALSE]

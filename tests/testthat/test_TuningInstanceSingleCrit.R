@@ -17,7 +17,7 @@ test_that("TuningInstanceSingleCrit", {
   expect_equal(inst$archive$benchmark_result$resample_result(2)$learners[[1]]$param_set$values$maxdepth, 10)
   expect_identical(inst$archive$n_evals, 2L)
   expect_data_table(z, nrows = 2)
-  expect_named(z, c("dummy.cp.classif"))
+  expect_named(z, "dummy.cp.classif")
 
   z = inst$eval_batch(data.table(cp = c(0.2, 0.1), minsplit = c(3, 4)))
   expect_data_table(inst$archive$data, nrows = 4L)
@@ -29,7 +29,7 @@ test_that("TuningInstanceSingleCrit", {
   expect_equal(inst$archive$benchmark_result$resample_result(4)$learners[[1]]$param_set$values$maxdepth, 10)
   expect_identical(inst$archive$n_evals, 4L)
   expect_data_table(z, nrows = 2L)
-  expect_named(z, c("dummy.cp.classif"))
+  expect_named(z, "dummy.cp.classif")
 
   # test archive
   a = inst$archive$data
