@@ -127,8 +127,24 @@ TunerIrace = R6Class("TunerIrace",
         targetRunnerData = list(inst = inst)
       ), pv)
 
-      g(irace::irace(scenario = scenario, parameters = paradox_to_irace(inst$search_space)))
-    }
+      g({res =irace::irace(scenario = scenario, parameters = paradox_to_irace(inst$search_space))})
+
+      # Temporarily store result
+      private$.result_id = res$.ID.[1]
+    },
+
+    # The final configurations returned by irace are the elites of the final race.
+    # We store the best performing one.
+    # The reported performance value is the average of all resampling iterations.
+    .assign_result = function(inst) {
+      res = inst$archive$data[id_configuration == private$.result_id, ]
+      cols = c(inst$archive$cols_x, "id_configuration")
+      xdt = res[1, cols, with = FALSE]
+      y = set_names(mean(unlist(res[, inst$archive$cols_y, with = FALSE])), inst$archive$cols_y)
+      inst$assign_result(xdt, y)
+    },
+
+    .result_id = NULL
   )
 )
 
