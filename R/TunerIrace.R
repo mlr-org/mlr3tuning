@@ -1,7 +1,7 @@
-#' @title TunerIrace
+#' @title Tuning via Iterated Racing.
 #'
-#' @name mlr_tuners_irace
 #' @include Tuner.R
+#' @name mlr_tuners_irace
 #'
 #' @description
 #' `TunerIrace` class that implements iterated racing. Calls [irace::irace()]

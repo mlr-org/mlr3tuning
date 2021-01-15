@@ -3,7 +3,7 @@
 \name{mlr_tuners_irace}
 \alias{mlr_tuners_irace}
 \alias{TunerIrace}
-\title{TunerIrace}
+\title{Tuning via Iterated Racing.}
 \description{
 \code{TunerIrace} class that implements iterated racing. Calls \code{\link[irace:irace]{irace::irace()}}
 from package \CRANpkg{irace}.
