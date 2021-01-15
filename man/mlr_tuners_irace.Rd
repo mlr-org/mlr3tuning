@@ -5,42 +5,20 @@
 \alias{TunerIrace}
 \title{TunerIrace}
 \description{
-Subclass for iterated racing tuning calling \code{\link[irace:irace]{irace::irace()}} from package \CRANpkg{irace}.
+\code{TunerIrace} class that implements iterated racing. Calls \code{\link[irace:irace]{irace::irace()}}
+from package \CRANpkg{irace}.
 }
 \section{Parameters}{
 
-\itemize{
-\item \code{show.irace.output} (\code{logical(1)})
-\item \code{debugLevel} (\code{integer(1)})
-\item \code{seed} (\code{integer(1)})
-\item \code{postselection} (\code{numeric(1)})
-\item \code{elitist} (\code{integer(1)})
-\item \code{elitistLimit} (\code{integer(1)})
-\item \code{nbIterations} (\code{integer(1)})
-\item \code{nbExperimentsPerIteration} (\code{integer(1)})
-\item \code{minNbSurvival} (\code{integer(1)})
-\item \code{nbConfigurations} (\code{integer(1)})
-\item \code{mu} (\code{integer(1)})
-\item \code{softRestart} (\code{integer(1)})
-\item \code{softRestartThreshold} (\code{numeric(1)})
-\item \code{digits} (\code{integer(1)})
-\item \code{testType} (\code{character(1)})
-\item \code{firstTest} (\code{integer(1)})
-\item \code{eachTest} (\code{integer(1)})
-\item \code{confidence} (\code{numeric(1)})
-\item \code{capping} (\code{integer(1)})
-\item \code{cappingType} (\code{character(1)})
-\item \code{boundType} (\code{character(1)})
-\item \code{boundMax} (\code{numeric(1)})
-\item \code{boundDigits} (\code{integer(1)})
-\item \code{boundPar} (\code{numeric(1)})
-\item \code{boundAsTimeout} (\code{numeric(1)})
+\describe{
+\item{\code{n_instances}}{\code{integer(1)}\cr
+Number of resampling instances.}
 }
 
-\code{show.irace.output} suppresses the output from \code{\link[irace:irace]{irace::irace()}} and only prints output from this package.
 For the meaning of all other parameters, see \code{\link[irace:defaultScenario]{irace::defaultScenario()}}.
-Note that we have removed all control parameters which refer to the termination of the algorithm and
-where our terminators allow to obtain the same behavior.
+Note that we have removed all control parameters which refer to the
+termination of the algorithm. Use \link{TerminatorRunTime} or \link{TerminatorEvals}
+instead. Other terminators do not work with \code{TunerIrace}.
 }
 
 \section{Dictionary}{
@@ -53,7 +31,30 @@ tnr("irace")
 }
 
 \examples{
-# see ?Tuner
+library(mlr3)
+library(paradox)
+search_space = ParamSet$new(list(
+  ParamDbl$new("cp", lower = 0.001, upper = 0.1)
+))
+terminator = trm("evals", n_evals = 42)
+instance = TuningInstanceSingleCrit$new(
+  task = tsk("iris"),
+  learner = lrn("classif.rpart"),
+  resampling = rsmp("holdout"),
+  measure = msr("classif.ce"),
+  search_space = search_space,
+  terminator = terminator
+)
+tt = tnr("irace")
+
+# modifies the instance by reference
+tt$optimize(instance)
+
+# returns best configuration and best performance
+instance$result
+
+# allows access of data.table of full path of all evaluations
+instance$archive
 }
 \references{
 Birattari, M., Stützle, T., Paquete, L., & Varrentrapp, K. (2002).

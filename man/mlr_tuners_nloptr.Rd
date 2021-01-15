@@ -24,7 +24,8 @@ their package defaults. To deactivate these conditions, set them to \code{-1}.
 \section{Dictionary}{
 
 This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary}
-\link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:\preformatted{mlr_tuners$get("nloptr")
+\link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:\preformatted{TunerNLoptr$new()
+mlr_tuners$get("nloptr")
 tnr("nloptr")
 }
 }
@@ -99,6 +100,7 @@ Other Tuner:
 \code{\link{mlr_tuners_design_points}},
 \code{\link{mlr_tuners_gensa}},
 \code{\link{mlr_tuners_grid_search}},
+\code{\link{mlr_tuners_irace}},
 \code{\link{mlr_tuners_random_search}}
 }
 \concept{Tuner}

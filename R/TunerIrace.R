@@ -4,38 +4,19 @@
 #' @include Tuner.R
 #'
 #' @description
-#' Subclass for iterated racing tuning calling [irace::irace()] from package \CRANpkg{irace}.
+#' `TunerIrace` class that implements iterated racing. Calls [irace::irace()]
+#' from package \CRANpkg{irace}.
 #'
 #' @section Parameters:
-#' * `n_instances` (`interger(1)`)
-#' * `debugLevel` (`integer(1)`)
-#' * `seed` (`integer(1)`)
-#' * `postselection` (`numeric(1)`)
-#' * `elitist` (`integer(1)`)
-#' * `elitistLimit` (`integer(1)`)
-#' * `nbIterations` (`integer(1)`)
-#' * `nbExperimentsPerIteration` (`integer(1)`)
-#' * `minNbSurvival` (`integer(1)`)
-#' * `nbConfigurations` (`integer(1)`)
-#' * `mu` (`integer(1)`)
-#' * `softRestart` (`integer(1)`)
-#' * `softRestartThreshold` (`numeric(1)`)
-#' * `digits` (`integer(1)`)
-#' * `testType` (`character(1)`)
-#' * `firstTest` (`integer(1)`)
-#' * `eachTest` (`integer(1)`)
-#' * `confidence` (`numeric(1)`)
-#' * `capping` (`integer(1)`)
-#' * `cappingType` (`character(1)`)
-#' * `boundType` (`character(1)`)
-#' * `boundMax` (`numeric(1)`)
-#' * `boundDigits` (`integer(1)`)
-#' * `boundPar` (`numeric(1)`)
-#' * `boundAsTimeout` (`numeric(1)`)
+#' \describe{
+#' \item{`n_instances`}{`integer(1)`\cr
+#' Number of resampling instances.}
+#' }
 #'
 #' For the meaning of all other parameters, see [irace::defaultScenario()].
-#' Note that we have removed all control parameters which refer to the termination of the algorithm and
-#' where our terminators allow to obtain the same behavior.
+#' Note that we have removed all control parameters which refer to the
+#' termination of the algorithm. Use [TerminatorRunTime] or [TerminatorEvals] 
+#' instead. Other terminators do not work with `TunerIrace`.
 #'
 #' @templateVar id irace
 #' @template section_dictionary_tuners
@@ -48,7 +29,31 @@
 #' @family Tuner
 #' @export
 #' @examples
-#' # see ?Tuner
+#' library(mlr3)
+#' library(paradox)
+#' search_space = ParamSet$new(list(
+#'   ParamDbl$new("cp", lower = 0.001, upper = 0.1)
+#' ))
+#' terminator = trm("evals", n_evals = 42)
+#' instance = TuningInstanceSingleCrit$new(
+#'   task = tsk("iris"),
+#'   learner = lrn("classif.rpart"),
+#'   resampling = rsmp("holdout"),
+#'   measure = msr("classif.ce"),
+#'   search_space = search_space,
+#'   terminator = terminator
+#' )
+#' tt = tnr("irace")
+#'
+#' # modifies the instance by reference
+#' tt$optimize(instance)
+#'
+#' # returns best configuration and best performance
+#' instance$result
+#'
+#' # allows access of data.table of full path of all evaluations
+#' instance$archive
+
 TunerIrace = R6Class("TunerIrace",
   inherit = Tuner,
   public = list(
@@ -83,8 +88,7 @@ TunerIrace = R6Class("TunerIrace",
         ParamDbl$new("boundPar", default = 1),
         ParamDbl$new("boundAsTimeout", default = 1)
       ))
-
-      ps$values = list(n_instances = 10)  # nolint
+      ps$values = list(n_instances = 10)
 
       super$initialize(
         param_set = ps,

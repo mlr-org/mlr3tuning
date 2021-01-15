@@ -1,10 +1,10 @@
 # mlr3tuning 0.5.0.9000
 
-- Internal changes only.
+- Adds `TunerIrace` from `irace` package.
 
 # mlr3tuning 0.5.0
 
-- Adds `TunerCmaes` from adagio package.
+- Adds `TunerCmaes` from `adagio` package.
 - Fix `predict_type` in `AutoTuner`.
 - Support to set `TuneToken` in `Learner$param_set` and create a search space
   from it.

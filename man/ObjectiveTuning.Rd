@@ -18,8 +18,6 @@ by the \link{TuningInstanceSingleCrit} / \link{TuningInstanceMultiCrit}.
 
 \item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner}).}
 
-\item{\code{resampling}}{(\link[mlr3:Resampling]{mlr3::Resampling}).}
-
 \item{\code{measures}}{(list of \link[mlr3:Measure]{mlr3::Measure}).}
 
 \item{\code{store_models}}{(\code{logical(1)}).}
@@ -27,6 +25,13 @@ by the \link{TuningInstanceSingleCrit} / \link{TuningInstanceMultiCrit}.
 \item{\code{store_benchmark_result}}{(\code{logical(1)}).}
 
 \item{\code{archive}}{(\link{ArchiveTuning}).}
+}
+\if{html}{\out{</div>}}
+}
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{resampling}}{(\link[mlr3:Resampling]{mlr3::Resampling}).}
 }
 \if{html}{\out{</div>}}
 }
