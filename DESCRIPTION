@@ -48,12 +48,9 @@ Imports:
     paradox (>= 0.6.0-9000),
     R6
 Suggests:
-    e1071,
     adagio,
     GenSA,
-    glmnet,
     irace,
-    mlr3learners,
     mlr3pipelines,
     nloptr,
     rpart,

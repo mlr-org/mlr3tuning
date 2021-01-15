@@ -53,7 +53,6 @@
 #'
 #' # allows access of data.table of full path of all evaluations
 #' instance$archive
-
 TunerIrace = R6Class("TunerIrace",
   inherit = Tuner,
   public = list(
