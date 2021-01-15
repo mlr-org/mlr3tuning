@@ -3,7 +3,7 @@
 \name{mlr_tuners_cmaes}
 \alias{mlr_tuners_cmaes}
 \alias{TunerCmaes}
-\title{TunerCmaes}
+\title{Hyperparameter Tuning with Covariance Matrix Adaptation Evolution Strategy}
 \description{
 Subclass that implements CMA-ES calling \code{\link[adagio:cmaes]{adagio::pureCMAES()}}
 from package \CRANpkg{adagio}.

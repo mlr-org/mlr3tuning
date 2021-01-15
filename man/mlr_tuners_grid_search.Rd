@@ -3,7 +3,7 @@
 \name{mlr_tuners_grid_search}
 \alias{mlr_tuners_grid_search}
 \alias{TunerGridSearch}
-\title{TunerGridSearch}
+\title{Hyperparameter Tuning with Grid Search}
 \description{
 Subclass for grid search tuning.
 

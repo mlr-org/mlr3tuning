@@ -1,4 +1,4 @@
-#' @title TunerGridSearch
+#' @title Hyperparameter Tuning with Grid Search
 #'
 #' @name mlr_tuners_grid_search
 #'

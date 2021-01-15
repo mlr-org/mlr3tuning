@@ -1,4 +1,4 @@
-#' @title TunerDesignPoints
+#' @title Hyperparameter Tuning with via Design Points
 #'
 #' @name mlr_tuners_design_points
 #'

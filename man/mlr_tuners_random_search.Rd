@@ -3,7 +3,7 @@
 \name{mlr_tuners_random_search}
 \alias{mlr_tuners_random_search}
 \alias{TunerRandomSearch}
-\title{TunerRandomSearch}
+\title{Hyperparameter Tuning with Random Search}
 \source{
 Bergstra J, Bengio Y (2012).
 \dQuote{Random Search for Hyper-Parameter Optimization.}
