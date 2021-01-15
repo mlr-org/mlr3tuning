@@ -3,7 +3,7 @@
 \name{mlr_tuners_gensa}
 \alias{mlr_tuners_gensa}
 \alias{TunerGenSA}
-\title{TunerGenSA}
+\title{Hyperparameter Tuning with Generalized Simulated Annealing}
 \source{
 Tsallis C, Stariolo DA (1996).
 \dQuote{Generalized simulated annealing.}

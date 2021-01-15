@@ -1,4 +1,4 @@
-#' @title TuneNLoptr
+#' @title Hyperparameter Tuning with Non-linear Optimization
 #'
 #' @name mlr_tuners_nloptr
 #' @include Tuner.R

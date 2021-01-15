@@ -1,4 +1,4 @@
-#' @title TunerCmaes
+#' @title Hyperparameter Tuning with Covariance Matrix Adaptation Evolution Strategy
 #'
 #' @name mlr_tuners_cmaes
 #'

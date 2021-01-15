@@ -3,7 +3,7 @@
 \name{mlr_tuners_design_points}
 \alias{mlr_tuners_design_points}
 \alias{TunerDesignPoints}
-\title{TunerDesignPoints}
+\title{Hyperparameter Tuning with via Design Points}
 \description{
 Subclass for tuning w.r.t. fixed design points.
 

@@ -3,7 +3,7 @@
 \name{mlr_tuners_nloptr}
 \alias{mlr_tuners_nloptr}
 \alias{TunerNLoptr}
-\title{TuneNLoptr}
+\title{Hyperparameter Tuning with Non-linear Optimization}
 \source{
 Johnson, G S (2020).
 \dQuote{The NLopt nonlinear-optimization package.}

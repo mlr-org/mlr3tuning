@@ -1,4 +1,4 @@
-#' @title TunerGenSA
+#' @title Hyperparameter Tuning with Generalized Simulated Annealing
 #'
 #' @name mlr_tuners_gensa
 #'

@@ -1,4 +1,4 @@
-#' @title TunerRandomSearch
+#' @title Hyperparameter Tuning with Random Search
 #'
 #' @name mlr_tuners_random_search
 #' @include Tuner.R
