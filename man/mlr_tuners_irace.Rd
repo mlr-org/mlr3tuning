@@ -4,6 +4,12 @@
 \alias{mlr_tuners_irace}
 \alias{TunerIrace}
 \title{Tuning via Iterated Racing.}
+\source{
+López-Ibáñez M, Dubois-Lacoste J, Cáceres LP, Birattari M, Stützle T (2016).
+\dQuote{The irace package: Iterated racing for automatic algorithm configuration.}
+\emph{Operations Research Perspectives}, \bold{3}, 43--58.
+\doi{https://doi.org/10.1016/j.orp.2016.09.002}.
+}
 \description{
 \code{TunerIrace} class that implements iterated racing. Calls \code{\link[irace:irace]{irace::irace()}}
 from package \CRANpkg{irace}.
@@ -55,11 +61,6 @@ instance$result
 
 # allows access of data.table of full path of all evaluations
 instance$archive
-}
-\references{
-Birattari, M., Stützle, T., Paquete, L., & Varrentrapp, K. (2002).
-A Racing Algorithm for Configuring Metaheuristics.
-In Gecco (Vol. 2).
 }
 \seealso{
 Other Tuner: 

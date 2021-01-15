@@ -12,7 +12,6 @@ bibentries = c(
     doi          = "10.32614/rj-2013-002"
   ),
 
-
   tsallis_1996 = bibentry("article",
     title        = "Generalized simulated annealing",
     author       = "Constantino Tsallis and Daniel A. Stariolo",
@@ -42,5 +41,15 @@ bibentries = c(
     author       = "Johnson, Steven G",
     url          = "https://github.com/stevengj/nlopt",
     year         = "2020"
+  ),
+
+  lopez_2016 = bibentry("article",
+    title        = "The irace package: Iterated racing for automatic algorithm configuration",
+    author       = "Manuel López-Ibáñez and Jérémie Dubois-Lacoste and Leslie Pérez Cáceres and Mauro Birattari and Thomas Stützle",
+    year         = "2016",
+    journal      = "Operations Research Perspectives",
+    volume       = "3",
+    pages        = "43--58",
+    doi          = "https://doi.org/10.1016/j.orp.2016.09.002"
   )
 )
