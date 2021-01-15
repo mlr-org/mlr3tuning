@@ -45,7 +45,7 @@ bibentries = c(
 
   lopez_2016 = bibentry("article",
     title        = "The irace package: Iterated racing for automatic algorithm configuration",
-    author       = "Manuel López-Ibáñez and Jérémie Dubois-Lacoste and Leslie Pérez Cáceres and Mauro Birattari and Thomas Stützle",
+    author       = "Manuel Lopez-Ibanez and Jeremie Dubois-Lacoste and Leslie Perez Caceres and Mauro Birattari and Thomas Stuetzle",
     year         = "2016",
     journal      = "Operations Research Perspectives",
     volume       = "3",

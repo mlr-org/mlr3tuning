@@ -5,7 +5,7 @@
 \alias{TunerIrace}
 \title{Tuning via Iterated Racing.}
 \source{
-López-Ibáñez M, Dubois-Lacoste J, Cáceres LP, Birattari M, Stützle T (2016).
+Lopez-Ibanez M, Dubois-Lacoste J, Caceres LP, Birattari M, Stuetzle T (2016).
 \dQuote{The irace package: Iterated racing for automatic algorithm configuration.}
 \emph{Operations Research Perspectives}, \bold{3}, 43--58.
 \doi{https://doi.org/10.1016/j.orp.2016.09.002}.
