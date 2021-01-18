@@ -101,6 +101,11 @@ TunerIrace = R6Class("TunerIrace",
       pv = self$param_set$values
       terminator = inst$terminator
       objective = inst$objective
+
+      # Check terminators 
+      if (!(inherits(terminator, "TerminatorEvals") || inherits(terminator, "TerminatorRunTime"))) {
+        stopf("%s is not supported. Use <TerminatorEvals> or <TerminatorRunTime> instead.", format(inst$terminator))
+      }
       
       # Set resampling instances
       ri = map(seq(pv$n_instances), function(n) {
@@ -111,12 +116,12 @@ TunerIrace = R6Class("TunerIrace",
 
       # Make scenario
       scenario = c(list(
-        targetRunner = targetRunner,
+        targetRunner = target_runner,
         logFile = tempfile(),
         instances = ri,
         debugLevel = 0,
-        maxExperiments = if (class(inst$terminator)[1] == "TerminatorEvals") terminator$param_set$values$n_evals else 0,
-        maxTime = if (class(inst$terminator)[1] == "TerminatorRunTime") terminator$param_set$values$secs else 0,
+        maxExperiments = if (inherits(terminator, "TerminatorEvals")) terminator$param_set$values$n_evals else 0,
+        maxTime = if (inherits(terminator, "TerminatorRunTime")) terminator$param_set$values$secs - 2 else 0,
         targetRunnerData = list(inst = inst)
       ), pv)
 
@@ -133,8 +138,7 @@ TunerIrace = R6Class("TunerIrace",
       if(length(private$.result_id) == 0) {
         stop("irace::irace did not return a result. The evaluated configurations are still accessible through the archive.")
       }
-      id_configuration = NULL
-      res = inst$archive$data[id_configuration == private$.result_id, ]
+      res = inst$archive$data[get("id_configuration") == private$.result_id, ]
       cols = c(inst$archive$cols_x, "id_configuration")
       xdt = res[1, cols, with = FALSE]
       y = set_names(mean(unlist(res[, inst$archive$cols_y, with = FALSE])), inst$archive$cols_y)

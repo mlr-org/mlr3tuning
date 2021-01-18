@@ -57,7 +57,7 @@ get_irace_condition = function(ps) {
   return(tab)
 }
 
-targetRunner = function(experiment, scenario) { # nolint
+target_runner = function(experiment, scenario) { # nolint
   t0 = Sys.time()
   tuning_instance = scenario$targetRunnerData$inst
 
@@ -79,7 +79,6 @@ targetRunner = function(experiment, scenario) { # nolint
   # evaluate configuration
   # objective_function cannot pass extra information
   cost = as.numeric(tuning_instance$eval_batch(cbind(config, extra))) * tuning_instance$objective_multiplicator
-  t1 = Sys.time()
 
-  return(list(cost = cost, time = as.numeric(t1 - t0)))
+  return(list(cost = cost, time = as.numeric(difftime(Sys.time(), t0, units = "secs"))))
 }

@@ -44,7 +44,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
 
       self$task = assert_task(as_task(task, clone = TRUE))
       self$learner = assert_learner(as_learner(learner, clone = TRUE))
-      self$resampling = assert_resampling(as_resampling(resampling, clone = TRUE))
+      self$resampling = resampling
       self$measures = assert_measures(as_measures(measures, clone = TRUE),
         task = self$task, learner = self$learner)
       self$store_benchmark_result = assert_logical(store_benchmark_result)
