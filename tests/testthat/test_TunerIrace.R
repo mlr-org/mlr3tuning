@@ -17,10 +17,17 @@ test_that("TunerIrace works with TerminatorRunTime", {
   instance = TuningInstanceSingleCrit$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"),
     trm("run_time", secs = 30), search_space)
   tuner = tnr("irace")
-  # TunerIrace sometimes returns no result if used with TerminatorRunTime. 
-  # Therefore we can only check if the archive contains evaluations. 
-  tuner$optimize(instance)
-  expect_true(nrow(instance$archive$data) > 0)
+  expect_data_table(tuner$optimize(instance))
+})
+
+test_that("TunerIrace with unsupported terminators", {
+   search_space = ps(
+    cp = p_dbl(lower = 0.001, upper = 0.1),
+    minsplit = p_int(lower = 1, upper = 10)
+  )
+  instance = TuningInstanceSingleCrit$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"),
+    trm("run_time", secs = 30), search_space)
+  tuner = tnr("irace")
 })
 
 test_that("TunerIrace works with dependencies", {
