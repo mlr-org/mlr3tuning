@@ -21,13 +21,16 @@ test_that("TunerIrace works with TerminatorRunTime", {
 })
 
 test_that("TunerIrace with unsupported terminators", {
-   search_space = ps(
+  search_space = ps(
     cp = p_dbl(lower = 0.001, upper = 0.1),
     minsplit = p_int(lower = 1, upper = 10)
   )
   instance = TuningInstanceSingleCrit$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"),
-    trm("run_time", secs = 30), search_space)
+    trm("perf_reached", level = 0.1), search_space)
   tuner = tnr("irace")
+  expect_error(tuner$optimize(instance),
+    regex = "<TerminatorPerfReached> is not supported. Use <TerminatorEvals> or <TerminatorRunTime> instead.",
+    fixed = TRUE)
 })
 
 test_that("TunerIrace works with dependencies", {
