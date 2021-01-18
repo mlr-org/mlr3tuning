@@ -158,7 +158,9 @@ Task to operate on.}
 
 \item{\code{resampling}}{(\link[mlr3:Resampling]{mlr3::Resampling})\cr
 Uninstantiated resamplings are instantiated during construction
-so that all configurations are evaluated on the same data splits.}
+so that all configurations are evaluated on the same data splits. If a new
+resampling is passed, it is instantiated with new data splits. Already
+instantiated resamplings are kept unchanged.}
 
 \item{\code{measure}}{(\link[mlr3:Measure]{mlr3::Measure})\cr
 Measure to optimize.}

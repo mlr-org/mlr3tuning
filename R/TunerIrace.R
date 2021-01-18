@@ -13,10 +13,11 @@
 #' Number of resampling instances.}
 #' }
 #'
-#' For the meaning of all other parameters, see [irace::defaultScenario()].
-#' Note that we have removed all control parameters which refer to the
-#' termination of the algorithm. Use [TerminatorRunTime] or [TerminatorEvals] 
-#' instead. Other terminators do not work with `TunerIrace`.
+#' For the meaning of all other parameters, see [irace::defaultScenario()]. Note
+#' that we have removed all control parameters which refer to the termination of
+#' the algorithm. Use [TerminatorRunTime] or [TerminatorEvals] instead. Other
+#' terminators do not work with `TunerIrace`. We substract 5 seconds from the
+#' [TerminatorRunTime] budget for stability reasons.
 #'
 #' @templateVar id irace
 #' @template section_dictionary_tuners
@@ -121,7 +122,7 @@ TunerIrace = R6Class("TunerIrace",
         instances = ri,
         debugLevel = 0,
         maxExperiments = if (inherits(terminator, "TerminatorEvals")) terminator$param_set$values$n_evals else 0,
-        maxTime = if (inherits(terminator, "TerminatorRunTime")) terminator$param_set$values$secs - 2 else 0,
+        maxTime = if (inherits(terminator, "TerminatorRunTime")) terminator$param_set$values$secs - 5 else 0,
         targetRunnerData = list(inst = inst)
       ), pv)
 

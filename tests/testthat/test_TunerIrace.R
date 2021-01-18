@@ -19,7 +19,7 @@ test_that("TunerIrace works with TerminatorRunTime", {
   tuner = tnr("irace")
   # TunerIrace sometimes returns no result if used with TerminatorRunTime. 
   # Therefore we can only check if the archive contains evaluations. 
-  try(tuner$optimize(instance), silent = TRUE)
+  tuner$optimize(instance)
   expect_true(nrow(instance$archive$data) > 0)
 })
 

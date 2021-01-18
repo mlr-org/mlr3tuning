@@ -21,10 +21,11 @@ from package \CRANpkg{irace}.
 Number of resampling instances.}
 }
 
-For the meaning of all other parameters, see \code{\link[irace:defaultScenario]{irace::defaultScenario()}}.
-Note that we have removed all control parameters which refer to the
-termination of the algorithm. Use \link{TerminatorRunTime} or \link{TerminatorEvals}
-instead. Other terminators do not work with \code{TunerIrace}.
+For the meaning of all other parameters, see \code{\link[irace:defaultScenario]{irace::defaultScenario()}}. Note
+that we have removed all control parameters which refer to the termination of
+the algorithm. Use \link{TerminatorRunTime} or \link{TerminatorEvals} instead. Other
+terminators do not work with \code{TunerIrace}. We substract 5 seconds from the
+\link{TerminatorRunTime} budget for stability reasons.
 }
 
 \section{Dictionary}{
