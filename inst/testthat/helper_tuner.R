@@ -59,7 +59,3 @@ test_tuner_dependencies = function(key, ..., term_evals = 2L) {
   expect_names(names(y_opt), identical.to = "regr.mse")
   list(tuner = tuner, inst = inst)
 }
-
-
-
-
