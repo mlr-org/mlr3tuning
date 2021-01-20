@@ -111,9 +111,9 @@ LearnerRegrDepParams = R6::R6Class("LearnerRegrDepParams", inherit = LearnerRegr
       super$initialize(
         id = id,
         feature_types = c("logical", "integer", "numeric", "character", "factor", "ordered"),
-        predict_types = c("response"),
+        predict_types = "response",
         param_set = param_set,
-        properties = c("missings")
+        properties = "missings"
       )
     }
   ),

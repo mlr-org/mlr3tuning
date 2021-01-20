@@ -28,7 +28,7 @@ test_tuner = function(key, ..., n_dim = 1L, term_evals = 2L, real_evals = term_e
   y_opt = inst$result_y
   expect_list(x_opt, len = n_dim)
   if (n_dim == 1)
-    expect_named(x_opt, c("cp"))
+    expect_named(x_opt, "cp")
   else
     expect_named(x_opt, c("cp", "minsplit"))
   expect_numeric(y_opt, len = 1L)
