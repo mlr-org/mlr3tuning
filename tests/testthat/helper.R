@@ -1,4 +1,5 @@
 library(mlr3)
+library(paradox)
 library(R6)
 library(mlr3misc)
 library(mlr3pipelines)
