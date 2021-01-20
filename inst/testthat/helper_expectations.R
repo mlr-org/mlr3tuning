@@ -19,26 +19,26 @@ expect_irace_parameters = function(parameters, names, types, domain, conditions,
   expect_equal(names(parameters), c("names", "types", "switches", "domain", "conditions", "isFixed", "transform", 
     "depends", "hierarchy", "nbParameters", "nbFixed", "nbVariable"))
   expect_equal(parameters$names, names)
-  expect_equal(parameters$types, mlr3misc::set_names(types, names))
-  expect_equal(parameters$switches, mlr3misc::named_vector(names, ""))
+  expect_equal(parameters$types, set_names(types, names))
+  expect_equal(parameters$switches, named_vector(names, ""))
   expect_equal(parameters$domain, domain)
   if (missing(conditions)) {
-    expect_equal(parameters$conditions, mlr3misc::named_list(names, TRUE))
+    expect_equal(parameters$conditions, named_list(names, TRUE))
   } else {
     # can't compare expressions directly
     expect_equal(as.character(parameters$conditions), as.character(conditions))
   }
-  expect_equal(parameters$isFixed, mlr3misc::named_vector(names, FALSE))
-  expect_equal(parameters$transform, mlr3misc::named_list(names, ""))
+  expect_equal(parameters$isFixed, named_vector(names, FALSE))
+  expect_equal(parameters$transform, named_list(names, ""))
   if (missing(depends)) {
-    expect_equal(parameters$depends, mlr3misc::named_list(names, character(0)))
+    expect_equal(parameters$depends, named_list(names, character(0)))
   } else {
     expect_equal(parameters$depends, depends)
   }
   if (missing(hierarchy)) {
-    expect_equal(parameters$hierarchy, mlr3misc::named_vector(names, 1))
+    expect_equal(parameters$hierarchy, named_vector(names, 1))
   } else {
-    expect_equal(parameters$hierarchy, mlr3misc::set_names(hierarchy, names))
+    expect_equal(parameters$hierarchy, set_names(hierarchy, names))
   }
   expect_equal(parameters$nbParameters, length(names))
   expect_equal(parameters$nbFixed, 0)

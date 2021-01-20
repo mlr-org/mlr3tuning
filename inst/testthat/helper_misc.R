@@ -72,7 +72,7 @@ make_dummy_cp_measure = function(type, minimize = TRUE) {
     inh = MeasureRegr
     cl = "MeaureDummyCPRegr"
   }
-  m = R6::R6Class(cl,
+  m = R6Class(cl,
     inherit = inh,
     public = list(
       # allow a fun to transform cp to score, this allows further shenenigans
@@ -98,13 +98,13 @@ make_dummy_cp_measure = function(type, minimize = TRUE) {
   )
 }
 MeasureDummyCPClassif = make_dummy_cp_measure("classif")
-mlr3::mlr_measures$add("dummy.cp.classif", MeasureDummyCPClassif)
+mlr_measures$add("dummy.cp.classif", MeasureDummyCPClassif)
 MeasureDummyCPRegr = make_dummy_cp_measure("regr")
-mlr3::mlr_measures$add("dummy.cp.regr", MeasureDummyCPRegr)
+mlr_measures$add("dummy.cp.regr", MeasureDummyCPRegr)
 MeasureDummyCPMaximizeClassif = make_dummy_cp_measure("classif", minimize = FALSE)
-mlr3::mlr_measures$add("dummy.cp.maximize.classif", MeasureDummyCPMaximizeClassif)
+mlr_measures$add("dummy.cp.maximize.classif", MeasureDummyCPMaximizeClassif)
 
-LearnerRegrDepParams = R6::R6Class("LearnerRegrDepParams", inherit = LearnerRegr,
+LearnerRegrDepParams = R6Class("LearnerRegrDepParams", inherit = LearnerRegr,
   public = list(
     initialize = function(id = "regr.depparams") {
       param_set = TEST_MAKE_PS2()
@@ -133,11 +133,11 @@ LearnerRegrDepParams = R6::R6Class("LearnerRegrDepParams", inherit = LearnerRegr
 )
 
 MAKE_GL = function() {
-  g = mlr3pipelines::Graph$new()
-  op_ds = mlr3pipelines::PipeOpSubsample$new()
-  op_lrn = mlr3pipelines::PipeOpLearner$new(lrn("classif.rpart"))
+  g = Graph$new()
+  op_ds = PipeOpSubsample$new()
+  op_lrn = PipeOpLearner$new(lrn("classif.rpart"))
   g$add_pipeop(op_ds)
   g$add_pipeop(op_lrn)
   g$add_edge("subsample", "classif.rpart")
-  mlr3pipelines::GraphLearner$new(g)
+  GraphLearner$new(g)
 }
