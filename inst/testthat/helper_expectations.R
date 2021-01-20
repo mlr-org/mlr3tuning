@@ -16,9 +16,8 @@ expect_terminator = function(term) {
 
 expect_irace_parameters = function(parameters, names, types, domain, conditions, depends, hierarchy) {
   expect_list(parameters, len = 12, any.missing = FALSE)
-  expect_equal(names(parameters), c("names", "types", "switches", "domain", "conditions", "isFixed",
-                                    "transform", "depends", "hierarchy", "nbParameters", "nbFixed",
-                                    "nbVariable"))
+  expect_equal(names(parameters), c("names", "types", "switches", "domain", "conditions", "isFixed", "transform", 
+    "depends", "hierarchy", "nbParameters", "nbFixed", "nbVariable"))
   expect_equal(parameters$names, names)
   expect_equal(parameters$types, mlr3misc::set_names(types, names))
   expect_equal(parameters$switches, mlr3misc::named_vector(names, ""))
