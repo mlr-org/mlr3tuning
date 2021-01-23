@@ -14,6 +14,7 @@
 #' @template section_logging
 #'
 #' @inheritSection bbotk::OptimizerRandomSearch Parameters
+#' @inheritSection bbotk::OptimizerRandomSearch Progress Bars
 #'
 #' @source
 #' `r format_bib("bergstra_2012")`

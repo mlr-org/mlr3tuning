@@ -11,6 +11,7 @@
 #' @template section_logging
 #'
 #' @inheritSection bbotk::OptimizerCmaes Parameters
+#' @inheritSection bbotk::OptimizerCmaes Progress Bars
 #'
 #' @family Tuner
 #' @seealso Package \CRANpkg{mlr3hyperband} for hyperband tuning.

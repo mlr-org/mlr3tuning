@@ -11,6 +11,7 @@
 #' @template section_logging
 #'
 #' @inheritSection bbotk::OptimizerGenSA Parameters
+#' @inheritSection bbotk::OptimizerGenSA Progress Bars
 #'
 #' @source
 #' `r format_bib("tsallis_1996", "xiang_2013")`

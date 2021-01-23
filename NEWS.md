@@ -1,6 +1,6 @@
-# mlr3tuning 0.5.0.9000
+# mlr3tuning 0.6.0
 
-- Internal changes only.
+- `ArchiveTuning$data` is a public field now.
 
 # mlr3tuning 0.5.0
 
