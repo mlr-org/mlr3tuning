@@ -3,12 +3,13 @@
 \name{mlr_tuners_gensa}
 \alias{mlr_tuners_gensa}
 \alias{TunerGenSA}
-\title{TunerGenSA}
+\title{Hyperparameter Tuning with Generalized Simulated Annealing}
 \source{
 Tsallis C, Stariolo DA (1996).
 \dQuote{Generalized simulated annealing.}
 \emph{Physica A: Statistical Mechanics and its Applications}, \bold{233}(1-2), 395--406.
 \doi{10.1016/s0378-4371(96)00271-3}.
+
 Xiang Y, Gubian S, Suomela B, Hoeng J (2013).
 \dQuote{Generalized Simulated Annealing for Global Optimization: The GenSA Package.}
 \emph{The R Journal}, \bold{5}(1), 13.
@@ -48,6 +49,16 @@ Use \code{lgr::get_logger("bbotk")} to access and control the logger.
 For the meaning of the control parameters, see \code{\link[GenSA:GenSA]{GenSA::GenSA()}}. Note that we
 have removed all control parameters which refer to the termination of the
 algorithm and where our terminators allow to obtain the same behavior.
+
+}
+
+\section{Progress Bars}{
+
+
+\verb{$optimize()} supports progress bars via the package \href{https://CRAN.R-project.org/package=progressr}{\pkg{progressr}}
+combined with a \link[bbotk]{Terminator}. Simply wrap the function in
+\code{progressr::with_progress()} to enable them. We recommend to use package
+\href{https://CRAN.R-project.org/package=progress}{\pkg{progress}} as backend; enable with \code{progressr::handlers("progress")}.
 
 }
 

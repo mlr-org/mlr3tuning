@@ -3,7 +3,7 @@
 \name{mlr_tuners_nloptr}
 \alias{mlr_tuners_nloptr}
 \alias{TunerNLoptr}
-\title{TuneNLoptr}
+\title{Hyperparameter Tuning with Non-linear Optimization}
 \source{
 Johnson, G S (2020).
 \dQuote{The NLopt nonlinear-optimization package.}
@@ -42,12 +42,14 @@ Use \code{lgr::get_logger("bbotk")} to access and control the logger.
 
 \describe{
 \item{\code{algorithm}}{\code{character(1)}}
-\item{\code{x0}}{\code{numeric()}}
 \item{\code{eval_g_ineq}}{\verb{function()}}
 \item{\code{xtol_rel}}{\code{numeric(1)}}
 \item{\code{xtol_abs}}{\code{numeric(1)}}
 \item{\code{ftol_rel}}{\code{numeric(1)}}
 \item{\code{ftol_abs}}{\code{numeric(1)}}
+\item{\code{start_values}}{\code{character(1)}\cr
+Create \code{random} start values or based on \code{center} of search space? In the
+latter case, it is the center of the parameters before a trafo is applied.}
 }
 
 For the meaning of the control parameters, see \code{\link[nloptr:nloptr]{nloptr::nloptr()}} and
@@ -59,6 +61,16 @@ subclasses. The x and function value tolerance termination conditions
 (\code{xtol_rel = 10^-4}, \code{xtol_abs = rep(0.0, length(x0))}, \code{ftol_rel = 0.0} and
 \code{ftol_abs = 0.0}) are still available and implemented with their package
 defaults. To deactivate these conditions, set them to \code{-1}.
+
+}
+
+\section{Progress Bars}{
+
+
+\verb{$optimize()} supports progress bars via the package \href{https://CRAN.R-project.org/package=progressr}{\pkg{progressr}}
+combined with a \link[bbotk]{Terminator}. Simply wrap the function in
+\code{progressr::with_progress()} to enable them. We recommend to use package
+\href{https://CRAN.R-project.org/package=progress}{\pkg{progress}} as backend; enable with \code{progressr::handlers("progress")}.
 
 }
 
@@ -80,7 +92,7 @@ instance = TuningInstanceSingleCrit$new(
   search_space = search_space,
   terminator = terminator
 )
-tt = tnr("nloptr", x0 = 0.1, algorithm = "NLOPT_LN_BOBYQA")
+tt = tnr("nloptr", algorithm = "NLOPT_LN_BOBYQA")
 # modifies the instance by reference
 tt$optimize(instance)
 # returns best configuration and best performance

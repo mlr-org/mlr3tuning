@@ -3,7 +3,7 @@
 \name{mlr_tuners_cmaes}
 \alias{mlr_tuners_cmaes}
 \alias{TunerCmaes}
-\title{TunerCmaes}
+\title{Hyperparameter Tuning with Covariance Matrix Adaptation Evolution Strategy}
 \description{
 Subclass that implements CMA-ES calling \code{\link[adagio:cmaes]{adagio::pureCMAES()}}
 from package \CRANpkg{adagio}.
@@ -28,13 +28,25 @@ Use \code{lgr::get_logger("bbotk")} to access and control the logger.
 
 
 \describe{
-\item{\code{par}}{\code{numeric()}}
 \item{\code{sigma}}{\code{numeric(1)}}
+\item{\code{start_values}}{\code{character(1)}\cr
+Create \code{random} start values or based on \code{center} of search space? In the
+latter case, it is the center of the parameters before a trafo is applied.}
 }
 
 For the meaning of the control parameters, see \code{\link[adagio:cmaes]{adagio::pureCMAES()}}. Note
 that we have removed all control parameters which refer to the termination of
 the algorithm and where our terminators allow to obtain the same behavior.
+
+}
+
+\section{Progress Bars}{
+
+
+\verb{$optimize()} supports progress bars via the package \href{https://CRAN.R-project.org/package=progressr}{\pkg{progressr}}
+combined with a \link[bbotk]{Terminator}. Simply wrap the function in
+\code{progressr::with_progress()} to enable them. We recommend to use package
+\href{https://CRAN.R-project.org/package=progress}{\pkg{progress}} as backend; enable with \code{progressr::handlers("progress")}.
 
 }
 
@@ -54,7 +66,7 @@ instance = TuningInstanceSingleCrit$new(
   search_space = search_space,
   terminator = terminator
 )
-tt = tnr("cmaes", par = 0.1)
+tt = tnr("cmaes")
 # modifies the instance by reference
 tt$optimize(instance)
 # returns best configuration and best performance

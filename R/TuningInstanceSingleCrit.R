@@ -101,7 +101,7 @@
 #'   terminated_error = function(e) message(as.character(e))
 #' )
 #'
-#' archive = inst$archive$data()
+#' archive = as.data.table(inst$archive)
 #'
 #' # column errors: multiple errors recorded
 #' print(archive)
@@ -115,18 +115,28 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     #' This defines the resampled performance of a learner on a task, a
     #' feasibility region for the parameters the tuner is supposed to optimize,
     #' and a termination criterion.
-    initialize = function(task, learner, resampling, measure, search_space,
-      terminator, store_benchmark_result = TRUE, store_models = FALSE,
-      check_values = FALSE) {
-        measure = as_measure(measure)
-        obj = ObjectiveTuning$new(task = task, learner = learner,
-          resampling = resampling, measures = list(measure),
-          store_benchmark_result = store_benchmark_result,
-          store_models = store_models, check_values = check_values)
-        super$initialize(obj, search_space, terminator)
-        self$archive = ArchiveTuning$new(search_space = search_space,
-          codomain = self$objective$codomain, check_values = check_values)
-        self$objective$archive = self$archive
+    initialize = function(task, learner, resampling, measure,
+      terminator, search_space = NULL, store_benchmark_result = TRUE,
+      store_models = FALSE, check_values = FALSE) {
+      learner = assert_learner(as_learner(learner, clone = TRUE))
+
+      if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token")) > 0) {
+        stop("If the values of the ParamSet of the Learner contain TuneTokens you cannot supply a search_space.")
+      }
+      if (is.null(search_space)) {
+        search_space = learner$param_set$search_space()
+        learner$param_set$values = learner$param_set$get_values(type = "without_token")
+      }
+
+      measure = as_measure(measure)
+      obj = ObjectiveTuning$new(task = task, learner = learner,
+        resampling = resampling, measures = list(measure),
+        store_benchmark_result = store_benchmark_result,
+        store_models = store_models, check_values = check_values)
+      super$initialize(obj, search_space, terminator)
+      self$archive = ArchiveTuning$new(search_space = search_space,
+        codomain = self$objective$codomain, check_values = check_values)
+      self$objective$archive = self$archive
     },
 
     eval_batch = function(xdt) {
@@ -154,7 +164,7 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
       # set the column with the learner param_vals that were not optimized over but set implicitly
       assert_list(learner_param_vals, null.ok = TRUE, names = "named")
       if (is.null(learner_param_vals)) {
-        learner_param_vals = self$objective$learner$param_set$values
+        learner_param_vals = self$objective$learner$param_set$get_values(type = "without_token")
       }
       opt_x = transform_xdt_to_xss(xdt, self$search_space)[[1]]
       learner_param_vals = insert_named(learner_param_vals, opt_x)
@@ -162,7 +172,7 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
       if (length(learner_param_vals) == 1) {
         learner_param_vals = list(learner_param_vals)
       }
-      xdt[, learner_param_vals := list(learner_param_vals)]
+      set(xdt, j = "learner_param_vals", value = list(learner_param_vals))
       super$assign_result(xdt, y)
     }
   ),

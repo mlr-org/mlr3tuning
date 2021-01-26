@@ -41,9 +41,19 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
     #' This defines the resampled performance of a learner on a task, a
     #' feasibility region for the parameters the tuner is supposed to optimize,
     #' and a termination criterion.
-    initialize = function(task, learner, resampling, measures, search_space,
-      terminator, store_models = FALSE, check_values = FALSE,
-      store_benchmark_result = TRUE) {
+    initialize = function(task, learner, resampling, measures,
+      terminator, search_space = NULL, store_models = FALSE,
+      check_values = FALSE, store_benchmark_result = TRUE) {
+      learner = assert_learner(as_learner(learner, clone = TRUE))
+
+      if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token")) > 0) {
+        stop("If the values of the ParamSet of the Learner contain TuneTokens you cannot supply a search_space.")
+      }
+      if (is.null(search_space)) {
+        search_space = learner$param_set$search_space()
+        learner$param_set$values = learner$param_set$get_values(type = "without_token")
+      }
+
       obj = ObjectiveTuning$new(
         task = task, learner = learner,
         resampling = resampling, measures = measures,
@@ -64,7 +74,7 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
     assign_result = function(xdt, ydt, learner_param_vals = NULL) {
       # set the column with the learner param_vals that were not optimized over but set implicitly
       if (is.null(learner_param_vals)) {
-        learner_param_vals = self$objective$learner$param_set$values
+        learner_param_vals = self$objective$learner$param_set$get_values(type = "without_token")
         learner_param_vals = replicate(nrow(xdt), learner_param_vals, simplify = FALSE)
       }
       assert_list(learner_param_vals, len = nrow(xdt))
