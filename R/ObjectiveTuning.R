@@ -41,17 +41,13 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
-    initialize = function(task, learner, resampling, measures,
-      check_values = TRUE, store_benchmark_result = TRUE,
+    initialize = function(task, learner, resampling, measures, check_values = TRUE, store_benchmark_result = TRUE,
       store_models = FALSE) {
 
       self$task = assert_task(as_task(task, clone = TRUE))
       self$learner = assert_learner(as_learner(learner, clone = TRUE))
-      self$resampling = assert_resampling(as_resampling(
-        resampling,
-        clone = TRUE))
-      self$measures = assert_measures(as_measures(measures, clone = TRUE),
-        task = self$task, learner = self$learner)
+      self$resampling = assert_resampling(as_resampling(resampling, clone = TRUE))
+      self$measures = assert_measures(as_measures(measures, clone = TRUE), task = self$task, learner = self$learner)
       self$store_benchmark_result = assert_logical(store_benchmark_result)
       self$store_models = assert_logical(store_models)
       if (self$store_models && !self$store_benchmark_result) {
@@ -65,66 +61,25 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
         ParamDbl$new(id = s$id, tags = ifelse(s$minimize, "minimize", "maximize"))
       }))
 
-      super$initialize(
-        id = sprintf("%s_on_%s", self$learner$id, self$task$id), domain = self$learner$param_set,
+      super$initialize(id = sprintf("%s_on_%s", self$learner$id, self$task$id), domain = self$learner$param_set,
         codomain = codomain, check_values = check_values)
-    },
-
-    #' @description
-    #' Evaluates multiple input values on the objective function. If
-    #' `check_values = TRUE`, the validity of the points as well as the validity
-    #' of the results are checked.
-    #'
-    #' @param xss (`list()`)\cr
-    #'  A list of lists that contains multiple x values, e.g.
-    #'  `list(list(x1 = 1, x2 = 2), list(x1 = 3, x2 = 4))`.
-    #' @param c_hash (`character()`)\cr
-    #'  A vector of hashes matching models in the archive.
-    #'
-    #' @return data.table::data.table()] that contains one y-column for
-    #' single-criteria functions and multiple y-columns for multi-criteria functions,
-    #' e.g.  `data.table(y = 1:2)` or `data.table(y1 = 1:2, y2 = 3:4)`.
-    #' It may also contain additional columns that will be stored in the archive if
-    #' called through the [OptimInstance].
-    #' These extra columns are referred to as *extras*.
-    eval_many = function(xss, c_hash = NULL) {
-      if (self$check_values) lapply(xss, self$domain$assert)
-      res = private$.eval_many(xss, c_hash)
-      if (self$check_values) {
-        self$codomain$assert_dt(res[, self$codomain$ids(), with = FALSE])
-      }
-      return(res)
     }
   ),
 
   private = list(
-    .eval_many = function(xss, c_hash = NULL) {
+    .eval_many = function(xss) {
       learners = map(xss, function(x) {
         learner = self$learner$clone(deep = TRUE)
         learner$param_set$values = insert_named(learner$param_set$values, x)
         return(learner)
       })
 
-      if(is.null(c_hash) || "continue" %nin% self$learner$properties || !self$store_models || self$archive$n_evals == 0 || "GraphLearner" %in% class(self$learner)) {
+      if(is.null(self$continue_hash)) {
         design = benchmark_grid(self$task, learners, self$resampling)
         bmr = benchmark(design, store_models = self$store_models)
       } else {
-        # Search for continuable models by continue hash
-        archive = self$archive$data()
-        archive = archive[continue_hash %in% c_hash, ]
-        archive = archive[, .SD[which.max(batch_nr)], by = continue_hash]
-
-        if(nrow(archive) == length(xss)) {
-          # All models are continuable
-          uhash = archive$uhash
-          bmr_filtered = self$archive$benchmark_result$clone(deep = TRUE)$filter(uhashes = uhash)
-
-          bmr = benchmark_continue(learners, bmr_filtered, self$store_models)
-        } else {
-          # No or not all models are continuable
-          design = benchmark_grid(self$task, learners, self$resampling)
-          bmr = benchmark(design, store_models = self$store_models)
-        }
+        bmr = self$archive$benchmark_result$clone(deep = TRUE)$filter(uhashes = self$continue_hash)
+        bmr$continue(learners[[1]]$param_set$get_values(tags = "budget"), store_models = TRUE)
       }
 
       aggr = bmr$aggregate(self$measures)
@@ -139,6 +94,24 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
         cbind(aggr[, y, with = FALSE], uhash = bmr$uhashes)
       } else {
         aggr[, y, with = FALSE]
+      }
+    },
+
+    .continue_hash = NULL
+  ),
+
+  active = list(
+    continue_hash = function(rhs) {
+      if(missing(rhs)) {
+        if("continue" %nin% self$learner$properties
+          || !self$store_models
+          || "GraphLearner" %in% class(self$learner)) {
+            NULL
+        } else {
+          private$.continue_hash
+        }
+      } else {
+        private$.continue_hash = rhs
       }
     }
   )
