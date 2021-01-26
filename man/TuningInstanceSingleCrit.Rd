@@ -111,6 +111,7 @@ Param values for the optimal learner call.}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{TuningInstanceSingleCrit$new()}}
+\item \href{#method-eval_batch}{\code{TuningInstanceSingleCrit$eval_batch()}}
 \item \href{#method-assign_result}{\code{TuningInstanceSingleCrit$assign_result()}}
 \item \href{#method-clone}{\code{TuningInstanceSingleCrit$clone()}}
 }
@@ -118,7 +119,6 @@ Param values for the optimal learner call.}
 \if{html}{
 \out{<details open ><summary>Inherited methods</summary>}
 \itemize{
-\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="eval_batch">}\href{../../bbotk/html/OptimInstance.html#method-eval_batch}{\code{bbotk::OptimInstance$eval_batch()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="format">}\href{../../bbotk/html/OptimInstance.html#method-format}{\code{bbotk::OptimInstance$format()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="objective_function">}\href{../../bbotk/html/OptimInstance.html#method-objective_function}{\code{bbotk::OptimInstance$objective_function()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="print">}\href{../../bbotk/html/OptimInstance.html#method-print}{\code{bbotk::OptimInstance$print()}}\out{</span>}
@@ -176,6 +176,32 @@ Store models in benchmark result?}
 \item{\code{check_values}}{(\code{logical(1)})\cr
 Should parameters before the evaluation and the results be checked for
 validity?}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-eval_batch"></a>}}
+\if{latex}{\out{\hypertarget{method-eval_batch}{}}}
+\subsection{Method \code{eval_batch()}}{
+Evaluates all input values in \code{xdt} by calling
+the \link{Objective}. Applies possible transformations to the input values
+and writes the results to the \link{Archive}.
+
+Before each batch-evaluation, the \link{Terminator} is checked, and if it
+is positive, an exception of class \code{terminated_error} is raised. This
+function should be internally called by the \link{Optimizer}.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TuningInstanceSingleCrit$eval_batch(xdt)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{xdt}}{(\code{data.table::data.table()})\cr
+x values as \code{data.table()} with one point per row. Contains the value in
+the \emph{search space} of the \link{OptimInstance} object. Can contain additional
+columns for extra information.}
 }
 \if{html}{\out{</div>}}
 }

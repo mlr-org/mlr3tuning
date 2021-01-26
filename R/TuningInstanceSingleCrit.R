@@ -139,6 +139,18 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
       self$objective$archive = self$archive
     },
 
+    #' @description
+    #' Evaluates all input values in `xdt` by calling
+    #' the [Objective]. Applies possible transformations to the input values
+    #' and writes the results to the [Archive].
+    #'
+    #' Before each batch-evaluation, the [Terminator] is checked, and if it
+    #' is positive, an exception of class `terminated_error` is raised. This
+    #' function should be internally called by the [Optimizer].
+    #' @param xdt (`data.table::data.table()`)\cr
+    #' x values as `data.table()` with one point per row. Contains the value in
+    #' the *search space* of the [OptimInstance] object. Can contain additional
+    #' columns for extra information.
     eval_batch = function(xdt) {
       if (self$is_terminated || self$terminator$is_terminated(self$archive)) {
         self$is_terminated = TRUE

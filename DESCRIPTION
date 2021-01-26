@@ -55,6 +55,7 @@ Suggests:
     nloptr,
     rpart,
     testthat (>= 3.0.0)
+    xgboost
 Remotes:
     mlr-org/mlr3@continue,
     mlr-org/mlr3learners@continue
@@ -75,6 +76,7 @@ Collate:
     'TunerFromOptimizer.R'
     'TunerGenSA.R'
     'TunerGridSearch.R'
+    'TunerGridSearchContinue.R'
     'TunerNLoptr.R'
     'TunerRandomSearch.R'
     'TuningInstanceMulticrit.R'
