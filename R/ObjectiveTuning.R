@@ -101,6 +101,11 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
   ),
 
   active = list(
+
+    #' @field continue_hash (`character()`)\cr
+    #' Stores the `uhash` of models that should be continued in the next
+    #' `$eval_many` call. Returns `NULL` if the `Learner` does not support
+    #' `$continue()`, the learner is a `GraphLearner` or `store_models = FALSE`.
     continue_hash = function(rhs) {
       if(missing(rhs)) {
         if("continue" %nin% self$learner$properties

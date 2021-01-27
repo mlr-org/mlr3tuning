@@ -76,7 +76,6 @@ Collate:
     'TunerFromOptimizer.R'
     'TunerGenSA.R'
     'TunerGridSearch.R'
-    'TunerGridSearchContinue.R'
     'TunerNLoptr.R'
     'TunerRandomSearch.R'
     'TuningInstanceMulticrit.R'
