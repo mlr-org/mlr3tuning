@@ -1,3 +1,7 @@
+# mlr3tuning 0.6.0.9000
+
+- Fix `TuningInstance*$assign_result()` errors with required parameter bug.
+
 # mlr3tuning 0.6.0
 
 - `ArchiveTuning$data` is a public field now.
