@@ -291,8 +291,8 @@ test_that("inner_tuning_results function works", {
   rr = resample(task, at, resampling_outer, store_models = TRUE)
 
   irr = inner_tuning_results(rr)
-  expect_data_table(irr, nrows = ) 
-  expect_named(irr, c("cp", "learner_par2am_vals", "x_domain", "classif.ce"))
+  expect_data_table(irr, nrows = 2) 
+  expect_named(irr, c("cp", "learner_param_vals", "x_domain", "classif.ce"))
 
 
   at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
