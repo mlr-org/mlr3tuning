@@ -110,7 +110,7 @@ TunerIrace = R6Class("TunerIrace",
       
       browser()
       # Set resampling instances
-      ri = replicate(seq(pv$n_instances), {
+      ri = replicate(pv$n_instances, {
         r = objective$resampling$clone()
         r$instantiate(objective$task)
       })
