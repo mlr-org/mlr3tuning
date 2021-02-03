@@ -26,6 +26,8 @@ Stores benchmark result.}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
+\item \href{#method-learner}{\code{ArchiveTuning$learner()}}
+\item \href{#method-resample_result}{\code{ArchiveTuning$resample_result()}}
 \item \href{#method-clone}{\code{ArchiveTuning$clone()}}
 }
 }
@@ -40,6 +42,50 @@ Stores benchmark result.}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="print">}\href{../../bbotk/html/Archive.html#method-print}{\code{bbotk::Archive$print()}}\out{</span>}
 }
 \out{</details>}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-learner"></a>}}
+\if{latex}{\out{\hypertarget{method-learner}{}}}
+\subsection{Method \code{learner()}}{
+Retrieve \link[mlr3:Learner]{mlr3::Learner} of the i-th evaluation, by position
+or by unique hash \code{uhash}. \code{i} and \code{uhash} are mutually exclusive.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ArchiveTuning$learner(i = NULL, uhash = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{i}}{(\code{integer(1)})\cr
+The iteration value to filter for.}
+
+\item{\code{uhash}}{(\code{logical(1)})\cr
+The \code{uhash} value to filter for.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-resample_result"></a>}}
+\if{latex}{\out{\hypertarget{method-resample_result}{}}}
+\subsection{Method \code{resample_result()}}{
+Retrieve \link[mlr3:ResampleResult]{mlr3::ResampleResult} of the i-th evaluation, by position
+or by unique hash \code{uhash}. \code{i} and \code{uhash} are mutually exclusive.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ArchiveTuning$resample_result(i = NULL, uhash = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{i}}{(\code{integer(1)})\cr
+The iteration value to filter for.}
+
+\item{\code{uhash}}{(\code{logical(1)})\cr
+The \code{uhash} value to filter for.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

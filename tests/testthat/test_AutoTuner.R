@@ -278,3 +278,28 @@ test_that("search space from TuneToken works", {
     regexp = "If the values of the ParamSet of the Learner contain TuneTokens you cannot supply a search_space.",
     fixed = TRUE)
 })
+
+test_that("inner_tuning_results function works", {
+  te = trm("evals", n_evals = 4)
+  task = tsk("iris")
+  search_space = TEST_MAKE_PS1(n_dim = 1)
+  ms = msr("classif.ce")
+  tuner = tnr("grid_search", resolution = 3)
+
+  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
+  resampling_outer = rsmp("cv", folds = 2)
+  rr = resample(task, at, resampling_outer, store_models = TRUE)
+
+  irr = inner_tuning_results(rr)
+  expect_data_table(irr, nrows = ) 
+  expect_named(irr, c("cp", "learner_par2am_vals", "x_domain", "classif.ce"))
+
+
+  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
+  resampling_outer = rsmp("repeated_cv", folds = 2, repeats = 3)
+  rr = resample(task, at, resampling_outer, store_models = TRUE)
+
+  irr = inner_tuning_results(rr)
+  expect_data_table(irr, nrows = 6) 
+  expect_named(irr, c("cp", "learner_param_vals", "x_domain", "classif.ce"))
+})
