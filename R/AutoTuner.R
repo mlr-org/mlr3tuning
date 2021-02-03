@@ -23,32 +23,42 @@
 #' and execute [mlr3::resample()] or [mlr3::benchmark()] with
 #' `store_models = TRUE` (see examples).
 #'
+#' @template param_store_models
+#' @template param_check_values
+#' @template param_store_benchmark_result
+#'
 #' @export
 #' @examples
 #' library(mlr3)
 #' library(paradox)
-#' task = tsk("iris")
-#' learner = lrn("classif.rpart")
-#' resampling = rsmp("holdout")
-#' measure = msr("classif.ce")
-#' search_space = ParamSet$new(
-#'   params = list(ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 #'
-#' terminator = trm("evals", n_evals = 5)
-#' tuner = tnr("grid_search")
+#' task = tsk("iris")
+#' search_space = ParamSet$new(
+#'   params = list(ParamDbl$new("cp", lower = 0.001, upper = 0.1))
+#' )
+#'
 #' at = AutoTuner$new(
-#'   learner, resampling, measure, search_space, terminator,
-#'   tuner)
-#' at$store_tuning_instance = TRUE
+#'   learner = lrn("classif.rpart"),
+#'   resampling = rsmp("holdout"),
+#'   measure = msr("classif.ce"),
+#'   terminator = trm("evals", n_evals = 5),
+#'   tuner = tnr("grid_search"),
+#'   search_space = search_space,
+#'   store_tuning_instance = TRUE)
 #'
 #' at$train(task)
 #' at$model
 #' at$learner
 #'
 #' # Nested resampling
-#' at = AutoTuner$new(learner, resampling, measure, search_space, terminator,
-#'   tuner)
-#' at$store_tuning_instance = TRUE
+#' at = AutoTuner$new(
+#'   learner = lrn("classif.rpart"),
+#'   resampling = rsmp("holdout"),
+#'   measure = msr("classif.ce"),
+#'   terminator = trm("evals", n_evals = 5),
+#'   tuner = tnr("grid_search"),
+#'   search_space = search_space,
+#'   store_tuning_instance = TRUE)
 #'
 #' resampling_outer = rsmp("cv", folds = 2)
 #' rr = resample(task, at, resampling_outer, store_models = TRUE)
@@ -69,12 +79,6 @@ AutoTuner = R6Class("AutoTuner",
     #' @field tuner ([Tuner]).
     tuner = NULL,
 
-    #' @field store_tuning_instance (`logical(1)`)\cr
-    #' If `TRUE` (default), stores the internally created
-    #' [TuningInstanceSingleCrit] with all intermediate results in slot
-    #' `$tuning_instance`.
-    store_tuning_instance = TRUE,
-
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #'
@@ -87,7 +91,7 @@ AutoTuner = R6Class("AutoTuner",
     #' on the training set of an arbitrary outer resampling. For this reason
     #' it is not feasible to pass an instantiated [mlr3::Resampling] here.
     #'
-    #' @param measure (list of [mlr3::Measure])\cr
+    #' @param measure ([mlr3::Measure])\cr
     #' Performance measure to optimize.
     #'
     #' @param search_space ([paradox::ParamSet])\cr
@@ -96,21 +100,42 @@ AutoTuner = R6Class("AutoTuner",
     #' @param terminator ([bbotk::Terminator])\cr
     #' When to stop tuning, see [TuningInstanceSingleCrit].
     #'
+    #' @param store_tuning_instance (`logical(1)`)\cr
+    #' If `TRUE` (default), stores the internally created
+    #' [TuningInstanceSingleCrit] with all intermediate results in slot
+    #' `$tuning_instance`.
+    #'
     #' @param tuner ([Tuner])\cr
     #' Tuning algorithm to run.
-    initialize = function(learner, resampling, measure, search_space,
-      terminator, tuner) {
+    initialize = function(learner, resampling, measure, terminator, tuner,
+      search_space = NULL, store_tuning_instance = TRUE,
+      store_benchmark_result = TRUE, store_models = FALSE,
+      check_values = FALSE) {
+      learner = assert_learner(learner)$clone(deep = TRUE)
+
+      if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token")) > 0) {
+        stop("If the values of the ParamSet of the Learner contain TuneTokens you cannot supply a search_space.")
+      }
+
       ia = list()
-      ia$learner = assert_learner(learner)$clone(deep = TRUE)
-      ia$resampling = assert_resampling(resampling,
-        instantiated = FALSE)$clone()
+      ia$learner = learner
+      ia$resampling = assert_resampling(resampling, instantiated = FALSE)$clone()
       ia$measure = assert_measure(as_measure(measure), learner = learner)
-      ia$search_space = assert_param_set(search_space)$clone()
-      # We create a ParamSetColellection from the tuning ps and learner ps.
-      # Without setting the ps id to "", the parameter would be prefixed with
-      # the learner id in the ParamSetColellection.
-      ia$learner$param_set$set_id = ""
+      if(!is.null(search_space)) ia$search_space = assert_param_set(search_space)$clone()
       ia$terminator = assert_terminator(terminator)$clone()
+
+      private$.store_tuning_instance = assert_flag(store_tuning_instance)
+      ia$store_benchmark_result = assert_flag(store_benchmark_result)
+      ia$store_models = assert_flag(store_models)
+
+      if (!private$.store_tuning_instance && ia$store_benchmark_result) {
+        stop("Benchmark results can only be stored if store_tuning_instance is set to TRUE")
+      }
+      if (ia$store_models && !ia$store_benchmark_result) {
+        stop("Models can only be stored if store_benchmark_result is set to TRUE")
+      }
+
+      ia$check_values = assert_flag(check_values)
       self$instance_args = ia
       self$tuner = assert_tuner(tuner)$clone()
 
@@ -120,11 +145,11 @@ AutoTuner = R6Class("AutoTuner",
         packages = learner$packages,
         feature_types = learner$feature_types,
         predict_types = learner$predict_types,
-        param_set = learner$param_set,
         properties = learner$properties
       )
 
       self$predict_type = learner$predict_type
+      self$predict_sets = learner$predict_sets
     }
   ),
 
@@ -153,21 +178,23 @@ AutoTuner = R6Class("AutoTuner",
     #' Short-cut to `result` from [TuningInstanceSingleCrit].
     tuning_result = function() self$tuning_instance$result,
 
-    #' @field param_set [paradox::ParamSet].
-    param_set = function(rhs) {
-      if (is.null(private$.param_set)) {
-        private$.param_set = ParamSetCollection$new(list(
-          # --> this is how we would insert the self$tuner_paramset:
-          # self$tuner$param_set,
-          self$learner$param_set
-        ))
-        private$.param_set$set_id = private$.ps_id
+    #' @field predict_type (`character(1)`)\cr
+    #' Stores the currently active predict type, e.g. `"response"`.
+    #' Must be an element of `$predict_types`.
+    predict_type = function(rhs) {
+      if (missing(rhs)) {
+        return(private$.predict_type)
+      }
+      if (rhs %nin% self$predict_types) {
+        stopf("Learner '%s' does not support predict type '%s'", self$id, rhs)
       }
 
-      if (!missing(rhs) && !identical(rhs, private$.param_set)) {
-        stop("param_set is read-only.")
-      }
-      private$.param_set
+      # Catches 'Error: Field/Binding is read-only' bug
+      tryCatch({
+        self$model$learner$predict_type = rhs
+      }, error = function(cond){})
+
+      private$.predict_type = rhs
     }
   ),
 
@@ -188,7 +215,8 @@ AutoTuner = R6Class("AutoTuner",
       # the return model is a list of "learner" and "tuning_instance"
       result_model = list()
       result_model$learner = learner
-      if (isTRUE(self$store_tuning_instance)) {
+
+      if (isTRUE(private$.store_tuning_instance)) {
         result_model$tuning_instance = instance
       }
       return(result_model)
@@ -198,18 +226,6 @@ AutoTuner = R6Class("AutoTuner",
       self$model$learner$predict(task)
     },
 
-    deep_clone = function(name, value) {
-      if (!is.null(private$.param_set)) {
-        private$.ps_id = private$.param_set$set_id
-        # required to keep clone identical to original, otherwise tests get
-        # really ugly
-        private$.param_set = NULL
-      }
-      if (is.environment(value) && !is.null(value[[".__enclos_env__"]])) {
-        return(value$clone(deep = TRUE))
-      }
-      value
-    },
-    .ps_id = ""
+    .store_tuning_instance = NULL
   )
 )

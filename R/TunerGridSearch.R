@@ -1,4 +1,4 @@
-#' @title TunerGridSearch
+#' @title Hyperparameter Tuning with Grid Search
 #'
 #' @name mlr_tuners_grid_search
 #'
@@ -17,7 +17,10 @@
 #'
 #'
 #' @inheritSection bbotk::OptimizerGridSearch Parameters
+#' @inheritSection bbotk::OptimizerGridSearch Progress Bars
 #'
+#' @family Tuner
+#' @seealso Package \CRANpkg{mlr3hyperband} for hyperband tuning.
 #' @export
 #' @template example
 TunerGridSearch = R6Class("TunerGridSearch",

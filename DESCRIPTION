@@ -1,6 +1,6 @@
 Package: mlr3tuning
 Title: Tuning for 'mlr3'
-Version: 0.3.0.9000
+Version: 0.6.0.9000
 Authors@R:
     c(person(given = "Marc",
              family = "Becker",
@@ -37,25 +37,25 @@ URL: https://mlr3tuning.mlr-org.com,
     https://github.com/mlr-org/mlr3tuning
 BugReports: https://github.com/mlr-org/mlr3tuning/issues
 Depends:
+    mlr3 (>= 0.7.0),
+    paradox (>= 0.7.0),
     R (>= 3.1.0)
 Imports:
-    bbotk (>= 0.2.0),
+    bbotk (>= 0.3.0),
     checkmate (>= 2.0.0),
     data.table,
     lgr,
-    mlr3,
-    mlr3misc (>= 0.5.0),
-    paradox (>= 0.3.0),
+    mlr3misc (>= 0.7.0),
     R6
 Suggests:
-    bibtex,
+    adagio,
     GenSA,
     mlr3pipelines,
     nloptr,
     rpart,
-    testthat
-RdMacros:
-    mlr3misc
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Config/testthat/parallel: true
 Encoding: UTF-8
 NeedsCompilation: no
 Roxygen: list(markdown = TRUE)
@@ -66,6 +66,7 @@ Collate:
     'ObjectiveTuning.R'
     'mlr_tuners.R'
     'Tuner.R'
+    'TunerCmaes.R'
     'TunerDesignPoints.R'
     'TunerFromOptimizer.R'
     'TunerGenSA.R'
@@ -75,6 +76,7 @@ Collate:
     'TuningInstanceMulticrit.R'
     'TuningInstanceSingleCrit.R'
     'assertions.R'
+    'bibentries.R'
     'helper.R'
     'reexport.R'
     'sugar.R'

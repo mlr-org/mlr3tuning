@@ -3,11 +3,11 @@
 Package website: [release](https://mlr3tuning.mlr-org.com/) | [dev](https://mlr3tuning.mlr-org.com/dev/)
 
 <!-- badges: start -->
-[![tic](https://github.com/mlr-org/mlr3tuning/workflows/tic/badge.svg?branch=master)](https://github.com/mlr-org/mlr3tuning/actions)
-[![CRAN Status Badge](https://www.r-pkg.org/badges/version-ago/mlr3tuning)](https://cran.r-project.org/package=mlr3tuning)
-[![Cran Checks](https://cranchecks.info/badges/worst/mlr3tuning)](https://cran.r-project.org/web/checks/check_results_mlr3tuning.html)
-[![codecov](https://codecov.io/gh/mlr-org/mlr3tuning/branch/master/graph/badge.svg)](https://codecov.io/gh/mlr-org/mlr3tuning)
+[![tic](https://github.com/mlr-org/mlr3tuning/workflows/tic/badge.svg?branch=main)](https://github.com/mlr-org/mlr3tuning/actions)
+[![CRAN Status](https://www.r-pkg.org/badges/version-ago/mlr3tuning)](https://cran.r-project.org/package=mlr3tuning)
 [![StackOverflow](https://img.shields.io/badge/stackoverflow-mlr3-orange.svg)](https://stackoverflow.com/questions/tagged/mlr3)
+[![Mattermost](https://img.shields.io/badge/chat-mattermost-orange.svg)](https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/)
+[![CodeFactor](https://www.codefactor.io/repository/github/mlr-org/mlr3tuning/badge)](https://www.codefactor.io/repository/github/mlr-org/mlr3tuning)
 <!-- badges: end -->
 
 This package provides hyperparameter tuning for
@@ -22,19 +22,19 @@ framework for optimization.
 
 CRAN version
 
-```{r}
+```r
 install.packages("mlr3tuning")
 ```
 
 Development version
 
-```{r}
+```r
 remotes::install_github("mlr-org/mlr3tuning")
 ```
 
 ## Example
 
-```{r}
+```r
 library("mlr3")
 library("mlr3tuning")
 library("paradox")
@@ -58,8 +58,8 @@ instance = TuningInstanceSingleCrit$new(task = task,
   learner = learner,
   resampling = resampling,
   measure = measure,
-  search_space = search_space,
-  terminator = terminator)
+  terminator = terminator,
+  search_space = search_space)
 
 # Load tuner
 tuner = tnr("grid_search", resolution = 5)

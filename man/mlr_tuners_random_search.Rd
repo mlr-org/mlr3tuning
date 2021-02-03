@@ -3,9 +3,12 @@
 \name{mlr_tuners_random_search}
 \alias{mlr_tuners_random_search}
 \alias{TunerRandomSearch}
-\title{TunerRandomSearch}
+\title{Hyperparameter Tuning with Random Search}
 \source{
-\cite{bbotk}{bergstra_2012}
+Bergstra J, Bengio Y (2012).
+\dQuote{Random Search for Hyper-Parameter Optimization.}
+\emph{Journal of Machine Learning Research}, \bold{13}(10), 281--305.
+\url{https://jmlr.csail.mit.edu/papers/v13/bergstra12a.html}.
 }
 \description{
 Subclass for random search tuning.
@@ -45,24 +48,19 @@ Use \code{lgr::get_logger("bbotk")} to access and control the logger.
 
 
 \describe{
-\item{\code{algorithm}}{\code{character(1)}}
-\item{\code{x0}}{\code{numeric()}}
-\item{\code{eval_g_ineq}}{\verb{function()}}
-\item{\code{xtol_rel}}{\code{numeric(1)}}
-\item{\code{xtol_abs}}{\code{numeric(1)}}
-\item{\code{ftol_rel}}{\code{numeric(1)}}
-\item{\code{ftol_abs}}{\code{numeric(1)}}
+\item{\code{batch_size}}{\code{integer(1)}\cr
+Maximum number of points to try in a batch.}
 }
 
-For the meaning of the control parameters, see \code{\link[nloptr:nloptr]{nloptr::nloptr()}} and
-\code{\link[nloptr:nloptr.print.options]{nloptr::nloptr.print.options()}}.
+}
 
-The termination conditions \code{stopval}, \code{maxtime} and \code{maxeval} of
-\code{\link[nloptr:nloptr]{nloptr::nloptr()}} are deactivated and replaced by the \link[bbotk]{Terminator}
-subclasses. The x and function value tolerance termination conditions
-(\code{xtol_rel = 10^-4}, \code{xtol_abs = rep(0.0, length(x0))}, \code{ftol_rel = 0.0} and
-\code{ftol_abs = 0.0}) are still available and implemented with their package
-defaults. To deactivate these conditions, set them to \code{-1}.
+\section{Progress Bars}{
+
+
+\verb{$optimize()} supports progress bars via the package \href{https://CRAN.R-project.org/package=progressr}{\pkg{progressr}}
+combined with a \link[bbotk]{Terminator}. Simply wrap the function in
+\code{progressr::with_progress()} to enable them. We recommend to use package
+\href{https://CRAN.R-project.org/package=progress}{\pkg{progress}} as backend; enable with \code{progressr::handlers("progress")}.
 
 }
 
@@ -92,6 +90,17 @@ instance$result
 # allows access of data.table of full path of all evaluations
 instance$archive
 }
+\seealso{
+Package \CRANpkg{mlr3hyperband} for hyperband tuning.
+
+Other Tuner: 
+\code{\link{mlr_tuners_cmaes}},
+\code{\link{mlr_tuners_design_points}},
+\code{\link{mlr_tuners_gensa}},
+\code{\link{mlr_tuners_grid_search}},
+\code{\link{mlr_tuners_nloptr}}
+}
+\concept{Tuner}
 \section{Super classes}{
 \code{\link[mlr3tuning:Tuner]{mlr3tuning::Tuner}} -> \code{\link[mlr3tuning:TunerFromOptimizer]{mlr3tuning::TunerFromOptimizer}} -> \code{TunerRandomSearch}
 }

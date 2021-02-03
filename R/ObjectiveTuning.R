@@ -46,8 +46,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       store_models = FALSE) {
 
       self$task = assert_task(as_task(task, clone = TRUE))
-      self$learner = assert_learner(as_learner(learner, clone = TRUE),
-        task = self$task)
+      self$learner = assert_learner(as_learner(learner, clone = TRUE))
       self$resampling = assert_resampling(as_resampling(
         resampling,
         clone = TRUE))
@@ -63,14 +62,11 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       }
 
       codomain = ParamSet$new(map(self$measures, function(s) {
-        ParamDbl$new(
-          id = s$id,
-          tags = ifelse(s$minimize, "minimize", "maximize"))
+        ParamDbl$new(id = s$id, tags = ifelse(s$minimize, "minimize", "maximize"))
       }))
 
-      super$initialize(
-        id = sprintf("%s_on_%s", self$learner$id, self$task$id), domain = self$learner$param_set,
-        codomain = codomain, check_values = check_values)
+      super$initialize(id = sprintf("%s_on_%s", self$learner$id, self$task$id), 
+        domain = self$learner$param_set, codomain = codomain, check_values = check_values)
     }
   ),
 

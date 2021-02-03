@@ -30,28 +30,34 @@ and execute \code{\link[mlr3:resample]{mlr3::resample()}} or \code{\link[mlr3:be
 \examples{
 library(mlr3)
 library(paradox)
-task = tsk("iris")
-learner = lrn("classif.rpart")
-resampling = rsmp("holdout")
-measure = msr("classif.ce")
-search_space = ParamSet$new(
-  params = list(ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 
-terminator = trm("evals", n_evals = 5)
-tuner = tnr("grid_search")
+task = tsk("iris")
+search_space = ParamSet$new(
+  params = list(ParamDbl$new("cp", lower = 0.001, upper = 0.1))
+)
+
 at = AutoTuner$new(
-  learner, resampling, measure, search_space, terminator,
-  tuner)
-at$store_tuning_instance = TRUE
+  learner = lrn("classif.rpart"),
+  resampling = rsmp("holdout"),
+  measure = msr("classif.ce"),
+  terminator = trm("evals", n_evals = 5),
+  tuner = tnr("grid_search"),
+  search_space = search_space,
+  store_tuning_instance = TRUE)
 
 at$train(task)
 at$model
 at$learner
 
 # Nested resampling
-at = AutoTuner$new(learner, resampling, measure, search_space, terminator,
-  tuner)
-at$store_tuning_instance = TRUE
+at = AutoTuner$new(
+  learner = lrn("classif.rpart"),
+  resampling = rsmp("holdout"),
+  measure = msr("classif.ce"),
+  terminator = trm("evals", n_evals = 5),
+  tuner = tnr("grid_search"),
+  search_space = search_space,
+  store_tuning_instance = TRUE)
 
 resampling_outer = rsmp("cv", folds = 2)
 rr = resample(task, at, resampling_outer, store_models = TRUE)
@@ -72,11 +78,6 @@ as.data.table(rr)$learner[[1]]$tuning_result
 All arguments from construction to create the \link{TuningInstanceSingleCrit}.}
 
 \item{\code{tuner}}{(\link{Tuner}).}
-
-\item{\code{store_tuning_instance}}{(\code{logical(1)})\cr
-If \code{TRUE} (default), stores the internally created
-\link{TuningInstanceSingleCrit} with all intermediate results in slot
-\verb{$tuning_instance}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -95,7 +96,9 @@ Internally created tuning instance with all intermediate results.}
 \item{\code{tuning_result}}{(named \code{list()})\cr
 Short-cut to \code{result} from \link{TuningInstanceSingleCrit}.}
 
-\item{\code{param_set}}{\link[paradox:ParamSet]{paradox::ParamSet}.}
+\item{\code{predict_type}}{(\code{character(1)})\cr
+Stores the currently active predict type, e.g. \code{"response"}.
+Must be an element of \verb{$predict_types}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -109,6 +112,7 @@ Short-cut to \code{result} from \link{TuningInstanceSingleCrit}.}
 \if{html}{
 \out{<details ><summary>Inherited methods</summary>}
 \itemize{
+\item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="continue">}\href{../../mlr3/html/Learner.html#method-continue}{\code{mlr3::Learner$continue()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="format">}\href{../../mlr3/html/Learner.html#method-format}{\code{mlr3::Learner$format()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="help">}\href{../../mlr3/html/Learner.html#method-help}{\code{mlr3::Learner$help()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="predict">}\href{../../mlr3/html/Learner.html#method-predict}{\code{mlr3::Learner$predict()}}\out{</span>}
@@ -116,6 +120,7 @@ Short-cut to \code{result} from \link{TuningInstanceSingleCrit}.}
 \item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="print">}\href{../../mlr3/html/Learner.html#method-print}{\code{mlr3::Learner$print()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="reset">}\href{../../mlr3/html/Learner.html#method-reset}{\code{mlr3::Learner$reset()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="train">}\href{../../mlr3/html/Learner.html#method-train}{\code{mlr3::Learner$train()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="update">}\href{../../mlr3/html/Learner.html#method-update}{\code{mlr3::Learner$update()}}\out{</span>}
 }
 \out{</details>}
 }
@@ -125,7 +130,18 @@ Short-cut to \code{result} from \link{TuningInstanceSingleCrit}.}
 \subsection{Method \code{new()}}{
 Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AutoTuner$new(learner, resampling, measure, search_space, terminator, tuner)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AutoTuner$new(
+  learner,
+  resampling,
+  measure,
+  terminator,
+  tuner,
+  search_space = NULL,
+  store_tuning_instance = TRUE,
+  store_benchmark_result = TRUE,
+  store_models = FALSE,
+  check_values = FALSE
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -140,17 +156,32 @@ Resampling strategy during tuning, see \link{TuningInstanceSingleCrit}. This
 on the training set of an arbitrary outer resampling. For this reason
 it is not feasible to pass an instantiated \link[mlr3:Resampling]{mlr3::Resampling} here.}
 
-\item{\code{measure}}{(list of \link[mlr3:Measure]{mlr3::Measure})\cr
+\item{\code{measure}}{(\link[mlr3:Measure]{mlr3::Measure})\cr
 Performance measure to optimize.}
-
-\item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
-Hyperparameter search space, see \link{TuningInstanceSingleCrit}.}
 
 \item{\code{terminator}}{(\link[bbotk:Terminator]{bbotk::Terminator})\cr
 When to stop tuning, see \link{TuningInstanceSingleCrit}.}
 
 \item{\code{tuner}}{(\link{Tuner})\cr
 Tuning algorithm to run.}
+
+\item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
+Hyperparameter search space, see \link{TuningInstanceSingleCrit}.}
+
+\item{\code{store_tuning_instance}}{(\code{logical(1)})\cr
+If \code{TRUE} (default), stores the internally created
+\link{TuningInstanceSingleCrit} with all intermediate results in slot
+\verb{$tuning_instance}.}
+
+\item{\code{store_benchmark_result}}{(\code{logical(1)})\cr
+Store benchmark result in archive?}
+
+\item{\code{store_models}}{(\code{logical(1)})\cr
+Store models in benchmark result?}
+
+\item{\code{check_values}}{(\code{logical(1)})\cr
+Should parameters before the evaluation and the results be checked for
+validity?}
 }
 \if{html}{\out{</div>}}
 }

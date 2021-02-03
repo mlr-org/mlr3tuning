@@ -75,17 +75,6 @@
 #' instance$archive
 Tuner = R6Class("Tuner",
   public = list(
-    #' @field param_set ([paradox::ParamSet]).
-    param_set = NULL,
-
-    #' @field param_classes (`character()`).
-    param_classes = NULL,
-
-    #' @field properties (`character()`).
-    properties = NULL,
-
-    #' @field packages (`character()`).
-    packages = NULL,
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
@@ -106,17 +95,15 @@ Tuner = R6Class("Tuner",
     #' [requireNamespace()], and are not attached.
     initialize = function(param_set, param_classes, properties,
       packages = character()) {
-      self$param_set = assert_param_set(param_set)
-      self$param_classes = assert_subset(
-        param_classes,
+      private$.param_set = assert_param_set(param_set)
+      private$.param_classes = assert_subset(param_classes,
         c("ParamLgl", "ParamInt", "ParamDbl", "ParamFct", "ParamUty"))
       # has to have at least multi-crit or single-crit property
-      self$properties = assert_subset(properties,
-        bbotk_reflections$optimizer_properties,
-        empty.ok = FALSE)
-      self$packages = assert_set(packages)
+      private$.properties = assert_subset(properties, bbotk_reflections$optimizer_properties, empty.ok = FALSE)
+      private$.packages = assert_set(packages)
 
-      check_packages_installed(self$packages, msg = sprintf("Package '%%s' required but not installed for Tuner '%s'", format(self)))
+      check_packages_installed(self$packages, 
+        msg = sprintf("Package '%%s' required but not installed for Tuner '%s'", format(self)))
     },
 
     #' @description
@@ -152,12 +139,55 @@ Tuner = R6Class("Tuner",
     }
   ),
 
+  active = list(
+   
+    #' @field param_set ([paradox::ParamSet]).
+    param_set = function(rhs) {
+      if (!missing(rhs) && !identical(rhs, private$.param_set)) {
+        stop("$param_set is read-only.")
+      }
+      private$.param_set
+    },
+
+    #' @field param_classes (`character()`).
+    param_classes = function(rhs) {
+      if (!missing(rhs) && !identical(rhs, private$.param_classes)) {
+        stop("$param_classes is read-only.")
+      }
+      private$.param_classes
+    },
+
+    #' @field properties (`character()`).
+    properties = function(rhs) {
+      if (!missing(rhs) && !identical(rhs, private$.properties)) {
+        stop("$properties is read-only.")
+      }
+      private$.properties
+    },
+
+    #' @field packages (`character()`).
+    packages = function(rhs) {
+      if (!missing(rhs) && !identical(rhs, private$.packages)) {
+        stop("$packages is read-only.")
+      }
+      private$.packages
+    }
+  ),
+
   private = list(
     .optimize = function(inst) stop("abstract"),
 
     .assign_result = function(inst) {
       assert_multi_class(inst, c("TuningInstanceSingleCrit", "TuningInstanceMultiCrit"))
       assign_result_default(inst)
-    }
+    },
+
+    .param_set = NULL,
+
+    .param_classes = NULL,
+
+    .properties = NULL,
+
+    .packages = NULL
   )
 )

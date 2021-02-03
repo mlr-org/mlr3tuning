@@ -9,15 +9,6 @@
 #' [mlr3::BenchmarkResult] is connected to the [data.table::data.table] via the
 #' `uhash` column.
 #'
-#' @section Technical details:
-#'
-#' The data is stored in a private `.data` field that contains a
-#' [data.table::data.table] which logs all performed function calls of the [ObjectiveTuning].
-#' This [data.table::data.table] is accessed with the public `$data()` method. New
-#' values can be added with the `$add_evals()` method. This however is usually
-#' done through the evaluation of the [TuningInstanceSingleCrit] or
-#' [TuningInstanceMultiCrit] by the [Tuner].
-#'
 #' @export
 ArchiveTuning = R6Class("ArchiveTuning",
   inherit = Archive,

@@ -3,11 +3,17 @@
 \name{mlr_tuners_gensa}
 \alias{mlr_tuners_gensa}
 \alias{TunerGenSA}
-\title{TunerGenSA}
+\title{Hyperparameter Tuning with Generalized Simulated Annealing}
 \source{
-\cite{bbotk}{tsallis_1996}
+Tsallis C, Stariolo DA (1996).
+\dQuote{Generalized simulated annealing.}
+\emph{Physica A: Statistical Mechanics and its Applications}, \bold{233}(1-2), 395--406.
+\doi{10.1016/s0378-4371(96)00271-3}.
 
-\cite{bbotk}{xiang_2013}
+Xiang Y, Gubian S, Suomela B, Hoeng J (2013).
+\dQuote{Generalized Simulated Annealing for Global Optimization: The GenSA Package.}
+\emph{The R Journal}, \bold{5}(1), 13.
+\doi{10.32614/rj-2013-002}.
 }
 \description{
 Subclass for generalized simulated annealing tuning calling \code{\link[GenSA:GenSA]{GenSA::GenSA()}}
@@ -46,6 +52,16 @@ algorithm and where our terminators allow to obtain the same behavior.
 
 }
 
+\section{Progress Bars}{
+
+
+\verb{$optimize()} supports progress bars via the package \href{https://CRAN.R-project.org/package=progressr}{\pkg{progressr}}
+combined with a \link[bbotk]{Terminator}. Simply wrap the function in
+\code{progressr::with_progress()} to enable them. We recommend to use package
+\href{https://CRAN.R-project.org/package=progress}{\pkg{progress}} as backend; enable with \code{progressr::handlers("progress")}.
+
+}
+
 \examples{
 library(mlr3)
 library(paradox)
@@ -72,6 +88,17 @@ instance$result
 # allows access of data.table of full path of all evaluations
 instance$archive
 }
+\seealso{
+Package \CRANpkg{mlr3hyperband} for hyperband tuning.
+
+Other Tuner: 
+\code{\link{mlr_tuners_cmaes}},
+\code{\link{mlr_tuners_design_points}},
+\code{\link{mlr_tuners_grid_search}},
+\code{\link{mlr_tuners_nloptr}},
+\code{\link{mlr_tuners_random_search}}
+}
+\concept{Tuner}
 \section{Super classes}{
 \code{\link[mlr3tuning:Tuner]{mlr3tuning::Tuner}} -> \code{\link[mlr3tuning:TunerFromOptimizer]{mlr3tuning::TunerFromOptimizer}} -> \code{TunerGenSA}
 }

@@ -3,7 +3,7 @@
 \name{mlr_tuners_grid_search}
 \alias{mlr_tuners_grid_search}
 \alias{TunerGridSearch}
-\title{TunerGridSearch}
+\title{Hyperparameter Tuning with Grid Search}
 \description{
 Subclass for grid search tuning.
 
@@ -55,6 +55,16 @@ Maximum number of points to try in a batch.}
 
 }
 
+\section{Progress Bars}{
+
+
+\verb{$optimize()} supports progress bars via the package \href{https://CRAN.R-project.org/package=progressr}{\pkg{progressr}}
+combined with a \link[bbotk]{Terminator}. Simply wrap the function in
+\code{progressr::with_progress()} to enable them. We recommend to use package
+\href{https://CRAN.R-project.org/package=progress}{\pkg{progress}} as backend; enable with \code{progressr::handlers("progress")}.
+
+}
+
 \examples{
 library(mlr3)
 library(paradox)
@@ -81,6 +91,17 @@ instance$result
 # allows access of data.table of full path of all evaluations
 instance$archive
 }
+\seealso{
+Package \CRANpkg{mlr3hyperband} for hyperband tuning.
+
+Other Tuner: 
+\code{\link{mlr_tuners_cmaes}},
+\code{\link{mlr_tuners_design_points}},
+\code{\link{mlr_tuners_gensa}},
+\code{\link{mlr_tuners_nloptr}},
+\code{\link{mlr_tuners_random_search}}
+}
+\concept{Tuner}
 \section{Super classes}{
 \code{\link[mlr3tuning:Tuner]{mlr3tuning::Tuner}} -> \code{\link[mlr3tuning:TunerFromOptimizer]{mlr3tuning::TunerFromOptimizer}} -> \code{TunerGridSearch}
 }

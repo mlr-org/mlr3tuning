@@ -1,4 +1,4 @@
-#' @title TunerGenSA
+#' @title Hyperparameter Tuning with Generalized Simulated Annealing
 #'
 #' @name mlr_tuners_gensa
 #'
@@ -11,12 +11,13 @@
 #' @template section_logging
 #'
 #' @inheritSection bbotk::OptimizerGenSA Parameters
+#' @inheritSection bbotk::OptimizerGenSA Progress Bars
 #'
 #' @source
-#' \cite{bbotk}{tsallis_1996}
+#' `r format_bib("tsallis_1996", "xiang_2013")`
 #'
-#' \cite{bbotk}{xiang_2013}
-#'
+#' @family Tuner
+#' @seealso Package \CRANpkg{mlr3hyperband} for hyperband tuning.
 #' @export
 #' @template example
 TunerGenSA = R6Class("TunerGenSA",
