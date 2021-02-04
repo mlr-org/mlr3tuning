@@ -29,7 +29,7 @@ ArchiveTuning = R6Class("ArchiveTuning",
     #' @param uhash (`logical(1)`)\cr
     #' The `uhash` value to filter for.
     learner = function(i = NULL, uhash = NULL) {
-      self$benchmark_result$resample_result(i = i, uhash = uhash)$learner
+      self$resample_result(i = i, uhash = uhash)$learner
     },
 
     #' @description
@@ -48,11 +48,11 @@ ArchiveTuning = R6Class("ArchiveTuning",
 
   active = list(
 
-    #' @field extended_archive ([data.table::data.table])\cr
-    #' Joins each performed function call of the Objective with the
+    #' @field extended_archive ([data.table::data.table()])\cr
+    #' Joins each performed function call of the [Objective] with the
     #' corresponding [mlr3::ResampleResult].
     extended_archive = function() {
-      setDT(self$data)[self$benchmark_result$resample_results, on = "uhash"] 
+      self$data[self$benchmark_result$resample_results, on = "uhash"]
     }
   )
 )

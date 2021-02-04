@@ -26,8 +26,8 @@ Stores benchmark result.}
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
-\item{\code{extended_archive}}{(\link[data.table:data.table]{data.table::data.table})\cr
-Joins each performed function call of the Objective with the
+\item{\code{extended_archive}}{(\code{\link[data.table:data.table]{data.table::data.table()}})\cr
+Joins each performed function call of the \link{Objective} with the
 corresponding \link[mlr3:ResampleResult]{mlr3::ResampleResult}.}
 }
 \if{html}{\out{</div>}}

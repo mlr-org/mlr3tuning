@@ -14,9 +14,9 @@ Must contain an \link{AutoTuner}.}
 \link[data.table:data.table]{data.table::data.table}.
 }
 \description{
-Retrieves innner tuning results of nested resampling. The function iterates
+Retrieves inner tuning results of nested resampling. The function iterates
 over the \link{AutoTuner}s stored in the \link[mlr3:ResampleResult]{mlr3::ResampleResult} and binds the
-tuning results to a \link[data.table:data.table]{data.table::data.table}. \link{AutoTuner} must be
+tuning results to a \code{\link[data.table:data.table]{data.table::data.table()}}. \link{AutoTuner} must be
 initialized with \code{store_tuning_instance = TRUE}.
 }
 \examples{
