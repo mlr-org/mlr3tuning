@@ -108,7 +108,6 @@ TunerIrace = R6Class("TunerIrace",
         stopf("%s is not supported. Use <TerminatorEvals> or <TerminatorRunTime> instead.", format(inst$terminator))
       }
       
-      browser()
       # Set resampling instances
       ri = replicate(pv$n_instances, {
         r = objective$resampling$clone()
