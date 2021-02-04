@@ -15,7 +15,8 @@ terminated_error = function(instance) {
 #' @description 
 #' Retrieves innner tuning results of nested resampling. The function iterates
 #' over the [AutoTuner]s stored in the [mlr3::ResampleResult] and binds the
-#' tuning results to a [data.table::data.table]. 
+#' tuning results to a [data.table::data.table]. [AutoTuner] must be
+#' initialized with `store_tuning_instance = TRUE`.
 #' 
 #' @param resample_result ([mlr3::ResampleResult])\cr
 #' Must contain an [AutoTuner].
