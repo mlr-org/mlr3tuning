@@ -43,12 +43,16 @@ ArchiveTuning = R6Class("ArchiveTuning",
     #' The `uhash` value to filter for.
     resample_result = function(i = NULL, uhash = NULL) {
       self$benchmark_result$resample_result(i = i, uhash = uhash)
-    },
-
-    #' @description
-    #' Joins archive data with [mlr3::ResampleResult] stored in [mlr3::BenchmarkResult].
-    join = function() {
-      setDT(self$data)[instance$archive$benchmark_result$resample_results, on = "uhash"] 
     }
   ),
+
+  active = list(
+
+    #' @field extended_archive ([data.table::data.table])\cr
+    #' Joins each performed function call of the Objective with the
+    #' corresponding [mlr3::ResampleResult].
+    extended_archive = function() {
+      setDT(self$data)[self$benchmark_result$resample_results, on = "uhash"] 
+    }
+  )
 )

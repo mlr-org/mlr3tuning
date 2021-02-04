@@ -23,12 +23,20 @@ Stores benchmark result.}
 }
 \if{html}{\out{</div>}}
 }
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{extended_archive}}{(\link[data.table:data.table]{data.table::data.table})\cr
+Joins each performed function call of the Objective with the
+corresponding \link[mlr3:ResampleResult]{mlr3::ResampleResult}.}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-learner}{\code{ArchiveTuning$learner()}}
 \item \href{#method-resample_result}{\code{ArchiveTuning$resample_result()}}
-\item \href{#method-join}{\code{ArchiveTuning$join()}}
 \item \href{#method-clone}{\code{ArchiveTuning$clone()}}
 }
 }
@@ -87,16 +95,6 @@ The \code{uhash} value to filter for.}
 }
 \if{html}{\out{</div>}}
 }
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-join"></a>}}
-\if{latex}{\out{\hypertarget{method-join}{}}}
-\subsection{Method \code{join()}}{
-Joins archive data with \link[mlr3:ResampleResult]{mlr3::ResampleResult} stored in \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ArchiveTuning$join()}\if{html}{\out{</div>}}
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
