@@ -11,13 +11,13 @@ extract_inner_tuning_results(x, ...)
 Must contain an \link{AutoTuner}.}
 }
 \value{
-\link[data.table:data.table]{data.table::data.table}.
+\code{\link[data.table:data.table]{data.table::data.table()}}.
 }
 \description{
-Extract innner tuning results of nested resampling. Implemented for
+Extract inner tuning results of nested resampling. Implemented for
 \link[mlr3:ResampleResult]{mlr3::ResampleResult} and \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}. The function iterates
 over the \link{AutoTuner} objects and binds the tuning results to a
-\link[data.table:data.table]{data.table::data.table}. \link{AutoTuner} must be initialized with
+\code{\link[data.table:data.table]{data.table::data.table()}}. \link{AutoTuner} must be initialized with
 \code{store_tuning_instance = TRUE}. For \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}, the number of
 the \code{experiment} is added to the table.
 }

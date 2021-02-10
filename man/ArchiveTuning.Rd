@@ -4,7 +4,7 @@
 \alias{ArchiveTuning}
 \title{Logging object for objective function evaluations}
 \description{
-Container around a \link[data.table:data.table]{data.table::data.table} which stores all performed
+Container around a \code{\link[data.table:data.table]{data.table::data.table()}} which stores all performed
 function calls of the Objective and the associated \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}.
 
 \verb{$benchmark_result} stores a \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} which contains the
