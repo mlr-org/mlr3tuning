@@ -230,3 +230,23 @@ test_that("TuneToken and result_learner_param_vals works", {
   expect_equal(instance$result_learner_param_vals$xval, 0)
   expect_equal(instance$result_learner_param_vals$cp, 0.1)
 })
+
+test_that("TuningInstanceSingleCrit can be continued", {
+  learner = lrn("classif.rpart", xval = 0)
+  learner$param_set$values$cp = to_tune(0.1, 0.3)
+
+  instance = TuningInstanceSingleCrit$new(task = tsk("iris"), learner = learner,
+    resampling = rsmp("holdout"), measure = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 4))
+
+  tuner = tnr("random_search", batch_size = 2)
+  tuner$optimize(instance)
+  expect_data_table(instance$archive$data, nrows = 4)
+
+  instance$terminator = trm("evals", n_evals = 8)
+  instance$is_terminated = FALSE
+
+  tuner$optimize(instance)
+  expect_data_table(instance$archive$data, nrows = 8)
+})
+
