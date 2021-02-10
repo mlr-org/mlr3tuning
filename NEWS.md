@@ -1,4 +1,6 @@
-# mlr3tuning 0.6.0.9000
+# mlr3tuning 0.7.0.9000
+
+# mlr3tuning 0.7.0
 
 - Fix `TuningInstance*$assign_result()` errors with required parameter bug.
 - Shortcuts to access `$learner()`, `$learners()`, `$learner_param_vals`,
