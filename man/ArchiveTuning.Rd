@@ -36,6 +36,9 @@ corresponding \link[mlr3:ResampleResult]{mlr3::ResampleResult}.}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-learner}{\code{ArchiveTuning$learner()}}
+\item \href{#method-learners}{\code{ArchiveTuning$learners()}}
+\item \href{#method-learner_param_vals}{\code{ArchiveTuning$learner_param_vals()}}
+\item \href{#method-predictions}{\code{ArchiveTuning$predictions()}}
 \item \href{#method-resample_result}{\code{ArchiveTuning$resample_result()}}
 \item \href{#method-clone}{\code{ArchiveTuning$clone()}}
 }
@@ -58,8 +61,78 @@ corresponding \link[mlr3:ResampleResult]{mlr3::ResampleResult}.}
 \subsection{Method \code{learner()}}{
 Retrieve \link[mlr3:Learner]{mlr3::Learner} of the i-th evaluation, by position
 or by unique hash \code{uhash}. \code{i} and \code{uhash} are mutually exclusive.
+Learner does not contain a model. Use \verb{$learners()} to get learners with
+models.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ArchiveTuning$learner(i = NULL, uhash = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{i}}{(\code{integer(1)})\cr
+The iteration value to filter for.}
+
+\item{\code{uhash}}{(\code{logical(1)})\cr
+The \code{uhash} value to filter for.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-learners"></a>}}
+\if{latex}{\out{\hypertarget{method-learners}{}}}
+\subsection{Method \code{learners()}}{
+Retrieve list of trained \link[mlr3:Learner]{mlr3::Learner} objects of the i-th evaluation,
+by position or by unique hash \code{uhash}. \code{i} and \code{uhash} are mutually
+exclusive.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ArchiveTuning$learners(i = NULL, uhash = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{i}}{(\code{integer(1)})\cr
+The iteration value to filter for.}
+
+\item{\code{uhash}}{(\code{logical(1)})\cr
+The \code{uhash} value to filter for.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-learner_param_vals"></a>}}
+\if{latex}{\out{\hypertarget{method-learner_param_vals}{}}}
+\subsection{Method \code{learner_param_vals()}}{
+Retrieve param values of the i-th evaluation, by position
+or by unique hash \code{uhash}. \code{i} and \code{uhash} are mutually exclusive.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ArchiveTuning$learner_param_vals(i = NULL, uhash = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{i}}{(\code{integer(1)})\cr
+The iteration value to filter for.}
+
+\item{\code{uhash}}{(\code{logical(1)})\cr
+The \code{uhash} value to filter for.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-predictions"></a>}}
+\if{latex}{\out{\hypertarget{method-predictions}{}}}
+\subsection{Method \code{predictions()}}{
+Retrieve list of \link[mlr3:Prediction]{mlr3::Prediction} objects of the i-th evaluation, by
+position or by unique hash \code{uhash}. \code{i} and \code{uhash} are mutually
+exclusive.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ArchiveTuning$predictions(i = NULL, uhash = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

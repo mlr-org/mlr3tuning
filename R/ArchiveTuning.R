@@ -22,6 +22,8 @@ ArchiveTuning = R6Class("ArchiveTuning",
     #' @description
     #' Retrieve [mlr3::Learner] of the i-th evaluation, by position
     #' or by unique hash `uhash`. `i` and `uhash` are mutually exclusive.
+    #' Learner does not contain a model. Use `$learners()` to get learners with
+    #' models.
     #'
     #' @param i (`integer(1)`)\cr
     #' The iteration value to filter for.
@@ -30,6 +32,47 @@ ArchiveTuning = R6Class("ArchiveTuning",
     #' The `uhash` value to filter for.
     learner = function(i = NULL, uhash = NULL) {
       self$benchmark_result$resample_result(i = i, uhash = uhash)$learner
+    },
+
+    #' @description
+    #' Retrieve list of trained [mlr3::Learner] objects of the i-th evaluation,
+    #' by position or by unique hash `uhash`. `i` and `uhash` are mutually
+    #' exclusive.
+    #'
+    #' @param i (`integer(1)`)\cr
+    #' The iteration value to filter for.
+    #'
+    #' @param uhash (`logical(1)`)\cr
+    #' The `uhash` value to filter for.
+    learners = function(i = NULL, uhash = NULL) {
+      self$benchmark_result$resample_result(i = i, uhash = uhash)$learners
+    },
+
+    #' @description
+    #' Retrieve param values of the i-th evaluation, by position
+    #' or by unique hash `uhash`. `i` and `uhash` are mutually exclusive.
+    #'
+    #' @param i (`integer(1)`)\cr
+    #' The iteration value to filter for.
+    #'
+    #' @param uhash (`logical(1)`)\cr
+    #' The `uhash` value to filter for.
+    learner_param_vals = function(i = NULL, uhash = NULL) {
+      self$learner(i = i, uhash = uhash)$param_set$values
+    },
+
+    #' @description
+    #' Retrieve list of [mlr3::Prediction] objects of the i-th evaluation, by
+    #' position or by unique hash `uhash`. `i` and `uhash` are mutually
+    #' exclusive.
+    #'
+    #' @param i (`integer(1)`)\cr
+    #' The iteration value to filter for.
+    #'
+    #' @param uhash (`logical(1)`)\cr
+    #' The `uhash` value to filter for.
+    predictions = function(i = NULL, uhash = NULL) {
+      self$benchmark_result$resample_result(i = i, uhash = uhash)$predictions()
     },
 
     #' @description

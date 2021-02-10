@@ -10,15 +10,17 @@ terminated_error = function(instance) {
     "terminated_error", "error", "condition"))
 }
 
-#' @title Retrieve Inner Tuning Results
+#' @title Extract Inner Tuning Results
 #' 
 #' @description 
-#' Retrieves innner tuning results of nested resampling. The function iterates
-#' over the [AutoTuner]s stored in the [mlr3::ResampleResult] and binds the
-#' tuning results to a [data.table::data.table]. [AutoTuner] must be
-#' initialized with `store_tuning_instance = TRUE`.
+#' Extract innner tuning results of nested resampling. Implemented for
+#' [mlr3::ResampleResult] and [mlr3::BenchmarkResult]. The function iterates
+#' over the [AutoTuner] objects and binds the tuning results to a
+#' [data.table::data.table]. [AutoTuner] must be initialized with
+#' `store_tuning_instance = TRUE`. For [mlr3::BenchmarkResult], the number of
+#' the `experiment` is added to the table.
 #' 
-#' @param resample_result ([mlr3::ResampleResult])\cr
+#' @param x ([mlr3::ResampleResult] | [mlr3::BenchmarkResult])\cr
 #' Must contain an [AutoTuner].
 #' @return [data.table::data.table].
 #' 
@@ -41,10 +43,24 @@ terminated_error = function(instance) {
 #' resampling_outer = rsmp("cv", folds = 2)
 #' rr = resample(task, at, resampling_outer, store_models = TRUE)
 #' 
-#' inner_tuning_results(rr)
-inner_tuning_results = function(resample_result) {
-  rr = assert_resample_result(resample_result)
+#' extract_inner_tuning_results(rr)
+extract_inner_tuning_results <- function (x, ...) {
+   UseMethod("extract_inner_tuning_results", x)
+}
+
+#' @export
+extract_inner_tuning_results.ResampleResult = function(x) {
+  rr = assert_resample_result(x)
   map(rr$learners, function(learner) assert_r6(learner, "AutoTuner"))
 
   rbindlist(map(rr$learners, function(learner) learner$tuning_result))
+}
+
+#' @export
+extract_inner_tuning_results.BenchmarkResult = function(x) {
+  bmr = assert_benchmark_result(x)
+  imap_dtr(bmr$resample_results$resample_result, function(rr, i) {
+     data = extract_inner_tuning_results(rr)
+     set(data, j = "experiment", value = i)
+  })
 }
