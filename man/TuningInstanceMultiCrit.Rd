@@ -43,6 +43,7 @@ List of param values for the optimal learner call.}
 \if{html}{
 \out{<details open ><summary>Inherited methods</summary>}
 \itemize{
+\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="clear">}\href{../../bbotk/html/OptimInstance.html#method-clear}{\code{bbotk::OptimInstance$clear()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="eval_batch">}\href{../../bbotk/html/OptimInstance.html#method-eval_batch}{\code{bbotk::OptimInstance$eval_batch()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="format">}\href{../../bbotk/html/OptimInstance.html#method-format}{\code{bbotk::OptimInstance$format()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="objective_function">}\href{../../bbotk/html/OptimInstance.html#method-objective_function}{\code{bbotk::OptimInstance$objective_function()}}\out{</span>}
