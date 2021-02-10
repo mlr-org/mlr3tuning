@@ -4,7 +4,7 @@
 \alias{extract_inner_tuning_results}
 \title{Extract Inner Tuning Results}
 \usage{
-extract_inner_tuning_results(x, ...)
+extract_inner_tuning_results(x)
 }
 \arguments{
 \item{x}{(\link[mlr3:ResampleResult]{mlr3::ResampleResult} | \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult})\cr

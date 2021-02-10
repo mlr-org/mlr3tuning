@@ -44,7 +44,7 @@ terminated_error = function(instance) {
 #' rr = resample(task, at, resampling_outer, store_models = TRUE)
 #' 
 #' extract_inner_tuning_results(rr)
-extract_inner_tuning_results <- function (x, ...) {
+extract_inner_tuning_results = function (x) {
    UseMethod("extract_inner_tuning_results", x)
 }
 
