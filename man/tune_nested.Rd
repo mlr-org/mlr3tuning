@@ -46,6 +46,9 @@ Maximum allowed time in seconds.}
 \item{...}{(named \code{list()})\cr
 Named arguments to be set as parameters of the tuner.}
 }
+\value{
+\link[mlr3:ResampleResult]{mlr3::ResampleResult}
+}
 \description{
 Function to conduct nested resampling.
 }

@@ -142,6 +142,8 @@ tune = function(method, task, learner, resampling, measure, term_evals = NULL, t
 #'  Maximum allowed time in seconds.
 #' @param ... (named `list()`)\cr
 #'  Named arguments to be set as parameters of the tuner.
+#' 
+#' @return [mlr3::ResampleResult]
 #'  
 #' @template param_task
 #' @template param_learner
@@ -173,7 +175,7 @@ tune_nested = function(method, task, learner, inner_resampling, outer_resampling
   assert_task(task)
   assert_resampling(inner_resampling)
   assert_resampling(outer_resampling)
-  
+
   at = tune_auto(method, learner, inner_resampling, measure, search_space, term_evals, term_time, ...)
   resample(task, at, outer_resampling, store_models = TRUE)
 }
