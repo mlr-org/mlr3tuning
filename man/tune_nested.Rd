@@ -49,3 +49,23 @@ Named arguments to be set as parameters of the tuner.}
 \description{
 Function to conduct nested resampling.
 }
+\examples{
+learner = lrn("classif.rpart")
+learner$param_set$values$minsplit = to_tune(1, 10)
+
+rr = tune_nested(
+  method = "random_search",
+  task = tsk("pima"),
+  learner = learner, 
+  inner_resampling = rsmp ("holdout"),
+  outer_resampling = rsmp("cv", folds = 3), 
+  measure = msr("classif.ce"),
+  term_evals = 50,
+  batch_size = 10)
+
+# check the inner results
+extract_inner_tuning_results(rr)
+
+# aggregate performance of outer results
+rr$aggregate()
+}

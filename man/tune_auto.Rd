@@ -39,6 +39,23 @@ Maximum allowed time in seconds.}
 \item{...}{(named \code{list()})\cr
 Named arguments to be set as parameters of the tuner.}
 }
+\value{
+\link{AutoTuner}
+}
 \description{
 Function to create an \link{AutoTuner}.
+}
+\examples{
+learner = lrn("classif.rpart")
+learner$param_set$values$minsplit = to_tune(1, 10)
+
+at = tune_auto(
+  method = "random_search",
+  learner = learner, 
+  resampling = rsmp ("holdout"),
+  measure = msr("classif.ce"), 
+  term_evals = 50, 
+  batch_size = 10)  
+
+at$train(tsk("pima"))
 }

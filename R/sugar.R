@@ -34,6 +34,8 @@ tnrs = function(.keys, ...) {
 #'  Maximum allowed time in seconds.
 #' @param ... (named `list()`)\cr
 #'  Named arguments to be set as parameters of the tuner.
+#' 
+#' @return [TuningInstanceSingleCrit]
 #'  
 #' @template param_task
 #' @template param_learner
@@ -42,6 +44,24 @@ tnrs = function(.keys, ...) {
 #' @template param_search_space
 #' 
 #' @export 
+#' @examples
+#' learner = lrn("classif.rpart")
+#' learner$param_set$values$minsplit = to_tune(1, 10)
+#'
+#' instance = tune(
+#'   method = "random_search", 
+#'   task = tsk("pima"), 
+#'   learner = learner, 
+#'   resampling = rsmp ("holdout"), 
+#'   measure = msr("classif.ce"), 
+#'   term_evals = 50, 
+#'   batch_size = 10) 
+#' 
+#' # check evaluated hyperparameter configurations
+#' instance$archive
+#' 
+#' # get results
+#' instance$result
 tune = function(method, task, learner, resampling, measure, term_evals = NULL, term_time = NULL, search_space = NULL,
   ...) {
   assert_choice(method, mlr_tuners$keys())
@@ -79,12 +99,27 @@ tune = function(method, task, learner, resampling, measure, term_evals = NULL, t
 #' @param ... (named `list()`)\cr
 #'  Named arguments to be set as parameters of the tuner.
 #' 
+#' @return [AutoTuner]
+#' 
 #' @template param_learner
 #' @template param_resampling
 #' @template param_measure
 #' @template param_search_space
 #' 
-#' @export 
+#' @export
+#' @examples
+#' learner = lrn("classif.rpart")
+#' learner$param_set$values$minsplit = to_tune(1, 10)
+#'
+#' at = tune_auto(
+#'   method = "random_search",
+#'   learner = learner, 
+#'   resampling = rsmp ("holdout"),
+#'   measure = msr("classif.ce"), 
+#'   term_evals = 50, 
+#'   batch_size = 10)  
+#'
+#' at$train(tsk("pima"))
 tune_auto = function(method, learner, resampling, measure, search_space = NULL, term_evals = NULL, term_time = NULL, 
   ...) {
   assert_choice(method, mlr_tuners$keys())
@@ -129,6 +164,25 @@ tune_auto = function(method, learner, resampling, measure, search_space = NULL, 
 #' @template param_search_space
 #' 
 #' @export 
+#' @examples
+#' learner = lrn("classif.rpart")
+#' learner$param_set$values$minsplit = to_tune(1, 10)
+#'
+#' rr = tune_nested(
+#'   method = "random_search",
+#'   task = tsk("pima"),
+#'   learner = learner, 
+#'   inner_resampling = rsmp ("holdout"),
+#'   outer_resampling = rsmp("cv", folds = 3), 
+#'   measure = msr("classif.ce"),
+#'   term_evals = 50,
+#'   batch_size = 10)
+#' 
+#' # check the inner results
+#' extract_inner_tuning_results(rr)
+#' 
+#' # aggregate performance of outer results
+#' rr$aggregate()
 tune_nested = function(method, task, learner, inner_resampling, outer_resampling, measure, term_evals = NULL, 
   term_time = NULL, search_space = NULL, ...) {
   assert_task(task)

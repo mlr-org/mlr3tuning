@@ -43,6 +43,28 @@ Maximum allowed time in seconds.}
 \item{...}{(named \code{list()})\cr
 Named arguments to be set as parameters of the tuner.}
 }
+\value{
+\link{TuningInstanceSingleCrit}
+}
 \description{
 Function to tune a \link[mlr3:Learner]{mlr3::Learner}.
+}
+\examples{
+learner = lrn("classif.rpart")
+learner$param_set$values$minsplit = to_tune(1, 10)
+
+instance = tune(
+  method = "random_search", 
+  task = tsk("pima"), 
+  learner = learner, 
+  resampling = rsmp ("holdout"), 
+  measure = msr("classif.ce"), 
+  term_evals = 50, 
+  batch_size = 10) 
+
+# check evaluated hyperparameter configurations
+instance$archive
+
+# get results
+instance$result
 }
