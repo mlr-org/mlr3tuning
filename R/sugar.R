@@ -119,6 +119,7 @@ tune_auto = function(method, learner, resampling, measure, search_space = NULL, 
 #' instance$result
 tune = function(method, task, learner, resampling, measure, term_evals = NULL, term_time = NULL, search_space = NULL,
   ...) {
+  assert_task(task)
   at = tune_auto(method, learner, resampling, measure, search_space, term_evals, term_time, ...)
   at$train(task)
   at$tuning_instance
@@ -172,8 +173,7 @@ tune_nested = function(method, task, learner, inner_resampling, outer_resampling
   assert_task(task)
   assert_resampling(inner_resampling)
   assert_resampling(outer_resampling)
-  assert_choice(method, mlr_tuners$keys())
-
+  
   at = tune_auto(method, learner, inner_resampling, measure, search_space, term_evals, term_time, ...)
   resample(task, at, outer_resampling, store_models = TRUE)
 }
