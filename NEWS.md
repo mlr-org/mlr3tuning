@@ -1,5 +1,7 @@
 # mlr3tuning 0.7.0.9000
 
+- Adds `tune()`, `tune_auto()` and `tune_nested` sugar functions.
+
 # mlr3tuning 0.7.0
 
 - Fix `TuningInstance*$assign_result()` errors with required parameter bug.
