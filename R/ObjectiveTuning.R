@@ -54,9 +54,6 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
         task = self$task, learner = self$learner)
       self$store_benchmark_result = assert_logical(store_benchmark_result)
       self$store_models = assert_logical(store_models)
-      if (self$store_models && !self$store_benchmark_result) {
-        stop("Models can only be stored if store_benchmark_result is set to TRUE")
-      }
       if (!resampling$is_instantiated) {
         self$resampling$instantiate(self$task)
       }

@@ -144,12 +144,6 @@ test_that("store_benchmark_result and store_models flag works", {
   inst$eval_batch(data.table(cp = c(0.3, 0.25), minsplit = c(3, 4)))
   expect_r6(inst$archive$benchmark_result, "BenchmarkResult")
 
-  expect_error(TEST_MAKE_INST1(values = list(maxdepth = 10), folds = 2L,
-    measure = msr("dummy.cp.classif", fun = function(pv) pv$cp), n_dim = 2,
-    store_benchmark_result = FALSE, store_models = TRUE),
-    regexp = "Models can only be stored if store_benchmark_result is set to TRUE",
-    fixed = TRUE)
-
   inst = TEST_MAKE_INST1(values = list(maxdepth = 10), folds = 2L,
     measure = msr("dummy.cp.classif", fun = function(pv) pv$cp), n_dim = 2,
     store_benchmark_result = TRUE, store_models = FALSE)
