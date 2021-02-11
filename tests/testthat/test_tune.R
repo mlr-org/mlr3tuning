@@ -1,34 +1,3 @@
-testthat("tune function works", {
-  learner = lrn("classif.rpart")
-  learner$param_set$values$minsplit = to_tune(1, 10)
-
-  instance = tune(method = "random_search", task = tsk("pima"), learner = learner, resampling = rsmp ("holdout"), 
-    measure = msr("classif.ce"), term_evals = 2, batch_size = 1)  
-
-  expect_class(instance, "TuningInstanceSingleCrit")
-  expect_data_table(instance$archive$data, nrows = 2)
-  expect_class(instance$terminator, "TerminatorEvals")
-
-  instance = tune(method = "random_search", task = tsk("pima"), learner = learner, resampling = rsmp ("holdout"), 
-    measure = msr("classif.ce"), term_evals = 2, batch_size = 1)  
-
-  expect_class(instance, "TuningInstanceSingleCrit")
-  expect_data_table(instance$archive$data, nrows = 2)
-  expect_class(instance$terminator, "TerminatorRunTime")
-
-  instance = tune(method = "random_search", task = tsk("pima"), learner = learner, resampling = rsmp ("holdout"), 
-    measure = msr("classif.ce"), term_evals = 2, term_time = 2, batch_size = 1)  
-
-  expect_class(instance, "TuningInstanceSingleCrit")
-  expect_data_table(instance$archive$data, nrows = 2)
-  expect_class(instance$terminator, "TerminatorCombo")
-  
-  expect_error(tune(method = "random_search", task = tsk("pima"), learner = learner, 
-    resampling = rsmp ("holdout"), measure = msr("classif.ce"), batch_size = 5),
-    regexp = "`term_evals` or `term_time` must be provided",
-    fixed = TRUE)
-})
-
 test_that("tune_auto function works", {
   learner = lrn("classif.rpart")
   learner$param_set$values$minsplit = to_tune(1, 10)
@@ -55,6 +24,18 @@ test_that("tune_auto function works", {
     measure = msr("classif.ce"), batch_size = 10),
     regexp = "`term_evals` or `term_time` must be provided",
     fixed = TRUE)
+})
+
+testthat("tune function works", {
+  learner = lrn("classif.rpart")
+  learner$param_set$values$minsplit = to_tune(1, 10)
+
+  instance = tune(method = "random_search", task = tsk("pima"), learner = learner, resampling = rsmp ("holdout"), 
+    measure = msr("classif.ce"), term_evals = 2, batch_size = 1)  
+
+  expect_class(instance, "TuningInstanceSingleCrit")
+  expect_data_table(instance$archive$data, nrows = 2)
+  expect_class(instance$terminator, "TerminatorEvals")
 })
 
 test_that("tune_nested function works", {
