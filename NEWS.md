@@ -1,3 +1,9 @@
+# mlr3tuning 0.7.0.9000
+
+- `TuningInstanceSingleCrit`, `TuningInstanceMultiCrit` and `AutoTuner` can be
+  initialized with `store_benchmark_result = FALSE` and `store_models = TRUE`
+  to allow measures to access the models. 
+
 # mlr3tuning 0.7.0
 
 - Fix `TuningInstance*$assign_result()` errors with required parameter bug.
