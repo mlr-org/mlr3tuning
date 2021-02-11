@@ -190,14 +190,6 @@ tune_nested = function(method, task, learner, inner_resampling, outer_resampling
   assert_resampling(outer_resampling)
   assert_choice(method, mlr_tuners$keys())
 
-  terminator = if (!is.null(term_evals)) {
-    trm("evals", n_evals = term_evals)
-  } else if (!is.null(term_time)) {
-    trm("run_time", secs = term_time)
-  } else {
-    stop("Either `term_evals` or `term_time` must be provided")
-  }
-
   tuner = tnr(method, ...)
   at = tune_auto(method, learner, inner_resampling, measure, search_space, term_evals, term_time, ...)
   resample(task, at, outer_resampling, store_models = TRUE)
