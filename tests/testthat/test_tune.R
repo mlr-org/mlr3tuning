@@ -26,7 +26,7 @@ test_that("tune_auto function works", {
     fixed = TRUE)
 })
 
-testthat("tune function works", {
+test_that("tune function works", {
   learner = lrn("classif.rpart")
   learner$param_set$values$minsplit = to_tune(1, 10)
 
