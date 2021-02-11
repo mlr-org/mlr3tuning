@@ -24,11 +24,116 @@ tnrs = function(.keys, ...) {
 #' @title Syntactic Sugar for Tuning
 #' 
 #' @description
-#' Sugar
+#' Function to tune a [mlr3::Learner].
+#' 
+#' @param method (`character(1)`)\cr
+#'  Key to retrieve tuner from [mlr_tuners] dictionary.
+#' @param term_evals (`integer(1)`)\cr
+#'  Number of allowed evaluations.
+#' @param term_time (`integer(1)`)\cr
+#'  Maximum allowed time in seconds.
+#' @param ... (named `list()`)\cr
+#'  Named arguments to be set as parameters of the tuner.
+#'  
+#' @template param_task
+#' @template param_learner
+#' @template param_resampling
+#' @template param_measure
+#' @template param_search_space
 #' 
 #' @export 
-tune = function(method, task, learner, resampling, measures, term_evals = NULL, term_time = NULL, 
-  search_space = NULL, ...) {
+tune = function(method, task, learner, resampling, measure, term_evals = NULL, term_time = NULL, search_space = NULL,
+  ...) {
+  assert_choice(method, mlr_tuners$keys())
+  assert_int(term_evals, null.ok = TRUE)
+  assert_int(term_time, null.ok = TRUE)
+
+  terminator = if (is.null(term_evals) && is.null(term_time)) {
+    stop("`term_evals` or `term_time` must be provided")
+  } else if (!is.null(term_evals) && !is.null(term_time)) {
+    trm("combo", list(trm("evals", n_evals = term_evals), trm("run_time", secs = term_time)))
+  } else if (!is.null(term_evals)) {
+    trm("evals", n_evals = term_evals)
+  } else if (!is.null(term_time)) {
+    trm("run_time", secs = term_time)
+  }
+
+  tuner = tnr(method, ...)
+
+  instance = TuningInstanceSingleCrit$new(task, learner, resampling, measure, terminator, search_space)
+  tuner$optimize(instance)
+  instance
+}
+
+#' @title Syntactic Sugar for Automatic Tuning
+#' 
+#' @description
+#' Function to create an [AutoTuner].
+#' 
+#' @param method (`character(1)`)\cr
+#'  Key to retrieve tuner from [mlr_tuners] dictionary.
+#' @param term_evals (`integer(1)`)\cr
+#'  Number of allowed evaluations.
+#' @param term_time (`integer(1)`)\cr
+#'  Maximum allowed time in seconds.
+#' @param ... (named `list()`)\cr
+#'  Named arguments to be set as parameters of the tuner.
+#' 
+#' @template param_learner
+#' @template param_resampling
+#' @template param_measure
+#' @template param_search_space
+#' 
+#' @export 
+tune_auto = function(method, learner, resampling, measure, search_space = NULL, term_evals = NULL, term_time = NULL, 
+  ...) {
+  assert_choice(method, mlr_tuners$keys())
+  assert_int(term_evals, null.ok = TRUE)
+  assert_int(term_time, null.ok = TRUE)
+
+  terminator = if (is.null(term_evals) && is.null(term_time)) {
+    stop("`term_evals` or `term_time` must be provided")
+  } else if (!is.null(term_evals) && !is.null(term_time)) {
+    trm("combo", list(trm("evals", n_evals = term_evals), trm("run_time", secs = term_time)))
+  } else if (!is.null(term_evals)) {
+    trm("evals", n_evals = term_evals)
+  } else if (!is.null(term_time)) {
+    trm("run_time", secs = term_time)
+  }
+
+  tuner = tnr(method, ...)
+  AutoTuner$new(learner, resampling, measure, terminator, tuner, search_space)
+}
+
+#' @title Syntactic Sugar for Nested Resampling
+#' 
+#' @description
+#' Function to conduct nested resampling.
+#' 
+#' @param method (`character(1)`)\cr
+#'  Key to retrieve tuner from [mlr_tuners] dictionary.
+#' @param inner_resampling ([mlr3::Resampling])\cr
+#'  Resampling used for the inner loop.
+#' @param outer_resampling [mlr3::Resampling])\cr
+#'  Resampling used for the outer loop.
+#' @param term_evals (`integer(1)`)\cr
+#'  Number of allowed evaluations.
+#' @param term_time (`integer(1)`)\cr
+#'  Maximum allowed time in seconds.
+#' @param ... (named `list()`)\cr
+#'  Named arguments to be set as parameters of the tuner.
+#'  
+#' @template param_task
+#' @template param_learner
+#' @template param_measure
+#' @template param_search_space
+#' 
+#' @export 
+tune_nested = function(method, task, learner, inner_resampling, outer_resampling, measure, term_evals = NULL, 
+  term_time = NULL, search_space = NULL, ...) {
+  assert_task(task)
+  assert_resampling(inner_resampling)
+  assert_resampling(outer_resampling)
   assert_choice(method, mlr_tuners$keys())
 
   terminator = if (!is.null(term_evals)) {
@@ -40,56 +145,6 @@ tune = function(method, task, learner, resampling, measures, term_evals = NULL, 
   }
 
   tuner = tnr(method, ...)
-  instance = TuningInstanceSingleCrit$new(task, learner, resampling, measures, terminator, 
-    search_space)
-  tuner$optimize(instance)
-  instance
+  at = tune_auto(method, learner, inner_resampling, measure, search_space, term_evals, term_time, ...)
+  resample(task, at, outer_resampling, store_models = TRUE)
 }
-
-#' @title Syntactic Sugar for Automatic Tuning
-#' 
-#' @description
-#' Sugar
-#' 
-#' @export 
-tune_auto = function(method, learner, resampling, measure, search_space = NULL, term_evals = NULL, 
-  term_time = NULL, ...) {
-    assert_choice(method, mlr_tuners$keys())
-
-    terminator = if (!is.null(term_evals)) {
-      trm("evals", n_evals = term_evals)
-    } else if (!is.null(term_time)) {
-      trm("run_time", secs = term_time)
-    } else {
-      stop("Either `term_evals` or `term_time` must be provided")
-    }
-
-    tuner = tnr(method, ...)
-    AutoTuner$new(learner, resampling, measure, terminator, tuner, search_space)
-  }
-
-#' @title Syntactic Sugar for Nested Resampling
-#' 
-#' @description
-#' Sugar
-#' 
-#' @export 
-tune_nested = function(method, task, learner, inner_resampling, outer_resampling, measure, 
-  term_evals = NULL, term_time = NULL, search_space = NULL, ...) {
-    assert_task(task)
-    assert_resampling(inner_resampling)
-    assert_resampling(outer_resampling)
-    assert_choice(method, mlr_tuners$keys())
-
-    terminator = if (!is.null(term_evals)) {
-      trm("evals", n_evals = term_evals)
-    } else if (!is.null(term_time)) {
-      trm("run_time", secs = term_time)
-    } else {
-      stop("Either `term_evals` or `term_time` must be provided")
-    }
-
-    tuner = tnr(method, ...)
-    at = tune_auto(method, learner, inner_resampling, measure, search_space, term_evals, term_time, ...)
-    resample(task, at, outer_resampling, store_models = TRUE)
-  }

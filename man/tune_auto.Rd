@@ -15,6 +15,30 @@ tune_auto(
   ...
 )
 }
+\arguments{
+\item{method}{(\code{character(1)})\cr
+Key to retrieve tuner from \link{mlr_tuners} dictionary.}
+
+\item{learner}{(\link[mlr3:Learner]{mlr3::Learner}).}
+
+\item{resampling}{(\link[mlr3:Resampling]{mlr3::Resampling})\cr
+Uninstantiated resamplings are instantiated during construction
+so that all configurations are evaluated on the same data splits.}
+
+\item{measure}{(\link[mlr3:Measure]{mlr3::Measure})\cr
+Measure to optimize.}
+
+\item{search_space}{(\link[paradox:ParamSet]{paradox::ParamSet}).}
+
+\item{term_evals}{(\code{integer(1)})\cr
+Number of allowed evaluations.}
+
+\item{term_time}{(\code{integer(1)})\cr
+Maximum allowed time in seconds.}
+
+\item{...}{(named \code{list()})\cr
+Named arguments to be set as parameters of the tuner.}
+}
 \description{
-Sugar
+Function to create an \link{AutoTuner}.
 }
