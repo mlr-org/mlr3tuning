@@ -5,7 +5,7 @@
 # mlr3tuning 0.7.0
 
 - Fix `TuningInstance*$assign_result()` errors with required parameter bug.
-- Shortcuts to access `$learner()`, `$learners()`, `$learner_param_vals`,
+- Shortcuts to access `$learner()`, `$learners()`, `$learner_param_vals()`,
   `$predictions()` and `$resample_result()` from benchmark result in archive.
 - `extract_inner_tuning_results()` helper function to extract inner tuning 
   results.
