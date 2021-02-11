@@ -9,9 +9,9 @@ tune_auto(
   learner,
   resampling,
   measure,
-  search_space = NULL,
   term_evals = NULL,
   term_time = NULL,
+  search_space = NULL,
   ...
 )
 }
@@ -28,13 +28,13 @@ so that all configurations are evaluated on the same data splits.}
 \item{measure}{(\link[mlr3:Measure]{mlr3::Measure})\cr
 Measure to optimize.}
 
-\item{search_space}{(\link[paradox:ParamSet]{paradox::ParamSet}).}
-
 \item{term_evals}{(\code{integer(1)})\cr
 Number of allowed evaluations.}
 
 \item{term_time}{(\code{integer(1)})\cr
 Maximum allowed time in seconds.}
+
+\item{search_space}{(\link[paradox:ParamSet]{paradox::ParamSet}).}
 
 \item{...}{(named \code{list()})\cr
 Named arguments to be set as parameters of the tuner.}
