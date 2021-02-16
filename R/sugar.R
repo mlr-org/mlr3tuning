@@ -56,23 +56,12 @@ tnrs = function(.keys, ...) {
 #'   batch_size = 10)  
 #'
 #' at$train(tsk("pima"))
-tune_auto = function(method, learner, resampling, measure, term_evals = NULL, term_time = NULL, search_space = NULL,
+auto_tuner = function(method, learner, resampling, measure, term_evals = NULL, term_time = NULL, search_space = NULL,
   ...) {
   assert_choice(method, mlr_tuners$keys())
-  assert_int(term_evals, null.ok = TRUE)
-  assert_int(term_time, null.ok = TRUE)
-
-  terminator = if (is.null(term_evals) && is.null(term_time)) {
-    stop("`term_evals` or `term_time` must be provided")
-  } else if (!is.null(term_evals) && !is.null(term_time)) {
-    trm("combo", list(trm("evals", n_evals = term_evals), trm("run_time", secs = term_time)))
-  } else if (!is.null(term_evals)) {
-    trm("evals", n_evals = term_evals)
-  } else if (!is.null(term_time)) {
-    trm("run_time", secs = term_time)
-  }
-
   tuner = tnr(method, ...)
+  terminator = terminator_selection(term_evals, term_time)
+
   AutoTuner$new(learner, resampling, measure, terminator, tuner, search_space)
 }
 
@@ -90,7 +79,7 @@ tune_auto = function(method, learner, resampling, measure, term_evals = NULL, te
 #' @param ... (named `list()`)\cr
 #'  Named arguments to be set as parameters of the tuner.
 #' 
-#' @return [TuningInstanceSingleCrit]
+#' @return `list()`
 #'  
 #' @template param_task
 #' @template param_learner
@@ -103,7 +92,7 @@ tune_auto = function(method, learner, resampling, measure, term_evals = NULL, te
 #' learner = lrn("classif.rpart")
 #' learner$param_set$values$minsplit = to_tune(1, 10)
 #'
-#' instance = tune(
+#' parameters = tune(
 #'   method = "random_search", 
 #'   task = tsk("pima"), 
 #'   learner = learner, 
@@ -112,20 +101,21 @@ tune_auto = function(method, learner, resampling, measure, term_evals = NULL, te
 #'   term_evals = 50, 
 #'   batch_size = 10) 
 #' 
-#' # check evaluated hyperparameter configurations
-#' instance$archive
-#' 
-#' # get results
-#' instance$result
+#' # Apply hyperparameter values to learner
+#' learner$param_set$values = parameters
 tune = function(method, task, learner, resampling, measure, term_evals = NULL, term_time = NULL, search_space = NULL,
   ...) {
-  assert_task(task)
-  at = tune_auto(method, learner, resampling, measure, term_evals, term_time, search_space, ...)
-  at$train(task)
-  at$tuning_instance
+  assert_choice(method, mlr_tuners$keys())
+  tuner = tnr(method, ...)
+  terminator = terminator_selection(term_evals, term_time)
+
+  instance = TuningInstanceSingleCrit$new(task, learner, resampling, measure, terminator, search_space)
+
+  tuner$optimize(instance)
+  instance$result_learner_param_vals
 }
 
-#' @title Syntactic Sugar for Nested Resampling
+#' @title Function for Nested Resampling
 #' 
 #' @description
 #' Function to conduct nested resampling.
@@ -178,4 +168,19 @@ tune_nested = function(method, task, learner, inner_resampling, outer_resampling
 
   at = tune_auto(method, learner, inner_resampling, measure, search_space, term_evals, term_time, ...)
   resample(task, at, outer_resampling, store_models = TRUE)
+}
+
+terminator_selection = function(term_evals, term_time) {
+  assert_int(term_evals, null.ok = TRUE)
+  assert_int(term_time, null.ok = TRUE)
+
+  if (is.null(term_evals) && is.null(term_time)) {
+    stop("`term_evals` or `term_time` must be provided")
+  } else if (!is.null(term_evals) && !is.null(term_time)) {
+    trm("combo", list(trm("evals", n_evals = term_evals), trm("run_time", secs = term_time)))
+  } else if (!is.null(term_evals)) {
+    trm("evals", n_evals = term_evals)
+  } else if (!is.null(term_time)) {
+    trm("run_time", secs = term_time)
+  }
 }
