@@ -224,18 +224,6 @@ test_that("store_tuning_instance, store_benchmark_result and store_models flags 
     store_models = FALSE),
     regexp = "Benchmark results can only be stored if store_tuning_instance is set to TRUE",
     fixed = TRUE)
-
-  expect_error(AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te,
-    tuner = tuner, ps, store_tuning_instance = TRUE, store_benchmark_result = FALSE,
-    store_models = TRUE),
-    regexp = "Models can only be stored if store_benchmark_result is set to TRUE",
-    fixed = TRUE)
-
-  expect_error(AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te,
-    tuner = tuner, ps, store_tuning_instance = FALSE, store_benchmark_result = FALSE,
-    store_models = TRUE),
-    regexp = "Models can only be stored if store_benchmark_result is set to TRUE",
-    fixed = TRUE)
 })
 
 test_that("predict_type works", {
