@@ -24,7 +24,7 @@ tnrs = function(.keys, ...) {
 #' @title Syntactic Sugar for Automatic Tuning
 #' 
 #' @description
-#' Function to create an [AutoTuner].
+#' Function to create an [AutoTuner] object.
 #' 
 #' @param method (`character(1)`)\cr
 #'  Key to retrieve tuner from [mlr_tuners] dictionary.
