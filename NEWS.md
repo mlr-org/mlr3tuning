@@ -1,6 +1,6 @@
 # mlr3tuning 0.7.0.9000
 
-- Adds `tune()`, `tune_auto()` and `tune_nested` sugar functions.
+- Adds `tune()`, `tune_auto()` and `tune_nested()` sugar functions.
 
 # mlr3tuning 0.7.0
 
