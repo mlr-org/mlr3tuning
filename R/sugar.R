@@ -76,7 +76,7 @@ tune_auto = function(method, learner, resampling, measure, term_evals = NULL, te
   AutoTuner$new(learner, resampling, measure, terminator, tuner, search_space)
 }
 
-#' @title Syntactic Sugar for Tuning
+#' @title Function for Tuning
 #' 
 #' @description
 #' Function to tune a [mlr3::Learner].
