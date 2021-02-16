@@ -56,7 +56,7 @@ tnrs = function(.keys, ...) {
 #'   batch_size = 10)  
 #'
 #' at$train(tsk("pima"))
-tune_auto = function(method, learner, resampling, measure, term_evals = NULL, term_time = NULL, search_space = NULL,
+auto_tuner = function(method, learner, resampling, measure, term_evals = NULL, term_time = NULL, search_space = NULL,
   ...) {
   assert_choice(method, mlr_tuners$keys())
   assert_int(term_evals, null.ok = TRUE)
