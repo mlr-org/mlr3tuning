@@ -2,7 +2,7 @@
 % Please edit documentation in R/sugar.R
 \name{tune_nested}
 \alias{tune_nested}
-\title{Syntactic Sugar for Nested Resampling}
+\title{Function for Nested Resampling}
 \usage{
 tune_nested(
   method,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/sugar.R
 \name{tune}
 \alias{tune}
-\title{Syntactic Sugar for Tuning}
+\title{Function for Tuning}
 \usage{
 tune(
   method,
@@ -44,7 +44,7 @@ Maximum allowed time in seconds.}
 Named arguments to be set as parameters of the tuner.}
 }
 \value{
-\link{TuningInstanceSingleCrit}
+\code{list()}
 }
 \description{
 Function to tune a \link[mlr3:Learner]{mlr3::Learner}.
@@ -53,7 +53,7 @@ Function to tune a \link[mlr3:Learner]{mlr3::Learner}.
 learner = lrn("classif.rpart")
 learner$param_set$values$minsplit = to_tune(1, 10)
 
-instance = tune(
+parameters = tune(
   method = "random_search", 
   task = tsk("pima"), 
   learner = learner, 
@@ -62,9 +62,6 @@ instance = tune(
   term_evals = 50, 
   batch_size = 10) 
 
-# check evaluated hyperparameter configurations
-instance$archive
-
-# get results
-instance$result
+# Apply hyperparameter values to learner
+learner$param_set$values = parameters
 }

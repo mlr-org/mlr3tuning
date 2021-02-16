@@ -47,7 +47,7 @@ tnrs = function(.keys, ...) {
 #' learner = lrn("classif.rpart")
 #' learner$param_set$values$minsplit = to_tune(1, 10)
 #'
-#' at = tune_auto(
+#' at = auto_tuner(
 #'   method = "random_search",
 #'   learner = learner, 
 #'   resampling = rsmp ("holdout"),
@@ -166,7 +166,7 @@ tune_nested = function(method, task, learner, inner_resampling, outer_resampling
   assert_resampling(inner_resampling)
   assert_resampling(outer_resampling)
 
-  at = tune_auto(method, learner, inner_resampling, measure, search_space, term_evals, term_time, ...)
+  at = auto_tuner(method, learner, inner_resampling, measure, search_space, term_evals, term_time, ...)
   resample(task, at, outer_resampling, store_models = TRUE)
 }
 

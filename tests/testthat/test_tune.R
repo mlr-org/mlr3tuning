@@ -1,26 +1,26 @@
-test_that("tune_auto function works", {
+test_that("auto_tuner function works", {
   learner = lrn("classif.rpart")
   learner$param_set$values$minsplit = to_tune(1, 10)
 
-  at = tune_auto(method = "random_search", learner = learner, resampling = rsmp ("holdout"), 
+  at = auto_tuner(method = "random_search", learner = learner, resampling = rsmp ("holdout"), 
     measure = msr("classif.ce"), term_evals = 50, batch_size = 10)
 
   expect_class(at, "AutoTuner")
   expect_class(at$instance_args$terminator, "TerminatorEvals")
 
-  at = tune_auto(method = "random_search", learner = learner, resampling = rsmp ("holdout"), 
+  at = auto_tuner(method = "random_search", learner = learner, resampling = rsmp ("holdout"), 
     measure = msr("classif.ce"), term_time = 50, batch_size = 10)
 
   expect_class(at, "AutoTuner")
   expect_class(at$instance_args$terminator, "TerminatorRunTime")
 
-  at = tune_auto(method = "random_search", learner = learner, resampling = rsmp ("holdout"), 
+  at = auto_tuner(method = "random_search", learner = learner, resampling = rsmp ("holdout"), 
     measure = msr("classif.ce"), term_evals = 10, term_time = 50, batch_size = 10)
 
   expect_class(at, "AutoTuner")
   expect_class(at$instance_args$terminator, "TerminatorCombo")
 
-  expect_error(tune_auto(method = "random_search", learner = learner, resampling = rsmp ("holdout"), 
+  expect_error(auto_tuner(method = "random_search", learner = learner, resampling = rsmp ("holdout"), 
     measure = msr("classif.ce"), batch_size = 10),
     regexp = "`term_evals` or `term_time` must be provided",
     fixed = TRUE)
@@ -34,7 +34,7 @@ test_that("tune function works", {
     measure = msr("classif.ce"), term_evals = 2, batch_size = 1)
 
   expect_list(parameters, len = 2)
-  expect_named(parameter, c("xval", "minsplit"))
+  expect_named(parameters, c("xval", "minsplit"))
 })
 
 test_that("tune_nested function works", {
