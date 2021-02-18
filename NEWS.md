@@ -1,6 +1,6 @@
 # mlr3tuning 0.7.0.9000
 
-- Adds `tune()`, `tune_auto()` and `tune_nested()` sugar functions.
+- Adds `tune()`, `auto_tuner()` and `tune_nested()` sugar functions.
 - `TuningInstanceSingleCrit`, `TuningInstanceMultiCrit` and `AutoTuner` can be
   initialized with `store_benchmark_result = FALSE` and `store_models = TRUE`
   to allow measures to access the models. 
