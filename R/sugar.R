@@ -79,7 +79,7 @@ auto_tuner = function(method, learner, resampling, measure, term_evals = NULL, t
 #' @param ... (named `list()`)\cr
 #'  Named arguments to be set as parameters of the tuner.
 #' 
-#' @return `list()`
+#' @return `TuningInstanceSingleCrit`
 #'  
 #' @template param_task
 #' @template param_learner
@@ -92,7 +92,7 @@ auto_tuner = function(method, learner, resampling, measure, term_evals = NULL, t
 #' learner = lrn("classif.rpart")
 #' learner$param_set$values$minsplit = to_tune(1, 10)
 #'
-#' parameters = tune(
+#' instance = tune(
 #'   method = "random_search", 
 #'   task = tsk("pima"), 
 #'   learner = learner, 
@@ -102,7 +102,7 @@ auto_tuner = function(method, learner, resampling, measure, term_evals = NULL, t
 #'   batch_size = 10) 
 #' 
 #' # Apply hyperparameter values to learner
-#' learner$param_set$values = parameters
+#' learner$param_set$values = instance$result_learner_param_vals
 tune = function(method, task, learner, resampling, measure, term_evals = NULL, term_time = NULL, search_space = NULL,
   ...) {
   assert_choice(method, mlr_tuners$keys())
@@ -112,7 +112,7 @@ tune = function(method, task, learner, resampling, measure, term_evals = NULL, t
   instance = TuningInstanceSingleCrit$new(task, learner, resampling, measure, terminator, search_space)
 
   tuner$optimize(instance)
-  instance$result_learner_param_vals
+  instance
 }
 
 #' @title Function for Nested Resampling

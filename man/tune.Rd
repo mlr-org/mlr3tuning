@@ -44,7 +44,7 @@ Maximum allowed time in seconds.}
 Named arguments to be set as parameters of the tuner.}
 }
 \value{
-\code{list()}
+\code{TuningInstanceSingleCrit}
 }
 \description{
 Function to tune a \link[mlr3:Learner]{mlr3::Learner}.
@@ -53,7 +53,7 @@ Function to tune a \link[mlr3:Learner]{mlr3::Learner}.
 learner = lrn("classif.rpart")
 learner$param_set$values$minsplit = to_tune(1, 10)
 
-parameters = tune(
+instance = tune(
   method = "random_search", 
   task = tsk("pima"), 
   learner = learner, 
@@ -63,5 +63,5 @@ parameters = tune(
   batch_size = 10) 
 
 # Apply hyperparameter values to learner
-learner$param_set$values = parameters
+learner$param_set$values = instance$result_learner_param_vals
 }
