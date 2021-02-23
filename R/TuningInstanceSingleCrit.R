@@ -149,7 +149,7 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
       # set the column with the learner param_vals that were not optimized over but set implicitly
       assert_list(learner_param_vals, null.ok = TRUE, names = "named")
       if (is.null(learner_param_vals)) {
-        learner_param_vals = self$objective$learner$param_set$get_values(type = "without_token")
+        learner_param_vals = self$objective$learner$param_set$values
       }
       opt_x = transform_xdt_to_xss(xdt, self$search_space)[[1]]
       learner_param_vals = insert_named(learner_param_vals, opt_x)
