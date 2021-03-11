@@ -114,11 +114,14 @@ Must be an element of \verb{$predict_types}.}
 \itemize{
 \item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="format">}\href{../../mlr3/html/Learner.html#method-format}{\code{mlr3::Learner$format()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="help">}\href{../../mlr3/html/Learner.html#method-help}{\code{mlr3::Learner$help()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="is_retrainable">}\href{../../mlr3/html/Learner.html#method-is_retrainable}{\code{mlr3::Learner$is_retrainable()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="predict">}\href{../../mlr3/html/Learner.html#method-predict}{\code{mlr3::Learner$predict()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="predict_newdata">}\href{../../mlr3/html/Learner.html#method-predict_newdata}{\code{mlr3::Learner$predict_newdata()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="print">}\href{../../mlr3/html/Learner.html#method-print}{\code{mlr3::Learner$print()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="reset">}\href{../../mlr3/html/Learner.html#method-reset}{\code{mlr3::Learner$reset()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="retrain">}\href{../../mlr3/html/Learner.html#method-retrain}{\code{mlr3::Learner$retrain()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="train">}\href{../../mlr3/html/Learner.html#method-train}{\code{mlr3::Learner$train()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="update">}\href{../../mlr3/html/Learner.html#method-update}{\code{mlr3::Learner$update()}}\out{</span>}
 }
 \out{</details>}
 }
@@ -172,10 +175,13 @@ If \code{TRUE} (default), stores the internally created
 \verb{$tuning_instance}.}
 
 \item{\code{store_benchmark_result}}{(\code{logical(1)})\cr
-Store benchmark result in archive?}
+If \code{TRUE} (default), stores the \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} in archive.}
 
 \item{\code{store_models}}{(\code{logical(1)})\cr
-Store models in benchmark result?}
+If \code{FALSE} (default), the fitted models are not stored in the
+\link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}. If \code{store_benchmark_result = FALSE}, the models are
+only stored temporarily and not accessible after the tuning. This combination
+might be useful for measures that require a model.}
 
 \item{\code{check_values}}{(\code{logical(1)})\cr
 Should parameters before the evaluation and the results be checked for

@@ -20,6 +20,7 @@
 #' @template section_logging
 #'
 #' @inheritSection bbotk::OptimizerNLoptr Parameters
+#' @inheritSection bbotk::OptimizerNLoptr Progress Bars
 #'
 #' @family Tuner
 #' @seealso Package \CRANpkg{mlr3hyperband} for hyperband tuning.

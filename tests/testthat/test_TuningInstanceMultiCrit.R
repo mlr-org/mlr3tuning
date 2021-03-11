@@ -39,12 +39,6 @@ test_that("store_benchmark_result and store_models flag works", {
   inst$eval_batch(data.table(cp = c(0.3, 0.25), minsplit = c(3, 4)))
   expect_r6(inst$archive$benchmark_result, "BenchmarkResult")
 
-  expect_error(TEST_MAKE_INST1_2D(
-    store_benchmark_result = FALSE,
-    store_models = TRUE),
-  regexp = "Models can only be stored if store_benchmark_result is set to TRUE",
-  fixed = TRUE)
-
   inst = TEST_MAKE_INST1_2D(store_benchmark_result = TRUE, store_models = FALSE)
   inst$eval_batch(data.table(cp = c(0.3, 0.25), minsplit = c(3, 4)))
   expect_null(inst$archive$benchmark_result$resample_result(1)$learners[[1]]$model)

@@ -74,7 +74,7 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
     assign_result = function(xdt, ydt, learner_param_vals = NULL) {
       # set the column with the learner param_vals that were not optimized over but set implicitly
       if (is.null(learner_param_vals)) {
-        learner_param_vals = self$objective$learner$param_set$get_values(type = "without_token")
+        learner_param_vals = self$objective$learner$param_set$values
         learner_param_vals = replicate(nrow(xdt), learner_param_vals, simplify = FALSE)
       }
       assert_list(learner_param_vals, len = nrow(xdt))

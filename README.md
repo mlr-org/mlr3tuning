@@ -3,7 +3,7 @@
 Package website: [release](https://mlr3tuning.mlr-org.com/) | [dev](https://mlr3tuning.mlr-org.com/dev/)
 
 <!-- badges: start -->
-[![tic](https://github.com/mlr-org/mlr3tuning/workflows/tic/badge.svg?branch=master)](https://github.com/mlr-org/mlr3tuning/actions)
+[![tic](https://github.com/mlr-org/mlr3tuning/workflows/tic/badge.svg?branch=main)](https://github.com/mlr-org/mlr3tuning/actions)
 [![CRAN Status](https://www.r-pkg.org/badges/version-ago/mlr3tuning)](https://cran.r-project.org/package=mlr3tuning)
 [![StackOverflow](https://img.shields.io/badge/stackoverflow-mlr3-orange.svg)](https://stackoverflow.com/questions/tagged/mlr3)
 [![Mattermost](https://img.shields.io/badge/chat-mattermost-orange.svg)](https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/)

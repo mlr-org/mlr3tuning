@@ -144,12 +144,6 @@ test_that("store_benchmark_result and store_models flag works", {
   inst$eval_batch(data.table(cp = c(0.3, 0.25), minsplit = c(3, 4)))
   expect_r6(inst$archive$benchmark_result, "BenchmarkResult")
 
-  expect_error(TEST_MAKE_INST1(values = list(maxdepth = 10), folds = 2L,
-    measure = msr("dummy.cp.classif", fun = function(pv) pv$cp), n_dim = 2,
-    store_benchmark_result = FALSE, store_models = TRUE),
-    regexp = "Models can only be stored if store_benchmark_result is set to TRUE",
-    fixed = TRUE)
-
   inst = TEST_MAKE_INST1(values = list(maxdepth = 10), folds = 2L,
     measure = msr("dummy.cp.classif", fun = function(pv) pv$cp), n_dim = 2,
     store_benchmark_result = TRUE, store_models = FALSE)
@@ -230,3 +224,23 @@ test_that("TuneToken and result_learner_param_vals works", {
   expect_equal(instance$result_learner_param_vals$xval, 0)
   expect_equal(instance$result_learner_param_vals$cp, 0.1)
 })
+
+test_that("TuningInstanceSingleCrit can be continued", {
+  learner = lrn("classif.rpart", xval = 0)
+  learner$param_set$values$cp = to_tune(0.1, 0.3)
+
+  instance = TuningInstanceSingleCrit$new(task = tsk("iris"), learner = learner,
+    resampling = rsmp("holdout"), measure = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 4))
+
+  tuner = tnr("random_search", batch_size = 2)
+  tuner$optimize(instance)
+  expect_data_table(instance$archive$data, nrows = 4)
+
+  instance$terminator = trm("evals", n_evals = 8)
+  instance$is_terminated = FALSE
+
+  tuner$optimize(instance)
+  expect_data_table(instance$archive$data, nrows = 8)
+})
+
