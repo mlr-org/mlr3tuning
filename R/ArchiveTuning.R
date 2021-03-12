@@ -86,6 +86,15 @@ ArchiveTuning = R6Class("ArchiveTuning",
     #' The `uhash` value to filter for.
     resample_result = function(i = NULL, uhash = NULL) {
       self$benchmark_result$resample_result(i = i, uhash = uhash)
+    },
+
+    #' @description
+    #' Printer.
+    #'
+    #' @param ... (ignored).
+    print = function() {
+      catf(format(self))
+      print(self$data[, setdiff(names(self$data), c("x_domain", "uhash")), with = FALSE], digits=2)
     }
   ),
 

@@ -61,10 +61,10 @@ rr = tune_nested(
   task = tsk("pima"),
   learner = learner, 
   inner_resampling = rsmp ("holdout"),
-  outer_resampling = rsmp("cv", folds = 3), 
+  outer_resampling = rsmp("cv", folds = 2), 
   measure = msr("classif.ce"),
-  term_evals = 50,
-  batch_size = 10)
+  term_evals = 2,
+  batch_size = 2)
 
 # check the inner results
 extract_inner_tuning_results(rr)

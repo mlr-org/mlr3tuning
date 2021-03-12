@@ -238,7 +238,6 @@ test_that("TuningInstanceSingleCrit can be continued", {
   expect_data_table(instance$archive$data, nrows = 4)
 
   instance$terminator = trm("evals", n_evals = 8)
-  instance$is_terminated = FALSE
 
   tuner$optimize(instance)
   expect_data_table(instance$archive$data, nrows = 8)
