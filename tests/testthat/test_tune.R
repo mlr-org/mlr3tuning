@@ -19,11 +19,6 @@ test_that("auto_tuner function works", {
 
   expect_class(at, "AutoTuner")
   expect_class(at$instance_args$terminator, "TerminatorCombo")
-
-  expect_error(auto_tuner(method = "random_search", learner = learner, resampling = rsmp ("holdout"), 
-    measure = msr("classif.ce"), batch_size = 10),
-    regexp = "`term_evals` or `term_time` must be provided",
-    fixed = TRUE)
 })
 
 test_that("tune function works", {

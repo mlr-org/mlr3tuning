@@ -175,7 +175,7 @@ terminator_selection = function(term_evals, term_time) {
   assert_int(term_time, null.ok = TRUE)
 
   if (is.null(term_evals) && is.null(term_time)) {
-    stop("`term_evals` or `term_time` must be provided")
+    trm("none")
   } else if (!is.null(term_evals) && !is.null(term_time)) {
     trm("combo", list(trm("evals", n_evals = term_evals), trm("run_time", secs = term_time)))
   } else if (!is.null(term_evals)) {
