@@ -1,56 +1,54 @@
+---
+output: github_document
+---
+
+```{r, include = FALSE}
+lgr::get_logger("mlr3")$set_threshold("warn")
+lgr::get_logger("bbotk")$set_threshold("warn")
+set.seed(1)
+options(datatable.print.class = FALSE, datatable.print.keys = FALSE)
+```
 
 # mlr3tuning
 
-Package website: [release](https://mlr3tuning.mlr-org.com/) |
-[dev](https://mlr3tuning.mlr-org.com/dev/)
+Package website: [release](https://mlr3tuning.mlr-org.com/) | [dev](https://mlr3tuning.mlr-org.com/dev/)
 
 <!-- badges: start -->
-
 [![tic](https://github.com/mlr-org/mlr3tuning/workflows/tic/badge.svg?branch=main)](https://github.com/mlr-org/mlr3tuning/actions)
-[![CRAN
-Status](https://www.r-pkg.org/badges/version-ago/mlr3tuning)](https://cran.r-project.org/package=mlr3tuning)
+[![CRAN Status](https://www.r-pkg.org/badges/version-ago/mlr3tuning)](https://cran.r-project.org/package=mlr3tuning)
 [![StackOverflow](https://img.shields.io/badge/stackoverflow-mlr3-orange.svg)](https://stackoverflow.com/questions/tagged/mlr3)
 [![Mattermost](https://img.shields.io/badge/chat-mattermost-orange.svg)](https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/)
 [![CodeFactor](https://www.codefactor.io/repository/github/mlr-org/mlr3tuning/badge)](https://www.codefactor.io/repository/github/mlr-org/mlr3tuning)
 <!-- badges: end -->
 
-This package provides hyperparameter tuning for
-[mlr3](https://mlr3.mlr-org.com). It offers various tuning methods
-e.g. grid search, random search and generalized simulated annealing and
-different termination criteria can be set and combined. `AutoTuner`
-provides a convenient way to perform nested resampling in combination
-with `mlr3`. The package is build on
-[bbotk](https://github.com/mlr-org/bbotk) which provides a common
-framework for optimization.
+This package provides hyperparameter tuning for [mlr3](https://mlr3.mlr-org.com).
+It offers various tuning methods e.g. grid search, random search and generalized simulated annealing and different termination criteria can be set and combined.
+`AutoTuner` provides a convenient way to perform nested resampling in combination with `mlr3`.
+The package is build on [bbotk](https://github.com/mlr-org/bbotk) which provides a common framework for optimization.
 
 ## Resources
 
-  - mlr3book chapters on [tuning search
-    spaces](https://mlr3book.mlr-org.com/searchspace.html),
-    [hyperparameter tuning](https://mlr3book.mlr-org.com/tuning.html)
-    and [nested
-    resampling](https://mlr3book.mlr-org.com/nested-resampling.html).
-  - mlr3gallery
-    [posts](https://mlr3gallery.mlr-org.com/#category:mlr3tuning)
+  - mlr3book chapters on [tuning search spaces](https://mlr3book.mlr-org.com/searchspace.html), [hyperparameter tuning](https://mlr3book.mlr-org.com/tuning.html) and [nested resampling](https://mlr3book.mlr-org.com/nested-resampling.html).
+  - mlr3gallery [posts](https://mlr3gallery.mlr-org.com/#category:mlr3tuning)
   - [cheatsheet](https://cheatsheets.mlr-org.com/mlr3tuning.pdf)
 
 ## Installation
 
 Install the last release from CRAN:
 
-``` r
+```{r eval = FALSE}
 install.packages("mlr3tuning")
 ```
 
 Install the development version from GitHub:
 
-``` r
+```{r eval = FALSE}
 remotes::install_github("mlr-org/mlr3tuning")
 ```
 
 ## Example
 
-``` r
+```{r}
 library("mlr3")
 library("mlr3tuning")
 library("paradox")
@@ -81,6 +79,3 @@ tuner = tnr("grid_search", resolution = 5)
 # Trigger optimization
 tuner$optimize(instance)
 ```
-
-    ##        cp minsplit learner_param_vals  x_domain classif.ce
-    ## 1: 0.0505       10          <list[3]> <list[2]>  0.1953125
