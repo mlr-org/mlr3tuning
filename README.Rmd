@@ -28,9 +28,9 @@ The package is build on [bbotk](https://github.com/mlr-org/bbotk) which provides
 
 ## Resources
 
-  - mlr3book chapters on [tuning search spaces](https://mlr3book.mlr-org.com/searchspace.html), [hyperparameter tuning](https://mlr3book.mlr-org.com/tuning.html) and [nested resampling](https://mlr3book.mlr-org.com/nested-resampling.html).
-  - mlr3gallery [posts](https://mlr3gallery.mlr-org.com/#category:mlr3tuning)
-  - [cheatsheet](https://cheatsheets.mlr-org.com/mlr3tuning.pdf)
+- mlr3book chapters on [tuning search spaces](https://mlr3book.mlr-org.com/searchspace.html), [hyperparameter tuning](https://mlr3book.mlr-org.com/tuning.html) and [nested resampling](https://mlr3book.mlr-org.com/nested-resampling.html).
+- mlr3gallery [posts](https://mlr3gallery.mlr-org.com/#category:mlr3tuning)
+- [cheatsheet](https://cheatsheets.mlr-org.com/mlr3tuning.pdf)
 
 ## Installation
 

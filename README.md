@@ -53,6 +53,11 @@ remotes::install_github("mlr-org/mlr3tuning")
 ``` r
 library("mlr3")
 library("mlr3tuning")
+```
+
+    ## Loading required package: paradox
+
+``` r
 library("paradox")
 
 task = tsk("pima")
