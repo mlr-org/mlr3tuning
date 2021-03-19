@@ -50,6 +50,7 @@ Imports:
 Suggests:
     adagio,
     GenSA,
+    irace,
     mlr3pipelines,
     nloptr,
     rpart,
@@ -71,6 +72,7 @@ Collate:
     'TunerFromOptimizer.R'
     'TunerGenSA.R'
     'TunerGridSearch.R'
+    'TunerIrace.R'
     'TunerNLoptr.R'
     'TunerRandomSearch.R'
     'TuningInstanceMulticrit.R'
@@ -78,6 +80,7 @@ Collate:
     'assertions.R'
     'bibentries.R'
     'helper.R'
+    'irace_helpers.R'
     'reexport.R'
     'sugar.R'
     'zzz.R'

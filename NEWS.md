@@ -2,6 +2,7 @@
 
 # mlr3tuning 0.8.0
 
+- Adds `TunerIrace` from `irace` package.
 - Adds `tune()`, `auto_tuner()` and `tune_nested()` sugar functions.
 - `TuningInstanceSingleCrit`, `TuningInstanceMultiCrit` and `AutoTuner` can be
   initialized with `store_benchmark_result = FALSE` and `store_models = TRUE`
@@ -22,7 +23,7 @@
 
 # mlr3tuning 0.5.0
 
-- Adds `TunerCmaes` from adagio package.
+- Adds `TunerCmaes` from `adagio` package.
 - Fix `predict_type` in `AutoTuner`.
 - Support to set `TuneToken` in `Learner$param_set` and create a search space
   from it.

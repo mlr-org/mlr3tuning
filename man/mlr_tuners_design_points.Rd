@@ -13,7 +13,8 @@ in the design are evaluated in order as given.
 \section{Dictionary}{
 
 This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary}
-\link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:\preformatted{mlr_tuners$get("design_points")
+\link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:\preformatted{TunerDesignPoints$new()
+mlr_tuners$get("design_points")
 tnr("design_points")
 }
 }
@@ -93,6 +94,7 @@ Other Tuner:
 \code{\link{mlr_tuners_cmaes}},
 \code{\link{mlr_tuners_gensa}},
 \code{\link{mlr_tuners_grid_search}},
+\code{\link{mlr_tuners_irace}},
 \code{\link{mlr_tuners_nloptr}},
 \code{\link{mlr_tuners_random_search}}
 }

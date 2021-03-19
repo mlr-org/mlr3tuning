@@ -24,9 +24,6 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     #' @field learner ([mlr3::Learner]).
     learner = NULL,
 
-    #' @field resampling ([mlr3::Resampling]).
-    resampling = NULL,
-
     #' @field measures (list of [mlr3::Measure]).
     measures = NULL,
 
@@ -47,16 +44,11 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
 
       self$task = assert_task(as_task(task, clone = TRUE))
       self$learner = assert_learner(as_learner(learner, clone = TRUE))
-      self$resampling = assert_resampling(as_resampling(
-        resampling,
-        clone = TRUE))
+      self$resampling = resampling
       self$measures = assert_measures(as_measures(measures, clone = TRUE),
         task = self$task, learner = self$learner)
       self$store_benchmark_result = assert_logical(store_benchmark_result)
       self$store_models = assert_logical(store_models)
-      if (!resampling$is_instantiated) {
-        self$resampling$instantiate(self$task)
-      }
 
       codomain = ParamSet$new(map(self$measures, function(s) {
         ParamDbl$new(id = s$id, tags = ifelse(s$minimize, "minimize", "maximize"))
@@ -89,6 +81,22 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
         cbind(aggr[, y, with = FALSE], uhash = bmr$uhashes)
       } else {
         aggr[, y, with = FALSE]
+      }
+    },
+
+    .resampling = NULL
+  ),
+
+  active = list(
+
+    #' @field resampling ([mlr3::Resampling]).
+    resampling = function(rhs) {
+      if(missing(rhs)) {
+        private$.resampling
+      } else {
+        resampling = assert_resampling(as_resampling(rhs, clone = TRUE))
+        if (!resampling$is_instantiated) resampling$instantiate(self$task)
+        private$.resampling = resampling
       }
     }
   )
