@@ -19,7 +19,8 @@ parametrized wrapped learner.
 }
 
 During \verb{$predict()} the \code{AutoTuner} just calls the predict method of the
-wrapped (inner) learner.
+wrapped (inner) learner. A set timeout is disabled while fitting the final
+model.
 
 Note that this approach allows to perform nested resampling by passing an
 \link{AutoTuner} object to \code{\link[mlr3:resample]{mlr3::resample()}} or \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
