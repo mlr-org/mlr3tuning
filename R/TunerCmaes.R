@@ -1,4 +1,4 @@
-#' @title TunerCmaes
+#' @title Hyperparameter Tuning with Covariance Matrix Adaptation Evolution Strategy
 #'
 #' @name mlr_tuners_cmaes
 #'
@@ -11,6 +11,7 @@
 #' @template section_logging
 #'
 #' @inheritSection bbotk::OptimizerCmaes Parameters
+#' @inheritSection bbotk::OptimizerCmaes Progress Bars
 #'
 #' @family Tuner
 #' @seealso Package \CRANpkg{mlr3hyperband} for hyperband tuning.
@@ -31,7 +32,7 @@
 #'   search_space = search_space,
 #'   terminator = terminator
 #' )
-#' tt = tnr("cmaes", par = 0.1)
+#' tt = tnr("cmaes")
 #' # modifies the instance by reference
 #' tt$optimize(instance)
 #' # returns best configuration and best performance

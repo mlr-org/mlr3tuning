@@ -3,7 +3,7 @@
 \name{mlr_tuners_nloptr}
 \alias{mlr_tuners_nloptr}
 \alias{TunerNLoptr}
-\title{TuneNLoptr}
+\title{Hyperparameter Tuning with Non-linear Optimization}
 \source{
 Johnson, G S (2020).
 \dQuote{The NLopt nonlinear-optimization package.}
@@ -64,6 +64,16 @@ defaults. To deactivate these conditions, set them to \code{-1}.
 
 }
 
+\section{Progress Bars}{
+
+
+\verb{$optimize()} supports progress bars via the package \href{https://CRAN.R-project.org/package=progressr}{\pkg{progressr}}
+combined with a \link[bbotk]{Terminator}. Simply wrap the function in
+\code{progressr::with_progress()} to enable them. We recommend to use package
+\href{https://CRAN.R-project.org/package=progress}{\pkg{progress}} as backend; enable with \code{progressr::handlers("progress")}.
+
+}
+
 \examples{
 \dontrun{
 library(mlr3)
@@ -82,7 +92,7 @@ instance = TuningInstanceSingleCrit$new(
   search_space = search_space,
   terminator = terminator
 )
-tt = tnr("nloptr", x0 = 0.1, algorithm = "NLOPT_LN_BOBYQA")
+tt = tnr("nloptr", algorithm = "NLOPT_LN_BOBYQA")
 # modifies the instance by reference
 tt$optimize(instance)
 # returns best configuration and best performance

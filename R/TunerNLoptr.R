@@ -1,4 +1,4 @@
-#' @title TuneNLoptr
+#' @title Hyperparameter Tuning with Non-linear Optimization
 #'
 #' @name mlr_tuners_nloptr
 #' @include Tuner.R
@@ -20,6 +20,7 @@
 #' @template section_logging
 #'
 #' @inheritSection bbotk::OptimizerNLoptr Parameters
+#' @inheritSection bbotk::OptimizerNLoptr Progress Bars
 #'
 #' @family Tuner
 #' @seealso Package \CRANpkg{mlr3hyperband} for hyperband tuning.
@@ -45,7 +46,7 @@
 #'   search_space = search_space,
 #'   terminator = terminator
 #' )
-#' tt = tnr("nloptr", x0 = 0.1, algorithm = "NLOPT_LN_BOBYQA")
+#' tt = tnr("nloptr", algorithm = "NLOPT_LN_BOBYQA")
 #' # modifies the instance by reference
 #' tt$optimize(instance)
 #' # returns best configuration and best performance

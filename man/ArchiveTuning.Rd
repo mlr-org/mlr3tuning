@@ -4,7 +4,7 @@
 \alias{ArchiveTuning}
 \title{Logging object for objective function evaluations}
 \description{
-Container around a \link[data.table:data.table]{data.table::data.table} which stores all performed
+Container around a \code{\link[data.table:data.table]{data.table::data.table()}} which stores all performed
 function calls of the Objective and the associated \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}.
 
 \verb{$benchmark_result} stores a \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} which contains the
@@ -12,17 +12,6 @@ function calls of the Objective and the associated \link[mlr3:BenchmarkResult]{m
 \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} is connected to the \link[data.table:data.table]{data.table::data.table} via the
 \code{uhash} column.
 }
-\section{Technical details}{
-
-
-The data is stored in a private \code{.data} field that contains a
-\link[data.table:data.table]{data.table::data.table} which logs all performed function calls of the \link{ObjectiveTuning}.
-This \link[data.table:data.table]{data.table::data.table} is accessed with the public \verb{$data()} method. New
-values can be added with the \verb{$add_evals()} method. This however is usually
-done through the evaluation of the \link{TuningInstanceSingleCrit} or
-\link{TuningInstanceMultiCrit} by the \link{Tuner}.
-}
-
 \section{Super class}{
 \code{\link[bbotk:Archive]{bbotk::Archive}} -> \code{ArchiveTuning}
 }
@@ -34,23 +23,168 @@ Stores benchmark result.}
 }
 \if{html}{\out{</div>}}
 }
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{extended_archive}}{(\code{\link[data.table:data.table]{data.table::data.table()}})\cr
+Joins each performed function call of the \link{Objective} with the
+corresponding \link[mlr3:ResampleResult]{mlr3::ResampleResult}.}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
+\item \href{#method-learner}{\code{ArchiveTuning$learner()}}
+\item \href{#method-learners}{\code{ArchiveTuning$learners()}}
+\item \href{#method-learner_param_vals}{\code{ArchiveTuning$learner_param_vals()}}
+\item \href{#method-predictions}{\code{ArchiveTuning$predictions()}}
+\item \href{#method-resample_result}{\code{ArchiveTuning$resample_result()}}
+\item \href{#method-print}{\code{ArchiveTuning$print()}}
 \item \href{#method-clone}{\code{ArchiveTuning$clone()}}
 }
 }
 \if{html}{
-\out{<details ><summary>Inherited methods</summary>}
+\out{<details open ><summary>Inherited methods</summary>}
 \itemize{
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="add_evals">}\href{../../bbotk/html/Archive.html#method-add_evals}{\code{bbotk::Archive$add_evals()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="best">}\href{../../bbotk/html/Archive.html#method-best}{\code{bbotk::Archive$best()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="clear">}\href{../../bbotk/html/Archive.html#method-clear}{\code{bbotk::Archive$clear()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="format">}\href{../../bbotk/html/Archive.html#method-format}{\code{bbotk::Archive$format()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="initialize">}\href{../../bbotk/html/Archive.html#method-initialize}{\code{bbotk::Archive$initialize()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="print">}\href{../../bbotk/html/Archive.html#method-print}{\code{bbotk::Archive$print()}}\out{</span>}
 }
 \out{</details>}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-learner"></a>}}
+\if{latex}{\out{\hypertarget{method-learner}{}}}
+\subsection{Method \code{learner()}}{
+Retrieve \link[mlr3:Learner]{mlr3::Learner} of the i-th evaluation, by position
+or by unique hash \code{uhash}. \code{i} and \code{uhash} are mutually exclusive.
+Learner does not contain a model. Use \verb{$learners()} to get learners with
+models.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ArchiveTuning$learner(i = NULL, uhash = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{i}}{(\code{integer(1)})\cr
+The iteration value to filter for.}
+
+\item{\code{uhash}}{(\code{logical(1)})\cr
+The \code{uhash} value to filter for.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-learners"></a>}}
+\if{latex}{\out{\hypertarget{method-learners}{}}}
+\subsection{Method \code{learners()}}{
+Retrieve list of trained \link[mlr3:Learner]{mlr3::Learner} objects of the i-th evaluation,
+by position or by unique hash \code{uhash}. \code{i} and \code{uhash} are mutually
+exclusive.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ArchiveTuning$learners(i = NULL, uhash = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{i}}{(\code{integer(1)})\cr
+The iteration value to filter for.}
+
+\item{\code{uhash}}{(\code{logical(1)})\cr
+The \code{uhash} value to filter for.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-learner_param_vals"></a>}}
+\if{latex}{\out{\hypertarget{method-learner_param_vals}{}}}
+\subsection{Method \code{learner_param_vals()}}{
+Retrieve param values of the i-th evaluation, by position
+or by unique hash \code{uhash}. \code{i} and \code{uhash} are mutually exclusive.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ArchiveTuning$learner_param_vals(i = NULL, uhash = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{i}}{(\code{integer(1)})\cr
+The iteration value to filter for.}
+
+\item{\code{uhash}}{(\code{logical(1)})\cr
+The \code{uhash} value to filter for.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-predictions"></a>}}
+\if{latex}{\out{\hypertarget{method-predictions}{}}}
+\subsection{Method \code{predictions()}}{
+Retrieve list of \link[mlr3:Prediction]{mlr3::Prediction} objects of the i-th evaluation, by
+position or by unique hash \code{uhash}. \code{i} and \code{uhash} are mutually
+exclusive.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ArchiveTuning$predictions(i = NULL, uhash = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{i}}{(\code{integer(1)})\cr
+The iteration value to filter for.}
+
+\item{\code{uhash}}{(\code{logical(1)})\cr
+The \code{uhash} value to filter for.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-resample_result"></a>}}
+\if{latex}{\out{\hypertarget{method-resample_result}{}}}
+\subsection{Method \code{resample_result()}}{
+Retrieve \link[mlr3:ResampleResult]{mlr3::ResampleResult} of the i-th evaluation, by position
+or by unique hash \code{uhash}. \code{i} and \code{uhash} are mutually exclusive.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ArchiveTuning$resample_result(i = NULL, uhash = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{i}}{(\code{integer(1)})\cr
+The iteration value to filter for.}
+
+\item{\code{uhash}}{(\code{logical(1)})\cr
+The \code{uhash} value to filter for.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-print"></a>}}
+\if{latex}{\out{\hypertarget{method-print}{}}}
+\subsection{Method \code{print()}}{
+Printer.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ArchiveTuning$print()}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{(ignored).}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

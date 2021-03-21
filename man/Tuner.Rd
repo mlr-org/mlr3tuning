@@ -82,8 +82,8 @@ instance$result
 # evaluations
 instance$archive
 }
-\section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
 \item{\code{param_set}}{(\link[paradox:ParamSet]{paradox::ParamSet}).}
 

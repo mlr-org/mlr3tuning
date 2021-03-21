@@ -3,7 +3,7 @@
 \name{mlr_tuners_cmaes}
 \alias{mlr_tuners_cmaes}
 \alias{TunerCmaes}
-\title{TunerCmaes}
+\title{Hyperparameter Tuning with Covariance Matrix Adaptation Evolution Strategy}
 \description{
 Subclass that implements CMA-ES calling \code{\link[adagio:cmaes]{adagio::pureCMAES()}}
 from package \CRANpkg{adagio}.
@@ -40,6 +40,16 @@ the algorithm and where our terminators allow to obtain the same behavior.
 
 }
 
+\section{Progress Bars}{
+
+
+\verb{$optimize()} supports progress bars via the package \href{https://CRAN.R-project.org/package=progressr}{\pkg{progressr}}
+combined with a \link[bbotk]{Terminator}. Simply wrap the function in
+\code{progressr::with_progress()} to enable them. We recommend to use package
+\href{https://CRAN.R-project.org/package=progress}{\pkg{progress}} as backend; enable with \code{progressr::handlers("progress")}.
+
+}
+
 \examples{
 library(mlr3)
 library(paradox)
@@ -56,7 +66,7 @@ instance = TuningInstanceSingleCrit$new(
   search_space = search_space,
   terminator = terminator
 )
-tt = tnr("cmaes", par = 0.1)
+tt = tnr("cmaes")
 # modifies the instance by reference
 tt$optimize(instance)
 # returns best configuration and best performance

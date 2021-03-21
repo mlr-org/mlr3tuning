@@ -46,8 +46,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       store_models = FALSE) {
 
       self$task = assert_task(as_task(task, clone = TRUE))
-      self$learner = assert_learner(as_learner(learner, clone = TRUE),
-        task = self$task)
+      self$learner = assert_learner(as_learner(learner, clone = TRUE))
       self$resampling = assert_resampling(as_resampling(
         resampling,
         clone = TRUE))
@@ -55,22 +54,16 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
         task = self$task, learner = self$learner)
       self$store_benchmark_result = assert_logical(store_benchmark_result)
       self$store_models = assert_logical(store_models)
-      if (self$store_models && !self$store_benchmark_result) {
-        stop("Models can only be stored if store_benchmark_result is set to TRUE")
-      }
       if (!resampling$is_instantiated) {
         self$resampling$instantiate(self$task)
       }
 
       codomain = ParamSet$new(map(self$measures, function(s) {
-        ParamDbl$new(
-          id = s$id,
-          tags = ifelse(s$minimize, "minimize", "maximize"))
+        ParamDbl$new(id = s$id, tags = ifelse(s$minimize, "minimize", "maximize"))
       }))
 
-      super$initialize(
-        id = sprintf("%s_on_%s", self$learner$id, self$task$id), domain = self$learner$param_set,
-        codomain = codomain, check_values = check_values)
+      super$initialize(id = sprintf("%s_on_%s", self$learner$id, self$task$id), 
+        domain = self$learner$param_set, codomain = codomain, check_values = check_values)
     }
   ),
 
@@ -79,9 +72,6 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       learners = map(xss, function(x) {
         learner = self$learner$clone(deep = TRUE)
         learner$param_set$values = insert_named(learner$param_set$values, x)
-        learner$param_set$values = keep(learner$param_set$values, function(x) {
-          "TuneToken" %nin% class(x)
-        })
         return(learner)
       })
 

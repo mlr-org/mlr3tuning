@@ -1,6 +1,6 @@
 Package: mlr3tuning
 Title: Tuning for 'mlr3'
-Version: 0.4.0.9000
+Version: 0.8.0.9000
 Authors@R:
     c(person(given = "Marc",
              family = "Becker",
@@ -37,15 +37,15 @@ URL: https://mlr3tuning.mlr-org.com,
     https://github.com/mlr-org/mlr3tuning
 BugReports: https://github.com/mlr-org/mlr3tuning/issues
 Depends:
+    mlr3 (>= 0.11.0),
+    paradox (>= 0.7.0),
     R (>= 3.1.0)
 Imports:
-    bbotk (>= 0.2.2),
+    bbotk (>= 0.3.0),
     checkmate (>= 2.0.0),
     data.table,
     lgr,
-    mlr3 (>= 0.8.0-9000),
-    mlr3misc (>= 0.5.0),
-    paradox (>= 0.3.0),
+    mlr3misc (>= 0.7.0),
     R6
 Suggests:
     adagio,
@@ -53,10 +53,9 @@ Suggests:
     mlr3pipelines,
     nloptr,
     rpart,
-    testthat
-Remotes:
-    mlr-org/bbotk,
-    mlr-org/mlr3
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Config/testthat/parallel: true
 Encoding: UTF-8
 NeedsCompilation: no
 Roxygen: list(markdown = TRUE)

@@ -1,15 +1,13 @@
-context("TuningInstanceSingleCrit")
-
 test_that("TuningInstanceSingleCrit", {
   inst = TEST_MAKE_INST1(values = list(maxdepth = 10), folds = 2L, measure = msr("dummy.cp.classif", fun = function(pv) pv$cp), n_dim = 2)
   # test empty inst
-  expect_data_table(inst$archive$data(), nrows = 0)
+  expect_data_table(inst$archive$data, nrows = 0)
   expect_identical(inst$archive$n_evals, 0L)
   #expect_output(print(inst), "Not tuned")
 
   # add a couple of eval points and test the state of inst
   z = inst$eval_batch(data.table(cp = c(0.3, 0.25), minsplit = c(3, 4)))
-  expect_data_table(inst$archive$data(), nrows = 2L)
+  expect_data_table(inst$archive$data, nrows = 2L)
 
   expect_equal(inst$archive$benchmark_result$resample_result(1)$learners[[1]]$param_set$values$cp, 0.3)
   expect_equal(inst$archive$benchmark_result$resample_result(1)$learners[[1]]$param_set$values$minsplit, 3)
@@ -19,10 +17,10 @@ test_that("TuningInstanceSingleCrit", {
   expect_equal(inst$archive$benchmark_result$resample_result(2)$learners[[1]]$param_set$values$maxdepth, 10)
   expect_identical(inst$archive$n_evals, 2L)
   expect_data_table(z, nrows = 2)
-  expect_named(z, c("dummy.cp.classif", "uhash"))
+  expect_named(z, "dummy.cp.classif")
 
   z = inst$eval_batch(data.table(cp = c(0.2, 0.1), minsplit = c(3, 4)))
-  expect_data_table(inst$archive$data(), nrows = 4L)
+  expect_data_table(inst$archive$data, nrows = 4L)
   expect_equal(inst$archive$benchmark_result$resample_result(3)$learners[[1]]$param_set$values$cp, 0.2)
   expect_equal(inst$archive$benchmark_result$resample_result(3)$learners[[1]]$param_set$values$minsplit, 3)
   expect_equal(inst$archive$benchmark_result$resample_result(3)$learners[[1]]$param_set$values$maxdepth, 10)
@@ -31,12 +29,12 @@ test_that("TuningInstanceSingleCrit", {
   expect_equal(inst$archive$benchmark_result$resample_result(4)$learners[[1]]$param_set$values$maxdepth, 10)
   expect_identical(inst$archive$n_evals, 4L)
   expect_data_table(z, nrows = 2L)
-  expect_named(z, c("dummy.cp.classif", "uhash"))
+  expect_named(z, "dummy.cp.classif")
 
   # test archive
-  a = inst$archive$data()
+  a = inst$archive$data
   expect_data_table(a, nrows = 4L)
-  a = inst$archive$data(unnest = "x_domain")
+  a = as.data.table(inst$archive)
   expect_data_table(a, nrows = 4L)
   expect_true("x_domain_cp" %in% colnames(a))
   expect_true("dummy.cp.classif" %in% colnames(a))
@@ -46,7 +44,7 @@ test_that("TuningInstanceSingleCrit", {
 test_that("archive one row (#40)", {
   inst = TEST_MAKE_INST1()
   inst$eval_batch(data.table(cp = 0.1))
-  a = inst$archive$data()
+  a = inst$archive$data
   expect_data_table(a, nrows = 1)
   expect_number(a$classif.ce)
 })
@@ -55,20 +53,20 @@ test_that("eval_batch and termination", {
   inst = TEST_MAKE_INST1(term_evals = 3L)
   design = generate_design_random(inst$search_space, 2)$data
   inst$eval_batch(design[1:2, ])
-  expect_data_table(inst$archive$data(), nrows = 2L)
+  expect_data_table(inst$archive$data, nrows = 2L)
   inst$eval_batch(design[1, ])
-  expect_data_table(inst$archive$data(), nrows = 3L)
+  expect_data_table(inst$archive$data, nrows = 3L)
   expect_error(inst$eval_batch(design[1, ]), class = "terminated_error")
-  expect_data_table(inst$archive$data(), nrows = 3L)
+  expect_data_table(inst$archive$data, nrows = 3L)
 
   inst = TEST_MAKE_INST1(term_evals = 5L)
   tuner = tnr("random_search", batch_size = 3L)
   tuner$optimize(inst)
-  expect_data_table(inst$archive$data(), nrows = 6L)
+  expect_data_table(inst$archive$data, nrows = 6L)
 
   # second start should be a NOP
   tuner$optimize(inst)
-  tab = inst$archive$data()
+  tab = inst$archive$data
   expect_data_table(tab, nrows = 6L)
 })
 
@@ -76,7 +74,7 @@ test_that("the same experiment can be added twice", {
   inst = TEST_MAKE_INST1()
   d = data.table(cp = c(0.1, 0.1))
   inst$eval_batch(d)
-  tab = inst$archive$data()
+  tab = inst$archive$data
   expect_data_table(tab, nrows = 2)
 })
 
@@ -97,7 +95,7 @@ test_that("tuning with custom resampling", {
   terminator = trm("evals", n_evals = 10)
   tuner = tnr("random_search")
 
-  inst = TuningInstanceSingleCrit$new(task, learner, resampling, measure, tune_ps, terminator)
+  inst = TuningInstanceSingleCrit$new(task, learner, resampling, measure, terminator, tune_ps)
   tuner$optimize(inst)
   rr = as.data.table(inst$archive$benchmark_result)$resampling
   expect_list(rr, len = 20)
@@ -125,14 +123,12 @@ test_that("non-scalar hyperpars (#201)", {
     return(x)
   }
 
-  inst = TuningInstanceSingleCrit$new(tsk("iris"),
-    learner,
-    rsmp("holdout"), msr("classif.ce"),
-    search_space,
-    trm("evals", n_evals = 1), check_values = TRUE)
+  inst = TuningInstanceSingleCrit$new(tsk("iris"), learner, rsmp("holdout"),
+    msr("classif.ce"), trm("evals", n_evals = 1), search_space,
+    check_values = TRUE)
 
   tnr("random_search")$optimize(inst)
-  expect_data_table(inst$archive$data(), nrows = 1)
+  expect_data_table(inst$archive$data, nrows = 1)
 })
 
 test_that("store_benchmark_result and store_models flag works", {
@@ -140,19 +136,13 @@ test_that("store_benchmark_result and store_models flag works", {
     measure = msr("dummy.cp.classif", fun = function(pv) pv$cp), n_dim = 2,
     store_benchmark_result = FALSE)
   inst$eval_batch(data.table(cp = c(0.3, 0.25), minsplit = c(3, 4)))
-  expect_true("uhashes" %nin% colnames(inst$archive$data()))
+  expect_true("uhashes" %nin% colnames(inst$archive$data))
 
   inst = TEST_MAKE_INST1(values = list(maxdepth = 10), folds = 2L,
     measure = msr("dummy.cp.classif", fun = function(pv) pv$cp), n_dim = 2,
     store_benchmark_result = TRUE)
   inst$eval_batch(data.table(cp = c(0.3, 0.25), minsplit = c(3, 4)))
   expect_r6(inst$archive$benchmark_result, "BenchmarkResult")
-
-  expect_error(TEST_MAKE_INST1(values = list(maxdepth = 10), folds = 2L,
-    measure = msr("dummy.cp.classif", fun = function(pv) pv$cp), n_dim = 2,
-    store_benchmark_result = FALSE, store_models = TRUE),
-    regexp = "Models can only be stored if store_benchmark_result is set to TRUE",
-    fixed = TRUE)
 
   inst = TEST_MAKE_INST1(values = list(maxdepth = 10), folds = 2L,
     measure = msr("dummy.cp.classif", fun = function(pv) pv$cp), n_dim = 2,
@@ -178,13 +168,59 @@ test_that("check_values flag with parameter set dependencies", {
   tuner = tnr("random_search")
 
   inst = TuningInstanceSingleCrit$new(tsk("boston_housing"), learner,
-    rsmp("holdout"), msr("regr.mse"), search_space, terminator)
+    rsmp("holdout"), msr("regr.mse"), terminator, search_space)
   tuner$optimize(inst)
   expect_named(inst$result_learner_param_vals, c("xx", "cp", "yy"))
 
   inst = TuningInstanceSingleCrit$new(tsk("boston_housing"), learner,
-    rsmp("holdout"), msr("regr.mse"), search_space, terminator,
+    rsmp("holdout"), msr("regr.mse"), terminator, search_space,
     check_values = TRUE)
   expect_error(tuner$optimize(inst),
-    fixed = "The parameter 'yy' can only be set")
+    regexp = "The parameter 'yy' can only be set")
+})
+
+test_that("search space from TuneToken works", {
+  learner = lrn("classif.rpart")
+  learner$param_set$values$cp = to_tune(0.1, 0.3)
+
+  instance = TuningInstanceSingleCrit$new(task = tsk("iris"), learner = learner,
+    resampling = rsmp("holdout"), measure = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 1))
+
+  expect_r6(instance$search_space, "ParamSet")
+  expect_equal(instance$search_space$ids(), "cp")
+
+  ps = ParamSet$new(list(
+    ParamDbl$new("cp", lower = 0.1, upper = 0.3)
+  ))
+
+  expect_error(TuningInstanceSingleCrit$new(task = tsk("iris"), learner = learner,
+    resampling = rsmp("holdout"), measure = msr("classif.ce"),
+    search_space = ps, terminator = trm("evals", n_evals = 1)),
+    regexp = "If the values of the ParamSet of the Learner contain TuneTokens you cannot supply a search_space.",
+    fixed = TRUE)
+
+  instance = TuningInstanceSingleCrit$new(task = tsk("iris"),
+    learner = lrn("classif.rpart"), resampling = rsmp("holdout"),
+    measure = msr("classif.ce"), search_space = ps,
+    terminator = trm("evals", n_evals = 1))
+
+  expect_r6(instance$search_space, "ParamSet")
+  expect_equal(instance$search_space$ids(), "cp")
+})
+
+test_that("TuneToken and result_learner_param_vals works", {
+  learner = lrn("classif.rpart", xval = 0)
+  learner$param_set$values$cp = to_tune(0.1, 0.3)
+
+  instance = TuningInstanceSingleCrit$new(task = tsk("iris"), learner = learner,
+    resampling = rsmp("holdout"), measure = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 1))
+
+  xdt = data.table(cp = 0.1)
+  tuner = tnr("design_points", design = xdt)
+  tuner$optimize(instance)
+
+  expect_equal(instance$result_learner_param_vals$xval, 0)
+  expect_equal(instance$result_learner_param_vals$cp, 0.1)
 })

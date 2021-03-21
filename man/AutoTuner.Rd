@@ -31,26 +31,34 @@ and execute \code{\link[mlr3:resample]{mlr3::resample()}} or \code{\link[mlr3:be
 \examples{
 library(mlr3)
 library(paradox)
-task = tsk("iris")
-learner = lrn("classif.rpart")
-resampling = rsmp("holdout")
-measure = msr("classif.ce")
-search_space = ParamSet$new(
-  params = list(ParamDbl$new("cp", lower = 0.001, upper = 0.1)))
 
-terminator = trm("evals", n_evals = 5)
-tuner = tnr("grid_search")
+task = tsk("iris")
+search_space = ParamSet$new(
+  params = list(ParamDbl$new("cp", lower = 0.001, upper = 0.1))
+)
+
 at = AutoTuner$new(
-  learner, resampling, measure, search_space, terminator,
-  tuner, store_tuning_instance = TRUE)
+  learner = lrn("classif.rpart"),
+  resampling = rsmp("holdout"),
+  measure = msr("classif.ce"),
+  terminator = trm("evals", n_evals = 5),
+  tuner = tnr("grid_search"),
+  search_space = search_space,
+  store_tuning_instance = TRUE)
 
 at$train(task)
 at$model
 at$learner
 
 # Nested resampling
-at = AutoTuner$new(learner, resampling, measure, search_space, terminator,
-  tuner, store_tuning_instance = TRUE)
+at = AutoTuner$new(
+  learner = lrn("classif.rpart"),
+  resampling = rsmp("holdout"),
+  measure = msr("classif.ce"),
+  terminator = trm("evals", n_evals = 5),
+  tuner = tnr("grid_search"),
+  search_space = search_space,
+  store_tuning_instance = TRUE)
 
 resampling_outer = rsmp("cv", folds = 2)
 rr = resample(task, at, resampling_outer, store_models = TRUE)
@@ -88,8 +96,6 @@ Internally created tuning instance with all intermediate results.}
 
 \item{\code{tuning_result}}{(named \code{list()})\cr
 Short-cut to \code{result} from \link{TuningInstanceSingleCrit}.}
-
-\item{\code{param_set}}{\link[paradox:ParamSet]{paradox::ParamSet}.}
 
 \item{\code{predict_type}}{(\code{character(1)})\cr
 Stores the currently active predict type, e.g. \code{"response"}.
@@ -130,9 +136,9 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   learner,
   resampling,
   measure,
-  search_space,
   terminator,
   tuner,
+  search_space = NULL,
   store_tuning_instance = TRUE,
   store_benchmark_result = TRUE,
   store_models = FALSE,
@@ -155,14 +161,14 @@ it is not feasible to pass an instantiated \link[mlr3:Resampling]{mlr3::Resampli
 \item{\code{measure}}{(\link[mlr3:Measure]{mlr3::Measure})\cr
 Performance measure to optimize.}
 
-\item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
-Hyperparameter search space, see \link{TuningInstanceSingleCrit}.}
-
 \item{\code{terminator}}{(\link[bbotk:Terminator]{bbotk::Terminator})\cr
 When to stop tuning, see \link{TuningInstanceSingleCrit}.}
 
 \item{\code{tuner}}{(\link{Tuner})\cr
 Tuning algorithm to run.}
+
+\item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
+Hyperparameter search space, see \link{TuningInstanceSingleCrit}.}
 
 \item{\code{store_tuning_instance}}{(\code{logical(1)})\cr
 If \code{TRUE} (default), stores the internally created
@@ -170,10 +176,13 @@ If \code{TRUE} (default), stores the internally created
 \verb{$tuning_instance}.}
 
 \item{\code{store_benchmark_result}}{(\code{logical(1)})\cr
-Store benchmark result in archive?}
+If \code{TRUE} (default), stores the \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} in archive.}
 
 \item{\code{store_models}}{(\code{logical(1)})\cr
-Store models in benchmark result?}
+If \code{FALSE} (default), the fitted models are not stored in the
+\link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}. If \code{store_benchmark_result = FALSE}, the models are
+only stored temporarily and not accessible after the tuning. This combination
+might be useful for measures that require a model.}
 
 \item{\code{check_values}}{(\code{logical(1)})\cr
 Should parameters before the evaluation and the results be checked for

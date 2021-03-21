@@ -1,4 +1,4 @@
-#' @title TunerRandomSearch
+#' @title Hyperparameter Tuning with Random Search
 #'
 #' @name mlr_tuners_random_search
 #' @include Tuner.R
@@ -13,7 +13,8 @@
 #' @template section_parallelization
 #' @template section_logging
 #'
-#' @inheritSection bbotk::OptimizerNLoptr Parameters
+#' @inheritSection bbotk::OptimizerRandomSearch Parameters
+#' @inheritSection bbotk::OptimizerRandomSearch Progress Bars
 #'
 #' @source
 #' `r format_bib("bergstra_2012")`

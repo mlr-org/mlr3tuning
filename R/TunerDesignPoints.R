@@ -1,4 +1,4 @@
-#' @title TunerDesignPoints
+#' @title Hyperparameter Tuning with via Design Points
 #'
 #' @name mlr_tuners_design_points
 #'
@@ -14,6 +14,7 @@
 #' @template section_logging
 #'
 #' @inheritSection bbotk::OptimizerDesignPoints Parameters
+#' @inheritSection bbotk::OptimizerDesignPoints Progress Bars
 #'
 #' @family Tuner
 #' @seealso Package \CRANpkg{mlr3hyperband} for hyperband tuning.
