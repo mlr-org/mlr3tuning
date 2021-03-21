@@ -15,7 +15,8 @@
 #'    parametrized wrapped learner.
 #'
 #' During `$predict()` the `AutoTuner` just calls the predict method of the
-#' wrapped (inner) learner.
+#' wrapped (inner) learner. A set timeout is disabled while fitting the final 
+#' model.
 #'
 #' Note that this approach allows to perform nested resampling by passing an
 #' [AutoTuner] object to [mlr3::resample()] or [mlr3::benchmark()].
@@ -219,6 +220,8 @@ AutoTuner = R6Class("AutoTuner",
       # here we write to the object and this would change instance_args
       learner = ia$learner$clone(deep = TRUE)
       learner$param_set$values = instance$result_learner_param_vals
+      # disable timeout to allow train on full data set without time limit
+      # timeout during tuning is not affected
       learner$timeout = c(train = Inf, predict = Inf)
       learner$train(task)
 
