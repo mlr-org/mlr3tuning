@@ -1,8 +1,9 @@
 # mlr3tuning 0.8.0.9000
 
+- Adds `TunerIrace` from `irace` package.
+
 # mlr3tuning 0.8.0
 
-- Adds `TunerIrace` from `irace` package.
 - Adds `tune()`, `auto_tuner()` and `tune_nested()` sugar functions.
 - `TuningInstanceSingleCrit`, `TuningInstanceMultiCrit` and `AutoTuner` can be
   initialized with `store_benchmark_result = FALSE` and `store_models = TRUE`
