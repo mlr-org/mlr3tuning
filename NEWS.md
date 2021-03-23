@@ -18,7 +18,7 @@
 - `extract_inner_tuning_results()` helper function to extract inner tuning 
   results.
 
- # mlr3tuning 0.6.0
+# mlr3tuning 0.6.0
 
 - `ArchiveTuning$data` is a public field now.
 
