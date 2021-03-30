@@ -12,6 +12,7 @@
 #' @template param_store_models
 #' @template param_check_values
 #' @template param_store_benchmark_result
+#' @template param_allow_retrain
 #'
 #' @export
 ObjectiveTuning = R6Class("ObjectiveTuning",
@@ -39,17 +40,21 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     #' @field archive ([ArchiveTuning]).
     archive = NULL,
 
+    #' @field allow_retrain (`logical(1)`).
+    allow_retrain = NULL,
+
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function(task, learner, resampling, measures, check_values = TRUE, store_benchmark_result = TRUE,
-      store_models = FALSE) {
+      store_models = FALSE, allow_retrain = FALSE) {
 
       self$task = assert_task(as_task(task, clone = TRUE))
       self$learner = assert_learner(as_learner(learner, clone = TRUE))
       self$resampling = assert_resampling(as_resampling(resampling, clone = TRUE))
       self$measures = assert_measures(as_measures(measures, clone = TRUE), task = self$task, learner = self$learner)
-      self$store_benchmark_result = assert_logical(store_benchmark_result)
-      self$store_models = assert_logical(store_models)
+      self$store_benchmark_result = assert_flag(store_benchmark_result)
+      self$store_models = assert_flag(store_models)
+      self$allow_retrain = assert_flag(allow_retrain)
       if (!resampling$is_instantiated) {
         self$resampling$instantiate(self$task)
       }
@@ -71,12 +76,26 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
         return(learner)
       })
 
-      if(is.null(self$continue_hash)) {
+      # automatic matching of retrainable learners
+      # for every learner
+      #  - keep retrainable resample results
+      #  - find resample result that can be retrained most efficiently
+      #  - retrain or if no retrain is possible, resample
+      if (self$allow_retrain) {
+        rrs = self$archive$benchmark_result$resample_results$resample_result
+        res = map(learners, function(learner) {
+          rrrs = keep(rrs, function(rr) rr$is_retrainable(learner$param_set$values))
+          if (length(rrrs) > 0) {
+            retrain_values = map(rrrs, function(rrr) rrr$learner$param_set$get_values(tags = "retrain"))
+            rrrs[[learner$which_retrain(retrain_values)]]$clone()$retrain(learner$param_set$values)
+          } else {
+            resample(self$task, learner, self$resampling, store_models = TRUE)
+          }
+        })
+        bmr = do.call("c", res)
+      } else {
         design = benchmark_grid(self$task, learners, self$resampling)
         bmr = benchmark(design, store_models = self$store_models)
-      } else {
-        bmr = self$archive$benchmark_result$clone(deep = TRUE)$filter(uhashes = self$continue_hash)
-        bmr$continue(learners[[1]]$param_set$get_values(tags = "budget"), store_models = TRUE)
       }
 
       aggr = bmr$aggregate(self$measures)
@@ -92,9 +111,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       } else {
         aggr[, y, with = FALSE]
       }
-    },
-
-    .continue_hash = NULL
+    }
   ),
 
   active = list(
