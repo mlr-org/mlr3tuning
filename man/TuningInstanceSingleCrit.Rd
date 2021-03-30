@@ -185,7 +185,7 @@ Should parameters before the evaluation and the results be checked for
 validity?}
 
 \item{\code{allow_retrain}}{(\code{logical(1)})\cr
-If \code{FALSE} (default), the learner are not retrained.}
+If \code{TRUE}, learners are retrained if possible.}
 }
 \if{html}{\out{</div>}}
 }

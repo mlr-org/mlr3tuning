@@ -105,7 +105,7 @@ only stored temporarily and not accessible after the tuning. This combination
 might be useful for measures that require a model.}
 
 \item{\code{allow_retrain}}{(\code{logical(1)})\cr
-If \code{FALSE} (default), the learner are not retrained.}
+If \code{TRUE}, learners are retrained if possible.}
 }
 \if{html}{\out{</div>}}
 }
