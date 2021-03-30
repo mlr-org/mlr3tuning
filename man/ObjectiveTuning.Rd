@@ -25,6 +25,8 @@ by the \link{TuningInstanceSingleCrit} / \link{TuningInstanceMultiCrit}.
 \item{\code{store_benchmark_result}}{(\code{logical(1)}).}
 
 \item{\code{archive}}{(\link{ArchiveTuning}).}
+
+\item{\code{allow_retrain}}{(\code{logical(1)}).}
 }
 \if{html}{\out{</div>}}
 }
@@ -66,7 +68,8 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   measures,
   check_values = TRUE,
   store_benchmark_result = TRUE,
-  store_models = FALSE
+  store_models = FALSE,
+  allow_retrain = FALSE
 )}\if{html}{\out{</div>}}
 }
 
@@ -100,6 +103,9 @@ If \code{FALSE} (default), the fitted models are not stored in the
 \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}. If \code{store_benchmark_result = FALSE}, the models are
 only stored temporarily and not accessible after the tuning. This combination
 might be useful for measures that require a model.}
+
+\item{\code{allow_retrain}}{(\code{logical(1)})\cr
+If \code{FALSE} (default), the learner are not retrained.}
 }
 \if{html}{\out{</div>}}
 }

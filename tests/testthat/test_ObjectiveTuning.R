@@ -30,7 +30,7 @@ test_that("ObjectiveTuning", {
     4)
 })
 
-test_that("ObjectiveTuning - Multiple measures", {
+test_that("ObjectiveTuning works with multiple measures", {
   task = tsk("iris")
   learner = lrn("classif.rpart")
   resampling = rsmp("holdout")
@@ -45,7 +45,7 @@ test_that("ObjectiveTuning - Multiple measures", {
   expect_data_table(z, nrows = 2, ncols = 3)
 })
 
-test_that("ObjectiveTuning - Store models", {
+test_that("ObjectiveTuning works with store models flag", {
   task = tsk("iris")
   learner = lrn("classif.rpart")
   resampling = rsmp("holdout")
@@ -60,4 +60,36 @@ test_that("ObjectiveTuning - Store models", {
 
   z = obj$eval_many(xss)
   expect_class(as.data.table(obj$archive$benchmark_result)$learner[[1]]$model, "rpart")
+})
+
+test_that("ObjectiveTuning continues the right models", {
+  search_space = ps(
+    iter = p_int(1, 16, tag = "budget"),
+    x = p_dbl(0, 1)
+  )
+
+  instance = TuningInstanceSingleCrit$new(task = tsk("iris"), learner = LearnerClassifDebug$new(),
+    resampling = rsmp("holdout"), measure = msr("classif.ce"), terminator = trm("evals", n_evals = 6),
+    search_space = search_space, store_models = TRUE, allow_retrain = TRUE)
+
+  xdt = data.table(iter = c(1, 1, 1), x = c(0.1, 0.2, 0.3))
+  instance$eval_batch(xdt)
+
+  # increase budget
+  xdt = data.table(iter = c(2, 2, 2), x = c(0.1, 0.2, 0.3))
+  instance$eval_batch(xdt)
+
+  bms = instance$archive$benchmark_result$score()
+  set(bms, j = "retrain_id", value = map(bms$learner, function(x) x$model$retrain_id))
+  set(bms, j = "iter", value = map(bms$learner, function(x) x$param_set$values$iter))
+  set(bms, j = "x", value = map(bms$learner, function(x) x$param_set$values$x))
+
+  expect_length(unique(bms$uhash), 6)
+  expect_length(unique(bms$retrain_id), 3)
+
+  map(unique(bms$retrain_id), function(id) {
+    m = bms[retrain_id == id,]
+    expect_equal(m$x[[1]], m$x[[2]])
+    expect_set_equal(unlist(m$iter), c(2,1))
+  })
 })
