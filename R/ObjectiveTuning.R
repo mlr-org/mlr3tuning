@@ -12,6 +12,7 @@
 #' @template param_store_models
 #' @template param_check_values
 #' @template param_store_benchmark_result
+#' @template param_allow_retrain
 #'
 #' @export
 ObjectiveTuning = R6Class("ObjectiveTuning",
@@ -36,11 +37,13 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     #' @field archive ([ArchiveTuning]).
     archive = NULL,
 
+    #' @field allow_retrain (`logical(1)`).
+    allow_retrain = NULL,
+
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
-    initialize = function(task, learner, resampling, measures,
-      check_values = TRUE, store_benchmark_result = TRUE,
-      store_models = FALSE) {
+    initialize = function(task, learner, resampling, measures, check_values = TRUE, store_benchmark_result = TRUE,
+      store_models = FALSE, allow_retrain = FALSE) {
 
       self$task = assert_task(as_task(task, clone = TRUE))
       self$learner = assert_learner(as_learner(learner, clone = TRUE))
@@ -49,13 +52,14 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
         task = self$task, learner = self$learner)
       self$store_benchmark_result = assert_logical(store_benchmark_result)
       self$store_models = assert_logical(store_models)
+      self$allow_retrain = assert_flag(allow_retrain)
 
       codomain = ParamSet$new(map(self$measures, function(s) {
         ParamDbl$new(id = s$id, tags = ifelse(s$minimize, "minimize", "maximize"))
       }))
 
-      super$initialize(id = sprintf("%s_on_%s", self$learner$id, self$task$id), 
-        domain = self$learner$param_set, codomain = codomain, check_values = check_values)
+      super$initialize(id = sprintf("%s_on_%s", self$learner$id, self$task$id), domain = self$learner$param_set,
+        codomain = codomain, check_values = check_values)
     }
   ),
 
@@ -67,7 +71,45 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
         return(learner)
       })
 
-      design = benchmark_grid(self$task, learners, self$resampling)
+      # automatic matching of retrainable learners
+      if (self$allow_retrain) {
+        rrs = self$archive$benchmark_result$resample_results$resample_result
+        # for every learner / hyperparameter configuration
+        design = map_dtr(learners, function(learner) {
+          # keep retrainable resample results
+          rrrs = keep(rrs, function(rr) rr$is_retrainable(learner$param_set$values))
+          if (length(rrrs) > 0) {
+            # retrain process
+            retrain_values = map(rrrs, function(rrr) rrr$learner$param_set$get_values(tags = "retrain"))
+            # find resample result that can be retrained most efficiently
+            rrr = rrrs[[learner$which_retrain(retrain_values)]]
+            # clone and set `"retrain"` hyperparameter value(s)
+            rls = map(rrr$learners, function(rl) {
+              rlc = rl$clone()
+              rlc$param_set$values = insert_named(rlc$param_set$values, learner$param_set$values)
+              rlc
+            })
+            # create design
+            data.table(
+              task = list(self$task),
+              learner = list(learner), # force list column
+              resampling = list(self$resampling),
+              retrain = ifelse(length(rls) > 1, rls, list(rls))
+            )
+          } else {
+            # train process
+            data.table(
+              task = list(self$task),
+              learner = list(learner),
+              resampling = list(self$resampling), # force list column
+              retrain = list(list())
+            )
+          }
+        })
+      } else {
+        design = benchmark_grid(self$task, learners, self$resampling)
+      }
+
       bmr = benchmark(design, store_models = self$store_models)
       aggr = bmr$aggregate(self$measures)
       y = map_chr(self$measures, "id")

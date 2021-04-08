@@ -54,7 +54,11 @@ Suggests:
     mlr3pipelines,
     nloptr,
     rpart,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    xgboost
+Remotes:
+    mlr-org/mlr3@retrain,
+    mlr-org/mlr3learners@continue
 Config/testthat/edition: 3
 Config/testthat/parallel: true
 Encoding: UTF-8
