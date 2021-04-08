@@ -62,7 +62,7 @@ test_that("ObjectiveTuning works with store models flag", {
   expect_class(as.data.table(obj$archive$benchmark_result)$learner[[1]]$model, "rpart")
 })
 
-test_that("ObjectiveTuning continues the right models", {
+test_that("ObjectiveTuning retrains the right models", {
   search_space = ps(
     iter = p_int(1, 16, tag = "budget"),
     x = p_dbl(0, 1)
@@ -75,7 +75,7 @@ test_that("ObjectiveTuning continues the right models", {
   xdt = data.table(iter = c(1, 1, 1), x = c(0.1, 0.2, 0.3))
   instance$eval_batch(xdt)
 
-  # increase budget
+  # increase `"retrain"` hyperparameter value
   xdt = data.table(iter = c(2, 2, 2), x = c(0.1, 0.2, 0.3))
   instance$eval_batch(xdt)
 

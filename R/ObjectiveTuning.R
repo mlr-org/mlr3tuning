@@ -72,27 +72,45 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       })
 
       # automatic matching of retrainable learners
-      # for every learner
-      #  - keep retrainable resample results
-      #  - find resample result that can be retrained most efficiently
-      #  - retrain or if no retrain is possible, resample
       if (self$allow_retrain) {
         rrs = self$archive$benchmark_result$resample_results$resample_result
-        res = map(learners, function(learner) {
+        # for every learner / hyperparameter configuration
+        design = map_dtr(learners, function(learner) {
+          # keep retrainable resample results
           rrrs = keep(rrs, function(rr) rr$is_retrainable(learner$param_set$values))
           if (length(rrrs) > 0) {
+            # retrain process
             retrain_values = map(rrrs, function(rrr) rrr$learner$param_set$get_values(tags = "retrain"))
-            rrrs[[learner$which_retrain(retrain_values)]]$clone()$retrain(learner$param_set$values)
+            # find resample result that can be retrained most efficiently
+            rrr = rrrs[[learner$which_retrain(retrain_values)]]
+            # clone and set `"retrain"` hyperparameter value(s)
+            rls = map(rrr$learners, function(rl) {
+              rlc = rl$clone()
+              rlc$param_set$values = insert_named(rlc$param_set$values, learner$param_set$values)
+              rlc
+            })
+            # create design
+            data.table(
+              task = list(self$task),
+              learner = list(learner), # force list column
+              resampling = list(self$resampling),
+              retrain = ifelse(length(rls) > 1, rls, list(rls))
+            )
           } else {
-            resample(self$task, learner, self$resampling, store_models = TRUE)
+            # train process
+            data.table(
+              task = list(self$task),
+              learner = list(learner),
+              resampling = list(self$resampling), # force list column
+              retrain = list(list())
+            )
           }
         })
-        bmr = do.call("c", res)
       } else {
         design = benchmark_grid(self$task, learners, self$resampling)
-        bmr = benchmark(design, store_models = self$store_models)
       }
 
+      bmr = benchmark(design, store_models = self$store_models)
       aggr = bmr$aggregate(self$measures)
       y = map_chr(self$measures, "id")
 
