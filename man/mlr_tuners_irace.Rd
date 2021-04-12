@@ -21,11 +21,12 @@ from package \CRANpkg{irace}.
 Number of resampling instances.}
 }
 
-For the meaning of all other parameters, see \code{\link[irace:defaultScenario]{irace::defaultScenario()}}. Note
-that we have removed all control parameters which refer to the termination of
-the algorithm. Use \link{TerminatorRunTime} or \link{TerminatorEvals} instead. Other
-terminators do not work with \code{TunerIrace}. We substract 5 seconds from the
-\link{TerminatorRunTime} budget for stability reasons.
+For the meaning of all other parameters, see \code{\link[irace:defaultScenario]{irace::defaultScenario()}}. The
+parameter \code{instances} and \code{targetRunner} are automatically set by the tuner.
+Note that we have removed all control parameters which refer to the
+termination of the algorithm. Use \link{TerminatorRunTime} or \link{TerminatorEvals}
+instead. Other terminators do not work with \code{TunerIrace}. We substract 5
+seconds from the \link{TerminatorRunTime} budget for stability reasons.
 }
 
 \section{Dictionary}{
@@ -73,13 +74,14 @@ Other Tuner:
 \code{\link{mlr_tuners_random_search}}
 }
 \concept{Tuner}
-\section{Super class}{
-\code{\link[mlr3tuning:Tuner]{mlr3tuning::Tuner}} -> \code{TunerIrace}
+\section{Super classes}{
+\code{\link[mlr3tuning:Tuner]{mlr3tuning::Tuner}} -> \code{\link[mlr3tuning:TunerFromOptimizer]{mlr3tuning::TunerFromOptimizer}} -> \code{TunerIrace}
 }
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{TunerIrace$new()}}
+\item \href{#method-optimize}{\code{TunerIrace$optimize()}}
 \item \href{#method-clone}{\code{TunerIrace$clone()}}
 }
 }
@@ -87,7 +89,6 @@ Other Tuner:
 \out{<details open ><summary>Inherited methods</summary>}
 \itemize{
 \item \out{<span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="format">}\href{../../mlr3tuning/html/Tuner.html#method-format}{\code{mlr3tuning::Tuner$format()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="optimize">}\href{../../mlr3tuning/html/Tuner.html#method-optimize}{\code{mlr3tuning::Tuner$optimize()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="print">}\href{../../mlr3tuning/html/Tuner.html#method-print}{\code{mlr3tuning::Tuner$print()}}\out{</span>}
 }
 \out{</details>}
@@ -101,6 +102,29 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
 \if{html}{\out{<div class="r">}}\preformatted{TunerIrace$new()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-optimize"></a>}}
+\if{latex}{\out{\hypertarget{method-optimize}{}}}
+\subsection{Method \code{optimize()}}{
+Performs the tuning on a \link{TuningInstanceSingleCrit} until termination.
+The single evaluations and the final results will be written into the
+\link{ArchiveTuning} that resides in the \link{TuningInstanceSingleCrit}. The final
+result is returned.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TunerIrace$optimize(inst)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{inst}}{(\link{TuningInstanceSingleCrit}).}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link[data.table:data.table]{data.table::data.table}.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
