@@ -15,7 +15,7 @@
 #'    parametrized wrapped learner.
 #'
 #' During `$predict()` the `AutoTuner` just calls the predict method of the
-#' wrapped (inner) learner. A set timeout is disabled while fitting the final 
+#' wrapped (inner) learner. A set timeout is disabled while fitting the final
 #' model.
 #'
 #' Note that this approach allows to perform nested resampling by passing an
@@ -112,7 +112,7 @@ AutoTuner = R6Class("AutoTuner",
       search_space = NULL, store_tuning_instance = TRUE,
       store_benchmark_result = TRUE, store_models = FALSE,
       check_values = FALSE) {
-      learner = assert_learner(learner)$clone(deep = TRUE)
+      learner = assert_learner(as_learner(learner, clone = TRUE))
 
       if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token")) > 0) {
         stop("If the values of the ParamSet of the Learner contain TuneTokens you cannot supply a search_space.")
