@@ -1,6 +1,8 @@
 # mlr3tuning 0.8.0.9000
 
 - Adds `TunerIrace` from `irace` package.
+- `extract_inner_tuning_archives()` helper function to extract inner tuning
+  archives.
 
 # mlr3tuning 0.8.0
 
