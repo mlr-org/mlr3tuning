@@ -55,11 +55,12 @@ extract_inner_tuning_results.ResampleResult = function(x) {
 #' @export
 extract_inner_tuning_results.BenchmarkResult = function(x) {
   bmr = assert_benchmark_result(x)
-  imap_dtr(bmr$resample_results$resample_result, function(rr, i) {
+  tab = imap_dtr(bmr$resample_results$resample_result, function(rr, i) {
      data = extract_inner_tuning_results(rr)
      set(data, j = "experiment", value = i)
   }, .fill = TRUE)
   # reorder dt
+  browser()
   cols_x = map_chr(bmr$resample_results$resample_result, function(rr) rr$learners[[1]]$archive$cols_x)
   cols_y = map_chr(bmr$resample_results$resample_result, function(rr) rr$learners[[1]]$archive$cols_y)
   setcolorder(tab, unique(c(cols_x, cols_y)))
