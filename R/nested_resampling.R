@@ -59,6 +59,11 @@ extract_inner_tuning_results.BenchmarkResult = function(x) {
      data = extract_inner_tuning_results(rr)
      set(data, j = "experiment", value = i)
   }, .fill = TRUE)
+  # reorder dt
+  cols_x = map_chr(bmr$resample_results$resample_result, function(rr) rr$learners[[1]]$archive$cols_x)
+  cols_y = map_chr(bmr$resample_results$resample_result, function(rr) rr$learners[[1]]$archive$cols_y)
+  setcolorder(tab, unique(c(cols_x, cols_y)))
+  tab
 }
 
 #' @title Extract Inner Tuning Archives
@@ -118,8 +123,13 @@ extract_inner_tuning_archives.ResampleResult = function(x) {
 #' @export
 extract_inner_tuning_archives.BenchmarkResult = function(x) {
   bmr = assert_benchmark_result(x)
-  imap_dtr(bmr$resample_results$resample_result, function(rr, i) {
+  tab = imap_dtr(bmr$resample_results$resample_result, function(rr, i) {
      data = extract_inner_tuning_archives(rr)
      set(data, j = "experiment", value = i)
   }, .fill = TRUE)
+  # reorder dt
+  cols_x = map_chr(bmr$resample_results$resample_result, function(rr) rr$learners[[1]]$archive$cols_x)
+  cols_y = map_chr(bmr$resample_results$resample_result, function(rr) rr$learners[[1]]$archive$cols_y)
+  setcolorder(tab, unique(c(cols_x, cols_y)))
+  tab
 }

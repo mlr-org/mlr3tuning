@@ -55,8 +55,8 @@ test_that("extract_inner_tuning_results function works", {
   bmr = benchmark(grid, store_models = TRUE)
 
   ibmr = extract_inner_tuning_results(bmr)
-  expect_data_table(ibmr, nrows = 12)
-  expect_named(ibmr, c("cp", "x", "classif.ce", "uhash", "x_domain", "timestamp", "batch_nr", "iteration", "experiment"))
+  expect_data_table(ibmr, nrows = 4)
+  expect_named(ibmr, c("cp", "x", "learner_param_vals", "x_domain", "classif.ce", "iteration", "experiment"))
   expect_equal(unique(ibmr$experiment), c(1, 2))
 
   # error handling
