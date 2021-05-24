@@ -18,22 +18,22 @@ Extract inner tuning archives of nested resampling. Implemented for
 \link[mlr3:ResampleResult]{mlr3::ResampleResult} and \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}. The function iterates
 over the \link{AutoTuner} objects and binds the tuning archives to a
 \code{\link[data.table:data.table]{data.table::data.table()}}. \link{AutoTuner} must be initialized with
-\code{store_tuning_instance = TRUE}. For \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}, the number of
-the \code{experiment} is added to the table.
+\code{store_tuning_instance = TRUE} and \code{resample()} or \code{benchmark()} must be
+called with \code{store_models = TRUE}. The resampling \code{iteration} is added to the
+table and for \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}, the number of the \code{experiment} is
+added.
 }
 \examples{
 task = tsk("iris")
-search_space = ParamSet$new(
-  params = list(ParamDbl$new("cp", lower = 0.001, upper = 0.1))
-)
+learner = lrn("classif.rpart")
+learner$param_set$values$cp = to_tune(0.001, 0.1)
 
 at = AutoTuner$new(
-  learner = lrn("classif.rpart"),
+  learner = learner,
   resampling = rsmp("holdout"),
   measure = msr("classif.ce"),
   terminator = trm("evals", n_evals = 5),
   tuner = tnr("grid_search"),
-  search_space = search_space,
   store_tuning_instance = TRUE)
 
 resampling_outer = rsmp("cv", folds = 2)

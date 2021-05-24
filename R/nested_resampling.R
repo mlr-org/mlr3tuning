@@ -5,8 +5,10 @@
 #' [mlr3::ResampleResult] and [mlr3::BenchmarkResult]. The function iterates
 #' over the [AutoTuner] objects and binds the tuning results to a
 #' [data.table::data.table()]. [AutoTuner] must be initialized with
-#' `store_tuning_instance = TRUE`. For [mlr3::BenchmarkResult], the number of
-#' the `experiment` is added to the table.
+#' `store_tuning_instance = TRUE` and `resample()` or `benchmark()` must be
+#' called with `store_models = TRUE`. The resampling `iteration` is added to the
+#' table and for [mlr3::BenchmarkResult], the number of the `experiment` is
+#' added.
 #' 
 #' @param x ([mlr3::ResampleResult] | [mlr3::BenchmarkResult])\cr
 #'  Must contain an [AutoTuner].
@@ -15,19 +17,17 @@
 #' @export
 #' @examples
 #' task = tsk("iris")
-#' search_space = ParamSet$new(
-#'   params = list(ParamDbl$new("cp", lower = 0.001, upper = 0.1))
-#' )
-#'
+#' learner = lrn("classif.rpart")
+#' learner$param_set$values$cp = to_tune(0.001, 0.1)
+#' 
 #' at = AutoTuner$new(
-#'   learner = lrn("classif.rpart"),
+#'   learner = learner,
 #'   resampling = rsmp("holdout"),
 #'   measure = msr("classif.ce"),
 #'   terminator = trm("evals", n_evals = 5),
 #'   tuner = tnr("grid_search"),
-#'   search_space = search_space,
 #'   store_tuning_instance = TRUE)
-#'
+#' 
 #' resampling_outer = rsmp("cv", folds = 2)
 #' rr = resample(task, at, resampling_outer, store_models = TRUE)
 #' 
@@ -39,6 +39,12 @@ extract_inner_tuning_results = function (x) {
 #' @export
 extract_inner_tuning_results.ResampleResult = function(x) {
   rr = assert_resample_result(x)
+  if (is.null(rr$learners[[1]]$model)) {
+    stopf("Set `store_models = TRUE` in `resample()` or `benchmark()`.")
+  }
+  if (is.null(rr$learners[[1]]$model$tuning_instance)) {
+    stopf("Set `store_tuning_instance = TRUE` in %s.", format(rr$learners[[1]]))
+  }
   imap_dtr(rr$learners, function(learner, i) {
     assert_r6(learner, "AutoTuner")
     data = learner$tuning_result
@@ -52,7 +58,7 @@ extract_inner_tuning_results.BenchmarkResult = function(x) {
   imap_dtr(bmr$resample_results$resample_result, function(rr, i) {
      data = extract_inner_tuning_results(rr)
      set(data, j = "experiment", value = i)
-  })
+  }, .fill = TRUE)
 }
 
 #' @title Extract Inner Tuning Archives
@@ -62,8 +68,10 @@ extract_inner_tuning_results.BenchmarkResult = function(x) {
 #' [mlr3::ResampleResult] and [mlr3::BenchmarkResult]. The function iterates
 #' over the [AutoTuner] objects and binds the tuning archives to a
 #' [data.table::data.table()]. [AutoTuner] must be initialized with
-#' `store_tuning_instance = TRUE`. For [mlr3::BenchmarkResult], the number of
-#' the `experiment` is added to the table.
+#' `store_tuning_instance = TRUE` and `resample()` or `benchmark()` must be
+#' called with `store_models = TRUE`. The resampling `iteration` is added to the
+#' table and for [mlr3::BenchmarkResult], the number of the `experiment` is
+#' added.
 #' 
 #' @param x ([mlr3::ResampleResult] | [mlr3::BenchmarkResult])\cr
 #'  Must contain an [AutoTuner].
@@ -72,19 +80,17 @@ extract_inner_tuning_results.BenchmarkResult = function(x) {
 #' @export
 #' @examples
 #' task = tsk("iris")
-#' search_space = ParamSet$new(
-#'   params = list(ParamDbl$new("cp", lower = 0.001, upper = 0.1))
-#' )
-#'
+#' learner = lrn("classif.rpart")
+#' learner$param_set$values$cp = to_tune(0.001, 0.1)
+#' 
 #' at = AutoTuner$new(
-#'   learner = lrn("classif.rpart"),
+#'   learner = learner,
 #'   resampling = rsmp("holdout"),
 #'   measure = msr("classif.ce"),
 #'   terminator = trm("evals", n_evals = 5),
 #'   tuner = tnr("grid_search"),
-#'   search_space = search_space,
 #'   store_tuning_instance = TRUE)
-#'
+#' 
 #' resampling_outer = rsmp("cv", folds = 2)
 #' rr = resample(task, at, resampling_outer, store_models = TRUE)
 #' 
@@ -96,6 +102,12 @@ extract_inner_tuning_archives = function (x) {
 #' @export
 extract_inner_tuning_archives.ResampleResult = function(x) {
   rr = assert_resample_result(x)
+  if (is.null(rr$learners[[1]]$model)) {
+    stopf("Set `store_models = TRUE` in `resample()` or `benchmark()`.")
+  }
+  if (is.null(rr$learners[[1]]$model$tuning_instance)) {
+    stopf("Set `store_tuning_instance = TRUE` in %s.", format(rr$learners[[1]]))
+  }
   imap_dtr(rr$learners, function(learner, i) {
     assert_r6(learner, "AutoTuner")
     data = learner$archive$data
@@ -109,5 +121,5 @@ extract_inner_tuning_archives.BenchmarkResult = function(x) {
   imap_dtr(bmr$resample_results$resample_result, function(rr, i) {
      data = extract_inner_tuning_archives(rr)
      set(data, j = "experiment", value = i)
-  })
+  }, .fill = TRUE)
 }
