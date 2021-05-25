@@ -60,7 +60,6 @@ extract_inner_tuning_results.BenchmarkResult = function(x) {
      set(data, j = "experiment", value = i)
   }, .fill = TRUE)
   # reorder dt
-  browser()
   cols_x = map_chr(bmr$resample_results$resample_result, function(rr) rr$learners[[1]]$archive$cols_x)
   cols_y = map_chr(bmr$resample_results$resample_result, function(rr) rr$learners[[1]]$archive$cols_y)
   setcolorder(tab, unique(c(cols_x, cols_y)))
