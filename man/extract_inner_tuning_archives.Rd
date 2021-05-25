@@ -11,7 +11,7 @@ extract_inner_tuning_archives(x, extended_archive = FALSE)
 Must contain an \link{AutoTuner}.}
 
 \item{extended_archive}{(\code{logical(1)})\cr
-For each performed function call of the \link{Objective}, the corresponding
+For each evaluated hyperparameter configuration, the corresponding
 \link[mlr3:ResampleResult]{mlr3::ResampleResult} is added.}
 }
 \value{

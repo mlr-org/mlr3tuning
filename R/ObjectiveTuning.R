@@ -76,7 +76,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       time = map_dbl(bmr$resample_results$resample_result, function(rr) {
         sum(map_dbl(rr$learners, function(l) sum(l$timings)))
       })
-      aggr[, runtime := time]
+      aggr[, "runtime" := time]
 
       if (self$store_benchmark_result) {
         if (is.null(self$archive$benchmark_result)) {
