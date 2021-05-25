@@ -109,7 +109,7 @@ test_that("extract_inner_tuning_archives function works", {
 
   irr = extract_inner_tuning_archives(rr)
   expect_data_table(irr, nrows = 6)
-  expect_named(irr, c("cp", "classif.ce", "uhash", "x_domain", "timestamp", "batch_nr", "iteration"))
+  expect_named(irr, c("cp", "classif.ce", "runtime" ,"uhash", "x_domain", "timestamp", "batch_nr", "iteration"))
 
   # repeated cv
   at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
@@ -118,7 +118,7 @@ test_that("extract_inner_tuning_archives function works", {
 
   irr = extract_inner_tuning_archives(rr)
   expect_data_table(irr, nrows = 18)
-  expect_named(irr, c("cp", "classif.ce", "uhash", "x_domain", "timestamp", "batch_nr", "iteration"))
+  expect_named(irr, c("cp", "classif.ce", "runtime", "uhash", "x_domain", "timestamp", "batch_nr", "iteration"))
 
   # cv
   at_1 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
@@ -129,7 +129,7 @@ test_that("extract_inner_tuning_archives function works", {
 
   ibmr = extract_inner_tuning_archives(bmr)
   expect_data_table(ibmr, nrows = 12)
-  expect_named(ibmr, c("cp", "classif.ce", "uhash", "x_domain", "timestamp", "batch_nr", "iteration", "experiment"))
+  expect_named(ibmr, c("cp", "classif.ce", "runtime", "uhash", "x_domain", "timestamp", "batch_nr", "iteration", "experiment"))
   expect_equal(unique(ibmr$experiment), c(1, 2))
 
    # repeated cv
@@ -141,7 +141,7 @@ test_that("extract_inner_tuning_archives function works", {
 
   ibmr = extract_inner_tuning_archives(bmr)
   expect_data_table(ibmr, nrows = 36)
-  expect_named(ibmr, c("cp", "classif.ce", "uhash", "x_domain", "timestamp", "batch_nr", "iteration", "experiment"))
+  expect_named(ibmr, c("cp", "classif.ce", "runtime", "uhash", "x_domain", "timestamp", "batch_nr", "iteration", "experiment"))
   expect_equal(unique(ibmr$experiment), c(1, 2))
 
   # different hyperparameters
@@ -153,7 +153,7 @@ test_that("extract_inner_tuning_archives function works", {
 
   ibmr = extract_inner_tuning_archives(bmr)
   expect_data_table(ibmr, nrows = 12)
-  expect_named(ibmr, c("cp", "x", "classif.ce", "uhash", "x_domain", "timestamp", "batch_nr", "iteration", "experiment"))
+  expect_named(ibmr, c("cp", "x", "classif.ce", "runtime", "uhash", "x_domain", "timestamp", "batch_nr", "iteration", "experiment"))
   expect_equal(unique(ibmr$experiment), c(1, 2))
 
   # error handling
