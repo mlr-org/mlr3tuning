@@ -80,6 +80,9 @@ extract_inner_tuning_results.BenchmarkResult = function(x) {
 #' 
 #' @param x ([mlr3::ResampleResult] | [mlr3::BenchmarkResult])\cr
 #'  Must contain an [AutoTuner].
+#' @param extended_archive (`logical(1)`)\cr
+#'  For each evaluated hyperparameter configuration, the corresponding
+#'  [mlr3::ResampleResult] is added.
 #' @return [data.table::data.table()].
 #'
 #' @export
@@ -100,12 +103,12 @@ extract_inner_tuning_results.BenchmarkResult = function(x) {
 #' rr = resample(task, at, resampling_outer, store_models = TRUE)
 #' 
 #' extract_inner_tuning_archives(rr)
-extract_inner_tuning_archives = function (x) {
-   UseMethod("extract_inner_tuning_archives", x)
+extract_inner_tuning_archives = function (x, extended_archive = FALSE) {
+   UseMethod("extract_inner_tuning_archives")
 }
 
 #' @export
-extract_inner_tuning_archives.ResampleResult = function(x) {
+extract_inner_tuning_archives.ResampleResult = function(x, extended_archive = FALSE) {
   rr = assert_resample_result(x)
   if (is.null(rr$learners[[1]]$model)) {
     stopf("Set `store_models = TRUE` in `resample()` or `benchmark()`.")
@@ -115,16 +118,16 @@ extract_inner_tuning_archives.ResampleResult = function(x) {
   }
   imap_dtr(rr$learners, function(learner, i) {
     assert_r6(learner, "AutoTuner")
-    data = learner$archive$data
+    data = if (extended_archive) learner$archive$extended_archive else learner$archive$data
     set(data, j = "iteration", value = i)
   })
 }
 
 #' @export
-extract_inner_tuning_archives.BenchmarkResult = function(x) {
+extract_inner_tuning_archives.BenchmarkResult = function(x, extended_archive = FALSE) {
   bmr = assert_benchmark_result(x)
   tab = imap_dtr(bmr$resample_results$resample_result, function(rr, i) {
-     data = extract_inner_tuning_archives(rr)
+     data = extract_inner_tuning_archives(rr, extended_archive)
      set(data, j = "experiment", value = i)
   }, .fill = TRUE)
   # reorder dt

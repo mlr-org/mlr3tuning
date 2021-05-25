@@ -4,11 +4,15 @@
 \alias{extract_inner_tuning_archives}
 \title{Extract Inner Tuning Archives}
 \usage{
-extract_inner_tuning_archives(x)
+extract_inner_tuning_archives(x, extended_archive = FALSE)
 }
 \arguments{
 \item{x}{(\link[mlr3:ResampleResult]{mlr3::ResampleResult} | \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult})\cr
 Must contain an \link{AutoTuner}.}
+
+\item{extended_archive}{(\code{logical(1)})\cr
+For each performed function call of the \link{Objective}, the corresponding
+\link[mlr3:ResampleResult]{mlr3::ResampleResult} is added.}
 }
 \value{
 \code{\link[data.table:data.table]{data.table::data.table()}}.
