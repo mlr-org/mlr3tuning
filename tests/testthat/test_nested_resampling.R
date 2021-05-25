@@ -32,7 +32,7 @@ test_that("extract_inner_tuning_results function works", {
 
   ibmr = extract_inner_tuning_results(bmr)
   expect_data_table(ibmr, nrows = 4)
-  expect_named(ibmr, c("cp", "learner_param_vals", "x_domain", "classif.ce", "iteration", "experiment"))
+  expect_named(ibmr, c("cp", "classif.ce", "learner_param_vals", "x_domain", "iteration", "experiment"))
   expect_equal(unique(ibmr$experiment), c(1, 2))
 
    # repeated cv
@@ -44,7 +44,7 @@ test_that("extract_inner_tuning_results function works", {
 
   ibmr = extract_inner_tuning_results(bmr)
   expect_data_table(ibmr, nrows = 12)
-  expect_named(ibmr, c("cp", "learner_param_vals", "x_domain", "classif.ce", "iteration", "experiment"))
+  expect_named(ibmr, c("cp", "classif.ce", "learner_param_vals", "x_domain", "iteration", "experiment"))
   expect_equal(unique(ibmr$experiment), c(1, 2))
 
   # different hyperparameters
@@ -56,7 +56,7 @@ test_that("extract_inner_tuning_results function works", {
 
   ibmr = extract_inner_tuning_results(bmr)
   expect_data_table(ibmr, nrows = 4)
-  expect_named(ibmr, c("cp", "x", "learner_param_vals", "x_domain", "classif.ce", "iteration", "experiment"))
+  expect_named(ibmr, c("cp", "x", "classif.ce", "learner_param_vals", "x_domain", "iteration", "experiment"))
   expect_equal(unique(ibmr$experiment), c(1, 2))
 
   # error handling
