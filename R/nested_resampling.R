@@ -1,25 +1,40 @@
 #' @title Extract Inner Tuning Results
-#' 
-#' @description 
+#'
+#' @description
 #' Extract inner tuning results of nested resampling. Implemented for
 #' [mlr3::ResampleResult] and [mlr3::BenchmarkResult]. The function iterates
 #' over the [AutoTuner] objects and binds the tuning results to a
 #' [data.table::data.table()]. [AutoTuner] must be initialized with
 #' `store_tuning_instance = TRUE` and `resample()` or `benchmark()` must be
-#' called with `store_models = TRUE`. The resampling `iteration` is added to the
-#' table and for [mlr3::BenchmarkResult], the number of the `experiment` is
-#' added.
-#' 
-#' @param x ([mlr3::ResampleResult] | [mlr3::BenchmarkResult])\cr
-#'  Must contain an [AutoTuner].
+#' called with `store_models = TRUE`.
+#'
+#' @section Data structure:
+#'
+#' The returned data table has the following columns:
+#'
+#' * `experiment` (integer(1))\cr
+#'   Experiment of the benchmark grid.
+#' * `iteration` (integer(1))\cr
+#'   Iteration of the outer resampling.
+#' * One column for each hyperparameter of the search spaces.
+#' * One column for each performance measure.
+#' * `learner_param_vals` (`list()`)\cr
+#'   Tuned and fixed hyperparameter values.
+#' * `x_domain` (`list()`)\cr
+#'   List of transformed hyperparameter values.
+#'   Resample result of the inner resampling.
+#' * `task_id` (`character(1)`).
+#' * `learner_id` (`character(1)`).
+#' * `resampling_id` (`character(1)`).
+#'
+#' @param x ([mlr3::ResampleResult] | [mlr3::BenchmarkResult]).
 #' @return [data.table::data.table()].
 #'
 #' @export
 #' @examples
 #' task = tsk("iris")
-#' learner = lrn("classif.rpart")
-#' learner$param_set$values$cp = to_tune(0.001, 0.1)
-#' 
+#' learner = lrn("classif.rpart", cp = to_tune(0.001, 0.1))
+#'
 #' at = AutoTuner$new(
 #'   learner = learner,
 #'   resampling = rsmp("holdout"),
@@ -27,10 +42,10 @@
 #'   terminator = trm("evals", n_evals = 5),
 #'   tuner = tnr("grid_search"),
 #'   store_tuning_instance = TRUE)
-#' 
-#' resampling_outer = rsmp("cv", folds = 2)
+#'
+#' resampling_outer = rsmp("cv", folds = 3)
 #' rr = resample(task, at, resampling_outer, store_models = TRUE)
-#' 
+#'
 #' extract_inner_tuning_results(rr)
 extract_inner_tuning_results = function (x) {
    UseMethod("extract_inner_tuning_results", x)
@@ -39,17 +54,20 @@ extract_inner_tuning_results = function (x) {
 #' @export
 extract_inner_tuning_results.ResampleResult = function(x) {
   rr = assert_resample_result(x)
-  if (is.null(rr$learners[[1]]$model)) {
-    stopf("Set `store_models = TRUE` in `resample()` or `benchmark()`.")
+  if (is.null(rr$learners[[1]]$model) || is.null(rr$learners[[1]]$model$tuning_instance)) {
+    return(data.table())
   }
-  if (is.null(rr$learners[[1]]$model$tuning_instance)) {
-    stopf("Set `store_tuning_instance = TRUE` in %s.", format(rr$learners[[1]]))
-  }
-  imap_dtr(rr$learners, function(learner, i) {
-    assert_r6(learner, "AutoTuner")
+  tab = imap_dtr(rr$learners, function(learner, i) {
     data = learner$tuning_result
     set(data, j = "iteration", value = i)
   })
+  tab[, task_id := rr$task$id]
+  tab[, learner_id := rr$learner$id]
+  tab[, resampling_id := rr$resampling$id]
+  cols_x = rr$learners[[1]]$archive$cols_x
+  cols_y = rr$learners[[1]]$archive$cols_y
+  setcolorder(tab, c("iteration", cols_x, cols_y))
+  tab
 }
 
 #' @export
@@ -57,40 +75,69 @@ extract_inner_tuning_results.BenchmarkResult = function(x) {
   bmr = assert_benchmark_result(x)
   tab = imap_dtr(bmr$resample_results$resample_result, function(rr, i) {
      data = extract_inner_tuning_results(rr)
-     set(data, j = "experiment", value = i)
+     if (nrow(data) > 0) set(data, j = "experiment", value = i)
   }, .fill = TRUE)
   # reorder dt
-  cols_x = map_chr(bmr$resample_results$resample_result, function(rr) rr$learners[[1]]$archive$cols_x)
-  cols_y = map_chr(bmr$resample_results$resample_result, function(rr) rr$learners[[1]]$archive$cols_y)
-  setcolorder(tab, unique(c(cols_x, cols_y)))
+  if (nrow(tab) > 0) {
+    cols_x = map_chr(unique(tab$experiment), function(i) bmr$resample_results$resample_result[[i]]$learners[[1]]$archive$cols_x)
+    cols_y = map_chr(unique(tab$experiment), function(i) bmr$resample_results$resample_result[[i]]$learners[[1]]$archive$cols_y)
+    setcolorder(tab, unique(c("experiment", "iteration", cols_x, cols_y)))
+  }
   tab
 }
 
 #' @title Extract Inner Tuning Archives
-#' 
-#' @description 
+#'
+#' @description
 #' Extract inner tuning archives of nested resampling. Implemented for
 #' [mlr3::ResampleResult] and [mlr3::BenchmarkResult]. The function iterates
 #' over the [AutoTuner] objects and binds the tuning archives to a
 #' [data.table::data.table()]. [AutoTuner] must be initialized with
 #' `store_tuning_instance = TRUE` and `resample()` or `benchmark()` must be
-#' called with `store_models = TRUE`. The resampling `iteration` is added to the
-#' table and for [mlr3::BenchmarkResult], the number of the `experiment` is
-#' added.
-#' 
-#' @param x ([mlr3::ResampleResult] | [mlr3::BenchmarkResult])\cr
-#'  Must contain an [AutoTuner].
-#' @param extended_archive (`logical(1)`)\cr
-#'  For each evaluated hyperparameter configuration, the corresponding
-#'  [mlr3::ResampleResult] is added.
+#' called with `store_models = TRUE`.
+#'
+#' @section Data structure:
+#'
+#' The returned data table has the following columns:
+#'
+#' * `experiment` (integer(1))\cr
+#'   Experiment of the benchmark grid.
+#' * `iteration` (integer(1))\cr
+#'   Iteration of the outer resampling.
+#' * One column for each hyperparameter of the search spaces.
+#' * One column for each performance measure.
+#' * `runtime` (`numeric(1)`)\cr
+#'   Sum of all training and predict times logged per resampling.
+#' * `timestamp` (`POSIXct`)\cr
+#'   Time stamp when the evaluation was logged into the archive.
+#' * `batch_nr` (`integer(1)`)\cr
+#'   Hyperparameters are evaluated in batches. Each batch has a unique batch
+#'   number.
+#' * `x_domain` (`list()`)\cr
+#'   List of transformed hyperparameter values. By default this column is
+#'   unnested.
+#' * `x_domain_*` (`any`)\cr
+#'   Separate column for each transformed hyperparameter.
+#' * `resample_result` ([mlr3::ResampleResult])\cr
+#'   Resample result of the inner resampling.
+#' * `task_id` (`character(1)`).
+#' * `learner_id` (`character(1)`).
+#' * `resampling_id` (`character(1)`).
+#'
+#' @param x ([mlr3::ResampleResult] | [mlr3::BenchmarkResult]).
+#' @param unnest (`character()`)\cr
+#'   Transforms list columns to separate columns. By default, `x_domain` is
+#'   unnested. Set to `NULL` if no column should be unnested.
+#' @param exclude_columns (`character()`)\cr
+#'   Exclude columns from result table. Set to `NULL` if no column should be
+#'   excluded.
 #' @return [data.table::data.table()].
 #'
 #' @export
 #' @examples
 #' task = tsk("iris")
-#' learner = lrn("classif.rpart")
-#' learner$param_set$values$cp = to_tune(0.001, 0.1)
-#' 
+#' learner = lrn("classif.rpart", cp = to_tune(0.001, 0.1))
+#'
 #' at = AutoTuner$new(
 #'   learner = learner,
 #'   resampling = rsmp("holdout"),
@@ -98,41 +145,47 @@ extract_inner_tuning_results.BenchmarkResult = function(x) {
 #'   terminator = trm("evals", n_evals = 5),
 #'   tuner = tnr("grid_search"),
 #'   store_tuning_instance = TRUE)
-#' 
-#' resampling_outer = rsmp("cv", folds = 2)
+#'
+#' resampling_outer = rsmp("cv", folds = 3)
 #' rr = resample(task, at, resampling_outer, store_models = TRUE)
-#' 
+#'
 #' extract_inner_tuning_archives(rr)
-extract_inner_tuning_archives = function (x, extended_archive = FALSE) {
+extract_inner_tuning_archives = function (x, unnest = "x_domain", exclude_columns = "uhash") {
    UseMethod("extract_inner_tuning_archives")
 }
 
 #' @export
-extract_inner_tuning_archives.ResampleResult = function(x, extended_archive = FALSE) {
+extract_inner_tuning_archives.ResampleResult = function(x, unnest = "x_domain", exclude_columns = "uhash") {
   rr = assert_resample_result(x)
-  if (is.null(rr$learners[[1]]$model)) {
-    stopf("Set `store_models = TRUE` in `resample()` or `benchmark()`.")
+  if (is.null(rr$learners[[1]]$model) || is.null(rr$learners[[1]]$model$tuning_instance)) {
+    return(data.table())
   }
-  if (is.null(rr$learners[[1]]$model$tuning_instance)) {
-    stopf("Set `store_tuning_instance = TRUE` in %s.", format(rr$learners[[1]]))
-  }
-  imap_dtr(rr$learners, function(learner, i) {
-    assert_r6(learner, "AutoTuner")
-    data = if (extended_archive) learner$archive$extended_archive else learner$archive$data
+  tab = imap_dtr(rr$learners, function(learner, i) {
+    data = as.data.table(learner$archive, unnest, exclude_columns)
     set(data, j = "iteration", value = i)
   })
+  tab[, task_id := rr$task$id]
+  tab[, learner_id := rr$learner$id]
+  tab[, resampling_id := rr$resampling$id]
+  cols_x = rr$learners[[1]]$archive$cols_x
+  cols_y = rr$learners[[1]]$archive$cols_y
+  setcolorder(tab, c("iteration", cols_x, cols_y))
+  tab
 }
 
 #' @export
-extract_inner_tuning_archives.BenchmarkResult = function(x, extended_archive = FALSE) {
+extract_inner_tuning_archives.BenchmarkResult = function(x, unnest = "x_domain", exclude_columns = "uhash") {
   bmr = assert_benchmark_result(x)
   tab = imap_dtr(bmr$resample_results$resample_result, function(rr, i) {
-     data = extract_inner_tuning_archives(rr, extended_archive)
-     set(data, j = "experiment", value = i)
+     data = extract_inner_tuning_archives(rr, unnest, exclude_columns)
+     if (nrow(data) > 0) set(data, j = "experiment", value = i)
   }, .fill = TRUE)
-  # reorder dt
-  cols_x = map_chr(bmr$resample_results$resample_result, function(rr) rr$learners[[1]]$archive$cols_x)
-  cols_y = map_chr(bmr$resample_results$resample_result, function(rr) rr$learners[[1]]$archive$cols_y)
-  setcolorder(tab, unique(c(cols_x, cols_y)))
+
+  if (nrow(tab) > 0) {
+    # reorder dt
+    cols_x = map_chr(unique(tab$experiment), function(i) bmr$resample_results$resample_result[[i]]$learners[[1]]$archive$cols_x)
+    cols_y = map_chr(unique(tab$experiment), function(i) bmr$resample_results$resample_result[[i]]$learners[[1]]$archive$cols_y)
+    setcolorder(tab, c("experiment", "iteration", unique(c(cols_x, cols_y))))
+  }
   tab
 }

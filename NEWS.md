@@ -3,6 +3,9 @@
 - Adds `TunerIrace` from `irace` package.
 - `extract_inner_tuning_archives()` helper function to extract inner tuning
   archives.
+- Removes `ArchiveTuning$extended_archive()` method. The `mlr3::ResampleResults` are
+  joined automatically by `as.data.table.TuningArchive()` and
+  `extract_inner_tuning_archives()`.
 
 # mlr3tuning 0.8.0
 

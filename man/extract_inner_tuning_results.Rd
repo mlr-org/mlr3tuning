@@ -7,8 +7,7 @@
 extract_inner_tuning_results(x)
 }
 \arguments{
-\item{x}{(\link[mlr3:ResampleResult]{mlr3::ResampleResult} | \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult})\cr
-Must contain an \link{AutoTuner}.}
+\item{x}{(\link[mlr3:ResampleResult]{mlr3::ResampleResult} | \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}).}
 }
 \value{
 \code{\link[data.table:data.table]{data.table::data.table()}}.
@@ -19,14 +18,33 @@ Extract inner tuning results of nested resampling. Implemented for
 over the \link{AutoTuner} objects and binds the tuning results to a
 \code{\link[data.table:data.table]{data.table::data.table()}}. \link{AutoTuner} must be initialized with
 \code{store_tuning_instance = TRUE} and \code{resample()} or \code{benchmark()} must be
-called with \code{store_models = TRUE}. The resampling \code{iteration} is added to the
-table and for \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}, the number of the \code{experiment} is
-added.
+called with \code{store_models = TRUE}.
 }
+\section{Data structure}{
+
+
+The returned data table has the following columns:
+\itemize{
+\item \code{experiment} (integer(1))\cr
+Experiment of the benchmark grid.
+\item \code{iteration} (integer(1))\cr
+Iteration of the outer resampling.
+\item One column for each hyperparameter of the search spaces.
+\item One column for each performance measure.
+\item \code{learner_param_vals} (\code{list()})\cr
+Tuned and fixed hyperparameter values.
+\item \code{x_domain} (\code{list()})\cr
+List of transformed hyperparameter values.
+Resample result of the inner resampling.
+\item \code{task_id} (\code{character(1)}).
+\item \code{learner_id} (\code{character(1)}).
+\item \code{resampling_id} (\code{character(1)}).
+}
+}
+
 \examples{
 task = tsk("iris")
-learner = lrn("classif.rpart")
-learner$param_set$values$cp = to_tune(0.001, 0.1)
+learner = lrn("classif.rpart", cp = to_tune(0.001, 0.1))
 
 at = AutoTuner$new(
   learner = learner,
@@ -36,7 +54,7 @@ at = AutoTuner$new(
   tuner = tnr("grid_search"),
   store_tuning_instance = TRUE)
 
-resampling_outer = rsmp("cv", folds = 2)
+resampling_outer = rsmp("cv", folds = 3)
 rr = resample(task, at, resampling_outer, store_models = TRUE)
 
 extract_inner_tuning_results(rr)

@@ -12,7 +12,7 @@ test_that("extract_inner_tuning_results function works", {
 
   irr = extract_inner_tuning_results(rr)
   expect_data_table(irr, nrows = 2)
-  expect_named(irr, c("cp", "learner_param_vals", "x_domain", "classif.ce", "iteration"))
+  expect_named(irr, c("iteration", "cp", "classif.ce", "learner_param_vals", "x_domain", "task_id", "learner_id", "resampling_id"))
 
   # repeated cv
   at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
@@ -21,7 +21,7 @@ test_that("extract_inner_tuning_results function works", {
 
   irr = extract_inner_tuning_results(rr)
   expect_data_table(irr, nrows = 6)
-  expect_named(irr, c("cp", "learner_param_vals", "x_domain", "classif.ce", "iteration"))
+  expect_named(irr, c("iteration", "cp", "classif.ce", "learner_param_vals", "x_domain", "task_id", "learner_id", "resampling_id"))
 
   # cv
   at_1 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
@@ -32,7 +32,7 @@ test_that("extract_inner_tuning_results function works", {
 
   ibmr = extract_inner_tuning_results(bmr)
   expect_data_table(ibmr, nrows = 4)
-  expect_named(ibmr, c("cp", "classif.ce", "learner_param_vals", "x_domain", "iteration", "experiment"))
+  expect_named(ibmr, c("experiment", "iteration", "cp", "classif.ce", "learner_param_vals", "x_domain", "task_id", "learner_id", "resampling_id"))
   expect_equal(unique(ibmr$experiment), c(1, 2))
 
    # repeated cv
@@ -44,7 +44,7 @@ test_that("extract_inner_tuning_results function works", {
 
   ibmr = extract_inner_tuning_results(bmr)
   expect_data_table(ibmr, nrows = 12)
-  expect_named(ibmr, c("cp", "classif.ce", "learner_param_vals", "x_domain", "iteration", "experiment"))
+  expect_named(ibmr, c("experiment", "iteration", "cp", "classif.ce", "learner_param_vals", "x_domain", "task_id", "learner_id", "resampling_id"))
   expect_equal(unique(ibmr$experiment), c(1, 2))
 
   # different hyperparameters
@@ -56,43 +56,55 @@ test_that("extract_inner_tuning_results function works", {
 
   ibmr = extract_inner_tuning_results(bmr)
   expect_data_table(ibmr, nrows = 4)
-  expect_named(ibmr, c("cp", "x", "classif.ce", "learner_param_vals", "x_domain", "iteration", "experiment"))
+   expect_named(ibmr, c("experiment", "iteration", "cp", "x", "classif.ce", "learner_param_vals", "x_domain", "task_id", "learner_id", "resampling_id"))
   expect_equal(unique(ibmr$experiment), c(1, 2))
 
-  # error handling
+  # no model
   at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
   resampling_outer = rsmp("cv", folds = 2)
   rr = resample(task, at, resampling_outer, store_models = FALSE)
 
-  expect_error(extract_inner_tuning_results(rr),
-    regex = "Set `store_models = TRUE` in `resample()` or `benchmark()`",
-    fixed = TRUE)
+  expect_data_table(extract_inner_tuning_results(rr), nrows = 0, ncols = 0)
 
+ # instance
   at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space,
     store_tuning_instance = FALSE, store_benchmark_result = FALSE)
   resampling_outer = rsmp("cv", folds = 2)
   rr = resample(task, at, resampling_outer, store_models = TRUE)
 
-  expect_error(extract_inner_tuning_results(rr),
-    regex = "Set `store_tuning_instance = TRUE` in <AutoTuner:classif.rpart.tuned>.",
-    fixed = TRUE)
+  expect_data_table(extract_inner_tuning_results(rr), nrows = 0, ncols = 0)
 
+  # no models
   at_1 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
   at_2 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
   resampling_outer = rsmp("cv", folds = 2)
   grid = benchmark_grid(task, list(at_1, at_2), resampling_outer)
   bmr = benchmark(grid, store_models = FALSE)
 
-  expect_error(extract_inner_tuning_results(bmr), regex = "store_models")
+  expect_data_table(extract_inner_tuning_results(bmr), nrows = 0, ncols = 0)
 
+  # mixed store instance
   at_1 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space,
     store_tuning_instance = FALSE, store_benchmark_result = FALSE)
-  at_2 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
+  at_2 = AutoTuner$new(lrn("classif.debug", x = to_tune()), rsmp("holdout"), ms, te, tuner = tuner)
   resampling_outer = rsmp("cv", folds = 2)
   grid = benchmark_grid(task, list(at_1, at_2), resampling_outer)
   bmr = benchmark(grid, store_models = TRUE)
 
-  expect_error(extract_inner_tuning_results(bmr), regex = "store_tuning_instance")
+  ibmr = extract_inner_tuning_results(bmr)
+  expect_data_table(ibmr, nrows = 2, ncols = 9)
+  expect_equal(unique(ibmr$experiment), 2)
+
+  # autotuner and learner
+  learner = lrn("classif.rpart")
+  at = AutoTuner$new(lrn("classif.debug", x = to_tune()), rsmp("holdout"), ms, te, tuner = tuner)
+  grid = benchmark_grid(task, list(at, learner), resampling_outer)
+  bmr = benchmark(grid, store_models = TRUE)
+
+  ibmr = extract_inner_tuning_archives(bmr)
+  expect_data_table(ibmr, nrows = 6)
+  expect_named(ibmr, c("experiment", "iteration", "x", "classif.ce", "runtime", "timestamp", "batch_nr", "x_domain_x", "resample_result", "task_id", "learner_id", "resampling_id"))
+  expect_equal(unique(ibmr$experiment), 1)
 })
 
 test_that("extract_inner_tuning_archives function works", {
@@ -109,7 +121,7 @@ test_that("extract_inner_tuning_archives function works", {
 
   irr = extract_inner_tuning_archives(rr)
   expect_data_table(irr, nrows = 6)
-  expect_named(irr, c("cp", "classif.ce", "runtime" ,"uhash", "x_domain", "timestamp", "batch_nr", "iteration"))
+  expect_named(irr, c("iteration", "cp", "classif.ce", "runtime", "timestamp", "batch_nr", "x_domain_cp", "resample_result", "task_id", "learner_id", "resampling_id"))
 
   # repeated cv
   at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
@@ -118,7 +130,7 @@ test_that("extract_inner_tuning_archives function works", {
 
   irr = extract_inner_tuning_archives(rr)
   expect_data_table(irr, nrows = 18)
-  expect_named(irr, c("cp", "classif.ce", "runtime", "uhash", "x_domain", "timestamp", "batch_nr", "iteration"))
+  expect_named(irr, c("iteration", "cp", "classif.ce", "runtime", "timestamp", "batch_nr", "x_domain_cp", "resample_result", "task_id", "learner_id", "resampling_id"))
 
   # cv
   at_1 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
@@ -129,7 +141,7 @@ test_that("extract_inner_tuning_archives function works", {
 
   ibmr = extract_inner_tuning_archives(bmr)
   expect_data_table(ibmr, nrows = 12)
-  expect_named(ibmr, c("cp", "classif.ce", "runtime", "uhash", "x_domain", "timestamp", "batch_nr", "iteration", "experiment"))
+  expect_named(ibmr, c("experiment", "iteration", "cp", "classif.ce", "runtime", "timestamp", "batch_nr", "x_domain_cp", "resample_result", "task_id", "learner_id", "resampling_id"))
   expect_equal(unique(ibmr$experiment), c(1, 2))
 
    # repeated cv
@@ -141,7 +153,7 @@ test_that("extract_inner_tuning_archives function works", {
 
   ibmr = extract_inner_tuning_archives(bmr)
   expect_data_table(ibmr, nrows = 36)
-  expect_named(ibmr, c("cp", "classif.ce", "runtime", "uhash", "x_domain", "timestamp", "batch_nr", "iteration", "experiment"))
+  expect_named(ibmr, c("experiment", "iteration", "cp", "classif.ce", "runtime", "timestamp", "batch_nr", "x_domain_cp", "resample_result", "task_id", "learner_id", "resampling_id"))
   expect_equal(unique(ibmr$experiment), c(1, 2))
 
   # different hyperparameters
@@ -153,41 +165,54 @@ test_that("extract_inner_tuning_archives function works", {
 
   ibmr = extract_inner_tuning_archives(bmr)
   expect_data_table(ibmr, nrows = 12)
-  expect_named(ibmr, c("cp", "x", "classif.ce", "runtime", "uhash", "x_domain", "timestamp", "batch_nr", "iteration", "experiment"))
+  expect_named(ibmr, c("experiment", "iteration", "cp", "x", "classif.ce", "runtime", "timestamp", "batch_nr", "x_domain_cp", "resample_result", "task_id", "learner_id", "resampling_id", "x_domain_x"))
   expect_equal(unique(ibmr$experiment), c(1, 2))
 
-  # error handling
+  # no models
   at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
   resampling_outer = rsmp("cv", folds = 2)
   rr = resample(task, at, resampling_outer, store_models = FALSE)
 
-  expect_error(extract_inner_tuning_archives(rr),
-    regex = "Set `store_models = TRUE` in `resample()` or `benchmark()`",
-    fixed = TRUE)
+  expect_data_table(extract_inner_tuning_archives(rr), nrows = 0, ncols = 0)
 
+  # no instance
   at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space,
     store_tuning_instance = FALSE, store_benchmark_result = FALSE)
   resampling_outer = rsmp("cv", folds = 2)
   rr = resample(task, at, resampling_outer, store_models = TRUE)
 
-  expect_error(extract_inner_tuning_archives(rr),
-    regex = "Set `store_tuning_instance = TRUE` in <AutoTuner:classif.rpart.tuned>.",
-    fixed = TRUE)
+  expect_data_table(extract_inner_tuning_archives(rr), nrows = 0, ncols = 0)
 
+  # no models
   at_1 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
   at_2 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
   resampling_outer = rsmp("cv", folds = 2)
   grid = benchmark_grid(task, list(at_1, at_2), resampling_outer)
   bmr = benchmark(grid, store_models = FALSE)
 
-  expect_error(extract_inner_tuning_archives(bmr), regex = "store_models")
+  expect_data_table(extract_inner_tuning_archives(rr), nrows = 0, ncols = 0)
 
+  # mixed store instance
   at_1 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space,
     store_tuning_instance = FALSE, store_benchmark_result = FALSE)
-  at_2 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
-  resampling_outer = rsmp("cv", folds = 2)
+  at_2 = AutoTuner$new(lrn("classif.debug", x = to_tune()), rsmp("holdout"), ms, te, tuner = tuner)
+    resampling_outer = rsmp("cv", folds = 2)
   grid = benchmark_grid(task, list(at_1, at_2), resampling_outer)
   bmr = benchmark(grid, store_models = TRUE)
 
-  expect_error(extract_inner_tuning_archives(bmr), regex = "store_tuning_instance")
+  ibmr = extract_inner_tuning_archives(bmr)
+  expect_data_table(ibmr, nrows = 6)
+  expect_named(ibmr, c("experiment", "iteration", "x", "classif.ce", "runtime", "timestamp", "batch_nr", "x_domain_x", "resample_result", "task_id", "learner_id", "resampling_id"))
+  expect_equal(unique(ibmr$experiment), 2)
+
+  # autotuner and learner
+  learner = lrn("classif.rpart")
+  at = AutoTuner$new(lrn("classif.debug", x = to_tune()), rsmp("holdout"), ms, te, tuner = tuner)
+  grid = benchmark_grid(task, list(at, learner), resampling_outer)
+  bmr = benchmark(grid, store_models = TRUE)
+
+  ibmr = extract_inner_tuning_archives(bmr)
+  expect_data_table(ibmr, nrows = 6)
+  expect_named(ibmr, c("experiment", "iteration", "x", "classif.ce", "runtime", "timestamp", "batch_nr", "x_domain_x", "resample_result", "task_id", "learner_id", "resampling_id"))
+  expect_equal(unique(ibmr$experiment), 1)
 })

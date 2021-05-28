@@ -4,15 +4,22 @@
 \alias{extract_inner_tuning_archives}
 \title{Extract Inner Tuning Archives}
 \usage{
-extract_inner_tuning_archives(x, extended_archive = FALSE)
+extract_inner_tuning_archives(
+  x,
+  unnest = "x_domain",
+  exclude_columns = "uhash"
+)
 }
 \arguments{
-\item{x}{(\link[mlr3:ResampleResult]{mlr3::ResampleResult} | \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult})\cr
-Must contain an \link{AutoTuner}.}
+\item{x}{(\link[mlr3:ResampleResult]{mlr3::ResampleResult} | \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}).}
 
-\item{extended_archive}{(\code{logical(1)})\cr
-For each evaluated hyperparameter configuration, the corresponding
-\link[mlr3:ResampleResult]{mlr3::ResampleResult} is added.}
+\item{unnest}{(\code{character()})\cr
+Transforms list columns to separate columns. By default, \code{x_domain} is
+unnested. Set to \code{NULL} if no column should be unnested.}
+
+\item{exclude_columns}{(\code{character()})\cr
+Exclude columns from result table. Set to \code{NULL} if no column should be
+excluded.}
 }
 \value{
 \code{\link[data.table:data.table]{data.table::data.table()}}.
@@ -23,14 +30,42 @@ Extract inner tuning archives of nested resampling. Implemented for
 over the \link{AutoTuner} objects and binds the tuning archives to a
 \code{\link[data.table:data.table]{data.table::data.table()}}. \link{AutoTuner} must be initialized with
 \code{store_tuning_instance = TRUE} and \code{resample()} or \code{benchmark()} must be
-called with \code{store_models = TRUE}. The resampling \code{iteration} is added to the
-table and for \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}, the number of the \code{experiment} is
-added.
+called with \code{store_models = TRUE}.
 }
+\section{Data structure}{
+
+
+The returned data table has the following columns:
+\itemize{
+\item \code{experiment} (integer(1))\cr
+Experiment of the benchmark grid.
+\item \code{iteration} (integer(1))\cr
+Iteration of the outer resampling.
+\item One column for each hyperparameter of the search spaces.
+\item One column for each performance measure.
+\item \code{runtime} (\code{numeric(1)})\cr
+Sum of all training and predict times logged per resampling.
+\item \code{timestamp} (\code{POSIXct})\cr
+Time stamp when the evaluation was logged into the archive.
+\item \code{batch_nr} (\code{integer(1)})\cr
+Hyperparameters are evaluated in batches. Each batch has a unique batch
+number.
+\item \code{x_domain} (\code{list()})\cr
+List of transformed hyperparameter values. By default this column is
+unnested.
+\item \verb{x_domain_*} (\code{any})\cr
+Separate column for each transformed hyperparameter.
+\item \code{resample_result} (\link[mlr3:ResampleResult]{mlr3::ResampleResult})\cr
+Resample result of the inner resampling.
+\item \code{task_id} (\code{character(1)}).
+\item \code{learner_id} (\code{character(1)}).
+\item \code{resampling_id} (\code{character(1)}).
+}
+}
+
 \examples{
 task = tsk("iris")
-learner = lrn("classif.rpart")
-learner$param_set$values$cp = to_tune(0.001, 0.1)
+learner = lrn("classif.rpart", cp = to_tune(0.001, 0.1))
 
 at = AutoTuner$new(
   learner = learner,
@@ -40,7 +75,7 @@ at = AutoTuner$new(
   tuner = tnr("grid_search"),
   store_tuning_instance = TRUE)
 
-resampling_outer = rsmp("cv", folds = 2)
+resampling_outer = rsmp("cv", folds = 3)
 rr = resample(task, at, resampling_outer, store_models = TRUE)
 
 extract_inner_tuning_archives(rr)
