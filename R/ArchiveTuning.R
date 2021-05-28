@@ -152,7 +152,7 @@ ArchiveTuning = R6Class("ArchiveTuning",
 )
 
 #' @export
-as.data.table.ArchiveTuning = function(x, unnest = "x_domain", exclude_columns = "uhash", measures = NULL, ...) {
+as.data.table.ArchiveTuning = function(x, ..., unnest = "x_domain", exclude_columns = "uhash", measures = NULL) {
   if (nrow(x$data)==0) return(data.table())
   assert_subset(unnest, names(x$data), empty.ok = TRUE)
   assert_subset(exclude_columns, c(names(x$data), "resample_result", "uhash"), empty.ok = TRUE)

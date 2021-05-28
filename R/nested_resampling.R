@@ -61,9 +61,9 @@ extract_inner_tuning_results.ResampleResult = function(x) {
     data = learner$tuning_result
     set(data, j = "iteration", value = i)
   })
-  tab[, task_id := rr$task$id]
-  tab[, learner_id := rr$learner$id]
-  tab[, resampling_id := rr$resampling$id]
+  tab[, "task_id" := rr$task$id]
+  tab[, "learner_id" := rr$learner$id]
+  tab[, "resampling_id" := rr$resampling$id]
   cols_x = rr$learners[[1]]$archive$cols_x
   cols_y = rr$learners[[1]]$archive$cols_y
   setcolorder(tab, c("iteration", cols_x, cols_y))
@@ -164,9 +164,9 @@ extract_inner_tuning_archives.ResampleResult = function(x, unnest = "x_domain", 
     data = as.data.table(learner$archive, unnest, exclude_columns)
     set(data, j = "iteration", value = i)
   })
-  tab[, task_id := rr$task$id]
-  tab[, learner_id := rr$learner$id]
-  tab[, resampling_id := rr$resampling$id]
+  tab[, "task_id" := rr$task$id]
+  tab[, "learner_id" := rr$learner$id]
+  tab[, "resampling_id" := rr$resampling$id]
   cols_x = rr$learners[[1]]$archive$cols_x
   cols_y = rr$learners[[1]]$archive$cols_y
   setcolorder(tab, c("iteration", cols_x, cols_y))
