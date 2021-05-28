@@ -41,7 +41,9 @@ Number of allowed evaluations.}
 \item{term_time}{(\code{integer(1)})\cr
 Maximum allowed time in seconds.}
 
-\item{search_space}{(\link[paradox:ParamSet]{paradox::ParamSet}).}
+\item{search_space}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
+Hyperparameter search space. If \code{NULL}, the search space is constructed from
+the \link{TuneToken} in the \code{ParamSet} of the learner.}
 
 \item{...}{(named \code{list()})\cr
 Named arguments to be set as parameters of the tuner.}

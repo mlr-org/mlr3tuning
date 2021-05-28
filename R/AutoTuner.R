@@ -107,7 +107,8 @@ AutoTuner = R6Class("AutoTuner",
     #' Performance measure to optimize.
     #'
     #' @param search_space ([paradox::ParamSet])\cr
-    #' Hyperparameter search space, see [TuningInstanceSingleCrit].
+    #' Hyperparameter search space. If `NULL`, the search space is constructed
+    #' from the [TuneToken] in the `ParamSet` of the learner.
     #'
     #' @param terminator ([bbotk::Terminator])\cr
     #' When to stop tuning, see [TuningInstanceSingleCrit].

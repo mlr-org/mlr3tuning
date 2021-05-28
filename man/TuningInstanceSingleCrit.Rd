@@ -145,7 +145,9 @@ Measure to optimize.}
 
 \item{\code{terminator}}{(\link{Terminator}).}
 
-\item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet}).}
+\item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
+Hyperparameter search space. If \code{NULL}, the search space is constructed from
+the \link{TuneToken} in the \code{ParamSet} of the learner.}
 
 \item{\code{store_benchmark_result}}{(\code{logical(1)})\cr
 If \code{TRUE} (default), stores the \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} in archive.}

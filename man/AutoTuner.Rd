@@ -176,7 +176,8 @@ When to stop tuning, see \link{TuningInstanceSingleCrit}.}
 Tuning algorithm to run.}
 
 \item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
-Hyperparameter search space, see \link{TuningInstanceSingleCrit}.}
+Hyperparameter search space. If \code{NULL}, the search space is constructed
+from the \link{TuneToken} in the \code{ParamSet} of the learner.}
 
 \item{\code{store_tuning_instance}}{(\code{logical(1)})\cr
 If \code{TRUE} (default), stores the internally created

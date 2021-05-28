@@ -122,7 +122,9 @@ If \code{NULL}, \CRANpkg{mlr3}'s default measure is used.}
 
 \item{\code{terminator}}{(\link{Terminator}).}
 
-\item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet}).}
+\item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
+Hyperparameter search space. If \code{NULL}, the search space is constructed from
+the \link{TuneToken} in the \code{ParamSet} of the learner.}
 
 \item{\code{store_models}}{(\code{logical(1)})\cr
 If \code{FALSE} (default), the fitted models are not stored in the
