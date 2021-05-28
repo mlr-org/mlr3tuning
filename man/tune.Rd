@@ -52,8 +52,7 @@ Named arguments to be set as parameters of the tuner.}
 Function to tune a \link[mlr3:Learner]{mlr3::Learner}.
 }
 \examples{
-learner = lrn("classif.rpart")
-learner$param_set$values$minsplit = to_tune(1, 10)
+learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
 
 instance = tune(
   method = "random_search", 
@@ -64,6 +63,6 @@ instance = tune(
   term_evals = 50, 
   batch_size = 10) 
 
-# Apply hyperparameter values to learner
+# apply hyperparameter values to learner
 learner$param_set$values = instance$result_learner_param_vals
 }

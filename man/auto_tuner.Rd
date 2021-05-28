@@ -48,12 +48,9 @@ Named arguments to be set as parameters of the tuner.}
 Function to create an \link{AutoTuner} object.
 }
 \examples{
-learner = lrn("classif.rpart")
-learner$param_set$values$minsplit = to_tune(1, 10)
-
 at = auto_tuner(
   method = "random_search",
-  learner = learner, 
+  learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)), 
   resampling = rsmp ("holdout"),
   measure = msr("classif.ce"), 
   term_evals = 50, 

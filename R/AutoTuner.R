@@ -30,45 +30,56 @@
 #'
 #' @export
 #' @examples
-#' library(mlr3)
-#' library(paradox)
-#'
-#' task = tsk("iris")
-#' search_space = ParamSet$new(
-#'   params = list(ParamDbl$new("cp", lower = 0.001, upper = 0.1))
-#' )
-#'
+#' task = tsk("pima")
+#' train_set = sample(task$nrow, 0.8 * task$nrow)
+#' test_set = setdiff(seq_len(task$nrow), train_set)
+#' 
 #' at = AutoTuner$new(
-#'   learner = lrn("classif.rpart"),
+#'   learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
 #'   resampling = rsmp("holdout"),
 #'   measure = msr("classif.ce"),
 #'   terminator = trm("evals", n_evals = 5),
-#'   tuner = tnr("grid_search"),
-#'   search_space = search_space,
-#'   store_tuning_instance = TRUE)
-#'
-#' at$train(task)
+#'   tuner = tnr("random_search"))
+#' 
+#' # tune hyperparameters and fit final model
+#' at$train(task, row_ids = train_set)
+#' 
+#' # predict with final model
+#' at$predict(task, row_ids = test_set)
+#' 
+#' # show tuning result
+#' at$tuning_result
+#' 
+#' # model slot contains trained learner and tuning instance
 #' at$model
+#' 
+#' # shortcut trained learner
 #' at$learner
+#' 
+#' # shortcut tuning instance
+#' at$tuning_instance
+#' 
 #'
-#' # Nested resampling
+#' ### nested resampling
+#' 
 #' at = AutoTuner$new(
-#'   learner = lrn("classif.rpart"),
+#'   learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
 #'   resampling = rsmp("holdout"),
 #'   measure = msr("classif.ce"),
 #'   terminator = trm("evals", n_evals = 5),
-#'   tuner = tnr("grid_search"),
-#'   search_space = search_space,
-#'   store_tuning_instance = TRUE)
+#'   tuner = tnr("random_search"))
 #'
-#' resampling_outer = rsmp("cv", folds = 2)
+#' resampling_outer = rsmp("cv", folds = 3)
 #' rr = resample(task, at, resampling_outer, store_models = TRUE)
 #'
-#' # Aggregate performance of outer results
+#' # retrieve inner tuning results.
+#' extract_inner_tuning_results(rr)
+#' 
+#' # performance scores estimated on the outer resampling
+#' rr$score()
+#' 
+#' # unbiased performance of the final model trained on the full data set
 #' rr$aggregate()
-#'
-#' # Retrieve inner tuning results.
-#' as.data.table(rr)$learner[[1]]$tuning_result
 AutoTuner = R6Class("AutoTuner",
   inherit = Learner,
   public = list(

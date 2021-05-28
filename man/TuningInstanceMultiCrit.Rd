@@ -21,6 +21,34 @@ The tuner is also supposed to store its final result, consisting of a
 selected hyperparameter configuration and associated estimated performance
 values, by calling the method \code{instance$assign_result}.
 }
+\examples{
+library(data.table)
+
+# define search space
+search_space = ps(
+  cp = p_dbl(lower = 0.001, upper = 0.1),
+  minsplit = p_int(lower = 1, upper = 10)
+)
+
+# initialize instance
+instance = TuningInstanceMultiCrit$new(
+  task = tsk("iris"),
+  learner = lrn("classif.rpart"),
+  resampling = rsmp("holdout"),
+  measure = msrs(c("classif.ce", "classif.acc")),
+  search_space = search_space,
+  terminator = trm("evals", n_evals = 5)
+)
+
+# generate design
+design = data.table(cp = c(0.05, 0.01), minsplit = c(5, 3))
+
+# eval design
+instance$eval_batch(design)
+
+# show archive
+instance$archive
+}
 \section{Super classes}{
 \code{\link[bbotk:OptimInstance]{bbotk::OptimInstance}} -> \code{\link[bbotk:OptimInstanceMultiCrit]{bbotk::OptimInstanceMultiCrit}} -> \code{TuningInstanceMultiCrit}
 }

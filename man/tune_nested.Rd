@@ -53,22 +53,22 @@ Named arguments to be set as parameters of the tuner.}
 Function to conduct nested resampling.
 }
 \examples{
-learner = lrn("classif.rpart")
-learner$param_set$values$minsplit = to_tune(1, 10)
-
 rr = tune_nested(
   method = "random_search",
   task = tsk("pima"),
-  learner = learner, 
+  learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)), 
   inner_resampling = rsmp ("holdout"),
   outer_resampling = rsmp("cv", folds = 2), 
   measure = msr("classif.ce"),
   term_evals = 2,
   batch_size = 2)
 
-# check the inner results
+# retrieve inner tuning results.
 extract_inner_tuning_results(rr)
 
-# aggregate performance of outer results
+# performance scores estimated on the outer resampling
+rr$score()
+
+# unbiased performance of the final model trained on the full data set
 rr$aggregate()
 }
