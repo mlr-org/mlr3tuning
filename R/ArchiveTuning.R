@@ -11,7 +11,7 @@
 #' * One column for each hyperparameter of the search space (`$search_space`).
 #' * One column for each performance measure (`$codomain`).
 #' * `x_domain` (`list()`)\cr
-#'   Lists of transformed hyperparameter values.
+#'   Lists of transformed hyperparameter values that are passed to the learner.
 #' * `runtime` (`numeric(1)`)\cr
 #'   Sum of all training and predict times logged per evaluation.
 #' * `timestamp` (`POSIXct`)\cr
