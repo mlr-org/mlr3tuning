@@ -153,24 +153,28 @@ ArchiveTuning = R6Class("ArchiveTuning",
 
 #' @export
 as.data.table.ArchiveTuning = function(x, ..., unnest = "x_domain", exclude_columns = "uhash", measures = NULL) {
-  if (nrow(x$data)==0) return(data.table())
-  assert_subset(unnest, names(x$data), empty.ok = TRUE)
-  assert_subset(exclude_columns, c(names(x$data), "resample_result", "uhash"), empty.ok = TRUE)
+  if (nrow(x$data) == 0) return(data.table())
+  # default values for unnest and exclude_columns might be not present in archive
+  if ("x_domain" %nin% names(x$data)) unnest = unnest[unnest %nin% "x_domain"]
+  if (is.null(x$benchmark_result)) exclude_columns = exclude_columns[exclude_columns %nin% "uhash"]
+ 
+  assert_subset(unnest, names(x$data))
   cols_y_extra = NULL
+  
+  # unnest data
+  tab = unnest(copy(x$data), unnest, prefix = "{col}_")
 
-  tab = if ((!x$store_x_domain && unnest == "x_domain") || is.null(unnest)) {
-    copy(x$data)
-  } else {
-    unnest(copy(x$data), unnest, prefix = "{col}_")
-  }
   if (!is.null(x$benchmark_result)) {
+    # add extra measures
     if (!is.null(measures)) {
       measures = assert_measures(as_measures(measures), learner = x$learners(1)[[1]], task = x$resample_result(1)$task)
       cols_y_extra = map_chr(measures, "id")
       tab = cbind(tab, x$benchmark_result$aggregate(measures)[, cols_y_extra, with = FALSE])
     }
+    # add resample results
     tab = merge(tab, x$benchmark_result$resample_results[, c("uhash", "resample_result"), with = FALSE], by = "uhash")
   }
   setcolorder(tab, c(x$cols_x, x$cols_y, cols_y_extra, "runtime", "timestamp", "batch_nr"))
+  assert_subset(exclude_columns, names(tab))
   tab[, setdiff(names(tab), exclude_columns), with = FALSE]
 }
