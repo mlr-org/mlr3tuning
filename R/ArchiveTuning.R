@@ -155,7 +155,7 @@ ArchiveTuning = R6Class("ArchiveTuning",
 as.data.table.ArchiveTuning = function(x, ..., unnest = "x_domain", exclude_columns = "uhash", measures = NULL) {
   if (nrow(x$data) == 0) return(data.table())
   # default values for unnest and exclude_columns might be not present in archive
-  if ("x_domain" %nin% names(x$data)) unnest = unnest[unnest %nin% "x_domain"]
+  if ("x_domain" %nin% names(x$data)) unnest = setdiff(unnest, "x_domain")
   if (is.null(x$benchmark_result)) exclude_columns = exclude_columns[exclude_columns %nin% "uhash"]
  
   assert_subset(unnest, names(x$data))
