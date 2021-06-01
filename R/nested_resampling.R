@@ -13,7 +13,7 @@
 #' The returned data table has the following columns:
 #'
 #' * `experiment` (integer(1))\cr
-#'   Experiment of the benchmark grid.
+#'   Index, giving the according row number in the original benchmark grid.
 #' * `iteration` (integer(1))\cr
 #'   Iteration of the outer resampling.
 #' * One column for each hyperparameter of the search spaces.
