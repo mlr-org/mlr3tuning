@@ -32,7 +32,8 @@ Iteration of the outer resampling.
 \item One column for each hyperparameter of the search spaces.
 \item One column for each performance measure.
 \item \code{learner_param_vals} (\code{list()})\cr
-Tuned and fixed hyperparameter values.
+Hyperparameter values used by the learner. Includes fixed and proposed
+hyperparameter values.
 \item \code{x_domain} (\code{list()})\cr
 List of transformed hyperparameter values.
 Resample result of the inner resampling.
