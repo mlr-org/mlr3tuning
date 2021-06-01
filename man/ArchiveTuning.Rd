@@ -15,7 +15,7 @@ The table (\verb{$data}) has the following columns:
 \item One column for each hyperparameter of the search space (\verb{$search_space}).
 \item One column for each performance measure (\verb{$codomain}).
 \item \code{x_domain} (\code{list()})\cr
-Lists of transformed hyperparameter values.
+Lists of transformed hyperparameter values that are passed to the learner.
 \item \code{runtime} (\code{numeric(1)})\cr
 Sum of all training and predict times logged per evaluation.
 \item \code{timestamp} (\code{POSIXct})\cr

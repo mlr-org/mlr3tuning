@@ -54,7 +54,7 @@ extract_inner_tuning_results = function (x) {
 #' @export
 extract_inner_tuning_results.ResampleResult = function(x) {
   rr = assert_resample_result(x)
-  if (is.null(rr$learners[[1]]$model) || is.null(rr$learners[[1]]$model$tuning_instance)) {
+  if (is.null(rr$learners[[1]]$model$tuning_instance)) {
     return(data.table())
   }
   tab = imap_dtr(rr$learners, function(learner, i) {
@@ -101,7 +101,7 @@ extract_inner_tuning_results.BenchmarkResult = function(x) {
 #' The returned data table has the following columns:
 #'
 #' * `experiment` (integer(1))\cr
-#'   Experiment of the benchmark grid.
+#'   Index, giving the according row number in the original benchmark grid.
 #' * `iteration` (integer(1))\cr
 #'   Iteration of the outer resampling.
 #' * One column for each hyperparameter of the search spaces.
@@ -157,7 +157,7 @@ extract_inner_tuning_archives = function (x, unnest = "x_domain", exclude_column
 #' @export
 extract_inner_tuning_archives.ResampleResult = function(x, unnest = "x_domain", exclude_columns = "uhash") {
   rr = assert_resample_result(x)
-  if (is.null(rr$learners[[1]]$model) || is.null(rr$learners[[1]]$model$tuning_instance)) {
+  if (is.null(rr$learners[[1]]$model$tuning_instance)) {
     return(data.table())
   }
   tab = imap_dtr(rr$learners, function(learner, i) {
