@@ -47,13 +47,12 @@ Resample result of the inner resampling.
 task = tsk("iris")
 learner = lrn("classif.rpart", cp = to_tune(0.001, 0.1))
 
-at = AutoTuner$new(
+at = auto_tuner(
+  method = "grid_search",
   learner = learner,
-  resampling = rsmp("holdout"),
+  resampling = rsmp ("holdout"),
   measure = msr("classif.ce"),
-  terminator = trm("evals", n_evals = 5),
-  tuner = tnr("grid_search"),
-  store_tuning_instance = TRUE)
+  term_evals = 10)
 
 resampling_outer = rsmp("cv", folds = 3)
 rr = resample(task, at, resampling_outer, store_models = TRUE)
