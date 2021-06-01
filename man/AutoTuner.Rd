@@ -118,6 +118,7 @@ Must be an element of \verb{$predict_types}.}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{AutoTuner$new()}}
+\item \href{#method-base_learner}{\code{AutoTuner$base_learner()}}
 \item \href{#method-clone}{\code{AutoTuner$clone()}}
 }
 }
@@ -198,6 +199,29 @@ Should parameters before the evaluation and the results be checked for
 validity?}
 }
 \if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-base_learner"></a>}}
+\if{latex}{\out{\hypertarget{method-base_learner}{}}}
+\subsection{Method \code{base_learner()}}{
+Extracts the base learner from nested learner objects like
+\code{GraphLearner} in \CRANpkg{mlr3pipelines}. If \code{recursive = 0}, the (tuned)
+learner is returned.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AutoTuner$base_learner(recursive = Inf)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{recursive}}{(\code{integer(1)})\cr
+Depth of recursion for multiple nested objects.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{Learner}.
 }
 }
 \if{html}{\out{<hr>}}
