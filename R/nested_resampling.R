@@ -157,7 +157,7 @@ extract_inner_tuning_archives = function (x, unnest = "x_domain", exclude_column
 #' @export
 extract_inner_tuning_archives.ResampleResult = function(x, unnest = "x_domain", exclude_columns = "uhash") {
   rr = assert_resample_result(x)
-  if (is.null(rr$learners[[1]]$model) || is.null(rr$learners[[1]]$model$tuning_instance)) {
+  if (is.null(rr$learners[[1]]$model$tuning_instance)) {
     return(data.table())
   }
   tab = imap_dtr(rr$learners, function(learner, i) {
