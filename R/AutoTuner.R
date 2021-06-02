@@ -160,6 +160,19 @@ AutoTuner = R6Class("AutoTuner",
 
       self$predict_type = learner$predict_type
       self$predict_sets = learner$predict_sets
+    },
+
+    #' @description
+    #' Extracts the base learner from nested learner objects like
+    #' `GraphLearner` in \CRANpkg{mlr3pipelines}. If `recursive = 0`, the (tuned)
+    #' learner is returned.
+    #'
+    #' @param recursive (`integer(1)`)\cr
+    #'   Depth of recursion for multiple nested objects.
+    #'
+    #' @return [Learner].
+    base_learner = function(recursive = Inf) {
+      if(recursive == 0) self$learner else self$learner$base_learner(recursive -1)
     }
   ),
 
