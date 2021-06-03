@@ -23,7 +23,6 @@
 #'   hyperparameter values.
 #' * `x_domain` (`list()`)\cr
 #'   List of transformed hyperparameter values.
-#'   Resample result of the inner resampling.
 #' * `task_id` (`character(1)`).
 #' * `learner_id` (`character(1)`).
 #' * `resampling_id` (`character(1)`).

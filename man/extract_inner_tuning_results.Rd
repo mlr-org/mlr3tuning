@@ -36,7 +36,6 @@ Hyperparameter values used by the learner. Includes fixed and proposed
 hyperparameter values.
 \item \code{x_domain} (\code{list()})\cr
 List of transformed hyperparameter values.
-Resample result of the inner resampling.
 \item \code{task_id} (\code{character(1)}).
 \item \code{learner_id} (\code{character(1)}).
 \item \code{resampling_id} (\code{character(1)}).
