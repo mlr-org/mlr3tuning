@@ -3,7 +3,7 @@ test_that("extract_inner_tuning_results function works", {
   task = tsk("iris")
   search_space = TEST_MAKE_PS1(n_dim = 1)
   ms = msr("classif.ce")
-  tuner = tnr("grid_search", resolution = 3)
+  tuner = tnr("random_search")
 
   # cv
   at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
@@ -105,6 +105,17 @@ test_that("extract_inner_tuning_results function works", {
   expect_data_table(ibmr, nrows = 2)
   expect_named(ibmr, c("experiment", "iteration", "x", "classif.ce", "learner_param_vals", "x_domain", "task_id", "learner_id", "resampling_id"))
   expect_equal(unique(ibmr$experiment), 1)
+
+  # search_space > 1
+  at_1 = AutoTuner$new(lrn("classif.rpart", cp = to_tune(0.01, 0.1), minsplit = to_tune(1, 12)), rsmp("holdout"), ms, te, tuner = tuner)
+  at_2 = AutoTuner$new(lrn("classif.debug", x = to_tune()), rsmp("holdout"), ms, te, tuner = tuner)
+  grid = benchmark_grid(task, list(at_1, at_2), resampling_outer)
+  bmr = benchmark(grid, store_models = TRUE)
+
+  ibmr = extract_inner_tuning_results(bmr)
+  expect_data_table(ibmr, nrows = 4)
+  expect_named(ibmr, c("experiment", "iteration", "cp", "minsplit", "x", "classif.ce", "learner_param_vals", "x_domain", "task_id", "learner_id", "resampling_id"))
+  expect_equal(unique(ibmr$experiment), c(1, 2))
 })
 
 test_that("extract_inner_tuning_archives function works", {
@@ -215,4 +226,15 @@ test_that("extract_inner_tuning_archives function works", {
   expect_data_table(ibmr, nrows = 6)
   expect_named(ibmr, c("experiment", "iteration", "x", "classif.ce", "x_domain_x", "runtime", "timestamp", "batch_nr", "resample_result", "task_id", "learner_id", "resampling_id"))
   expect_equal(unique(ibmr$experiment), 1)
+
+  # search_space > 1
+  at_1 = AutoTuner$new(lrn("classif.rpart", cp = to_tune(0.01, 0.1), minsplit = to_tune(1, 12)), rsmp("holdout"), ms, te, tuner = tuner)
+  at_2 = AutoTuner$new(lrn("classif.debug", x = to_tune()), rsmp("holdout"), ms, te, tuner = tuner)
+  grid = benchmark_grid(task, list(at_1, at_2), resampling_outer)
+  bmr = benchmark(grid, store_models = TRUE)
+
+  ibmr = extract_inner_tuning_archives(bmr)
+  expect_data_table(ibmr, nrows = 16)
+  expect_named(ibmr, c("experiment", "iteration", "cp", "minsplit", "x", "classif.ce", "x_domain_cp", "x_domain_minsplit", "x_domain_x", "runtime", "timestamp", "batch_nr", "resample_result", "task_id", "learner_id", "resampling_id"))
+  expect_equal(unique(ibmr$experiment), c(1, 2))
 })

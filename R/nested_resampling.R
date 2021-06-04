@@ -78,8 +78,8 @@ extract_inner_tuning_results.BenchmarkResult = function(x) {
   }, .fill = TRUE)
   # reorder dt
   if (nrow(tab) > 0) {
-    cols_x = map_chr(unique(tab$experiment), function(i) bmr$resample_results$resample_result[[i]]$learners[[1]]$archive$cols_x)
-    cols_y = map_chr(unique(tab$experiment), function(i) bmr$resample_results$resample_result[[i]]$learners[[1]]$archive$cols_y)
+    cols_x = unique(unlist(map(unique(tab$experiment), function(i) bmr$resample_results$resample_result[[i]]$learners[[1]]$archive$cols_x)))
+    cols_y = unique(unlist(map(unique(tab$experiment), function(i) bmr$resample_results$resample_result[[i]]$learners[[1]]$archive$cols_y)))
     setcolorder(tab, unique(c("experiment", "iteration", cols_x, cols_y)))
   }
   tab
@@ -181,8 +181,8 @@ extract_inner_tuning_archives.BenchmarkResult = function(x, unnest = "x_domain",
 
   if (nrow(tab) > 0) {
     # reorder dt
-    cols_x = map_chr(unique(tab$experiment), function(i) bmr$resample_results$resample_result[[i]]$learners[[1]]$archive$cols_x)
-    cols_y = map_chr(unique(tab$experiment), function(i) bmr$resample_results$resample_result[[i]]$learners[[1]]$archive$cols_y)
+    cols_x = unique(unlist(map(unique(tab$experiment), function(i) bmr$resample_results$resample_result[[i]]$learners[[1]]$archive$cols_x)))
+    cols_y = unique(unlist(map(unique(tab$experiment), function(i) bmr$resample_results$resample_result[[i]]$learners[[1]]$archive$cols_y)))
     cols_x_domain =  if ("x_domain" %in% unnest) setdiff(paste0("x_domain_", cols_x), exclude_columns) else NULL
     setcolorder(tab, c("experiment", "iteration", unique(c(cols_x, cols_y)), cols_x_domain))
   }
