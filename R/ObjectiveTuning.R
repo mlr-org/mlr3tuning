@@ -72,15 +72,21 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       aggr = bmr$aggregate(self$measures)
       y = map_chr(self$measures, "id")
 
+      # add runtime
+      time = map_dbl(bmr$resample_results$resample_result, function(rr) {
+        sum(map_dbl(rr$learners, function(l) sum(l$timings)))
+      })
+      aggr[, "runtime_learners" := time]
+
       if (self$store_benchmark_result) {
         if (is.null(self$archive$benchmark_result)) {
           self$archive$benchmark_result = bmr
         } else {
           self$archive$benchmark_result$combine(bmr)
         }
-        cbind(aggr[, y, with = FALSE], uhash = bmr$uhashes)
+        cbind(aggr[, c(y, "runtime_learners"), with = FALSE], uhash = bmr$uhashes)
       } else {
-        aggr[, y, with = FALSE]
+        aggr[, c(y, "runtime_learners"), with = FALSE]
       }
     },
 

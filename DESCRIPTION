@@ -83,6 +83,7 @@ Collate:
     'bibentries.R'
     'helper.R'
     'irace_helpers.R'
+    'nested_resampling.R'
     'reexport.R'
     'sugar.R'
     'zzz.R'
