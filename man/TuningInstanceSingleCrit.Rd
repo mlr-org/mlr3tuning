@@ -23,78 +23,55 @@ values, by calling the method \code{instance$assign_result}.
 }
 \examples{
 library(data.table)
-library(paradox)
-library(mlr3)
 
-# Objects required to define the performance evaluator:
-task = tsk("iris")
-learner = lrn("classif.rpart")
-resampling = rsmp("holdout")
-measure = msr("classif.ce")
-param_set = ParamSet$new(list(
-  ParamDbl$new("cp", lower = 0.001, upper = 0.1),
-  ParamInt$new("minsplit", lower = 1, upper = 10))
+# define search space
+search_space = ps(
+  cp = p_dbl(lower = 0.001, upper = 0.1),
+  minsplit = p_int(lower = 1, upper = 10)
 )
 
-terminator = trm("evals", n_evals = 5)
-inst = TuningInstanceSingleCrit$new(
-  task = task,
-  learner = learner,
-  resampling = resampling,
-  measure = measure,
-  search_space = param_set,
-  terminator = terminator
+# initialize instance
+instance = TuningInstanceSingleCrit$new(
+  task = tsk("iris"),
+  learner = lrn("classif.rpart"),
+  resampling = rsmp("holdout"),
+  measure = msr("classif.ce"),
+  search_space = search_space,
+  terminator = trm("evals", n_evals = 5)
 )
 
-# first 4 points as cross product
-design = CJ(cp = c(0.05, 0.01), minsplit = c(5, 3))
-inst$eval_batch(design)
-inst$archive
+# generate design
+design = data.table(cp = c(0.05, 0.01), minsplit = c(5, 3))
 
-# try more points, catch the raised terminated message
-tryCatch(
-  inst$eval_batch(data.table(cp = 0.01, minsplit = 7)),
-  terminated_error = function(e) message(as.character(e))
-)
+# eval design
+instance$eval_batch(design)
 
-# try another point although the budget is now exhausted
-# -> no extra evaluations
-tryCatch(
-  inst$eval_batch(data.table(cp = 0.01, minsplit = 9)),
-  terminated_error = function(e) message(as.character(e))
-)
+# show archive
+instance$archive
 
-inst$archive
+### error handling
 
-### Error handling
 # get a learner which breaks with 50\% probability
 # set encapsulation + fallback
 learner = lrn("classif.debug", error_train = 0.5)
 learner$encapsulate = c(train = "evaluate", predict = "evaluate")
 learner$fallback = lrn("classif.featureless")
 
-param_set = ParamSet$new(list(
-  ParamDbl$new("x", lower = 0, upper = 1)
-))
+# define search space
+search_space = ps(
+ x = p_dbl(lower = 0, upper = 1)
+)
 
-inst = TuningInstanceSingleCrit$new(
+instance = TuningInstanceSingleCrit$new(
   task = tsk("wine"),
   learner = learner,
   resampling = rsmp("cv", folds = 3),
   measure = msr("classif.ce"),
-  search_space = param_set,
+  search_space = search_space,
   terminator = trm("evals", n_evals = 5)
 )
 
-tryCatch(
-  inst$eval_batch(data.table(x = 1:5 / 5)),
-  terminated_error = function(e) message(as.character(e))
-)
-
-archive = as.data.table(inst$archive)
-
-# column errors: multiple errors recorded
-print(archive)
+instance$eval_batch(data.table(x = 1:5 / 5))
 }
 \section{Super classes}{
 \code{\link[bbotk:OptimInstance]{bbotk::OptimInstance}} -> \code{\link[bbotk:OptimInstanceSingleCrit]{bbotk::OptimInstanceSingleCrit}} -> \code{TuningInstanceSingleCrit}
@@ -168,7 +145,9 @@ Measure to optimize.}
 
 \item{\code{terminator}}{(\link{Terminator}).}
 
-\item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet}).}
+\item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
+Hyperparameter search space. If \code{NULL}, the search space is constructed from
+the \link{TuneToken} in the \code{ParamSet} of the learner.}
 
 \item{\code{store_benchmark_result}}{(\code{logical(1)})\cr
 If \code{TRUE} (default), stores the \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} in archive.}

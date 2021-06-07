@@ -31,6 +31,33 @@
 #' @template param_learner_param_vals
 #'
 #' @export
+#' @examples
+#' library(data.table)
+#' 
+#' # define search space
+#' search_space = ps(
+#'   cp = p_dbl(lower = 0.001, upper = 0.1),
+#'   minsplit = p_int(lower = 1, upper = 10)
+#' )
+#' 
+#' # initialize instance
+#' instance = TuningInstanceMultiCrit$new(
+#'   task = tsk("iris"),
+#'   learner = lrn("classif.rpart"),
+#'   resampling = rsmp("holdout"),
+#'   measure = msrs(c("classif.ce", "classif.acc")),
+#'   search_space = search_space,
+#'   terminator = trm("evals", n_evals = 5)
+#' )
+#' 
+#' # generate design
+#' design = data.table(cp = c(0.05, 0.01), minsplit = c(5, 3))
+#' 
+#' # eval design
+#' instance$eval_batch(design)
+#' 
+#' # show archive
+#' instance$archive
 TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
   inherit = OptimInstanceMultiCrit,
   public = list(

@@ -44,7 +44,9 @@ Iteration of the outer resampling.
 \item One column for each hyperparameter of the search spaces.
 \item One column for each performance measure.
 \item \code{runtime_learners} (\code{numeric(1)})\cr
-Sum of all training and predict times logged per resampling.
+Sum of training and predict times logged in learners per
+\link[mlr3:ResampleResult]{mlr3::ResampleResult} / evaluation. This does not include potential
+overhead time.
 \item \code{timestamp} (\code{POSIXct})\cr
 Time stamp when the evaluation was logged into the archive.
 \item \code{batch_nr} (\code{integer(1)})\cr

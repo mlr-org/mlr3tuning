@@ -266,3 +266,41 @@ test_that("search space from TuneToken works", {
     regexp = "If the values of the ParamSet of the Learner contain TuneTokens you cannot supply a search_space.",
     fixed = TRUE)
 })
+
+test_that("AutoTuner get_base_learner method works", {
+  skip_if_not_installed("mlr3pipelines")
+  requireNamespace("mlr3pipelines")
+
+  # simple learner
+  learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
+  at = auto_tuner(
+    method = "random_search",
+    learner = learner,
+    resampling = rsmp("holdout"),
+    measure = msr("classif.ce"),
+    term_evals = 1)
+  at$train(tsk("pima"))
+
+  expect_learner(at$base_learner())
+  expect_equal(at$base_learner()$id, "classif.rpart")
+  expect_learner(at$base_learner(recursive = 0))
+  expect_equal(at$base_learner(recursive = 0)$id, "classif.rpart")
+
+  # graph learner
+  learner = as_learner(pipeline_robustify() %>>% lrn("classif.rpart"))
+  learner$param_set$values$classif.rpart.cp = to_tune(1e-04, 1e-1, logscale = TRUE)
+  learner$id = "graphlearner.classif.rpart"
+
+  at = auto_tuner(
+    method = "random_search",
+    learner = learner,
+    resampling = rsmp("holdout"),
+    measure = msr("classif.ce"),
+    term_evals = 1)
+  at$train(tsk("pima"))
+
+  expect_learner(at$base_learner(recursive = 0))
+  expect_equal(at$base_learner(recursive = 0)$id, "graphlearner.classif.rpart")
+  # expect_learner(at$base_learner())
+  # expect_equal(at$base_learner()$id, "classif.rpart")
+})

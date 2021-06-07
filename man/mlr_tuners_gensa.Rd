@@ -64,24 +64,18 @@ combined with a \link[bbotk]{Terminator}. Simply wrap the function in
 }
 
 \examples{
-library(mlr3)
-library(paradox)
-search_space = ParamSet$new(list(
-  ParamDbl$new("cp", lower = 0.001, upper = 0.1)
-))
-terminator = trm("evals", n_evals = 3)
 instance = TuningInstanceSingleCrit$new(
   task = tsk("iris"),
-  learner = lrn("classif.rpart"),
+  learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
   resampling = rsmp("holdout"),
   measure = msr("classif.ce"),
-  search_space = search_space,
-  terminator = terminator
+  terminator = trm("evals", n_evals = 3)
 )
-tt = tnr("gensa")
+tuner = tnr("gensa")
 
+# optimize hyperparameter
 # modifies the instance by reference
-tt$optimize(instance)
+tuner$optimize(instance)
 
 # returns best configuration and best performance
 instance$result

@@ -16,9 +16,10 @@ The table (\verb{$data}) has the following columns:
 \item One column for each performance measure (\verb{$codomain}).
 \item \code{x_domain} (\code{list()})\cr
 Lists of transformed hyperparameter values that are passed to the learner.
-\item \code{runtime} (\code{numeric(1)})\cr
-Sum of training and predict times logged in learners per \link[mlr3:ResampleResult]{mlr3::ResampleResult} / evaluation.
-This does not include potential overhead time.
+\item \code{runtime_learners} (\code{numeric(1)})\cr
+Sum of training and predict times logged in learners per
+\link[mlr3:ResampleResult]{mlr3::ResampleResult} / evaluation. This does not include potential
+overhead time.
 \item \code{timestamp} (\code{POSIXct})\cr
 Time stamp when the evaluation was logged into the archive.
 \item \code{batch_nr} (\code{integer(1)})\cr
