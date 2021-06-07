@@ -173,6 +173,32 @@ AutoTuner = R6Class("AutoTuner",
     #' @return [Learner].
     base_learner = function(recursive = Inf) {
       if(recursive == 0) self$learner else self$learner$base_learner(recursive -1)
+    },
+
+    #' Printer.
+    #' @param ... (ignored).
+    print = function() {
+      search_space = if (is.null(self$instance_args$search_space)) {
+        self$instance_args$learner$param_set$search_space()
+      } else {
+        self$instance_args$search_space
+      }
+      catf(format(self))
+      catf(str_indent("* Model:", if (is.null(self$model)) "-" else class(self$model)[1L]))
+      catf("* Search Space:")
+      print(search_space)
+      catf(str_indent("* Packages:", self$packages))
+      catf(str_indent("* Predict Type:", self$predict_type))
+      catf(str_indent("* Feature Types:", self$feature_types))
+      catf(str_indent("* Properties:", self$properties))
+      w = self$warnings
+      e = self$errors
+      if (length(w)) {
+        catf(str_indent("* Warnings:", w))
+      }
+      if (length(e)) {
+        catf(str_indent("* Errors:", e))
+      }
     }
   ),
 
