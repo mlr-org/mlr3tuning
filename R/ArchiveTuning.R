@@ -12,8 +12,10 @@
 #' * One column for each performance measure (`$codomain`).
 #' * `x_domain` (`list()`)\cr
 #'   Lists of transformed hyperparameter values that are passed to the learner.
-#' * `runtime` (`numeric(1)`)\cr
-#'   Sum of all training and predict times logged per evaluation.
+#' * `runtime_learners` (`numeric(1)`)\cr
+#'   Sum of training and predict times logged in learners per
+#'   [mlr3::ResampleResult] / evaluation. This does not include potential
+#'   overhead time. 
 #' * `timestamp` (`POSIXct`)\cr
 #'   Time stamp when the evaluation was logged into the archive.
 #' * `batch_nr` (`integer(1)`)\cr
@@ -174,7 +176,7 @@ as.data.table.ArchiveTuning = function(x, ..., unnest = "x_domain", exclude_colu
     # add resample results
     tab = merge(tab, x$benchmark_result$resample_results[, c("uhash", "resample_result"), with = FALSE], by = "uhash")
   }
-  setcolorder(tab, c(x$cols_x, x$cols_y, cols_y_extra, "runtime", "timestamp", "batch_nr"))
+  setcolorder(tab, c(x$cols_x, x$cols_y, cols_y_extra, "runtime_learners", "timestamp", "batch_nr"))
   assert_subset(exclude_columns, names(tab))
   tab[, setdiff(names(tab), exclude_columns), with = FALSE]
 }

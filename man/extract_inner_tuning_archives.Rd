@@ -43,7 +43,7 @@ Index, giving the according row number in the original benchmark grid.
 Iteration of the outer resampling.
 \item One column for each hyperparameter of the search spaces.
 \item One column for each performance measure.
-\item \code{runtime} (\code{numeric(1)})\cr
+\item \code{runtime_learners} (\code{numeric(1)})\cr
 Sum of all training and predict times logged per resampling.
 \item \code{timestamp} (\code{POSIXct})\cr
 Time stamp when the evaluation was logged into the archive.

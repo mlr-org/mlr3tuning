@@ -105,8 +105,10 @@ extract_inner_tuning_results.BenchmarkResult = function(x) {
 #'   Iteration of the outer resampling.
 #' * One column for each hyperparameter of the search spaces.
 #' * One column for each performance measure.
-#' * `runtime` (`numeric(1)`)\cr
-#'   Sum of all training and predict times logged per resampling.
+#' * `runtime_learners` (`numeric(1)`)\cr
+#'   Sum of training and predict times logged in learners per
+#'   [mlr3::ResampleResult] / evaluation. This does not include potential
+#'   overhead time. 
 #' * `timestamp` (`POSIXct`)\cr
 #'   Time stamp when the evaluation was logged into the archive.
 #' * `batch_nr` (`integer(1)`)\cr

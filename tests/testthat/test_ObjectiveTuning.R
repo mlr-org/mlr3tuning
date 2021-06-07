@@ -63,7 +63,7 @@ test_that("ObjectiveTuning - Store models", {
 })
 
 
-test_that("runtime is added", {
+test_that("runtime_learners is added", {
   # cv
   task = tsk("iris")
   learner = lrn("classif.rpart")
@@ -78,12 +78,12 @@ test_that("runtime is added", {
 
   z = obj$eval_many(xss)
   expect_data_table(z, nrows = 2, ncols = 3)
-  expect_named(z, c("classif.ce", "runtime", "uhash"))
+  expect_named(z, c("classif.ce", "runtime_learners", "uhash"))
 
   t1 = sum(map_dbl(obj$archive$benchmark_result$resample_result(1)$learners, function(l) sum(l$timings)))
   t2 = sum(map_dbl(obj$archive$benchmark_result$resample_result(2)$learners, function(l) sum(l$timings)))
-  expect_equal(z[1, runtime], t1)
-  expect_equal(z[2, runtime], t2)
+  expect_equal(z[1, runtime_learners], t1)
+  expect_equal(z[2, runtime_learners], t2)
 
 
   # repeated cv
@@ -97,10 +97,10 @@ test_that("runtime is added", {
 
   z = obj$eval_many(xss)
   expect_data_table(z, nrows = 2, ncols = 3)
-  expect_named(z, c("classif.ce", "runtime", "uhash"))
+  expect_named(z, c("classif.ce", "runtime_learners", "uhash"))
 
   t1 = sum(map_dbl(obj$archive$benchmark_result$resample_result(1)$learners, function(l) sum(l$timings)))
   t2 = sum(map_dbl(obj$archive$benchmark_result$resample_result(2)$learners, function(l) sum(l$timings)))
-  expect_equal(z[1, runtime], t1)
-  expect_equal(z[2, runtime], t2)
+  expect_equal(z[1, runtime_learners], t1)
+  expect_equal(z[2, runtime_learners], t2)
 })

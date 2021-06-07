@@ -120,37 +120,37 @@ test_that("ArchiveTuning as.data.table function works", {
   # default
   tab = as.data.table(instance$archive)
   expect_data_table(tab, nrows = 4, ncols = 7)
-  expect_named(tab, c("cp", "classif.ce", "runtime", "timestamp", "batch_nr", "x_domain_cp", "resample_result"))
+  expect_named(tab, c("cp", "classif.ce", "runtime_learners", "timestamp", "batch_nr", "x_domain_cp", "resample_result"))
 
   # extra measure
   tab = as.data.table(instance$archive, measures = msr("classif.acc"))
   expect_data_table(tab, nrows = 4, ncols = 8)
-  expect_named(tab, c("cp", "classif.ce", "classif.acc", "runtime", "timestamp", "batch_nr", "x_domain_cp", "resample_result"))
+  expect_named(tab, c("cp", "classif.ce", "classif.acc", "runtime_learners", "timestamp", "batch_nr", "x_domain_cp", "resample_result"))
 
   # extra measures
   tab = as.data.table(instance$archive, measures = msrs(c("classif.acc", "classif.mcc")))
   expect_data_table(tab, nrows = 4, ncols = 9)
-  expect_named(tab, c("cp", "classif.ce", "classif.acc", "classif.mcc" ,"runtime", "timestamp", "batch_nr", "x_domain_cp", "resample_result"))
+  expect_named(tab, c("cp", "classif.ce", "classif.acc", "classif.mcc" ,"runtime_learners", "timestamp", "batch_nr", "x_domain_cp", "resample_result"))
 
   # exclude column
   tab = as.data.table(instance$archive, exclude_columns = "timestamp")
   expect_data_table(tab, nrows = 4, ncols = 7)
-  expect_named(tab, c("cp", "classif.ce" ,"runtime", "batch_nr", "uhash", "x_domain_cp", "resample_result"))
+  expect_named(tab, c("cp", "classif.ce" ,"runtime_learners", "batch_nr", "uhash", "x_domain_cp", "resample_result"))
 
   # exclude columns
   tab = as.data.table(instance$archive, exclude_columns = c("timestamp", "uhash"))
   expect_data_table(tab, nrows = 4, ncols = 6)
-  expect_named(tab, c("cp", "classif.ce" ,"runtime", "batch_nr", "x_domain_cp", "resample_result"))
+  expect_named(tab, c("cp", "classif.ce" ,"runtime_learners", "batch_nr", "x_domain_cp", "resample_result"))
 
   # no exclude
   tab = as.data.table(instance$archive, exclude_columns = NULL)
   expect_data_table(tab, nrows = 4, ncols = 8)
-  expect_named(tab, c("cp", "classif.ce" ,"runtime", "timestamp", "batch_nr", "uhash", "x_domain_cp", "resample_result"))
+  expect_named(tab, c("cp", "classif.ce" ,"runtime_learners", "timestamp", "batch_nr", "uhash", "x_domain_cp", "resample_result"))
 
   # no unnest
   tab = as.data.table(instance$archive, unnest = NULL)
   expect_data_table(tab, nrows = 4, ncols = 7)
-  expect_named(tab, c("cp", "classif.ce" ,"runtime", "timestamp", "batch_nr", "x_domain", "resample_result"))
+  expect_named(tab, c("cp", "classif.ce" ,"runtime_learners", "timestamp", "batch_nr", "x_domain", "resample_result"))
 
   # without benchmark result
   instance = TuningInstanceSingleCrit$new(task = tsk("pima"), learner = lrn("classif.rpart"), 
@@ -162,7 +162,7 @@ test_that("ArchiveTuning as.data.table function works", {
 
   tab = as.data.table(instance$archive)
   expect_data_table(tab, nrows = 4, ncols = 6)
-  expect_named(tab, c("cp", "classif.ce", "runtime", "timestamp", "batch_nr", "x_domain_cp"))
+  expect_named(tab, c("cp", "classif.ce", "runtime_learners", "timestamp", "batch_nr", "x_domain_cp"))
 
   # empty archive
   instance = TuningInstanceSingleCrit$new(task = tsk("pima"), learner = lrn("classif.rpart"), 
