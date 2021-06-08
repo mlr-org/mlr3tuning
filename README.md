@@ -51,41 +51,42 @@ remotes::install_github("mlr-org/mlr3tuning")
 ## Example
 
 ``` r
-library("mlr3")
 library("mlr3tuning")
+
+# load learner and set search space
+learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
+
+# hyperparameter tuning on the pima indians diabetes data set
+instance = tune(
+  method = "random_search",
+  task =  tsk("pima"),
+  learner = learner,
+  resampling = rsmp("holdout"),
+  measure = msr("classif.ce"),
+  term_evals = 10,
+  batch_size = 5
+)
+
+# best performing feature set
+instance$result
 ```
 
-    ## Loading required package: paradox
+    ##           cp learner_param_vals  x_domain classif.ce
+    ## 1: -3.438787          <list[2]> <list[1]>  0.1953125
 
 ``` r
-library("paradox")
-
-task = tsk("pima")
-learner = lrn("classif.rpart")
-resampling = rsmp("holdout")
-measure = msr("classif.ce")
-
-# Create the search space with lower and upper bounds
-learner$param_set$values$cp = to_tune(0.001, 0.1)
-learner$param_set$values$minsplit = to_tune(1, 10) 
-
-# Define termination criterion
-terminator = trm("evals", n_evals = 20)
-
-# Create tuning instance
-instance = TuningInstanceSingleCrit$new(
-  task = task,
-  learner = learner,
-  resampling = resampling,
-  measure = measure,
-  terminator = terminator)
-
-# Load tuner
-tuner = tnr("grid_search", resolution = 5)
-
-# Trigger optimization
-tuner$optimize(instance)
+# all evaluated feature sets
+as.data.table(instance$archive)
 ```
 
-    ##        cp minsplit learner_param_vals  x_domain classif.ce
-    ## 1: 0.0505       10          <list[3]> <list[2]>  0.1953125
+    ##            cp classif.ce runtime_learners           timestamp batch_nr  x_domain_cp      resample_result
+    ##  1: -7.655174  0.2109375            0.010 2021-06-08 13:40:53        2 0.0004735875 <ResampleResult[20]>
+    ##  2: -8.371245  0.2109375            0.009 2021-06-08 13:40:52        1 0.0002314272 <ResampleResult[20]>
+    ##  3: -2.977903  0.1953125            0.008 2021-06-08 13:40:52        1 0.0508994680 <ResampleResult[20]>
+    ##  4: -6.157045  0.1992188            0.010 2021-06-08 13:40:53        2 0.0021185043 <ResampleResult[20]>
+    ##  5: -2.571322  0.1953125            0.011 2021-06-08 13:40:53        2 0.0764343975 <ResampleResult[20]>
+    ##  6: -6.206153  0.1992188            0.011 2021-06-08 13:40:53        2 0.0020169813 <ResampleResult[20]>
+    ##  7: -4.542023  0.1953125            0.008 2021-06-08 13:40:52        1 0.0106518336 <ResampleResult[20]>
+    ##  8: -5.779360  0.1992188            0.010 2021-06-08 13:40:52        1 0.0030906915 <ResampleResult[20]>
+    ##  9: -7.881995  0.2109375            0.011 2021-06-08 13:40:53        2 0.0003774793 <ResampleResult[20]>
+    ## 10: -3.438787  0.1953125            0.009 2021-06-08 13:40:52        1 0.0321036084 <ResampleResult[20]>
