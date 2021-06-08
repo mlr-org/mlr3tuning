@@ -176,7 +176,8 @@ as.data.table.ArchiveTuning = function(x, ..., unnest = "x_domain", exclude_colu
     # add resample results
     tab = merge(tab, x$benchmark_result$resample_results[, c("uhash", "resample_result"), with = FALSE], by = "uhash")
   }
-  setcolorder(tab, c(x$cols_x, x$cols_y, cols_y_extra, "runtime_learners", "timestamp", "batch_nr"))
+  cols_x_domain =  if ("x_domain" %in% unnest) setdiff(paste0("x_domain_", x$cols_x), exclude_columns) else NULL
+  setcolorder(tab, c(x$cols_x, x$cols_y, cols_y_extra, cols_x_domain, "runtime_learners", "timestamp", "batch_nr"))
   assert_subset(exclude_columns, names(tab))
   tab[, setdiff(names(tab), exclude_columns), with = FALSE]
 }
