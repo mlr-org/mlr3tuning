@@ -65,9 +65,9 @@ instance = tune(
   batch_size = 5
 )
 
-# best performing feature set
+# best performing hyperparameter configuration
 instance$result
 
-# all evaluated feature sets
+# all evaluated hyperparameter configuration
 as.data.table(instance$archive)
 ```
