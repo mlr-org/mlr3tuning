@@ -56,7 +56,7 @@ extract_inner_tuning_results.ResampleResult = function(x) {
     return(data.table())
   }
   tab = imap_dtr(rr$learners, function(learner, i) {
-    data = learner$tuning_result
+    data = setalloccol(learner$tuning_result)
     set(data, j = "iteration", value = i)
   })
   tab[, "task_id" := rr$task$id]
