@@ -19,6 +19,7 @@
 #' @template param_resampling
 #' @template param_measure
 #' @template param_search_space
+#' @template param_store_models
 #' 
 #' @export 
 #' @examples
@@ -35,12 +36,13 @@
 #' # apply hyperparameter values to learner
 #' learner$param_set$values = instance$result_learner_param_vals
 tune = function(method, task, learner, resampling, measure, term_evals = NULL, term_time = NULL, search_space = NULL,
-  ...) {
+  store_models = FALSE, ...) {
   assert_choice(method, mlr_tuners$keys())
   tuner = tnr(method, ...)
   terminator = terminator_selection(term_evals, term_time)
 
-  instance = TuningInstanceSingleCrit$new(task, learner, resampling, measure, terminator, search_space)
+  instance = TuningInstanceSingleCrit$new(task, learner, resampling, measure, terminator, search_space, 
+    store_models = store_models)
 
   tuner$optimize(instance)
   instance

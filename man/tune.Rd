@@ -13,6 +13,7 @@ tune(
   term_evals = NULL,
   term_time = NULL,
   search_space = NULL,
+  store_models = FALSE,
   ...
 )
 }
@@ -43,6 +44,12 @@ Maximum allowed time in seconds.}
 \item{search_space}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
 Hyperparameter search space. If \code{NULL}, the search space is constructed from
 the \link{TuneToken} in the \code{ParamSet} of the learner.}
+
+\item{store_models}{(\code{logical(1)})\cr
+If \code{FALSE} (default), the fitted models are not stored in the
+\link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}. If \code{store_benchmark_result = FALSE}, the models are
+only stored temporarily and not accessible after the tuning. This combination
+might be useful for measures that require a model.}
 
 \item{...}{(named \code{list()})\cr
 Named arguments to be set as parameters of the tuner.}
