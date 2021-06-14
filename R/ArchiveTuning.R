@@ -159,6 +159,7 @@ as.data.table.ArchiveTuning = function(x, ..., unnest = "x_domain", exclude_colu
   # default values for unnest and exclude_columns might be not present in archive
   if ("x_domain" %nin% names(x$data)) unnest = setdiff(unnest, "x_domain")
   if (is.null(x$benchmark_result)) exclude_columns = exclude_columns[exclude_columns %nin% "uhash"]
+
  
   assert_subset(unnest, names(x$data))
   cols_y_extra = NULL
@@ -176,7 +177,13 @@ as.data.table.ArchiveTuning = function(x, ..., unnest = "x_domain", exclude_colu
     # add resample results
     tab = merge(tab, x$benchmark_result$resample_results[, c("uhash", "resample_result"), with = FALSE], by = "uhash")
   }
-  cols_x_domain =  if ("x_domain" %in% unnest) setdiff(paste0("x_domain_", x$cols_x), exclude_columns) else NULL
+  cols_x_domain =  if ("x_domain" %in% unnest) {
+    # get all ids of x_domain
+    # trafo could add unknown ids
+    x_domain_ids = paste0("x_domain_", unique(unlist(map(x$data$x_domain, names))))
+    setdiff(x_domain_ids, exclude_columns) 
+  } else NULL
+
   setcolorder(tab, c(x$cols_x, x$cols_y, cols_y_extra, cols_x_domain, "runtime_learners", "timestamp", "batch_nr"))
   assert_subset(exclude_columns, names(tab))
   tab[, setdiff(names(tab), exclude_columns), with = FALSE]

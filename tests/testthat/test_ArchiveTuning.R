@@ -170,4 +170,47 @@ test_that("ArchiveTuning as.data.table function works", {
     terminator = trm("evals", n_evals = 4))
 
   expect_data_table(as.data.table(instance$archive), nrows = 0, ncols = 0)
+
+  # new ids in x_domain
+  search_space = ps(
+    x1 = p_int(1, 12),
+    x2 = p_dbl(0.01, 0.1),
+    .extra_trafo = function(x, param_set) {
+      x$minsplit = x$x1
+      x$cp = x$x2
+      x$x1 = NULL
+      x$x2 = NULL
+      x
+    }
+  )
+
+  instance = tune(method = "random_search", task = tsk("pima"), learner = lrn("classif.rpart"), 
+    resampling = rsmp("holdout"), measure = msr("classif.ce"), search_space = search_space, 
+    term_evals = 4, batch_size = 2)
+
+  tab = as.data.table(instance$archive)
+  expect_data_table(tab, nrows = 4, ncols = 9)
+  expect_named(tab, c("x1", "x2", "classif.ce", "x_domain_minsplit", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "resample_result"))
+
+  # new ids in x_domain switch
+  search_space = ps(
+    x1 = p_int(1, 12),
+    x2 = p_dbl(0.01, 0.1),
+    .extra_trafo = function(x, param_set) {
+
+      if (x$x1 > 3) x$minsplit = x$x1
+      x$cp = x$x2
+      x$x1 = NULL
+      x$x2 = NULL
+      x
+    }
+  )
+
+  instance = tune(method = "random_search", task = tsk("pima"), learner = lrn("classif.rpart"), 
+    resampling = rsmp("holdout"), measure = msr("classif.ce"), search_space = search_space, 
+    term_evals = 4, batch_size = 2)
+
+  tab = as.data.table(instance$archive)
+  expect_data_table(tab, nrows = 4, ncols = 9)
+  expect_named(tab, c("x1", "x2", "classif.ce", "x_domain_minsplit", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "resample_result"))
 })

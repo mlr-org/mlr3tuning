@@ -97,7 +97,7 @@ extract_inner_tuning_archives.BenchmarkResult = function(x, unnest = "x_domain",
     # reorder dt
     cols_x = unique(unlist(map(unique(tab$experiment), function(i) bmr$resample_results$resample_result[[i]]$learners[[1]]$archive$cols_x)))
     cols_y = unique(unlist(map(unique(tab$experiment), function(i) bmr$resample_results$resample_result[[i]]$learners[[1]]$archive$cols_y)))
-    cols_x_domain =  if ("x_domain" %in% unnest) setdiff(paste0("x_domain_", cols_x), exclude_columns) else NULL
+    cols_x_domain =  if ("x_domain" %in% unnest) names(tab)[grepl("^x_domain_.*", names(tab))] else NULL
     setcolorder(tab, c("experiment", "iteration", unique(c(cols_x, cols_y)), cols_x_domain))
   }
   tab
