@@ -73,7 +73,7 @@ extract_inner_tuning_archives.ResampleResult = function(x, unnest = "x_domain", 
     return(data.table())
   }
   tab = imap_dtr(rr$learners, function(learner, i) {
-    data = as.data.table(learner$archive, unnest, exclude_columns)
+    data = as.data.table(learner$archive, unnest = unnest, exclude_columns = exclude_columns)
     set(data, j = "iteration", value = i)
   })
   tab[, "task_id" := rr$task$id]
@@ -89,7 +89,7 @@ extract_inner_tuning_archives.ResampleResult = function(x, unnest = "x_domain", 
 extract_inner_tuning_archives.BenchmarkResult = function(x, unnest = "x_domain", exclude_columns = "uhash") {
   bmr = assert_benchmark_result(x)
   tab = imap_dtr(bmr$resample_results$resample_result, function(rr, i) {
-     data = extract_inner_tuning_archives(rr, unnest, exclude_columns)
+     data = extract_inner_tuning_archives(rr, unnest = unnest, exclude_columns = exclude_columns)
      if (nrow(data) > 0) set(data, j = "experiment", value = i)
   }, .fill = TRUE)
 
