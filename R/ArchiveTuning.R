@@ -175,7 +175,8 @@ as.data.table.ArchiveTuning = function(x, ..., unnest = "x_domain", exclude_colu
       tab = cbind(tab, x$benchmark_result$aggregate(measures)[, cols_y_extra, with = FALSE])
     }
     # add resample results
-    tab = merge(tab, x$benchmark_result$resample_results[, c("uhash", "resample_result"), with = FALSE], by = "uhash")
+    tab = merge(tab, x$benchmark_result$resample_results[, c("uhash", "resample_result"), with = FALSE], by = "uhash",
+      sort = FALSE)
   }
   cols_x_domain =  if ("x_domain" %in% unnest) {
     # get all ids of x_domain

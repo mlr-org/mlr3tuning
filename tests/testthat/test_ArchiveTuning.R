@@ -213,4 +213,15 @@ test_that("ArchiveTuning as.data.table function works", {
   tab = as.data.table(instance$archive)
   expect_data_table(tab, nrows = 4, ncols = 9)
   expect_named(tab, c("x1", "x2", "classif.ce", "x_domain_minsplit", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "resample_result"))
+
+  # row order
+  instance = TuningInstanceSingleCrit$new(task = tsk("pima"), learner = lrn("classif.rpart"), 
+    resampling = rsmp("holdout"), measure = msr("classif.ce"), search_space = TEST_MAKE_PS1(n_dim = 1), 
+    terminator = trm("evals", n_evals = 10))
+
+  tuner = tnr("random_search", batch_size = 1)
+  tuner$optimize(instance)
+
+  tab = as.data.table(instance$archive)
+  expect_equal(tab$batch_nr, 1:10)
 })
