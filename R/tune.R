@@ -12,12 +12,12 @@
 #' @param ... (named `list()`)\cr
 #'  Named arguments to be set as parameters of the tuner.
 #' 
-#' @return `TuningInstanceSingleCrit`
+#' @return `TuningInstanceSingleCrit` | `TuningInstanceMultiCrit`
 #'  
 #' @template param_task
 #' @template param_learner
 #' @template param_resampling
-#' @template param_measure
+#' @template param_measures
 #' @template param_search_space
 #' @template param_store_models
 #' 
@@ -30,19 +30,24 @@
 #'   task = tsk("pima"), 
 #'   learner = learner, 
 #'   resampling = rsmp ("holdout"), 
-#'   measure = msr("classif.ce"), 
+#'   measures = msr("classif.ce"), 
 #'   term_evals = 4) 
 #' 
 #' # apply hyperparameter values to learner
 #' learner$param_set$values = instance$result_learner_param_vals
-tune = function(method, task, learner, resampling, measure, term_evals = NULL, term_time = NULL, search_space = NULL,
+tune = function(method, task, learner, resampling, measures, term_evals = NULL, term_time = NULL, search_space = NULL,
   store_models = FALSE, ...) {
   assert_choice(method, mlr_tuners$keys())
   tuner = tnr(method, ...)
   terminator = terminator_selection(term_evals, term_time)
 
-  instance = TuningInstanceSingleCrit$new(task, learner, resampling, measure, terminator, search_space, 
-    store_models = store_models)
+  if (!is.list(measures)) {
+    instance = TuningInstanceSingleCrit$new(task, learner, resampling, measures, terminator, search_space, 
+      store_models = store_models)
+  } else {
+    instance = TuningInstanceMultiCrit$new(task, learner, resampling, measures, terminator, search_space, 
+      store_models = store_models)
+  }
 
   tuner$optimize(instance)
   instance

@@ -9,7 +9,7 @@ tune(
   task,
   learner,
   resampling,
-  measure,
+  measures,
   term_evals = NULL,
   term_time = NULL,
   search_space = NULL,
@@ -32,8 +32,9 @@ so that all configurations are evaluated on the same data splits. If a new
 resampling is passed, it is instantiated with new data splits. Already
 instantiated resamplings are kept unchanged.}
 
-\item{measure}{(\link[mlr3:Measure]{mlr3::Measure})\cr
-Measure to optimize.}
+\item{measures}{(list of \link[mlr3:Measure]{mlr3::Measure})\cr
+Measures to optimize.
+If \code{NULL}, \CRANpkg{mlr3}'s default measure is used.}
 
 \item{term_evals}{(\code{integer(1)})\cr
 Number of allowed evaluations.}
@@ -55,7 +56,7 @@ might be useful for measures that require a model.}
 Named arguments to be set as parameters of the tuner.}
 }
 \value{
-\code{TuningInstanceSingleCrit}
+\code{TuningInstanceSingleCrit} | \code{TuningInstanceMultiCrit}
 }
 \description{
 Function to tune a \link[mlr3:Learner]{mlr3::Learner}.
@@ -68,7 +69,7 @@ instance = tune(
   task = tsk("pima"), 
   learner = learner, 
   resampling = rsmp ("holdout"), 
-  measure = msr("classif.ce"), 
+  measures = msr("classif.ce"), 
   term_evals = 4) 
 
 # apply hyperparameter values to learner
