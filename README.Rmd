@@ -6,7 +6,7 @@ output: github_document
 lgr::get_logger("mlr3")$set_threshold("warn")
 lgr::get_logger("bbotk")$set_threshold("warn")
 set.seed(1)
-options(datatable.print.class = FALSE, datatable.print.keys = FALSE)
+options(datatable.print.class = FALSE, datatable.print.keys = FALSE, width = 200)
 ```
 
 # mlr3tuning
@@ -48,34 +48,102 @@ remotes::install_github("mlr-org/mlr3tuning")
 
 ## Example
 
+### Basic hyperparameter tuning
+
 ```{r}
-library("mlr3")
 library("mlr3tuning")
-library("paradox")
 
+# task
 task = tsk("pima")
-learner = lrn("classif.rpart")
-resampling = rsmp("holdout")
-measure = msr("classif.ce")
 
-# Create the search space with lower and upper bounds
-learner$param_set$values$cp = to_tune(0.001, 0.1)
-learner$param_set$values$minsplit = to_tune(1, 10) 
+# load learner and set search space
+learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
 
-# Define termination criterion
-terminator = trm("evals", n_evals = 20)
-
-# Create tuning instance
-instance = TuningInstanceSingleCrit$new(
+# hyperparameter tuning on the pima indians diabetes data set
+instance = tune(
+  method = "random_search",
   task = task,
   learner = learner,
-  resampling = resampling,
-  measure = measure,
-  terminator = terminator)
+  resampling = rsmp("cv", folds = 3),
+  measure = msr("classif.ce"),
+  term_evals = 10,
+  batch_size = 5
+)
 
-# Load tuner
-tuner = tnr("grid_search", resolution = 5)
+# best performing hyperparameter configuration
+instance$result
 
-# Trigger optimization
-tuner$optimize(instance)
+# all evaluated hyperparameter configuration
+as.data.table(instance$archive)
+
+# fit final model on complete data set
+learner$param_set$values = instance$result_learner_param_vals
+learner$train(task)
+```
+
+### Automatic tuning
+
+```{r}
+# task
+task = tsk("pima")
+
+# construct auto tuner
+at = auto_tuner(
+  method = "random_search",
+  learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
+  resampling = rsmp("cv", folds = 3),
+  measure = msr("classif.ce"),
+  term_evals = 10,
+  batch_size = 5
+)
+
+# train/test split
+train_set = sample(task$nrow, 0.8 * task$nrow)
+test_set = setdiff(seq_len(task$nrow), train_set)
+
+# tune hyperparameters and fit final model on the complete data set in one go
+at$train(task, row_ids = train_set)
+
+# best performing hyperparameter configuration
+at$tuning_result
+
+# all evaluated hyperparameter configuration
+as.data.table(at$archive)
+
+# predict new data with model trained on the complete data set and optimized hyperparameters
+at$predict(task, row_ids = test_set)
+```
+
+### Nested resampling
+
+```{r}
+# task
+task = tsk("pima")
+
+# load learner and set search space
+learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
+
+# nested resampling
+rr = tune_nested(
+  method = "random_search",
+  task =  task,
+  learner = learner,
+  inner_resampling = rsmp("holdout"),
+  outer_resampling = rsmp("cv", folds = 3),
+  measure = msr("classif.ce"),
+  term_evals = 10,
+  batch_size = 5
+)
+
+# aggregated performance of all outer resampling iterations
+rr$aggregate()
+
+# performance scores of the outer resampling
+rr$score()
+
+# inner resampling results
+extract_inner_tuning_results(rr)
+
+# inner resampling archives
+extract_inner_tuning_archives(rr)
 ```
