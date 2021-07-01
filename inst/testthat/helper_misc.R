@@ -127,7 +127,7 @@ LearnerRegrDepParams = R6Class("LearnerRegrDepParams", inherit = LearnerRegr,
     .predict = function(task) {
       n = task$nrow
       response = rep(99, n)
-      PredictionRegr$new(task, response = response)
+      list(response = response)
     }
   )
 )
