@@ -174,7 +174,7 @@ The result will be written into the instance object.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-NULL
+\link[data.table:data.table]{data.table::data.table}
 }
 }
 \if{html}{\out{<hr>}}
