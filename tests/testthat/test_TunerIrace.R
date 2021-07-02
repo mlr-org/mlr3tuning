@@ -2,21 +2,23 @@ skip_if_not_installed("irace")
 
 test_that("TunerIrace", {
   z = test_tuner("irace", term_evals = 42, real_evals = 39)
-  a = z$inst$archive$data
+  instance = z$inst
+  archive = instance$archive$data
   tuner = z$tuner
 
   # check archive columns
-  expect_subset(c("race", "step", "configuration", "instance"), names(a))
+  expect_subset(c("race", "step", "configuration", "instance"), names(archive))
 
   # check optimization direction
   # first elite of the first race should have the lowest average performance
   load(tuner$param_set$values$logFile)
   elites = iraceResults$allElites
-  aggr = instance$archive$data[race == 1, .(y = mean(y)), by = configuration]
-  expect_equal(aggr[which.min(y), configuration], elites[[1]][1])
+  aggr = archive[race == 1, .(classif.ce = mean(classif.ce)), by = configuration]
+  expect_equal(aggr[which.min(classif.ce), configuration], elites[[1]][1])
 
-  # check for mean performance
-  expect_equal(z$inst$result$classif.ce, mean(a[id_configuration == z$inst$result$id_configuration,]$classif.ce))
+  # the performance of the best configuration should be the mean performance across all evaluated instances
+  configuration_id = instance$result$configuration
+  expect_equal(unname(instance$result_y), mean(archive[configuration == configuration_id, classif.ce]))
 })
 
 test_that("TunerIrace works with dependencies", {
@@ -29,9 +31,9 @@ test_that("TunerIrace works with dependencies", {
   tuner = tnr("irace")
   tuner$optimize(instance)
   
-  a = instance$archive$data
-  expect_true(all(is.na(a[cp != 0.005, minsplit])))
-  expect_double(a$cp)
+  archive = instance$archive$data
+  expect_true(all(is.na(archive[cp != 0.005, minsplit])))
+  expect_double(archive$cp)
 })
 
 test_that("TunerIrace works with logical parameters", {
