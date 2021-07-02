@@ -24,7 +24,7 @@ Number of resampling instances.}
 For the meaning of all other parameters, see \code{\link[irace:defaultScenario]{irace::defaultScenario()}}. Note
 that we have removed all control parameters which refer to the termination of
 the algorithm. Use \link{TerminatorEvals} instead. Other terminators do not work
-with \code{OptimizerIrace}.
+with \code{TunerIrace}.
 }
 
 \section{Archive}{
@@ -44,7 +44,7 @@ Identifies configurations across races and steps.
 
 \section{Result}{
 
-The optimization result (\code{instance$result}) is the best performing elite of
+The tuning result (\code{instance$result}) is the best performing elite of
 the final race. The reported performance is the average performance estimated
 on all used instances.
 }
