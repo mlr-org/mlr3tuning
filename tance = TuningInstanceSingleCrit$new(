@@ -1,0 +1,118 @@
+rpart                  package:rpart                   R Documentation
+
+_R_e_c_u_r_s_i_v_e _P_a_r_t_i_t_i_o_n_i_n_g _a_n_d _R_e_g_r_e_s_s_i_o_n _T_r_e_e_s
+
+_D_e_s_c_r_i_p_t_i_o_n:
+
+     Fit a ‘rpart’ model
+
+_U_s_a_g_e:
+
+     rpart(formula, data, weights, subset, na.action = na.rpart, method,
+           model = FALSE, x = FALSE, y = TRUE, parms, control, cost, ...)
+     
+_A_r_g_u_m_e_n_t_s:
+
+ formula: a formula, with a response but no interaction terms.  If this
+          a a data frame, that is taken as the model frame (see
+          ‘model.frame).’
+
+    data: an optional data frame in which to interpret the variables
+          named in the formula.
+
+ weights: optional case weights.
+
+  subset: optional expression saying that only a subset of the rows of
+          the data should be used in the fit.
+
+na.action: the default action deletes all observations for which ‘y’ is
+          missing, but keeps those in which one or more predictors are
+          missing.
+
+  method: one of ‘"anova"’, ‘"poisson"’, ‘"class"’ or ‘"exp"’.  If
+          ‘method’ is missing then the routine tries to make an
+          intelligent guess.  If ‘y’ is a survival object, then ‘method
+          = "exp"’ is assumed, if ‘y’ has 2 columns then ‘method =
+          "poisson"’ is assumed, if ‘y’ is a factor then ‘method =
+          "class"’ is assumed, otherwise ‘method = "anova"’ is assumed.
+          It is wisest to specify the method directly, especially as
+          more criteria may added to the function in future.
+
+          Alternatively, ‘method’ can be a list of functions named
+          ‘init’, ‘split’ and ‘eval’.  Examples are given in the file
+          ‘tests/usersplits.R’ in the sources, and in the vignettes
+          ‘User Written Split Functions’.
+
+   model: if logical: keep a copy of the model frame in the result?  If
+          the input value for ‘model’ is a model frame (likely from an
+          earlier call to the ‘rpart’ function), then this frame is
+          used rather than constructing new data.
+
+       x: keep a copy of the ‘x’ matrix in the result.
+
+       y: keep a copy of the dependent variable in the result.  If
+          missing and ‘model’ is supplied this defaults to ‘FALSE’.
+
+   parms: optional parameters for the splitting function.
+          Anova splitting has no parameters.
+          Poisson splitting has a single parameter, the coefficient of
+          variation of the prior distribution on the rates.  The
+          default value is 1.
+          Exponential splitting has the same parameter as Poisson.
+          For classification splitting, the list can contain any of:
+          the vector of prior probabilities (component ‘prior’), the
+          loss matrix (component ‘loss’) or the splitting index
+          (component ‘split’).  The priors must be positive and sum to
+          1.  The loss matrix must have zeros on the diagonal and
+          positive off-diagonal elements.  The splitting index can be
+          ‘gini’ or ‘information’.  The default priors are proportional
+          to the data counts, the losses default to 1, and the split
+          defaults to ‘gini’.
+
+ control: a list of options that control details of the ‘rpart’
+          algorithm.  See ‘rpart.control’.
+
+    cost: a vector of non-negative costs, one for each variable in the
+          model. Defaults to one for all variables.  These are scalings
+          to be applied when considering splits, so the improvement on
+          splitting on a variable is divided by its cost in deciding
+          which split to choose.
+
+     ...: arguments to ‘rpart.control’ may also be specified in the
+          call to ‘rpart’.  They are checked against the list of valid
+          arguments.
+
+_D_e_t_a_i_l_s:
+
+     This differs from the ‘tree’ function in S mainly in its handling
+     of surrogate variables.  In most details it follows Breiman _et.
+     al_ (1984) quite closely.  R package ‘tree’ provides a
+     re-implementation of ‘tree’.
+
+_V_a_l_u_e:
+
+     An object of class ‘rpart’.  See ‘rpart.object’.
+
+_R_e_f_e_r_e_n_c_e_s:
+
+     Breiman L., Friedman J. H., Olshen R. A., and Stone, C. J. (1984)
+     _Classification and Regression Trees._ Wadsworth.
+
+_S_e_e _A_l_s_o:
+
+     ‘rpart.control’, ‘rpart.object’, ‘summary.rpart’, ‘print.rpart’
+
+_E_x_a_m_p_l_e_s:
+
+     fit <- rpart(Kyphosis ~ Age + Number + Start, data = kyphosis)
+     fit2 <- rpart(Kyphosis ~ Age + Number + Start, data = kyphosis,
+                   parms = list(prior = c(.65,.35), split = "information"))
+     fit3 <- rpart(Kyphosis ~ Age + Number + Start, data = kyphosis,
+                   control = rpart.control(cp = 0.05))
+     par(mfrow = c(1,2), xpd = NA) # otherwise on some devices the text is clipped
+     plot(fit)
+     text(fit, use.n = TRUE)
+     plot(fit2)
+     text(fit2, use.n = TRUE)
+     
+

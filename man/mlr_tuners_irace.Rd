@@ -21,12 +21,32 @@ from package \CRANpkg{irace}.
 Number of resampling instances.}
 }
 
-For the meaning of all other parameters, see \code{\link[irace:defaultScenario]{irace::defaultScenario()}}. The
-parameter \code{instances} and \code{targetRunner} are automatically set by the tuner.
-Note that we have removed all control parameters which refer to the
-termination of the algorithm. Use \link{TerminatorRunTime} or \link{TerminatorEvals}
-instead. Other terminators do not work with \code{TunerIrace}. We substract 5
-seconds from the \link{TerminatorRunTime} budget for stability reasons.
+For the meaning of all other parameters, see \code{\link[irace:defaultScenario]{irace::defaultScenario()}}. Note
+that we have removed all control parameters which refer to the termination of
+the algorithm. Use \link{TerminatorEvals} instead. Other terminators do not work
+with \code{OptimizerIrace}.
+}
+
+\section{Archive}{
+
+The \link{ArchiveTuning} holds the following additional columns:
+\itemize{
+\item \code{"race"} (\code{integer(1)})\cr
+Race iteration.
+\item \code{"step"} (\code{integer(1)})\cr
+Step number of race.
+\item \code{"instance"} (\code{integer(1)})\cr
+Identifies resampling instances across races and steps.
+\item \code{"configuration"} (\code{integer(1)})\cr
+Identifies configurations across races and steps.
+}
+}
+
+\section{Result}{
+
+The optimization result (\code{instance$result}) is the best performing elite of
+the final race. The reported performance is the average performance estimated
+on all used instances.
 }
 
 \section{Dictionary}{

@@ -13,12 +13,26 @@
 #' Number of resampling instances.}
 #' }
 #'
-#' For the meaning of all other parameters, see [irace::defaultScenario()]. The
-#' parameter `instances` and `targetRunner` are automatically set by the tuner.
-#' Note that we have removed all control parameters which refer to the
-#' termination of the algorithm. Use [TerminatorRunTime] or [TerminatorEvals]
-#' instead. Other terminators do not work with `TunerIrace`. We substract 5
-#' seconds from the [TerminatorRunTime] budget for stability reasons.
+#' For the meaning of all other parameters, see [irace::defaultScenario()]. Note
+#' that we have removed all control parameters which refer to the termination of
+#' the algorithm. Use [TerminatorEvals] instead. Other terminators do not work
+#' with `TunerIrace`.
+#'
+#' @section Archive:
+#' The [ArchiveTuning] holds the following additional columns:
+#'  * `"race"` (`integer(1)`)\cr
+#'    Race iteration.
+#'  * `"step"` (`integer(1)`)\cr
+#'    Step number of race.
+#'  * `"instance"` (`integer(1)`)\cr
+#'    Identifies resampling instances across races and steps.
+#'  * `"configuration"` (`integer(1)`)\cr
+#'    Identifies configurations across races and steps.
+#'
+#' @section Result:
+#' The tuning result (`instance$result`) is the best performing elite of
+#' the final race. The reported performance is the average performance estimated
+#' on all used instances.
 #'
 #' @templateVar id irace
 #' @template section_dictionary_tuners
@@ -56,7 +70,11 @@ TunerIrace = R6Class("TunerIrace",
     initialize = function() {
       optimizer = OptimizerIrace$new()
       optimizer$param_set$add(ParamInt$new("n_instances", lower = 1, default = 10))
-      optimizer$param_set$values = list(n_instances = 10, targetRunner = target_runner)
+      optimizer$param_set$values = list(
+        n_instances = 10,
+        targetRunnerParallel = target_runner,
+        debugLevel = 0,
+        logFile = tempfile(fileext = ".Rdata"))
 
       super$initialize(optimizer = optimizer)
     },
@@ -83,41 +101,41 @@ TunerIrace = R6Class("TunerIrace",
 
       # temporary remove n_instance from parameter set values
       private$.optimizer$param_set$values$n_instances = NULL
-      
+
       private$.optimizer$optimize(inst)
 
       # restore n_instances in parameter set
       private$.optimizer$param_set$values$n_instances = n_instances
-      
+
       return(inst$result)
     }
   )
 )
 
-target_runner = function(experiment, scenario) { # nolint
-  t0 = Sys.time()
+target_runner = function(experiment, exec.target.runner, scenario, target.runner) { # nolint
   tuning_instance = scenario$targetRunnerData$inst
 
-  # fix logicals
-  config = as.data.table(lapply(experiment$configuration, function(x) {
-    if (x %in% c("TRUE", "FALSE")) {
-      return(as.logical(x))
-    } else {
-      return(x)
-    }
-  }))
+  xdt = map_dtr(experiment, function(e) {
+    configuration = as.data.table(e$configuration)
+    # add configuration and instance id to archive
+    set(configuration, j = "configuration", value = e$id.configuration)
+    set(configuration, j = "instance", value = e$id.instance)
+    # fix logicals
+    configuration[, map(.SD, function(x) ifelse(x %in% c("TRUE", "FALSE"), as.logical(x), x))]
+  })
 
   # change resampling instance
-  tuning_instance$objective$resampling = experiment$instance
-
-  # add extra info to archive
-  extra = data.table(id_configuration = experiment$id.configuration, id_instance = experiment$id.instance)
+  # we assume irace evaluates different configurations on the same instance / resampling in one batch
+  if (length(unique(xdt$instance)) != 1) stop("Parallel execution of more than 1 instance.")
+  tuning_instance$objective$resampling = experiment[[1]]$instance
 
   # evaluate configuration
-  # objective_function cannot pass extra information
-  cost = as.numeric(tuning_instance$eval_batch(cbind(config, extra))) * tuning_instance$objective_multiplicator
+  res = tuning_instance$eval_batch(xdt)
 
-  return(list(cost = cost, time = as.numeric(difftime(Sys.time(), t0, units = "secs"))))
+  # return cost (minimize) and dummy time to irace
+  map(transpose_list(res), function(cost) {
+    list(cost = unlist(cost) * tuning_instance$objective_multiplicator, time = NA_real_)
+  })
 }
 
 mlr_tuners$add("irace", TunerIrace)
