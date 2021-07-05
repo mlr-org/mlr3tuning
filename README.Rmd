@@ -53,16 +53,13 @@ remotes::install_github("mlr-org/mlr3tuning")
 ```{r}
 library("mlr3tuning")
 
-# task
-task = tsk("pima")
-
 # load learner and set search space
 learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
 
 # hyperparameter tuning on the pima indians diabetes data set
 instance = tune(
   method = "random_search",
-  task = task,
+  task = tsk("pima"),
   learner = learner,
   resampling = rsmp("cv", folds = 3),
   measure = msr("classif.ce"),
@@ -78,7 +75,7 @@ as.data.table(instance$archive)
 
 # fit final model on complete data set
 learner$param_set$values = instance$result_learner_param_vals
-learner$train(task)
+learner$train(tsk("pima"))
 ```
 
 ### Automatic tuning

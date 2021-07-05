@@ -64,24 +64,28 @@ combined with a \link[bbotk]{Terminator}. Simply wrap the function in
 }
 
 \examples{
-instance = TuningInstanceSingleCrit$new(
-  task = tsk("iris"),
-  learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
+# load learner and set search space
+learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
+
+# hyperparameter tuning on the pima indians diabetes data set
+instance = tune(
+  method = "gensa",
+  task = tsk("pima"),
+  learner = learner,
   resampling = rsmp("holdout"),
   measure = msr("classif.ce"),
-  terminator = trm("evals", n_evals = 3)
+  term_evals = 10
 )
-tuner = tnr("gensa")
 
-# optimize hyperparameter
-# modifies the instance by reference
-tuner$optimize(instance)
-
-# returns best configuration and best performance
+# best performing hyperparameter configuration
 instance$result
 
-# allows access of data.table of full path of all evaluations
-instance$archive
+# all evaluated hyperparameter configuration
+as.data.table(instance$archive)
+
+# fit final model on complete data set
+learner$param_set$values = instance$result_learner_param_vals
+learner$train(tsk("pima"))
 }
 \seealso{
 Package \CRANpkg{mlr3hyperband} for hyperband tuning.

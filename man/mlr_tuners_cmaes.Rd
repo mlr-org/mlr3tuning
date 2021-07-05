@@ -52,28 +52,28 @@ combined with a \link[bbotk]{Terminator}. Simply wrap the function in
 }
 
 \examples{
-library(mlr3)
-library(paradox)
-library(data.table)
-search_space = ParamSet$new(list(
-  ParamDbl$new("cp", lower = 0.001, upper = 0.1)
-))
-terminator = trm("evals", n_evals = 10)
-instance = TuningInstanceSingleCrit$new(
-  task = tsk("iris"),
-  learner = lrn("classif.rpart"),
+# load learner and set search space
+learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
+
+# hyperparameter tuning on the pima indians diabetes data set
+instance = tune(
+  method = "cmaes",
+  task = tsk("pima"),
+  learner = learner,
   resampling = rsmp("holdout"),
   measure = msr("classif.ce"),
-  search_space = search_space,
-  terminator = terminator
+  term_evals = 10
 )
-tt = tnr("cmaes")
-# modifies the instance by reference
-tt$optimize(instance)
-# returns best configuration and best performance
+
+# best performing hyperparameter configuration
 instance$result
-# allows access of data.table of full path of all evaluations
-instance$archive
+
+# all evaluated hyperparameter configuration
+as.data.table(instance$archive)
+
+# fit final model on complete data set
+learner$param_set$values = instance$result_learner_param_vals
+learner$train(tsk("pima"))
 }
 \seealso{
 Package \CRANpkg{mlr3hyperband} for hyperband tuning.
