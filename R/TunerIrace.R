@@ -6,21 +6,24 @@
 #' @description
 #' `TunerIrace` class that implements iterated racing. Calls [irace::irace()]
 #' from package \CRANpkg{irace}.
-#'
+#' 
+#' @templateVar id irace
+#' @template section_dictionary_tuners
+#' @template section_logging
+#' 
 #' @section Parameters:
 #' \describe{
 #' \item{`n_instances`}{`integer(1)`\cr
 #' Number of resampling instances.}
 #' }
-#'
+#' 
 #' For the meaning of all other parameters, see [irace::defaultScenario()]. Note
 #' that we have removed all control parameters which refer to the termination of
 #' the algorithm. Use [TerminatorRunTime] or [TerminatorEvals] instead. Other
 #' terminators do not work with `TunerIrace`. We substract 5 seconds from the
 #' [TerminatorRunTime] budget for stability reasons.
-#'
-#' @templateVar id irace
-#' @template section_dictionary_tuners
+#' 
+#' @template section_progress_bars
 #'
 #' @source
 #' `r format_bib("lopez_2016")`
@@ -28,24 +31,31 @@
 #' @family Tuner
 #' @export
 #' @examples
-#' instance = TuningInstanceSingleCrit$new(
-#'   task = tsk("iris"),
-#'   learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
+#' # retrieve task
+#' task = tsk("pima")
+#' 
+#' # load learner and set search space
+#' learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
+#' 
+#' # hyperparameter tuning on the pima indians diabetes data set
+#' instance = tune(
+#'   method = "irace",
+#'   task = task,
+#'   learner = learner,
 #'   resampling = rsmp("holdout"),
 #'   measure = msr("classif.ce"),
-#'   terminator = trm("evals", n_evals = 42)
+#'   term_evals = 42
 #' )
-#' tuner = tnr("irace")
 #'
-#' # optimize hyperparameter
-#' # modifies the instance by reference
-#' tuner$optimize(instance)
-#'
-#' # returns best configuration and best performance
+#' # best performing hyperparameter configuration
 #' instance$result
-#'
-#' # allows access of data.table of full path of all evaluations
-#' instance$archive
+#' 
+#' # all evaluated hyperparameter configuration
+#' as.data.table(instance$archive)
+#' 
+#' # fit final model on complete data set
+#' learner$param_set$values = instance$result_learner_param_vals
+#' learner$train(task)
 TunerIrace = R6Class("TunerIrace",
   inherit = Tuner,
   public = list(

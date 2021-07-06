@@ -14,6 +14,23 @@ Lopez-Ibanez M, Dubois-Lacoste J, Caceres LP, Birattari M, Stuetzle T (2016).
 \code{TunerIrace} class that implements iterated racing. Calls \code{\link[irace:irace]{irace::irace()}}
 from package \CRANpkg{irace}.
 }
+\section{Dictionary}{
+
+This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary}
+\link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:\preformatted{TunerIrace$new()
+mlr_tuners$get("irace")
+tnr("irace")
+}
+}
+
+\section{Logging}{
+
+
+All \link{Tuner}s use a logger (as implemented in \CRANpkg{lgr}) from package
+\CRANpkg{bbotk}.
+Use \code{lgr::get_logger("bbotk")} to access and control the logger.
+}
+
 \section{Parameters}{
 
 \describe{
@@ -28,34 +45,40 @@ terminators do not work with \code{TunerIrace}. We substract 5 seconds from the
 \link{TerminatorRunTime} budget for stability reasons.
 }
 
-\section{Dictionary}{
+\section{Progress Bars}{
 
-This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary}
-\link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:\preformatted{TunerIrace$new()
-mlr_tuners$get("irace")
-tnr("irace")
-}
+\verb{$optimize()} supports progress bars via the package \CRANpkg{progressr}
+combined with a \link{Terminator}. Simply wrap the function in
+\code{progressr::with_progress()} to enable them. We recommend to use package
+\CRANpkg{progress} as backend; enable with \code{progressr::handlers("progress")}.
 }
 
 \examples{
-instance = TuningInstanceSingleCrit$new(
-  task = tsk("iris"),
-  learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
+# retrieve task
+task = tsk("pima")
+
+# load learner and set search space
+learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
+
+# hyperparameter tuning on the pima indians diabetes data set
+instance = tune(
+  method = "irace",
+  task = task,
+  learner = learner,
   resampling = rsmp("holdout"),
   measure = msr("classif.ce"),
-  terminator = trm("evals", n_evals = 42)
+  term_evals = 42
 )
-tuner = tnr("irace")
 
-# optimize hyperparameter
-# modifies the instance by reference
-tuner$optimize(instance)
-
-# returns best configuration and best performance
+# best performing hyperparameter configuration
 instance$result
 
-# allows access of data.table of full path of all evaluations
-instance$archive
+# all evaluated hyperparameter configuration
+as.data.table(instance$archive)
+
+# fit final model on complete data set
+learner$param_set$values = instance$result_learner_param_vals
+learner$train(task)
 }
 \seealso{
 Other Tuner: 
