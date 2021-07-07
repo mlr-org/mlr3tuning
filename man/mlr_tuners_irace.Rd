@@ -21,6 +21,13 @@ This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{diction
 mlr_tuners$get("irace")
 tnr("irace")
 }
+
+
+This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary}
+\link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:\preformatted{TunerIrace$new()
+mlr_tuners$get("irace")
+tnr("irace")
+}
 }
 
 \section{Logging}{
@@ -44,6 +51,14 @@ the algorithm. Use \link{TerminatorEvals} instead. Other terminators do not work
 with \code{TunerIrace}.
 }
 
+\section{Progress Bars}{
+
+\verb{$optimize()} supports progress bars via the package \CRANpkg{progressr}
+combined with a \link{Terminator}. Simply wrap the function in
+\code{progressr::with_progress()} to enable them. We recommend to use package
+\CRANpkg{progress} as backend; enable with \code{progressr::handlers("progress")}.
+}
+
 \section{Archive}{
 
 The \link{ArchiveTuning} holds the following additional columns:
@@ -64,14 +79,6 @@ Identifies configurations across races and steps.
 The tuning result (\code{instance$result}) is the best performing elite of
 the final race. The reported performance is the average performance estimated
 on all used instances.
-}
-
-\section{Progress Bars}{
-
-\verb{$optimize()} supports progress bars via the package \CRANpkg{progressr}
-combined with a \link{Terminator}. Simply wrap the function in
-\code{progressr::with_progress()} to enable them. We recommend to use package
-\CRANpkg{progress} as backend; enable with \code{progressr::handlers("progress")}.
 }
 
 \examples{
