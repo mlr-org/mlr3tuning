@@ -244,6 +244,14 @@ AutoTuner = R6Class("AutoTuner",
       }, error = function(cond){})
 
       private$.predict_type = rhs
+    },
+
+    #' @field hash (`character(1)`)\cr
+    #' Hash (unique identifier) for this object.
+    hash = function(rhs) {
+      assert_ro_binding(rhs)
+      hash(class(self), self$id, self$param_set$values, private$.predict_type, self$fallback$hash, self$instance_args,
+        private$.store_tuning_instance)
     }
   ),
 
