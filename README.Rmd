@@ -48,6 +48,11 @@ remotes::install_github("mlr-org/mlr3tuning")
 
 ## Example
 
+```{r, include = FALSE}
+# mute load messages
+library("mlr3tuning")
+```
+
 ### Basic hyperparameter tuning
 
 ```{r}
