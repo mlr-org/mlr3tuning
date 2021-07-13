@@ -22,7 +22,7 @@ Package website: [release](https://mlr3tuning.mlr-org.com/) | [dev](https://mlr3
 <!-- badges: end -->
 
 This package provides hyperparameter tuning for [mlr3](https://mlr3.mlr-org.com).
-It offers various tuning methods e.g. grid search, random search and generalized simulated annealing and different termination criteria can be set and combined.
+It offers various tuning methods e.g. grid search, random search and generalized simulated annealing and iterated racing and different termination criteria can be set and combined.
 `AutoTuner` provides a convenient way to perform nested resampling in combination with `mlr3`.
 The package is build on [bbotk](https://github.com/mlr-org/bbotk) which provides a common framework for optimization.
 

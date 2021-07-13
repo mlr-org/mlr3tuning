@@ -27,14 +27,13 @@ Authors@R:
              role = "aut",
              email = "daniel.schalk@stat.uni-muenchen.de",
              comment = c(ORCID = "0000-0003-0950-1947")))
-Description: Implements methods for hyperparameter tuning with
-    'mlr3', e.g. Grid Search, Random Search, or Simulated Annealing.
-    Various termination criteria can be set and combined.  The class
-    'AutoTuner' provides a convenient way to perform nested resampling in
-    combination with 'mlr3'.
+Description: Implements methods for hyperparameter tuning with 'mlr3',
+    e.g. grid search, random search, generalized simulated annealing and
+    iterated racing.  Various termination criteria can be set and
+    combined.  The class 'AutoTuner' provides a convenient way to perform
+    nested resampling in combination with 'mlr3'.
 License: LGPL-3
-URL: https://mlr3tuning.mlr-org.com,
-    https://github.com/mlr-org/mlr3tuning
+URL: https://mlr3tuning.mlr-org.com, https://github.com/mlr-org/mlr3tuning
 BugReports: https://github.com/mlr-org/mlr3tuning/issues
 Depends:
     mlr3 (>= 0.11.0-9000),
