@@ -9,12 +9,3 @@ terminated_error = function(instance) {
   set_class(list(message = msg, call = NULL), c(
     "terminated_error", "error", "condition"))
 }
-
-hash = function(...) {
-  dots = list(...)
-  dots = map_if(dots, is.function, function(fun) {
-    list(formals(fun), as.character(body(fun)))
-  })
-  dots = map_if(dots, is.data.table, as.list)
-  digest::digest(dots, algo = "xxhash64")
-}
