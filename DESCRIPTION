@@ -56,7 +56,8 @@ Suggests:
     rpart,
     testthat (>= 3.0.0)
 Remotes:
-    mlr-org/mlr3
+    mlr-org/mlr3,
+    mlr-org/bbotk
 Config/testthat/edition: 3
 Config/testthat/parallel: true
 Encoding: UTF-8
