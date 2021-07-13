@@ -89,7 +89,7 @@ learner$train(task)
 ### Automatic tuning
 
 ```{r}
-# task
+# retrieve task
 task = tsk("pima")
 
 # construct auto tuner
@@ -122,7 +122,7 @@ at$predict(task, row_ids = test_set)
 ### Nested resampling
 
 ```{r}
-# task
+# retrieve task
 task = tsk("pima")
 
 # load learner and set search space
