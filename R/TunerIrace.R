@@ -85,7 +85,7 @@ TunerIrace = R6Class("TunerIrace",
       optimizer$param_set$add(ParamInt$new("n_instances", lower = 1, default = 10))
       optimizer$param_set$values = list(
         n_instances = 10,
-        targetRunnerParallel = target_runner,
+        targetRunnerParallel = target_runner_tuning,
         debugLevel = 0,
         logFile = tempfile(fileext = ".Rdata"))
 
@@ -125,7 +125,7 @@ TunerIrace = R6Class("TunerIrace",
   )
 )
 
-target_runner = function(experiment, exec.target.runner, scenario, target.runner) { # nolint
+target_runner_tuning = function(experiment, exec.target.runner, scenario, target.runner) {# nolint
   tuning_instance = scenario$targetRunnerData$inst
 
   xdt = map_dtr(experiment, function(e) {
@@ -137,10 +137,8 @@ target_runner = function(experiment, exec.target.runner, scenario, target.runner
     configuration[, map(.SD, function(x) ifelse(x %in% c("TRUE", "FALSE"), as.logical(x), x))]
   })
 
-  # change resampling instance
-  # we assume irace evaluates different configurations on the same instance / resampling in one batch
-  if (length(unique(xdt$instance)) != 1) stop("Parallel execution of more than 1 instance.")
-  tuning_instance$objective$resampling = experiment[[1]]$instance
+  # provide experiment instances to objective
+  tuning_instance$objective$constants$values$resampling = map(experiment, function(e) e$instance)
 
   # evaluate configuration
   res = tuning_instance$eval_batch(xdt)
