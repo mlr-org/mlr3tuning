@@ -63,7 +63,7 @@ test_that("ObjectiveTuning - Store models", {
 })
 
 
-test_that("runtime_learners is added", {
+test_that("runtime of learners is added", {
   # cv
   task = tsk("iris")
   learner = lrn("classif.rpart")
@@ -103,4 +103,31 @@ test_that("runtime_learners is added", {
   t2 = sum(map_dbl(obj$archive$benchmark_result$resample_result(2)$learners, function(l) sum(l$timings)))
   expect_equal(z[1, runtime_learners], t1)
   expect_equal(z[2, runtime_learners], t2)
+})
+
+test_that("tuner can modify resampling", {
+  instance = TuningInstanceSingleCrit$new(
+    task = tsk("iris"),
+    learner = lrn("classif.rpart", cp = to_tune(0.001, 0.1)),
+    resampling = rsmp("cv", folds =3),
+    measure = msr("classif.ce"),
+    terminator = trm("none")
+  )
+
+  instance$eval_batch(data.table(cp = 0.001))
+  rr = instance$archive$resample_result(1) 
+  expect_equal(rr$resampling$id, "cv")
+
+  # add new resampling
+  new_resampling = rsmp("holdout")
+  new_resampling$instantiate(tsk("iris"))
+  instance$objective$constants$values$resampling = list(new_resampling)
+  instance$eval_batch(data.table(cp = 0.001))
+  rr = instance$archive$resample_result(2) 
+  expect_equal(rr$resampling$id, "holdout")
+
+  # uninstantiated resampling
+  new_resampling = rsmp("cv", folds = 2)
+  instance$objective$constants$values$resampling = list(new_resampling)
+  expect_error(instance$eval_batch(data.table(cp = 0.001)), regex = "must be instantiated")
 })

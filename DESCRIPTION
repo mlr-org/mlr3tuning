@@ -56,8 +56,8 @@ Suggests:
     rpart,
     testthat (>= 3.0.0)
 Remotes:
-    mlr-org/mlr3,
-    mlr-org/bbotk
+    mlr-org/bbotk,
+    mlr-org/mlr3
 Config/testthat/edition: 3
 Config/testthat/parallel: true
 Encoding: UTF-8
@@ -86,7 +86,6 @@ Collate:
     'extract_inner_tuning_archives.R'
     'extract_inner_tuning_results.R'
     'helper.R'
-    'irace_helpers.R'
     'reexport.R'
     'sugar.R'
     'tune.R'

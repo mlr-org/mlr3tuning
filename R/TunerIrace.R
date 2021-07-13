@@ -19,12 +19,30 @@
 #' 
 #' For the meaning of all other parameters, see [irace::defaultScenario()]. Note
 #' that we have removed all control parameters which refer to the termination of
-#' the algorithm. Use [TerminatorRunTime] or [TerminatorEvals] instead. Other
-#' terminators do not work with `TunerIrace`. We substract 5 seconds from the
-#' [TerminatorRunTime] budget for stability reasons.
+#' the algorithm. Use [TerminatorEvals] instead. Other terminators do not work
+#' with `TunerIrace`.
 #' 
 #' @template section_progress_bars
 #'
+#' @section Archive:
+#' The [ArchiveTuning] holds the following additional columns:
+#'  * `"race"` (`integer(1)`)\cr
+#'    Race iteration.
+#'  * `"step"` (`integer(1)`)\cr
+#'    Step number of race.
+#'  * `"instance"` (`integer(1)`)\cr
+#'    Identifies resampling instances across races and steps.
+#'  * `"configuration"` (`integer(1)`)\cr
+#'    Identifies configurations across races and steps.
+#'
+#' @section Result:
+#' The tuning result (`instance$result`) is the best performing elite of
+#' the final race. The reported performance is the average performance estimated
+#' on all used instances.
+#' 
+#' @templateVar id irace
+#' @template section_dictionary_tuners
+#' 
 #' @source
 #' `r format_bib("lopez_2016")`
 #'
@@ -57,101 +75,78 @@
 #' learner$param_set$values = instance$result_learner_param_vals
 #' learner$train(task)
 TunerIrace = R6Class("TunerIrace",
-  inherit = Tuner,
+  inherit = TunerFromOptimizer,
   public = list(
+
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function() {
-      ps = ParamSet$new(list(
-        ParamInt$new("n_instances", lower = 1, default = 10),
-        ParamInt$new("debugLevel", default = 0, lower = 0),
-        ParamInt$new("seed"),
-        ParamDbl$new("postselection", default = 0, lower = 0, upper = 1),
-        ParamInt$new("elitist", default = 1, lower = 0, upper = 1),
-        ParamInt$new("elitistLimit", default = 2, lower = 0),
-        ParamInt$new("nbIterations", default = 0, lower = 0),
-        ParamInt$new("nbExperimentsPerIteration", default = 0, lower = 0),
-        ParamInt$new("minNbSurvival", default = 0, lower = 0),
-        ParamInt$new("nbConfigurations", default = 0, lower = 0),
-        ParamInt$new("mu", default = 5, lower = 1),
-        ParamInt$new("softRestart", default = 1, lower = 0, upper = 1),
-        ParamDbl$new("softRestartThreshold"),
-        ParamInt$new("digits", default = 4, lower = 1, upper = 15),
-        ParamFct$new("testType", default = "F-test",
-          levels = c("F-test", "t-test", "t-test-bonferroni", "t-test-holm")),
-        ParamInt$new("firstTest", default = 5, lower = 0),
-        ParamInt$new("eachTest", default = 1, lower = 1),
-        ParamDbl$new("confidence", default = 0.95, lower = 0, upper = 1),
-        ParamInt$new("capping", default = 0, lower = 0, upper = 1),
-        ParamFct$new("cappingType", default = "median", levels = c("median", "mean", "best", "worst")),
-        ParamFct$new("boundType", default = "candidate", levels = c("candidate", "instance")),
-        ParamDbl$new("boundMax", default = 0),
-        ParamInt$new("boundDigits", default = 0),
-        ParamDbl$new("boundPar", default = 1),
-        ParamDbl$new("boundAsTimeout", default = 1)
-      ))
-      ps$values = list(n_instances = 10)
-
-      super$initialize(
-        param_set = ps,
-        param_classes = c("ParamDbl", "ParamInt", "ParamFct", "ParamLgl"),
-        properties = c("dependencies", "single-crit"),
-        packages = "irace"
-      )
-    }
-  ),
-
-  private = list(
-    .optimize = function(inst) {
-      pv = self$param_set$values
-      terminator = inst$terminator
-      objective = inst$objective
-
-      # Check terminators 
-      if (!(inherits(terminator, "TerminatorEvals") || inherits(terminator, "TerminatorRunTime"))) {
-        stopf("%s is not supported. Use <TerminatorEvals> or <TerminatorRunTime> instead.", format(inst$terminator))
-      }
-      
-      # Set resampling instances
-      ri = replicate(pv$n_instances, {
-        r = objective$resampling$clone()
-        r$instantiate(objective$task)
-      })
-      pv$n_instances = NULL
-
-      # Make scenario
-      scenario = c(list(
-        targetRunner = target_runner,
-        logFile = tempfile(),
-        instances = ri,
+      optimizer = OptimizerIrace$new()
+      optimizer$param_set$add(ParamInt$new("n_instances", lower = 1, default = 10))
+      optimizer$param_set$values = list(
+        n_instances = 10,
+        targetRunnerParallel = target_runner_tuning,
         debugLevel = 0,
-        maxExperiments = if (inherits(terminator, "TerminatorEvals")) terminator$param_set$values$n_evals else 0,
-        maxTime = if (inherits(terminator, "TerminatorRunTime")) terminator$param_set$values$secs - 5 else 0,
-        targetRunnerData = list(inst = inst)
-      ), pv)
+        logFile = tempfile(fileext = ".Rdata"))
 
-      res = irace::irace(scenario = scenario, parameters = paradox_to_irace(inst$search_space))
-      
-      # Temporarily store result
-      private$.result_id = res$.ID.[1]
+      super$initialize(optimizer = optimizer)
     },
 
-    # The final configurations returned by irace are the elites of the final race.
-    # We store the best performing one.
-    # The reported performance value is the average of all resampling iterations.
-    .assign_result = function(inst) {
-      if(length(private$.result_id) == 0) {
-        stop("irace::irace did not return a result. The evaluated configurations are still accessible through the archive.")
-      }
-      res = inst$archive$data[get("id_configuration") == private$.result_id, ]
-      cols = c(inst$archive$cols_x, "id_configuration")
-      xdt = res[1, cols, with = FALSE]
-      y = set_names(mean(unlist(res[, inst$archive$cols_y, with = FALSE])), inst$archive$cols_y)
-      inst$assign_result(xdt, y)
-    },
+    #' @description
+    #' Performs the tuning on a [TuningInstanceSingleCrit] until termination.
+    #' The single evaluations and the final results will be written into the
+    #' [ArchiveTuning] that resides in the [TuningInstanceSingleCrit]. The final
+    #' result is returned.
+    #'
+    #' @param inst ([TuningInstanceSingleCrit]).
+    #'
+    #' @return [data.table::data.table].
+    optimize = function(inst) {
+      assert_class(inst, "TuningInstanceSingleCrit")
+      n_instances = private$.optimizer$param_set$values$n_instances
 
-    .result_id = NULL
+      # Set resampling instances
+      ri = replicate(n_instances, {
+        r = inst$objective$resampling$clone()
+        r$instantiate(inst$objective$task)
+      })
+      private$.optimizer$param_set$values$instances = ri
+
+      # temporary remove n_instance from parameter set values
+      private$.optimizer$param_set$values$n_instances = NULL
+
+      private$.optimizer$optimize(inst)
+
+      # restore n_instances in parameter set
+      private$.optimizer$param_set$values$n_instances = n_instances
+
+      return(inst$result)
+    }
   )
 )
+
+target_runner_tuning = function(experiment, exec.target.runner, scenario, target.runner) {# nolint
+  tuning_instance = scenario$targetRunnerData$inst
+
+  xdt = map_dtr(experiment, function(e) {
+    configuration = as.data.table(e$configuration)
+    # add configuration and instance id to archive
+    set(configuration, j = "configuration", value = e$id.configuration)
+    set(configuration, j = "instance", value = e$id.instance)
+    # fix logicals
+    configuration[, map(.SD, function(x) ifelse(x %in% c("TRUE", "FALSE"), as.logical(x), x))]
+  })
+
+  # provide experiment instances to objective
+  tuning_instance$objective$constants$values$resampling = map(experiment, function(e) e$instance)
+
+  # evaluate configuration
+  res = tuning_instance$eval_batch(xdt)
+
+  # return cost (minimize) and dummy time to irace
+  map(transpose_list(res), function(cost) {
+    list(cost = unlist(cost) * tuning_instance$objective_multiplicator, time = NA_real_)
+  })
+}
 
 mlr_tuners$add("irace", TunerIrace)

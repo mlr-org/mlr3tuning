@@ -27,10 +27,13 @@ Task to operate on.}
 \item{learner}{(\link[mlr3:Learner]{mlr3::Learner}).}
 
 \item{resampling}{(\link[mlr3:Resampling]{mlr3::Resampling})\cr
-Uninstantiated resamplings are instantiated during construction
-so that all configurations are evaluated on the same data splits. If a new
-resampling is passed, it is instantiated with new data splits. Already
-instantiated resamplings are kept unchanged.}
+Resampling that is used to evaluated the performance of the hyperparameter
+configurations. Uninstantiated resamplings are instantiated during
+construction so that all configurations are evaluated on the same data
+splits. Already instantiated resamplings are kept unchanged. Specialized
+\link{Tuner} change the resampling e.g. to evaluate a hyperparameter configuration
+on different data splits. This field, however, always returns the resampling
+passed in construction.}
 
 \item{measures}{(list of \link[mlr3:Measure]{mlr3::Measure})\cr
 Measures to optimize.
