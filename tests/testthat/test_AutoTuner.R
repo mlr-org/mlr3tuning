@@ -304,3 +304,27 @@ test_that("AutoTuner get_base_learner method works", {
   # expect_learner(at$base_learner())
   # expect_equal(at$base_learner()$id, "classif.rpart")
 })
+
+test_that("AutoTuner hash works #647 in mlr3", {
+  at_1 = AutoTuner$new(
+    learner = lrn("classif.rpart", minsplit = to_tune(1, 12)), 
+    resampling = rsmp("holdout"), 
+    measure = msr("classif.ce"), 
+    terminator = trm("evals", n_evals = 4), 
+    tuner = tnr("grid_search", resolution = 3))
+
+  at_2 = AutoTuner$new(
+    learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)), 
+    resampling = rsmp("holdout"), 
+    measure = msr("classif.ce"), 
+    terminator = trm("evals", n_evals = 4), 
+    tuner = tnr("grid_search", resolution = 3))
+
+  resampling_outer = rsmp("holdout")
+  grid = benchmark_grid(tsk("iris"), list(at_1, at_2), resampling_outer)
+  bmr = benchmark(grid, store_models = TRUE)
+
+  expect_data_table(bmr$learners, nrows = 2)
+  expect_named(bmr$resample_result(1)$learners[[1]]$tuning_result, c("minsplit", "learner_param_vals", "x_domain", "classif.ce"))
+  expect_named(bmr$resample_result(2)$learners[[1]]$tuning_result, c("cp", "learner_param_vals", "x_domain", "classif.ce"))
+})

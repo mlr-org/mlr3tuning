@@ -111,6 +111,9 @@ Short-cut to \code{result} from \link{TuningInstanceSingleCrit}.}
 \item{\code{predict_type}}{(\code{character(1)})\cr
 Stores the currently active predict type, e.g. \code{"response"}.
 Must be an element of \verb{$predict_types}.}
+
+\item{\code{hash}}{(\code{character(1)})\cr
+Hash (unique identifier) for this object.}
 }
 \if{html}{\out{</div>}}
 }
