@@ -129,6 +129,5 @@ test_that("tuner can modify resampling", {
   # uninstantiated resampling
   new_resampling = rsmp("cv", folds = 2)
   instance$objective$constants$values$resampling = list(new_resampling)
-  expect_error(instance$eval_batch(data.table(cp = 0.001)), regex = "Error: Resampling 'cv' must be instantiated", 
-    fixed = TRUE)
+  expect_error(instance$eval_batch(data.table(cp = 0.001)), regex = "must be instantiated")
 })

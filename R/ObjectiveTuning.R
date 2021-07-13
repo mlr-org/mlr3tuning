@@ -60,7 +60,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
 
       # set resamplings in constants
       resampling = assert_resampling(as_resampling(resampling, clone = TRUE))
-      resampling$instantiate(task)
+      if (!resampling$is_instantiated) resampling$instantiate(task)
       self$resampling = resampling
       self$constants$values$resampling = list(resampling)
     }
