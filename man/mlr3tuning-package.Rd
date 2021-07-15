@@ -6,11 +6,11 @@
 \alias{mlr3tuning-package}
 \title{mlr3tuning: Tuning for 'mlr3'}
 \description{
-Implements methods for hyperparameter tuning with
-    'mlr3', e.g. Grid Search, Random Search, or Simulated Annealing.
-    Various termination criteria can be set and combined.  The class
-    'AutoTuner' provides a convenient way to perform nested resampling in
-    combination with 'mlr3'.
+Implements methods for hyperparameter tuning with 'mlr3',
+    e.g. grid search, random search, generalized simulated annealing and
+    iterated racing.  Various termination criteria can be set and
+    combined.  The class 'AutoTuner' provides a convenient way to perform
+    nested resampling in combination with 'mlr3'.
 }
 \seealso{
 Useful links:

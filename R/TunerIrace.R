@@ -9,7 +9,6 @@
 #' 
 #' @templateVar id irace
 #' @template section_dictionary_tuners
-#' @template section_logging
 #' 
 #' @section Parameters:
 #' \describe{
@@ -21,8 +20,6 @@
 #' that we have removed all control parameters which refer to the termination of
 #' the algorithm. Use [TerminatorEvals] instead. Other terminators do not work
 #' with `TunerIrace`.
-#' 
-#' @template section_progress_bars
 #'
 #' @section Archive:
 #' The [ArchiveTuning] holds the following additional columns:
@@ -40,8 +37,8 @@
 #' the final race. The reported performance is the average performance estimated
 #' on all used instances.
 #' 
-#' @templateVar id irace
-#' @template section_dictionary_tuners
+#' @template section_progress_bars
+#' @template section_logging
 #' 
 #' @source
 #' `r format_bib("lopez_2016")`

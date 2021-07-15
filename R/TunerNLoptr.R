@@ -17,10 +17,11 @@
 #'
 #' @templateVar id nloptr
 #' @template section_dictionary_tuners
-#' @template section_logging
 #'
 #' @inheritSection bbotk::OptimizerNLoptr Parameters
 #' @inheritSection bbotk::OptimizerNLoptr Progress Bars
+#'
+#' @template section_logging
 #'
 #' @family Tuner
 #' @seealso Package \CRANpkg{mlr3hyperband} for hyperband tuning.

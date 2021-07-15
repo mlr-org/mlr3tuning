@@ -8,7 +8,6 @@
 #'
 #' @templateVar id cmaes
 #' @template section_dictionary_tuners
-#' @template section_logging
 #'
 #' @section Parameters:
 #' \describe{
@@ -23,6 +22,10 @@
 #' the algorithm and where our terminators allow to obtain the same behavior.
 #' 
 #' @template section_progress_bars
+#' @template section_logging
+#' 
+#' @source 
+#' `r format_bib("hansen_2016")`
 #'
 #' @family Tuner
 #' @seealso Package \CRANpkg{mlr3hyperband} for hyperband tuning.

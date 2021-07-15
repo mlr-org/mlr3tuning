@@ -10,11 +10,12 @@
 #'
 #' @templateVar id design_points
 #' @template section_dictionary_tuners
-#' @template section_parallelization
-#' @template section_logging
 #'
 #' @inheritSection bbotk::OptimizerDesignPoints Parameters
 #' @inheritSection bbotk::OptimizerDesignPoints Progress Bars
+#' 
+#' @template section_parallelization
+#' @template section_logging
 #'
 #' @family Tuner
 #' @seealso Package \CRANpkg{mlr3hyperband} for hyperband tuning.

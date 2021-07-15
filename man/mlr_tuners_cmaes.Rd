@@ -4,6 +4,11 @@
 \alias{mlr_tuners_cmaes}
 \alias{TunerCmaes}
 \title{Hyperparameter Tuning with Covariance Matrix Adaptation Evolution Strategy}
+\source{
+Hansen N (2016).
+\dQuote{The CMA Evolution Strategy: A Tutorial.}
+1604.00772.
+}
 \description{
 Subclass that implements CMA-ES calling \code{\link[adagio:cmaes]{adagio::pureCMAES()}}
 from package \CRANpkg{adagio}.
@@ -15,14 +20,6 @@ This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{diction
 mlr_tuners$get("cmaes")
 tnr("cmaes")
 }
-}
-
-\section{Logging}{
-
-
-All \link{Tuner}s use a logger (as implemented in \CRANpkg{lgr}) from package
-\CRANpkg{bbotk}.
-Use \code{lgr::get_logger("bbotk")} to access and control the logger.
 }
 
 \section{Parameters}{
@@ -45,6 +42,14 @@ the algorithm and where our terminators allow to obtain the same behavior.
 combined with a \link{Terminator}. Simply wrap the function in
 \code{progressr::with_progress()} to enable them. We recommend to use package
 \CRANpkg{progress} as backend; enable with \code{progressr::handlers("progress")}.
+}
+
+\section{Logging}{
+
+
+All \link{Tuner}s use a logger (as implemented in \CRANpkg{lgr}) from package
+\CRANpkg{bbotk}.
+Use \code{lgr::get_logger("bbotk")} to access and control the logger.
 }
 
 \examples{

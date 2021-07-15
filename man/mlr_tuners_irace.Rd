@@ -21,21 +21,6 @@ This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{diction
 mlr_tuners$get("irace")
 tnr("irace")
 }
-
-
-This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary}
-\link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:\preformatted{TunerIrace$new()
-mlr_tuners$get("irace")
-tnr("irace")
-}
-}
-
-\section{Logging}{
-
-
-All \link{Tuner}s use a logger (as implemented in \CRANpkg{lgr}) from package
-\CRANpkg{bbotk}.
-Use \code{lgr::get_logger("bbotk")} to access and control the logger.
 }
 
 \section{Parameters}{
@@ -49,14 +34,6 @@ For the meaning of all other parameters, see \code{\link[irace:defaultScenario]{
 that we have removed all control parameters which refer to the termination of
 the algorithm. Use \link{TerminatorEvals} instead. Other terminators do not work
 with \code{TunerIrace}.
-}
-
-\section{Progress Bars}{
-
-\verb{$optimize()} supports progress bars via the package \CRANpkg{progressr}
-combined with a \link{Terminator}. Simply wrap the function in
-\code{progressr::with_progress()} to enable them. We recommend to use package
-\CRANpkg{progress} as backend; enable with \code{progressr::handlers("progress")}.
 }
 
 \section{Archive}{
@@ -79,6 +56,22 @@ Identifies configurations across races and steps.
 The tuning result (\code{instance$result}) is the best performing elite of
 the final race. The reported performance is the average performance estimated
 on all used instances.
+}
+
+\section{Progress Bars}{
+
+\verb{$optimize()} supports progress bars via the package \CRANpkg{progressr}
+combined with a \link{Terminator}. Simply wrap the function in
+\code{progressr::with_progress()} to enable them. We recommend to use package
+\CRANpkg{progress} as backend; enable with \code{progressr::handlers("progress")}.
+}
+
+\section{Logging}{
+
+
+All \link{Tuner}s use a logger (as implemented in \CRANpkg{lgr}) from package
+\CRANpkg{bbotk}.
+Use \code{lgr::get_logger("bbotk")} to access and control the logger.
 }
 
 \examples{

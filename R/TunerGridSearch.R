@@ -12,12 +12,12 @@
 #'
 #' @templateVar id grid_search
 #' @template section_dictionary_tuners
-#' @template section_parallelization
-#' @template section_logging
-#'
-#'
+#' 
 #' @inheritSection bbotk::OptimizerGridSearch Parameters
 #' @inheritSection bbotk::OptimizerGridSearch Progress Bars
+#' 
+#' @template section_parallelization
+#' @template section_logging
 #'
 #' @family Tuner
 #' @seealso Package \CRANpkg{mlr3hyperband} for hyperband tuning.
