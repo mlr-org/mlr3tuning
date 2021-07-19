@@ -118,7 +118,6 @@ test_that("TuneToken and result_learner_param_vals works", {
 })
 
 test_that("TuningInstanceMultiCrit and empty search space works", {
-
   # xval constant
   instance = tune(
     method = "random_search",
