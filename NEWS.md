@@ -1,5 +1,6 @@
 # mlr3tuning 0.8.0.9000
 
+- Allows empty search space.
 - Adds `TunerIrace` from `irace` package.
 - `extract_inner_tuning_archives()` helper function to extract inner tuning
   archives.
