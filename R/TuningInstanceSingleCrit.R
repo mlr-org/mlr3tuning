@@ -125,13 +125,17 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     assign_result = function(xdt, y, learner_param_vals = NULL) {
       # set the column with the learner param_vals that were not optimized over but set implicitly
       assert_list(learner_param_vals, null.ok = TRUE, names = "named")
+
       if (is.null(learner_param_vals)) {
         learner_param_vals = self$objective$learner$param_set$values
       }
-      opt_x = transform_xdt_to_xss(xdt, self$search_space)[[1]]
+      opt_x = unlist(transform_xdt_to_xss(xdt, self$search_space), recursive = FALSE)
       learner_param_vals = insert_named(learner_param_vals, opt_x)
+ 
       # ugly but necessary to maintain list column correctly
-      if (length(learner_param_vals) == 1) {
+      if (length(learner_param_vals) == 0) {
+        learner_param_vals = list(list())
+      } else if (length(learner_param_vals) == 1) {
         learner_param_vals = list(learner_param_vals)
       }
       set(xdt, j = "learner_param_vals", value = list(learner_param_vals))
