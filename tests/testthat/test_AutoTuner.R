@@ -328,3 +328,35 @@ test_that("AutoTuner hash works #647 in mlr3", {
   expect_named(bmr$resample_result(1)$learners[[1]]$tuning_result, c("minsplit", "learner_param_vals", "x_domain", "classif.ce"))
   expect_named(bmr$resample_result(2)$learners[[1]]$tuning_result, c("cp", "learner_param_vals", "x_domain", "classif.ce"))
 })
+
+test_that("AutoTuner works with empty search space", {
+  at = auto_tuner(
+    method = "random_search",
+    learner = lrn("classif.rpart"),
+    resampling = rsmp("cv", folds = 3),
+    measure = msr("classif.ce"),
+    term_evals = 10,
+    batch_size = 5
+  )
+
+  at$train(tsk("pima"))
+  expect_equal(at$tuning_instance$result$learner_param_vals, list(list(xval = 0)))
+  expect_equal(at$tuning_instance$result$x_domain, list(list()))
+
+  # no constant
+  learner = lrn("classif.rpart")
+  learner$param_set$values$xval = NULL
+  
+  at = auto_tuner(
+    method = "random_search",
+    learner = learner,
+    resampling = rsmp("cv", folds = 3),
+    measure = msr("classif.ce"),
+    term_evals = 10,
+    batch_size = 5
+  )
+
+  at$train(tsk("pima"))
+  expect_equal(at$tuning_instance$result$learner_param_vals, list(list()))
+  expect_equal(at$tuning_instance$result$x_domain, list(list()))
+})
