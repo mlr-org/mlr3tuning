@@ -9,7 +9,7 @@ if (ci_on_ghactions() && ci_has_env("BUILD_PKGDOWN")) {
   do_pkgdown()
 }
 
-if (ci_on_ghactions() && ci_is_env("BBOTK", "devel")) {
+if (ci_on_ghactions() && ci_has_env("BBOTK")) {
     get_stage("install") %>%
       add_step(step_install_github("mlr-org/bbotk"))
 }

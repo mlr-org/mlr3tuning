@@ -1,4 +1,4 @@
-## tic GitHub Actions template: linux-macos-windows-deploy
+## tic GitHub Actions template: custom
 ## revision date: 2021-06-27
 # [Custom header]
 on:
@@ -18,15 +18,15 @@ jobs:
   all:
     runs-on: ${{ matrix.config.os }}
 
-    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
+    name: ${{ matrix.config.os }} (${{ matrix.config.r }}) (bbotk-devel)
 
     strategy:
       fail-fast: false
       matrix:
         config:
-          # use a different tic template type if you do not want to build on all listed platforms
-          - { os: ubuntu-latest, r: "devel" }
-          - { os: ubuntu-latest, r: "release", pkgdown: true, latex: true }
+          ### Custom configs (specify your own runners here)
+          # [Custom matrix env var]
+          - { os: ubuntu-latest, r: "release", bbotk: "devel" }
 
     env:
       # otherwise remotes::fun() errors cause the build to fail. Example: Unavailability of binaries
@@ -43,6 +43,8 @@ jobs:
       SDKROOT: /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk
       # use GITHUB_TOKEN from GitHub to workaround rate limits in {remotes}
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      # use bbotk version
+      BBOTK: ${{ matrix.config.bbotk }}
 
     steps:
       - uses: actions/checkout@v2
@@ -74,8 +76,8 @@ jobs:
         uses: pat-s/always-upload-cache@v2
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-r-${{ matrix.config.r }}-${{steps.date.outputs.date}}
-          restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-${{steps.date.outputs.date}}
+          key: ${{ runner.os }}-r-${{ matrix.config.r }}-bbotk-devel-${{steps.date.outputs.date}}
+          restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-bbotk-devel-${{steps.date.outputs.date}}
 
       - name: "[Stage] [Linux] Install required system libs"
         if: runner.os == 'Linux'
@@ -133,12 +135,3 @@ jobs:
         with:
           name: ${{ runner.os }}-r${{ matrix.config.r }}-results
           path: check
-      - name: "[Stage] Before Deploy"
-        run: |
-          Rscript -e "tic::before_deploy()"
-
-      - name: "[Stage] Deploy"
-        run: Rscript -e "tic::deploy()"
-
-      - name: "[Stage] After Deploy"
-        run: Rscript -e "tic::after_deploy()"
