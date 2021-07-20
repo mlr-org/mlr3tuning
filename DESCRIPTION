@@ -40,7 +40,7 @@ Depends:
     paradox (>= 0.7.0),
     R (>= 3.1.0)
 Imports:
-    bbotk (>= 0.3.2),
+    bbotk (>= 0.3.2.9000),
     checkmate (>= 2.0.0),
     data.table,
     digest,
@@ -56,6 +56,7 @@ Suggests:
     rpart,
     testthat (>= 3.0.0)
 Remotes:
+    mlr-org/bbotk,
     mlr-org/mlr3,
     mlr-org/mlr3misc
 Config/testthat/edition: 3
