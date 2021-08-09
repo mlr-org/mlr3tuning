@@ -10,9 +10,11 @@
 #'    a search space as [paradox::ParamSet], a [mlr3::Resampling] and a
 #'    [mlr3::Measure].
 #' 2. The best found hyperparameter configuration is set as hyperparameters
-#'    for the wrapped (inner) learner.
+#'    for the wrapped (inner) learner stored in `at$learner`. Access the tuned
+#'    hyperparameters via `at$learner$param_set$values`.
 #' 3. A final model is fit on the complete training data using the now
-#'    parametrized wrapped learner.
+#'    parametrized wrapped learner. The respective model is available via field
+#'    `at$learner$model`.
 #'
 #' During `$predict()` the `AutoTuner` just calls the predict method of the
 #' wrapped (inner) learner. A set timeout is disabled while fitting the final
@@ -172,7 +174,7 @@ AutoTuner = R6Class("AutoTuner",
     #'
     #' @return [Learner].
     base_learner = function(recursive = Inf) {
-      if(recursive == 0L) self$learner else self$learner$base_learner(recursive - 1L)
+      if (recursive == 0L) self$learner else self$learner$base_learner(recursive - 1L)
     },
 
     #' Printer.
