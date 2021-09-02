@@ -107,7 +107,7 @@ Trained learner}
 \item{\code{tuning_instance}}{(\link{TuningInstanceSingleCrit})\cr
 Internally created tuning instance with all intermediate results.}
 
-\item{\code{tuning_result}}{(named \code{list()})\cr
+\item{\code{tuning_result}}{(\link[data.table:data.table]{data.table::data.table})\cr
 Short-cut to \code{result} from \link{TuningInstanceSingleCrit}.}
 
 \item{\code{predict_type}}{(\code{character(1)})\cr

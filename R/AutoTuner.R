@@ -225,7 +225,7 @@ AutoTuner = R6Class("AutoTuner",
     #' Internally created tuning instance with all intermediate results.
     tuning_instance = function() self$model$tuning_instance,
 
-    #' @field tuning_result (named `list()`)\cr
+    #' @field tuning_result ([data.table::data.table])\cr
     #' Short-cut to `result` from [TuningInstanceSingleCrit].
     tuning_result = function() self$tuning_instance$result,
 
