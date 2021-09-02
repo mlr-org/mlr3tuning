@@ -13,9 +13,11 @@ The tuning can be specified by providing a \link{Tuner}, a \link[bbotk:Terminato
 a search space as \link[paradox:ParamSet]{paradox::ParamSet}, a \link[mlr3:Resampling]{mlr3::Resampling} and a
 \link[mlr3:Measure]{mlr3::Measure}.
 \item The best found hyperparameter configuration is set as hyperparameters
-for the wrapped (inner) learner.
+for the wrapped (inner) learner stored in \code{at$learner}. Access the tuned
+hyperparameters via \code{at$learner$param_set$values}.
 \item A final model is fit on the complete training data using the now
-parametrized wrapped learner.
+parametrized wrapped learner. The respective model is available via field
+\code{at$learner$model}.
 }
 
 During \verb{$predict()} the \code{AutoTuner} just calls the predict method of the

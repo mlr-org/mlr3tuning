@@ -10,9 +10,11 @@
 #'    a search space as [paradox::ParamSet], a [mlr3::Resampling] and a
 #'    [mlr3::Measure].
 #' 2. The best found hyperparameter configuration is set as hyperparameters
-#'    for the wrapped (inner) learner.
+#'    for the wrapped (inner) learner stored in `at$learner`. Access the tuned
+#'    hyperparameters via `at$learner$param_set$values`.
 #' 3. A final model is fit on the complete training data using the now
-#'    parametrized wrapped learner.
+#'    parametrized wrapped learner. The respective model is available via field
+#'    `at$learner$model`.
 #'
 #' During `$predict()` the `AutoTuner` just calls the predict method of the
 #' wrapped (inner) learner. A set timeout is disabled while fitting the final
@@ -33,35 +35,35 @@
 #' task = tsk("pima")
 #' train_set = sample(task$nrow, 0.8 * task$nrow)
 #' test_set = setdiff(seq_len(task$nrow), train_set)
-#' 
+#'
 #' at = AutoTuner$new(
 #'   learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
 #'   resampling = rsmp("holdout"),
 #'   measure = msr("classif.ce"),
 #'   terminator = trm("evals", n_evals = 5),
 #'   tuner = tnr("random_search"))
-#' 
+#'
 #' # tune hyperparameters and fit final model
 #' at$train(task, row_ids = train_set)
-#' 
+#'
 #' # predict with final model
 #' at$predict(task, row_ids = test_set)
-#' 
+#'
 #' # show tuning result
 #' at$tuning_result
-#' 
+#'
 #' # model slot contains trained learner and tuning instance
 #' at$model
-#' 
+#'
 #' # shortcut trained learner
 #' at$learner
-#' 
+#'
 #' # shortcut tuning instance
 #' at$tuning_instance
-#' 
+#'
 #'
 #' ### nested resampling
-#' 
+#'
 #' at = AutoTuner$new(
 #'   learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
 #'   resampling = rsmp("holdout"),
@@ -74,10 +76,10 @@
 #'
 #' # retrieve inner tuning results.
 #' extract_inner_tuning_results(rr)
-#' 
+#'
 #' # performance scores estimated on the outer resampling
 #' rr$score()
-#' 
+#'
 #' # unbiased performance of the final model trained on the full data set
 #' rr$aggregate()
 AutoTuner = R6Class("AutoTuner",
@@ -172,7 +174,7 @@ AutoTuner = R6Class("AutoTuner",
     #'
     #' @return [Learner].
     base_learner = function(recursive = Inf) {
-      if(recursive == 0) self$learner else self$learner$base_learner(recursive -1)
+      if (recursive == 0L) self$learner else self$learner$base_learner(recursive - 1L)
     },
 
     #' Printer.
