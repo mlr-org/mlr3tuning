@@ -1,5 +1,7 @@
 # mlr3tuning 0.9.0
 
+- Adds `AutoTuner$base_learner()` method to extract the base learner from 
+  nested learner objects.
 - `tune()` supports multi-criteria tuning.
 - Allows empty search space.
 - Adds `TunerIrace` from `irace` package.
