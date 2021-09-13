@@ -306,19 +306,39 @@ test_that("AutoTuner get_base_learner method works", {
 })
 
 test_that("AutoTuner hash works #647 in mlr3", {
+  # different measure -> different hash?
   at_1 = AutoTuner$new(
-    learner = lrn("classif.rpart", minsplit = to_tune(1, 12)), 
-    resampling = rsmp("holdout"), 
-    measure = msr("classif.ce"), 
-    terminator = trm("evals", n_evals = 4), 
+    learner = lrn("classif.rpart", minsplit = to_tune(1, 12)),
+    resampling = rsmp("holdout"),
+    measure = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 4),
     tuner = tnr("grid_search", resolution = 3))
 
   at_2 = AutoTuner$new(
-    learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)), 
-    resampling = rsmp("holdout"), 
-    measure = msr("classif.ce"), 
-    terminator = trm("evals", n_evals = 4), 
+    learner = lrn("classif.rpart", minsplit = to_tune(1, 12)),
+    resampling = rsmp("holdout"),
+    measure = msr("classif.acc"),
+    terminator = trm("evals", n_evals = 4),
     tuner = tnr("grid_search", resolution = 3))
+
+  expect_true(at_1$hash != at_2$hash)
+
+
+  at_1 = AutoTuner$new(
+    learner = lrn("classif.rpart", minsplit = to_tune(1, 12)),
+    resampling = rsmp("holdout"),
+    measure = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 4),
+    tuner = tnr("grid_search", resolution = 3))
+
+  at_2 = AutoTuner$new(
+    learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
+    resampling = rsmp("holdout"),
+    measure = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 4),
+    tuner = tnr("grid_search", resolution = 3))
+
+  expect_true(at_1$hash != at_2$hash)
 
   resampling_outer = rsmp("holdout")
   grid = benchmark_grid(tsk("iris"), list(at_1, at_2), resampling_outer)
@@ -346,7 +366,7 @@ test_that("AutoTuner works with empty search space", {
   # no constant
   learner = lrn("classif.rpart")
   learner$param_set$values$xval = NULL
-  
+
   at = auto_tuner(
     method = "random_search",
     learner = learner,
