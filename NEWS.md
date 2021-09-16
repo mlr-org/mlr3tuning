@@ -1,3 +1,7 @@
+# mlr3tuning 0.9.0.9000
+
+- Fixes bug in `TuningInstanceMultiCrit$assign_result()`.
+
 # mlr3tuning 0.9.0
 
 - Adds `AutoTuner$base_learner()` method to extract the base learner from 
