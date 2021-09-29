@@ -83,7 +83,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       if (self$allow_retrain) {
         rrs = self$archive$benchmark_result$resample_results$resample_result
         # for every learner / hyperparameter configuration
-        design = imap_dtr(learners, function(learner) {
+        design = map_dtr(learners, function(learner) {
           # keep retrainable resample results
           rrrs = keep(rrs, function(rr) rr$is_retrainable(learner$param_set$values))
           if (length(rrrs) > 0) {
@@ -101,22 +101,21 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
             data.table(
               task = list(self$task),
               learner = list(learner), # force list column
-              resampling = list(rrr$resampling),
+              resampling = resampling,
               retrain = ifelse(length(rls) > 1, rls, list(rls))
             )
           } else {
             # train process
-            browser()
             data.table(
               task = list(self$task),
               learner = list(learner),
-              resampling = list(self$resampling), # force list column
+              resampling = resampling, # force list column
               retrain = list(list())
             )
           }
         })
       } else {
-        design = benchmark_grid(self$task, learners, self$resampling)
+        design = benchmark_grid(self$task, learners, resampling)
       }
 
       bmr = benchmark(design, store_models = self$store_models)
