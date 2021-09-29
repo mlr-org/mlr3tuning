@@ -34,78 +34,55 @@
 #' @export
 #' @examples
 #' library(data.table)
-#' library(paradox)
-#' library(mlr3)
-#'
-#' # Objects required to define the performance evaluator:
-#' task = tsk("iris")
-#' learner = lrn("classif.rpart")
-#' resampling = rsmp("holdout")
-#' measure = msr("classif.ce")
-#' param_set = ParamSet$new(list(
-#'   ParamDbl$new("cp", lower = 0.001, upper = 0.1),
-#'   ParamInt$new("minsplit", lower = 1, upper = 10))
+#' 
+#' # define search space
+#' search_space = ps(
+#'   cp = p_dbl(lower = 0.001, upper = 0.1),
+#'   minsplit = p_int(lower = 1, upper = 10)
 #' )
-#'
-#' terminator = trm("evals", n_evals = 5)
-#' inst = TuningInstanceSingleCrit$new(
-#'   task = task,
-#'   learner = learner,
-#'   resampling = resampling,
-#'   measure = measure,
-#'   search_space = param_set,
-#'   terminator = terminator
+#' 
+#' # initialize instance
+#' instance = TuningInstanceSingleCrit$new(
+#'   task = tsk("iris"),
+#'   learner = lrn("classif.rpart"),
+#'   resampling = rsmp("holdout"),
+#'   measure = msr("classif.ce"),
+#'   search_space = search_space,
+#'   terminator = trm("evals", n_evals = 5)
 #' )
-#'
-#' # first 4 points as cross product
-#' design = CJ(cp = c(0.05, 0.01), minsplit = c(5, 3))
-#' inst$eval_batch(design)
-#' inst$archive
-#'
-#' # try more points, catch the raised terminated message
-#' tryCatch(
-#'   inst$eval_batch(data.table(cp = 0.01, minsplit = 7)),
-#'   terminated_error = function(e) message(as.character(e))
-#' )
-#'
-#' # try another point although the budget is now exhausted
-#' # -> no extra evaluations
-#' tryCatch(
-#'   inst$eval_batch(data.table(cp = 0.01, minsplit = 9)),
-#'   terminated_error = function(e) message(as.character(e))
-#' )
-#'
-#' inst$archive
-#'
-#' ### Error handling
+#' 
+#' # generate design
+#' design = data.table(cp = c(0.05, 0.01), minsplit = c(5, 3))
+#' 
+#' # eval design
+#' instance$eval_batch(design)
+#' 
+#' # show archive
+#' instance$archive
+#' 
+#' ### error handling
+#' 
 #' # get a learner which breaks with 50% probability
 #' # set encapsulation + fallback
 #' learner = lrn("classif.debug", error_train = 0.5)
 #' learner$encapsulate = c(train = "evaluate", predict = "evaluate")
 #' learner$fallback = lrn("classif.featureless")
-#'
-#' param_set = ParamSet$new(list(
-#'   ParamDbl$new("x", lower = 0, upper = 1)
-#' ))
-#'
-#' inst = TuningInstanceSingleCrit$new(
+#' 
+#' # define search space
+#' search_space = ps(
+#'  x = p_dbl(lower = 0, upper = 1)
+#' )
+#' 
+#' instance = TuningInstanceSingleCrit$new(
 #'   task = tsk("wine"),
 #'   learner = learner,
 #'   resampling = rsmp("cv", folds = 3),
 #'   measure = msr("classif.ce"),
-#'   search_space = param_set,
+#'   search_space = search_space,
 #'   terminator = trm("evals", n_evals = 5)
 #' )
-#'
-#' tryCatch(
-#'   inst$eval_batch(data.table(x = 1:5 / 5)),
-#'   terminated_error = function(e) message(as.character(e))
-#' )
-#'
-#' archive = as.data.table(inst$archive)
-#'
-#' # column errors: multiple errors recorded
-#' print(archive)
+#' 
+#' instance$eval_batch(data.table(x = 1:5 / 5))
 TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
   inherit = OptimInstanceSingleCrit,
   public = list(
@@ -147,13 +124,17 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     assign_result = function(xdt, y, learner_param_vals = NULL) {
       # set the column with the learner param_vals that were not optimized over but set implicitly
       assert_list(learner_param_vals, null.ok = TRUE, names = "named")
+
       if (is.null(learner_param_vals)) {
         learner_param_vals = self$objective$learner$param_set$values
       }
-      opt_x = transform_xdt_to_xss(xdt, self$search_space)[[1]]
+      opt_x = unlist(transform_xdt_to_xss(xdt, self$search_space), recursive = FALSE)
       learner_param_vals = insert_named(learner_param_vals, opt_x)
+ 
       # ugly but necessary to maintain list column correctly
-      if (length(learner_param_vals) == 1) {
+      if (length(learner_param_vals) == 0) {
+        learner_param_vals = list(list())
+      } else if (length(learner_param_vals) == 1) {
         learner_param_vals = list(learner_param_vals)
       }
       set(xdt, j = "learner_param_vals", value = list(learner_param_vals))

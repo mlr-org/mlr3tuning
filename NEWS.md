@@ -1,6 +1,19 @@
-# mlr3tuning 0.8.0.9000
+# mlr3tuning 0.9.0.9000
 
+- Fixes bug in `TuningInstanceMultiCrit$assign_result()`.
+
+# mlr3tuning 0.9.0
+
+- Adds `AutoTuner$base_learner()` method to extract the base learner from 
+  nested learner objects.
+- `tune()` supports multi-criteria tuning.
+- Allows empty search space.
 - Adds `TunerIrace` from `irace` package.
+- `extract_inner_tuning_archives()` helper function to extract inner tuning
+  archives.
+- Removes `ArchiveTuning$extended_archive()` method. The `mlr3::ResampleResults` are
+  joined automatically by `as.data.table.TuningArchive()` and
+  `extract_inner_tuning_archives()`.
 
 # mlr3tuning 0.8.0
 

@@ -267,52 +267,116 @@ test_that("search space from TuneToken works", {
     fixed = TRUE)
 })
 
-test_that("extract_inner_tuning_results function works", {
-  te = trm("evals", n_evals = 4)
-  task = tsk("iris")
-  search_space = TEST_MAKE_PS1(n_dim = 1)
-  ms = msr("classif.ce")
-  tuner = tnr("grid_search", resolution = 3)
+test_that("AutoTuner get_base_learner method works", {
+  skip_if_not_installed("mlr3pipelines")
+  requireNamespace("mlr3pipelines")
 
-  # cv
-  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
-  resampling_outer = rsmp("cv", folds = 2)
-  rr = resample(task, at, resampling_outer, store_models = TRUE)
+  # simple learner
+  learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
+  at = auto_tuner(
+    method = "random_search",
+    learner = learner,
+    resampling = rsmp("holdout"),
+    measure = msr("classif.ce"),
+    term_evals = 1)
+  at$train(tsk("pima"))
 
-  irr = extract_inner_tuning_results(rr)
-  expect_data_table(irr, nrows = 2) 
-  expect_named(irr, c("cp", "learner_param_vals", "x_domain", "classif.ce"))
+  expect_learner(at$base_learner())
+  expect_equal(at$base_learner()$id, "classif.rpart")
+  expect_learner(at$base_learner(recursive = 0))
+  expect_equal(at$base_learner(recursive = 0)$id, "classif.rpart")
 
-  # repeated cv
-  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
-  resampling_outer = rsmp("repeated_cv", folds = 2, repeats = 3)
-  rr = resample(task, at, resampling_outer, store_models = TRUE)
+  # graph learner
+  learner = as_learner(pipeline_robustify() %>>% lrn("classif.rpart"))
+  learner$param_set$values$classif.rpart.cp = to_tune(1e-04, 1e-1, logscale = TRUE)
+  learner$id = "graphlearner.classif.rpart"
 
-  irr = extract_inner_tuning_results(rr)
-  expect_data_table(irr, nrows = 6) 
-  expect_named(irr, c("cp", "learner_param_vals", "x_domain", "classif.ce"))
+  at = auto_tuner(
+    method = "random_search",
+    learner = learner,
+    resampling = rsmp("holdout"),
+    measure = msr("classif.ce"),
+    term_evals = 1)
+  at$train(tsk("pima"))
 
-  # cv
-  at_1 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
-  at_2 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
-  resampling_outer = rsmp("cv", folds = 2)
-  grid = benchmark_grid(task, list(at_1, at_2), resampling_outer)
+  expect_learner(at$base_learner(recursive = 0))
+  expect_equal(at$base_learner(recursive = 0)$id, "graphlearner.classif.rpart")
+  # expect_learner(at$base_learner())
+  # expect_equal(at$base_learner()$id, "classif.rpart")
+})
+
+test_that("AutoTuner hash works #647 in mlr3", {
+  # different measure -> different hash?
+  at_1 = AutoTuner$new(
+    learner = lrn("classif.rpart", minsplit = to_tune(1, 12)),
+    resampling = rsmp("holdout"),
+    measure = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 4),
+    tuner = tnr("grid_search", resolution = 3))
+
+  at_2 = AutoTuner$new(
+    learner = lrn("classif.rpart", minsplit = to_tune(1, 12)),
+    resampling = rsmp("holdout"),
+    measure = msr("classif.acc"),
+    terminator = trm("evals", n_evals = 4),
+    tuner = tnr("grid_search", resolution = 3))
+
+  expect_true(at_1$hash != at_2$hash)
+
+
+  at_1 = AutoTuner$new(
+    learner = lrn("classif.rpart", minsplit = to_tune(1, 12)),
+    resampling = rsmp("holdout"),
+    measure = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 4),
+    tuner = tnr("grid_search", resolution = 3))
+
+  at_2 = AutoTuner$new(
+    learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
+    resampling = rsmp("holdout"),
+    measure = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 4),
+    tuner = tnr("grid_search", resolution = 3))
+
+  expect_true(at_1$hash != at_2$hash)
+
+  resampling_outer = rsmp("holdout")
+  grid = benchmark_grid(tsk("iris"), list(at_1, at_2), resampling_outer)
   bmr = benchmark(grid, store_models = TRUE)
 
-  ibmr = extract_inner_tuning_results(bmr)
-  expect_data_table(ibmr, nrows = 4) 
-  expect_named(ibmr, c("cp", "learner_param_vals", "x_domain", "classif.ce", "experiment"))
-  expect_equal(unique(ibmr$experiment), c(1, 2))
+  expect_data_table(bmr$learners, nrows = 2)
+  expect_named(bmr$resample_result(1)$learners[[1]]$tuning_result, c("minsplit", "learner_param_vals", "x_domain", "classif.ce"))
+  expect_named(bmr$resample_result(2)$learners[[1]]$tuning_result, c("cp", "learner_param_vals", "x_domain", "classif.ce"))
+})
 
-   # repeated cv
-  at_1 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
-  at_2 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
-  resampling_outer = rsmp("repeated_cv", folds = 2, repeats = 3)
-  grid = benchmark_grid(task, list(at_1, at_2), resampling_outer)
-  bmr = benchmark(grid, store_models = TRUE)
+test_that("AutoTuner works with empty search space", {
+  at = auto_tuner(
+    method = "random_search",
+    learner = lrn("classif.rpart"),
+    resampling = rsmp("cv", folds = 3),
+    measure = msr("classif.ce"),
+    term_evals = 10,
+    batch_size = 5
+  )
 
-  ibmr = extract_inner_tuning_results(bmr)
-  expect_data_table(ibmr, nrows = 12) 
-  expect_named(ibmr, c("cp", "learner_param_vals", "x_domain", "classif.ce", "experiment"))
-  expect_equal(unique(ibmr$experiment), c(1, 2))
+  at$train(tsk("pima"))
+  expect_equal(at$tuning_instance$result$learner_param_vals, list(list(xval = 0)))
+  expect_equal(at$tuning_instance$result$x_domain, list(list()))
+
+  # no constant
+  learner = lrn("classif.rpart")
+  learner$param_set$values$xval = NULL
+
+  at = auto_tuner(
+    method = "random_search",
+    learner = learner,
+    resampling = rsmp("cv", folds = 3),
+    measure = msr("classif.ce"),
+    term_evals = 10,
+    batch_size = 5
+  )
+
+  at$train(tsk("pima"))
+  expect_equal(at$tuning_instance$result$learner_param_vals, list(list()))
+  expect_equal(at$tuning_instance$result$x_domain, list(list()))
 })

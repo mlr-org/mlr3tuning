@@ -50,28 +50,23 @@
 #'
 #' @export
 #' @examples
-#' library(mlr3)
-#' library(paradox)
-#' search_space = ParamSet$new(list(
-#'   ParamDbl$new("cp", lower = 0.001, upper = 0.1)
-#' ))
-#' terminator = trm("evals", n_evals = 3)
 #' instance = TuningInstanceSingleCrit$new(
 #'   task = tsk("iris"),
-#'   learner = lrn("classif.rpart"),
+#'   learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
 #'   resampling = rsmp("holdout"),
 #'   measure = msr("classif.ce"),
-#'   search_space = search_space,
-#'   terminator = terminator
+#'   terminator = trm("evals", n_evals = 3)
 #' )
-#' # swap this line to use a different Tuner
-#' tt = tnr("random_search")
+#' tuner = tnr("random_search")
+#'
+#' # optimize hyperparameter
 #' # modifies the instance by reference
-#' tt$optimize(instance)
+#' tuner$optimize(instance)
+#'
 #' # returns best configuration and best performance
 #' instance$result
-#' # allows access of data.table / benchmark result of full path of all
-#' # evaluations
+#'
+#' # allows access of data.table of full path of all evaluations
 #' instance$archive
 Tuner = R6Class("Tuner",
   public = list(
@@ -132,7 +127,7 @@ Tuner = R6Class("Tuner",
     #'
     #' @param inst ([TuningInstanceSingleCrit] | [TuningInstanceMultiCrit]).
     #'
-    #' @return NULL
+    #' @return [data.table::data.table]
     optimize = function(inst) {
       assert_multi_class(inst, c("TuningInstanceSingleCrit", "TuningInstanceMultiCrit"))
       optimize_default(inst, self, private)

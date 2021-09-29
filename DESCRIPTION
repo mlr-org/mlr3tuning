@@ -1,6 +1,6 @@
 Package: mlr3tuning
 Title: Tuning for 'mlr3'
-Version: 0.8.0.9000
+Version: 0.9.0.9000
 Authors@R:
     c(person(given = "Marc",
              family = "Becker",
@@ -27,25 +27,25 @@ Authors@R:
              role = "aut",
              email = "daniel.schalk@stat.uni-muenchen.de",
              comment = c(ORCID = "0000-0003-0950-1947")))
-Description: Implements methods for hyperparameter tuning with
-    'mlr3', e.g. Grid Search, Random Search, or Simulated Annealing.
-    Various termination criteria can be set and combined.  The class
-    'AutoTuner' provides a convenient way to perform nested resampling in
-    combination with 'mlr3'.
+Description: Implements methods for hyperparameter tuning with 'mlr3',
+    e.g. grid search, random search, generalized simulated annealing and
+    iterated racing.  Various termination criteria can be set and
+    combined.  The class 'AutoTuner' provides a convenient way to perform
+    nested resampling in combination with 'mlr3'.
 License: LGPL-3
-URL: https://mlr3tuning.mlr-org.com,
-    https://github.com/mlr-org/mlr3tuning
+URL: https://mlr3tuning.mlr-org.com, https://github.com/mlr-org/mlr3tuning
 BugReports: https://github.com/mlr-org/mlr3tuning/issues
 Depends:
-    mlr3 (>= 0.11.0),
+    mlr3 (>= 0.12.0),
     paradox (>= 0.7.0),
     R (>= 3.1.0)
 Imports:
-    bbotk (>= 0.3.0),
+    bbotk (>= 0.4.0),
     checkmate (>= 2.0.0),
     data.table,
+    digest,
     lgr,
-    mlr3misc (>= 0.7.0),
+    mlr3misc (>= 0.9.4),
     R6
 Suggests:
     adagio,
@@ -64,7 +64,7 @@ Config/testthat/parallel: true
 Encoding: UTF-8
 NeedsCompilation: no
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Collate:
     'ArchiveTuning.R'
     'AutoTuner.R'
@@ -82,9 +82,13 @@ Collate:
     'TuningInstanceMulticrit.R'
     'TuningInstanceSingleCrit.R'
     'assertions.R'
+    'auto_tuner.R'
     'bibentries.R'
+    'extract_inner_tuning_archives.R'
+    'extract_inner_tuning_results.R'
     'helper.R'
-    'irace_helpers.R'
     'reexport.R'
     'sugar.R'
+    'tune.R'
+    'tune_nested.R'
     'zzz.R'

@@ -14,20 +14,6 @@ Lopez-Ibanez M, Dubois-Lacoste J, Caceres LP, Birattari M, Stuetzle T (2016).
 \code{TunerIrace} class that implements iterated racing. Calls \code{\link[irace:irace]{irace::irace()}}
 from package \CRANpkg{irace}.
 }
-\section{Parameters}{
-
-\describe{
-\item{\code{n_instances}}{\code{integer(1)}\cr
-Number of resampling instances.}
-}
-
-For the meaning of all other parameters, see \code{\link[irace:defaultScenario]{irace::defaultScenario()}}. Note
-that we have removed all control parameters which refer to the termination of
-the algorithm. Use \link{TerminatorRunTime} or \link{TerminatorEvals} instead. Other
-terminators do not work with \code{TunerIrace}. We substract 5 seconds from the
-\link{TerminatorRunTime} budget for stability reasons.
-}
-
 \section{Dictionary}{
 
 This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary}
@@ -37,31 +23,83 @@ tnr("irace")
 }
 }
 
+\section{Parameters}{
+
+\describe{
+\item{\code{n_instances}}{\code{integer(1)}\cr
+Number of resampling instances.}
+}
+
+For the meaning of all other parameters, see \code{\link[irace:defaultScenario]{irace::defaultScenario()}}. Note
+that we have removed all control parameters which refer to the termination of
+the algorithm. Use \link{TerminatorEvals} instead. Other terminators do not work
+with \code{TunerIrace}.
+}
+
+\section{Archive}{
+
+The \link{ArchiveTuning} holds the following additional columns:
+\itemize{
+\item \code{"race"} (\code{integer(1)})\cr
+Race iteration.
+\item \code{"step"} (\code{integer(1)})\cr
+Step number of race.
+\item \code{"instance"} (\code{integer(1)})\cr
+Identifies resampling instances across races and steps.
+\item \code{"configuration"} (\code{integer(1)})\cr
+Identifies configurations across races and steps.
+}
+}
+
+\section{Result}{
+
+The tuning result (\code{instance$result}) is the best performing elite of
+the final race. The reported performance is the average performance estimated
+on all used instances.
+}
+
+\section{Progress Bars}{
+
+\verb{$optimize()} supports progress bars via the package \CRANpkg{progressr}
+combined with a \link{Terminator}. Simply wrap the function in
+\code{progressr::with_progress()} to enable them. We recommend to use package
+\CRANpkg{progress} as backend; enable with \code{progressr::handlers("progress")}.
+}
+
+\section{Logging}{
+
+
+All \link{Tuner}s use a logger (as implemented in \CRANpkg{lgr}) from package
+\CRANpkg{bbotk}.
+Use \code{lgr::get_logger("bbotk")} to access and control the logger.
+}
+
 \examples{
-library(mlr3)
-library(paradox)
-search_space = ParamSet$new(list(
-  ParamDbl$new("cp", lower = 0.001, upper = 0.1)
-))
-terminator = trm("evals", n_evals = 42)
-instance = TuningInstanceSingleCrit$new(
-  task = tsk("iris"),
-  learner = lrn("classif.rpart"),
+# retrieve task
+task = tsk("pima")
+
+# load learner and set search space
+learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
+
+# hyperparameter tuning on the pima indians diabetes data set
+instance = tune(
+  method = "irace",
+  task = task,
+  learner = learner,
   resampling = rsmp("holdout"),
   measure = msr("classif.ce"),
-  search_space = search_space,
-  terminator = terminator
+  term_evals = 42
 )
-tt = tnr("irace")
 
-# modifies the instance by reference
-tt$optimize(instance)
-
-# returns best configuration and best performance
+# best performing hyperparameter configuration
 instance$result
 
-# allows access of data.table of full path of all evaluations
-instance$archive
+# all evaluated hyperparameter configuration
+as.data.table(instance$archive)
+
+# fit final model on complete data set
+learner$param_set$values = instance$result_learner_param_vals
+learner$train(task)
 }
 \seealso{
 Other Tuner: 
@@ -73,13 +111,14 @@ Other Tuner:
 \code{\link{mlr_tuners_random_search}}
 }
 \concept{Tuner}
-\section{Super class}{
-\code{\link[mlr3tuning:Tuner]{mlr3tuning::Tuner}} -> \code{TunerIrace}
+\section{Super classes}{
+\code{\link[mlr3tuning:Tuner]{mlr3tuning::Tuner}} -> \code{\link[mlr3tuning:TunerFromOptimizer]{mlr3tuning::TunerFromOptimizer}} -> \code{TunerIrace}
 }
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{TunerIrace$new()}}
+\item \href{#method-optimize}{\code{TunerIrace$optimize()}}
 \item \href{#method-clone}{\code{TunerIrace$clone()}}
 }
 }
@@ -87,7 +126,6 @@ Other Tuner:
 \out{<details open ><summary>Inherited methods</summary>}
 \itemize{
 \item \out{<span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="format">}\href{../../mlr3tuning/html/Tuner.html#method-format}{\code{mlr3tuning::Tuner$format()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="optimize">}\href{../../mlr3tuning/html/Tuner.html#method-optimize}{\code{mlr3tuning::Tuner$optimize()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="print">}\href{../../mlr3tuning/html/Tuner.html#method-print}{\code{mlr3tuning::Tuner$print()}}\out{</span>}
 }
 \out{</details>}
@@ -101,6 +139,29 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
 \if{html}{\out{<div class="r">}}\preformatted{TunerIrace$new()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-optimize"></a>}}
+\if{latex}{\out{\hypertarget{method-optimize}{}}}
+\subsection{Method \code{optimize()}}{
+Performs the tuning on a \link{TuningInstanceSingleCrit} until termination.
+The single evaluations and the final results will be written into the
+\link{ArchiveTuning} that resides in the \link{TuningInstanceSingleCrit}. The final
+result is returned.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TunerIrace$optimize(inst)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{inst}}{(\link{TuningInstanceSingleCrit}).}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link[data.table:data.table]{data.table::data.table}.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

@@ -51,5 +51,14 @@ bibentries = c(
     volume       = "3",
     pages        = "43--58",
     doi          = "https://doi.org/10.1016/j.orp.2016.09.002"
+  ),
+
+  hansen_2016 = bibentry("misc",
+    author        = "Nikolaus Hansen",
+    title         = "The CMA Evolution Strategy: A Tutorial",
+    year          = "2016",
+    eprint        = "1604.00772",
+    archivePrefix = "arXiv",
+    primaryClass  = "cs.LG"
   )
 )

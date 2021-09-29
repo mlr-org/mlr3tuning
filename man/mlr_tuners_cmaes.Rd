@@ -4,6 +4,11 @@
 \alias{mlr_tuners_cmaes}
 \alias{TunerCmaes}
 \title{Hyperparameter Tuning with Covariance Matrix Adaptation Evolution Strategy}
+\source{
+Hansen N (2016).
+\dQuote{The CMA Evolution Strategy: A Tutorial.}
+1604.00772.
+}
 \description{
 Subclass that implements CMA-ES calling \code{\link[adagio:cmaes]{adagio::pureCMAES()}}
 from package \CRANpkg{adagio}.
@@ -17,16 +22,7 @@ tnr("cmaes")
 }
 }
 
-\section{Logging}{
-
-
-All \link{Tuner}s use a logger (as implemented in \CRANpkg{lgr}) from package
-\CRANpkg{bbotk}.
-Use \code{lgr::get_logger("bbotk")} to access and control the logger.
-}
-
 \section{Parameters}{
-
 
 \describe{
 \item{\code{sigma}}{\code{numeric(1)}}
@@ -38,42 +34,55 @@ latter case, it is the center of the parameters before a trafo is applied.}
 For the meaning of the control parameters, see \code{\link[adagio:cmaes]{adagio::pureCMAES()}}. Note
 that we have removed all control parameters which refer to the termination of
 the algorithm and where our terminators allow to obtain the same behavior.
-
 }
 
 \section{Progress Bars}{
 
-
-\verb{$optimize()} supports progress bars via the package \href{https://CRAN.R-project.org/package=progressr}{\pkg{progressr}}
-combined with a \link[bbotk]{Terminator}. Simply wrap the function in
+\verb{$optimize()} supports progress bars via the package \CRANpkg{progressr}
+combined with a \link{Terminator}. Simply wrap the function in
 \code{progressr::with_progress()} to enable them. We recommend to use package
-\href{https://CRAN.R-project.org/package=progress}{\pkg{progress}} as backend; enable with \code{progressr::handlers("progress")}.
+\CRANpkg{progress} as backend; enable with \code{progressr::handlers("progress")}.
+}
 
+\section{Logging}{
+
+
+All \link{Tuner}s use a logger (as implemented in \CRANpkg{lgr}) from package
+\CRANpkg{bbotk}.
+Use \code{lgr::get_logger("bbotk")} to access and control the logger.
 }
 
 \examples{
-library(mlr3)
-library(paradox)
 library(data.table)
-search_space = ParamSet$new(list(
-  ParamDbl$new("cp", lower = 0.001, upper = 0.1)
-))
-terminator = trm("evals", n_evals = 10)
-instance = TuningInstanceSingleCrit$new(
-  task = tsk("iris"),
-  learner = lrn("classif.rpart"),
+
+# retrieve task
+task = tsk("pima")
+
+# load learner and set search space
+learner = lrn("classif.rpart", 
+  cp = to_tune(1e-04, 1e-1, logscale = TRUE), 
+  minsplit = to_tune(p_dbl(2, 128, trafo = as.integer)),
+  minbucket = to_tune(p_dbl(1, 64, trafo = as.integer))
+)
+
+# hyperparameter tuning on the pima indians diabetes data set
+instance = tune(
+  method = "cmaes",
+  task = task,
+  learner = learner,
   resampling = rsmp("holdout"),
   measure = msr("classif.ce"),
-  search_space = search_space,
-  terminator = terminator
-)
-tt = tnr("cmaes")
-# modifies the instance by reference
-tt$optimize(instance)
-# returns best configuration and best performance
+  term_evals = 10)
+
+# best performing hyperparameter configuration
 instance$result
-# allows access of data.table of full path of all evaluations
-instance$archive
+
+# all evaluated hyperparameter configuration
+as.data.table(instance$archive)
+
+# fit final model on complete data set
+learner$param_set$values = instance$result_learner_param_vals
+learner$train(task)
 }
 \seealso{
 Package \CRANpkg{mlr3hyperband} for hyperband tuning.

@@ -10,11 +10,12 @@
 #'
 #' @templateVar id random_search
 #' @template section_dictionary_tuners
-#' @template section_parallelization
-#' @template section_logging
 #'
 #' @inheritSection bbotk::OptimizerRandomSearch Parameters
 #' @inheritSection bbotk::OptimizerRandomSearch Progress Bars
+#' 
+#' @template section_parallelization
+#' @template section_logging
 #'
 #' @source
 #' `r format_bib("bergstra_2012")`
