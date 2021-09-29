@@ -1,4 +1,4 @@
-#' @title TunerGenSA
+#' @title Hyperparameter Tuning with Generalized Simulated Annealing
 #'
 #' @name mlr_tuners_gensa
 #'
@@ -8,9 +8,12 @@
 #'
 #' @templateVar id gensa
 #' @template section_dictionary_tuners
-#' @template section_logging
 #'
 #' @inheritSection bbotk::OptimizerGenSA Parameters
+#' @inheritSection bbotk::OptimizerGenSA Progress Bars
+#' 
+#' @template section_parallelization
+#' @template section_logging
 #'
 #' @source
 #' `r format_bib("tsallis_1996", "xiang_2013")`

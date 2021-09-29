@@ -3,7 +3,12 @@
 \name{mlr_tuners_cmaes}
 \alias{mlr_tuners_cmaes}
 \alias{TunerCmaes}
-\title{TunerCmaes}
+\title{Hyperparameter Tuning with Covariance Matrix Adaptation Evolution Strategy}
+\source{
+Hansen N (2016).
+\dQuote{The CMA Evolution Strategy: A Tutorial.}
+1604.00772.
+}
 \description{
 Subclass that implements CMA-ES calling \code{\link[adagio:cmaes]{adagio::pureCMAES()}}
 from package \CRANpkg{adagio}.
@@ -11,9 +16,32 @@ from package \CRANpkg{adagio}.
 \section{Dictionary}{
 
 This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary}
-\link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:\preformatted{mlr_tuners$get("cmaes")
+\link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:\preformatted{TunerCmaes$new()
+mlr_tuners$get("cmaes")
 tnr("cmaes")
 }
+}
+
+\section{Parameters}{
+
+\describe{
+\item{\code{sigma}}{\code{numeric(1)}}
+\item{\code{start_values}}{\code{character(1)}\cr
+Create \code{random} start values or based on \code{center} of search space? In the
+latter case, it is the center of the parameters before a trafo is applied.}
+}
+
+For the meaning of the control parameters, see \code{\link[adagio:cmaes]{adagio::pureCMAES()}}. Note
+that we have removed all control parameters which refer to the termination of
+the algorithm and where our terminators allow to obtain the same behavior.
+}
+
+\section{Progress Bars}{
+
+\verb{$optimize()} supports progress bars via the package \CRANpkg{progressr}
+combined with a \link{Terminator}. Simply wrap the function in
+\code{progressr::with_progress()} to enable them. We recommend to use package
+\CRANpkg{progress} as backend; enable with \code{progressr::handlers("progress")}.
 }
 
 \section{Logging}{
@@ -24,43 +52,37 @@ All \link{Tuner}s use a logger (as implemented in \CRANpkg{lgr}) from package
 Use \code{lgr::get_logger("bbotk")} to access and control the logger.
 }
 
-\section{Parameters}{
-
-
-\describe{
-\item{\code{par}}{\code{numeric()}}
-\item{\code{sigma}}{\code{numeric(1)}}
-}
-
-For the meaning of the control parameters, see \code{\link[adagio:cmaes]{adagio::pureCMAES()}}. Note
-that we have removed all control parameters which refer to the termination of
-the algorithm and where our terminators allow to obtain the same behavior.
-
-}
-
 \examples{
-library(mlr3)
-library(paradox)
 library(data.table)
-search_space = ParamSet$new(list(
-  ParamDbl$new("cp", lower = 0.001, upper = 0.1)
-))
-terminator = trm("evals", n_evals = 10)
-instance = TuningInstanceSingleCrit$new(
-  task = tsk("iris"),
-  learner = lrn("classif.rpart"),
+
+# retrieve task
+task = tsk("pima")
+
+# load learner and set search space
+learner = lrn("classif.rpart", 
+  cp = to_tune(1e-04, 1e-1, logscale = TRUE), 
+  minsplit = to_tune(p_dbl(2, 128, trafo = as.integer)),
+  minbucket = to_tune(p_dbl(1, 64, trafo = as.integer))
+)
+
+# hyperparameter tuning on the pima indians diabetes data set
+instance = tune(
+  method = "cmaes",
+  task = task,
+  learner = learner,
   resampling = rsmp("holdout"),
   measure = msr("classif.ce"),
-  search_space = search_space,
-  terminator = terminator
-)
-tt = tnr("cmaes", par = 0.1)
-# modifies the instance by reference
-tt$optimize(instance)
-# returns best configuration and best performance
+  term_evals = 10)
+
+# best performing hyperparameter configuration
 instance$result
-# allows access of data.table of full path of all evaluations
-instance$archive
+
+# all evaluated hyperparameter configuration
+as.data.table(instance$archive)
+
+# fit final model on complete data set
+learner$param_set$values = instance$result_learner_param_vals
+learner$train(task)
 }
 \seealso{
 Package \CRANpkg{mlr3hyperband} for hyperband tuning.
@@ -69,6 +91,7 @@ Other Tuner:
 \code{\link{mlr_tuners_design_points}},
 \code{\link{mlr_tuners_gensa}},
 \code{\link{mlr_tuners_grid_search}},
+\code{\link{mlr_tuners_irace}},
 \code{\link{mlr_tuners_nloptr}},
 \code{\link{mlr_tuners_random_search}}
 }

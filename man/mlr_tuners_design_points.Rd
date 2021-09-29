@@ -3,7 +3,7 @@
 \name{mlr_tuners_design_points}
 \alias{mlr_tuners_design_points}
 \alias{TunerDesignPoints}
-\title{TunerDesignPoints}
+\title{Hyperparameter Tuning with via Design Points}
 \description{
 Subclass for tuning w.r.t. fixed design points.
 
@@ -13,7 +13,8 @@ in the design are evaluated in order as given.
 \section{Dictionary}{
 
 This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary}
-\link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:\preformatted{mlr_tuners$get("design_points")
+\link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:\preformatted{TunerDesignPoints$new()
+mlr_tuners$get("design_points")
 tnr("design_points")
 }
 }
@@ -51,30 +52,44 @@ Design points to try in search, one per row.}
 
 }
 
+\section{Progress Bars}{
+
+
+\verb{$optimize()} supports progress bars via the package \href{https://CRAN.R-project.org/package=progressr}{\pkg{progressr}}
+combined with a \link[bbotk]{Terminator}. Simply wrap the function in
+\code{progressr::with_progress()} to enable them. We recommend to use package
+\href{https://CRAN.R-project.org/package=progress}{\pkg{progress}} as backend; enable with \code{progressr::handlers("progress")}.
+
+}
+
 \examples{
-library(mlr3)
-library(paradox)
 library(data.table)
-search_space = ParamSet$new(list(
-  ParamDbl$new("cp", lower = 0.001, upper = 0.1)
-))
-terminator = trm("evals", n_evals = 3)
-instance = TuningInstanceSingleCrit$new(
-  task = tsk("iris"),
-  learner = lrn("classif.rpart"),
+
+# retrieve task
+task = tsk("pima")
+
+# load learner and set search space
+learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
+
+# hyperparameter tuning on the pima indians diabetes data set
+instance = tune(
+  method = "design_points",
+  task = task,
+  learner = learner,
   resampling = rsmp("holdout"),
   measure = msr("classif.ce"),
-  search_space = search_space,
-  terminator = terminator
+  design = data.table(cp = c(log(1e-1), log(1e-2)))
 )
-design = data.table(cp = c(0.1, 0.01))
-tt = tnr("design_points", design = design)
-# modifies the instance by reference
-tt$optimize(instance)
-# returns best configuration and best performance
+
+# best performing hyperparameter configuration
 instance$result
-# allows access of data.table of full path of all evaluations
-instance$archive
+
+# all evaluated hyperparameter configuration
+as.data.table(instance$archive)
+
+# fit final model on complete data set
+learner$param_set$values = instance$result_learner_param_vals
+learner$train(task)
 }
 \seealso{
 Package \CRANpkg{mlr3hyperband} for hyperband tuning.
@@ -83,6 +98,7 @@ Other Tuner:
 \code{\link{mlr_tuners_cmaes}},
 \code{\link{mlr_tuners_gensa}},
 \code{\link{mlr_tuners_grid_search}},
+\code{\link{mlr_tuners_irace}},
 \code{\link{mlr_tuners_nloptr}},
 \code{\link{mlr_tuners_random_search}}
 }

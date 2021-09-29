@@ -58,32 +58,27 @@ configuration and aggregated performance to the instance.
 }
 
 \examples{
-library(mlr3)
-library(paradox)
-search_space = ParamSet$new(list(
-  ParamDbl$new("cp", lower = 0.001, upper = 0.1)
-))
-terminator = trm("evals", n_evals = 3)
 instance = TuningInstanceSingleCrit$new(
   task = tsk("iris"),
-  learner = lrn("classif.rpart"),
+  learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
   resampling = rsmp("holdout"),
   measure = msr("classif.ce"),
-  search_space = search_space,
-  terminator = terminator
+  terminator = trm("evals", n_evals = 3)
 )
-# swap this line to use a different Tuner
-tt = tnr("random_search")
+tuner = tnr("random_search")
+
+# optimize hyperparameter
 # modifies the instance by reference
-tt$optimize(instance)
+tuner$optimize(instance)
+
 # returns best configuration and best performance
 instance$result
-# allows access of data.table / benchmark result of full path of all
-# evaluations
+
+# allows access of data.table of full path of all evaluations
 instance$archive
 }
-\section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
 \item{\code{param_set}}{(\link[paradox:ParamSet]{paradox::ParamSet}).}
 
@@ -179,7 +174,7 @@ The result will be written into the instance object.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-NULL
+\link[data.table:data.table]{data.table::data.table}
 }
 }
 \if{html}{\out{<hr>}}

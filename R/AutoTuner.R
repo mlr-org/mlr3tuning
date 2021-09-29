@@ -10,12 +10,15 @@
 #'    a search space as [paradox::ParamSet], a [mlr3::Resampling] and a
 #'    [mlr3::Measure].
 #' 2. The best found hyperparameter configuration is set as hyperparameters
-#'    for the wrapped (inner) learner.
+#'    for the wrapped (inner) learner stored in `at$learner`. Access the tuned
+#'    hyperparameters via `at$learner$param_set$values`.
 #' 3. A final model is fit on the complete training data using the now
-#'    parametrized wrapped learner.
+#'    parametrized wrapped learner. The respective model is available via field
+#'    `at$learner$model`.
 #'
 #' During `$predict()` the `AutoTuner` just calls the predict method of the
-#' wrapped (inner) learner.
+#' wrapped (inner) learner. A set timeout is disabled while fitting the final
+#' model.
 #'
 #' Note that this approach allows to perform nested resampling by passing an
 #' [AutoTuner] object to [mlr3::resample()] or [mlr3::benchmark()].
@@ -29,45 +32,56 @@
 #'
 #' @export
 #' @examples
-#' library(mlr3)
-#' library(paradox)
-#'
-#' task = tsk("iris")
-#' search_space = ParamSet$new(
-#'   params = list(ParamDbl$new("cp", lower = 0.001, upper = 0.1))
-#' )
+#' task = tsk("pima")
+#' train_set = sample(task$nrow, 0.8 * task$nrow)
+#' test_set = setdiff(seq_len(task$nrow), train_set)
 #'
 #' at = AutoTuner$new(
-#'   learner = lrn("classif.rpart"),
+#'   learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
 #'   resampling = rsmp("holdout"),
 #'   measure = msr("classif.ce"),
 #'   terminator = trm("evals", n_evals = 5),
-#'   tuner = tnr("grid_search"),
-#'   search_space = search_space,
-#'   store_tuning_instance = TRUE)
+#'   tuner = tnr("random_search"))
 #'
-#' at$train(task)
+#' # tune hyperparameters and fit final model
+#' at$train(task, row_ids = train_set)
+#'
+#' # predict with final model
+#' at$predict(task, row_ids = test_set)
+#'
+#' # show tuning result
+#' at$tuning_result
+#'
+#' # model slot contains trained learner and tuning instance
 #' at$model
+#'
+#' # shortcut trained learner
 #' at$learner
 #'
-#' # Nested resampling
+#' # shortcut tuning instance
+#' at$tuning_instance
+#'
+#'
+#' ### nested resampling
+#'
 #' at = AutoTuner$new(
-#'   learner = lrn("classif.rpart"),
+#'   learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
 #'   resampling = rsmp("holdout"),
 #'   measure = msr("classif.ce"),
 #'   terminator = trm("evals", n_evals = 5),
-#'   tuner = tnr("grid_search"),
-#'   search_space = search_space,
-#'   store_tuning_instance = TRUE)
+#'   tuner = tnr("random_search"))
 #'
-#' resampling_outer = rsmp("cv", folds = 2)
+#' resampling_outer = rsmp("cv", folds = 3)
 #' rr = resample(task, at, resampling_outer, store_models = TRUE)
 #'
-#' # Aggregate performance of outer results
-#' rr$aggregate()
+#' # retrieve inner tuning results.
+#' extract_inner_tuning_results(rr)
 #'
-#' # Retrieve inner tuning results.
-#' as.data.table(rr)$learner[[1]]$tuning_result
+#' # performance scores estimated on the outer resampling
+#' rr$score()
+#'
+#' # unbiased performance of the final model trained on the full data set
+#' rr$aggregate()
 AutoTuner = R6Class("AutoTuner",
   inherit = Learner,
   public = list(
@@ -95,7 +109,8 @@ AutoTuner = R6Class("AutoTuner",
     #' Performance measure to optimize.
     #'
     #' @param search_space ([paradox::ParamSet])\cr
-    #' Hyperparameter search space, see [TuningInstanceSingleCrit].
+    #' Hyperparameter search space. If `NULL`, the search space is constructed
+    #' from the [TuneToken] in the `ParamSet` of the learner.
     #'
     #' @param terminator ([bbotk::Terminator])\cr
     #' When to stop tuning, see [TuningInstanceSingleCrit].
@@ -111,7 +126,7 @@ AutoTuner = R6Class("AutoTuner",
       search_space = NULL, store_tuning_instance = TRUE,
       store_benchmark_result = TRUE, store_models = FALSE,
       check_values = FALSE) {
-      learner = assert_learner(learner)$clone(deep = TRUE)
+      learner = assert_learner(as_learner(learner, clone = TRUE))
 
       if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token")) > 0) {
         stop("If the values of the ParamSet of the Learner contain TuneTokens you cannot supply a search_space.")
@@ -131,9 +146,6 @@ AutoTuner = R6Class("AutoTuner",
       if (!private$.store_tuning_instance && ia$store_benchmark_result) {
         stop("Benchmark results can only be stored if store_tuning_instance is set to TRUE")
       }
-      if (ia$store_models && !ia$store_benchmark_result) {
-        stop("Models can only be stored if store_benchmark_result is set to TRUE")
-      }
 
       ia$check_values = assert_flag(check_values)
       self$instance_args = ia
@@ -150,6 +162,45 @@ AutoTuner = R6Class("AutoTuner",
 
       self$predict_type = learner$predict_type
       self$predict_sets = learner$predict_sets
+    },
+
+    #' @description
+    #' Extracts the base learner from nested learner objects like
+    #' `GraphLearner` in \CRANpkg{mlr3pipelines}. If `recursive = 0`, the (tuned)
+    #' learner is returned.
+    #'
+    #' @param recursive (`integer(1)`)\cr
+    #'   Depth of recursion for multiple nested objects.
+    #'
+    #' @return [Learner].
+    base_learner = function(recursive = Inf) {
+      if (recursive == 0L) self$learner else self$learner$base_learner(recursive - 1L)
+    },
+
+    #' Printer.
+    #' @param ... (ignored).
+    print = function() {
+      search_space = if (is.null(self$instance_args$search_space)) {
+        self$instance_args$learner$param_set$search_space()
+      } else {
+        self$instance_args$search_space
+      }
+      catf(format(self))
+      catf(str_indent("* Model:", if (is.null(self$model)) "-" else class(self$model)[1L]))
+      catf("* Search Space:")
+      print(search_space)
+      catf(str_indent("* Packages:", self$packages))
+      catf(str_indent("* Predict Type:", self$predict_type))
+      catf(str_indent("* Feature Types:", self$feature_types))
+      catf(str_indent("* Properties:", self$properties))
+      w = self$warnings
+      e = self$errors
+      if (length(w)) {
+        catf(str_indent("* Warnings:", w))
+      }
+      if (length(e)) {
+        catf(str_indent("* Errors:", e))
+      }
     }
   ),
 
@@ -174,7 +225,7 @@ AutoTuner = R6Class("AutoTuner",
     #' Internally created tuning instance with all intermediate results.
     tuning_instance = function() self$model$tuning_instance,
 
-    #' @field tuning_result (named `list()`)\cr
+    #' @field tuning_result ([data.table::data.table])\cr
     #' Short-cut to `result` from [TuningInstanceSingleCrit].
     tuning_result = function() self$tuning_instance$result,
 
@@ -195,6 +246,14 @@ AutoTuner = R6Class("AutoTuner",
       }, error = function(cond){})
 
       private$.predict_type = rhs
+    },
+
+    #' @field hash (`character(1)`)\cr
+    #' Hash (unique identifier) for this object.
+    hash = function(rhs) {
+      assert_ro_binding(rhs)
+      calculate_hash(class(self), self$id, self$param_set$values, private$.predict_type, self$fallback$hash, self$instance_args,
+        private$.store_tuning_instance)
     }
   ),
 
@@ -210,6 +269,9 @@ AutoTuner = R6Class("AutoTuner",
       # here we write to the object and this would change instance_args
       learner = ia$learner$clone(deep = TRUE)
       learner$param_set$values = instance$result_learner_param_vals
+      # disable timeout to allow train on full data set without time limit
+      # timeout during tuning is not affected
+      learner$timeout = c(train = Inf, predict = Inf)
       learner$train(task)
 
       # the return model is a list of "learner" and "tuning_instance"

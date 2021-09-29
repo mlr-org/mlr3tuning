@@ -21,6 +21,34 @@ The tuner is also supposed to store its final result, consisting of a
 selected hyperparameter configuration and associated estimated performance
 values, by calling the method \code{instance$assign_result}.
 }
+\examples{
+library(data.table)
+
+# define search space
+search_space = ps(
+  cp = p_dbl(lower = 0.001, upper = 0.1),
+  minsplit = p_int(lower = 1, upper = 10)
+)
+
+# initialize instance
+instance = TuningInstanceMultiCrit$new(
+  task = tsk("iris"),
+  learner = lrn("classif.rpart"),
+  resampling = rsmp("holdout"),
+  measure = msrs(c("classif.ce", "classif.acc")),
+  search_space = search_space,
+  terminator = trm("evals", n_evals = 5)
+)
+
+# generate design
+design = data.table(cp = c(0.05, 0.01), minsplit = c(5, 3))
+
+# eval design
+instance$eval_batch(design)
+
+# show archive
+instance$archive
+}
 \section{Super classes}{
 \code{\link[bbotk:OptimInstance]{bbotk::OptimInstance}} -> \code{\link[bbotk:OptimInstanceMultiCrit]{bbotk::OptimInstanceMultiCrit}} -> \code{TuningInstanceMultiCrit}
 }
@@ -43,6 +71,7 @@ List of param values for the optimal learner call.}
 \if{html}{
 \out{<details open ><summary>Inherited methods</summary>}
 \itemize{
+\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="clear">}\href{../../bbotk/html/OptimInstance.html#method-clear}{\code{bbotk::OptimInstance$clear()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="eval_batch">}\href{../../bbotk/html/OptimInstance.html#method-eval_batch}{\code{bbotk::OptimInstance$eval_batch()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="format">}\href{../../bbotk/html/OptimInstance.html#method-format}{\code{bbotk::OptimInstance$format()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="objective_function">}\href{../../bbotk/html/OptimInstance.html#method-objective_function}{\code{bbotk::OptimInstance$objective_function()}}\out{</span>}
@@ -82,8 +111,13 @@ Task to operate on.}
 \item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner}).}
 
 \item{\code{resampling}}{(\link[mlr3:Resampling]{mlr3::Resampling})\cr
-Uninstantiated resamplings are instantiated during construction
-so that all configurations are evaluated on the same data splits.}
+Resampling that is used to evaluated the performance of the hyperparameter
+configurations. Uninstantiated resamplings are instantiated during
+construction so that all configurations are evaluated on the same data
+splits. Already instantiated resamplings are kept unchanged. Specialized
+\link{Tuner} change the resampling e.g. to evaluate a hyperparameter configuration
+on different data splits. This field, however, always returns the resampling
+passed in construction.}
 
 \item{\code{measures}}{(list of \link[mlr3:Measure]{mlr3::Measure})\cr
 Measures to optimize.
@@ -91,17 +125,22 @@ If \code{NULL}, \CRANpkg{mlr3}'s default measure is used.}
 
 \item{\code{terminator}}{(\link{Terminator}).}
 
-\item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet}).}
+\item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
+Hyperparameter search space. If \code{NULL}, the search space is constructed from
+the \link{TuneToken} in the \code{ParamSet} of the learner.}
 
 \item{\code{store_models}}{(\code{logical(1)})\cr
-Store models in benchmark result?}
+If \code{FALSE} (default), the fitted models are not stored in the
+\link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}. If \code{store_benchmark_result = FALSE}, the models are
+only stored temporarily and not accessible after the tuning. This combination
+might be useful for measures that require a model.}
 
 \item{\code{check_values}}{(\code{logical(1)})\cr
 Should parameters before the evaluation and the results be checked for
 validity?}
 
 \item{\code{store_benchmark_result}}{(\code{logical(1)})\cr
-Store benchmark result in archive?}
+If \code{TRUE} (default), stores the \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} in archive.}
 }
 \if{html}{\out{</div>}}
 }

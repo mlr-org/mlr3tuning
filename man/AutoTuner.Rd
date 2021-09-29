@@ -13,13 +13,16 @@ The tuning can be specified by providing a \link{Tuner}, a \link[bbotk:Terminato
 a search space as \link[paradox:ParamSet]{paradox::ParamSet}, a \link[mlr3:Resampling]{mlr3::Resampling} and a
 \link[mlr3:Measure]{mlr3::Measure}.
 \item The best found hyperparameter configuration is set as hyperparameters
-for the wrapped (inner) learner.
+for the wrapped (inner) learner stored in \code{at$learner}. Access the tuned
+hyperparameters via \code{at$learner$param_set$values}.
 \item A final model is fit on the complete training data using the now
-parametrized wrapped learner.
+parametrized wrapped learner. The respective model is available via field
+\code{at$learner$model}.
 }
 
 During \verb{$predict()} the \code{AutoTuner} just calls the predict method of the
-wrapped (inner) learner.
+wrapped (inner) learner. A set timeout is disabled while fitting the final
+model.
 
 Note that this approach allows to perform nested resampling by passing an
 \link{AutoTuner} object to \code{\link[mlr3:resample]{mlr3::resample()}} or \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
@@ -28,45 +31,56 @@ and execute \code{\link[mlr3:resample]{mlr3::resample()}} or \code{\link[mlr3:be
 \code{store_models = TRUE} (see examples).
 }
 \examples{
-library(mlr3)
-library(paradox)
-
-task = tsk("iris")
-search_space = ParamSet$new(
-  params = list(ParamDbl$new("cp", lower = 0.001, upper = 0.1))
-)
+task = tsk("pima")
+train_set = sample(task$nrow, 0.8 * task$nrow)
+test_set = setdiff(seq_len(task$nrow), train_set)
 
 at = AutoTuner$new(
-  learner = lrn("classif.rpart"),
+  learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
   resampling = rsmp("holdout"),
   measure = msr("classif.ce"),
   terminator = trm("evals", n_evals = 5),
-  tuner = tnr("grid_search"),
-  search_space = search_space,
-  store_tuning_instance = TRUE)
+  tuner = tnr("random_search"))
 
-at$train(task)
+# tune hyperparameters and fit final model
+at$train(task, row_ids = train_set)
+
+# predict with final model
+at$predict(task, row_ids = test_set)
+
+# show tuning result
+at$tuning_result
+
+# model slot contains trained learner and tuning instance
 at$model
+
+# shortcut trained learner
 at$learner
 
-# Nested resampling
+# shortcut tuning instance
+at$tuning_instance
+
+
+### nested resampling
+
 at = AutoTuner$new(
-  learner = lrn("classif.rpart"),
+  learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
   resampling = rsmp("holdout"),
   measure = msr("classif.ce"),
   terminator = trm("evals", n_evals = 5),
-  tuner = tnr("grid_search"),
-  search_space = search_space,
-  store_tuning_instance = TRUE)
+  tuner = tnr("random_search"))
 
-resampling_outer = rsmp("cv", folds = 2)
+resampling_outer = rsmp("cv", folds = 3)
 rr = resample(task, at, resampling_outer, store_models = TRUE)
 
-# Aggregate performance of outer results
-rr$aggregate()
+# retrieve inner tuning results.
+extract_inner_tuning_results(rr)
 
-# Retrieve inner tuning results.
-as.data.table(rr)$learner[[1]]$tuning_result
+# performance scores estimated on the outer resampling
+rr$score()
+
+# unbiased performance of the final model trained on the full data set
+rr$aggregate()
 }
 \section{Super class}{
 \code{\link[mlr3:Learner]{mlr3::Learner}} -> \code{AutoTuner}
@@ -93,12 +107,15 @@ Trained learner}
 \item{\code{tuning_instance}}{(\link{TuningInstanceSingleCrit})\cr
 Internally created tuning instance with all intermediate results.}
 
-\item{\code{tuning_result}}{(named \code{list()})\cr
+\item{\code{tuning_result}}{(\link[data.table:data.table]{data.table::data.table})\cr
 Short-cut to \code{result} from \link{TuningInstanceSingleCrit}.}
 
 \item{\code{predict_type}}{(\code{character(1)})\cr
 Stores the currently active predict type, e.g. \code{"response"}.
 Must be an element of \verb{$predict_types}.}
+
+\item{\code{hash}}{(\code{character(1)})\cr
+Hash (unique identifier) for this object.}
 }
 \if{html}{\out{</div>}}
 }
@@ -106,6 +123,8 @@ Must be an element of \verb{$predict_types}.}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{AutoTuner$new()}}
+\item \href{#method-base_learner}{\code{AutoTuner$base_learner()}}
+\item \href{#method-print}{\code{AutoTuner$print()}}
 \item \href{#method-clone}{\code{AutoTuner$clone()}}
 }
 }
@@ -116,7 +135,6 @@ Must be an element of \verb{$predict_types}.}
 \item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="help">}\href{../../mlr3/html/Learner.html#method-help}{\code{mlr3::Learner$help()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="predict">}\href{../../mlr3/html/Learner.html#method-predict}{\code{mlr3::Learner$predict()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="predict_newdata">}\href{../../mlr3/html/Learner.html#method-predict_newdata}{\code{mlr3::Learner$predict_newdata()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="print">}\href{../../mlr3/html/Learner.html#method-print}{\code{mlr3::Learner$print()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="reset">}\href{../../mlr3/html/Learner.html#method-reset}{\code{mlr3::Learner$reset()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="train">}\href{../../mlr3/html/Learner.html#method-train}{\code{mlr3::Learner$train()}}\out{</span>}
 }
@@ -164,7 +182,8 @@ When to stop tuning, see \link{TuningInstanceSingleCrit}.}
 Tuning algorithm to run.}
 
 \item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
-Hyperparameter search space, see \link{TuningInstanceSingleCrit}.}
+Hyperparameter search space. If \code{NULL}, the search space is constructed
+from the \link{TuneToken} in the \code{ParamSet} of the learner.}
 
 \item{\code{store_tuning_instance}}{(\code{logical(1)})\cr
 If \code{TRUE} (default), stores the internally created
@@ -172,14 +191,57 @@ If \code{TRUE} (default), stores the internally created
 \verb{$tuning_instance}.}
 
 \item{\code{store_benchmark_result}}{(\code{logical(1)})\cr
-Store benchmark result in archive?}
+If \code{TRUE} (default), stores the \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} in archive.}
 
 \item{\code{store_models}}{(\code{logical(1)})\cr
-Store models in benchmark result?}
+If \code{FALSE} (default), the fitted models are not stored in the
+\link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}. If \code{store_benchmark_result = FALSE}, the models are
+only stored temporarily and not accessible after the tuning. This combination
+might be useful for measures that require a model.}
 
 \item{\code{check_values}}{(\code{logical(1)})\cr
 Should parameters before the evaluation and the results be checked for
 validity?}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-base_learner"></a>}}
+\if{latex}{\out{\hypertarget{method-base_learner}{}}}
+\subsection{Method \code{base_learner()}}{
+Extracts the base learner from nested learner objects like
+\code{GraphLearner} in \CRANpkg{mlr3pipelines}. If \code{recursive = 0}, the (tuned)
+learner is returned.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AutoTuner$base_learner(recursive = Inf)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{recursive}}{(\code{integer(1)})\cr
+Depth of recursion for multiple nested objects.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\link{Learner}.
+Printer.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-print"></a>}}
+\if{latex}{\out{\hypertarget{method-print}{}}}
+\subsection{Method \code{print()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AutoTuner$print()}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{(ignored).}
 }
 \if{html}{\out{</div>}}
 }

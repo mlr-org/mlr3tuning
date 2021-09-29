@@ -31,6 +31,33 @@
 #' @template param_learner_param_vals
 #'
 #' @export
+#' @examples
+#' library(data.table)
+#' 
+#' # define search space
+#' search_space = ps(
+#'   cp = p_dbl(lower = 0.001, upper = 0.1),
+#'   minsplit = p_int(lower = 1, upper = 10)
+#' )
+#' 
+#' # initialize instance
+#' instance = TuningInstanceMultiCrit$new(
+#'   task = tsk("iris"),
+#'   learner = lrn("classif.rpart"),
+#'   resampling = rsmp("holdout"),
+#'   measure = msrs(c("classif.ce", "classif.acc")),
+#'   search_space = search_space,
+#'   terminator = trm("evals", n_evals = 5)
+#' )
+#' 
+#' # generate design
+#' design = data.table(cp = c(0.05, 0.01), minsplit = c(5, 3))
+#' 
+#' # eval design
+#' instance$eval_batch(design)
+#' 
+#' # show archive
+#' instance$archive
 TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
   inherit = OptimInstanceMultiCrit,
   public = list(
@@ -51,6 +78,7 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
       }
       if (is.null(search_space)) {
         search_space = learner$param_set$search_space()
+        learner$param_set$values = learner$param_set$get_values(type = "without_token")
       }
 
       obj = ObjectiveTuning$new(
@@ -73,12 +101,15 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
     assign_result = function(xdt, ydt, learner_param_vals = NULL) {
       # set the column with the learner param_vals that were not optimized over but set implicitly
       if (is.null(learner_param_vals)) {
-        learner_param_vals = self$objective$learner$param_set$get_values(type = "without_token")
-        learner_param_vals = replicate(nrow(xdt), learner_param_vals, simplify = FALSE)
+        learner_param_vals = self$objective$learner$param_set$values
+        if (length(learner_param_vals) == 0) learner_param_vals = list()
+        learner_param_vals = replicate(nrow(ydt), list(learner_param_vals))
       }
-      assert_list(learner_param_vals, len = nrow(xdt))
+
       opt_x = transform_xdt_to_xss(xdt, self$search_space)
-      xdt$learner_param_vals = Map(insert_named, learner_param_vals, opt_x)
+      if (length(opt_x) == 0) opt_x = replicate(length(ydt), list())
+      learner_param_vals = Map(insert_named, learner_param_vals, opt_x)
+      xdt = cbind(xdt, learner_param_vals)
       super$assign_result(xdt, ydt)
     }
   ),

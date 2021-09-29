@@ -1,0 +1,154 @@
+---
+output: github_document
+---
+
+```{r, include = FALSE}
+lgr::get_logger("mlr3")$set_threshold("warn")
+lgr::get_logger("bbotk")$set_threshold("warn")
+set.seed(1)
+options(datatable.print.class = FALSE, datatable.print.keys = FALSE, width = 200)
+```
+
+# mlr3tuning
+
+Package website: [release](https://mlr3tuning.mlr-org.com/) | [dev](https://mlr3tuning.mlr-org.com/dev/)
+
+<!-- badges: start -->
+[![tic](https://github.com/mlr-org/mlr3tuning/workflows/tic/badge.svg?branch=main)](https://github.com/mlr-org/mlr3tuning/actions)
+[![CRAN Status](https://www.r-pkg.org/badges/version-ago/mlr3tuning)](https://cran.r-project.org/package=mlr3tuning)
+[![StackOverflow](https://img.shields.io/badge/stackoverflow-mlr3-orange.svg)](https://stackoverflow.com/questions/tagged/mlr3)
+[![Mattermost](https://img.shields.io/badge/chat-mattermost-orange.svg)](https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/)
+[![CodeFactor](https://www.codefactor.io/repository/github/mlr-org/mlr3tuning/badge)](https://www.codefactor.io/repository/github/mlr-org/mlr3tuning)
+<!-- badges: end -->
+
+This package provides hyperparameter tuning for [mlr3](https://mlr3.mlr-org.com).
+It offers various tuning methods e.g. grid search, random search and generalized simulated annealing and iterated racing and different termination criteria can be set and combined.
+`AutoTuner` provides a convenient way to perform nested resampling in combination with `mlr3`.
+The package is build on [bbotk](https://github.com/mlr-org/bbotk) which provides a common framework for optimization.
+
+## Resources
+
+- mlr3book chapters on [tuning search spaces](https://mlr3book.mlr-org.com/optimization.html#searchspace), [hyperparameter tuning](https://mlr3book.mlr-org.com/optimization.html#tuning) and [nested resampling](https://mlr3book.mlr-org.com/optimization.html#nested-resampling).
+- mlr3gallery [posts](https://mlr3gallery.mlr-org.com/#category:mlr3tuning)
+- [cheatsheet](https://cheatsheets.mlr-org.com/mlr3tuning.pdf)
+
+## Installation
+
+Install the last release from CRAN:
+
+```{r eval = FALSE}
+install.packages("mlr3tuning")
+```
+
+Install the development version from GitHub:
+
+```{r eval = FALSE}
+remotes::install_github("mlr-org/mlr3tuning")
+```
+
+## Example
+
+```{r, include = FALSE}
+# mute load messages
+library("mlr3tuning")
+```
+
+### Basic hyperparameter tuning
+
+```{r}
+library("mlr3tuning")
+
+# retrieve task
+task = tsk("pima")
+
+# load learner and set search space
+learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
+
+# hyperparameter tuning on the pima indians diabetes data set
+instance = tune(
+  method = "random_search",
+  task = task,
+  learner = learner,
+  resampling = rsmp("cv", folds = 3),
+  measure = msr("classif.ce"),
+  term_evals = 10,
+  batch_size = 5
+)
+
+# best performing hyperparameter configuration
+instance$result
+
+# all evaluated hyperparameter configuration
+as.data.table(instance$archive)
+
+# fit final model on complete data set
+learner$param_set$values = instance$result_learner_param_vals
+learner$train(task)
+```
+
+### Automatic tuning
+
+```{r}
+# retrieve task
+task = tsk("pima")
+
+# construct auto tuner
+at = auto_tuner(
+  method = "random_search",
+  learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
+  resampling = rsmp("cv", folds = 3),
+  measure = msr("classif.ce"),
+  term_evals = 10,
+  batch_size = 5
+)
+
+# train/test split
+train_set = sample(task$nrow, 0.8 * task$nrow)
+test_set = setdiff(seq_len(task$nrow), train_set)
+
+# tune hyperparameters and fit final model on the complete data set in one go
+at$train(task, row_ids = train_set)
+
+# best performing hyperparameter configuration
+at$tuning_result
+
+# all evaluated hyperparameter configuration
+as.data.table(at$archive)
+
+# predict new data with model trained on the complete data set and optimized hyperparameters
+at$predict(task, row_ids = test_set)
+```
+
+### Nested resampling
+
+```{r}
+# retrieve task
+task = tsk("pima")
+
+# load learner and set search space
+learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
+
+# nested resampling
+rr = tune_nested(
+  method = "random_search",
+  task =  task,
+  learner = learner,
+  inner_resampling = rsmp("holdout"),
+  outer_resampling = rsmp("cv", folds = 3),
+  measure = msr("classif.ce"),
+  term_evals = 10,
+  batch_size = 5
+)
+
+# aggregated performance of all outer resampling iterations
+rr$aggregate()
+
+# performance scores of the outer resampling
+rr$score()
+
+# inner resampling results
+extract_inner_tuning_results(rr)
+
+# inner resampling archives
+extract_inner_tuning_archives(rr)
+```

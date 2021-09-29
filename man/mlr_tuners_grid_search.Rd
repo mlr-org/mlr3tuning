@@ -3,7 +3,7 @@
 \name{mlr_tuners_grid_search}
 \alias{mlr_tuners_grid_search}
 \alias{TunerGridSearch}
-\title{TunerGridSearch}
+\title{Hyperparameter Tuning with Grid Search}
 \description{
 Subclass for grid search tuning.
 
@@ -14,7 +14,8 @@ evaluated in a random order.
 \section{Dictionary}{
 
 This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary}
-\link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:\preformatted{mlr_tuners$get("grid_search")
+\link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:\preformatted{TunerGridSearch$new()
+mlr_tuners$get("grid_search")
 tnr("grid_search")
 }
 }
@@ -55,31 +56,42 @@ Maximum number of points to try in a batch.}
 
 }
 
+\section{Progress Bars}{
+
+
+\verb{$optimize()} supports progress bars via the package \href{https://CRAN.R-project.org/package=progressr}{\pkg{progressr}}
+combined with a \link[bbotk]{Terminator}. Simply wrap the function in
+\code{progressr::with_progress()} to enable them. We recommend to use package
+\href{https://CRAN.R-project.org/package=progress}{\pkg{progress}} as backend; enable with \code{progressr::handlers("progress")}.
+
+}
+
 \examples{
-library(mlr3)
-library(paradox)
-search_space = ParamSet$new(list(
-  ParamDbl$new("cp", lower = 0.001, upper = 0.1)
-))
-terminator = trm("evals", n_evals = 3)
-instance = TuningInstanceSingleCrit$new(
-  task = tsk("iris"),
-  learner = lrn("classif.rpart"),
+# retrieve task
+task = tsk("pima")
+
+# load learner and set search space
+learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
+
+# hyperparameter tuning on the pima indians diabetes data set
+instance = tune(
+  method = "grid_search",
+  task = task,
+  learner = learner,
   resampling = rsmp("holdout"),
   measure = msr("classif.ce"),
-  search_space = search_space,
-  terminator = terminator
+  term_evals = 10
 )
-tt = tnr("grid_search")
 
-# modifies the instance by reference
-tt$optimize(instance)
-
-# returns best configuration and best performance
+# best performing hyperparameter configuration
 instance$result
 
-# allows access of data.table of full path of all evaluations
-instance$archive
+# all evaluated hyperparameter configuration
+as.data.table(instance$archive)
+
+# fit final model on complete data set
+learner$param_set$values = instance$result_learner_param_vals
+learner$train(task)
 }
 \seealso{
 Package \CRANpkg{mlr3hyperband} for hyperband tuning.
@@ -88,6 +100,7 @@ Other Tuner:
 \code{\link{mlr_tuners_cmaes}},
 \code{\link{mlr_tuners_design_points}},
 \code{\link{mlr_tuners_gensa}},
+\code{\link{mlr_tuners_irace}},
 \code{\link{mlr_tuners_nloptr}},
 \code{\link{mlr_tuners_random_search}}
 }

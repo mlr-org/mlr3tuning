@@ -1,4 +1,4 @@
-#' @title TunerGridSearch
+#' @title Hyperparameter Tuning with Grid Search
 #'
 #' @name mlr_tuners_grid_search
 #'
@@ -12,11 +12,12 @@
 #'
 #' @templateVar id grid_search
 #' @template section_dictionary_tuners
+#' 
+#' @inheritSection bbotk::OptimizerGridSearch Parameters
+#' @inheritSection bbotk::OptimizerGridSearch Progress Bars
+#' 
 #' @template section_parallelization
 #' @template section_logging
-#'
-#'
-#' @inheritSection bbotk::OptimizerGridSearch Parameters
 #'
 #' @family Tuner
 #' @seealso Package \CRANpkg{mlr3hyperband} for hyperband tuning.

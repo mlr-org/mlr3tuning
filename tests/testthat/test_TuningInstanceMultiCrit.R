@@ -39,12 +39,6 @@ test_that("store_benchmark_result and store_models flag works", {
   inst$eval_batch(data.table(cp = c(0.3, 0.25), minsplit = c(3, 4)))
   expect_r6(inst$archive$benchmark_result, "BenchmarkResult")
 
-  expect_error(TEST_MAKE_INST1_2D(
-    store_benchmark_result = FALSE,
-    store_models = TRUE),
-  regexp = "Models can only be stored if store_benchmark_result is set to TRUE",
-  fixed = TRUE)
-
   inst = TEST_MAKE_INST1_2D(store_benchmark_result = TRUE, store_models = FALSE)
   inst$eval_batch(data.table(cp = c(0.3, 0.25), minsplit = c(3, 4)))
   expect_null(inst$archive$benchmark_result$resample_result(1)$learners[[1]]$model)
@@ -121,4 +115,75 @@ test_that("TuneToken and result_learner_param_vals works", {
 
   expect_equal(instance$result_learner_param_vals[[1]]$xval, 0)
   expect_equal(instance$result_learner_param_vals[[1]]$cp, 0.1)
+})
+
+test_that("TuningInstanceMultiCrit and empty search space works", {
+  # xval constant
+  instance = tune(
+    method = "random_search",
+    task = tsk("pima"),
+    learner = lrn("classif.rpart"),
+    resampling = rsmp("cv", folds = 3),
+    measure = msrs(c("classif.ce", "classif.acc")),
+    term_evals = 10,
+    batch_size = 5
+  )
+
+  expect_data_table(instance$result)
+  expect_equal(instance$result$learner_param_vals[[1]], list(xval = 0))
+  expect_equal(instance$result$x_domain[[1]], list())
+
+  # xval and cp constant
+  instance = tune(
+    method = "random_search",
+    task = tsk("pima"),
+    learner = lrn("classif.rpart", xval = 0, cp = 0.1),
+    resampling = rsmp("cv", folds = 3),
+    measure = msrs(c("classif.ce", "classif.acc")),
+    term_evals = 10,
+    batch_size = 5
+  )
+
+  expect_data_table(instance$result)
+  expect_equal(instance$result$learner_param_vals[[1]], list(xval = 0, cp = 0.1))
+  expect_equal(instance$result$x_domain[[1]], list())
+
+  # no constant
+  learner = lrn("classif.rpart")
+  learner$param_set$values$xval = NULL
+
+  instance = tune(
+    method = "random_search",
+    task = tsk("pima"),
+    learner = learner,
+    resampling = rsmp("cv", folds = 3),
+    measure = msrs(c("classif.ce", "classif.acc")),
+    term_evals = 10,
+    batch_size = 5
+  )
+
+  expect_data_table(instance$result)
+  expect_equal(instance$result$learner_param_vals[[1]], list())
+  expect_equal(instance$result$x_domain[[1]], list())
+})
+
+test_that("assign_result works", {
+  learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1))
+  task = tsk("pima")
+  resampling = rsmp("holdout")
+  measures = msrs(c("classif.fpr", "classif.tpr"))
+  terminator = trm("evals", n_evals = 10)
+
+  instance = TuningInstanceMultiCrit$new(task, learner, resampling, measures, terminator)
+
+  xdt = data.table(cp = c(0.1, 0.01))
+  ydt = data.table(classif.fpr = c(0.8, 0.7), classif.tpr = c(0.3, 0.2))
+
+  instance$assign_result(xdt, ydt)
+  res = instance$result
+  expect_data_table(res, nrow = 2)
+  expect_equal(res$cp, c(0.1, 0.01))
+  expect_equal(res$classif.fpr, c(0.8, 0.7))
+  expect_equal(res$classif.tpr, c(0.3, 0.2))
+  expect_equal(res$learner_param_vals[[1]], list(xval = 0, cp = 0.1))
 })
