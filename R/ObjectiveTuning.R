@@ -78,12 +78,12 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
         learner$param_set$values = insert_named(learner$param_set$values, x)
         return(learner)
       })
-
+  
       # automatic matching of retrainable learners
       if (self$allow_retrain) {
         rrs = self$archive$benchmark_result$resample_results$resample_result
         # for every learner / hyperparameter configuration
-        design = map_dtr(learners, function(learner) {
+        design = imap_dtr(learners, function(learner) {
           # keep retrainable resample results
           rrrs = keep(rrs, function(rr) rr$is_retrainable(learner$param_set$values))
           if (length(rrrs) > 0) {
@@ -101,11 +101,12 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
             data.table(
               task = list(self$task),
               learner = list(learner), # force list column
-              resampling = list(self$resampling),
+              resampling = list(rrr$resampling),
               retrain = ifelse(length(rls) > 1, rls, list(rls))
             )
           } else {
             # train process
+            browser()
             data.table(
               task = list(self$task),
               learner = list(learner),

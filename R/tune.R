@@ -36,14 +36,14 @@
 #' # apply hyperparameter values to learner
 #' learner$param_set$values = instance$result_learner_param_vals
 tune = function(method, task, learner, resampling, measures, term_evals = NULL, term_time = NULL, search_space = NULL,
-  store_models = FALSE, ...) {
+  store_models = FALSE, allow_retrain = FALSE, ...) {
   assert_choice(method, mlr_tuners$keys())
   tuner = tnr(method, ...)
   terminator = terminator_selection(term_evals, term_time)
 
   if (!is.list(measures)) {
     instance = TuningInstanceSingleCrit$new(task, learner, resampling, measures, terminator, search_space, 
-      store_models = store_models)
+      store_models = store_models, allow_retrain = allow_retrain)
   } else {
     instance = TuningInstanceMultiCrit$new(task, learner, resampling, measures, terminator, search_space, 
       store_models = store_models)

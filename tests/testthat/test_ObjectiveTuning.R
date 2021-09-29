@@ -92,6 +92,7 @@ test_that("ObjectiveTuning retrains the right models", {
     expect_equal(m$x[[1]], m$x[[2]])
     expect_set_equal(unlist(m$iter), c(2,1))
   })
+})
 
 test_that("runtime of learners is added", {
   # cv
