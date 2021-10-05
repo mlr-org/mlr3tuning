@@ -8,6 +8,8 @@ test_that("ObjectiveTuning", {
     task = task, learner = learner,
     resampling = resampling, measures = measures)
 
+  expect_true("noisy" %in% obj$properties)
+
   expect_equal(obj$id, "classif.rpart_on_iris")
 
   xss = list(list("cp" = 0.01), list("cp" = 0.02))
@@ -115,7 +117,7 @@ test_that("tuner can modify resampling", {
   )
 
   instance$eval_batch(data.table(cp = 0.001))
-  rr = instance$archive$resample_result(1) 
+  rr = instance$archive$resample_result(1)
   expect_equal(rr$resampling$id, "cv")
 
   # add new resampling
@@ -123,6 +125,6 @@ test_that("tuner can modify resampling", {
   new_resampling$instantiate(tsk("iris"))
   instance$objective$constants$values$resampling = list(new_resampling)
   instance$eval_batch(data.table(cp = 0.001))
-  rr = instance$archive$resample_result(2) 
+  rr = instance$archive$resample_result(2)
   expect_equal(rr$resampling$id, "holdout")
 })

@@ -45,7 +45,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       store_models = FALSE) {
 
       self$task = assert_task(as_task(task, clone = TRUE))
-      self$learner = assert_learner(as_learner(learner, clone = TRUE))      
+      self$learner = assert_learner(as_learner(learner, clone = TRUE))
       self$measures = assert_measures(as_measures(measures, clone = TRUE),
         task = self$task, learner = self$learner)
       self$store_benchmark_result = assert_logical(store_benchmark_result)
@@ -55,7 +55,8 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
         ParamDbl$new(id = s$id, tags = ifelse(s$minimize, "minimize", "maximize"))
       }))
 
-      super$initialize(id = sprintf("%s_on_%s", self$learner$id, self$task$id), domain = self$learner$param_set, 
+      super$initialize(id = sprintf("%s_on_%s", self$learner$id, self$task$id), properties = "noisy",
+        domain = self$learner$param_set,
         codomain = codomain, constants = ps(resampling = p_uty()), check_values = check_values)
 
       # set resamplings in constants
