@@ -40,7 +40,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     #' @field archive ([ArchiveTuning]).
     archive = NULL,
 
-    #' @field hotstart_stack ([HotStartStack]).
+    #' @field hotstart_stack ([mlr3::HotstartStack]).
     hotstart_stack = NULL,
 
     #' @field allow_hotstart (logical(1))\cr
