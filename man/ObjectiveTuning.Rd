@@ -28,7 +28,7 @@ by the \link{TuningInstanceSingleCrit} / \link{TuningInstanceMultiCrit}.
 
 \item{\code{archive}}{(\link{ArchiveTuning}).}
 
-\item{\code{hotstart_stack}}{(\link{HotStartStack}).}
+\item{\code{hotstart_stack}}{(\link[mlr3:HotstartStack]{mlr3::HotstartStack}).}
 
 \item{\code{allow_hotstart}}{(logical(1))\cr}
 }
