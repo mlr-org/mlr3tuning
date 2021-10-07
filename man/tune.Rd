@@ -14,6 +14,7 @@ tune(
   term_time = NULL,
   search_space = NULL,
   store_models = FALSE,
+  allow_hotstart = FALSE,
   ...
 )
 }
@@ -55,6 +56,10 @@ If \code{FALSE} (default), the fitted models are not stored in the
 only stored temporarily and not accessible after the tuning. This combination
 might be useful for measures that require a model.}
 
+\item{allow_hotstart}{(\code{logical(1)})\cr
+Allow to hot start learners with previously fitted models. See also
+\link[mlr3:HotstartStack]{mlr3::HotstartStack}. Sets \code{store_models = TRUE}.}
+
 \item{...}{(named \code{list()})\cr
 Named arguments to be set as parameters of the tuner.}
 }
@@ -68,12 +73,12 @@ Function to tune a \link[mlr3:Learner]{mlr3::Learner}.
 learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
 
 instance = tune(
-  method = "random_search", 
-  task = tsk("pima"), 
-  learner = learner, 
-  resampling = rsmp ("holdout"), 
-  measures = msr("classif.ce"), 
-  term_evals = 4) 
+  method = "random_search",
+  task = tsk("pima"),
+  learner = learner,
+  resampling = rsmp ("holdout"),
+  measures = msr("classif.ce"),
+  term_evals = 4)
 
 # apply hyperparameter values to learner
 learner$param_set$values = instance$result_learner_param_vals

@@ -122,7 +122,8 @@ and a termination criterion.
   search_space = NULL,
   store_benchmark_result = TRUE,
   store_models = FALSE,
-  check_values = FALSE
+  check_values = FALSE,
+  allow_hotstart = FALSE
 )}\if{html}{\out{</div>}}
 }
 
@@ -164,6 +165,10 @@ might be useful for measures that require a model.}
 \item{\code{check_values}}{(\code{logical(1)})\cr
 Should parameters before the evaluation and the results be checked for
 validity?}
+
+\item{\code{allow_hotstart}}{(\code{logical(1)})\cr
+Allow to hot start learners with previously fitted models. See also
+\link[mlr3:HotstartStack]{mlr3::HotstartStack}. Sets \code{store_models = TRUE}.}
 }
 \if{html}{\out{</div>}}
 }

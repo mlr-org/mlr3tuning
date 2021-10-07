@@ -55,6 +55,9 @@ Suggests:
     nloptr,
     rpart,
     testthat (>= 3.0.0)
+Remotes:
+    mlr-org/mlr3@train_adapt,
+    mlr-org/bbotk@train_adapt
 Config/testthat/edition: 3
 Config/testthat/parallel: true
 Encoding: UTF-8

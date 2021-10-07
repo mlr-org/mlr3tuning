@@ -96,9 +96,10 @@ and a termination criterion.
   measures,
   terminator,
   search_space = NULL,
+  store_benchmark_result = TRUE,
   store_models = FALSE,
   check_values = FALSE,
-  store_benchmark_result = TRUE
+  allow_hotstart = FALSE
 )}\if{html}{\out{</div>}}
 }
 
@@ -129,6 +130,9 @@ If \code{NULL}, \CRANpkg{mlr3}'s default measure is used.}
 Hyperparameter search space. If \code{NULL}, the search space is constructed from
 the \link{TuneToken} in the \code{ParamSet} of the learner.}
 
+\item{\code{store_benchmark_result}}{(\code{logical(1)})\cr
+If \code{TRUE} (default), stores the \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} in archive.}
+
 \item{\code{store_models}}{(\code{logical(1)})\cr
 If \code{FALSE} (default), the fitted models are not stored in the
 \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}. If \code{store_benchmark_result = FALSE}, the models are
@@ -139,8 +143,9 @@ might be useful for measures that require a model.}
 Should parameters before the evaluation and the results be checked for
 validity?}
 
-\item{\code{store_benchmark_result}}{(\code{logical(1)})\cr
-If \code{TRUE} (default), stores the \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} in archive.}
+\item{\code{allow_hotstart}}{(\code{logical(1)})\cr
+Allow to hot start learners with previously fitted models. See also
+\link[mlr3:HotstartStack]{mlr3::HotstartStack}. Sets \code{store_models = TRUE}.}
 }
 \if{html}{\out{</div>}}
 }

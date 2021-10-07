@@ -12,6 +12,7 @@
 #' @template param_store_models
 #' @template param_check_values
 #' @template param_store_benchmark_result
+#' @template param_allow_hotstart
 #'
 #' @export
 ObjectiveTuning = R6Class("ObjectiveTuning",
@@ -39,23 +40,31 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     #' @field archive ([ArchiveTuning]).
     archive = NULL,
 
+    #' @field hotstart_stack ([HotStartStack]).
+    hotstart_stack = NULL,
+
+    #' @field allow_hotstart (logical(1))\cr
+    allow_hotstart = NULL,
+
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function(task, learner, resampling, measures, check_values = TRUE, store_benchmark_result = TRUE,
-      store_models = FALSE) {
+      store_models = FALSE, allow_hotstart = FALSE) {
 
       self$task = assert_task(as_task(task, clone = TRUE))
-      self$learner = assert_learner(as_learner(learner, clone = TRUE))      
+      self$learner = assert_learner(as_learner(learner, clone = TRUE))
       self$measures = assert_measures(as_measures(measures, clone = TRUE),
         task = self$task, learner = self$learner)
       self$store_benchmark_result = assert_logical(store_benchmark_result)
+      self$allow_hotstart = assert_logical(allow_hotstart)
+      if (self$allow_hotstart) store_models = TRUE
       self$store_models = assert_logical(store_models)
 
       codomain = ParamSet$new(map(self$measures, function(s) {
         ParamDbl$new(id = s$id, tags = ifelse(s$minimize, "minimize", "maximize"))
       }))
 
-      super$initialize(id = sprintf("%s_on_%s", self$learner$id, self$task$id), domain = self$learner$param_set, 
+      super$initialize(id = sprintf("%s_on_%s", self$learner$id, self$task$id), domain = self$learner$param_set,
         codomain = codomain, constants = ps(resampling = p_uty()), check_values = check_values)
 
       # set resamplings in constants
@@ -71,11 +80,12 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       learners = map(xss, function(x) {
         learner = self$learner$clone(deep = TRUE)
         learner$param_set$values = insert_named(learner$param_set$values, x)
+        if (self$allow_hotstart && !is.null(self$hotstart_stack)) learner$hotstart_stack = self$hotstart_stack
         return(learner)
       })
 
       design = data.table(task = list(self$task), learner = learners, resampling = resampling)
-      bmr = benchmark(design, store_models = self$store_models)
+      bmr = benchmark(design, store_models = self$store_models, allow_hotstart = self$allow_hotstart)
       aggr = bmr$aggregate(self$measures)
       y = map_chr(self$measures, "id")
 
@@ -88,8 +98,10 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       if (self$store_benchmark_result) {
         if (is.null(self$archive$benchmark_result)) {
           self$archive$benchmark_result = bmr
+          if (self$allow_hotstart) self$hotstart_stack = HotstartStack$new(extract_bmr_learners(bmr))
         } else {
           self$archive$benchmark_result$combine(bmr)
+          if (self$allow_hotstart) self$hotstart_stack$add(extract_bmr_learners(bmr))
         }
         cbind(aggr[, c(y, "runtime_learners"), with = FALSE], uhash = bmr$uhashes)
       } else {
@@ -98,3 +110,9 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     }
   )
 )
+
+extract_bmr_learners = function(bmr) {
+  unlist(map(seq_len(bmr$n_resample_results), function(n) {
+    bmr$resample_result(n)$learners
+  }))
+}
