@@ -6,12 +6,16 @@ test_that("hotstart works", {
     method = "grid_search",
     task = task,
     learner = learner,
-    resampling = rsmp("cv", folds = 3),
+    resampling = rsmp("holdout"),
     measure = msr("classif.ce"),
     batch_size = 5,
     resolution = 5,
     allow_hotstart = TRUE
   )
 
-  expect_r6(instance, "TuningInstanceSingleCrit")
+  ids = map(extract_bmr_learners(instance$archive$benchmark_result), function(l) {
+    l$model$id
+  })
+
+  expect_equal(length(unique(ids)), 5)
 })
