@@ -17,7 +17,7 @@ test_that("hotstart works", {
 
   ids = map(extract_bmr_learners(instance$archive$benchmark_result), function(l) l$model$id)
   expect_equal(length(unique(ids)), 5)
-    expect_equal(unique(instance$archive$data$iter), c(1, 25, 50, 75, 100))
+  expect_equal(unique(instance$archive$data$iter), c(1, 25, 50, 75, 100))
 
   # backward
   learner$properties[learner$properties %in% "hotstart_forward"] = "hotstart_backward"
