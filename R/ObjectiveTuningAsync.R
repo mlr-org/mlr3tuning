@@ -74,8 +74,6 @@ ObjectiveTuningAsync = R6Class("ObjectiveTuningAsync",
 
   private = list(
     .eval = function(xs, resampling) {
-      lgr::get_logger("mlr3")$set_threshold("warn")
-
       learner = self$learner$clone(deep = TRUE)
       learner$param_set$values = insert_named(learner$param_set$values, xs)
       if (self$allow_hotstart && !is.null(self$hotstart_stack)) learner$hotstart_stack = self$hotstart_stack
