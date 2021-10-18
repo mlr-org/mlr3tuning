@@ -97,7 +97,7 @@ Tuner = R6Class("Tuner",
       private$.properties = assert_subset(properties, bbotk_reflections$optimizer_properties, empty.ok = FALSE)
       private$.packages = assert_set(packages)
 
-      check_packages_installed(self$packages, 
+      check_packages_installed(self$packages,
         msg = sprintf("Package '%%s' required but not installed for Tuner '%s'", format(self)))
     },
 
@@ -130,12 +130,12 @@ Tuner = R6Class("Tuner",
     #' @return [data.table::data.table]
     optimize = function(inst) {
       assert_multi_class(inst, c("TuningInstanceSingleCrit", "TuningInstanceMultiCrit"))
-      optimize_default(inst, self, private)
+      optimize_tuning(inst, self, private)
     }
   ),
 
   active = list(
-   
+
     #' @field param_set ([paradox::ParamSet]).
     param_set = function(rhs) {
       if (!missing(rhs) && !identical(rhs, private$.param_set)) {

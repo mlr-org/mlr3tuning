@@ -15,7 +15,7 @@
 #' * `runtime_learners` (`numeric(1)`)\cr
 #'   Sum of training and predict times logged in learners per
 #'   [mlr3::ResampleResult] / evaluation. This does not include potential
-#'   overhead time. 
+#'   overhead time.
 #' * `timestamp` (`POSIXct`)\cr
 #'   Time stamp when the evaluation was logged into the archive.
 #' * `batch_nr` (`integer(1)`)\cr
@@ -72,6 +72,37 @@ ArchiveTuning = R6Class("ArchiveTuning",
     #' @field benchmark_result ([mlr3::BenchmarkResult])\cr
     #' Stores benchmark result.
     benchmark_result = NULL,
+
+    objective = NULL,
+
+
+    resolve_promise = function(i = NULL) {
+      assert_subset(i, seq(nrow(self$data)))
+
+      # mark resolved points
+      fun_resolved = function(p) if (future::resolved(p)) "resolved" else "in_progress"
+      self$data["in_progress", "status" := map_chr(get("promise"), fun_resolved), , on = "status"]
+
+      # ...
+      fun_value = function(promise, resolve_id) pmap_dtr(list(promise, resolve_id), function(p, id) future::value(p)[id])
+      ydt = self$data["resolved", fun_value(get("promise"), get("resolve_id")), on = "status", nomatch = NULL]
+      id = self$data["resolved", on = "status", which = TRUE, nomatch = NULL]
+      if (length(id)) {
+        set(self$data, i = id, j = names(ydt), value = ydt)
+        set(self$data, i = id, j = "status", value = "evaluated")
+
+        # hotstart
+        if (self$objective$allow_hotstart) {
+          learners = map(ydt$resample_result, "learners")
+          if (is.null(self$objective$hotstart_stack)) {
+            hot = HotstartStack$new(unlist(learners))
+          } else {
+            self$objective$hotstart_stack$add(learners)
+          }
+        }
+      }
+
+    },
 
     #' @description
     #' Retrieve [mlr3::Learner] of the i-th evaluation, by position
@@ -160,10 +191,10 @@ as.data.table.ArchiveTuning = function(x, ..., unnest = "x_domain", exclude_colu
   if ("x_domain" %nin% names(x$data)) unnest = setdiff(unnest, "x_domain")
   if (is.null(x$benchmark_result)) exclude_columns = exclude_columns[exclude_columns %nin% "uhash"]
 
- 
+
   assert_subset(unnest, names(x$data))
   cols_y_extra = NULL
-  
+
   # unnest data
   tab = unnest(copy(x$data), unnest, prefix = "{col}_")
 
@@ -182,7 +213,7 @@ as.data.table.ArchiveTuning = function(x, ..., unnest = "x_domain", exclude_colu
     # get all ids of x_domain
     # trafo could add unknown ids
     x_domain_ids = paste0("x_domain_", unique(unlist(map(x$data$x_domain, names))))
-    setdiff(x_domain_ids, exclude_columns) 
+    setdiff(x_domain_ids, exclude_columns)
   } else NULL
 
   setcolorder(tab, c(x$cols_x, x$cols_y, cols_y_extra, cols_x_domain, "runtime_learners", "timestamp", "batch_nr"))

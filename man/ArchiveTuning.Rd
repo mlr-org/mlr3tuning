@@ -92,6 +92,7 @@ Stores benchmark result.}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
+\item \href{#method-resolve_promise}{\code{ArchiveTuning$resolve_promise()}}
 \item \href{#method-learner}{\code{ArchiveTuning$learner()}}
 \item \href{#method-learners}{\code{ArchiveTuning$learners()}}
 \item \href{#method-learner_param_vals}{\code{ArchiveTuning$learner_param_vals()}}
@@ -112,6 +113,15 @@ Stores benchmark result.}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="nds_selection">}\href{../../bbotk/html/Archive.html#method-nds_selection}{\code{bbotk::Archive$nds_selection()}}\out{</span>}
 }
 \out{</details>}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-resolve_promise"></a>}}
+\if{latex}{\out{\hypertarget{method-resolve_promise}{}}}
+\subsection{Method \code{resolve_promise()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ArchiveTuning$resolve_promise(i = NULL)}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-learner"></a>}}
