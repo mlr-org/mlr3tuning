@@ -51,8 +51,8 @@ optimize_tuning = function(inst, self, private) {
   # if evaluation was asynchronous, combine resample results to single benchmark result
   if (!is.null(inst$archive$data$resample_result)) {
     rdatas = map(unlist(inst$archive$data$resample_result), function(rr) get_private(rr)$.data)
-    if (length(rdatas) > 1) for (i in 2:length(rdatas)) rdatas[[1]]$combine(rdatas[[i]])
-    inst$archive$benchmark_result = BenchmarkResult$new(rdatas[[1]])
+    rdata = Reduce(function(x, y) x$combine(y), rdatas)
+    inst$archive$benchmark_result = BenchmarkResult$new(rdata)
     inst$archive$data["evaluated", uhash := inst$archive$benchmark_result$uhashes, on = "status"]
     inst$archive$data[, resample_result := NULL]
   }

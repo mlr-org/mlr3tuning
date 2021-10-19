@@ -83,25 +83,14 @@ ArchiveTuning = R6Class("ArchiveTuning",
       fun_resolved = function(p) if (future::resolved(p)) "resolved" else "in_progress"
       self$data["in_progress", "status" := map_chr(get("promise"), fun_resolved), , on = "status"]
 
-      # ...
+      # get values and set status
       fun_value = function(promise, resolve_id) pmap_dtr(list(promise, resolve_id), function(p, id) future::value(p)[id])
       ydt = self$data["resolved", fun_value(get("promise"), get("resolve_id")), on = "status", nomatch = NULL]
       id = self$data["resolved", on = "status", which = TRUE, nomatch = NULL]
       if (length(id)) {
         set(self$data, i = id, j = names(ydt), value = ydt)
         set(self$data, i = id, j = "status", value = "evaluated")
-
-        # hotstart
-        if (self$objective$allow_hotstart) {
-          learners = map(ydt$resample_result, "learners")
-          if (is.null(self$objective$hotstart_stack)) {
-            hot = HotstartStack$new(unlist(learners))
-          } else {
-            self$objective$hotstart_stack$add(learners)
-          }
-        }
       }
-
     },
 
     #' @description
