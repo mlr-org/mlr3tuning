@@ -73,26 +73,6 @@ ArchiveTuning = R6Class("ArchiveTuning",
     #' Stores benchmark result.
     benchmark_result = NULL,
 
-    objective = NULL,
-
-
-    resolve_promise = function(i = NULL) {
-      assert_subset(i, seq(nrow(self$data)))
-
-      # mark resolved points
-      fun_resolved = function(p) if (future::resolved(p)) "resolved" else "in_progress"
-      self$data["in_progress", "status" := map_chr(get("promise"), fun_resolved), , on = "status"]
-
-      # get values and set status
-      fun_value = function(promise, resolve_id) pmap_dtr(list(promise, resolve_id), function(p, id) future::value(p)[id])
-      ydt = self$data["resolved", fun_value(get("promise"), get("resolve_id")), on = "status", nomatch = NULL]
-      id = self$data["resolved", on = "status", which = TRUE, nomatch = NULL]
-      if (length(id)) {
-        set(self$data, i = id, j = names(ydt), value = ydt)
-        set(self$data, i = id, j = "status", value = "evaluated")
-      }
-    },
-
     #' @description
     #' Retrieve [mlr3::Learner] of the i-th evaluation, by position
     #' or by unique hash `uhash`. `i` and `uhash` are mutually exclusive.
