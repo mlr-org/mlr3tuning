@@ -105,8 +105,9 @@ only stored temporarily and not accessible after the tuning. This combination
 might be useful for measures that require a model.}
 
 \item{\code{allow_hotstart}}{(\code{logical(1)})\cr
-Allow to hot start learners with previously fitted models. See also
-\link[mlr3:HotstartStack]{mlr3::HotstartStack}. Sets \code{store_models = TRUE}.}
+Allow to hotstart learners with previously fitted models. See also
+\link[mlr3:HotstartStack]{mlr3::HotstartStack}. The learner must support hotstarting. Sets
+\code{store_models = TRUE}.}
 }
 \if{html}{\out{</div>}}
 }

@@ -110,6 +110,7 @@ Stores benchmark result.}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="format">}\href{../../bbotk/html/Archive.html#method-format}{\code{bbotk::Archive$format()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="initialize">}\href{../../bbotk/html/Archive.html#method-initialize}{\code{bbotk::Archive$initialize()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="nds_selection">}\href{../../bbotk/html/Archive.html#method-nds_selection}{\code{bbotk::Archive$nds_selection()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="resolve_promise">}\href{../../bbotk/html/Archive.html#method-resolve_promise}{\code{bbotk::Archive$resolve_promise()}}\out{</span>}
 }
 \out{</details>}
 }

@@ -56,7 +56,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       self$measures = assert_measures(as_measures(measures, clone = TRUE),
         task = self$task, learner = self$learner)
       self$store_benchmark_result = assert_logical(store_benchmark_result)
-      self$allow_hotstart = assert_logical(allow_hotstart)
+      self$allow_hotstart = assert_logical(allow_hotstart) && any(c("hotstart_forward", "hotstart_backward") %in% learner$properties)
       if (self$allow_hotstart) store_models = TRUE
       self$store_models = assert_logical(store_models)
 
