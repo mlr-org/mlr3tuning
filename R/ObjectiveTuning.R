@@ -43,7 +43,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     #' @field hotstart_stack ([mlr3::HotstartStack]).
     hotstart_stack = NULL,
 
-    #' @field allow_hotstart (logical(1))\cr
+    #' @field allow_hotstart (`logical(1)`).
     allow_hotstart = NULL,
 
     #' @description
@@ -53,12 +53,10 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
 
       self$task = assert_task(as_task(task, clone = TRUE))
       self$learner = assert_learner(as_learner(learner, clone = TRUE))
-      self$measures = assert_measures(as_measures(measures, clone = TRUE),
-        task = self$task, learner = self$learner)
+      self$measures = assert_measures(as_measures(measures, clone = TRUE), task = self$task, learner = self$learner)
       self$store_benchmark_result = assert_logical(store_benchmark_result)
       self$allow_hotstart = assert_logical(allow_hotstart) && any(c("hotstart_forward", "hotstart_backward") %in% learner$properties)
-      if (self$allow_hotstart) store_models = TRUE
-      self$store_models = assert_logical(store_models)
+      self$store_models = assert_logical(store_models) || self$allow_hotstart
 
       codomain = ParamSet$new(map(self$measures, function(s) {
         ParamDbl$new(id = s$id, tags = ifelse(s$minimize, "minimize", "maximize"))
@@ -80,7 +78,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       learners = map(xss, function(x) {
         learner = self$learner$clone(deep = TRUE)
         learner$param_set$values = insert_named(learner$param_set$values, x)
-        if (self$allow_hotstart && !is.null(self$hotstart_stack)) learner$hotstart_stack = self$hotstart_stack
+        if (self$allow_hotstart) learner$hotstart_stack = self$hotstart_stack
         return(learner)
       })
 
