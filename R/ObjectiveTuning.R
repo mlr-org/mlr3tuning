@@ -78,8 +78,8 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       learners = map(xss, function(x) {
         learner = self$learner$clone(deep = TRUE)
         learner$param_set$values = insert_named(learner$param_set$values, x)
-        if (self$allow_hotstart) learner$hotstart_stack = self$hotstart_stack
-        return(learner)
+        learner$hotstart_stack = self$hotstart_stack
+        learner
       })
 
       design = data.table(task = list(self$task), learner = learners, resampling = resampling)
