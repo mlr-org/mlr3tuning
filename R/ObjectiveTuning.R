@@ -62,8 +62,9 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
         ParamDbl$new(id = s$id, tags = ifelse(s$minimize, "minimize", "maximize"))
       }))
 
-      super$initialize(id = sprintf("%s_on_%s", self$learner$id, self$task$id), domain = self$learner$param_set,
-        codomain = codomain, constants = ps(resampling = p_uty()), check_values = check_values)
+      super$initialize(id = sprintf("%s_on_%s", self$learner$id, self$task$id), properties = "noisy",
+        domain = self$learner$param_set, codomain = codomain, constants = ps(resampling = p_uty()),
+        check_values = check_values)
 
       # set resamplings in constants
       resampling = assert_resampling(as_resampling(resampling, clone = TRUE))
