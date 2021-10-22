@@ -83,7 +83,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       learners = map(xss, function(x) {
         learner = self$learner$clone(deep = TRUE)
         learner$param_set$values = insert_named(learner$param_set$values, x)
-        if (self$allow_hotstart && !is.null(self$hotstart_stack)) learner$hotstart_stack = self$hotstart_stack
+        if (self$allow_hotstart) learner$hotstart_stack = self$hotstart_stack
         return(learner)
       })
 
@@ -98,13 +98,14 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       })
       aggr[, "runtime_learners" := time]
 
+      # add to hotstart stack
+      if (self$allow_hotstart) self$hotstart_stack$add(extract_bmr_learners(bmr))
+
       if (self$store_benchmark_result) {
         if (is.null(self$archive$benchmark_result)) {
           self$archive$benchmark_result = bmr
-          if (self$allow_hotstart) self$hotstart_stack = HotstartStack$new(extract_bmr_learners(bmr))
         } else {
           self$archive$benchmark_result$combine(bmr)
-          if (self$allow_hotstart) self$hotstart_stack$add(extract_bmr_learners(bmr))
         }
         cbind(aggr[, c(y, "runtime_learners"), with = FALSE], uhash = bmr$uhashes)
       } else {
