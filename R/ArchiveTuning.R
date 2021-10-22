@@ -4,6 +4,11 @@
 #' Container around a [data.table::data.table()] which stores all evaluated
 #' hyperparameter configurations and performance scores.
 #'
+#' @template param_search_space
+#' @template param_codomain
+#' @template param_store_x_domain
+#'
+#'
 #' @section Data structure:
 #'
 #' The table (`$data`) has the following columns:
@@ -66,12 +71,48 @@
 #' @export
 ArchiveTuning = R6Class("ArchiveTuning",
   inherit = Archive,
-
   public = list(
 
     #' @field benchmark_result ([mlr3::BenchmarkResult])\cr
     #' Stores benchmark result.
     benchmark_result = NULL,
+
+    #' @field instance ([TuningInstanceSingleCrit] | [TuningInstanceMultiCrit])\cr
+    #' Stores instance that stores the archive.
+    instance = NULL,
+
+    #' @description
+    #' Creates a new instance of this [R6][R6::R6Class] class.
+    #'
+    #' @param check_values (`logical(1)`)\cr
+    #'   Should x-values that are added to the archive be checked for validity?
+    #'   Search space that is logged into archive.
+    #' @param objective ([ObjectiveTuning]).
+    initialize = function(search_space, codomain, check_values = TRUE, store_x_domain = TRUE, instance) {
+      super$initialize(search_space, codomain, check_values, store_x_domain)
+      self$instance = assert_multi_class(instance, c("TuningInstanceSingleCrit", "TuningInstanceMultiCrit"))
+    },
+
+    #' @description
+    #' Retrieve outcome, runtime and resample result of resolved futures and
+    #' add them to the archive table. If hotstarting is enabled, learners of
+    #' the resample results are added to the hotstart stack.
+    #'
+    #' @param i (`integer()`)\cr
+    #'   Row ids of archive table for which values are retrieved. If `NULL`
+    #'   (default), retrieve values from all futures which are resolved.
+    #'
+    #' @return [`data.table::data.table()`] (invisibly).
+    resolve_promise = function(i = NULL) {
+      ydt = super$resolve_promise(i)
+
+      if (nrow(ydt) && self$instance$objective$allow_hotstart) {
+        learners = unlist(map(ydt$resample_result, function(rr) rr$learners))
+        self$instance$objective$hotstart_stack$add(learners)
+      }
+
+      invisible(ydt)
+    },
 
     #' @description
     #' Retrieve [mlr3::Learner] of the i-th evaluation, by position

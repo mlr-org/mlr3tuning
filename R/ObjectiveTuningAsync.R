@@ -54,7 +54,10 @@ ObjectiveTuningAsync = R6Class("ObjectiveTuningAsync",
         task = self$task, learner = self$learner)
       self$store_benchmark_result = assert_logical(store_benchmark_result)
       self$allow_hotstart = assert_logical(allow_hotstart)
-      if (self$allow_hotstart) store_models = TRUE
+      if (self$allow_hotstart) {
+        store_models = TRUE
+        self$hotstart_stack = HotstartStackDB$new()
+      }
       self$store_models = assert_logical(store_models)
 
       codomain = ParamSet$new(map(self$measures, function(s) {
@@ -78,7 +81,8 @@ ObjectiveTuningAsync = R6Class("ObjectiveTuningAsync",
       learner$param_set$values = insert_named(learner$param_set$values, xs)
       if (self$allow_hotstart && !is.null(self$hotstart_stack)) learner$hotstart_stack = self$hotstart_stack
 
-      rr = resample(self$task, learner, resampling[[1]], store_models = self$store_models)
+
+      rr = resample(self$task, learner, resampling[[1]], store_models = self$store_models, allow_hotstart = self$allow_hotstart)
       aggr = rr$aggregate(self$measures)
       time = sum(map_dbl(rr$learners, function(l) sum(l$timings)))
 

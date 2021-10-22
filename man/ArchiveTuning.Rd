@@ -86,12 +86,16 @@ Score hyperparameter configurations on additional measures.
 \describe{
 \item{\code{benchmark_result}}{(\link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult})\cr
 Stores benchmark result.}
+
+\item{\code{instance}}{(\link{TuningInstanceSingleCrit} | \link{TuningInstanceMultiCrit})\cr
+Stores instance that stores the archive.}
 }
 \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
+\item \href{#method-new}{\code{ArchiveTuning$new()}}
 \item \href{#method-resolve_promise}{\code{ArchiveTuning$resolve_promise()}}
 \item \href{#method-learner}{\code{ArchiveTuning$learner()}}
 \item \href{#method-learners}{\code{ArchiveTuning$learners()}}
@@ -103,25 +107,79 @@ Stores benchmark result.}
 }
 }
 \if{html}{
-\out{<details ><summary>Inherited methods</summary>}
+\out{<details open ><summary>Inherited methods</summary>}
 \itemize{
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="add_evals">}\href{../../bbotk/html/Archive.html#method-add_evals}{\code{bbotk::Archive$add_evals()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="best">}\href{../../bbotk/html/Archive.html#method-best}{\code{bbotk::Archive$best()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="clear">}\href{../../bbotk/html/Archive.html#method-clear}{\code{bbotk::Archive$clear()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="format">}\href{../../bbotk/html/Archive.html#method-format}{\code{bbotk::Archive$format()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="initialize">}\href{../../bbotk/html/Archive.html#method-initialize}{\code{bbotk::Archive$initialize()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="nds_selection">}\href{../../bbotk/html/Archive.html#method-nds_selection}{\code{bbotk::Archive$nds_selection()}}\out{</span>}
 }
 \out{</details>}
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
+\subsection{Method \code{new()}}{
+Creates a new instance of this \link[R6:R6Class]{R6} class.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ArchiveTuning$new(
+  search_space,
+  codomain,
+  check_values = TRUE,
+  store_x_domain = TRUE,
+  objective
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
+Hyperparameter search space. If \code{NULL}, the search space is constructed from
+the \link{TuneToken} in the \code{ParamSet} of the learner.}
+
+\item{\code{codomain}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
+Specifies codomain of function.
+Most importantly the tags of each output "Parameter" define whether it should
+be minimized or maximized.  The default is to minimize each component.}
+
+\item{\code{check_values}}{(\code{logical(1)})\cr
+Should x-values that are added to the archive be checked for validity?
+Search space that is logged into archive.}
+
+\item{\code{store_x_domain}}{(\code{logical(1)})\cr
+Determines if x values, should be stored in \verb{$data$x_domain} as list
+items. The trafo will be applied if defined in \code{search_space}.}
+
+\item{\code{objective}}{(\link{ObjectiveTuning}).}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-resolve_promise"></a>}}
 \if{latex}{\out{\hypertarget{method-resolve_promise}{}}}
 \subsection{Method \code{resolve_promise()}}{
+Retrieve outcome, runtime and resample result of resolved futures and
+add them to the archive table. If hotstarting is enabled, learners of
+the resample results are added to the hotstart stack.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ArchiveTuning$resolve_promise(i = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{i}}{(\code{integer()})\cr
+Row ids of archive table for which values are retrieved. If \code{NULL}
+(default), retrieve values from all futures which are resolved.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\code{\link[data.table:data.table]{data.table::data.table()}} (invisibly).
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-learner"></a>}}

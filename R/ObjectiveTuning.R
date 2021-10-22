@@ -57,7 +57,10 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
         task = self$task, learner = self$learner)
       self$store_benchmark_result = assert_logical(store_benchmark_result)
       self$allow_hotstart = assert_logical(allow_hotstart)
-      if (self$allow_hotstart) store_models = TRUE
+      if (self$allow_hotstart) {
+        store_models = TRUE
+        self$hoststart_stack = HotstartStack$new()
+      }
       self$store_models = assert_logical(store_models)
 
       codomain = ParamSet$new(map(self$measures, function(s) {

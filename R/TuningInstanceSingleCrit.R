@@ -110,9 +110,8 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
         store_benchmark_result = store_benchmark_result, store_models = store_models, check_values = check_values,
         allow_hotstart = allow_hotstart)
       super$initialize(obj, search_space, terminator)
-      self$archive = ArchiveTuning$new(search_space = search_space,
-        codomain = self$objective$codomain, check_values = check_values)
-      self$archive$objective = self$objective
+      self$archive = ArchiveTuning$new(search_space = search_space, codomain = self$objective$codomain,
+        check_values = check_values, instance = self)
     },
 
     #' @description

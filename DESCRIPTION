@@ -36,7 +36,7 @@ License: LGPL-3
 URL: https://mlr3tuning.mlr-org.com, https://github.com/mlr-org/mlr3tuning
 BugReports: https://github.com/mlr-org/mlr3tuning/issues
 Depends:
-    mlr3 (>= 0.12.0),
+    mlr3 (>= 0.12.0-9000),
     paradox (>= 0.7.0),
     R (>= 3.1.0)
 Imports:
@@ -56,7 +56,7 @@ Suggests:
     rpart,
     testthat (>= 3.0.0)
 Remotes:
-    mlr-org/mlr3@train_adapt,
+    mlr-org/mlr3@hotstart_db
     mlr-org/bbotk@async
 Config/testthat/edition: 3
 Config/testthat/parallel: true
