@@ -59,7 +59,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       self$allow_hotstart = assert_logical(allow_hotstart)
       if (self$allow_hotstart) {
         store_models = TRUE
-        self$hoststart_stack = HotstartStack$new()
+        self$hotststart_stack = HotstartStack$new()
       }
       self$store_models = assert_logical(store_models)
 
