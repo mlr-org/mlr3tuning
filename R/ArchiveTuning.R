@@ -109,6 +109,8 @@ ArchiveTuning = R6Class("ArchiveTuning",
       if (nrow(ydt) && self$instance$objective$allow_hotstart) {
         learners = unlist(map(ydt$resample_result, function(rr) rr$learners))
         self$instance$objective$hotstart_stack$add(learners)
+        private$.n_evals = private$.n_evals + nrow(ydt)
+        lg$info("%i configurations evaluated.", private$.n_evals)
       }
 
       invisible(ydt)
@@ -191,6 +193,10 @@ ArchiveTuning = R6Class("ArchiveTuning",
       catf(format(self))
       print(as.data.table(self, unnest = NULL, exclude_columns = c("x_domain", "uhash")), digits=2)
     }
+  ),
+
+  private = list(
+    .n_evals = 0
   )
 )
 
