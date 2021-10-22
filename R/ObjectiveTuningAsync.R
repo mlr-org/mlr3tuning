@@ -81,7 +81,6 @@ ObjectiveTuningAsync = R6Class("ObjectiveTuningAsync",
       learner$param_set$values = insert_named(learner$param_set$values, xs)
       if (self$allow_hotstart && !is.null(self$hotstart_stack)) learner$hotstart_stack = self$hotstart_stack
 
-
       rr = resample(self$task, learner, resampling[[1]], store_models = self$store_models, allow_hotstart = self$allow_hotstart)
       aggr = rr$aggregate(self$measures)
       time = sum(map_dbl(rr$learners, function(l) sum(l$timings)))
