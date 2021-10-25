@@ -12,6 +12,7 @@ auto_tuner(
   term_evals = NULL,
   term_time = NULL,
   search_space = NULL,
+  store_models = FALSE,
   ...
 )
 }
@@ -43,6 +44,12 @@ Maximum allowed time in seconds.}
 Hyperparameter search space. If \code{NULL}, the search space is constructed from
 the \link{TuneToken} in the \code{ParamSet} of the learner.}
 
+\item{store_models}{(\code{logical(1)})\cr
+If \code{FALSE} (default), the fitted models are not stored in the
+\link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}. If \code{store_benchmark_result = FALSE}, the models are
+only stored temporarily and not accessible after the tuning. This combination
+might be useful for measures that require a model.}
+
 \item{...}{(named \code{list()})\cr
 Named arguments to be set as parameters of the tuner.}
 }
@@ -55,10 +62,10 @@ Function to create an \link{AutoTuner} object.
 \examples{
 at = auto_tuner(
   method = "random_search",
-  learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)), 
+  learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
   resampling = rsmp ("holdout"),
-  measure = msr("classif.ce"), 
-  term_evals = 4)  
+  measure = msr("classif.ce"),
+  term_evals = 4)
 
 at$train(tsk("pima"))
 }
