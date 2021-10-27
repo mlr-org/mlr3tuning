@@ -41,23 +41,26 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
-    initialize = function(task, learner, resampling, measures, check_values = TRUE, store_benchmark_result = TRUE,
-      store_models = FALSE) {
-
+    #'
+    #' @param archive ([ArchiveTuning])\cr
+    #'   Reference to archive of [TuningInstanceSingleCrit] |
+    #'   [TuningInstanceMultiCrit]. If `NULL` (default), benchmark result and
+    #'   models cannot be stored.
+    initialize = function(task, learner, resampling, measures, store_benchmark_result = TRUE, store_models = FALSE,
+      check_values = TRUE, archive = NULL) {
       self$task = assert_task(as_task(task, clone = TRUE))
       self$learner = assert_learner(as_learner(learner, clone = TRUE))
-      self$measures = assert_measures(as_measures(measures, clone = TRUE),
-        task = self$task, learner = self$learner)
+      self$measures = assert_measures(as_measures(measures, clone = TRUE), task = self$task, learner = self$learner)
       self$store_benchmark_result = assert_logical(store_benchmark_result)
       self$store_models = assert_logical(store_models)
+      self$archive = assert_r6(archive, "ArchiveTuning", null.ok = TRUE)
+      if (is.null(self$archive)) self$store_benchmark_result = self$store_models = FALSE
 
-      codomain = ParamSet$new(map(self$measures, function(s) {
-        ParamDbl$new(id = s$id, tags = ifelse(s$minimize, "minimize", "maximize"))
-      }))
+      codomain = measures_to_codomain(self$measures)
 
       super$initialize(id = sprintf("%s_on_%s", self$learner$id, self$task$id), properties = "noisy",
-        domain = self$learner$param_set,
-        codomain = codomain, constants = ps(resampling = p_uty()), check_values = check_values)
+        domain = self$learner$param_set, codomain = codomain, constants = ps(resampling = p_uty()),
+        check_values = check_values)
 
       # set resamplings in constants
       resampling = assert_resampling(as_resampling(resampling, clone = TRUE))
@@ -69,33 +72,33 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
 
   private = list(
     .eval_many = function(xss, resampling) {
+      # create learners from set of hyperparameter configurations
       learners = map(xss, function(x) {
         learner = self$learner$clone(deep = TRUE)
         learner$param_set$values = insert_named(learner$param_set$values, x)
         return(learner)
       })
 
+      # benchmark hyperparameter configurations
       design = data.table(task = list(self$task), learner = learners, resampling = resampling)
       bmr = benchmark(design, store_models = self$store_models)
-      aggr = bmr$aggregate(self$measures)
-      y = map_chr(self$measures, "id")
 
-      # add runtime
+      # aggregate performance scores
+      ydt = bmr$aggregate(self$measures)[, self$codomain$target_ids, with = FALSE]
+
+      # add runtime to evaluations
       time = map_dbl(bmr$resample_results$resample_result, function(rr) {
         sum(map_dbl(rr$learners, function(l) sum(l$timings)))
       })
-      aggr[, "runtime_learners" := time]
+      set(ydt, j = "runtime_learners", value = time)
 
+      # store benchmark result in archive
       if (self$store_benchmark_result) {
-        if (is.null(self$archive$benchmark_result)) {
-          self$archive$benchmark_result = bmr
-        } else {
-          self$archive$benchmark_result$combine(bmr)
-        }
-        cbind(aggr[, c(y, "runtime_learners"), with = FALSE], uhash = bmr$uhashes)
-      } else {
-        aggr[, c(y, "runtime_learners"), with = FALSE]
+        self$archive$benchmark_result$combine(bmr)
+        set(ydt, j = "uhash", value = bmr$uhashes)
       }
+
+      ydt
     }
   )
 )

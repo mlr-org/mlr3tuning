@@ -191,17 +191,19 @@ If \code{TRUE} (default), stores the internally created
 \verb{$tuning_instance}.}
 
 \item{\code{store_benchmark_result}}{(\code{logical(1)})\cr
-If \code{TRUE} (default), stores the \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} in archive.}
+If \code{TRUE} (default), store resample result of evaluated hyperparameter
+configurations in archive as \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}.}
 
 \item{\code{store_models}}{(\code{logical(1)})\cr
-If \code{FALSE} (default), the fitted models are not stored in the
-\link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}. If \code{store_benchmark_result = FALSE}, the models are
-only stored temporarily and not accessible after the tuning. This combination
-might be useful for measures that require a model.}
+If \code{TRUE}, fitted models are stored in the benchmark result
+(\code{archive$benchmark_result}). If \code{store_benchmark_result = FALSE}, models
+are only stored temporarily and not accessible after the tuning. This
+combination is needed for measures that require a model.}
 
 \item{\code{check_values}}{(\code{logical(1)})\cr
-Should parameters before the evaluation and the results be checked for
-validity?}
+If \code{TRUE}, hyperparameter values are checked before evaluation and
+performance scores after. If \code{FALSE} (default), values are unchecked but
+computational overhead is reduced.}
 }
 \if{html}{\out{</div>}}
 }

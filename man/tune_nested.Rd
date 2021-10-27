@@ -24,7 +24,8 @@ Key to retrieve tuner from \link{mlr_tuners} dictionary.}
 \item{task}{(\link[mlr3:Task]{mlr3::Task})\cr
 Task to operate on.}
 
-\item{learner}{(\link[mlr3:Learner]{mlr3::Learner}).}
+\item{learner}{(\link[mlr3:Learner]{mlr3::Learner})\cr
+Learner to tune.}
 
 \item{inner_resampling}{(\link[mlr3:Resampling]{mlr3::Resampling})\cr
 Resampling used for the inner loop.}
@@ -42,8 +43,9 @@ Number of allowed evaluations.}
 Maximum allowed time in seconds.}
 
 \item{search_space}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
-Hyperparameter search space. If \code{NULL}, the search space is constructed from
-the \link{TuneToken} in the \code{ParamSet} of the learner.}
+Hyperparameter search space. If \code{NULL} (default), the search space is
+constructed from the \link{TuneToken} of the learner's parameter set
+(learner$param_set).}
 
 \item{...}{(named \code{list()})\cr
 Named arguments to be set as parameters of the tuner.}

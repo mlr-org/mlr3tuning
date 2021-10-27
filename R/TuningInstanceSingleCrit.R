@@ -3,10 +3,10 @@
 #' @description
 #' Specifies a general single-criteria tuning scenario, including objective
 #' function and archive for Tuners to act upon. This class stores an
-#' `ObjectiveTuning` object that encodes the black box objective function which
+#' [ObjectiveTuning] object that encodes the black box objective function which
 #' a [Tuner] has to optimize. It allows the basic operations of querying the
 #' objective at design points (`$eval_batch()`), storing the evaluations in the
-#' internal `Archive` and accessing the final result (`$result`).
+#' internal [ArchiveTuning] and accessing the final result (`$result`).
 #'
 #' Evaluations of hyperparameter configurations are performed in batches by
 #' calling [mlr3::benchmark()] internally. Before a batch is evaluated, the
@@ -22,24 +22,25 @@
 #' @template param_learner
 #' @template param_resampling
 #' @template param_measure
-#' @template param_search_space
 #' @template param_terminator
+#' @template param_search_space
+#' @template param_store_benchmark_result
 #' @template param_store_models
 #' @template param_check_values
-#' @template param_store_benchmark_result
+#' @template param_store_x_domain
 #' @template param_xdt
 #' @template param_learner_param_vals
 #'
 #' @export
 #' @examples
 #' library(data.table)
-#' 
+#'
 #' # define search space
 #' search_space = ps(
 #'   cp = p_dbl(lower = 0.001, upper = 0.1),
 #'   minsplit = p_int(lower = 1, upper = 10)
 #' )
-#' 
+#'
 #' # initialize instance
 #' instance = TuningInstanceSingleCrit$new(
 #'   task = tsk("iris"),
@@ -49,29 +50,29 @@
 #'   search_space = search_space,
 #'   terminator = trm("evals", n_evals = 5)
 #' )
-#' 
+#'
 #' # generate design
 #' design = data.table(cp = c(0.05, 0.01), minsplit = c(5, 3))
-#' 
+#'
 #' # eval design
 #' instance$eval_batch(design)
-#' 
+#'
 #' # show archive
 #' instance$archive
-#' 
+#'
 #' ### error handling
-#' 
+#'
 #' # get a learner which breaks with 50% probability
 #' # set encapsulation + fallback
 #' learner = lrn("classif.debug", error_train = 0.5)
 #' learner$encapsulate = c(train = "evaluate", predict = "evaluate")
 #' learner$fallback = lrn("classif.featureless")
-#' 
+#'
 #' # define search space
 #' search_space = ps(
 #'  x = p_dbl(lower = 0, upper = 1)
 #' )
-#' 
+#'
 #' instance = TuningInstanceSingleCrit$new(
 #'   task = tsk("wine"),
 #'   learner = learner,
@@ -80,7 +81,7 @@
 #'   search_space = search_space,
 #'   terminator = trm("evals", n_evals = 5)
 #' )
-#' 
+#'
 #' instance$eval_batch(data.table(x = 1:5 / 5))
 TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
   inherit = OptimInstanceSingleCrit,
@@ -92,9 +93,8 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     #' This defines the resampled performance of a learner on a task, a
     #' feasibility region for the parameters the tuner is supposed to optimize,
     #' and a termination criterion.
-    initialize = function(task, learner, resampling, measure,
-      terminator, search_space = NULL, store_benchmark_result = TRUE,
-      store_models = FALSE, check_values = FALSE) {
+    initialize = function(task, learner, resampling, measure, terminator, search_space = NULL,
+      store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, store_x_domain = TRUE) {
       learner = assert_learner(as_learner(learner, clone = TRUE))
 
       if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token")) > 0) {
@@ -105,15 +105,18 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
         learner$param_set$values = learner$param_set$get_values(type = "without_token")
       }
 
-      measure = as_measure(measure)
-      obj = ObjectiveTuning$new(task = task, learner = learner,
-        resampling = resampling, measures = list(measure),
-        store_benchmark_result = store_benchmark_result,
-        store_models = store_models, check_values = check_values)
-      super$initialize(obj, search_space, terminator)
-      self$archive = ArchiveTuning$new(search_space = search_space,
-        codomain = self$objective$codomain, check_values = check_values)
-      self$objective$archive = self$archive
+      # create codomain from measure
+      measures = assert_measures(as_measures(measure, clone = TRUE), task = task, learner = learner)
+      codomain = measures_to_codomain(measures)
+
+      # initialized specialized tuning archive and objective
+      archive = ArchiveTuning$new(search_space, codomain, check_values, store_x_domain)
+      objective = ObjectiveTuning$new(task, learner, resampling, measures, store_benchmark_result, store_models,
+        check_values, archive)
+
+      super$initialize(objective, search_space, terminator)
+      # super class of instance initializes default archive, overwrite with tuning archive
+      self$archive = archive
     },
 
     #' @description
@@ -131,7 +134,7 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
       }
       opt_x = unlist(transform_xdt_to_xss(xdt, self$search_space), recursive = FALSE)
       learner_param_vals = insert_named(learner_param_vals, opt_x)
- 
+
       # ugly but necessary to maintain list column correctly
       if (length(learner_param_vals) == 0) {
         learner_param_vals = list(list())
