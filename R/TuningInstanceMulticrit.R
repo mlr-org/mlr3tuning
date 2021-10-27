@@ -89,13 +89,36 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
       codomain = measures_to_codomain(measures)
 
       # initialized specialized tuning archive and objective
-      archive = ArchiveTuning$new(search_space, codomain, check_values, store_x_domain, instance = self)
+      archive = ArchiveTuning$new(search_space, codomain, check_values, store_x_domain)
       objective = ObjectiveTuning$new(task, learner, resampling, measures, store_benchmark_result, store_models,
         check_values, allow_hotstart, archive)
 
       super$initialize(objective, search_space, terminator)
       # super class of instance initializes default archive, overwrite with tuning archive
       self$archive = archive
+    },
+
+    #' @description
+    #' Retrieve outcome, runtime and resample result of resolved futures and
+    #' add them to the archive table. If hotstarting is enabled, learners of
+    #' the resample results are added to the hotstart stack.
+    #'
+    #' @param i (`integer()`)\cr
+    #'   Row ids of archive table for which values are retrieved. If `NULL`
+    #'   (default), retrieve values from all futures which are resolved.
+    #'
+    #' @return [`data.table::data.table()`] (invisibly).
+    resolve_promise = function(i = NULL) {
+      ydt = super$resolve_promise(i)
+
+      if (nrow(ydt) && self$objective$allow_hotstart) {
+        learners = unlist(map(ydt$resample_result, function(rr) rr$learners))
+        self$objective$hotstart_stack$add(learners)
+        private$.n_evals = private$.n_evals + nrow(ydt)
+        lg$info("%i configurations evaluated.", private$.n_evals)
+      }
+
+      invisible(ydt)
     },
 
     #' @description

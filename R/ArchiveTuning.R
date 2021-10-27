@@ -77,49 +77,17 @@ ArchiveTuning = R6Class("ArchiveTuning",
     #' @field benchmark_result ([mlr3::BenchmarkResult]).
     benchmark_result = NULL,
 
-    #' @field instance ([TuningInstanceSingleCrit] | [TuningInstanceMultiCrit])\cr
-    #' Reference to instance which stores the archive.
-    instance = NULL,
-
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #'
     #' @param check_values (`logical(1)`)\cr
     #'   Should x-values that are added to the archive be checked for validity?
     #'   Search space that is logged into archive.
-    #' @param instance ([TuningInstanceSingleCrit] | [TuningInstanceMultiCrit])\cr
-    #'   Optionally, reference to instance which stores the archive. Only used
-    #'   if asynchronously evaluated learners are written to hotstart stack.
-    initialize = function(search_space, codomain, check_values = TRUE, store_x_domain = TRUE, instance = NULL) {
+    initialize = function(search_space, codomain, check_values = TRUE, store_x_domain = TRUE) {
       super$initialize(search_space, codomain, check_values, store_x_domain)
-      self$instance = assert_multi_class(instance, c("TuningInstanceSingleCrit", "TuningInstanceMultiCrit"),
-        null.ok = TRUE)
 
       # initialize empty benchmark result
       self$benchmark_result = BenchmarkResult$new()
-    },
-
-    #' @description
-    #' Retrieve outcome, runtime and resample result of resolved futures and
-    #' add them to the archive table. If hotstarting is enabled, learners of
-    #' the resample results are added to the hotstart stack.
-    #'
-    #' @param i (`integer()`)\cr
-    #'   Row ids of archive table for which values are retrieved. If `NULL`
-    #'   (default), retrieve values from all futures which are resolved.
-    #'
-    #' @return [`data.table::data.table()`] (invisibly).
-    resolve_promise = function(i = NULL) {
-      ydt = super$resolve_promise(i)
-
-      if (nrow(ydt) && self$instance$objective$allow_hotstart) {
-        learners = unlist(map(ydt$resample_result, function(rr) rr$learners))
-        self$instance$objective$hotstart_stack$add(learners)
-        private$.n_evals = private$.n_evals + nrow(ydt)
-        lg$info("%i configurations evaluated.", private$.n_evals)
-      }
-
-      invisible(ydt)
     },
 
     #' @description
