@@ -210,7 +210,7 @@ test_that("store_tuning_instance, store_benchmark_result and store_models flags 
   at$train(task)
 
   assert_r6(at$tuning_instance, "TuningInstanceSingleCrit")
-  assert_null(at$tuning_instance$archive$benchmark_result)
+  expect_equal(at$tuning_instance$archive$benchmark_result$n_resample_results, 0)
 
   at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te,
     tuner = tuner, ps, store_tuning_instance = FALSE, store_benchmark_result = FALSE,

@@ -4,6 +4,10 @@
 #' Container around a [data.table::data.table()] which stores all evaluated
 #' hyperparameter configurations and performance scores.
 #'
+#' @template param_search_space
+#' @template param_codomain
+#' @template param_store_x_domain
+#'
 #' @section Data structure:
 #'
 #' The table (`$data`) has the following columns:
@@ -11,11 +15,11 @@
 #' * One column for each hyperparameter of the search space (`$search_space`).
 #' * One column for each performance measure (`$codomain`).
 #' * `x_domain` (`list()`)\cr
-#'   Lists of transformed hyperparameter values that are passed to the learner.
+#'   Lists of (transformed) hyperparameter values that are passed to the learner.
 #' * `runtime_learners` (`numeric(1)`)\cr
 #'   Sum of training and predict times logged in learners per
 #'   [mlr3::ResampleResult] / evaluation. This does not include potential
-#'   overhead time. 
+#'   overhead time.
 #' * `timestamp` (`POSIXct`)\cr
 #'   Time stamp when the evaluation was logged into the archive.
 #' * `batch_nr` (`integer(1)`)\cr
@@ -25,7 +29,8 @@
 #'   Connects each hyperparameter configuration to the resampling experiment
 #'   stored in the [mlr3::BenchmarkResult].
 #'
-#' Each row corresponds to a single evaluation of a hyperparameter configuration.
+#' Each row corresponds to a single evaluation of a hyperparameter
+#' configuration.
 #'
 #' The archive stores additionally a [mlr3::BenchmarkResult]
 #' (`$benchmark_result`) that records the resampling experiments. Each
@@ -37,8 +42,9 @@
 #' @section Analysis:
 #'
 #' For analyzing the tuning results, it is recommended to pass the archive to
-#' `as.data.table()`. The returned data table is joined with the benchmark result
-#' which adds the [mlr3::ResampleResult] for each hyperparameter evaluation.
+#' `as.data.table()`. The returned data table is joined with the benchmark
+#' result which adds the [mlr3::ResampleResult] for each hyperparameter
+#' evaluation.
 #'
 #' The archive provides various getters (e.g. `$learners()`) to ease the access.
 #' All getters extract by position (`i`) or unique hash (`uhash`). For a
@@ -61,7 +67,7 @@
 #'     * `exclude_columns` (`character()`)\cr
 #'       Exclude columns from table. Set to `NULL` if no column should be
 #'       excluded.
-#'     * `measures` (list of [mlr3::Measure])\cr
+#'     * `measures` (List of [mlr3::Measure])\cr
 #'       Score hyperparameter configurations on additional measures.
 #' @export
 ArchiveTuning = R6Class("ArchiveTuning",
@@ -69,9 +75,19 @@ ArchiveTuning = R6Class("ArchiveTuning",
 
   public = list(
 
-    #' @field benchmark_result ([mlr3::BenchmarkResult])\cr
-    #' Stores benchmark result.
+    #' @field benchmark_result ([mlr3::BenchmarkResult]).
     benchmark_result = NULL,
+
+    #' @param check_values (`logical(1)`)\cr
+    #'   If `TRUE` (default), hyperparameter configurations are check for
+    #'   validity.
+    initialize = function(search_space, codomain, check_values = TRUE, store_x_domain = TRUE) {
+      super$initialize(search_space, codomain, check_values, store_x_domain)
+
+      # initialize empty benchmark result
+      self$benchmark_result = BenchmarkResult$new()
+    },
+
 
     #' @description
     #' Retrieve [mlr3::Learner] of the i-th evaluation, by position
@@ -80,10 +96,9 @@ ArchiveTuning = R6Class("ArchiveTuning",
     #' models.
     #'
     #' @param i (`integer(1)`)\cr
-    #' The iteration value to filter for.
-    #'
+    #'   The iteration value to filter for.
     #' @param uhash (`logical(1)`)\cr
-    #' The `uhash` value to filter for.
+    #'   The `uhash` value to filter for.
     learner = function(i = NULL, uhash = NULL) {
       self$resample_result(i = i, uhash = uhash)$learner
     },
@@ -94,10 +109,9 @@ ArchiveTuning = R6Class("ArchiveTuning",
     #' exclusive.
     #'
     #' @param i (`integer(1)`)\cr
-    #' The iteration value to filter for.
-    #'
+    #'   The iteration value to filter for.
     #' @param uhash (`logical(1)`)\cr
-    #' The `uhash` value to filter for.
+    #'   The `uhash` value to filter for.
     learners = function(i = NULL, uhash = NULL) {
       self$resample_result(i = i, uhash = uhash)$learners
     },
@@ -107,10 +121,9 @@ ArchiveTuning = R6Class("ArchiveTuning",
     #' or by unique hash `uhash`. `i` and `uhash` are mutually exclusive.
     #'
     #' @param i (`integer(1)`)\cr
-    #' The iteration value to filter for.
-    #'
+    #'   The iteration value to filter for.
     #' @param uhash (`logical(1)`)\cr
-    #' The `uhash` value to filter for.
+    #'   The `uhash` value to filter for.
     learner_param_vals = function(i = NULL, uhash = NULL) {
       self$learner(i = i, uhash = uhash)$param_set$values
     },
@@ -121,10 +134,9 @@ ArchiveTuning = R6Class("ArchiveTuning",
     #' exclusive.
     #'
     #' @param i (`integer(1)`)\cr
-    #' The iteration value to filter for.
-    #'
+    #'   The iteration value to filter for.
     #' @param uhash (`logical(1)`)\cr
-    #' The `uhash` value to filter for.
+    #'   The `uhash` value to filter for.
     predictions = function(i = NULL, uhash = NULL) {
       self$resample_result(i = i, uhash = uhash)$predictions()
     },
@@ -134,10 +146,9 @@ ArchiveTuning = R6Class("ArchiveTuning",
     #' or by unique hash `uhash`. `i` and `uhash` are mutually exclusive.
     #'
     #' @param i (`integer(1)`)\cr
-    #' The iteration value to filter for.
-    #'
+    #'   The iteration value to filter for.
     #' @param uhash (`logical(1)`)\cr
-    #' The `uhash` value to filter for.
+    #'   The `uhash` value to filter for.
     resample_result = function(i = NULL, uhash = NULL) {
       self$benchmark_result$resample_result(i = i, uhash = uhash)
     },
@@ -158,16 +169,15 @@ as.data.table.ArchiveTuning = function(x, ..., unnest = "x_domain", exclude_colu
   if (nrow(x$data) == 0) return(data.table())
   # default values for unnest and exclude_columns might be not present in archive
   if ("x_domain" %nin% names(x$data)) unnest = setdiff(unnest, "x_domain")
-  if (is.null(x$benchmark_result)) exclude_columns = exclude_columns[exclude_columns %nin% "uhash"]
+  if (!x$benchmark_result$n_resample_results) exclude_columns = exclude_columns[exclude_columns %nin% "uhash"]
 
- 
   assert_subset(unnest, names(x$data))
   cols_y_extra = NULL
-  
+
   # unnest data
   tab = unnest(copy(x$data), unnest, prefix = "{col}_")
 
-  if (!is.null(x$benchmark_result)) {
+  if (x$benchmark_result$n_resample_results) {
     # add extra measures
     if (!is.null(measures)) {
       measures = assert_measures(as_measures(measures), learner = x$learners(1)[[1]], task = x$resample_result(1)$task)
@@ -182,7 +192,7 @@ as.data.table.ArchiveTuning = function(x, ..., unnest = "x_domain", exclude_colu
     # get all ids of x_domain
     # trafo could add unknown ids
     x_domain_ids = paste0("x_domain_", unique(unlist(map(x$data$x_domain, names))))
-    setdiff(x_domain_ids, exclude_columns) 
+    setdiff(x_domain_ids, exclude_columns)
   } else NULL
 
   setcolorder(tab, c(x$cols_x, x$cols_y, cols_y_extra, cols_x_domain, "runtime_learners", "timestamp", "batch_nr"))

@@ -15,7 +15,7 @@ The table (\verb{$data}) has the following columns:
 \item One column for each hyperparameter of the search space (\verb{$search_space}).
 \item One column for each performance measure (\verb{$codomain}).
 \item \code{x_domain} (\code{list()})\cr
-Lists of transformed hyperparameter values that are passed to the learner.
+Lists of (transformed) hyperparameter values that are passed to the learner.
 \item \code{runtime_learners} (\code{numeric(1)})\cr
 Sum of training and predict times logged in learners per
 \link[mlr3:ResampleResult]{mlr3::ResampleResult} / evaluation. This does not include potential
@@ -30,7 +30,8 @@ Connects each hyperparameter configuration to the resampling experiment
 stored in the \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}.
 }
 
-Each row corresponds to a single evaluation of a hyperparameter configuration.
+Each row corresponds to a single evaluation of a hyperparameter
+configuration.
 
 The archive stores additionally a \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}
 (\verb{$benchmark_result}) that records the resampling experiments. Each
@@ -44,8 +45,9 @@ viewed with \code{as.data.table()}, both are joined automatically.
 
 
 For analyzing the tuning results, it is recommended to pass the archive to
-\code{as.data.table()}. The returned data table is joined with the benchmark result
-which adds the \link[mlr3:ResampleResult]{mlr3::ResampleResult} for each hyperparameter evaluation.
+\code{as.data.table()}. The returned data table is joined with the benchmark
+result which adds the \link[mlr3:ResampleResult]{mlr3::ResampleResult} for each hyperparameter
+evaluation.
 
 The archive provides various getters (e.g. \verb{$learners()}) to ease the access.
 All getters extract by position (\code{i}) or unique hash (\code{uhash}). For a
@@ -72,7 +74,7 @@ should be unnested.
 \item \code{exclude_columns} (\code{character()})\cr
 Exclude columns from table. Set to \code{NULL} if no column should be
 excluded.
-\item \code{measures} (list of \link[mlr3:Measure]{mlr3::Measure})\cr
+\item \code{measures} (List of \link[mlr3:Measure]{mlr3::Measure})\cr
 Score hyperparameter configurations on additional measures.
 }
 }
@@ -84,14 +86,14 @@ Score hyperparameter configurations on additional measures.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{benchmark_result}}{(\link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult})\cr
-Stores benchmark result.}
+\item{\code{benchmark_result}}{(\link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}).}
 }
 \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
+\item \href{#method-new}{\code{ArchiveTuning$new()}}
 \item \href{#method-learner}{\code{ArchiveTuning$learner()}}
 \item \href{#method-learners}{\code{ArchiveTuning$learners()}}
 \item \href{#method-learner_param_vals}{\code{ArchiveTuning$learner_param_vals()}}
@@ -102,17 +104,52 @@ Stores benchmark result.}
 }
 }
 \if{html}{
-\out{<details ><summary>Inherited methods</summary>}
+\out{<details open ><summary>Inherited methods</summary>}
 \itemize{
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="add_evals">}\href{../../bbotk/html/Archive.html#method-add_evals}{\code{bbotk::Archive$add_evals()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="best">}\href{../../bbotk/html/Archive.html#method-best}{\code{bbotk::Archive$best()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="clear">}\href{../../bbotk/html/Archive.html#method-clear}{\code{bbotk::Archive$clear()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="format">}\href{../../bbotk/html/Archive.html#method-format}{\code{bbotk::Archive$format()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="initialize">}\href{../../bbotk/html/Archive.html#method-initialize}{\code{bbotk::Archive$initialize()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="nds_selection">}\href{../../bbotk/html/Archive.html#method-nds_selection}{\code{bbotk::Archive$nds_selection()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="resolve_promise">}\href{../../bbotk/html/Archive.html#method-resolve_promise}{\code{bbotk::Archive$resolve_promise()}}\out{</span>}
 }
 \out{</details>}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
+\subsection{Method \code{new()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ArchiveTuning$new(
+  search_space,
+  codomain,
+  check_values = TRUE,
+  store_x_domain = TRUE
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
+Hyperparameter search space. If \code{NULL} (default), the search space is
+constructed from the \link{TuneToken} of the learner's parameter set
+(learner$param_set).}
+
+\item{\code{codomain}}{(\link[bbotk:Codomain]{bbotk::Codomain})\cr
+Specifies codomain of objective function i.e. a set of performance
+measures. Internally created from provided \link[mlr3:Measure]{mlr3::Measure}s.}
+
+\item{\code{check_values}}{(\code{logical(1)})\cr
+If \code{TRUE} (default), hyperparameter configurations are check for
+validity.}
+
+\item{\code{store_x_domain}}{(\code{logical(1)})\cr
+If \code{TRUE} (default), (transformed) hyperparameter values are stored
+in archive as list items. Values are transformed if search space
+(\verb{$search_space}) has a transformation function.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-learner"></a>}}

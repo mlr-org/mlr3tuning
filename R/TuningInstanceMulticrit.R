@@ -33,13 +33,13 @@
 #' @export
 #' @examples
 #' library(data.table)
-#' 
+#'
 #' # define search space
 #' search_space = ps(
 #'   cp = p_dbl(lower = 0.001, upper = 0.1),
 #'   minsplit = p_int(lower = 1, upper = 10)
 #' )
-#' 
+#'
 #' # initialize instance
 #' instance = TuningInstanceMultiCrit$new(
 #'   task = tsk("iris"),
@@ -49,13 +49,13 @@
 #'   search_space = search_space,
 #'   terminator = trm("evals", n_evals = 5)
 #' )
-#' 
+#'
 #' # generate design
 #' design = data.table(cp = c(0.05, 0.01), minsplit = c(5, 3))
-#' 
+#'
 #' # eval design
 #' instance$eval_batch(design)
-#' 
+#'
 #' # show archive
 #' instance$archive
 TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
@@ -68,9 +68,8 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
     #' This defines the resampled performance of a learner on a task, a
     #' feasibility region for the parameters the tuner is supposed to optimize,
     #' and a termination criterion.
-    initialize = function(task, learner, resampling, measures,
-      terminator, search_space = NULL, store_models = FALSE,
-      check_values = FALSE, store_benchmark_result = TRUE) {
+    initialize = function(task, learner, resampling, measures, terminator, search_space = NULL,
+      store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE) {
       learner = assert_learner(as_learner(learner, clone = TRUE))
 
       if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token")) > 0) {
@@ -81,15 +80,18 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
         learner$param_set$values = learner$param_set$get_values(type = "without_token")
       }
 
-      obj = ObjectiveTuning$new(
-        task = task, learner = learner,
-        resampling = resampling, measures = measures,
-        store_benchmark_result = store_benchmark_result,
-        store_models = store_models, check_values = check_values)
-      super$initialize(obj, search_space, terminator)
-      self$archive = ArchiveTuning$new(search_space = search_space,
-        codomain = self$objective$codomain, check_values = check_values)
-      self$objective$archive = self$archive
+      # create codomain from measure
+      measures = assert_measures(as_measures(measures, clone = TRUE), task = task, learner = learner)
+      codomain = measures_to_codomain(measures)
+
+      # initialized specialized tuning archive and objective
+      archive = ArchiveTuning$new(search_space, codomain, check_values)
+      objective = ObjectiveTuning$new(task, learner, resampling, measures, store_benchmark_result, store_models,
+        check_values, archive)
+
+      super$initialize(objective, search_space, terminator)
+      # super class of instance initializes default archive, overwrite with tuning archive
+      self$archive = archive
     },
 
     #' @description
