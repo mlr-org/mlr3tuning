@@ -157,3 +157,42 @@ extract_inner_tuning_results(rr)
 # inner resampling archives
 extract_inner_tuning_archives(rr)
 ```
+
+### Hotstart
+
+```{r}
+library("mlr3tuning")
+library("mlr3learners")
+
+# retrieve task
+task = tsk("pima")
+
+# load learner and set search space
+learner = lrn("classif.xgboost",
+  eta = to_tune(),
+  nrounds = to_tune(500, 2500),
+  eval_metric = "logloss"
+)
+
+# hyperparameter tuning on the pima indians diabetes data set
+instance = tune(
+  method = "grid_search",
+  task = task,
+  learner = learner,
+  resampling = rsmp("cv", folds = 3),
+  measure = msr("classif.ce"),
+  allow_hotstart = TRUE,
+  resolution = 5,
+  batch_size = 5
+)
+
+# best performing hyperparameter configuration
+instance$result
+
+# all evaluated hyperparameter configuration
+as.data.table(instance$archive)
+
+# fit final model on complete data set
+learner$param_set$values = instance$result_learner_param_vals
+learner$train(task)
+```
