@@ -25,20 +25,20 @@ Key to retrieve tuner from \link{mlr_tuners} dictionary.}
 \item{task}{(\link[mlr3:Task]{mlr3::Task})\cr
 Task to operate on.}
 
-\item{learner}{(\link[mlr3:Learner]{mlr3::Learner}).}
+\item{learner}{(\link[mlr3:Learner]{mlr3::Learner})\cr
+Learner to tune.}
 
 \item{resampling}{(\link[mlr3:Resampling]{mlr3::Resampling})\cr
 Resampling that is used to evaluated the performance of the hyperparameter
 configurations. Uninstantiated resamplings are instantiated during
 construction so that all configurations are evaluated on the same data
 splits. Already instantiated resamplings are kept unchanged. Specialized
-\link{Tuner} change the resampling e.g. to evaluate a hyperparameter configuration
-on different data splits. This field, however, always returns the resampling
-passed in construction.}
+\link{Tuner} change the resampling e.g. to evaluate a hyperparameter
+configuration on different data splits. This field, however, always returns
+the resampling passed in construction.}
 
 \item{measures}{(list of \link[mlr3:Measure]{mlr3::Measure})\cr
-Measures to optimize.
-If \code{NULL}, \CRANpkg{mlr3}'s default measure is used.}
+Measures to optimize.}
 
 \item{term_evals}{(\code{integer(1)})\cr
 Number of allowed evaluations.}
@@ -47,14 +47,15 @@ Number of allowed evaluations.}
 Maximum allowed time in seconds.}
 
 \item{search_space}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
-Hyperparameter search space. If \code{NULL}, the search space is constructed from
-the \link{TuneToken} in the \code{ParamSet} of the learner.}
+Hyperparameter search space. If \code{NULL} (default), the search space is
+constructed from the \link{TuneToken} of the learner's parameter set
+(learner$param_set).}
 
 \item{store_models}{(\code{logical(1)})\cr
-If \code{FALSE} (default), the fitted models are not stored in the
-\link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}. If \code{store_benchmark_result = FALSE}, the models are
-only stored temporarily and not accessible after the tuning. This combination
-might be useful for measures that require a model.}
+If \code{TRUE}, fitted models are stored in the benchmark result
+(\code{archive$benchmark_result}). If \code{store_benchmark_result = FALSE}, models
+are only stored temporarily and not accessible after the tuning. This
+combination is needed for measures that require a model.}
 
 \item{allow_hotstart}{(\code{logical(1)})\cr
 Allow to hotstart learners with previously fitted models. See also

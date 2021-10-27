@@ -9,3 +9,15 @@ terminated_error = function(instance) {
   set_class(list(message = msg, call = NULL), c(
     "terminated_error", "error", "condition"))
 }
+
+measures_to_codomain = function(measures) {
+  Codomain$new(map(as_measures(measures), function(s) {
+    ParamDbl$new(id = s$id, tags = ifelse(s$minimize, "minimize", "maximize"))
+  }))
+}
+
+extract_benchmark_result_learners = function(bmr) {
+  unlist(map(seq_len(bmr$n_resample_results), function(n) {
+    bmr$resample_result(n)$learners
+  }))
+}

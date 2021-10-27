@@ -1,4 +1,4 @@
 #' @param xdt (`data.table::data.table()`)\cr
-#'   x values as `data.table`. Each row is one point. Contains the value in
-#'   the *search space* of the [TuningInstanceMultiCrit] object. Can contain
-#'   additional columns for extra information.
+#'   Hyperparameter values as `data.table::data.table()`. Each row is one
+#'   configuration. Contains values in the search space. Can contain additional
+#'   columns for extra information.
