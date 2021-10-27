@@ -161,10 +161,6 @@ ArchiveTuning = R6Class("ArchiveTuning",
       catf(format(self))
       print(as.data.table(self, unnest = NULL, exclude_columns = c("x_domain", "uhash")), digits=2)
     }
-  ),
-
-  private = list(
-    .n_evals = 0
   )
 )
 

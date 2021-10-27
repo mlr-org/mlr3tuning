@@ -135,8 +135,6 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
       if (nrow(ydt) && self$objective$allow_hotstart) {
         learners = unlist(map(ydt$resample_result, function(rr) rr$learners))
         self$objective$hotstart_stack$add(learners)
-        private$.n_evals = private$.n_evals + nrow(ydt)
-        lg$info("%i configurations evaluated.", private$.n_evals)
       }
 
       invisible(ydt)
