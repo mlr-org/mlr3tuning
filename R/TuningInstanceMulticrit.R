@@ -22,11 +22,13 @@
 #' @template param_learner
 #' @template param_resampling
 #' @template param_measures
-#' @template param_search_space
 #' @template param_terminator
+#' @template param_search_space
+#' @template param_store_benchmark_result
 #' @template param_store_models
 #' @template param_check_values
-#' @template param_store_benchmark_result
+#' @template param_allow_hotstart
+#' @template param_store_x_domain
 #' @template param_xdt
 #' @template param_learner_param_vals
 #'
@@ -69,7 +71,8 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
     #' feasibility region for the parameters the tuner is supposed to optimize,
     #' and a termination criterion.
     initialize = function(task, learner, resampling, measures, terminator, search_space = NULL,
-      store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE) {
+      store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE,
+      store_x_domain = TRUE) {
       learner = assert_learner(as_learner(learner, clone = TRUE))
 
       if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token")) > 0) {
@@ -85,9 +88,9 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
       codomain = measures_to_codomain(measures)
 
       # initialized specialized tuning archive and objective
-      archive = ArchiveTuning$new(search_space, codomain, check_values)
+      archive = ArchiveTuning$new(search_space, codomain, check_values, store_x_domain)
       objective = ObjectiveTuning$new(task, learner, resampling, measures, store_benchmark_result, store_models,
-        check_values, archive)
+        check_values, allow_hotstart, archive)
 
       super$initialize(objective, search_space, terminator)
       # super class of instance initializes default archive, overwrite with tuning archive

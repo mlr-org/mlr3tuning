@@ -1,10 +1,11 @@
 # mlr3tuning 0.9.0.9000
 
 - Fixes bug in `TuningInstanceMultiCrit$assign_result()`.
+- Hotstarting of learners with previously fitted models.
 
 # mlr3tuning 0.9.0
 
-- Adds `AutoTuner$base_learner()` method to extract the base learner from 
+- Adds `AutoTuner$base_learner()` method to extract the base learner from
   nested learner objects.
 - `tune()` supports multi-criteria tuning.
 - Allows empty search space.
@@ -20,7 +21,7 @@
 - Adds `tune()`, `auto_tuner()` and `tune_nested()` sugar functions.
 - `TuningInstanceSingleCrit`, `TuningInstanceMultiCrit` and `AutoTuner` can be
   initialized with `store_benchmark_result = FALSE` and `store_models = TRUE`
-  to allow measures to access the models. 
+  to allow measures to access the models.
 - Prettier printing methods.
 
 # mlr3tuning 0.7.0
@@ -28,7 +29,7 @@
 - Fix `TuningInstance*$assign_result()` errors with required parameter bug.
 - Shortcuts to access `$learner()`, `$learners()`, `$learner_param_vals()`,
   `$predictions()` and `$resample_result()` from benchmark result in archive.
-- `extract_inner_tuning_results()` helper function to extract inner tuning 
+- `extract_inner_tuning_results()` helper function to extract inner tuning
   results.
 
 # mlr3tuning 0.6.0

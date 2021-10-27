@@ -12,6 +12,7 @@
 #' @template param_store_models
 #' @template param_check_values
 #' @template param_store_benchmark_result
+#' @template param_allow_hotstart
 #'
 #' @export
 ObjectiveTuning = R6Class("ObjectiveTuning",
@@ -39,6 +40,12 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     #' @field archive ([ArchiveTuning]).
     archive = NULL,
 
+    #' @field hotstart_stack ([mlr3::HotstartStack]).
+    hotstart_stack = NULL,
+
+    #' @field allow_hotstart (`logical(1)`).
+    allow_hotstart = NULL,
+
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #'
@@ -47,20 +54,23 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     #'   [TuningInstanceMultiCrit]. If `NULL` (default), benchmark result and
     #'   models cannot be stored.
     initialize = function(task, learner, resampling, measures, store_benchmark_result = TRUE, store_models = FALSE,
-      check_values = TRUE, archive = NULL) {
+      check_values = TRUE, allow_hotstart = FALSE, archive = NULL) {
       self$task = assert_task(as_task(task, clone = TRUE))
       self$learner = assert_learner(as_learner(learner, clone = TRUE))
       self$measures = assert_measures(as_measures(measures, clone = TRUE), task = self$task, learner = self$learner)
       self$store_benchmark_result = assert_logical(store_benchmark_result)
+      self$allow_hotstart = assert_logical(allow_hotstart) && any(c("hotstart_forward", "hotstart_backward") %in% learner$properties)
+      if (self$allow_hotstart) {
+        store_models = TRUE
+        self$hotstart_stack = HotstartStack$new()
+      }
       self$store_models = assert_logical(store_models)
       self$archive = assert_r6(archive, "ArchiveTuning", null.ok = TRUE)
-      if (is.null(self$archive)) self$store_benchmark_result = self$store_models = FALSE
-
-      codomain = measures_to_codomain(self$measures)
+      if (is.null(self$archive)) self$allow_hotstart = self$store_benchmark_result = self$store_models = FALSE
 
       super$initialize(id = sprintf("%s_on_%s", self$learner$id, self$task$id), properties = "noisy",
-        domain = self$learner$param_set, codomain = codomain, constants = ps(resampling = p_uty()),
-        check_values = check_values)
+        domain = self$learner$param_set, codomain = measures_to_codomain(self$measures),
+        constants = ps(resampling = p_uty()), check_values = check_values)
 
       # set resamplings in constants
       resampling = assert_resampling(as_resampling(resampling, clone = TRUE))
@@ -76,12 +86,13 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       learners = map(xss, function(x) {
         learner = self$learner$clone(deep = TRUE)
         learner$param_set$values = insert_named(learner$param_set$values, x)
-        return(learner)
+        if (self$allow_hotstart) learner$hotstart_stack = self$hotstart_stack
+        learner
       })
 
       # benchmark hyperparameter configurations
       design = data.table(task = list(self$task), learner = learners, resampling = resampling)
-      bmr = benchmark(design, store_models = self$store_models)
+      bmr = benchmark(design, store_models = self$store_models, allow_hotstart = self$allow_hotstart)
 
       # aggregate performance scores
       ydt = bmr$aggregate(self$measures)[, self$codomain$target_ids, with = FALSE]
@@ -91,6 +102,9 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
         sum(map_dbl(rr$learners, function(l) sum(l$timings)))
       })
       set(ydt, j = "runtime_learners", value = time)
+
+      # add to hotstart stack
+      if (self$allow_hotstart) self$hotstart_stack$add(extract_benchmark_result_learners(bmr))
 
       # store benchmark result in archive
       if (self$store_benchmark_result) {

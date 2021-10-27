@@ -98,7 +98,9 @@ and a termination criterion.
   search_space = NULL,
   store_benchmark_result = TRUE,
   store_models = FALSE,
-  check_values = FALSE
+  check_values = FALSE,
+  allow_hotstart = FALSE,
+  store_x_domain = TRUE
 )}\if{html}{\out{</div>}}
 }
 
@@ -145,6 +147,16 @@ combination is needed for measures that require a model.}
 If \code{TRUE}, hyperparameter values are checked before evaluation and
 performance scores after. If \code{FALSE} (default), values are unchecked but
 computational overhead is reduced.}
+
+\item{\code{allow_hotstart}}{(\code{logical(1)})\cr
+Allow to hotstart learners with previously fitted models. See also
+\link[mlr3:HotstartStack]{mlr3::HotstartStack}. The learner must support hotstarting. Sets
+\code{store_models = TRUE}.}
+
+\item{\code{store_x_domain}}{(\code{logical(1)})\cr
+If \code{TRUE} (default), (transformed) hyperparameter values are stored
+in archive as list items. Values are transformed if search space
+(\verb{$search_space}) has a transformation function.}
 }
 \if{html}{\out{</div>}}
 }
