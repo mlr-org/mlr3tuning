@@ -71,7 +71,6 @@
 #' @export
 ArchiveTuning = R6Class("ArchiveTuning",
   inherit = Archive,
-
   public = list(
 
     #' @field benchmark_result ([mlr3::BenchmarkResult]).
