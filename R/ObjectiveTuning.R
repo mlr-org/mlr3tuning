@@ -116,9 +116,3 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     }
   )
 )
-
-extract_bmr_learners = function(bmr) {
-  unlist(map(seq_len(bmr$n_resample_results), function(n) {
-    bmr$resample_result(n)$learners
-  }))
-}

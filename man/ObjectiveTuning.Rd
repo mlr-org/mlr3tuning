@@ -108,8 +108,6 @@ performance scores after. If \code{FALSE} (default), values are unchecked but
 computational overhead is reduced.}
 
 \item{\code{allow_hotstart}}{(\code{logical(1)})\cr
-Allow to hot start learners with previously fitted models. See also
-\link[mlr3:HotstartStack]{mlr3::HotstartStack}. Sets \code{store_models = TRUE}.
 Allow to hotstart learners with previously fitted models. See also
 \link[mlr3:HotstartStack]{mlr3::HotstartStack}. The learner must support hotstarting. Sets
 \code{store_models = TRUE}.}

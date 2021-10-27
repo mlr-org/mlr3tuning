@@ -30,7 +30,6 @@
 #' @template param_allow_hotstart
 #' @template param_xdt
 #' @template param_learner_param_vals
-#' @template param_allow_hotstart
 #'
 #' @export
 #' @examples
