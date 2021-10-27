@@ -77,6 +77,9 @@ ArchiveTuning = R6Class("ArchiveTuning",
     #' @field benchmark_result ([mlr3::BenchmarkResult]).
     benchmark_result = NULL,
 
+    #' @description
+    #' Creates a new instance of this [R6][R6::R6Class] class.
+    #'
     #' @param check_values (`logical(1)`)\cr
     #'   If `TRUE` (default), hyperparameter configurations are check for
     #'   validity.
@@ -86,7 +89,6 @@ ArchiveTuning = R6Class("ArchiveTuning",
       # initialize empty benchmark result
       self$benchmark_result = BenchmarkResult$new()
     },
-
 
     #' @description
     #' Retrieve [mlr3::Learner] of the i-th evaluation, by position

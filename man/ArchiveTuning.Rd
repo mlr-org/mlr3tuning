@@ -118,6 +118,7 @@ Score hyperparameter configurations on additional measures.
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
+Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ArchiveTuning$new(search_space, codomain, check_values = TRUE)}\if{html}{\out{</div>}}
 }
