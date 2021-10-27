@@ -15,7 +15,7 @@ The table (\verb{$data}) has the following columns:
 \item One column for each hyperparameter of the search space (\verb{$search_space}).
 \item One column for each performance measure (\verb{$codomain}).
 \item \code{x_domain} (\code{list()})\cr
-Lists of transformed hyperparameter values that are passed to the learner.
+Lists of (transformed) hyperparameter values that are passed to the learner.
 \item \code{runtime_learners} (\code{numeric(1)})\cr
 Sum of training and predict times logged in learners per
 \link[mlr3:ResampleResult]{mlr3::ResampleResult} / evaluation. This does not include potential
@@ -30,7 +30,8 @@ Connects each hyperparameter configuration to the resampling experiment
 stored in the \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}.
 }
 
-Each row corresponds to a single evaluation of a hyperparameter configuration.
+Each row corresponds to a single evaluation of a hyperparameter
+configuration.
 
 The archive stores additionally a \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}
 (\verb{$benchmark_result}) that records the resampling experiments. Each
@@ -44,8 +45,9 @@ viewed with \code{as.data.table()}, both are joined automatically.
 
 
 For analyzing the tuning results, it is recommended to pass the archive to
-\code{as.data.table()}. The returned data table is joined with the benchmark result
-which adds the \link[mlr3:ResampleResult]{mlr3::ResampleResult} for each hyperparameter evaluation.
+\code{as.data.table()}. The returned data table is joined with the benchmark
+result which adds the \link[mlr3:ResampleResult]{mlr3::ResampleResult} for each hyperparameter
+evaluation.
 
 The archive provides various getters (e.g. \verb{$learners()}) to ease the access.
 All getters extract by position (\code{i}) or unique hash (\code{uhash}). For a
@@ -72,7 +74,7 @@ should be unnested.
 \item \code{exclude_columns} (\code{character()})\cr
 Exclude columns from table. Set to \code{NULL} if no column should be
 excluded.
-\item \code{measures} (list of \link[mlr3:Measure]{mlr3::Measure})\cr
+\item \code{measures} (List of \link[mlr3:Measure]{mlr3::Measure})\cr
 Score hyperparameter configurations on additional measures.
 }
 }
@@ -84,11 +86,10 @@ Score hyperparameter configurations on additional measures.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{benchmark_result}}{(\link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult})\cr
-Stores benchmark result.}
+\item{\code{benchmark_result}}{(\link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}).}
 
 \item{\code{instance}}{(\link{TuningInstanceSingleCrit} | \link{TuningInstanceMultiCrit})\cr
-Stores instance that stores the archive.}
+Reference to instance which stores the archive.}
 }
 \if{html}{\out{</div>}}
 }
@@ -128,7 +129,7 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   codomain,
   check_values = TRUE,
   store_x_domain = TRUE,
-  objective
+  instance = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -136,13 +137,13 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
-Hyperparameter search space. If \code{NULL}, the search space is constructed from
-the \link{TuneToken} in the \code{ParamSet} of the learner.}
+Hyperparameter search space. If \code{NULL} (default), the search space is
+constructed from the \link{TuneToken} of the learner's parameter set
+(learner$param_set).}
 
-\item{\code{codomain}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
-Specifies codomain of function.
-Most importantly the tags of each output "Parameter" define whether it should
-be minimized or maximized.  The default is to minimize each component.}
+\item{\code{codomain}}{(\link[bbotk:Codomain]{bbotk::Codomain})\cr
+Specifies codomain of objective function i.e. a set of performance
+measures. Internally created from provided \link[mlr3:Measure]{mlr3::Measure}s.}
 
 \item{\code{check_values}}{(\code{logical(1)})\cr
 Should x-values that are added to the archive be checked for validity?
@@ -150,9 +151,14 @@ Search space that is logged into archive.}
 
 \item{\code{store_x_domain}}{(\code{logical(1)})\cr
 Determines if x values, should be stored in \verb{$data$x_domain} as list
-items. The trafo will be applied if defined in \code{search_space}.}
+items. The trafo will be applied if defined in \code{search_space}.
+If \code{TRUE} (default), (transformed) hyperparameter values are stored
+in archive as list items. Values are transformed if search space
+(\verb{$search_space}) has a transformation function.}
 
-\item{\code{objective}}{(\link{ObjectiveTuning}).}
+\item{\code{instance}}{(\link{TuningInstanceSingleCrit} | \link{TuningInstanceMultiCrit})\cr
+Optionally, reference to instance which stores the archive. Only used
+if asynchronously evaluated learners are written to hotstart stack.}
 }
 \if{html}{\out{</div>}}
 }

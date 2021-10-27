@@ -3,10 +3,10 @@
 #' @description
 #' Specifies a general single-criteria tuning scenario, including objective
 #' function and archive for Tuners to act upon. This class stores an
-#' `ObjectiveTuning` object that encodes the black box objective function which
+#' [ObjectiveTuning] object that encodes the black box objective function which
 #' a [Tuner] has to optimize. It allows the basic operations of querying the
 #' objective at design points (`$eval_batch()`), storing the evaluations in the
-#' internal `Archive` and accessing the final result (`$result`).
+#' internal [ArchiveTuning] and accessing the final result (`$result`).
 #'
 #' Evaluations of hyperparameter configurations are performed in batches by
 #' calling [mlr3::benchmark()] internally. Before a batch is evaluated, the
@@ -22,11 +22,13 @@
 #' @template param_learner
 #' @template param_resampling
 #' @template param_measure
-#' @template param_search_space
 #' @template param_terminator
+#' @template param_search_space
+#' @template param_store_benchmark_result
 #' @template param_store_models
 #' @template param_check_values
-#' @template param_store_benchmark_result
+#' @template param_allow_hotstart
+#' @template param_store_x_domain
 #' @template param_xdt
 #' @template param_learner_param_vals
 #' @template param_allow_hotstart
@@ -94,7 +96,8 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     #' feasibility region for the parameters the tuner is supposed to optimize,
     #' and a termination criterion.
     initialize = function(task, learner, resampling, measure, terminator, search_space = NULL,
-      store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE) {
+      store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE,
+      store_x_domain = TRUE) {
       learner = assert_learner(as_learner(learner, clone = TRUE))
 
       if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token")) > 0) {
@@ -105,13 +108,18 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
         learner$param_set$values = learner$param_set$get_values(type = "without_token")
       }
 
-      measure = as_measure(measure)
-      obj = ObjectiveTuning$new(task = task, learner = learner, resampling = resampling, measures = list(measure),
-        store_benchmark_result = store_benchmark_result, store_models = store_models, check_values = check_values,
-        allow_hotstart = allow_hotstart)
-      super$initialize(obj, search_space, terminator)
-      self$archive = ArchiveTuning$new(search_space = search_space, codomain = self$objective$codomain,
-        check_values = check_values, instance = self)
+      # create codomain from measure
+      measures = assert_measures(as_measures(measure, clone = TRUE), task = task, learner = learner)
+      codomain = measures_to_codomain(measures)
+
+      # initialized specialized tuning archive and objective
+      archive = ArchiveTuning$new(search_space, codomain, check_values, store_x_domain, instance = self)
+      objective = ObjectiveTuning$new(task, learner, resampling, measures, store_benchmark_result, store_models,
+        check_values, allow_hotstart, archive)
+
+      super$initialize(objective, search_space, terminator)
+      # super class of instance initializes default archive, overwrite with tuning archive
+      self$archive = archive
     },
 
     #' @description

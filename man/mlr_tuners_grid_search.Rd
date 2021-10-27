@@ -8,8 +8,10 @@
 Subclass for grid search tuning.
 
 The grid is constructed as a Cartesian product over discretized values per
-parameter, see \code{\link[paradox:generate_design_grid]{paradox::generate_design_grid()}}. The points of the grid are
-evaluated in a random order.
+parameter, see \code{\link[paradox:generate_design_grid]{paradox::generate_design_grid()}}. If the learner supports
+hotstarting, the grid is sorted by the hotstart parameter (see also
+\link[mlr3:HotstartStack]{mlr3::HotstartStack}). If not, the points of the grid are evaluated in a
+random order.
 }
 \section{Dictionary}{
 
@@ -18,6 +20,27 @@ This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{diction
 mlr_tuners$get("grid_search")
 tnr("grid_search")
 }
+}
+
+\section{Parameters}{
+
+\describe{
+\item{\code{resolution}}{\code{integer(1)}\cr
+Resolution of the grid, see \code{\link[paradox:generate_design_grid]{paradox::generate_design_grid()}}.}
+\item{\code{param_resolutions}}{named \code{integer()}\cr
+Resolution per parameter, named by parameter ID, see
+\code{\link[paradox:generate_design_grid]{paradox::generate_design_grid()}}.}
+\item{\code{batch_size}}{\code{integer(1)}\cr
+Maximum number of points to try in a batch.}
+}
+}
+
+\section{Progress Bars}{
+
+\verb{$optimize()} supports progress bars via the package \CRANpkg{progressr}
+combined with a \link{Terminator}. Simply wrap the function in
+\code{progressr::with_progress()} to enable them. We recommend to use package
+\CRANpkg{progress} as backend; enable with \code{progressr::handlers("progress")}.
 }
 
 \section{Parallelization}{
@@ -35,35 +58,9 @@ section on parallelization for more details).
 
 \section{Logging}{
 
-
 All \link{Tuner}s use a logger (as implemented in \CRANpkg{lgr}) from package
 \CRANpkg{bbotk}.
 Use \code{lgr::get_logger("bbotk")} to access and control the logger.
-}
-
-\section{Parameters}{
-
-
-\describe{
-\item{\code{resolution}}{\code{integer(1)}\cr
-Resolution of the grid, see \code{\link[paradox:generate_design_grid]{paradox::generate_design_grid()}}.}
-\item{\code{param_resolutions}}{named \code{integer()}\cr
-Resolution per parameter, named by parameter ID, see
-\code{\link[paradox:generate_design_grid]{paradox::generate_design_grid()}}.}
-\item{\code{batch_size}}{\code{integer(1)}\cr
-Maximum number of points to try in a batch.}
-}
-
-}
-
-\section{Progress Bars}{
-
-
-\verb{$optimize()} supports progress bars via the package \href{https://CRAN.R-project.org/package=progressr}{\pkg{progressr}}
-combined with a \link[bbotk]{Terminator}. Simply wrap the function in
-\code{progressr::with_progress()} to enable them. We recommend to use package
-\href{https://CRAN.R-project.org/package=progress}{\pkg{progress}} as backend; enable with \code{progressr::handlers("progress")}.
-
 }
 
 \examples{
@@ -105,8 +102,8 @@ Other Tuner:
 \code{\link{mlr_tuners_random_search}}
 }
 \concept{Tuner}
-\section{Super classes}{
-\code{\link[mlr3tuning:Tuner]{mlr3tuning::Tuner}} -> \code{\link[mlr3tuning:TunerFromOptimizer]{mlr3tuning::TunerFromOptimizer}} -> \code{TunerGridSearch}
+\section{Super class}{
+\code{\link[mlr3tuning:Tuner]{mlr3tuning::Tuner}} -> \code{TunerGridSearch}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -119,8 +116,8 @@ Other Tuner:
 \out{<details open ><summary>Inherited methods</summary>}
 \itemize{
 \item \out{<span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="format">}\href{../../mlr3tuning/html/Tuner.html#method-format}{\code{mlr3tuning::Tuner$format()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="optimize">}\href{../../mlr3tuning/html/Tuner.html#method-optimize}{\code{mlr3tuning::Tuner$optimize()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="print">}\href{../../mlr3tuning/html/Tuner.html#method-print}{\code{mlr3tuning::Tuner$print()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="mlr3tuning" data-topic="TunerFromOptimizer" data-id="optimize">}\href{../../mlr3tuning/html/TunerFromOptimizer.html#method-optimize}{\code{mlr3tuning::TunerFromOptimizer$optimize()}}\out{</span>}
 }
 \out{</details>}
 }

@@ -23,3 +23,65 @@ test_that("TunerGridSearch with TerminatorNone", {
   archive = inst$archive
   expect_data_table(archive$data, nrows = 4L)
 })
+
+test_that("TunerGridSearch works with forward hotstart parameter", {
+  task = tsk("pima")
+  learner = lrn("classif.debug", x = to_tune(), iter = to_tune(1, 100))
+
+  instance = tune(
+    method = "grid_search",
+    task = task,
+    learner = learner,
+    resampling = rsmp("holdout"),
+    measure = msr("classif.ce"),
+    batch_size = 5,
+    resolution = 5,
+    allow_hotstart = TRUE
+  )
+
+  ids = map(extract_benchmark_result_learners(instance$archive$benchmark_result), function(l) l$model$id)
+  expect_equal(length(unique(ids)), 5)
+  expect_equal(unique(instance$archive$data$iter), c(1, 25, 50, 75, 100))
+})
+
+test_that("TunerGridSearch works with forward hotstart parameter", {
+  task = tsk("pima")
+  learner = lrn("classif.debug", x = to_tune(), iter = to_tune(1, 100))
+  learner$properties[learner$properties %in% "hotstart_forward"] = "hotstart_backward"
+
+  instance = tune(
+    method = "grid_search",
+    task = task,
+    learner = learner,
+    resampling = rsmp("holdout"),
+    measure = msr("classif.ce"),
+    batch_size = 5,
+    resolution = 5,
+    allow_hotstart = TRUE
+  )
+
+  ids = map(extract_benchmark_result_learners(instance$archive$benchmark_result), function(l) l$model$id)
+  expect_equal(length(unique(ids)), 5)
+  expect_equal(unique(instance$archive$data$iter), c(100, 75, 50, 25, 1))
+})
+
+test_that("TunerGridSearch works with forward and backward hotstart parameter", {
+  task = tsk("pima")
+  learner = lrn("classif.debug", x = to_tune(), iter = to_tune(1, 100))
+  learner$properties = c(learner$properties, "hotstart_backward")
+
+  instance = tune(
+    method = "grid_search",
+    task = task,
+    learner = learner,
+    resampling = rsmp("holdout"),
+    measure = msr("classif.ce"),
+    batch_size = 5,
+    resolution = 5,
+    allow_hotstart = TRUE
+  )
+
+  ids = map(extract_benchmark_result_learners(instance$archive$benchmark_result), function(l) l$model$id)
+  expect_equal(length(unique(ids)), 5)
+  expect_equal(unique(instance$archive$data$iter), c(100, 75, 50, 25, 1))
+})

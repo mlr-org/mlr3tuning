@@ -36,16 +36,3 @@ test_that("predictions missing", {
     measure = msr("classif.ce"), search_space = param_set, terminator = trm("evals", n_evals = 10))
   expect_error(tt$optimize(instance), "missing")
 })
-
-
-test_that("faulty measure", {
-  learner = lrn("classif.debug")
-  tt = tnr("random_search")
-  param_set = ParamSet$new(list(
-      ParamDbl$new("x", lower = 0, upper = 1)
-  ))
-
-  instance = TuningInstanceSingleCrit$new(task = tsk("iris"), learner = learner, resampling = rsmp("holdout"),
-    measure = msr("debug", na_ratio = 0.5, minimize = TRUE), search_space = param_set, terminator = trm("evals", n_evals = 10))
-  expect_error(tt$optimize(instance), "Contains missing values")
-})

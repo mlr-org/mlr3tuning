@@ -69,11 +69,10 @@ List of param values for the optimal learner call.}
 }
 }
 \if{html}{
-\out{<details ><summary>Inherited methods</summary>}
+\out{<details open ><summary>Inherited methods</summary>}
 \itemize{
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="clear">}\href{../../bbotk/html/OptimInstance.html#method-clear}{\code{bbotk::OptimInstance$clear()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="eval_batch">}\href{../../bbotk/html/OptimInstance.html#method-eval_batch}{\code{bbotk::OptimInstance$eval_batch()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="eval_proposed">}\href{../../bbotk/html/OptimInstance.html#method-eval_proposed}{\code{bbotk::OptimInstance$eval_proposed()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="format">}\href{../../bbotk/html/OptimInstance.html#method-format}{\code{bbotk::OptimInstance$format()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="objective_function">}\href{../../bbotk/html/OptimInstance.html#method-objective_function}{\code{bbotk::OptimInstance$objective_function()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="print">}\href{../../bbotk/html/OptimInstance.html#method-print}{\code{bbotk::OptimInstance$print()}}\out{</span>}
@@ -100,7 +99,8 @@ and a termination criterion.
   store_benchmark_result = TRUE,
   store_models = FALSE,
   check_values = FALSE,
-  allow_hotstart = FALSE
+  allow_hotstart = FALSE,
+  store_x_domain = TRUE
 )}\if{html}{\out{</div>}}
 }
 
@@ -110,43 +110,64 @@ and a termination criterion.
 \item{\code{task}}{(\link[mlr3:Task]{mlr3::Task})\cr
 Task to operate on.}
 
-\item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner}).}
+\item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner})\cr
+Learner to tune.}
 
 \item{\code{resampling}}{(\link[mlr3:Resampling]{mlr3::Resampling})\cr
 Resampling that is used to evaluated the performance of the hyperparameter
 configurations. Uninstantiated resamplings are instantiated during
 construction so that all configurations are evaluated on the same data
 splits. Already instantiated resamplings are kept unchanged. Specialized
-\link{Tuner} change the resampling e.g. to evaluate a hyperparameter configuration
-on different data splits. This field, however, always returns the resampling
-passed in construction.}
+\link{Tuner} change the resampling e.g. to evaluate a hyperparameter
+configuration on different data splits. This field, however, always returns
+the resampling passed in construction.}
 
 \item{\code{measures}}{(list of \link[mlr3:Measure]{mlr3::Measure})\cr
-Measures to optimize.
-If \code{NULL}, \CRANpkg{mlr3}'s default measure is used.}
+Measures to optimize.}
 
-\item{\code{terminator}}{(\link{Terminator}).}
+\item{\code{terminator}}{(\link{Terminator})\cr
+Stop criterion of the tuning process.}
 
 \item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
-Hyperparameter search space. If \code{NULL}, the search space is constructed from
-the \link{TuneToken} in the \code{ParamSet} of the learner.}
+Hyperparameter search space. If \code{NULL} (default), the search space is
+constructed from the \link{TuneToken} of the learner's parameter set
+(learner$param_set).}
 
 \item{\code{store_benchmark_result}}{(\code{logical(1)})\cr
-If \code{TRUE} (default), stores the \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} in archive.}
+If \code{TRUE} (default), store resample result of evaluated hyperparameter
+configurations in archive as \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}.}
 
 \item{\code{store_models}}{(\code{logical(1)})\cr
-If \code{FALSE} (default), the fitted models are not stored in the
-\link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}. If \code{store_benchmark_result = FALSE}, the models are
-only stored temporarily and not accessible after the tuning. This combination
-might be useful for measures that require a model.}
+If \code{TRUE}, fitted models are stored in the benchmark result
+(\code{archive$benchmark_result}). If \code{store_benchmark_result = FALSE}, models
+are only stored temporarily and not accessible after the tuning. This
+combination is needed for measures that require a model.}
 
 \item{\code{check_values}}{(\code{logical(1)})\cr
-Should parameters before the evaluation and the results be checked for
-validity?}
+If \code{TRUE}, hyperparameter values are checked before evaluation and
+performance scores after. If \code{FALSE} (default), values are unchecked but
+computational overhead is reduced.}
 
 \item{\code{allow_hotstart}}{(\code{logical(1)})\cr
 Allow to hot start learners with previously fitted models. See also
-\link[mlr3:HotstartStack]{mlr3::HotstartStack}. Sets \code{store_models = TRUE}.}
+\link[mlr3:HotstartStack]{mlr3::HotstartStack}. Sets \code{store_models = TRUE}.
+Allow to hotstart learners with previously fitted models. See also
+\link[mlr3:HotstartStack]{mlr3::HotstartStack}. The learner must support hotstarting. Sets
+\code{store_models = TRUE}.}
+
+\item{\code{allow_hotstart}}{(\code{logical(1)})\cr
+Allow to hot start learners with previously fitted models. See also
+\link[mlr3:HotstartStack]{mlr3::HotstartStack}. Sets \code{store_models = TRUE}.
+Allow to hotstart learners with previously fitted models. See also
+\link[mlr3:HotstartStack]{mlr3::HotstartStack}. The learner must support hotstarting. Sets
+\code{store_models = TRUE}.}
+
+\item{\code{store_x_domain}}{(\code{logical(1)})\cr
+Determines if x values, should be stored in \verb{$data$x_domain} as list
+items. The trafo will be applied if defined in \code{search_space}.
+If \code{TRUE} (default), (transformed) hyperparameter values are stored
+in archive as list items. Values are transformed if search space
+(\verb{$search_space}) has a transformation function.}
 }
 \if{html}{\out{</div>}}
 }
@@ -165,14 +186,14 @@ and estimated performance values here. For internal use.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{xdt}}{(\code{data.table::data.table()})\cr
-x values as \code{data.table}. Each row is one point. Contains the value in
-the \emph{search space} of the \link{TuningInstanceMultiCrit} object. Can contain
-additional columns for extra information.}
+Hyperparameter values as \code{data.table::data.table()}. Each row is one
+configuration. Contains values in the search space. Can contain additional
+columns for extra information.}
 
 \item{\code{ydt}}{(\code{data.table::data.table()})\cr
 Optimal outcomes, e.g. the Pareto front.}
 
-\item{\code{learner_param_vals}}{(\code{list()})\cr
+\item{\code{learner_param_vals}}{(List of named \verb{list()s})\cr
 Fixed parameter values of the learner that are neither part of the}
 }
 \if{html}{\out{</div>}}
