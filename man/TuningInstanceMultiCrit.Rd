@@ -64,15 +64,17 @@ List of param values for the optimal learner call.}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{TuningInstanceMultiCrit$new()}}
+\item \href{#method-resolve_promise}{\code{TuningInstanceMultiCrit$resolve_promise()}}
 \item \href{#method-assign_result}{\code{TuningInstanceMultiCrit$assign_result()}}
 \item \href{#method-clone}{\code{TuningInstanceMultiCrit$clone()}}
 }
 }
 \if{html}{
-\out{<details open ><summary>Inherited methods</summary>}
+\out{<details ><summary>Inherited methods</summary>}
 \itemize{
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="clear">}\href{../../bbotk/html/OptimInstance.html#method-clear}{\code{bbotk::OptimInstance$clear()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="eval_batch">}\href{../../bbotk/html/OptimInstance.html#method-eval_batch}{\code{bbotk::OptimInstance$eval_batch()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="eval_proposed">}\href{../../bbotk/html/OptimInstance.html#method-eval_proposed}{\code{bbotk::OptimInstance$eval_proposed()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="format">}\href{../../bbotk/html/OptimInstance.html#method-format}{\code{bbotk::OptimInstance$format()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="objective_function">}\href{../../bbotk/html/OptimInstance.html#method-objective_function}{\code{bbotk::OptimInstance$objective_function()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="print">}\href{../../bbotk/html/OptimInstance.html#method-print}{\code{bbotk::OptimInstance$print()}}\out{</span>}
@@ -99,8 +101,7 @@ and a termination criterion.
   store_benchmark_result = TRUE,
   store_models = FALSE,
   check_values = FALSE,
-  allow_hotstart = FALSE,
-  store_x_domain = TRUE
+  allow_hotstart = FALSE
 )}\if{html}{\out{</div>}}
 }
 
@@ -161,15 +162,32 @@ Allow to hot start learners with previously fitted models. See also
 Allow to hotstart learners with previously fitted models. See also
 \link[mlr3:HotstartStack]{mlr3::HotstartStack}. The learner must support hotstarting. Sets
 \code{store_models = TRUE}.}
-
-\item{\code{store_x_domain}}{(\code{logical(1)})\cr
-Determines if x values, should be stored in \verb{$data$x_domain} as list
-items. The trafo will be applied if defined in \code{search_space}.
-If \code{TRUE} (default), (transformed) hyperparameter values are stored
-in archive as list items. Values are transformed if search space
-(\verb{$search_space}) has a transformation function.}
 }
 \if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-resolve_promise"></a>}}
+\if{latex}{\out{\hypertarget{method-resolve_promise}{}}}
+\subsection{Method \code{resolve_promise()}}{
+Retrieve outcome, runtime and resample result of resolved futures and
+add them to the archive table. If hotstarting is enabled, learners of
+the resample results are added to the hotstart stack.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TuningInstanceMultiCrit$resolve_promise(i = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{i}}{(\code{integer()})\cr
+Row ids of archive table for which values are retrieved. If \code{NULL}
+(default), retrieve values from all futures which are resolved.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+\code{\link[data.table:data.table]{data.table::data.table()}} (invisibly).
 }
 }
 \if{html}{\out{<hr>}}

@@ -87,9 +87,6 @@ Score hyperparameter configurations on additional measures.
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
 \item{\code{benchmark_result}}{(\link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}).}
-
-\item{\code{instance}}{(\link{TuningInstanceSingleCrit} | \link{TuningInstanceMultiCrit})\cr
-Reference to instance which stores the archive.}
 }
 \if{html}{\out{</div>}}
 }
@@ -97,7 +94,6 @@ Reference to instance which stores the archive.}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{ArchiveTuning$new()}}
-\item \href{#method-resolve_promise}{\code{ArchiveTuning$resolve_promise()}}
 \item \href{#method-learner}{\code{ArchiveTuning$learner()}}
 \item \href{#method-learners}{\code{ArchiveTuning$learners()}}
 \item \href{#method-learner_param_vals}{\code{ArchiveTuning$learner_param_vals()}}
@@ -124,13 +120,7 @@ Reference to instance which stores the archive.}
 \subsection{Method \code{new()}}{
 Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ArchiveTuning$new(
-  search_space,
-  codomain,
-  check_values = TRUE,
-  store_x_domain = TRUE,
-  instance = NULL
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ArchiveTuning$new(search_space, codomain, check_values = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -146,45 +136,10 @@ Specifies codomain of objective function i.e. a set of performance
 measures. Internally created from provided \link[mlr3:Measure]{mlr3::Measure}s.}
 
 \item{\code{check_values}}{(\code{logical(1)})\cr
-Should x-values that are added to the archive be checked for validity?
-Search space that is logged into archive.}
-
-\item{\code{store_x_domain}}{(\code{logical(1)})\cr
-Determines if x values, should be stored in \verb{$data$x_domain} as list
-items. The trafo will be applied if defined in \code{search_space}.
-If \code{TRUE} (default), (transformed) hyperparameter values are stored
-in archive as list items. Values are transformed if search space
-(\verb{$search_space}) has a transformation function.}
-
-\item{\code{instance}}{(\link{TuningInstanceSingleCrit} | \link{TuningInstanceMultiCrit})\cr
-Optionally, reference to instance which stores the archive. Only used
-if asynchronously evaluated learners are written to hotstart stack.}
+If \code{TRUE} (default), hyperparameter configurations are check for
+validity.}
 }
 \if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-resolve_promise"></a>}}
-\if{latex}{\out{\hypertarget{method-resolve_promise}{}}}
-\subsection{Method \code{resolve_promise()}}{
-Retrieve outcome, runtime and resample result of resolved futures and
-add them to the archive table. If hotstarting is enabled, learners of
-the resample results are added to the hotstart stack.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ArchiveTuning$resolve_promise(i = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{i}}{(\code{integer()})\cr
-Row ids of archive table for which values are retrieved. If \code{NULL}
-(default), retrieve values from all futures which are resolved.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-\code{\link[data.table:data.table]{data.table::data.table()}} (invisibly).
 }
 }
 \if{html}{\out{<hr>}}

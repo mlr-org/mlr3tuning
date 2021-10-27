@@ -6,7 +6,6 @@
 #'
 #' @template param_search_space
 #' @template param_codomain
-#' @template param_store_x_domain
 #'
 #' @section Data structure:
 #'
@@ -81,10 +80,10 @@ ArchiveTuning = R6Class("ArchiveTuning",
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #'
     #' @param check_values (`logical(1)`)\cr
-    #'   Should x-values that are added to the archive be checked for validity?
-    #'   Search space that is logged into archive.
-    initialize = function(search_space, codomain, check_values = TRUE, store_x_domain = TRUE) {
-      super$initialize(search_space, codomain, check_values, store_x_domain)
+    #'   If `TRUE` (default), hyperparameter configurations are check for
+    #'   validity.
+    initialize = function(search_space, codomain, check_values = TRUE) {
+      super$initialize(search_space, codomain, check_values)
 
       # initialize empty benchmark result
       self$benchmark_result = BenchmarkResult$new()
@@ -200,7 +199,7 @@ as.data.table.ArchiveTuning = function(x, ..., unnest = "x_domain", exclude_colu
     setdiff(x_domain_ids, exclude_columns)
   } else NULL
 
-  setcolorder(tab, c(x$cols_x, x$cols_y, cols_y_extra, cols_x_domain, "runtime_learners", "timestamp", "batch_nr"))
+  setcolorder(tab, c(x$cols_x, x$cols_y, cols_y_extra, cols_x_domain, "runtime_learners", "timestamp", "batch_nr", "status"))
   assert_subset(exclude_columns, names(tab))
   tab[, setdiff(names(tab), exclude_columns), with = FALSE]
 }
