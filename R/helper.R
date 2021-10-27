@@ -25,3 +25,4 @@ extract_benchmark_result_learners = function(bmr) {
     bmr$resample_result(n)$learners
   }))
 }
+
