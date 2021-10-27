@@ -160,6 +160,7 @@ HotstartStackDB = R6Class("HotstartStackDB",
       catf(format(self))
       print(DBI::dbGetQuery(self$connection, "SELECT * FROM stack LIMIT 10"),  digits = 2)
       cat("(First 10 rows only.)")
+      DBI::dbDisconnect(con, shutdown = TRUE)
     }
   ),
 
