@@ -43,6 +43,7 @@ Imports:
     bbotk (>= 0.4.0.9000),
     checkmate (>= 2.0.0),
     data.table,
+    DBI,
     lgr,
     mlr3misc (>= 0.9.4),
     R6
