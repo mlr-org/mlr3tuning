@@ -119,12 +119,7 @@ Score hyperparameter configurations on additional measures.
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ArchiveTuning$new(
-  search_space,
-  codomain,
-  check_values = TRUE,
-  store_x_domain = TRUE
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ArchiveTuning$new(search_space, codomain, check_values = TRUE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -142,11 +137,6 @@ measures. Internally created from provided \link[mlr3:Measure]{mlr3::Measure}s.}
 \item{\code{check_values}}{(\code{logical(1)})\cr
 If \code{TRUE} (default), hyperparameter configurations are check for
 validity.}
-
-\item{\code{store_x_domain}}{(\code{logical(1)})\cr
-If \code{TRUE} (default), (transformed) hyperparameter values are stored
-in archive as list items. Values are transformed if search space
-(\verb{$search_space}) has a transformation function.}
 }
 \if{html}{\out{</div>}}
 }

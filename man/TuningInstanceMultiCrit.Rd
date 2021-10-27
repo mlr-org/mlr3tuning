@@ -99,8 +99,7 @@ and a termination criterion.
   store_benchmark_result = TRUE,
   store_models = FALSE,
   check_values = FALSE,
-  allow_hotstart = FALSE,
-  store_x_domain = TRUE
+  allow_hotstart = FALSE
 )}\if{html}{\out{</div>}}
 }
 
@@ -152,11 +151,6 @@ computational overhead is reduced.}
 Allow to hotstart learners with previously fitted models. See also
 \link[mlr3:HotstartStack]{mlr3::HotstartStack}. The learner must support hotstarting. Sets
 \code{store_models = TRUE}.}
-
-\item{\code{store_x_domain}}{(\code{logical(1)})\cr
-If \code{TRUE} (default), (transformed) hyperparameter values are stored
-in archive as list items. Values are transformed if search space
-(\verb{$search_space}) has a transformation function.}
 }
 \if{html}{\out{</div>}}
 }

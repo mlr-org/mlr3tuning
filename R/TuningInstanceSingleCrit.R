@@ -28,7 +28,6 @@
 #' @template param_store_models
 #' @template param_check_values
 #' @template param_allow_hotstart
-#' @template param_store_x_domain
 #' @template param_xdt
 #' @template param_learner_param_vals
 #'
@@ -95,8 +94,7 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     #' feasibility region for the parameters the tuner is supposed to optimize,
     #' and a termination criterion.
     initialize = function(task, learner, resampling, measure, terminator, search_space = NULL,
-      store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE,
-      store_x_domain = TRUE) {
+      store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE) {
       learner = assert_learner(as_learner(learner, clone = TRUE))
 
       if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token")) > 0) {
@@ -112,7 +110,7 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
       codomain = measures_to_codomain(measures)
 
       # initialized specialized tuning archive and objective
-      archive = ArchiveTuning$new(search_space, codomain, check_values, store_x_domain)
+      archive = ArchiveTuning$new(search_space, codomain, check_values)
       objective = ObjectiveTuning$new(task, learner, resampling, measures, store_benchmark_result, store_models,
         check_values, allow_hotstart, archive)
 

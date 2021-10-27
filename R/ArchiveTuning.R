@@ -6,7 +6,6 @@
 #'
 #' @template param_search_space
 #' @template param_codomain
-#' @template param_store_x_domain
 #'
 #' @section Data structure:
 #'
@@ -81,8 +80,8 @@ ArchiveTuning = R6Class("ArchiveTuning",
     #' @param check_values (`logical(1)`)\cr
     #'   If `TRUE` (default), hyperparameter configurations are check for
     #'   validity.
-    initialize = function(search_space, codomain, check_values = TRUE, store_x_domain = TRUE) {
-      super$initialize(search_space, codomain, check_values, store_x_domain)
+    initialize = function(search_space, codomain, check_values = TRUE) {
+      super$initialize(search_space, codomain, check_values)
 
       # initialize empty benchmark result
       self$benchmark_result = BenchmarkResult$new()
