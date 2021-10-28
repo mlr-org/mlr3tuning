@@ -201,7 +201,9 @@ HotstartStackDB = R6Class("HotstartStackDB",
     #' @field connection (`SQLiteConnection`)\cr
     #' Connection to database.
     connection = function() {
-      DBI::dbConnect(RSQLite::SQLite(), self$stack)
+      con = DBI::dbConnect(RSQLite::SQLite(), self$stack)
+      RSQLite::sqliteSetBusyHandler(con, 10000)
+      con
     }
 
   )
