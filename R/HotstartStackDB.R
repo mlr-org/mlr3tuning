@@ -43,16 +43,12 @@
 #'
 #' # train automatically uses hot start learner while fitting the model
 #' learner$train(task)
-HotstartStackDB = R6Class("HotstartStack",
+HotstartStackDB = R6Class("HotstartStackDB",
   public = list(
 
     #' @field stack [data.table::data.table()]\cr
     #' Stores hot start learners.
     stack = NULL,
-
-    #' @field row_limit (`integer(1)`)\cr
-    #' Limit maximum number of rows in database.
-    row_limit = NULL,
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
@@ -87,11 +83,6 @@ HotstartStackDB = R6Class("HotstartStack",
     add = function(learners) {
       learners = assert_learners(as_learners(learners))
       con = self$connection
-
-      if (!is.null(self$row_limit) && DBI::dbGetQuery(self$connection, "SELECT COUNT(*)  FROM stack")[[1]] > self$row_limit) {
-        DBI::dbExecute(con, sprintf("DELETE FROM stack WHERE rowid IN (SELECT rowid FROM stack ORDER BY ROWID ASC LIMIT %i)",
-          self$row_limit))
-      }
 
       # record value of hotstart parameter
       hotstart_value = map_dbl(learners, function(learner) {
