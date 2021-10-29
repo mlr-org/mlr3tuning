@@ -43,7 +43,7 @@
 #'
 #' # train automatically uses hot start learner while fitting the model
 #' learner$train(task)
-HotstartStackDB = R6Class("HotstartStackDB",
+HotstartStackDB = R6Class("HotstartStack",
   public = list(
 
     #' @field stack [data.table::data.table()]\cr
@@ -158,7 +158,8 @@ HotstartStackDB = R6Class("HotstartStackDB",
     #' @param ... (ignored).
     print = function() {
       catf(format(self))
-      print(DBI::dbGetQuery(self$connection, "SELECT * FROM stack LIMIT 10"),  digits = 2)
+      con = self$connection
+      print(DBI::dbGetQuery(con, "SELECT * FROM stack LIMIT 10"),  digits = 2)
       cat("(First 10 rows only.)")
       DBI::dbDisconnect(con, shutdown = TRUE)
     }
