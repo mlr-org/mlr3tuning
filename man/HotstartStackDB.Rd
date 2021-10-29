@@ -51,6 +51,9 @@ learner$train(task)
 \describe{
 \item{\code{stack}}{\code{\link[data.table:data.table]{data.table::data.table()}}\cr
 Stores hot start learners.}
+
+\item{\code{row_limit}}{(\code{integer(1)})\cr
+Limit maximum number of rows in database.}
 }
 \if{html}{\out{</div>}}
 }
