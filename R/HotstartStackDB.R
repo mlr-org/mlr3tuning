@@ -50,6 +50,9 @@ HotstartStackDB = R6Class("HotstartStack",
     #' Stores hot start learners.
     stack = NULL,
 
+    #' @field learner_limit (integer(1)).
+    learner_limit = NULL,
+
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #'
@@ -69,8 +72,11 @@ HotstartStackDB = R6Class("HotstartStack",
         self$add(learners)
 
         # set index for fast subsetting
-        DBI::dbExecute(con, "CREATE INDEX task_learner_index ON stack (task_hash, learner_hash)")
+
         DBI::dbDisconnect(con, shutdown = TRUE)
+        private$.learner_count = length(learners)
+      }  else {
+        private$.learner_count = 0
       }
     },
 
@@ -83,6 +89,13 @@ HotstartStackDB = R6Class("HotstartStack",
     add = function(learners) {
       learners = assert_learners(as_learners(learners))
       con = self$connection
+
+      # remove oldest learners to save disk space
+      if (!is.null(self$learner_limit) && private$.learner_count > self$learner_limit) {
+        n_rows = private$.learner_count - ceiling(0.5 * self$learner_limit)
+        DBI::dbExecute(con, sprintf("DELETE FROM stack WHERE rowid IN (SELECT rowid FROM stack ORDER BY rowid ASC LIMIT %i)", n_rows))
+        private$.learner_count = private$.learner_count - n_rows
+      }
 
       # record value of hotstart parameter
       hotstart_value = map_dbl(learners, function(learner) {
@@ -100,6 +113,8 @@ HotstartStackDB = R6Class("HotstartStack",
       stack = data.table(task_hash, learner_hash, hotstart_value, state)
       DBI::dbAppendTable(con, "stack", stack)
       DBI::dbDisconnect(con, shutdown = TRUE)
+
+      private$.learner_count = private$.learner_count + length(learners)
 
       invisible(self)
     },
@@ -194,7 +209,9 @@ HotstartStackDB = R6Class("HotstartStack",
 
       learner$state = state
       learner
-    }
+    },
+
+    .learner_count = NULL
   ),
 
   active = list(

@@ -420,3 +420,22 @@ test_that("learners are cloned when hotstarting from data base is applied", {
   expect_equal(bmr$resample_result(1)$learners[[1]]$model$id, unserialize(stack$state[[1]])$model$id)
 })
 
+test_that("learner limit works", {
+  task = tsk("pima")
+  learner_1 = lrn("classif.debug", iter = 1)
+  learner_1$train(task)
+  learners = replicate(100, learner_1)
+
+  hot = HotstartStackDB$new(learners)
+  expect_equal(get_private(hot)$.learner_count, 100)
+
+  hot$add(learner_1)
+  expect_equal(get_private(hot)$.learner_count, 101)
+
+  hot$add(learners)
+  expect_equal(get_private(hot)$.learner_count, 201)
+
+  hot$learner_limit = 100
+  hot$add(learner_1)
+  expect_equal(get_private(hot)$.learner_count, 51)
+})
