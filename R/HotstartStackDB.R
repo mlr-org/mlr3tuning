@@ -193,6 +193,7 @@ HotstartStackDB = R6Class("HotstartStack",
       hotstart_id = learner$param_set$ids(tags = "hotstart")
       if (!length(hotstart_id)) return(NULL)
       hotstart_value = learner$param_set$values[[hotstart_id]]
+      if (is.null(hotstart_value)) return(NULL)
       con = self$connection
 
       # filtered stack contains multiple versions of the same learner with different fidelity levels

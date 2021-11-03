@@ -60,10 +60,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       self$measures = assert_measures(as_measures(measures, clone = TRUE), task = self$task, learner = self$learner)
       self$store_benchmark_result = assert_logical(store_benchmark_result)
       self$allow_hotstart = assert_logical(allow_hotstart) && any(c("hotstart_forward", "hotstart_backward") %in% learner$properties)
-      if (self$allow_hotstart) {
-        store_models = TRUE
-        self$hotstart_stack = HotstartStack$new()
-      }
+      if (self$allow_hotstart) self$hotstart_stack = HotstartStack$new()
       self$store_models = assert_logical(store_models)
       self$archive = assert_r6(archive, "ArchiveTuning", null.ok = TRUE)
       if (is.null(self$archive)) self$allow_hotstart = self$store_benchmark_result = self$store_models = FALSE
@@ -92,7 +89,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
 
       # benchmark hyperparameter configurations
       design = data.table(task = list(self$task), learner = learners, resampling = resampling)
-      bmr = benchmark(design, store_models = self$store_models, allow_hotstart = self$allow_hotstart)
+      bmr = benchmark(design, store_models = self$store_models || self$allow_hotstart, allow_hotstart = self$allow_hotstart)
 
       # aggregate performance scores
       ydt = bmr$aggregate(self$measures)[, self$codomain$target_ids, with = FALSE]
@@ -104,7 +101,10 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       set(ydt, j = "runtime_learners", value = time)
 
       # add to hotstart stack
-      if (self$allow_hotstart) self$hotstart_stack$add(extract_benchmark_result_learners(bmr))
+      if (self$allow_hotstart) {
+        self$hotstart_stack$add(extract_benchmark_result_learners(bmr))
+        if (!self$store_models) bmr$discard(models = TRUE)
+      }
 
       # store benchmark result in archive
       if (self$store_benchmark_result) {

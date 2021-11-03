@@ -135,6 +135,7 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
       if (nrow(ydt) && self$objective$allow_hotstart) {
         learners = unlist(map(ydt$resample_result, function(rr) rr$learners))
         self$objective$hotstart_stack$add(learners)
+        if (!self$objective$store_models) for(rr in ydt$resample_result) rr$discard(models = TRUE)
       }
 
       invisible(ydt)

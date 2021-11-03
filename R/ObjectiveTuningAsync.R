@@ -50,14 +50,10 @@ ObjectiveTuningAsync = R6Class("ObjectiveTuningAsync",
 
       self$task = assert_task(as_task(task, clone = TRUE))
       self$learner = assert_learner(as_learner(learner, clone = TRUE))
-      self$measures = assert_measures(as_measures(measures, clone = TRUE),
-        task = self$task, learner = self$learner)
+      self$measures = assert_measures(as_measures(measures, clone = TRUE), task = self$task, learner = self$learner)
       self$store_benchmark_result = assert_logical(store_benchmark_result)
-      self$allow_hotstart = assert_logical(allow_hotstart)
-      if (self$allow_hotstart) {
-        store_models = TRUE
-        self$hotstart_stack = HotstartStackDB$new()
-      }
+      self$allow_hotstart = assert_logical(allow_hotstart) && any(c("hotstart_forward", "hotstart_backward") %in% learner$properties)
+      if (self$allow_hotstart) self$hotstart_stack = HotstartStackDB$new()
       self$store_models = assert_logical(store_models)
 
       codomain = ParamSet$new(map(self$measures, function(s) {
@@ -81,11 +77,13 @@ ObjectiveTuningAsync = R6Class("ObjectiveTuningAsync",
       learner$param_set$values = insert_named(learner$param_set$values, xs)
       if (self$allow_hotstart) learner$hotstart_stack = self$hotstart_stack
 
-      rr = resample(self$task, learner, resampling[[1]], store_models = self$store_models, allow_hotstart = self$allow_hotstart)
+      rr = resample(self$task, learner, resampling[[1]], store_models = self$store_models || self$allow_hotstart, allow_hotstart = self$allow_hotstart)
       aggr = rr$aggregate(self$measures)
       time = sum(map_dbl(rr$learners, function(l) sum(l$timings)))
 
-      c(as.list(aggr), runtime_learners = time, resample_result = list(list(rr)))
+      ys = c(as.list(aggr), runtime_learners = time)
+      if (self$store_benchmark_result || self$allow_hotstart) ys = c(ys, resample_result = list(list(rr)))
+      ys
     }
   )
 )
