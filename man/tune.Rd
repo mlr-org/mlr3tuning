@@ -15,6 +15,7 @@ tune(
   search_space = NULL,
   store_models = FALSE,
   allow_hotstart = FALSE,
+  keep_hotstart_stack = FALSE,
   ...
 )
 }
@@ -61,6 +62,10 @@ combination is needed for measures that require a model.}
 Allow to hotstart learners with previously fitted models. See also
 \link[mlr3:HotstartStack]{mlr3::HotstartStack}. The learner must support hotstarting. Sets
 \code{store_models = TRUE}.}
+
+\item{keep_hotstart_stack}{(\code{logical(1)})\cr
+If \code{TRUE}, \link[mlr3:HotstartStack]{mlr3::HotstartStack} is kept in \verb{$objective$hotstart_stack}
+after tuning.}
 
 \item{...}{(named \code{list()})\cr
 Named arguments to be set as parameters of the tuner.}

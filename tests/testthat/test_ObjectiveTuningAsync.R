@@ -17,6 +17,11 @@ test_that("ObjectiveTuningAsync returns resample result with model", {
 })
 
 test_that("ObjectiveTuningAsync returns resample result with model when hotstarting is activated", {
+  task = tsk("iris")
+  learner = lrn("classif.debug")
+  resampling = rsmp("holdout")
+  measures = msr("classif.ce")
+
   objective = ObjectiveTuningAsync$new(task, learner, resampling, measures, store_benchmark_result = TRUE,
     store_models = TRUE, allow_hotstart = TRUE)
 
@@ -31,6 +36,11 @@ test_that("ObjectiveTuningAsync returns resample result with model when hotstart
 })
 
 test_that("ObjectiveTuningAsync returns resample result with model when store models is false but hotstarting is activated", {
+  task = tsk("iris")
+  learner = lrn("classif.debug")
+  resampling = rsmp("holdout")
+  measures = msr("classif.ce")
+
   objective = ObjectiveTuningAsync$new(task, learner, resampling, measures, store_benchmark_result = TRUE,
     store_models = FALSE, allow_hotstart = TRUE)
 
@@ -45,6 +55,11 @@ test_that("ObjectiveTuningAsync returns resample result with model when store mo
 })
 
 test_that("ObjectiveTuningAsync returns resample result with model when store benchmark result is false but hotstarting is activated", {
+  task = tsk("iris")
+  learner = lrn("classif.debug")
+  resampling = rsmp("holdout")
+  measures = msr("classif.ce")
+
   objective = ObjectiveTuningAsync$new(task, learner, resampling, measures, store_benchmark_result = FALSE,
     store_models = TRUE, allow_hotstart = TRUE)
 
@@ -59,6 +74,11 @@ test_that("ObjectiveTuningAsync returns resample result with model when store be
 })
 
 test_that("ObjectiveTuningAsync returns no resample result", {
+  task = tsk("iris")
+  learner = lrn("classif.debug")
+  resampling = rsmp("holdout")
+  measures = msr("classif.ce")
+
   objective = ObjectiveTuningAsync$new(task, learner, resampling, measures, store_benchmark_result = FALSE,
     store_models = FALSE, allow_hotstart = FALSE)
 

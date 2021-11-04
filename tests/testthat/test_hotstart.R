@@ -98,7 +98,8 @@ test_that("models are discarded after storing them in the stack", {
     batch_size = 5,
     resolution = 5,
     store_models = FALSE,
-    allow_hotstart = TRUE
+    allow_hotstart = TRUE,
+    keep_hotstart_stack = TRUE
   )
 
   expect_null(instance$archive$data$resample_result)

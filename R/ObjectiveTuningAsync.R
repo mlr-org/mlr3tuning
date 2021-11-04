@@ -13,6 +13,7 @@
 #' @template param_check_values
 #' @template param_store_benchmark_result
 #' @template param_allow_hotstart
+#' @template param_keep_hotstart_stack
 #'
 #' @export
 ObjectiveTuningAsync = R6Class("ObjectiveTuningAsync",
@@ -43,10 +44,13 @@ ObjectiveTuningAsync = R6Class("ObjectiveTuningAsync",
     #' @field allow_hotstart (logical(1))\cr
     allow_hotstart = NULL,
 
+    #' @field keep_hotstart_stack (`logical(1)`).
+    keep_hotstart_stack = NULL,
+
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function(task, learner, resampling, measures, check_values = TRUE, store_benchmark_result = TRUE,
-      store_models = FALSE, allow_hotstart = FALSE) {
+      store_models = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE) {
 
       self$task = assert_task(as_task(task, clone = TRUE))
       self$learner = assert_learner(as_learner(learner, clone = TRUE))
@@ -54,6 +58,7 @@ ObjectiveTuningAsync = R6Class("ObjectiveTuningAsync",
       self$store_benchmark_result = assert_logical(store_benchmark_result)
       self$allow_hotstart = assert_logical(allow_hotstart) && any(c("hotstart_forward", "hotstart_backward") %in% learner$properties)
       if (self$allow_hotstart) self$hotstart_stack = HotstartStackDB$new()
+      self$keep_hotstart_stack = assert_flag(keep_hotstart_stack)
       self$store_models = assert_logical(store_models)
 
       codomain = ParamSet$new(map(self$measures, function(s) {

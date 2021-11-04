@@ -51,6 +51,8 @@ learner$train(task)
 \describe{
 \item{\code{stack}}{\code{\link[data.table:data.table]{data.table::data.table()}}\cr
 Stores hot start learners.}
+
+\item{\code{learner_limit}}{(integer(1)).}
 }
 \if{html}{\out{</div>}}
 }
