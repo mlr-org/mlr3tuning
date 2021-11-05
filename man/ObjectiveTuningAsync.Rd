@@ -67,7 +67,8 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   store_benchmark_result = TRUE,
   store_models = FALSE,
   allow_hotstart = FALSE,
-  keep_hotstart_stack = FALSE
+  keep_hotstart_stack = FALSE,
+  learner_limit = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -115,6 +116,10 @@ Allow to hotstart learners with previously fitted models. See also
 \item{\code{keep_hotstart_stack}}{(\code{logical(1)})\cr
 If \code{TRUE}, \link[mlr3:HotstartStack]{mlr3::HotstartStack} is kept in \verb{$objective$hotstart_stack}
 after tuning.}
+
+\item{\code{learner_limit}}{(\code{logical(1)})\cr
+If set, \link{HotstartStackDB} only keeps the newest \code{learner_limit}
+learners.}
 }
 \if{html}{\out{</div>}}
 }

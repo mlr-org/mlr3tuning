@@ -131,7 +131,19 @@ Tuner = R6Class("Tuner",
     optimize = function(inst) {
       assert_multi_class(inst, c("TuningInstanceSingleCrit", "TuningInstanceMultiCrit"))
       res = optimize_default(inst, self, private)
+
+      # combine resample results to single benchmark result
+      if (inst$objective$store_benchmark_result && inst$async) {
+        rdatas = map(unlist(inst$archive$data$resample_result), function(rr) get_private(rr)$.data)
+        rdata = Reduce(function(x, y) x$combine(y), rdatas)
+        inst$archive$benchmark_result = BenchmarkResult$new(rdata)
+        inst$archive$data["evaluated", uhash := inst$archive$benchmark_result$uhashes, on = "status"]
+      }
+
+      # null resample result column in archive and hotstart stack in objective
+      if (!is.null(inst$archive$data$resample_result)) inst$archive$data[, "resample_result" := NULL]
       if (!inst$objective$keep_hotstart_stack) inst$objective$hotstart_stack = NULL
+
       res
     }
   ),

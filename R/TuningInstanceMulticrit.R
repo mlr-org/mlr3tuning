@@ -29,6 +29,7 @@
 #' @template param_check_values
 #' @template param_allow_hotstart
 #' @template param_keep_hotstart_stack
+#' @template param_learner_limit
 #' @template param_xdt
 #' @template param_learner_param_vals
 #'
@@ -72,7 +73,7 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
     #' and a termination criterion.
     initialize = function(task, learner, resampling, measures, terminator, search_space = NULL,
       store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE,
-      keep_hotstart_stack = FALSE) {
+      keep_hotstart_stack = FALSE, learner_limit = NULL) {
       learner = assert_learner(as_learner(learner, clone = TRUE))
 
       if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token")) > 0) {
@@ -89,10 +90,13 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
 
       # initialized specialized tuning archive and objective
       archive = ArchiveTuning$new(search_space, codomain, check_values)
-      objective = ObjectiveTuning$new(task, learner, resampling, measures, store_benchmark_result, store_models,
-        check_values, allow_hotstart, keep_hotstart_stack, archive)
+      private$.objective = ObjectiveTuning$new(task, learner, resampling, measures, store_benchmark_result,
+        store_models, check_values, allow_hotstart, keep_hotstart_stack, archive)
+      private$.objective_async = ObjectiveTuningAsync$new(task, learner, resampling, measures, store_benchmark_result,
+        store_models, check_values, allow_hotstart, keep_hotstart_stack, learner_limit)
+      self$async = FALSE
 
-      super$initialize(objective, search_space, terminator)
+      super$initialize(self$objective, search_space, terminator)
       # super class of instance initializes default archive, overwrite with tuning archive
       self$archive = archive
     },
@@ -146,6 +150,27 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
     result_learner_param_vals = function() {
       private$.result$learner_param_vals
 
+    },
+
+    #' @field async (`logical(1)`)\cr
+    #' If `TRUE`, [ObjectiveTuningAsync] is used to evaluate configurations.
+    #' Usually automatically set by [Tuner]s that support asynchronous
+    #' evaluations.
+    async = function(rhs) {
+      if (missing(rhs)) return(private$.async)
+      self$objective = if (rhs) {
+        private$.async = TRUE
+        private$.objective_async
+      } else {
+        private$.async = FALSE
+        private$.objective
+      }
     }
+  ),
+
+  private = list(
+    .objective = NULL,
+    .objective_async = NULL,
+    .async = NULL
   )
 )

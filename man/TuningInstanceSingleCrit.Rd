@@ -81,6 +81,11 @@ instance$eval_batch(data.table(x = 1:5 / 5))
 \describe{
 \item{\code{result_learner_param_vals}}{(\code{list()})\cr
 Param values for the optimal learner call.}
+
+\item{\code{async}}{(\code{logical(1)})\cr
+If \code{TRUE}, \link{ObjectiveTuningAsync} is used to evaluate configurations.
+Usually automatically set by \link{Tuner}s that support asynchronous
+evaluations.}
 }
 \if{html}{\out{</div>}}
 }
@@ -126,7 +131,8 @@ and a termination criterion.
   store_models = FALSE,
   check_values = FALSE,
   allow_hotstart = FALSE,
-  keep_hotstart_stack = FALSE
+  keep_hotstart_stack = FALSE,
+  learner_limit = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -182,6 +188,10 @@ Allow to hotstart learners with previously fitted models. See also
 \item{\code{keep_hotstart_stack}}{(\code{logical(1)})\cr
 If \code{TRUE}, \link[mlr3:HotstartStack]{mlr3::HotstartStack} is kept in \verb{$objective$hotstart_stack}
 after tuning.}
+
+\item{\code{learner_limit}}{(\code{logical(1)})\cr
+If set, \link{HotstartStackDB} only keeps the newest \code{learner_limit}
+learners.}
 }
 \if{html}{\out{</div>}}
 }

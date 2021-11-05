@@ -22,6 +22,8 @@
 #' locally in a [`data.table::data.table()`]. However, this class allows to
 #' access the data in \CRANpkg{future} workers without copying the stack.
 #'
+#' @template param_learner_limit
+#'
 #' @export
 #' @examples
 #' # train learner on pima task
@@ -58,8 +60,9 @@ HotstartStackDB = R6Class("HotstartStack",
     #'
     #' @param learners (List of [Learner]s)\cr
     #'  If `NULL` (default), empty database is created.
-    initialize = function(learners = NULL) {
+    initialize = function(learners = NULL, learner_limit = NULL) {
       requireNamespace("RSQLite")
+      self$learner_limit = assert_int(learner_limit, lower = 1, null.ok = TRUE)
 
       # create table on disk in temp
       self$stack = tempfile(fileext = ".db")

@@ -14,6 +14,8 @@ TunerRandomSearchAsync = R6Class("TunerRandomSearchAsync", inherit = Tuner,
 
   private = list(
     .optimize = function(inst) {
+      inst$async = TRUE
+
       repeat({
         while (inst$archive$n_in_progress < 8) {
           print(inst$archive$data)

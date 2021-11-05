@@ -82,7 +82,7 @@ Connection to database.}
 \subsection{Method \code{new()}}{
 Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{HotstartStackDB$new(learners = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{HotstartStackDB$new(learners = NULL, learner_limit = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -90,6 +90,10 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
 \describe{
 \item{\code{learners}}{(List of \link{Learner}s)\cr
 If \code{NULL} (default), empty database is created.}
+
+\item{\code{learner_limit}}{(\code{logical(1)})\cr
+If set, \link{HotstartStackDB} only keeps the newest \code{learner_limit}
+learners.}
 }
 \if{html}{\out{</div>}}
 }
