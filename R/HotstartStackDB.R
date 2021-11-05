@@ -75,12 +75,12 @@ HotstartStackDB = R6Class("HotstartStack",
         self$add(learners)
 
         # set index for fast subsetting
-
-        DBI::dbDisconnect(con, shutdown = TRUE)
+        DBI::dbExecute(con, "CREATE INDEX task_learner_index ON stack (task_hash, learner_hash)")
         private$.learner_count = length(learners)
       }  else {
         private$.learner_count = 0
       }
+      DBI::dbDisconnect(con, shutdown = TRUE)
     },
 
     #' @description
