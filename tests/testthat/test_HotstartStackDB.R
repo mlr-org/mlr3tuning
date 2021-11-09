@@ -439,3 +439,20 @@ test_that("learner limit works", {
   hot$add(learner_1)
   expect_equal(get_private(hot)$.learner_count, 51)
 })
+
+test_that("HotstartStack db file is removed by garbage collection", {
+  task = tsk("pima")
+
+  learner_1 = lrn("classif.debug", iter = 1)
+  learner_1$train(task)
+
+  hot = HotstartStackDB$new(list(learner_1))
+  file = hot$stack
+
+  expect_file_exists(file)
+
+  rm(hot)
+  gc()
+
+  expect_true(!file.exists(file))
+})

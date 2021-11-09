@@ -157,11 +157,13 @@ HotstartStackDB = R6Class("HotstartStack",
     },
 
     #' @description
-    #' Finalizer which disconnects from the database.
+    #' Finalizer which disconnects from the database and deletes it.
     #' This is called during garbage collection of the instance.
     #' @return `logical(1)`, the return value of [DBI::dbDisconnect()].
     finalize = function() {
-      DBI::dbDisconnect(self$connection, shutdown = TRUE)
+      res = DBI::dbDisconnect(self$connection, shutdown = TRUE)
+      unlink(self$stack)
+      res
     },
 
     #' @description
