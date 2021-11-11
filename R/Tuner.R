@@ -137,7 +137,7 @@ Tuner = R6Class("Tuner",
         rdatas = map(unlist(inst$archive$data$resample_result), function(rr) get_private(rr)$.data)
         rdata = Reduce(function(x, y) x$combine(y), rdatas)
         inst$archive$benchmark_result = BenchmarkResult$new(rdata)
-        inst$archive$data["evaluated", uhash := inst$archive$benchmark_result$uhashes, on = "status"]
+        inst$archive$data["evaluated", "uhash" := inst$archive$benchmark_result$uhashes, on = "status"]
       }
 
       # null resample result column in archive and hotstart stack in objective

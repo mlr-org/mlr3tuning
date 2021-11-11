@@ -59,3 +59,33 @@ test_tuner_dependencies = function(key, ..., term_evals = 2L) {
   expect_names(names(y_opt), identical.to = "regr.mse")
   list(tuner = tuner, inst = inst)
 }
+
+# adds a simple asynchronous random search
+TunerRandomSearchAsync = R6Class("TunerRandomSearchAsync", inherit = Tuner,
+  public = list(
+    initialize = function() {
+      super$initialize(
+        param_set = ps(),
+        param_classes = c("ParamLgl", "ParamInt", "ParamDbl", "ParamFct"),
+        properties = c("dependencies", "single-crit", "multi-crit")
+      )
+    }
+  ),
+
+  private = list(
+    .optimize = function(inst) {
+      inst$async = TRUE
+
+      repeat({
+        while (inst$archive$n_in_progress < future::availableCores()) {
+          xdt = generate_design_random(inst$search_space, 1)$data
+          inst$archive$add_evals(xdt, status = "proposed")
+          inst$eval_proposed(async = TRUE, single_worker = FALSE)
+        }
+      inst$resolve_promise()
+      })
+    }
+  )
+)
+
+mlr_tuners$add("random_async", TunerRandomSearchAsync)
