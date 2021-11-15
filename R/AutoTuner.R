@@ -154,7 +154,7 @@ AutoTuner = R6Class("AutoTuner",
       super$initialize(
         id = paste0(learner$id, ".tuned"),
         task_type = learner$task_type,
-        packages = learner$packages,
+        packages = c("mlr3tuning", learner$packages),
         feature_types = learner$feature_types,
         predict_types = learner$predict_types,
         properties = learner$properties
