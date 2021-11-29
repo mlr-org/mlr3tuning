@@ -137,33 +137,25 @@ Tuner = R6Class("Tuner",
 
     #' @field param_set ([paradox::ParamSet]).
     param_set = function(rhs) {
-      if (!missing(rhs) && !identical(rhs, private$.param_set)) {
-        stop("$param_set is read-only.")
-      }
+      assert_ro_binding(rhs)
       private$.param_set
     },
 
     #' @field param_classes (`character()`).
     param_classes = function(rhs) {
-      if (!missing(rhs) && !identical(rhs, private$.param_classes)) {
-        stop("$param_classes is read-only.")
-      }
+      assert_ro_binding(rhs)
       private$.param_classes
     },
 
     #' @field properties (`character()`).
     properties = function(rhs) {
-      if (!missing(rhs) && !identical(rhs, private$.properties)) {
-        stop("$properties is read-only.")
-      }
+      assert_ro_binding(rhs)
       private$.properties
     },
 
     #' @field packages (`character()`).
     packages = function(rhs) {
-      if (!missing(rhs) && !identical(rhs, private$.packages)) {
-        stop("$packages is read-only.")
-      }
+      assert_ro_binding(rhs)
       private$.packages
     }
   ),
@@ -177,11 +169,8 @@ Tuner = R6Class("Tuner",
     },
 
     .param_set = NULL,
-
     .param_classes = NULL,
-
     .properties = NULL,
-
     .packages = NULL
   )
 )
