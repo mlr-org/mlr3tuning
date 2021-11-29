@@ -177,11 +177,8 @@ Tuner = R6Class("Tuner",
     },
 
     .param_set = NULL,
-
     .param_classes = NULL,
-
     .properties = NULL,
-
     .packages = NULL
   )
 )
