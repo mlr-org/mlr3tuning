@@ -90,3 +90,18 @@ test_that("ObjectiveTuningAsync returns no resample result", {
   expect_list(z, len = 2)
   expect_names(names(z), permutation.of = c("classif.ce", "runtime_learners"))
 })
+
+test_that("ObjectiveTuningAsync sets logger threshold", {
+  task = tsk("iris")
+  learner = lrn("classif.debug")
+  resampling = rsmp("holdout")
+  measures = msr("classif.ce")
+
+  lgr::get_logger("mlr3")$set_threshold("error")
+  lgr::get_logger("bbotk")$set_threshold("error")
+
+  objective = ObjectiveTuningAsync$new(task, learner, resampling, measures, store_benchmark_result = FALSE,
+    store_models = FALSE, allow_hotstart = FALSE)
+
+  expect_equal(objective$logger_threshold, c("mlr3" = 200, "bbotk" = 200))
+})

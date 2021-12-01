@@ -48,6 +48,9 @@ ObjectiveTuningAsync = R6Class("ObjectiveTuningAsync",
     #' @field keep_hotstart_stack (`logical(1)`).
     keep_hotstart_stack = NULL,
 
+    #' @field logger_threshold (named `integer(1)`)
+    logger_threshold = NULL,
+
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function(task, learner, resampling, measures, store_benchmark_result = TRUE,
@@ -61,6 +64,7 @@ ObjectiveTuningAsync = R6Class("ObjectiveTuningAsync",
       if (self$allow_hotstart) self$hotstart_stack = HotstartStackDB$new(learner_limit = learner_limit)
       self$keep_hotstart_stack = assert_flag(keep_hotstart_stack)
       self$store_models = assert_logical(store_models)
+      self$logger_threshold = map_int(mlr_reflections$loggers, "threshold")
 
       codomain = ParamSet$new(map(self$measures, function(s) {
         ParamDbl$new(id = s$id, tags = ifelse(s$minimize, "minimize", "maximize"))
@@ -79,6 +83,13 @@ ObjectiveTuningAsync = R6Class("ObjectiveTuningAsync",
 
   private = list(
     .eval = function(xs, resampling) {
+      # restore logger thresholds
+      for (package in names(self$logger_threshold)) {
+        logger = lgr::get_logger(package)
+        threshold = self$logger_threshold[package]
+        logger$set_threshold(threshold)
+      }
+
       learner = self$learner$clone(deep = TRUE)
       learner$param_set$values = insert_named(learner$param_set$values, xs)
       if (self$allow_hotstart) learner$hotstart_stack = self$hotstart_stack
