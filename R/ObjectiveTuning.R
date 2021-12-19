@@ -97,7 +97,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       bmr = benchmark(design, store_models = self$store_models || self$allow_hotstart, allow_hotstart = self$allow_hotstart)
 
       # aggregate performance scores
-      ydt = bmr$aggregate(self$measures)[, self$codomain$target_ids, with = FALSE]
+      ydt = bmr$aggregate(self$measures, conditions = TRUE)[, c(self$codomain$target_ids, "warnings", "errors") , with = FALSE]
 
       # add runtime to evaluations
       time = map_dbl(bmr$resample_results$resample_result, function(rr) {
