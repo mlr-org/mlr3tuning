@@ -52,6 +52,9 @@ reference:
       - mlr_terminators
       - trm
       - trms
+  - title: Archive
+    contents:
+      - ArchiveTuning
   - title: Functions and Syntactic Sugar
     contents:
       - auto_tuner
