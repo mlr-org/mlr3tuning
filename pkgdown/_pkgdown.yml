@@ -52,6 +52,13 @@ reference:
       - mlr_terminators
       - trm
       - trms
+  - title: Functions and Syntactic Sugar
+    contents:
+      - auto_tuner
+      - tune
+      - tune_nested
+      - extract_inner_tuning_archives
+      - extract_inner_tuning_results
   - title: Misc
     contents:
       - ObjectiveTuning
