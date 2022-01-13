@@ -99,7 +99,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
 
       # add runtime to evaluations
       time = map_dbl(bmr$resample_results$resample_result, function(rr) {
-        sum(map_dbl(rr$learners, function(l) sum(l$timings)))
+        sum(map_dbl(get_private(rr)$.data$learner_states(get_private(rr)$.view), function(state) state$train_time + state$predict_time))
       })
       set(ydt, j = "runtime_learners", value = time)
 
