@@ -92,7 +92,9 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
 
       # benchmark hyperparameter configurations
       design = data.table(task = list(self$task), learner = learners, resampling = resampling)
-      bmr = benchmark(design, store_models = self$store_models, allow_hotstart = self$allow_hotstart)
+      # learner is already cloned, task and resampling are not changed
+      bmr = benchmark(design, store_models = self$store_models, allow_hotstart = self$allow_hotstart,
+       clone = character())
 
       # aggregate performance scores
       ydt = bmr$aggregate(self$measures)[, self$codomain$target_ids, with = FALSE]

@@ -77,3 +77,29 @@ test_that("hotstart flag is not set to TRUE if learners does not support hotstar
 
   expect_false(instance$objective$allow_hotstart)
 })
+
+test_that("objects are cloned", {
+  task = tsk("pima")
+  learner = lrn("classif.debug", x = to_tune(), iter = to_tune(1, 100))
+
+  instance = tune(
+    method = "grid_search",
+    task = task,
+    learner = learner,
+    resampling = rsmp("holdout"),
+    measure = msr("classif.ce"),
+    batch_size = 5,
+    resolution = 5,
+    allow_hotstart = TRUE
+  )
+
+  bmr = instance$archive$benchmark_result
+  expect_different_address(instance$objective$learner, get_private(bmr)$.data$data$learners$learner[[1]])
+  expect_character(map_chr(instance$objective$hotstart_stack$stack$start_learner, data.table::address), unique = TRUE, len = 25)
+  walk(instance$objective$hotstart_stack$stack$start_learner, function(learner) {
+      expect_different_address(learner, instance$objective$learner)
+      expect_different_address(learner$param_set, instance$objective$learner$param_set)
+      expect_different_address(learner, get_private(bmr)$.data$data$learners$learner[[1]])
+      expect_different_address(learner$param_set, get_private(bmr)$.data$data$learners$learner[[1]]$param_set)
+  })
+})
