@@ -60,9 +60,9 @@ Function to conduct nested resampling.
 rr = tune_nested(
   method = "random_search",
   task = tsk("pima"),
-  learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)), 
+  learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
   inner_resampling = rsmp ("holdout"),
-  outer_resampling = rsmp("cv", folds = 2), 
+  outer_resampling = rsmp("cv", folds = 2),
   measure = msr("classif.ce"),
   term_evals = 2,
   batch_size = 2)
