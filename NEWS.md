@@ -2,6 +2,7 @@
 
 - Fixes bug in `TuningInstanceMultiCrit$assign_result()`.
 - Hotstarting of learners with previously fitted models.
+- Remove deep clones to speed up tuning.
 
 # mlr3tuning 0.9.0
 
