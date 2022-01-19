@@ -114,3 +114,42 @@ test_that("tuner can modify resampling", {
   rr = instance$archive$resample_result(2)
   expect_equal(rr$resampling$id, "holdout")
 })
+
+test_that("benchmark clone works", {
+  grid = benchmark_grid(
+    tasks = tsk("iris"),
+    learners = lrn("classif.featureless"),
+    resamplings = rsmp("holdout")
+  )
+  task = grid$task[[1L]]
+  learner = grid$learner[[1L]]
+  resampling = grid$resampling[[1L]]
+
+  bmr = benchmark(grid, clone = c())
+
+  expect_same_address(task, bmr$tasks$task[[1]])
+  expect_same_address(learner, get_private(bmr)$.data$data$learners$learner[[1]])
+  expect_same_address(resampling, bmr$resamplings$resampling[[1]])
+
+  expect_identical(task$hash, bmr$tasks$task[[1]]$hash)
+  expect_identical(learner$hash, bmr$learners$learner[[1]]$hash)
+  expect_identical(resampling$hash, bmr$resamplings$resampling[[1]]$hash)
+})
+
+test_that("objects are cloned", {
+  task = tsk("iris")
+  learner = lrn("classif.rpart")
+  resampling = rsmp("holdout")
+  measures = msr("classif.ce")
+
+  archive = ArchiveTuning$new(search_space = learner$param_set, codomain = measures_to_codomain(measures))
+  obj = ObjectiveTuning$new(task, learner, resampling, measures, archive = archive)
+
+  xss = list(list("cp" = 0.01, minsplit = 3), list("cp" = 0.02, minsplit = 4))
+  z = obj$eval_many(xss)
+  bmr = archive$benchmark_result
+
+  expect_same_address(obj$task, bmr$tasks$task[[1]])
+  expect_different_address(obj$learner, get_private(bmr)$.data$data$learners$learner[[1]])
+  expect_same_address(obj$resampling, bmr$resamplings$resampling[[1]])
+})
