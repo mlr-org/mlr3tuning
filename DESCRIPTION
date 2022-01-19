@@ -1,6 +1,6 @@
 Package: mlr3tuning
 Title: Tuning for 'mlr3'
-Version: 0.9.0.9000
+Version: 0.10.0
 Authors@R:
     c(person(given = "Marc",
              family = "Becker",
@@ -40,7 +40,7 @@ Depends:
     paradox (>= 0.7.0),
     R (>= 3.1.0)
 Imports:
-    bbotk (>= 0.4.0.9000),
+    bbotk (>= 0.5.0),
     checkmate (>= 2.0.0),
     data.table,
     lgr,
