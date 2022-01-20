@@ -1,5 +1,5 @@
 library(mlr3)
-attachNamespace("checkmate")
+if (!"package:checkmate" %in% search()) attachNamespace("checkmate")
 # The upstream package causes partial match warnings
 # old_opts = options(
 #   warnPartialMatchArgs = TRUE,
