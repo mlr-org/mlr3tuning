@@ -7,104 +7,104 @@ test_that("ArchiveTuning access methods work", {
   tuner$optimize(instance)
 
   # learner
-  map(instance$archive$data$uhash, function(uhash) {
+  walk(instance$archive$data$uhash, function(uhash) {
     expect_learner(instance$archive$learner(uhash = uhash))
   })
 
-  map(seq(nrow(instance$archive$data)), function(i) {
+  walk(seq_row(instance$archive$data), function(i) {
     expect_learner(instance$archive$learner(i))
   })
 
   # learner param values
-  map(instance$archive$data$uhash, function(uhash) {
+  walk(instance$archive$data$uhash, function(uhash) {
     expect_list(instance$archive$learner_param_vals(uhash = uhash))
     expect_named(instance$archive$learner_param_vals(uhash = uhash), c("xval" ,"cp"))
   })
 
-  map(seq(nrow(instance$archive$data)), function(i) {
+  walk(seq_row(instance$archive$data), function(i) {
     expect_list(instance$archive$learner_param_vals(i))
     expect_named(instance$archive$learner_param_vals(i), c("xval" ,"cp"))
   })
 
   # learners
-  map(instance$archive$data$uhash, function(uhash) {
+  walk(instance$archive$data$uhash, function(uhash) {
     expect_list(instance$archive$learners(uhash = uhash))
     expect_learner(instance$archive$learners(uhash = uhash)[[1]])
   })
 
-  map(seq(nrow(instance$archive$data)), function(i) {
+  walk(seq_row(instance$archive$data), function(i) {
     expect_list(instance$archive$learners(i))
     expect_learner(instance$archive$learners(i)[[1]])
   })
 
   # predictions
-  map(instance$archive$data$uhash, function(uhash) {
+  walk(instance$archive$data$uhash, function(uhash) {
     expect_list(instance$archive$predictions(uhash = uhash))
     expect_prediction(instance$archive$predictions(uhash = uhash)[[1]])
   })
 
-  map(seq(nrow(instance$archive$data)), function(i) {
+  walk(seq_row(instance$archive$data), function(i) {
     expect_list(instance$archive$predictions(i))
     expect_prediction(instance$archive$predictions(i)[[1]])
   })
 
   # resample result
-  map(instance$archive$data$uhash, function(uhash) {
+  walk(instance$archive$data$uhash, function(uhash) {
     expect_resample_result(instance$archive$resample_result(uhash = uhash))
   })
 
-  map(seq(nrow(instance$archive$data)), function(i) {
+  walk(seq_row(instance$archive$data), function(i) {
     expect_resample_result(instance$archive$resample_result(i))
   })
 
     # learner
-  map(instance$archive$data$uhash, function(uhash) {
+  walk(instance$archive$data$uhash, function(uhash) {
     expect_learner(instance$archive$learner(uhash = uhash))
   })
 
-  map(seq(nrow(instance$archive$data)), function(i) {
+  walk(seq_row(instance$archive$data), function(i) {
     expect_learner(instance$archive$learner(i))
   })
 
   # learner param values
-  map(instance$archive$data$uhash, function(uhash) {
+  walk(instance$archive$data$uhash, function(uhash) {
     expect_list(instance$archive$learner_param_vals(uhash = uhash))
     expect_named(instance$archive$learner_param_vals(uhash = uhash), c("xval" ,"cp"))
   })
 
-  map(seq(nrow(instance$archive$data)), function(i) {
+  walk(seq_row(instance$archive$data), function(i) {
     expect_list(instance$archive$learner_param_vals(i))
     expect_named(instance$archive$learner_param_vals(i), c("xval" ,"cp"))
   })
 
   # learners
-  map(instance$archive$data$uhash, function(uhash) {
+  walk(instance$archive$data$uhash, function(uhash) {
     expect_list(instance$archive$learners(uhash = uhash))
     expect_learner(instance$archive$learners(uhash = uhash)[[1]])
   })
 
-  map(seq(nrow(instance$archive$data)), function(i) {
+  walk(seq_row(instance$archive$data), function(i) {
     expect_list(instance$archive$learners(i))
     expect_learner(instance$archive$learners(i)[[1]])
   })
 
   # predictions
-  map(instance$archive$data$uhash, function(uhash) {
+  walk(instance$archive$data$uhash, function(uhash) {
     expect_list(instance$archive$predictions(uhash = uhash))
     expect_prediction(instance$archive$predictions(uhash = uhash)[[1]])
   })
 
-  map(seq(nrow(instance$archive$data)), function(i) {
+  walk(seq_row(instance$archive$data), function(i) {
     expect_list(instance$archive$predictions(i))
     expect_prediction(instance$archive$predictions(i)[[1]])
   })
 
   # resample result
-  map(instance$archive$data$uhash, function(uhash) {
+  walk(instance$archive$data$uhash, function(uhash) {
     expect_resample_result(instance$archive$resample_result(uhash = uhash))
   })
 
-  map(seq(nrow(instance$archive$data)), function(i) {
+  walk(seq_row(instance$archive$data), function(i) {
     expect_resample_result(instance$archive$resample_result(i))
   })
 })
@@ -196,7 +196,7 @@ test_that("ArchiveTuning as.data.table function works", {
   search_space = ps(
     x1 = p_int(1, 12),
     x2 = p_dbl(0.01, 0.1),
-    .extra_trafo = function(x, param_set) {
+    .extra_trafo = function(x, param_set) {seq_row
 
       if (x$x1 > 3) x$minsplit = x$x1
       x$cp = x$x2
