@@ -1,6 +1,6 @@
 test_that("ArchiveTuning access methods work", {
-  instance = TuningInstanceSingleCrit$new(task = tsk("iris"), learner = lrn("classif.rpart"), 
-    resampling = rsmp("holdout"), measure = msr("classif.ce"), search_space = TEST_MAKE_PS1(n_dim = 1), 
+  instance = TuningInstanceSingleCrit$new(task = tsk("iris"), learner = lrn("classif.rpart"),
+    resampling = rsmp("holdout"), measure = msr("classif.ce"), search_space = TEST_MAKE_PS1(n_dim = 1),
     terminator = trm("evals", n_evals = 4))
 
   tuner = tnr("random_search", batch_size = 2)
@@ -110,8 +110,8 @@ test_that("ArchiveTuning access methods work", {
 })
 
 test_that("ArchiveTuning as.data.table function works", {
-  instance = TuningInstanceSingleCrit$new(task = tsk("pima"), learner = lrn("classif.rpart"), 
-    resampling = rsmp("holdout"), measure = msr("classif.ce"), search_space = TEST_MAKE_PS1(n_dim = 1), 
+  instance = TuningInstanceSingleCrit$new(task = tsk("pima"), learner = lrn("classif.rpart"),
+    resampling = rsmp("holdout"), measure = msr("classif.ce"), search_space = TEST_MAKE_PS1(n_dim = 1),
     terminator = trm("evals", n_evals = 4))
 
   tuner = tnr("random_search", batch_size = 2)
@@ -120,41 +120,41 @@ test_that("ArchiveTuning as.data.table function works", {
   # default
   tab = as.data.table(instance$archive)
   expect_data_table(tab, nrows = 4, ncols = 7)
-  expect_named(tab, c("cp", "classif.ce", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "resample_result"))
+  expect_named(tab, c("cp", "classif.ce", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "resample_result"), ignore.order =TRUE)
 
   # extra measure
   tab = as.data.table(instance$archive, measures = msr("classif.acc"))
   expect_data_table(tab, nrows = 4, ncols = 8)
-  expect_named(tab, c("cp", "classif.ce", "classif.acc", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "resample_result"))
+  expect_named(tab, c("cp", "classif.ce", "classif.acc", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "resample_result"), ignore.order =TRUE)
 
   # extra measures
   tab = as.data.table(instance$archive, measures = msrs(c("classif.acc", "classif.mcc")))
   expect_data_table(tab, nrows = 4, ncols = 9)
-  expect_named(tab, c("cp", "classif.ce", "classif.acc", "classif.mcc", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "resample_result"))
+  expect_named(tab, c("cp", "classif.ce", "classif.acc", "classif.mcc", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "resample_result"), ignore.order =TRUE)
 
   # exclude column
   tab = as.data.table(instance$archive, exclude_columns = "timestamp")
   expect_data_table(tab, nrows = 4, ncols = 7)
-  expect_named(tab, c("cp", "classif.ce", "x_domain_cp", "runtime_learners", "batch_nr", "uhash", "resample_result"))
+  expect_named(tab, c("cp", "classif.ce", "x_domain_cp", "runtime_learners", "batch_nr", "uhash", "resample_result"), ignore.order =TRUE)
 
   # exclude columns
   tab = as.data.table(instance$archive, exclude_columns = c("timestamp", "uhash"))
   expect_data_table(tab, nrows = 4, ncols = 6)
-  expect_named(tab, c("cp", "classif.ce", "x_domain_cp", "runtime_learners", "batch_nr", "resample_result"))
+  expect_named(tab, c("cp", "classif.ce", "x_domain_cp", "runtime_learners", "batch_nr", "resample_result"), ignore.order =TRUE)
 
   # no exclude
   tab = as.data.table(instance$archive, exclude_columns = NULL)
   expect_data_table(tab, nrows = 4, ncols = 8)
-  expect_named(tab, c("cp", "classif.ce", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "uhash", "resample_result"))
+  expect_named(tab, c("cp", "classif.ce", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "uhash", "resample_result"), ignore.order =TRUE)
 
   # no unnest
   tab = as.data.table(instance$archive, unnest = NULL)
   expect_data_table(tab, nrows = 4, ncols = 7)
-  expect_named(tab, c("cp", "classif.ce" ,"runtime_learners", "timestamp", "batch_nr", "x_domain", "resample_result"))
+  expect_named(tab, c("cp", "classif.ce" ,"runtime_learners", "timestamp", "batch_nr", "x_domain", "resample_result"), ignore.order =TRUE)
 
   # without benchmark result
-  instance = TuningInstanceSingleCrit$new(task = tsk("pima"), learner = lrn("classif.rpart"), 
-    resampling = rsmp("holdout"), measure = msr("classif.ce"), search_space = TEST_MAKE_PS1(n_dim = 1), 
+  instance = TuningInstanceSingleCrit$new(task = tsk("pima"), learner = lrn("classif.rpart"),
+    resampling = rsmp("holdout"), measure = msr("classif.ce"), search_space = TEST_MAKE_PS1(n_dim = 1),
     terminator = trm("evals", n_evals = 4), store_benchmark_result = FALSE)
 
   tuner = tnr("random_search", batch_size = 2)
@@ -162,11 +162,11 @@ test_that("ArchiveTuning as.data.table function works", {
 
   tab = as.data.table(instance$archive)
   expect_data_table(tab, nrows = 4, ncols = 6)
-  expect_named(tab, c("cp", "classif.ce", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr"))
+  expect_named(tab, c("cp", "classif.ce", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr"), ignore.order =TRUE)
 
   # empty archive
-  instance = TuningInstanceSingleCrit$new(task = tsk("pima"), learner = lrn("classif.rpart"), 
-    resampling = rsmp("holdout"), measure = msr("classif.ce"), search_space = TEST_MAKE_PS1(n_dim = 1), 
+  instance = TuningInstanceSingleCrit$new(task = tsk("pima"), learner = lrn("classif.rpart"),
+    resampling = rsmp("holdout"), measure = msr("classif.ce"), search_space = TEST_MAKE_PS1(n_dim = 1),
     terminator = trm("evals", n_evals = 4))
 
   expect_data_table(as.data.table(instance$archive), nrows = 0, ncols = 0)
@@ -184,13 +184,13 @@ test_that("ArchiveTuning as.data.table function works", {
     }
   )
 
-  instance = tune(method = "random_search", task = tsk("pima"), learner = lrn("classif.rpart"), 
-    resampling = rsmp("holdout"), measure = msr("classif.ce"), search_space = search_space, 
+  instance = tune(method = "random_search", task = tsk("pima"), learner = lrn("classif.rpart"),
+    resampling = rsmp("holdout"), measure = msr("classif.ce"), search_space = search_space,
     term_evals = 4, batch_size = 2)
 
   tab = as.data.table(instance$archive)
   expect_data_table(tab, nrows = 4, ncols = 9)
-  expect_named(tab, c("x1", "x2", "classif.ce", "x_domain_minsplit", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "resample_result"))
+  expect_named(tab, c("x1", "x2", "classif.ce", "x_domain_minsplit", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "resample_result"), ignore.order =TRUE)
 
   # new ids in x_domain switch
   search_space = ps(
@@ -206,17 +206,17 @@ test_that("ArchiveTuning as.data.table function works", {
     }
   )
 
-  instance = tune(method = "random_search", task = tsk("pima"), learner = lrn("classif.rpart"), 
-    resampling = rsmp("holdout"), measure = msr("classif.ce"), search_space = search_space, 
+  instance = tune(method = "random_search", task = tsk("pima"), learner = lrn("classif.rpart"),
+    resampling = rsmp("holdout"), measure = msr("classif.ce"), search_space = search_space,
     term_evals = 4, batch_size = 2)
 
   tab = as.data.table(instance$archive)
   expect_data_table(tab, nrows = 4, ncols = 9)
-  expect_named(tab, c("x1", "x2", "classif.ce", "x_domain_minsplit", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "resample_result"))
+  expect_named(tab, c("x1", "x2", "classif.ce", "x_domain_minsplit", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "resample_result"), ignore.order =TRUE)
 
   # row order
-  instance = TuningInstanceSingleCrit$new(task = tsk("pima"), learner = lrn("classif.rpart"), 
-    resampling = rsmp("holdout"), measure = msr("classif.ce"), search_space = TEST_MAKE_PS1(n_dim = 1), 
+  instance = TuningInstanceSingleCrit$new(task = tsk("pima"), learner = lrn("classif.rpart"),
+    resampling = rsmp("holdout"), measure = msr("classif.ce"), search_space = TEST_MAKE_PS1(n_dim = 1),
     terminator = trm("evals", n_evals = 10))
 
   tuner = tnr("random_search", batch_size = 1)
@@ -225,3 +225,4 @@ test_that("ArchiveTuning as.data.table function works", {
   tab = as.data.table(instance$archive)
   expect_equal(tab$batch_nr, 1:10)
 })
+
