@@ -196,7 +196,7 @@ test_that("ArchiveTuning as.data.table function works", {
   search_space = ps(
     x1 = p_int(1, 12),
     x2 = p_dbl(0.01, 0.1),
-    .extra_trafo = function(x, param_set) {seq_row
+    .extra_trafo = function(x, param_set) {
 
       if (x$x1 > 3) x$minsplit = x$x1
       x$cp = x$x2
