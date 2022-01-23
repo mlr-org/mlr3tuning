@@ -281,11 +281,6 @@ test_that("assign_result works with one hyperparameter", {
   expect_equal(res$cp, 0.1)
   expect_equal(res$classif.ce, 0.8)
   expect_equal(res$learner_param_vals[[1]], list(xval = 0, cp = 0.1))
-
-
-  expect_equal(res$classif.fpr, c(0.8, 0.7))
-  expect_equal(res$classif.tpr, c(0.3, 0.2))
-  expect_equal(res$learner_param_vals[[1]], list(cp = 0.1))
 })
 
 test_that("assign_result works with two hyperparameters", {
