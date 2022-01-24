@@ -93,7 +93,7 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     #' This defines the resampled performance of a learner on a task, a
     #' feasibility region for the parameters the tuner is supposed to optimize,
     #' and a termination criterion.
-    initialize = function(task, learner, resampling, measure, terminator, search_space = NULL,
+    initialize = function(task, learner, resampling, measure = NULL, terminator, search_space = NULL,
       store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE) {
       learner = assert_learner(as_learner(learner, clone = TRUE))
 
@@ -106,7 +106,8 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
       }
 
       # create codomain from measure
-      measures = assert_measures(as_measures(measure, clone = TRUE), task = task, learner = learner)
+      measures = assert_measures(as_measures(measure, task_type = task$task_type, clone = TRUE), task = task,
+        learner = learner)
       codomain = measures_to_codomain(measures)
 
       # initialized specialized tuning archive and objective
