@@ -258,7 +258,7 @@ test_that("TuningInstanceSingleCrit and empty search space works", {
   )
 
   expect_data_table(instance$result)
-  expect_equal(instance$result$learner_param_vals, list(list()))
+  expect_list(instance$result$learner_param_vals[[1]], len = 0)
   expect_equal(instance$result$x_domain, list(list()))
 })
 
@@ -280,7 +280,7 @@ test_that("assign_result works with one hyperparameter", {
   expect_data_table(res, nrow = 1)
   expect_equal(res$cp, 0.1)
   expect_equal(res$classif.ce, 0.8)
-  expect_equal(res$learner_param_vals[[1]], list(xval = 0, cp = 0.1))
+  expect_equal(res$learner_param_vals[[1]], list(cp = 0.1))
 })
 
 test_that("assign_result works with two hyperparameters", {
