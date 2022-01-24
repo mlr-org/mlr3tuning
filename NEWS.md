@@ -1,6 +1,7 @@
 # mlr3tuning 0.10.0
 
 * fix: `$assign_result()` method in `TuningInstanceSingleCrit` when search space is empty.
+* feat: Default measure is used when no measure is supplied to `TuningInstanceSingleCrit`.
 
 # mlr3tuning 0.10.0
 
