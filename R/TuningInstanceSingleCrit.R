@@ -135,12 +135,9 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
       opt_x = unlist(transform_xdt_to_xss(xdt, self$search_space), recursive = FALSE)
       learner_param_vals = insert_named(learner_param_vals, opt_x)
 
-      # ugly but necessary to maintain list column correctly
-      if (length(learner_param_vals) == 0) {
-        learner_param_vals = list(list())
-      } else if (length(learner_param_vals) == 1) {
-        learner_param_vals = list(learner_param_vals)
-      }
+      # maintain list column
+      if (length(learner_param_vals) < 2 | !nrow(xdt)) learner_param_vals = list(learner_param_vals)
+
       set(xdt, j = "learner_param_vals", value = list(learner_param_vals))
       super$assign_result(xdt, y)
     }

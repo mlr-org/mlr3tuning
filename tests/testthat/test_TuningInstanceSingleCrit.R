@@ -258,6 +258,149 @@ test_that("TuningInstanceSingleCrit and empty search space works", {
   )
 
   expect_data_table(instance$result)
-  expect_equal(instance$result$learner_param_vals, list(list()))
+  expect_list(instance$result$learner_param_vals[[1]], len = 0)
   expect_equal(instance$result$x_domain, list(list()))
+})
+
+test_that("assign_result works with one hyperparameter", {
+  learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1))
+  learner$param_set$values$xval = NULL
+  task = tsk("pima")
+  resampling = rsmp("holdout")
+  measure = msr("classif.ce")
+  terminator = trm("evals", n_evals = 10)
+
+  instance = TuningInstanceSingleCrit$new(task, learner, resampling, measure, terminator)
+
+  xdt = data.table(cp = 0.1)
+  y = c(classif.ce = 0.8)
+
+  instance$assign_result(xdt, y)
+  res = instance$result
+  expect_data_table(res, nrow = 1)
+  expect_equal(res$cp, 0.1)
+  expect_equal(res$classif.ce, 0.8)
+  expect_equal(res$learner_param_vals[[1]], list(cp = 0.1))
+})
+
+test_that("assign_result works with two hyperparameters", {
+  learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1), minbucket = to_tune(1, 12))
+  learner$param_set$values$xval = NULL
+  task = tsk("pima")
+  resampling = rsmp("holdout")
+  measure = msr("classif.ce")
+  terminator = trm("evals", n_evals = 10)
+
+  instance = TuningInstanceSingleCrit$new(task, learner, resampling, measure, terminator)
+
+  xdt = data.table(cp = 0.1, minbucket = 1)
+  y = c(classif.ce = 0.8)
+
+  instance$assign_result(xdt, y)
+  res = instance$result
+  expect_data_table(res, nrow = 1)
+  expect_equal(res$cp, 0.1)
+  expect_equal(res$minbucket, 1)
+  expect_equal(res$classif.ce, 0.8)
+  expect_equal(res$learner_param_vals[[1]], list(cp = 0.1, minbucket = 1))
+})
+
+test_that("assign_result works with two hyperparameters and one constant", {
+  learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1), minbucket = to_tune(1, 12), xval = 1)
+  task = tsk("pima")
+  resampling = rsmp("holdout")
+  measure = msr("classif.ce")
+  terminator = trm("evals", n_evals = 10)
+
+  instance = TuningInstanceSingleCrit$new(task, learner, resampling, measure, terminator)
+
+  xdt = data.table(cp = 0.1, minbucket = 1)
+  y = c(classif.ce = 0.8)
+
+  instance$assign_result(xdt, y)
+  res = instance$result
+  expect_data_table(res, nrow = 1)
+  expect_equal(res$cp, 0.1)
+  expect_equal(res$minbucket, 1)
+  expect_equal(res$classif.ce, 0.8)
+  expect_equal(res$learner_param_vals[[1]], list(xval = 1, cp = 0.1, minbucket = 1))
+})
+
+test_that("assign_result works with no hyperparameters and one constant", {
+  learner = lrn("classif.rpart", xval = 1)
+  task = tsk("pima")
+  resampling = rsmp("holdout")
+  measure = msr("classif.ce")
+  terminator = trm("evals", n_evals = 10)
+
+  instance = TuningInstanceSingleCrit$new(task, learner, resampling, measure, terminator)
+
+  xdt = data.table()
+  y = c(classif.ce = 0.8)
+
+  instance$assign_result(xdt, y)
+  res = instance$result
+  expect_data_table(res, nrow = 1)
+  expect_equal(res$classif.ce, 0.8)
+  expect_equal(res$learner_param_vals[[1]], list(xval = 1))
+})
+
+
+test_that("assign_result works with no hyperparameters and two constant", {
+  learner = lrn("classif.rpart", xval = 1, cp = 1)
+  task = tsk("pima")
+  resampling = rsmp("holdout")
+  measure = msr("classif.ce")
+  terminator = trm("evals", n_evals = 10)
+
+  instance = TuningInstanceSingleCrit$new(task, learner, resampling, measure, terminator)
+
+  xdt = data.table()
+  y = c(classif.ce = 0.8)
+
+  instance$assign_result(xdt, y)
+  res = instance$result
+  expect_data_table(res, nrow = 1)
+  expect_equal(res$classif.ce, 0.8)
+  expect_equal(res$learner_param_vals[[1]], list(xval = 1, cp = 1))
+})
+
+test_that("assign_result works with one hyperparameters and one constant", {
+  learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1), xval = 1)
+  task = tsk("pima")
+  resampling = rsmp("holdout")
+  measure = msr("classif.ce")
+  terminator = trm("evals", n_evals = 10)
+
+  instance = TuningInstanceSingleCrit$new(task, learner, resampling, measure, terminator)
+
+  xdt = data.table(cp = 0.1)
+  y = c(classif.ce = 0.8)
+
+  instance$assign_result(xdt, y)
+  res = instance$result
+  expect_data_table(res, nrow = 1)
+  expect_equal(res$cp, 0.1)
+  expect_equal(res$classif.ce, 0.8)
+  expect_equal(res$learner_param_vals[[1]], list(xval = 1, cp = 0.1))
+})
+
+test_that("assign_result works with no hyperparameter and constant", {
+  learner = lrn("classif.rpart")
+  learner$param_set$values$xval = NULL
+  task = tsk("pima")
+  resampling = rsmp("holdout")
+  measure = msr("classif.ce")
+  terminator = trm("evals", n_evals = 10)
+
+  instance = TuningInstanceSingleCrit$new(task, learner, resampling, measure, terminator)
+
+  xdt = data.table()
+  y = c(classif.ce = 0.8)
+
+  instance$assign_result(xdt, y)
+  res = instance$result
+  expect_data_table(res, nrow = 1)
+  expect_equal(res$classif.ce, 0.8)
+  expect_list(res$learner_param_vals[[1]], len = 0)
 })

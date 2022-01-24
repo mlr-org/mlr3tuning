@@ -360,7 +360,7 @@ test_that("AutoTuner works with empty search space", {
   )
 
   at$train(tsk("pima"))
-  expect_equal(at$tuning_instance$result$learner_param_vals, list(list(xval = 0)))
+  expect_equal(at$tuning_instance$result$learner_param_vals[[1]], list(xval = 0))
   expect_equal(at$tuning_instance$result$x_domain, list(list()))
 
   # no constant
@@ -377,6 +377,6 @@ test_that("AutoTuner works with empty search space", {
   )
 
   at$train(tsk("pima"))
-  expect_equal(at$tuning_instance$result$learner_param_vals, list(list()))
+  expect_list(at$tuning_instance$result$learner_param_vals[[1]], len = 0)
   expect_equal(at$tuning_instance$result$x_domain, list(list()))
 })
