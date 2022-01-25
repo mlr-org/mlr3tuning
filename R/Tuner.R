@@ -88,14 +88,13 @@ Tuner = R6Class("Tuner",
     #' @param packages (`character()`)\cr
     #' Set of required packages. Note that these packages will be loaded via
     #' [requireNamespace()], and are not attached.
-    initialize = function(param_set, param_classes, properties,
-      packages = character()) {
+    initialize = function(param_set, param_classes, properties, packages = character()) {
       private$.param_set = assert_param_set(param_set)
       private$.param_classes = assert_subset(param_classes,
         c("ParamLgl", "ParamInt", "ParamDbl", "ParamFct", "ParamUty"))
       # has to have at least multi-crit or single-crit property
       private$.properties = assert_subset(properties, bbotk_reflections$optimizer_properties, empty.ok = FALSE)
-      private$.packages = assert_set(packages)
+      private$.packages = union("mlr3tuning", assert_character(packages, any.missing = FALSE, min.chars = 1L))
 
       check_packages_installed(self$packages,
         msg = sprintf("Package '%%s' required but not installed for Tuner '%s'", format(self)))
@@ -192,11 +191,8 @@ Tuner = R6Class("Tuner",
     },
 
     .param_set = NULL,
-
     .param_classes = NULL,
-
     .properties = NULL,
-
     .packages = NULL
   )
 )

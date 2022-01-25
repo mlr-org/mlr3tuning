@@ -16,10 +16,10 @@ TunerFromOptimizer = R6Class("TunerFromOptimizer",
       #' Optimizer that is called.
       initialize = function(optimizer) {
         private$.optimizer = assert_optimizer(optimizer)
-        super$initialize(param_set = optimizer$param_set,
-                         param_classes = optimizer$param_classes,
-                         properties = optimizer$properties,
-                         packages = optimizer$packages)
+        packages = union("mlr3tuning", optimizer$packages)
+
+        super$initialize(param_set = optimizer$param_set, param_classes = optimizer$param_classes,
+          properties = optimizer$properties, packages = packages)
       },
 
       #' @description

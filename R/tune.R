@@ -37,8 +37,8 @@
 #'
 #' # apply hyperparameter values to learner
 #' learner$param_set$values = instance$result_learner_param_vals
-tune = function(method, task, learner, resampling, measures, term_evals = NULL, term_time = NULL, search_space = NULL,
-  store_models = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, ...) {
+tune = function(method, task, learner, resampling, measures = NULL, term_evals = NULL, term_time = NULL,
+  search_space = NULL, store_models = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, ...) {
   assert_choice(method, mlr_tuners$keys())
   tuner = tnr(method, ...)
   terminator = terminator_selection(term_evals, term_time)

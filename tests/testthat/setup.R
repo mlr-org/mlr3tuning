@@ -1,5 +1,5 @@
-library(mlr3)
-attachNamespace("checkmate")
+library("mlr3")
+library("checkmate")
 # The upstream package causes partial match warnings
 # old_opts = options(
 #   warnPartialMatchArgs = TRUE,
@@ -16,4 +16,3 @@ lg_mlr3$set_threshold("warn")
 lg_bbotk = lgr::get_logger("bbotk")
 old_threshold_bbotk = lg_bbotk$threshold
 lg_bbotk$set_threshold("warn")
-set.seed(123)

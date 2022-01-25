@@ -7,104 +7,104 @@ test_that("ArchiveTuning access methods work", {
   tuner$optimize(instance)
 
   # learner
-  map(instance$archive$data$uhash, function(uhash) {
+  walk(instance$archive$data$uhash, function(uhash) {
     expect_learner(instance$archive$learner(uhash = uhash))
   })
 
-  map(seq(nrow(instance$archive$data)), function(i) {
+  walk(seq_row(instance$archive$data), function(i) {
     expect_learner(instance$archive$learner(i))
   })
 
   # learner param values
-  map(instance$archive$data$uhash, function(uhash) {
+  walk(instance$archive$data$uhash, function(uhash) {
     expect_list(instance$archive$learner_param_vals(uhash = uhash))
     expect_named(instance$archive$learner_param_vals(uhash = uhash), c("xval" ,"cp"))
   })
 
-  map(seq(nrow(instance$archive$data)), function(i) {
+  walk(seq_row(instance$archive$data), function(i) {
     expect_list(instance$archive$learner_param_vals(i))
     expect_named(instance$archive$learner_param_vals(i), c("xval" ,"cp"))
   })
 
   # learners
-  map(instance$archive$data$uhash, function(uhash) {
+  walk(instance$archive$data$uhash, function(uhash) {
     expect_list(instance$archive$learners(uhash = uhash))
     expect_learner(instance$archive$learners(uhash = uhash)[[1]])
   })
 
-  map(seq(nrow(instance$archive$data)), function(i) {
+  walk(seq_row(instance$archive$data), function(i) {
     expect_list(instance$archive$learners(i))
     expect_learner(instance$archive$learners(i)[[1]])
   })
 
   # predictions
-  map(instance$archive$data$uhash, function(uhash) {
+  walk(instance$archive$data$uhash, function(uhash) {
     expect_list(instance$archive$predictions(uhash = uhash))
     expect_prediction(instance$archive$predictions(uhash = uhash)[[1]])
   })
 
-  map(seq(nrow(instance$archive$data)), function(i) {
+  walk(seq_row(instance$archive$data), function(i) {
     expect_list(instance$archive$predictions(i))
     expect_prediction(instance$archive$predictions(i)[[1]])
   })
 
   # resample result
-  map(instance$archive$data$uhash, function(uhash) {
+  walk(instance$archive$data$uhash, function(uhash) {
     expect_resample_result(instance$archive$resample_result(uhash = uhash))
   })
 
-  map(seq(nrow(instance$archive$data)), function(i) {
+  walk(seq_row(instance$archive$data), function(i) {
     expect_resample_result(instance$archive$resample_result(i))
   })
 
     # learner
-  map(instance$archive$data$uhash, function(uhash) {
+  walk(instance$archive$data$uhash, function(uhash) {
     expect_learner(instance$archive$learner(uhash = uhash))
   })
 
-  map(seq(nrow(instance$archive$data)), function(i) {
+  walk(seq_row(instance$archive$data), function(i) {
     expect_learner(instance$archive$learner(i))
   })
 
   # learner param values
-  map(instance$archive$data$uhash, function(uhash) {
+  walk(instance$archive$data$uhash, function(uhash) {
     expect_list(instance$archive$learner_param_vals(uhash = uhash))
     expect_named(instance$archive$learner_param_vals(uhash = uhash), c("xval" ,"cp"))
   })
 
-  map(seq(nrow(instance$archive$data)), function(i) {
+  walk(seq_row(instance$archive$data), function(i) {
     expect_list(instance$archive$learner_param_vals(i))
     expect_named(instance$archive$learner_param_vals(i), c("xval" ,"cp"))
   })
 
   # learners
-  map(instance$archive$data$uhash, function(uhash) {
+  walk(instance$archive$data$uhash, function(uhash) {
     expect_list(instance$archive$learners(uhash = uhash))
     expect_learner(instance$archive$learners(uhash = uhash)[[1]])
   })
 
-  map(seq(nrow(instance$archive$data)), function(i) {
+  walk(seq_row(instance$archive$data), function(i) {
     expect_list(instance$archive$learners(i))
     expect_learner(instance$archive$learners(i)[[1]])
   })
 
   # predictions
-  map(instance$archive$data$uhash, function(uhash) {
+  walk(instance$archive$data$uhash, function(uhash) {
     expect_list(instance$archive$predictions(uhash = uhash))
     expect_prediction(instance$archive$predictions(uhash = uhash)[[1]])
   })
 
-  map(seq(nrow(instance$archive$data)), function(i) {
+  walk(seq_row(instance$archive$data), function(i) {
     expect_list(instance$archive$predictions(i))
     expect_prediction(instance$archive$predictions(i)[[1]])
   })
 
   # resample result
-  map(instance$archive$data$uhash, function(uhash) {
+  walk(instance$archive$data$uhash, function(uhash) {
     expect_resample_result(instance$archive$resample_result(uhash = uhash))
   })
 
-  map(seq(nrow(instance$archive$data)), function(i) {
+  walk(seq_row(instance$archive$data), function(i) {
     expect_resample_result(instance$archive$resample_result(i))
   })
 })
@@ -120,37 +120,37 @@ test_that("ArchiveTuning as.data.table function works", {
   # default
   tab = as.data.table(instance$archive)
   expect_data_table(tab, nrows = 4, ncols = 8)
-  expect_named(tab, c("cp", "classif.ce", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "status", "resample_result"))
+  expect_named(tab, c("cp", "classif.ce", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "status", "resample_result"), ignore.order =TRUE)
 
   # extra measure
   tab = as.data.table(instance$archive, measures = msr("classif.acc"))
   expect_data_table(tab, nrows = 4, ncols = 9)
-  expect_named(tab, c("cp", "classif.ce", "classif.acc", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "status", "resample_result"))
+  expect_named(tab, c("cp", "classif.ce", "classif.acc", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "status", "resample_result"), ignore.order =TRUE)
 
   # extra measures
   tab = as.data.table(instance$archive, measures = msrs(c("classif.acc", "classif.mcc")))
   expect_data_table(tab, nrows = 4, ncols = 10)
-  expect_named(tab, c("cp", "classif.ce", "classif.acc", "classif.mcc", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "status", "resample_result"))
+  expect_named(tab, c("cp", "classif.ce", "classif.acc", "classif.mcc", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "status", "resample_result"), ignore.order =TRUE)
 
   # exclude column
   tab = as.data.table(instance$archive, exclude_columns = "timestamp")
   expect_data_table(tab, nrows = 4, ncols = 8)
-  expect_named(tab, c("cp", "classif.ce", "x_domain_cp", "runtime_learners", "batch_nr", "status", "uhash", "resample_result"))
+  expect_named(tab, c("cp", "classif.ce", "x_domain_cp", "runtime_learners", "batch_nr", "status", "uhash", "resample_result"), ignore.order =TRUE)
 
   # exclude columns
   tab = as.data.table(instance$archive, exclude_columns = c("timestamp", "uhash"))
   expect_data_table(tab, nrows = 4, ncols = 7)
-  expect_named(tab, c("cp", "classif.ce", "x_domain_cp", "runtime_learners", "batch_nr", "status", "resample_result"))
+  expect_named(tab, c("cp", "classif.ce", "x_domain_cp", "runtime_learners", "batch_nr", "status", "resample_result"), ignore.order =TRUE)
 
   # no exclude
   tab = as.data.table(instance$archive, exclude_columns = NULL)
   expect_data_table(tab, nrows = 4, ncols = 9)
-  expect_named(tab, c("cp", "classif.ce", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "status", "uhash", "resample_result"))
+  expect_named(tab, c("cp", "classif.ce", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "status", "uhash", "resample_result"), ignore.order =TRUE)
 
   # no unnest
   tab = as.data.table(instance$archive, unnest = NULL)
   expect_data_table(tab, nrows = 4, ncols = 8)
-  expect_named(tab, c("cp", "classif.ce" ,"runtime_learners", "timestamp", "batch_nr", "status", "x_domain", "resample_result"))
+  expect_named(tab, c("cp", "classif.ce" ,"runtime_learners", "timestamp", "batch_nr", "status", "x_domain", "resample_result"), ignore.order =TRUE)
 
   # without benchmark result
   instance = TuningInstanceSingleCrit$new(task = tsk("pima"), learner = lrn("classif.rpart"),
@@ -162,7 +162,7 @@ test_that("ArchiveTuning as.data.table function works", {
 
   tab = as.data.table(instance$archive)
   expect_data_table(tab, nrows = 4, ncols = 7)
-  expect_named(tab, c("cp", "classif.ce", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "status"))
+  expect_named(tab, c("cp", "classif.ce", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "status"), ignore.order =TRUE)
 
   # empty archive
   instance = TuningInstanceSingleCrit$new(task = tsk("pima"), learner = lrn("classif.rpart"),
@@ -190,7 +190,7 @@ test_that("ArchiveTuning as.data.table function works", {
 
   tab = as.data.table(instance$archive)
   expect_data_table(tab, nrows = 4, ncols = 10)
-  expect_named(tab, c("x1", "x2", "classif.ce", "x_domain_minsplit", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "status", "resample_result"))
+  expect_named(tab, c("x1", "x2", "classif.ce", "x_domain_minsplit", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "status", "resample_result"), ignore.order =TRUE)
 
   # new ids in x_domain switch
   search_space = ps(
@@ -212,7 +212,7 @@ test_that("ArchiveTuning as.data.table function works", {
 
   tab = as.data.table(instance$archive)
   expect_data_table(tab, nrows = 4, ncols = 10)
-  expect_named(tab, c("x1", "x2", "classif.ce", "x_domain_minsplit", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "status", "resample_result"))
+  expect_named(tab, c("x1", "x2", "classif.ce", "x_domain_minsplit", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "status", "resample_result"), ignore.order =TRUE)
 
   # row order
   instance = TuningInstanceSingleCrit$new(task = tsk("pima"), learner = lrn("classif.rpart"),
@@ -225,3 +225,4 @@ test_that("ArchiveTuning as.data.table function works", {
   tab = as.data.table(instance$archive)
   expect_equal(tab$batch_nr, 1:10)
 })
+

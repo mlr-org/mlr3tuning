@@ -1,7 +1,15 @@
-# mlr3tuning 0.9.0.9000
+# mlr3tuning 0.10.0
+
+* fix: `$assign_result()` method in `TuningInstanceSingleCrit` when search space is empty.
+* feat: Default measure is used when no measure is supplied to `TuningInstanceSingleCrit`.
+
+# mlr3tuning 0.10.0
 
 - Fixes bug in `TuningInstanceMultiCrit$assign_result()`.
 - Hotstarting of learners with previously fitted models.
+- Remove deep clones to speed up tuning.
+- Add `store_models` flag to `auto_tuner()`.
+- Add `"noisy"` property to `ObjectiveTuning`.
 
 # mlr3tuning 0.9.0
 

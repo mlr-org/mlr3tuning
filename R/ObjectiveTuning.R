@@ -94,14 +94,16 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
 
       # benchmark hyperparameter configurations
       design = data.table(task = list(self$task), learner = learners, resampling = resampling)
-      bmr = benchmark(design, store_models = self$store_models || self$allow_hotstart, allow_hotstart = self$allow_hotstart)
+      # learner is already cloned, task and resampling are not changed
+      bmr = benchmark(design, store_models = self$store_models || self$allow_hotstart,
+        allow_hotstart = self$allow_hotstart, clone = character())
 
       # aggregate performance scores
       ydt = bmr$aggregate(self$measures, conditions = TRUE)[, c(self$codomain$target_ids, "warnings", "errors") , with = FALSE]
 
       # add runtime to evaluations
       time = map_dbl(bmr$resample_results$resample_result, function(rr) {
-        sum(map_dbl(rr$learners, function(l) sum(l$timings)))
+        sum(map_dbl(get_private(rr)$.data$learner_states(get_private(rr)$.view), function(state) state$train_time + state$predict_time))
       })
       set(ydt, j = "runtime_learners", value = time)
 

@@ -96,7 +96,7 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     #' This defines the resampled performance of a learner on a task, a
     #' feasibility region for the parameters the tuner is supposed to optimize,
     #' and a termination criterion.
-    initialize = function(task, learner, resampling, measure, terminator, search_space = NULL,
+    initialize = function(task, learner, resampling, measure = NULL, terminator, search_space = NULL,
       store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE,
       keep_hotstart_stack = FALSE, learner_limit = NULL) {
       learner = assert_learner(as_learner(learner, clone = TRUE))
@@ -110,7 +110,8 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
       }
 
       # create codomain from measure
-      measures = assert_measures(as_measures(measure, clone = TRUE), task = task, learner = learner)
+      measures = assert_measures(as_measures(measure, task_type = task$task_type, clone = TRUE), task = task,
+        learner = learner)
       codomain = measures_to_codomain(measures)
 
       # initialized specialized tuning archive and objective
@@ -164,12 +165,9 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
       opt_x = unlist(transform_xdt_to_xss(xdt, self$search_space), recursive = FALSE)
       learner_param_vals = insert_named(learner_param_vals, opt_x)
 
-      # ugly but necessary to maintain list column correctly
-      if (length(learner_param_vals) == 0) {
-        learner_param_vals = list(list())
-      } else if (length(learner_param_vals) == 1) {
-        learner_param_vals = list(learner_param_vals)
-      }
+      # maintain list column
+      if (length(learner_param_vals) < 2 | !nrow(xdt)) learner_param_vals = list(learner_param_vals)
+
       set(xdt, j = "learner_param_vals", value = list(learner_param_vals))
       super$assign_result(xdt, y)
     }

@@ -157,8 +157,8 @@ test_that("Tuner active bindings work", {
   expect_equal(tuner$param_set, param_set)
   expect_equal(tuner$param_classes, param_classes)
   expect_equal(tuner$properties, properties)
-  expect_equal(tuner$packages, packages)
-  
+  expect_subset(packages, tuner$packages)
+
   expect_error({tuner$param_set = ParamSet$new(list(ParamLgl$new("p2")))},
     regexp = "$param_set is read-only",
     fixed = TRUE)
@@ -166,11 +166,11 @@ test_that("Tuner active bindings work", {
   expect_error({tuner$param_classes = "foo"},
     regexp = "$param_classes is read-only",
     fixed = TRUE)
-  
+
   expect_error({tuner$properties = "foo"},
     regexp = "$properties is read-only",
     fixed = TRUE)
-  
+
   expect_error({tuner$packages = "foo"},
     regexp = "$packages is read-only",
     fixed = TRUE)

@@ -1,10 +1,8 @@
 url: https://mlr3tuning.mlr-org.com
 
 template:
+  bootstrap: 5
   package: mlr3pkgdowntemplate
-  params:
-    bootswatch: journal
-  default_assets: false
 
 development:
   mode: auto
@@ -54,6 +52,16 @@ reference:
       - mlr_terminators
       - trm
       - trms
+  - title: Archive
+    contents:
+      - ArchiveTuning
+  - title: Functions and Syntactic Sugar
+    contents:
+      - auto_tuner
+      - tune
+      - tune_nested
+      - extract_inner_tuning_archives
+      - extract_inner_tuning_results
   - title: Misc
     contents:
       - ObjectiveTuning
