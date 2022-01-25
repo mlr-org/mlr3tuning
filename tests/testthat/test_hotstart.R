@@ -122,7 +122,8 @@ test_that("objects are cloned", {
     measure = msr("classif.ce"),
     batch_size = 5,
     resolution = 5,
-    allow_hotstart = TRUE
+    allow_hotstart = TRUE,
+    keep_hotstart_stack = TRUE
   )
 
   bmr = instance$archive$benchmark_result
