@@ -65,4 +65,5 @@ reference:
   - title: Misc
     contents:
       - ObjectiveTuning
+      - HotstartStackDB
       - mlr3tuning-package
