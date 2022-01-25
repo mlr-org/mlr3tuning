@@ -10,10 +10,6 @@ terminated_error = function(instance) {
     "terminated_error", "error", "condition"))
 }
 
-get_private = function(x) {
-  x[[".__enclos_env__"]][["private"]]
-}
-
 measures_to_codomain = function(measures) {
   Codomain$new(map(as_measures(measures), function(s) {
     ParamDbl$new(id = s$id, tags = ifelse(s$minimize, "minimize", "maximize"))
