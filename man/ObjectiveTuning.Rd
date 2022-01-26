@@ -33,6 +33,8 @@ by the \link{TuningInstanceSingleCrit} / \link{TuningInstanceMultiCrit}.
 \item{\code{allow_hotstart}}{(\code{logical(1)}).}
 
 \item{\code{keep_hotstart_stack}}{(\code{logical(1)}).}
+
+\item{\code{callbacks}}{(\code{list()}).}
 }
 \if{html}{\out{</div>}}
 }
@@ -70,7 +72,8 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   check_values = TRUE,
   allow_hotstart = FALSE,
   keep_hotstart_stack = FALSE,
-  archive = NULL
+  archive = NULL,
+  callbacks = NULL
 )}\if{html}{\out{</div>}}
 }
 

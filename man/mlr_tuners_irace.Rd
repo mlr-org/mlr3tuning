@@ -102,6 +102,7 @@ learner$train(task)
 }
 \seealso{
 Other Tuner: 
+\code{\link{mlr_tuners_async_random_search}},
 \code{\link{mlr_tuners_cmaes}},
 \code{\link{mlr_tuners_design_points}},
 \code{\link{mlr_tuners_gensa}},

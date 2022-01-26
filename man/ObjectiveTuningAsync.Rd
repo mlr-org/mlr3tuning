@@ -31,6 +31,10 @@ by the \link{TuningInstanceSingleCrit} / \link{TuningInstanceMultiCrit}.
 \item{\code{allow_hotstart}}{(logical(1))\cr}
 
 \item{\code{keep_hotstart_stack}}{(\code{logical(1)}).}
+
+\item{\code{logger_threshold}}{(named \code{integer(1)})}
+
+\item{\code{callbacks}}{(\code{list()}).}
 }
 \if{html}{\out{</div>}}
 }
@@ -63,12 +67,13 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   learner,
   resampling,
   measures,
-  check_values = TRUE,
   store_benchmark_result = TRUE,
   store_models = FALSE,
+  check_values = TRUE,
   allow_hotstart = FALSE,
   keep_hotstart_stack = FALSE,
-  learner_limit = NULL
+  learner_limit = NULL,
+  callbacks = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -93,11 +98,6 @@ the resampling passed in construction.}
 \item{\code{measures}}{(list of \link[mlr3:Measure]{mlr3::Measure})\cr
 Measures to optimize.}
 
-\item{\code{check_values}}{(\code{logical(1)})\cr
-If \code{TRUE}, hyperparameter values are checked before evaluation and
-performance scores after. If \code{FALSE} (default), values are unchecked but
-computational overhead is reduced.}
-
 \item{\code{store_benchmark_result}}{(\code{logical(1)})\cr
 If \code{TRUE} (default), store resample result of evaluated hyperparameter
 configurations in archive as \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}.}
@@ -107,6 +107,11 @@ If \code{TRUE}, fitted models are stored in the benchmark result
 (\code{archive$benchmark_result}). If \code{store_benchmark_result = FALSE}, models
 are only stored temporarily and not accessible after the tuning. This
 combination is needed for measures that require a model.}
+
+\item{\code{check_values}}{(\code{logical(1)})\cr
+If \code{TRUE}, hyperparameter values are checked before evaluation and
+performance scores after. If \code{FALSE} (default), values are unchecked but
+computational overhead is reduced.}
 
 \item{\code{allow_hotstart}}{(\code{logical(1)})\cr
 Allow to hotstart learners with previously fitted models. See also

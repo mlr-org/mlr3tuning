@@ -149,7 +149,7 @@ The following cost values can be returned:
 \if{html}{\out{<a id="method-finalize"></a>}}
 \if{latex}{\out{\hypertarget{method-finalize}{}}}
 \subsection{Method \code{finalize()}}{
-Finalizer which disconnects from the database.
+Finalizer which disconnects from the database and deletes it.
 This is called during garbage collection of the instance.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{HotstartStackDB$finalize()}\if{html}{\out{</div>}}

@@ -67,11 +67,13 @@ RoxygenNote: 7.1.2
 Collate:
     'ArchiveTuning.R'
     'AutoTuner.R'
+    'Callbacks.r'
     'HotstartStackDB.R'
     'ObjectiveTuning.R'
     'ObjectiveTuningAsync.R'
     'mlr_tuners.R'
     'Tuner.R'
+    'TunerAsyncRandomSearch.R'
     'TunerCmaes.R'
     'TunerDesignPoints.R'
     'TunerFromOptimizer.R'
