@@ -77,7 +77,7 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
         stop("If the values of the ParamSet of the Learner contain TuneTokens you cannot supply a search_space.")
       }
       if (is.null(search_space)) {
-        search_space = as_search_space(learner$param_set)
+        search_space = as_search_space(learner)
         learner$param_set$values = learner$param_set$get_values(type = "without_token")
       } else {
         search_space = as_search_space(search_space)
