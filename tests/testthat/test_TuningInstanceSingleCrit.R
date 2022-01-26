@@ -209,6 +209,19 @@ test_that("search space from TuneToken works", {
   expect_equal(instance$search_space$ids(), "cp")
 })
 
+test_that("search space from TuningSpace works", {
+  skip_if_not_installed("mlr3tuningspaces")
+  requireNamespace("mlr3tuningspaces")
+
+  tuning_space = mlr3tuningspaces::lts("classif.rpart.default")
+  instance = TuningInstanceSingleCrit$new(task = tsk("iris"), learner = lrn("classif.rpart"),
+    resampling = rsmp("holdout"), measure = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 1), search_space = tuning_space)
+
+  expect_r6(instance$search_space, "ParamSet")
+  expect_set_equal(instance$search_space$ids(), c("minsplit", "minbucket", "cp"))
+})
+
 test_that("TuneToken and result_learner_param_vals works", {
   learner = lrn("classif.rpart", xval = 0)
   learner$param_set$values$cp = to_tune(0.1, 0.3)

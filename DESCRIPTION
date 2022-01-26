@@ -51,6 +51,7 @@ Suggests:
     GenSA,
     irace,
     mlr3pipelines,
+    mlr3tuningspaces,
     nloptr,
     rpart,
     testthat (>= 3.0.0)
@@ -76,6 +77,7 @@ Collate:
     'TunerRandomSearch.R'
     'TuningInstanceMulticrit.R'
     'TuningInstanceSingleCrit.R'
+    'as_search_space.R'
     'assertions.R'
     'auto_tuner.R'
     'bibentries.R'

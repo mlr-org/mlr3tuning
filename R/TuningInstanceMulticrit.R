@@ -73,12 +73,14 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
       store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE) {
       learner = assert_learner(as_learner(learner, clone = TRUE))
 
-      if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token")) > 0) {
+      if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token"))) {
         stop("If the values of the ParamSet of the Learner contain TuneTokens you cannot supply a search_space.")
       }
       if (is.null(search_space)) {
-        search_space = learner$param_set$search_space()
+        search_space = as_search_space(learner$param_set)
         learner$param_set$values = learner$param_set$get_values(type = "without_token")
+      } else {
+        search_space = as_search_space(search_space)
       }
 
       # create codomain from measure
