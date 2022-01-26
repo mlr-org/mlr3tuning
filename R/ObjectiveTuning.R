@@ -117,8 +117,10 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       # add to hotstart stack
       if (self$allow_hotstart) {
         self$hotstart_stack$add(extract_benchmark_result_learners(bmr))
-        if (!self$store_models) bmr$discard(models = TRUE)
       }
+
+      # remove models
+      if (!self$store_models) bmr$discard(models = TRUE)
 
       # store benchmark result in archive
       if (self$store_benchmark_result) {
