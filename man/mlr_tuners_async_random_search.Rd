@@ -44,26 +44,6 @@ All \link{Tuner}s use a logger (as implemented in \CRANpkg{lgr}) from package
 Use \code{lgr::get_logger("bbotk")} to access and control the logger.
 }
 
-\section{Parameters}{
-
-
-\describe{
-\item{\code{batch_size}}{\code{integer(1)}\cr
-Maximum number of points to try in a batch.}
-}
-
-}
-
-\section{Progress Bars}{
-
-
-\verb{$optimize()} supports progress bars via the package \href{https://CRAN.R-project.org/package=progressr}{\pkg{progressr}}
-combined with a \link[bbotk]{Terminator}. Simply wrap the function in
-\code{progressr::with_progress()} to enable them. We recommend to use package
-\href{https://CRAN.R-project.org/package=progress}{\pkg{progress}} as backend; enable with \code{progressr::handlers("progress")}.
-
-}
-
 \examples{
 # retrieve task
 task = tsk("pima")

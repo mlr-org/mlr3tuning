@@ -67,7 +67,7 @@ RoxygenNote: 7.1.2
 Collate:
     'ArchiveTuning.R'
     'AutoTuner.R'
-    'Callbacks.r'
+    'Callbacks.R'
     'HotstartStackDB.R'
     'ObjectiveTuning.R'
     'ObjectiveTuningAsync.R'
