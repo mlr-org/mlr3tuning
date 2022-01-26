@@ -1,5 +1,5 @@
+devtools::load_all(".")
 devtools::load_all("../mlr3tuningspaces")
-
 
 CallbackEarlyStopping = R6Class("CallbackEarlyStopping", inherit = Callbacks,
   private = list(
@@ -35,6 +35,7 @@ instance = TuningInstanceSingleCrit$new(
 )
 
 tuner = tnr("async_random_search")
+tuner = tnr("random_search")
 
 tuner$optimize(instance)
 
