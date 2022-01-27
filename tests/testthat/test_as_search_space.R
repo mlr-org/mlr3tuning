@@ -5,16 +5,6 @@ testthat("as_search_space on Learner works", {
   expect_equal(search_space$ids(), "cp")
 })
 
-testthat("as_search_space on TuningSpace works", {
-  skip_if_not_installed("mlr3tuningspaces")
-  requireNamespace("mlr3tuningspaces")
-
-  tuning_space = lts("classif.rpart.default")
-  search_space = as_search_space(tuning_space)
-  expect_r6(search_space, "ParamSet")
-  expect_set_equal(search_space$ids(), c("minsplit", "minbucket", "cp"))
-})
-
 testthat("as_search_space on ParamSet works", {
   param_set = ps(cp = p_dbl(lower = 1e-4, upper = 1), minsplit = p_int(1, 20))
   search_space = as_search_space(param_set)

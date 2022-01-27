@@ -20,9 +20,3 @@ as_search_space.Learner = function(x, ...) { # nolint
 as_search_space.ParamSet = function(x, ...) { # nolint
   if (length(x$get_values(type = "only_token"))) x$search_space() else x
 }
-
-#' @export
-#' @rdname as_search_space
-as_search_space.TuningSpace = function(x, ...) { # nolint
-  x$get_learner()$param_set$search_space()
-}
