@@ -4,7 +4,6 @@
 \alias{as_search_space}
 \alias{as_search_space.Learner}
 \alias{as_search_space.ParamSet}
-\alias{as_search_space.TuningSpace}
 \title{Convert to a Search Space}
 \usage{
 as_search_space(x, ...)
@@ -12,8 +11,6 @@ as_search_space(x, ...)
 \method{as_search_space}{Learner}(x, ...)
 
 \method{as_search_space}{ParamSet}(x, ...)
-
-\method{as_search_space}{TuningSpace}(x, ...)
 }
 \value{
 \link[paradox:ParamSet]{paradox::ParamSet}.

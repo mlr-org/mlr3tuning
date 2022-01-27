@@ -51,7 +51,6 @@ Suggests:
     GenSA,
     irace,
     mlr3pipelines,
-    mlr3tuningspaces,
     nloptr,
     rpart,
     testthat (>= 3.0.0)
