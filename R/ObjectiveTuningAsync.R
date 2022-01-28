@@ -51,14 +51,11 @@ ObjectiveTuningAsync = R6Class("ObjectiveTuningAsync",
     #' @field logger_threshold (named `integer(1)`)
     logger_threshold = NULL,
 
-    #' @field callbacks (`list()`).
-    callbacks = NULL,
-
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function(task, learner, resampling, measures, store_benchmark_result = TRUE,
       store_models = FALSE, check_values = TRUE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE,
-      learner_limit = NULL, callbacks = NULL) {
+      learner_limit = NULL) {
 
       self$task = assert_task(as_task(task, clone = TRUE))
       self$learner = assert_learner(as_learner(learner, clone = TRUE))
@@ -69,7 +66,6 @@ ObjectiveTuningAsync = R6Class("ObjectiveTuningAsync",
       self$keep_hotstart_stack = assert_flag(keep_hotstart_stack)
       self$store_models = assert_logical(store_models)
       self$logger_threshold = map_int(mlr_reflections$loggers, "threshold")
-      self$callbacks = if (is.null(callbacks)) Callbacks$new() else assert_r6(callbacks, "Callbacks")
 
       codomain = ParamSet$new(map(self$measures, function(s) {
         ParamDbl$new(id = s$id, tags = ifelse(s$minimize, "minimize", "maximize"))
@@ -104,8 +100,6 @@ ObjectiveTuningAsync = R6Class("ObjectiveTuningAsync",
       aggr = rr$aggregate(self$measures)
       time = sum(map_dbl(get_private(rr)$.data$learner_states(), function(state) state$train_time + state$predict_time))
       ys = c(as.list(aggr), runtime_learners = time)
-
-      ys = self$callbacks$on_eval_end(ys, rr, self)
 
       if (!self$store_models && !self$allow_hotstart) rr$discard(models = TRUE)
       if (self$store_benchmark_result || self$allow_hotstart) ys = c(ys, resample_result = list(list(rr)))
