@@ -50,9 +50,6 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     #' @field keep_hotstart_stack (`logical(1)`).
     keep_hotstart_stack = NULL,
 
-    #' @field callbacks (`list()`).
-    callbacks = NULL,
-
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #'
@@ -61,7 +58,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     #'   [TuningInstanceMultiCrit]. If `NULL` (default), benchmark result and
     #'   models cannot be stored.
     initialize = function(task, learner, resampling, measures, store_benchmark_result = TRUE, store_models = FALSE,
-      check_values = TRUE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, archive = NULL, callbacks = NULL) {
+      check_values = TRUE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, archive = NULL) {
       self$task = assert_task(as_task(task, clone = TRUE))
       self$learner = assert_learner(as_learner(learner, clone = TRUE))
       self$measures = assert_measures(as_measures(measures, clone = TRUE), task = self$task, learner = self$learner)
@@ -72,7 +69,6 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       self$store_models = assert_flag(store_models)
       self$archive = assert_r6(archive, "ArchiveTuning", null.ok = TRUE)
       if (is.null(self$archive)) self$allow_hotstart = self$store_benchmark_result = self$store_models = FALSE
-      self$callbacks = if (is.null(callbacks)) Callbacks$new() else assert_r6(callbacks, "Callbacks")
 
       super$initialize(id = sprintf("%s_on_%s", self$learner$id, self$task$id), properties = "noisy",
         domain = self$learner$param_set, codomain = measures_to_codomain(self$measures),
@@ -88,8 +84,6 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
 
   private = list(
     .eval_many = function(xss, resampling) {
-      self$callbacks$on_eval_many_start(xss, resampling, self)
-
       # create learners from set of hyperparameter configurations
       learners = map(xss, function(x) {
         learner = self$learner$clone(deep = TRUE)
@@ -112,7 +106,11 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       })
       set(ydt, j = "runtime_learners", value = time)
 
-      self$callbacks$on_eval_many_end(ydt, bmr, design, learners, self)
+      # callback
+      mean_nrounds = round(map_dbl(bmr$resample_results$resample_result, function(rr) {
+        mean(map_dbl(get_private(rr)$.data$learner_states(get_private(rr)$.view), function(state) state$model$niter))
+      }))
+      set(ydt, j = "mean_nrounds", value = mean_nrounds)
 
       # add to hotstart stack
       if (self$allow_hotstart) {

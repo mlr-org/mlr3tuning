@@ -132,8 +132,7 @@ and a termination criterion.
   check_values = FALSE,
   allow_hotstart = FALSE,
   keep_hotstart_stack = FALSE,
-  learner_limit = NULL,
-  callbacks = NULL
+  learner_limit = NULL
 )}\if{html}{\out{</div>}}
 }
 
