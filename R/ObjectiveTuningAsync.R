@@ -102,7 +102,7 @@ ObjectiveTuningAsync = R6Class("ObjectiveTuningAsync",
       ys = c(as.list(aggr), runtime_learners = time)
 
       # callback
-      mean_nrounds = mean(map_dbl(get_private(rr)$.data$learner_states(), function(state) state$model$niter))
+      mean_nrounds = mean(map_dbl(get_private(rr)$.data$learner_states(), function(state) state$model$xgboost$model$niter))
       ys = c(ys, "mean_nrounds" = mean_nrounds)
 
       if (!self$store_models && !self$allow_hotstart) rr$discard(models = TRUE)
