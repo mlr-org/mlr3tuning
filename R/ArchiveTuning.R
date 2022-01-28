@@ -195,7 +195,9 @@ as.data.table.ArchiveTuning = function(x, ..., unnest = "x_domain", exclude_colu
     setdiff(x_domain_ids, exclude_columns)
   } else NULL
 
-  setcolorder(tab, c(x$cols_x, x$cols_y, cols_y_extra, cols_x_domain, "runtime_learners", "timestamp", "batch_nr", "status"))
+  timestamps = intersect(names(tab), c("timestamp_proposed", "timestamp_promise", "timestamp_eval_start", "timestamp_eval_end", "timestamp_resolved", "timestamp_evaluated"))
+
+  setcolorder(tab, c(x$cols_x, x$cols_y, cols_y_extra, cols_x_domain, "runtime_learners", timestamps, "batch_nr", "status"))
   assert_subset(exclude_columns, names(tab))
   tab[, setdiff(names(tab), exclude_columns), with = FALSE]
 }

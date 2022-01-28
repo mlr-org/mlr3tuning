@@ -84,6 +84,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
 
   private = list(
     .eval_many = function(xss, resampling) {
+      timestamp_eval_start = Sys.time()
       # create learners from set of hyperparameter configurations
       learners = map(xss, function(x) {
         learner = self$learner$clone(deep = TRUE)
@@ -125,7 +126,8 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
         self$archive$benchmark_result$combine(bmr)
         set(ydt, j = "uhash", value = bmr$uhashes)
       }
-
+      set(ydt, j = "timestamp_eval_start", value = timestamp_eval_start)
+      set(ydt, j = "timestamp_eval_end", value = Sys.time())
       ydt
     }
   )
