@@ -88,6 +88,7 @@ ObjectiveTuningAsync = R6Class("ObjectiveTuningAsync",
 
   private = list(
     .eval = function(xs, resampling) {
+      timestamp_eval_start = Sys.time()
       # restore logger thresholds
       for (package in names(self$logger_threshold)) {
         logger = lgr::get_logger(package)
@@ -108,7 +109,8 @@ ObjectiveTuningAsync = R6Class("ObjectiveTuningAsync",
 
       if (!self$store_models && !self$allow_hotstart) rr$discard(models = TRUE)
       if (self$store_benchmark_result || self$allow_hotstart) ys = c(ys, resample_result = list(list(rr)))
-      ys
+      timestamp_eval_end = Sys.time()
+      c(ys, "timestamp_eval_start" = list(timestamp_eval_start), "timestamp_eval_end" = list(timestamp_eval_end))
     }
   )
 )
