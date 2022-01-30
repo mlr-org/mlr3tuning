@@ -109,7 +109,9 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
 
       # callback
       mean_nrounds = round(map_dbl(bmr$resample_results$resample_result, function(rr) {
-        mean(map_dbl(get_private(rr)$.data$learner_states(get_private(rr)$.view), function(state) state$model$xgboost$model$niter))
+        mean(map_dbl(get_private(rr)$.data$learner_states(get_private(rr)$.view), function(state) {
+          if (is.null(state$model$xgboost$model)) NA else state$model$xgboost$model$niter
+        }))
       }))
       set(ydt, j = "mean_nrounds", value = mean_nrounds)
 
