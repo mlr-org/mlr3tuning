@@ -44,7 +44,7 @@ Imports:
     checkmate (>= 2.0.0),
     data.table,
     lgr,
-    mlr3misc (>= 0.9.4),
+    mlr3misc (>= 0.10.0),
     R6
 Suggests:
     adagio,
