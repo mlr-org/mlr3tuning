@@ -12,7 +12,7 @@ test_that("extract_inner_tuning_archives function works", {
 
   irr = extract_inner_tuning_archives(rr)
   expect_data_table(irr, nrows = 6)
-  expect_named(irr, c("iteration", "cp", "classif.ce", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "resample_result", "task_id", "learner_id", "resampling_id"))
+  expect_named(irr, c("iteration", "cp", "classif.ce", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "resample_result", "task_id", "learner_id", "resampling_id", "errors", "warnings"), ignore.order = TRUE)
 
   # repeated cv
   at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
@@ -21,7 +21,7 @@ test_that("extract_inner_tuning_archives function works", {
 
   irr = extract_inner_tuning_archives(rr)
   expect_data_table(irr, nrows = 18)
-  expect_named(irr, c("iteration", "cp", "classif.ce", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "resample_result", "task_id", "learner_id", "resampling_id"))
+  expect_named(irr, c("iteration", "cp", "classif.ce", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "resample_result", "task_id", "learner_id", "resampling_id", "errors", "warnings"), ignore.order = TRUE)
 
   # cv
   at_1 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
@@ -32,7 +32,7 @@ test_that("extract_inner_tuning_archives function works", {
 
   ibmr = extract_inner_tuning_archives(bmr)
   expect_data_table(ibmr, nrows = 12)
-  expect_named(ibmr, c("experiment", "iteration", "cp", "classif.ce", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "resample_result", "task_id", "learner_id", "resampling_id"))
+  expect_named(ibmr, c("experiment", "iteration", "cp", "classif.ce", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "resample_result", "task_id", "learner_id", "resampling_id", "errors", "warnings"), ignore.order = TRUE)
   expect_equal(unique(ibmr$experiment), c(1, 2))
 
    # repeated cv
@@ -44,7 +44,7 @@ test_that("extract_inner_tuning_archives function works", {
 
   ibmr = extract_inner_tuning_archives(bmr)
   expect_data_table(ibmr, nrows = 36)
-  expect_named(ibmr, c("experiment", "iteration", "cp", "classif.ce", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "resample_result", "task_id", "learner_id", "resampling_id"))
+  expect_named(ibmr, c("experiment", "iteration", "cp", "classif.ce", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "resample_result", "task_id", "learner_id", "resampling_id", "errors", "warnings"), ignore.order = TRUE)
   expect_equal(unique(ibmr$experiment), c(1, 2))
 
   # different hyperparameters
@@ -56,7 +56,7 @@ test_that("extract_inner_tuning_archives function works", {
 
   ibmr = extract_inner_tuning_archives(bmr)
   expect_data_table(ibmr, nrows = 12)
-  expect_named(ibmr, c("experiment", "iteration", "cp", "x", "classif.ce", "x_domain_cp", "x_domain_x", "runtime_learners", "timestamp", "batch_nr", "resample_result", "task_id", "learner_id", "resampling_id"))
+  expect_named(ibmr, c("experiment", "iteration", "cp", "x", "classif.ce", "x_domain_cp", "x_domain_x", "runtime_learners", "timestamp", "batch_nr", "resample_result", "task_id", "learner_id", "resampling_id", "errors", "warnings"), ignore.order = TRUE)
   expect_equal(unique(ibmr$experiment), c(1, 2))
 
   # no models
@@ -93,7 +93,7 @@ test_that("extract_inner_tuning_archives function works", {
 
   ibmr = extract_inner_tuning_archives(bmr)
   expect_data_table(ibmr, nrows = 6)
-  expect_named(ibmr, c("experiment", "iteration", "x", "classif.ce", "x_domain_x", "runtime_learners", "timestamp", "batch_nr", "resample_result", "task_id", "learner_id", "resampling_id"))
+  expect_named(ibmr, c("experiment", "iteration", "x", "classif.ce", "x_domain_x", "runtime_learners", "timestamp", "batch_nr", "resample_result", "task_id", "learner_id", "resampling_id", "errors", "warnings"), ignore.order = TRUE)
   expect_equal(unique(ibmr$experiment), 2)
 
   # autotuner and learner
@@ -104,7 +104,7 @@ test_that("extract_inner_tuning_archives function works", {
 
   ibmr = extract_inner_tuning_archives(bmr)
   expect_data_table(ibmr, nrows = 6)
-  expect_named(ibmr, c("experiment", "iteration", "x", "classif.ce", "x_domain_x", "runtime_learners", "timestamp", "batch_nr", "resample_result", "task_id", "learner_id", "resampling_id"))
+  expect_named(ibmr, c("experiment", "iteration", "x", "classif.ce", "x_domain_x", "runtime_learners", "timestamp", "batch_nr", "resample_result", "task_id", "learner_id", "resampling_id", "errors", "warnings"), ignore.order = TRUE)
   expect_equal(unique(ibmr$experiment), 1)
 
   # search_space > 1
@@ -115,6 +115,6 @@ test_that("extract_inner_tuning_archives function works", {
 
   ibmr = extract_inner_tuning_archives(bmr)
   expect_data_table(ibmr, nrows = 14)
-  expect_named(ibmr, c("experiment", "iteration", "cp", "minsplit", "x", "classif.ce", "x_domain_cp", "x_domain_minsplit", "x_domain_x", "runtime_learners", "timestamp", "batch_nr", "resample_result", "task_id", "learner_id", "resampling_id"))
+  expect_named(ibmr, c("experiment", "iteration", "cp", "minsplit", "x", "classif.ce", "x_domain_cp", "x_domain_minsplit", "x_domain_x", "runtime_learners", "timestamp", "batch_nr", "resample_result", "task_id", "learner_id", "resampling_id", "errors", "warnings"), ignore.order = TRUE)
   expect_equal(unique(ibmr$experiment), c(1, 2))
 })

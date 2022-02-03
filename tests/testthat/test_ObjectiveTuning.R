@@ -12,7 +12,7 @@ test_that("ObjectiveTuning", {
 
   xss = list(list("cp" = 0.01), list("cp" = 0.02))
   z = obj$eval_many(xss)
-  expect_data_table(z, nrows = 2, ncols = 3)
+  expect_data_table(z, nrows = 2, ncols = 5)
   expect_equal(obj$archive$benchmark_result$resample_result(1)$learners[[1]]$param_set$values$cp, 0.01)
   expect_equal(obj$archive$benchmark_result$resample_result(2)$learners[[1]]$param_set$values$cp,  0.02)
 
@@ -35,7 +35,7 @@ test_that("ObjectiveTuning - Multiple measures", {
 
   xss = list(list("cp" = 0.01), list("cp" = 0.02))
   z = obj$eval_many(xss)
-  expect_data_table(z, nrows = 2, ncols = 4)
+  expect_data_table(z, nrows = 2, ncols = 6)
 })
 
 test_that("ObjectiveTuning - Store models", {
@@ -67,8 +67,8 @@ test_that("runtime of learners is added", {
   xss = list(list("cp" = 0.01), list("cp" = 0.02))
 
   z = obj$eval_many(xss)
-  expect_data_table(z, nrows = 2, ncols = 3)
-  expect_named(z, c("classif.ce", "runtime_learners", "uhash"))
+  expect_data_table(z, nrows = 2, ncols = 5)
+  expect_named(z, c("classif.ce", "runtime_learners", "uhash", "warnings", "errors"), ignore.order = TRUE)
 
   t1 = sum(map_dbl(obj$archive$benchmark_result$resample_result(1)$learners, function(l) sum(l$timings)))
   t2 = sum(map_dbl(obj$archive$benchmark_result$resample_result(2)$learners, function(l) sum(l$timings)))
@@ -84,8 +84,8 @@ test_that("runtime of learners is added", {
   xss = list(list("cp" = 0.01), list("cp" = 0.02))
 
   z = obj$eval_many(xss)
-  expect_data_table(z, nrows = 2, ncols = 3)
-  expect_named(z, c("classif.ce", "runtime_learners", "uhash"))
+  expect_data_table(z, nrows = 2, ncols = 5)
+  expect_named(z, c("classif.ce", "runtime_learners", "uhash", "warnings", "errors"), ignore.order = TRUE)
 
   t1 = sum(map_dbl(obj$archive$benchmark_result$resample_result(1)$learners, function(l) sum(l$timings)))
   t2 = sum(map_dbl(obj$archive$benchmark_result$resample_result(2)$learners, function(l) sum(l$timings)))

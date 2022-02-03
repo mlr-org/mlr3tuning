@@ -99,7 +99,8 @@ and a termination criterion.
   store_benchmark_result = TRUE,
   store_models = FALSE,
   check_values = FALSE,
-  allow_hotstart = FALSE
+  allow_hotstart = FALSE,
+  keep_hotstart_stack = FALSE
 )}\if{html}{\out{</div>}}
 }
 
@@ -151,6 +152,10 @@ computational overhead is reduced.}
 Allow to hotstart learners with previously fitted models. See also
 \link[mlr3:HotstartStack]{mlr3::HotstartStack}. The learner must support hotstarting. Sets
 \code{store_models = TRUE}.}
+
+\item{\code{keep_hotstart_stack}}{(\code{logical(1)})\cr
+If \code{TRUE}, \link[mlr3:HotstartStack]{mlr3::HotstartStack} is kept in \verb{$objective$hotstart_stack}
+after tuning.}
 }
 \if{html}{\out{</div>}}
 }

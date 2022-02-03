@@ -34,9 +34,10 @@ test_that("TunerGridSearch works with forward hotstart parameter", {
     learner = learner,
     resampling = rsmp("holdout"),
     measure = msr("classif.ce"),
+    store_models = TRUE,
+    allow_hotstart = TRUE,
     batch_size = 5,
     resolution = 5,
-    allow_hotstart = TRUE
   )
 
   ids = map(extract_benchmark_result_learners(instance$archive$benchmark_result), function(l) l$model$id)
@@ -55,9 +56,10 @@ test_that("TunerGridSearch works with forward hotstart parameter", {
     learner = learner,
     resampling = rsmp("holdout"),
     measure = msr("classif.ce"),
+    store_models = TRUE,
+    allow_hotstart = TRUE,
     batch_size = 5,
-    resolution = 5,
-    allow_hotstart = TRUE
+    resolution = 5
   )
 
   ids = map(extract_benchmark_result_learners(instance$archive$benchmark_result), function(l) l$model$id)
@@ -76,9 +78,10 @@ test_that("TunerGridSearch works with forward and backward hotstart parameter", 
     learner = learner,
     resampling = rsmp("holdout"),
     measure = msr("classif.ce"),
+    store_models = TRUE,
+    allow_hotstart = TRUE,
     batch_size = 5,
-    resolution = 5,
-    allow_hotstart = TRUE
+    resolution = 5
   )
 
   ids = map(extract_benchmark_result_learners(instance$archive$benchmark_result), function(l) l$model$id)
