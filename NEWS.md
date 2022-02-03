@@ -1,3 +1,5 @@
+# mlr3tuning 0.11.0.9000
+
 # mlr3tuning 0.11.0
 
 * fix: `$assign_result()` method in `TuningInstanceSingleCrit` when search space is empty.
