@@ -3,6 +3,9 @@
 #' @description
 #' Convert object to a search space.
 #'
+#' @param x (`any`)\cr
+#'   Object to convert to search space.
+#'
 #' @return [paradox::ParamSet].
 #' @export
 as_search_space = function(x, ...) { # nolint

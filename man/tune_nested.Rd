@@ -42,7 +42,7 @@ Number of allowed evaluations.}
 \item{term_time}{(\code{integer(1)})\cr
 Maximum allowed time in seconds.}
 
-\item{search_space}{(\link[paradox:ParamSet]{paradox::ParamSet} | \link[mlr3tuningspaces:TuningSpace]{mlr3tuningspaces::TuningSpace})\cr
+\item{search_space}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
 Hyperparameter search space. If \code{NULL} (default), the search space is
 constructed from the \link{TuneToken} of the learner's parameter set
 (learner$param_set).}

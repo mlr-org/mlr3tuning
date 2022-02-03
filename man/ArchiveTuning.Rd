@@ -126,7 +126,7 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet} | \link[mlr3tuningspaces:TuningSpace]{mlr3tuningspaces::TuningSpace})\cr
+\item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
 Hyperparameter search space. If \code{NULL} (default), the search space is
 constructed from the \link{TuneToken} of the learner's parameter set
 (learner$param_set).}
