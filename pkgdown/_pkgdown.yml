@@ -47,6 +47,10 @@ reference:
       - TunerFromOptimizer
       - starts_with("mlr_tuners")
       - tnr
+  - title: Objective
+    contents:
+      - ObjectiveTuning
+      - ObjectiveTuningAsync
   - title: Terminators
     contents:
       - mlr_terminators
@@ -65,6 +69,5 @@ reference:
       - as_search_space
   - title: Misc
     contents:
-      - ObjectiveTuning
       - HotstartStackDB
       - mlr3tuning-package
