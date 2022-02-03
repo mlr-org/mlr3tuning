@@ -15,6 +15,9 @@ as_search_space(x, ...)
 \arguments{
 \item{x}{(\code{any})\cr
 Object to convert to search space.}
+
+\item{...}{(any)\cr
+Additional arguments.}
 }
 \value{
 \link[paradox:ParamSet]{paradox::ParamSet}.

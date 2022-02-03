@@ -5,6 +5,8 @@
 #'
 #' @param x (`any`)\cr
 #'   Object to convert to search space.
+#' @param ... (any)\cr
+#'   Additional arguments.
 #'
 #' @return [paradox::ParamSet].
 #' @export
