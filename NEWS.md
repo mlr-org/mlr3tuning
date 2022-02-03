@@ -1,4 +1,6 @@
-# mlr3tuning 0.10.0
+# mlr3tuning 0.11.0.9000
+
+# mlr3tuning 0.11.0
 
 * fix: `$assign_result()` method in `TuningInstanceSingleCrit` when search space is empty.
 * feat: Default measure is used when no measure is supplied to `TuningInstanceSingleCrit`.
@@ -65,7 +67,7 @@
 # mlr3tuning 0.3.0
 
 - Compact in-memory representation of R6 objects to save space when
-  saving mlr3 objects via saveRDS(), serialize() etc.
+  saving mlr3 objects via `saveRDS()`, `serialize()` etc.
 - `Archive` is `ArchiveTuning` now which stores the benchmark result in
   `$benchmark_result`. This change removed the resample results from the archive
   but they can be still accessed via the benchmark result.
@@ -96,7 +98,7 @@
   and `Tuner` from `bbotk::Optimizer`
 - `TuningInstance$param_set` becomes `TuningInstance$search_space` to avoid
   confusion as the `param_set` usually contains the parameters that change the
-  behaviour of an object.
+  behavior of an object.
 - Tuning is triggered by `$optimize()` instead of `$tune()`
 
 # mlr3tuning 0.1.2
