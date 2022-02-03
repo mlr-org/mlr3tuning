@@ -1,12 +1,15 @@
 # mlr3tuning 0.11.0.9000
 
-* feat: `as_search_space()` function to create search spaces from `Learner` and `ParamSet` objects. Allows to pass
-  `TuningSpace` objects as `search_space` in `TuningInstanceSingleCrit` and `TuningInstanceMultiCrit`.
+* feat: `as_search_space()` function to create search spaces from `Learner` and
+  `ParamSet` objects. Allows to pass `TuningSpace` objects as `search_space` in
+  `TuningInstanceSingleCrit` and `TuningInstanceMultiCrit`.
 
 # mlr3tuning 0.11.0
 
-* fix: `$assign_result()` method in `TuningInstanceSingleCrit` when search space is empty.
-* feat: Default measure is used when no measure is supplied to `TuningInstanceSingleCrit`.
+* fix: `$assign_result()` method in `TuningInstanceSingleCrit` when search space
+  is empty.
+* feat: Default measure is used when no measure is supplied to
+  `TuningInstanceSingleCrit`.
 
 # mlr3tuning 0.10.0
 
@@ -25,8 +28,8 @@
 - Adds `TunerIrace` from `irace` package.
 - `extract_inner_tuning_archives()` helper function to extract inner tuning
   archives.
-- Removes `ArchiveTuning$extended_archive()` method. The `mlr3::ResampleResults` are
-  joined automatically by `as.data.table.TuningArchive()` and
+- Removes `ArchiveTuning$extended_archive()` method. The `mlr3::ResampleResults`
+  are joined automatically by `as.data.table.TuningArchive()` and
   `extract_inner_tuning_archives()`.
 
 # mlr3tuning 0.8.0
