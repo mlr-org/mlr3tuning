@@ -76,6 +76,7 @@ Collate:
     'TunerRandomSearch.R'
     'TuningInstanceMulticrit.R'
     'TuningInstanceSingleCrit.R'
+    'as_search_space.R'
     'assertions.R'
     'auto_tuner.R'
     'bibentries.R'

@@ -1,5 +1,8 @@
 # mlr3tuning 0.11.0.9000
 
+* feat: `as_search_space()` function to create search spaces from `Learner` and `ParamSet` objects. Allows to pass
+  `TuningSpace` objects as `search_space` in `TuningInstanceSingleCrit` and `TuningInstanceMultiCrit`.
+
 # mlr3tuning 0.11.0
 
 * fix: `$assign_result()` method in `TuningInstanceSingleCrit` when search space is empty.
