@@ -1,6 +1,6 @@
 Package: mlr3tuning
 Title: Tuning for 'mlr3'
-Version: 0.10.0.9000
+Version: 0.11.0.9000
 Authors@R:
     c(person(given = "Marc",
              family = "Becker",
@@ -45,7 +45,7 @@ Imports:
     data.table,
     DBI,
     lgr,
-    mlr3misc (>= 0.9.4),
+    mlr3misc (>= 0.10.0),
     R6
 Suggests:
     adagio,
@@ -82,6 +82,7 @@ Collate:
     'TunerRandomSearch.R'
     'TuningInstanceMulticrit.R'
     'TuningInstanceSingleCrit.R'
+    'as_search_space.R'
     'assertions.R'
     'auto_tuner.R'
     'bibentries.R'

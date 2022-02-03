@@ -9,7 +9,7 @@ tune(
   task,
   learner,
   resampling,
-  measures,
+  measures = NULL,
   term_evals = NULL,
   term_time = NULL,
   search_space = NULL,

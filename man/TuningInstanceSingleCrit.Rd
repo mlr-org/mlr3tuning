@@ -123,7 +123,7 @@ and a termination criterion.
   task,
   learner,
   resampling,
-  measure,
+  measure = NULL,
   terminator,
   search_space = NULL,
   store_benchmark_result = TRUE,
