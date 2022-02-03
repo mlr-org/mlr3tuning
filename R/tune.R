@@ -21,6 +21,7 @@
 #' @template param_search_space
 #' @template param_store_models
 #' @template param_allow_hotstart
+#' @template param_keep_hotstart_stack
 #'
 #' @export
 #' @examples
@@ -37,17 +38,17 @@
 #' # apply hyperparameter values to learner
 #' learner$param_set$values = instance$result_learner_param_vals
 tune = function(method, task, learner, resampling, measures = NULL, term_evals = NULL, term_time = NULL,
-  search_space = NULL, store_models = FALSE, allow_hotstart = FALSE, ...) {
+  search_space = NULL, store_models = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, ...) {
   assert_choice(method, mlr_tuners$keys())
   tuner = tnr(method, ...)
   terminator = terminator_selection(term_evals, term_time)
 
   if (!is.list(measures)) {
     instance = TuningInstanceSingleCrit$new(task, learner, resampling, measures, terminator, search_space,
-      store_models = store_models, allow_hotstart = allow_hotstart)
+      store_models = store_models, allow_hotstart = allow_hotstart, keep_hotstart_stack = keep_hotstart_stack)
   } else {
     instance = TuningInstanceMultiCrit$new(task, learner, resampling, measures, terminator, search_space,
-      store_models = store_models, allow_hotstart = allow_hotstart)
+      store_models = store_models, allow_hotstart = allow_hotstart, keep_hotstart_stack = keep_hotstart_stack)
   }
 
   tuner$optimize(instance)

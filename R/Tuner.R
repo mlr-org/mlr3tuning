@@ -129,7 +129,9 @@ Tuner = R6Class("Tuner",
     #' @return [data.table::data.table]
     optimize = function(inst) {
       assert_multi_class(inst, c("TuningInstanceSingleCrit", "TuningInstanceMultiCrit"))
-      optimize_default(inst, self, private)
+      res = optimize_default(inst, self, private)
+      if (!inst$objective$keep_hotstart_stack) inst$objective$hotstart_stack = NULL
+      res
     }
   ),
 

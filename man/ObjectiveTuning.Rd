@@ -31,6 +31,8 @@ by the \link{TuningInstanceSingleCrit} / \link{TuningInstanceMultiCrit}.
 \item{\code{hotstart_stack}}{(\link[mlr3:HotstartStack]{mlr3::HotstartStack}).}
 
 \item{\code{allow_hotstart}}{(\code{logical(1)}).}
+
+\item{\code{keep_hotstart_stack}}{(\code{logical(1)}).}
 }
 \if{html}{\out{</div>}}
 }
@@ -67,6 +69,7 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   store_models = FALSE,
   check_values = TRUE,
   allow_hotstart = FALSE,
+  keep_hotstart_stack = FALSE,
   archive = NULL
 )}\if{html}{\out{</div>}}
 }
@@ -111,6 +114,10 @@ computational overhead is reduced.}
 Allow to hotstart learners with previously fitted models. See also
 \link[mlr3:HotstartStack]{mlr3::HotstartStack}. The learner must support hotstarting. Sets
 \code{store_models = TRUE}.}
+
+\item{\code{keep_hotstart_stack}}{(\code{logical(1)})\cr
+If \code{TRUE}, \link[mlr3:HotstartStack]{mlr3::HotstartStack} is kept in \verb{$objective$hotstart_stack}
+after tuning.}
 
 \item{\code{archive}}{(\link{ArchiveTuning})\cr
 Reference to archive of \link{TuningInstanceSingleCrit} |
