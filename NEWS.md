@@ -3,6 +3,8 @@
 * feat: `as_search_space()` function to create search spaces from `Learner` and
   `ParamSet` objects. Allows to pass `TuningSpace` objects as `search_space` in
   `TuningInstanceSingleCrit` and `TuningInstanceMultiCrit`.
+* feat: `keep_hotstart_stack` flag to remove `mlr3::HotstartStack` after tuning.
+* feat: Store errors and warnings in `Archive`.
 
 # mlr3tuning 0.11.0
 

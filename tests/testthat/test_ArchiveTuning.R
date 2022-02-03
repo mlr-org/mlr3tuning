@@ -225,4 +225,3 @@ test_that("ArchiveTuning as.data.table function works", {
   tab = as.data.table(instance$archive)
   expect_equal(tab$batch_nr, 1:10)
 })
-
