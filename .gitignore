@@ -96,5 +96,3 @@ cran-comments.md
 CRAN-RELEASE
 README.html
 revdep
-renv.lock
-renv/
