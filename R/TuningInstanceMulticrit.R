@@ -134,11 +134,5 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
       private$.result$learner_param_vals
 
     }
-  ),
-
-  private = list(
-    .evaluate_default = function() {
-      evaluate_default(self)
-    }
   )
 )

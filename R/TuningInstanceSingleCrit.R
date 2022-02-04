@@ -160,11 +160,5 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     result_learner_param_vals = function() {
       private$.result$learner_param_vals[[1]]
     }
-  ),
-
-  private = list(
-    .evaluate_default = function() {
-      evaluate_default(self)
-    }
   )
 )
