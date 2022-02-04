@@ -69,8 +69,8 @@ If \code{TRUE}, \link[mlr3:HotstartStack]{mlr3::HotstartStack} is kept in \verb{
 after tuning.}
 
 \item{evaluate_default}{(\code{logical(1)})\cr
-If \code{TRUE}, default values of hyperparameters are evaluated at the start
-of the optimization.}
+If \code{TRUE}, learner is evaluated with hyperparameters set to their default
+values at the start of the optimization.}
 
 \item{...}{(named \code{list()})\cr
 Named arguments to be set as parameters of the tuner.}
