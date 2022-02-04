@@ -187,3 +187,157 @@ test_that("assign_result works", {
   expect_equal(res$classif.tpr, c(0.3, 0.2))
   expect_equal(res$learner_param_vals[[1]], list(xval = 0, cp = 0.1))
 })
+
+# .evaluate_default() ------------------------------------------------------------------
+
+test_that("evaluate_default works", {
+  learner = lrn("classif.rpart", cp = to_tune(1e-3, 1))
+
+  instance = tune(
+    method = "random_search",
+    task = tsk("pima"),
+    learner = learner,
+    resampling = rsmp("cv", folds = 3),
+    measure = msrs(c("classif.tpr", "classif.fpr")),
+    term_evals = 10,
+    evaluate_default = TRUE
+  )
+
+  expect_equal(instance$archive$data$x_domain[[1]]$cp, 0.01)
+  expect_equal(instance$archive$data$cp[[1]], 0.01)
+})
+
+test_that("evaluate_default works with logscale", {
+  learner = lrn("classif.rpart", cp = to_tune(1e-3, 1, logscale = TRUE))
+
+  instance = tune(
+    method = "random_search",
+    task = tsk("pima"),
+    learner = learner,
+    resampling = rsmp("cv", folds = 3),
+    measure = msrs(c("classif.tpr", "classif.fpr")),
+    term_evals = 10,
+    evaluate_default = TRUE
+  )
+
+  expect_equal(instance$archive$data$x_domain[[1]]$cp, 0.01)
+  expect_equal(instance$archive$data$cp[[1]], log(0.01))
+})
+
+test_that("evaluate_default works with trafo", {
+  learner = lrn("classif.rpart", cp = to_tune(p_dbl(-10, 0, trafo = function(x) 10^x)))
+
+  instance = tune(
+    method = "random_search",
+    task = tsk("pima"),
+    learner = learner,
+    resampling = rsmp("cv", folds = 3),
+    measure = msrs(c("classif.tpr", "classif.fpr")),
+    term_evals = 10,
+    evaluate_default = TRUE
+  )
+
+  expect_equal(instance$archive$data$x_domain[[1]]$cp, 0.01)
+  expect_equal(instance$archive$data$cp[[1]], NA_real_)
+})
+
+test_that("evaluate_default works without transformation and with logscale", {
+  learner = lrn("classif.rpart",
+    cp = to_tune(1e-3, 1, logscale = TRUE),
+    minbucket = to_tune(1, 20))
+
+  instance = tune(
+    method = "random_search",
+    task = tsk("pima"),
+    learner = learner,
+    resampling = rsmp("cv", folds = 3),
+    measure = msrs(c("classif.tpr", "classif.fpr")),
+    term_evals = 10,
+    evaluate_default = TRUE
+  )
+
+  expect_equal(instance$archive$data$x_domain[[1]]$cp, 0.01)
+  expect_equal(instance$archive$data$cp[[1]], log(0.01))
+  expect_equal(instance$archive$data$x_domain[[1]]$minbucket, 7)
+  expect_equal(instance$archive$data$minbucket[[1]], 7)
+})
+
+test_that("evaluate_default works without transformation and with logscale and trafo", {
+  learner = lrn("classif.rpart",
+    cp = to_tune(1e-3, 1, logscale = TRUE),
+    minbucket = to_tune(1, 20),
+    minsplit = to_tune(p_int(0, 3, trafo = function(x) 2^x)))
+
+  instance = tune(
+    method = "random_search",
+    task = tsk("pima"),
+    learner = learner,
+    resampling = rsmp("cv", folds = 3),
+    measure = msrs(c("classif.tpr", "classif.fpr")),
+    term_evals = 10,
+    evaluate_default = TRUE
+  )
+
+  expect_equal(instance$archive$data$x_domain[[1]]$cp, 0.01)
+  expect_equal(instance$archive$data$cp[[1]], log(0.01))
+  expect_equal(instance$archive$data$x_domain[[1]]$minbucket, 7)
+  expect_equal(instance$archive$data$minbucket[[1]], 7)
+  expect_equal(instance$archive$data$x_domain[[1]]$minsplit, 20)
+  expect_equal(instance$archive$data$minsplit[[1]], NA_integer_)
+})
+
+test_that("evaluate_default works with extra trafo", {
+  learner = lrn("classif.rpart")
+  search_space = ps(
+    cp = p_dbl(1e-3, 1, logscale = TRUE),
+    minbucket = p_int(1, 20),
+    minsplit = p_int(1, 20),
+    .extra_trafo = function(x, param_set) {
+      x$minsplit = 3
+      x
+    }
+  )
+
+  instance = tune(
+    method = "random_search",
+    task = tsk("pima"),
+    learner = learner,
+    resampling = rsmp("cv", folds = 3),
+    measure = msrs(c("classif.tpr", "classif.fpr")),
+    search_space = search_space,
+    term_evals = 10,
+    evaluate_default = TRUE
+  )
+
+  expect_equal(instance$archive$data$x_domain[[1]]$cp, 0.01)
+  expect_equal(instance$archive$data$cp[[1]], NA_real_)
+  expect_equal(instance$archive$data$x_domain[[1]]$minbucket, 7)
+  expect_equal(instance$archive$data$minbucket[[1]], NA_integer_)
+  expect_equal(instance$archive$data$x_domain[[1]]$minsplit, 20)
+  expect_equal(instance$archive$data$minsplit[[1]], NA_integer_)
+})
+
+test_that("evaluate_default works with old parameter set api", {
+  learner = lrn("classif.rpart")
+  search_space = ParamSet$new(list(
+    ParamDbl$new(id = "cp", lower = -10, upper = 0)
+  ))
+  search_space$trafo = function(x, param_set) {
+    x$cp = 10^(x$cp)
+    x
+  }
+
+  instance = tune(
+    method = "random_search",
+    task = tsk("pima"),
+    learner = learner,
+    resampling = rsmp("cv", folds = 3),
+    measure = msrs(c("classif.tpr", "classif.fpr")),
+    search_space = search_space,
+    term_evals = 10,
+    evaluate_default = TRUE
+  )
+
+  expect_equal(instance$archive$data$x_domain[[1]]$cp, 0.01)
+  expect_equal(instance$archive$data$cp[[1]], NA_real_)
+})

@@ -29,6 +29,7 @@
 #' @template param_check_values
 #' @template param_allow_hotstart
 #' @template param_keep_hotstart_stack
+#' @template param_evaluate_default
 #' @template param_xdt
 #' @template param_learner_param_vals
 #'
@@ -88,6 +89,10 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
   inherit = OptimInstanceSingleCrit,
   public = list(
 
+    #' @field evaluate_default (`logical(1)`)\cr
+    #' If `TRUE`, hyperparameter default values are evaluated.
+    evaluate_default = NULL,
+
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #'
@@ -96,8 +101,9 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     #' and a termination criterion.
     initialize = function(task, learner, resampling, measure = NULL, terminator, search_space = NULL,
       store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE,
-      keep_hotstart_stack = FALSE) {
+      keep_hotstart_stack = FALSE, evaluate_default = FALSE) {
       learner = assert_learner(as_learner(learner, clone = TRUE))
+      self$evaluate_default = assert_flag(evaluate_default)
 
       if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token"))) {
         stop("If the values of the ParamSet of the Learner contain TuneTokens you cannot supply a search_space.")
@@ -153,6 +159,12 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     #' Param values for the optimal learner call.
     result_learner_param_vals = function() {
       private$.result$learner_param_vals[[1]]
+    }
+  ),
+
+  private = list(
+    .evaluate_default = function() {
+      evaluate_default(self)
     }
   )
 )
