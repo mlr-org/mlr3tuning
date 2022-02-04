@@ -56,7 +56,8 @@ instance$archive
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
 \item{\code{evaluate_default}}{(\code{logical(1)})\cr
-If \code{TRUE}, hyperparameter default values are evaluated.}
+If \code{TRUE}, learner is evaluated with hyperparameters set to their
+default values at the start of the optimization.}
 }
 \if{html}{\out{</div>}}
 }

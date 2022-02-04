@@ -90,7 +90,8 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
   public = list(
 
     #' @field evaluate_default (`logical(1)`)\cr
-    #' If `TRUE`, hyperparameter default values are evaluated.
+    #'   If `TRUE`, learner is evaluated with hyperparameters set to their
+    #'   default values at the start of the optimization.
     evaluate_default = NULL,
 
     #' @description
