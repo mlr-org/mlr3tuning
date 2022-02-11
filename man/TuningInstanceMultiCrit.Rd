@@ -52,15 +52,6 @@ instance$archive
 \section{Super classes}{
 \code{\link[bbotk:OptimInstance]{bbotk::OptimInstance}} -> \code{\link[bbotk:OptimInstanceMultiCrit]{bbotk::OptimInstanceMultiCrit}} -> \code{TuningInstanceMultiCrit}
 }
-\section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{evaluate_default}}{(\code{logical(1)})\cr
-If \code{TRUE}, learner is evaluated with hyperparameters set to their
-default values at the start of the optimization.}
-}
-\if{html}{\out{</div>}}
-}
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
@@ -109,8 +100,7 @@ and a termination criterion.
   store_models = FALSE,
   check_values = FALSE,
   allow_hotstart = FALSE,
-  keep_hotstart_stack = FALSE,
-  evaluate_default = FALSE
+  keep_hotstart_stack = FALSE
 )}\if{html}{\out{</div>}}
 }
 
@@ -166,10 +156,6 @@ Allow to hotstart learners with previously fitted models. See also
 \item{\code{keep_hotstart_stack}}{(\code{logical(1)})\cr
 If \code{TRUE}, \link[mlr3:HotstartStack]{mlr3::HotstartStack} is kept in \verb{$objective$hotstart_stack}
 after tuning.}
-
-\item{\code{evaluate_default}}{(\code{logical(1)})\cr
-If \code{TRUE}, learner is evaluated with hyperparameters set to their default
-values at the start of the optimization.}
 }
 \if{html}{\out{</div>}}
 }

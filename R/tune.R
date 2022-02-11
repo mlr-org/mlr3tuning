@@ -47,8 +47,9 @@ tune = function(method, task, learner, resampling, measures = NULL, term_evals =
 
   TuningInstance = if (!is.list(measures)) TuningInstanceSingleCrit else TuningInstanceMultiCrit
   instance = TuningInstance$new(task, learner, resampling, measures, terminator, search_space,
-      store_models = store_models, allow_hotstart = allow_hotstart, keep_hotstart_stack = keep_hotstart_stack,
-      evaluate_default = evaluate_default)
+      store_models = store_models, allow_hotstart = allow_hotstart, keep_hotstart_stack = keep_hotstart_stack)
+
+  if (evaluate_default) evaluate_default_values(instance)
 
   tuner$optimize(instance)
   instance
@@ -67,4 +68,27 @@ terminator_selection = function(term_evals, term_time) {
   } else if (!is.null(term_time)) {
     trm("run_time", secs = term_time)
   }
+}
+
+evaluate_default_values = function(inst) {
+  # get hyperparameter defaults
+  # values are on the learner scale i.e. possible transformation are already applied
+  xss = default_values(inst$objective$learner, inst$search_space, inst$objective$task)
+
+  # parameters with exp transformation and log inverse transformation
+  has_logscale = map_lgl(inst$search_space$params, function(param) get_private(param)$.has_logscale)
+  # parameters with unknown inverse transformation
+  has_trafo = map_lgl(inst$search_space$params, function(param) get_private(param)$.has_trafo)
+  # parameter set with trafo
+  has_extra_trafo = get_private(inst$search_space)$.has_extra_trafo
+
+  if (any(has_trafo) || has_extra_trafo) {
+    stop("Cannot evaluate default hyperparameter values. Search space contains transformation functions with unknown inverse function.")
+  }
+
+  # inverse parameter with exp transformation
+  xdt = as.data.table(map_if(xss, has_logscale, log))
+
+  # eval default hyperparameter values
+  inst$eval_batch(xdt)
 }
