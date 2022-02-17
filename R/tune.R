@@ -44,11 +44,13 @@ tune = function(method, task, learner, resampling, measures = NULL, term_evals =
   terminator = terminator_selection(term_evals, term_time)
 
   if (!is.list(measures)) {
-    instance = TuningInstanceSingleCrit$new(task, learner, resampling, measures, terminator, search_space,
-      store_models = store_models, allow_hotstart = allow_hotstart, keep_hotstart_stack = keep_hotstart_stack)
+    instance = TuningInstanceSingleCrit$new(task = task, learner = learner, resampling = resampling,
+      measure = measures, terminator = terminator, search_space = search_space, store_models = store_models,
+      allow_hotstart = allow_hotstart, keep_hotstart_stack = keep_hotstart_stack)
   } else {
-    instance = TuningInstanceMultiCrit$new(task, learner, resampling, measures, terminator, search_space,
-      store_models = store_models, allow_hotstart = allow_hotstart, keep_hotstart_stack = keep_hotstart_stack)
+    instance = TuningInstanceMultiCrit$new(task = task, learner = learner, resampling = resampling, measures = measures,
+      terminator = terminator, search_space = search_space, store_models = store_models,
+      allow_hotstart = allow_hotstart, keep_hotstart_stack = keep_hotstart_stack)
   }
 
   tuner$optimize(instance)

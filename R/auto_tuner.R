@@ -30,11 +30,12 @@
 #'   term_evals = 4)
 #'
 #' at$train(tsk("pima"))
-auto_tuner = function(method, learner, resampling, measure, term_evals = NULL, term_time = NULL, search_space = NULL,
+auto_tuner = function(method, learner, resampling, measure = NULL, term_evals = NULL, term_time = NULL, search_space = NULL,
   store_models = FALSE, ...) {
   assert_choice(method, mlr_tuners$keys())
   tuner = tnr(method, ...)
   terminator = terminator_selection(term_evals, term_time)
 
-  AutoTuner$new(learner, resampling, measure, terminator, tuner, search_space, store_models = store_models)
+  AutoTuner$new(learner = learner, resampling = resampling, measure = measure, terminator = terminator, tuner = tuner,
+    search_space = search_space, store_models = store_models)
 }

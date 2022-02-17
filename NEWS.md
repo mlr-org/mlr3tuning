@@ -5,6 +5,7 @@
   `TuningInstanceSingleCrit` and `TuningInstanceMultiCrit`.
 * feat: `keep_hotstart_stack` flag to remove `mlr3::HotstartStack` after tuning.
 * feat: Store errors and warnings in `Archive`.
+* feat: Default measure can be used in `auto_tuner()` and `tune_nested()`.
 
 # mlr3tuning 0.11.0
 
