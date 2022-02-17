@@ -147,7 +147,7 @@ configuration on different data splits. This field, however, always returns
 the resampling passed in construction.}
 
 \item{\code{measure}}{(\link[mlr3:Measure]{mlr3::Measure})\cr
-Measure to optimize.}
+Measure to optimize. If \code{NULL}, default measure is used.}
 
 \item{\code{terminator}}{(\link{Terminator})\cr
 Stop criterion of the tuning process.}

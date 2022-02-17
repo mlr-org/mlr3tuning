@@ -10,7 +10,7 @@ tune_nested(
   learner,
   inner_resampling,
   outer_resampling,
-  measure,
+  measure = NULL,
   term_evals = NULL,
   term_time = NULL,
   search_space = NULL,
@@ -34,7 +34,7 @@ Resampling used for the inner loop.}
 Resampling used for the outer loop.}
 
 \item{measure}{(\link[mlr3:Measure]{mlr3::Measure})\cr
-Measure to optimize.}
+Measure to optimize. If \code{NULL}, default measure is used.}
 
 \item{term_evals}{(\code{integer(1)})\cr
 Number of allowed evaluations.}

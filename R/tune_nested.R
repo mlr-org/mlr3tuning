@@ -43,12 +43,13 @@
 #'
 #' # unbiased performance of the final model trained on the full data set
 #' rr$aggregate()
-tune_nested = function(method, task, learner, inner_resampling, outer_resampling, measure, term_evals = NULL,
+tune_nested = function(method, task, learner, inner_resampling, outer_resampling, measure = NULL, term_evals = NULL,
   term_time = NULL, search_space = NULL, ...) {
   assert_task(task)
   assert_resampling(inner_resampling)
   assert_resampling(outer_resampling)
 
-  at = auto_tuner(method, learner, inner_resampling, measure, term_evals, term_time, search_space, ...)
+  at = auto_tuner(method = method, learner = learner, resampling = inner_resampling, measure = measure,
+    term_evals = term_evals, term_time = term_time, search_space = search_space, ...)
   resample(task, at, outer_resampling, store_models = TRUE)
 }
