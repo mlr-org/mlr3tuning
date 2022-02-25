@@ -211,7 +211,7 @@ test_that("ArchiveTuning as.data.table function works", {
     term_evals = 100, batch_size = 2)
 
   tab = as.data.table(instance$archive)
-  expect_data_table(tab, nrows = 4, ncols = 11)
+  expect_data_table(tab, nrows = 100, ncols = 11)
   expect_named(tab, c("x1", "x2", "classif.ce", "x_domain_minsplit", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "resample_result", "errors", "warnings"), ignore.order =TRUE)
 
   # row order
