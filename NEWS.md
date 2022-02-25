@@ -1,5 +1,7 @@
 # mlr3tuning 0.12.0.9000
 
+* feat: Added a `as.data.table.DictionaryTuner` method.
+
 # mlr3tuning 0.12.0
 
 * feat: `as_search_space()` function to create search spaces from `Learner` and
