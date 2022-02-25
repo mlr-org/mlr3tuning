@@ -13,7 +13,7 @@
 #'
 #' @inheritSection bbotk::OptimizerRandomSearch Parameters
 #' @inheritSection bbotk::OptimizerRandomSearch Progress Bars
-#' 
+#'
 #' @template section_parallelization
 #' @template section_logging
 #'
@@ -34,6 +34,7 @@ TunerRandomSearch = R6Class("TunerRandomSearch",
       super$initialize(
         optimizer = OptimizerRandomSearch$new()
       )
+      private$.man = "mlr3tuning::mlr_tuners_random_search"
     }
   )
 )

@@ -49,7 +49,8 @@ TunerGridSearch = R6Class("TunerGridSearch",
       super$initialize(
         param_set = param_set,
         param_classes = c("ParamLgl", "ParamInt", "ParamDbl", "ParamFct"),
-        properties = c("dependencies", "single-crit", "multi-crit")
+        properties = c("dependencies", "single-crit", "multi-crit"),
+        man = "mlr3tuning::mlr_tuners_grid_search"
       )
     }
   ),

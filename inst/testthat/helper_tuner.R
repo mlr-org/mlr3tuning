@@ -18,6 +18,7 @@ test_tuner = function(key, ..., n_dim = 1L, term_evals = 2L, real_evals = term_e
   inst = TuningInstanceSingleCrit$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), term, search_space)
   tuner = tnr(key, ...)
   expect_tuner(tuner)
+  expect_man_exists(tuner$man)
   tuner$optimize(inst)
   archive = inst$archive
 

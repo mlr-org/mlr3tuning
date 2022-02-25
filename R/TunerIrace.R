@@ -6,16 +6,16 @@
 #' @description
 #' `TunerIrace` class that implements iterated racing. Calls [irace::irace()]
 #' from package \CRANpkg{irace}.
-#' 
+#'
 #' @templateVar id irace
 #' @template section_dictionary_tuners
-#' 
+#'
 #' @section Parameters:
 #' \describe{
 #' \item{`n_instances`}{`integer(1)`\cr
 #' Number of resampling instances.}
 #' }
-#' 
+#'
 #' For the meaning of all other parameters, see [irace::defaultScenario()]. Note
 #' that we have removed all control parameters which refer to the termination of
 #' the algorithm. Use [TerminatorEvals] instead. Other terminators do not work
@@ -36,10 +36,10 @@
 #' The tuning result (`instance$result`) is the best performing elite of
 #' the final race. The reported performance is the average performance estimated
 #' on all used instances.
-#' 
+#'
 #' @template section_progress_bars
 #' @template section_logging
-#' 
+#'
 #' @source
 #' `r format_bib("lopez_2016")`
 #'
@@ -48,10 +48,10 @@
 #' @examples
 #' # retrieve task
 #' task = tsk("pima")
-#' 
+#'
 #' # load learner and set search space
 #' learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
-#' 
+#'
 #' # hyperparameter tuning on the pima indians diabetes data set
 #' instance = tune(
 #'   method = "irace",
@@ -64,10 +64,10 @@
 #'
 #' # best performing hyperparameter configuration
 #' instance$result
-#' 
+#'
 #' # all evaluated hyperparameter configuration
 #' as.data.table(instance$archive)
-#' 
+#'
 #' # fit final model on complete data set
 #' learner$param_set$values = instance$result_learner_param_vals
 #' learner$train(task)
@@ -87,6 +87,7 @@ TunerIrace = R6Class("TunerIrace",
         logFile = tempfile(fileext = ".Rdata"))
 
       super$initialize(optimizer = optimizer)
+      private$.man = "mlr3tuning::mlr_tuners_irace"
     },
 
     #' @description
