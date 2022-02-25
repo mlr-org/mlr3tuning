@@ -24,3 +24,21 @@ mlr_tuners = R6Class("DictionaryTuner",
   inherit = Dictionary,
   cloneable = FALSE
 )$new()
+
+#' @export
+as.data.table.DictionaryTuner = function(x, ...) {
+  setkeyv(map_dtr(x$keys(), function(key) {
+    t = tryCatch(x$get(key),
+      missingDefaultError = function(e) NULL)
+    if (is.null(t)) {
+      return(list(key = key))
+    }
+
+    list(
+      key = key,
+      param_classes = list(t$param_classes),
+      properties = list(t$properties),
+      packages = list(t$packages)
+    )
+  }, .fill = TRUE), "key")[]
+}
