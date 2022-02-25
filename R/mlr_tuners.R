@@ -38,7 +38,8 @@ as.data.table.DictionaryTuner = function(x, ...) {
       key = key,
       param_classes = list(t$param_classes),
       properties = list(t$properties),
-      packages = list(t$packages)
+      packages = list(t$packages),
+      man = t$man
     )
   }, .fill = TRUE), "key")[]
 }

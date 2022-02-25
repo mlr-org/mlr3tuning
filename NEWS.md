@@ -1,6 +1,7 @@
 # mlr3tuning 0.12.1
 
 * feat: Added a `as.data.table.DictionaryTuner` method.
+* feat: `$help()` method which opens manual page of a `Tuner`.
 
 # mlr3tuning 0.12.0
 

@@ -87,6 +87,8 @@ instance$archive
 \item{\code{properties}}{(\code{character()}).}
 
 \item{\code{packages}}{(\code{character()}).}
+
+\item{\code{man}}{(\code{character()}).}
 }
 \if{html}{\out{</div>}}
 }
@@ -96,6 +98,7 @@ instance$archive
 \item \href{#method-new}{\code{Tuner$new()}}
 \item \href{#method-format}{\code{Tuner$format()}}
 \item \href{#method-print}{\code{Tuner$print()}}
+\item \href{#method-help}{\code{Tuner$help()}}
 \item \href{#method-optimize}{\code{Tuner$optimize()}}
 \item \href{#method-clone}{\code{Tuner$clone()}}
 }
@@ -106,7 +109,13 @@ instance$archive
 \subsection{Method \code{new()}}{
 Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Tuner$new(param_set, param_classes, properties, packages = character())}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Tuner$new(
+  param_set,
+  param_classes,
+  properties,
+  packages = character(),
+  man = NA_character_
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -126,6 +135,10 @@ Set of properties of the tuner. Must be a subset of
 \item{\code{packages}}{(\code{character()})\cr
 Set of required packages. Note that these packages will be loaded via
 \code{\link[=requireNamespace]{requireNamespace()}}, and are not attached.}
+
+\item{\code{man}}{(\code{character(1)})\cr
+String in the format \verb{[pkg]::[topic]} pointing to a manual page for this object.
+The referenced help package can be opened via method \verb{$help()}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -152,6 +165,16 @@ Print method.
 \subsection{Returns}{
 (\code{character()}).
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-help"></a>}}
+\if{latex}{\out{\hypertarget{method-help}{}}}
+\subsection{Method \code{help()}}{
+Opens the corresponding help page referenced by field \verb{$man}.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Tuner$help()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-optimize"></a>}}

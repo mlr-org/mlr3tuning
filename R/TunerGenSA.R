@@ -11,7 +11,7 @@
 #'
 #' @inheritSection bbotk::OptimizerGenSA Parameters
 #' @inheritSection bbotk::OptimizerGenSA Progress Bars
-#' 
+#'
 #' @template section_parallelization
 #' @template section_logging
 #'
@@ -32,6 +32,7 @@ TunerGenSA = R6Class("TunerGenSA",
       super$initialize(
         optimizer = OptimizerGenSA$new()
       )
+      private$.man = "mlr3tuning::mlr_tuners_gensa"
     }
   )
 )
