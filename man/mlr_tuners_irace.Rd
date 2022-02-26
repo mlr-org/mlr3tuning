@@ -107,7 +107,8 @@ Other Tuner:
 \code{\link{mlr_tuners_gensa}},
 \code{\link{mlr_tuners_grid_search}},
 \code{\link{mlr_tuners_nloptr}},
-\code{\link{mlr_tuners_random_search}}
+\code{\link{mlr_tuners_random_search}},
+\code{\link{mlr_tuners}}
 }
 \concept{Tuner}
 \section{Super classes}{
