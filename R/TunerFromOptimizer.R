@@ -3,6 +3,8 @@
 #' @description
 #' Internally used to transform [bbotk::Optimizer] to [Tuner].
 #'
+#' @template param_man
+#'
 #' @keywords internal
 #' @export
 TunerFromOptimizer = R6Class("TunerFromOptimizer",
@@ -14,12 +16,19 @@ TunerFromOptimizer = R6Class("TunerFromOptimizer",
       #'
       #' @param optimizer [bbotk::Optimizer]\cr
       #' Optimizer that is called.
-      initialize = function(optimizer) {
+      initialize = function(optimizer, man = NA_character_) {
         private$.optimizer = assert_optimizer(optimizer)
         packages = union("mlr3tuning", optimizer$packages)
+        assert_string(man, na.ok = TRUE)
 
-        super$initialize(param_set = optimizer$param_set, param_classes = optimizer$param_classes,
-          properties = optimizer$properties, packages = packages)
+        super$initialize(
+          param_set = optimizer$param_set,
+          param_classes = optimizer$param_classes,
+          properties = optimizer$properties,
+          packages = packages,
+          label = optimizer$label,
+          man = man
+        )
       },
 
       #' @description

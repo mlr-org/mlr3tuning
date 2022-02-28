@@ -86,8 +86,10 @@ TunerIrace = R6Class("TunerIrace",
         debugLevel = 0,
         logFile = tempfile(fileext = ".Rdata"))
 
-      super$initialize(optimizer = optimizer)
-      private$.man = "mlr3tuning::mlr_tuners_irace"
+      super$initialize(
+        optimizer = optimizer,
+        man = "mlr3tuning::mlr_tuners_irace"
+      )
     },
 
     #' @description

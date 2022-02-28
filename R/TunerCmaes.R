@@ -69,9 +69,9 @@ TunerCmaes = R6Class("TunerCmaes",
    #' Creates a new instance of this [R6][R6::R6Class] class.
    initialize = function() {
      super$initialize(
-       optimizer = OptimizerCmaes$new()
+       optimizer = OptimizerCmaes$new(),
+       man = "mlr3tuning::mlr_tuners_cmaes"
      )
-     private$.man = "mlr3tuning::mlr_tuners_cmaes"
    }
   )
 )

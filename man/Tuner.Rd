@@ -4,15 +4,10 @@
 \alias{Tuner}
 \title{Tuner}
 \description{
-Abstract \code{Tuner} class that implements the base functionality each tuner must
-provide. A tuner is an object that describes the tuning strategy, i.e. how to
-optimize the black-box function and its feasible set defined by the
-\link{TuningInstanceSingleCrit} / \link{TuningInstanceMultiCrit} object.
+Abstract \code{Tuner} class that implements the base functionality each tuner must provide.
+A tuner is an object that describes the tuning strategy, i.e. how to optimize the black-box function and its feasible set defined by the \link{TuningInstanceSingleCrit} / \link{TuningInstanceMultiCrit} object.
 
-A tuner must write its result into the \link{TuningInstanceSingleCrit} /
-\link{TuningInstanceMultiCrit} using the \code{assign_result} method of the
-\link[bbotk:OptimInstance]{bbotk::OptimInstance} at the end of its tuning in order to store the best
-selected hyperparameter configuration and its estimated performance vector.
+A tuner must write its result into the \link{TuningInstanceSingleCrit}/\link{TuningInstanceMultiCrit} using the \code{assign_result} method of the \link[bbotk:OptimInstance]{bbotk::OptimInstance} at the end of its tuning in order to store the best selected hyperparameter configuration and its estimated performance vector.
 }
 \section{Private Methods}{
 
@@ -21,8 +16,8 @@ selected hyperparameter configuration and its estimated performance vector.
 Abstract base method. Implement to specify tuning of your subclass.
 See technical details sections.
 \item \code{.assign_result(instance)} -> \code{NULL}\cr
-Abstract base method. Implement to specify how the final configuration is
-selected. See technical details sections.
+Abstract base method. Implement to specify how the final configuration is selected.
+See technical details sections.
 }
 }
 
@@ -31,44 +26,43 @@ selected. See technical details sections.
 A subclass is implemented in the following way:
 \itemize{
 \item Inherit from Tuner.
-\item Specify the private abstract method \verb{$.tune()} and use it to call into
-your optimizer.
+\item Specify the private abstract method \verb{$.tune()} and use it to call into your optimizer.
 \item You need to call \code{instance$eval_batch()} to evaluate design points.
-\item The batch evaluation is requested at the \link{TuningInstanceSingleCrit} /
-\link{TuningInstanceMultiCrit} object \code{instance}, so each batch is possibly
-executed in parallel via \code{\link[mlr3:benchmark]{mlr3::benchmark()}}, and all evaluations are stored
-inside of \code{instance$archive}.
-\item Before the batch evaluation, the \link[bbotk:Terminator]{bbotk::Terminator} is checked, and if it is
-positive, an exception of class \code{"terminated_error"} is generated. In the
-later case the current batch of evaluations is still stored in \code{instance},
-but the numeric scores are not sent back to the handling optimizer as it has
-lost execution control.
-\item After such an exception was caught we select the best configuration from
-\code{instance$archive} and return it.
-\item Note that therefore more points than specified by the \link[bbotk:Terminator]{bbotk::Terminator}
-may be evaluated, as the Terminator is only checked before a batch
-evaluation, and not in-between evaluation in a batch. How many more depends
-on the setting of the batch size.
-\item Overwrite the private super-method \code{.assign_result()} if you want to decide
-yourself how to estimate the final configuration in the instance and its
-estimated performance. The default behavior is: We pick the best
-resample-experiment, regarding the given measure, then assign its
-configuration and aggregated performance to the instance.
+\item The batch evaluation is requested at the \link{TuningInstanceSingleCrit}/\link{TuningInstanceMultiCrit} object \code{instance}, so each batch is possibly executed in parallel via \code{\link[mlr3:benchmark]{mlr3::benchmark()}}, and all evaluations are stored inside of \code{instance$archive}.
+\item Before the batch evaluation, the \link[bbotk:Terminator]{bbotk::Terminator} is checked, and if it is positive, an exception of class \code{"terminated_error"} is generated.
+In the  later case the current batch of evaluations is still stored in \code{instance}, but the numeric scores are not sent back to the handling optimizer as it has lost execution control.
+\item After such an exception was caught we select the best configuration from \code{instance$archive} and return it.
+\item Note that therefore more points than specified by the \link[bbotk:Terminator]{bbotk::Terminator} may be evaluated, as the Terminator is only checked before a batch evaluation, and not in-between evaluation in a batch.
+How many more depends on the setting of the batch size.
+\item Overwrite the private super-method \code{.assign_result()} if you want to decide yourself how to estimate the final configuration in the instance and its estimated performance.
+The default behavior is: We pick the best resample-experiment, regarding the given measure, then assign its configuration and aggregated performance to the instance.
 }
 }
 
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
-\item{\code{param_set}}{(\link[paradox:ParamSet]{paradox::ParamSet}).}
+\item{\code{param_set}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
+Set of control parameters.}
 
-\item{\code{param_classes}}{(\code{character()}).}
+\item{\code{param_classes}}{(\code{character()})\cr
+Supported parameter classes for learner hyperparameters that the tuner can optimize.
+Subclasses of \link[paradox:Param]{paradox::Param}.}
 
-\item{\code{properties}}{(\code{character()}).}
+\item{\code{properties}}{(\code{character()})\cr
+Set of properties of the tuner.
+Must be a subset of \code{\link[mlr3:mlr_reflections]{mlr_reflections$tuner_properties}}.}
 
-\item{\code{packages}}{(\code{character()}).}
+\item{\code{packages}}{(\code{character()})\cr
+Set of required packages. Note that these packages will be loaded via \code{\link[=requireNamespace]{requireNamespace()}}, and are not attached.}
 
-\item{\code{man}}{(\code{character()}).}
+\item{\code{label}}{(\code{character(1)})\cr
+Label for this object.
+Can be used in tables, plot and text output instead of the ID.}
+
+\item{\code{man}}{(\code{character(1)})\cr
+String in the format \verb{[pkg]::[topic]} pointing to a manual page for this object.
+The referenced help package can be opened via method \verb{$help()}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -94,6 +88,7 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   param_classes,
   properties,
   packages = character(),
+  label = NA_character_,
   man = NA_character_
 )}\if{html}{\out{</div>}}
 }
@@ -102,19 +97,23 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{param_set}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
-Set of control parameters for tuner.}
+Set of control parameters.}
 
 \item{\code{param_classes}}{(\code{character()})\cr
-Supported parameter classes for learner hyperparameters that the tuner
-can optimize, subclasses of \link[paradox:Param]{paradox::Param}.}
+Supported parameter classes for learner hyperparameters that the tuner can optimize.
+Subclasses of \link[paradox:Param]{paradox::Param}.}
 
 \item{\code{properties}}{(\code{character()})\cr
-Set of properties of the tuner. Must be a subset of
-\code{\link[mlr3:mlr_reflections]{mlr_reflections$tuner_properties}}.}
+Set of properties of the tuner.
+Must be a subset of \code{\link[mlr3:mlr_reflections]{mlr_reflections$tuner_properties}}.}
 
 \item{\code{packages}}{(\code{character()})\cr
-Set of required packages. Note that these packages will be loaded via
-\code{\link[=requireNamespace]{requireNamespace()}}, and are not attached.}
+Set of required packages.
+Note that these packages will be loaded via \code{\link[=requireNamespace]{requireNamespace()}}, and are not attached.}
+
+\item{\code{label}}{(\code{character(1)})\cr
+Label for this object.
+Can be used in tables, plot and text output instead of the ID.}
 
 \item{\code{man}}{(\code{character(1)})\cr
 String in the format \verb{[pkg]::[topic]} pointing to a manual page for this object.
@@ -160,10 +159,8 @@ Opens the corresponding help page referenced by field \verb{$man}.
 \if{html}{\out{<a id="method-optimize"></a>}}
 \if{latex}{\out{\hypertarget{method-optimize}{}}}
 \subsection{Method \code{optimize()}}{
-Performs the tuning on a \link{TuningInstanceSingleCrit} or
-\link{TuningInstanceMultiCrit} until termination.
-The single evaluations will be written into the \link{ArchiveTuning} that resides in the
-\link{TuningInstanceSingleCrit}/\link{TuningInstanceMultiCrit}.
+Performs the tuning on a \link{TuningInstanceSingleCrit} or \link{TuningInstanceMultiCrit} until termination.
+The single evaluations will be written into the \link{ArchiveTuning} that resides in the \link{TuningInstanceSingleCrit}/\link{TuningInstanceMultiCrit}.
 The result will be written into the instance object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Tuner$optimize(inst)}\if{html}{\out{</div>}}
