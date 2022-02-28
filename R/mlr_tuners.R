@@ -35,7 +35,7 @@ mlr_tuners = R6Class("DictionaryTuner",
 )$new()
 
 #' @export
-as.data.table.DictionaryTuner = function(x, extra_cols = character(), ...) {
+as.data.table.DictionaryTuner = function(x, ..., extra_cols = character()) {
   assert_character(extra_cols, any.missing = FALSE)
 
   setkeyv(map_dtr(x$keys(), function(key) {

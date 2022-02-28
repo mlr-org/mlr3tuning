@@ -49,7 +49,8 @@ Tuner = R6Class("Tuner",
     #'   Must be a subset of [`mlr_reflections$tuner_properties`][mlr3::mlr_reflections].
     #'
     #' @param packages (`character()`)\cr
-    #'   Set of required packages. Note that these packages will be loaded via [requireNamespace()], and are not attached.
+    #'   Set of required packages.
+    #'   Note that these packages will be loaded via [requireNamespace()], and are not attached.
     #'
     #' @param label (`character(1)`)\cr
     #'   Label for this object.

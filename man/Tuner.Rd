@@ -108,7 +108,8 @@ Set of properties of the tuner.
 Must be a subset of \code{\link[mlr3:mlr_reflections]{mlr_reflections$tuner_properties}}.}
 
 \item{\code{packages}}{(\code{character()})\cr
-Set of required packages. Note that these packages will be loaded via \code{\link[=requireNamespace]{requireNamespace()}}, and are not attached.}
+Set of required packages.
+Note that these packages will be loaded via \code{\link[=requireNamespace]{requireNamespace()}}, and are not attached.}
 
 \item{\code{label}}{(\code{character(1)})\cr
 Label for this object.
