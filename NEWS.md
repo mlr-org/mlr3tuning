@@ -1,5 +1,7 @@
 # mlr3tuning 0.12.1.9000
 
+* feat: Added `$label` to `Tuner`s.
+
 # mlr3tuning 0.12.1
 
 * feat: Added a `as.data.table.DictionaryTuner` method.
