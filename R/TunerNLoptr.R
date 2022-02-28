@@ -65,9 +65,9 @@ TunerNLoptr = R6Class("TunerNLoptr",
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function() {
       super$initialize(
-        optimizer = OptimizerNLoptr$new()
+        optimizer = OptimizerNLoptr$new(),
+        man = "mlr3tuning::mlr_tuners_nloptr"
       )
-      private$.man = "mlr3tuning::mlr_tuners_nloptr"
     }
   )
 )
