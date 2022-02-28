@@ -18,8 +18,13 @@ TunerFromOptimizer = R6Class("TunerFromOptimizer",
         private$.optimizer = assert_optimizer(optimizer)
         packages = union("mlr3tuning", optimizer$packages)
 
-        super$initialize(param_set = optimizer$param_set, param_classes = optimizer$param_classes,
-          properties = optimizer$properties, packages = packages)
+        super$initialize(
+          param_set = optimizer$param_set,
+          param_classes = optimizer$param_classes,
+          properties = optimizer$properties,
+          packages = packages,
+          label = optimizer$label
+        )
       },
 
       #' @description
