@@ -15,9 +15,10 @@
 #' See [mlr3misc::Dictionary].
 #'
 #' @section S3 methods:
-#' * `as.data.table(dict)`\cr
+#' * `as.data.table(dict, ..., objects = FALSE)`\cr
 #'   [mlr3misc::Dictionary] -> [data.table::data.table()]\cr
-#'   Returns a [data.table::data.table()] with fields "key", "param_classes", "properties" and "packages" as columns.
+#'   Returns a [data.table::data.table()] with fields "key", "label", "param_classes", "properties" and "packages" as columns.
+#'   If `objects` is set to `TRUE`, the constructed objects are returned in the list column named `object`.
 #'
 #' @family Dictionary
 #' @family Tuner
@@ -35,19 +36,15 @@ mlr_tuners = R6Class("DictionaryTuner",
 )$new()
 
 #' @export
-as.data.table.DictionaryTuner = function(x, ..., extra_cols = character()) {
-  assert_character(extra_cols, any.missing = FALSE)
+as.data.table.DictionaryTuner = function(x, ..., objects = FALSE) {
+  assert_flag(objects)
 
   setkeyv(map_dtr(x$keys(), function(key) {
-    t = tryCatch(x$get(key),
-      missingDefaultError = function(e) NULL)
-    if (is.null(t)) {
-      return(list(key = key))
-    }
-
-    c(
-      list(key = key, param_classes = list(t$param_classes), properties = list(t$properties), packages = list(t$packages)),
-      mget(extra_cols, envir = t)
+    t = withCallingHandlers(x$get(key),
+      packageNotFoundWarning = function(w) invokeRestart("muffleWarning"))
+    insert_named(
+      list(key = key, label = t$label, param_classes = list(t$param_classes), properties = list(t$properties), packages = list(t$packages)),
+      if (objects) list(object = list(t))
     )
   }, .fill = TRUE), "key")[]
 }
