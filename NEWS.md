@@ -1,5 +1,6 @@
 # mlr3tuning 0.12.1.9000
 
+* docs: Link `Tuner` to help page of `bbotk::Optimizer`.
 * feat: `Tuner` objects have the optional field `$label` now.
 * feat: `as.data.table()` functions for objects of class `Dictionary` have been extended with additional columns.
 
@@ -18,10 +19,8 @@
 
 # mlr3tuning 0.11.0
 
-* fix: `$assign_result()` method in `TuningInstanceSingleCrit` when search space
-  is empty.
-* feat: Default measure is used when no measure is supplied to
-  `TuningInstanceSingleCrit`.
+* fix: `$assign_result()` method in `TuningInstanceSingleCrit` when search space is empty.
+* feat: Default measure is used when no measure is supplied to `TuningInstanceSingleCrit`.
 
 # mlr3tuning 0.10.0
 

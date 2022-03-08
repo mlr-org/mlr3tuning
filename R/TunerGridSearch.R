@@ -28,6 +28,8 @@
 #' @template section_progress_bars
 #' @template section_parallelization
 #' @template section_logging
+#' @templateVar optimizer bbotk::OptimizerGridSearch
+#' @template section_optimizer
 #'
 #' @family Tuner
 #' @seealso Package \CRANpkg{mlr3hyperband} for hyperband tuning.

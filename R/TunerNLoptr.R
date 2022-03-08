@@ -22,6 +22,8 @@
 #' @inheritSection bbotk::OptimizerNLoptr Progress Bars
 #'
 #' @template section_logging
+#' @templateVar optimizer bbotk::OptimizerNLoptr
+#' @template section_optimizer
 #'
 #' @family Tuner
 #' @seealso Package \CRANpkg{mlr3hyperband} for hyperband tuning.

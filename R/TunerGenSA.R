@@ -14,6 +14,8 @@
 #'
 #' @template section_parallelization
 #' @template section_logging
+#' @templateVar optimizer bbotk::OptimizerGenSA
+#' @template section_optimizer
 #'
 #' @source
 #' `r format_bib("tsallis_1996", "xiang_2013")`
