@@ -2,8 +2,8 @@ test_that("TunerCmaes", {
 
 expect_tuner(tnr("cmaes"))
 
-  learner = lrn("classif.rpart", 
-    cp = to_tune(1e-04, 1e-1, logscale = TRUE), 
+  learner = lrn("classif.rpart",
+    cp = to_tune(1e-04, 1e-1, logscale = TRUE),
     minsplit = to_tune(p_dbl(2, 128, trafo = as.integer)),
     minbucket = to_tune(p_dbl(1, 64, trafo = as.integer))
   )
@@ -13,7 +13,7 @@ expect_tuner(tnr("cmaes"))
     task = tsk("pima"),
     learner = learner,
     resampling = rsmp("holdout"),
-    measure = msr("classif.ce"),
+    measures = msr("classif.ce"),
     term_evals = 10
   )
 

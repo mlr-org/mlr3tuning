@@ -25,3 +25,4 @@ extract_benchmark_result_learners = function(bmr) {
 catn = function(..., file = "") {
   cat(paste0(..., collapse = "\n"), "\n", sep = "", file = file)
 }
+

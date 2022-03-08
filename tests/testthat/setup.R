@@ -1,14 +1,11 @@
-library("mlr3")
-library("checkmate")
-# The upstream package causes partial match warnings
-# old_opts = options(
-#   warnPartialMatchArgs = TRUE,
-#   warnPartialMatchAttr = TRUE,
-#   warnPartialMatchDollar = TRUE
-# )
+old_opts = options(
+  warnPartialMatchArgs = TRUE,
+  warnPartialMatchAttr = TRUE,
+  warnPartialMatchDollar = TRUE
+)
 
 # https://github.com/HenrikBengtsson/Wishlist-for-R/issues/88
-# old_opts = lapply(old_opts, function(x) if (is.null(x)) FALSE else x)
+old_opts = lapply(old_opts, function(x) if (is.null(x)) FALSE else x)
 
 lg_mlr3 = lgr::get_logger("mlr3")
 old_threshold_mlr3 = lg_mlr3$threshold
