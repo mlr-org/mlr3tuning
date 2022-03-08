@@ -124,7 +124,7 @@ test_that("TuningInstanceMultiCrit and empty search space works", {
     task = tsk("pima"),
     learner = lrn("classif.rpart"),
     resampling = rsmp("cv", folds = 3),
-    measure = msrs(c("classif.ce", "classif.acc")),
+    measures = msrs(c("classif.ce", "classif.acc")),
     term_evals = 10,
     batch_size = 5
   )
@@ -139,7 +139,7 @@ test_that("TuningInstanceMultiCrit and empty search space works", {
     task = tsk("pima"),
     learner = lrn("classif.rpart", xval = 0, cp = 0.1),
     resampling = rsmp("cv", folds = 3),
-    measure = msrs(c("classif.ce", "classif.acc")),
+    measures = msrs(c("classif.ce", "classif.acc")),
     term_evals = 10,
     batch_size = 5
   )
@@ -157,7 +157,7 @@ test_that("TuningInstanceMultiCrit and empty search space works", {
     task = tsk("pima"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
-    measure = msrs(c("classif.ce", "classif.acc")),
+    measures = msrs(c("classif.ce", "classif.acc")),
     term_evals = 10,
     batch_size = 5
   )
@@ -181,7 +181,7 @@ test_that("assign_result works", {
 
   instance$assign_result(xdt, ydt)
   res = instance$result
-  expect_data_table(res, nrow = 2)
+  expect_data_table(res, nrows = 2)
   expect_equal(res$cp, c(0.1, 0.01))
   expect_equal(res$classif.fpr, c(0.8, 0.7))
   expect_equal(res$classif.tpr, c(0.3, 0.2))
