@@ -23,6 +23,8 @@
 #'
 #' @template section_progress_bars
 #' @template section_logging
+#' @templateVar optimizer bbotk::OptimizerCmaes
+#' @template section_optimizer
 #'
 #' @source
 #' `r format_bib("hansen_2016")`

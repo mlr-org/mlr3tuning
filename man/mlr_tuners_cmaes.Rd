@@ -51,6 +51,12 @@ All \link{Tuner}s use a logger (as implemented in \CRANpkg{lgr}) from package
 Use \code{lgr::get_logger("bbotk")} to access and control the logger.
 }
 
+\section{Optimizer}{
+
+This \link{Tuner} is based on \link[bbotk:mlr_optimizers_cmaes]{bbotk::OptimizerCmaes} which can be applied on any black box optimization problem.
+See also the documentation of \href{https://bbotk.mlr-org.com/}{bbotk}.
+}
+
 \examples{
 library(data.table)
 

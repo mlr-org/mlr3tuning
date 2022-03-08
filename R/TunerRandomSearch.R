@@ -16,6 +16,8 @@
 #'
 #' @template section_parallelization
 #' @template section_logging
+#' @templateVar optimizer bbotk::OptimizerRandomSearch
+#' @template section_optimizer
 #'
 #' @source
 #' `r format_bib("bergstra_2012")`

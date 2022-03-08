@@ -39,6 +39,8 @@
 #'
 #' @template section_progress_bars
 #' @template section_logging
+#' @templateVar optimizer bbotk::OptimizerIrace
+#' @template section_optimizer
 #'
 #' @source
 #' `r format_bib("lopez_2016")`
