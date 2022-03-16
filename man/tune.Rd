@@ -20,8 +20,8 @@ tune(
 )
 }
 \arguments{
-\item{method}{(\code{character(1)})\cr
-Key to retrieve tuner from \link{mlr_tuners} dictionary.}
+\item{method}{(\code{character(1)} | \link{Tuner})\cr
+Key to retrieve tuner from \link{mlr_tuners} dictionary or \link{Tuner} object.}
 
 \item{task}{(\link[mlr3:Task]{mlr3::Task})\cr
 Task to operate on.}

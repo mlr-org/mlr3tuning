@@ -30,8 +30,7 @@
 #'   term_evals = 4)
 #'
 #' at$train(tsk("pima"))
-auto_tuner = function(method, learner, resampling, measure = NULL, term_evals = NULL, term_time = NULL, search_space = NULL,
-  store_models = FALSE, ...) {
+auto_tuner = function(method, learner, resampling, measure = NULL, term_evals = NULL, term_time = NULL, search_space = NULL, store_models = FALSE, ...) {
   tuner = if (is.character(method)) {
     assert_choice(method, mlr_tuners$keys())
     tnr(method, ...)

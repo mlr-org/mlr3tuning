@@ -17,8 +17,8 @@ auto_tuner(
 )
 }
 \arguments{
-\item{method}{(\code{character(1)})\cr
-Key to retrieve tuner from \link{mlr_tuners} dictionary.}
+\item{method}{(\code{character(1)} | \link{Tuner})\cr
+Key to retrieve tuner from \link{mlr_tuners} dictionary or \link{Tuner} object.}
 
 \item{learner}{(\link[mlr3:Learner]{mlr3::Learner})\cr
 Learner to tune.}
