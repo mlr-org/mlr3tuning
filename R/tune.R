@@ -3,8 +3,8 @@
 #' @description
 #' Function to tune a [mlr3::Learner].
 #'
-#' @param method (`character(1)`)\cr
-#'  Key to retrieve tuner from [mlr_tuners] dictionary.
+#' @param method (`character(1)` | [Tuner])\cr
+#'  Key to retrieve tuner from [mlr_tuners] dictionary or [Tuner] object.
 #' @param term_evals (`integer(1)`)\cr
 #'  Number of allowed evaluations.
 #' @param term_time (`integer(1)`)\cr
@@ -39,8 +39,13 @@
 #' learner$param_set$values = instance$result_learner_param_vals
 tune = function(method, task, learner, resampling, measures = NULL, term_evals = NULL, term_time = NULL,
   search_space = NULL, store_models = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, ...) {
-  assert_choice(method, mlr_tuners$keys())
-  tuner = tnr(method, ...)
+
+  tuner = if (is.character(method)) {
+    assert_choice(method, mlr_tuners$keys())
+    tnr(method, ...)
+  } else {
+    assert_tuner(method)
+  }
   terminator = terminator_selection(term_evals, term_time)
 
   if (!is.list(measures)) {
