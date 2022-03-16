@@ -1,15 +1,15 @@
-test_that("tune function works", {
+test_that("tune function works with one measure", {
   learner = lrn("classif.rpart", minsplit =  to_tune(1, 10))
-
-  # single-crit
   instance = tune(method = "random_search", task = tsk("pima"), learner = learner, resampling = rsmp ("holdout"),
     measures = msr("classif.ce"), term_evals = 2, batch_size = 1)
 
   expect_class(instance, "TuningInstanceSingleCrit")
   expect_data_table(instance$archive$data, nrows = 2)
   expect_class(instance$terminator, "TerminatorEvals")
+})
 
-  # multi-crit
+test_that("tune function works with multiple measures", {
+  learner = lrn("classif.rpart", minsplit =  to_tune(1, 10))
   instance = tune(method = "random_search", task = tsk("pima"), learner = learner, resampling = rsmp ("holdout"),
     measures = msrs(c("classif.ce", "classif.acc")), term_evals = 2, batch_size = 1)
 
@@ -19,9 +19,19 @@ test_that("tune function works", {
 })
 
 test_that("tune function works without measure", {
-  # single-crit
+  learner = lrn("classif.rpart", minsplit =  to_tune(1, 10))
   instance = tune(method = "random_search", task = tsk("pima"),
-    learner = lrn("classif.rpart", minsplit =  to_tune(1, 10)), resampling = rsmp ("holdout"), term_evals = 2)
+    learner = learner, resampling = rsmp ("holdout"), term_evals = 2)
 
   expect_measure(instance$objective$measures[[1]])
+})
+
+test_that("tune function accepts string input for method", {
+  learner = lrn("classif.rpart", minsplit =  to_tune(1, 10))
+  instance = tune(method = "random_search", task = tsk("pima"), learner = learner, resampling = rsmp ("holdout"),
+    measures = msr("classif.ce"), term_evals = 2, batch_size = 1)
+
+  expect_class(instance, "TuningInstanceSingleCrit")
+  expect_data_table(instance$archive$data, nrows = 2)
+  expect_class(instance$terminator, "TerminatorEvals")
 })
