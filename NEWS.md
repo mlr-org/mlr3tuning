@@ -1,4 +1,4 @@
-# mlr3tuning 0.12.1.9000
+# mlr3tuning 0.13.0
 
 * feat: Allow to pass `Tuner` objects as `method` in `tune()` and `auto_tuner()`.
 * docs: Link `Tuner` to help page of `bbotk::Optimizer`.
