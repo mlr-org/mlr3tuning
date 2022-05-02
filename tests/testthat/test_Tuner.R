@@ -28,6 +28,7 @@ test_that("we get a result when some subordinate params are not fulfilled", {
     public = list(
       initialize = function() {
         super$initialize(
+          id = "manual",
           param_set = ParamSet$new(),
           param_classes = c("ParamFct", "ParamDbl"),
           properties = c("dependencies", "single-crit")
@@ -57,6 +58,7 @@ test_that("print method workds", {
   packages = "GenSA"
 
   tuner = Tuner$new(
+    id = "tuner",
     param_set = param_set,
     param_classes = param_classes,
     properties = "single-crit",
@@ -75,6 +77,7 @@ test_that("optimize does not work in abstract class", {
   packages = character(0)
 
   tuner = Tuner$new(
+    id = "tuner",
     param_set = param_set,
     param_classes = param_classes,
     properties = "single-crit",
@@ -149,6 +152,7 @@ test_that("Tuner active bindings work", {
   packages = "GenSA"
 
   tuner = Tuner$new(
+    id = "tuner",
     param_set = param_set,
     param_classes = param_classes,
     properties = "single-crit",
