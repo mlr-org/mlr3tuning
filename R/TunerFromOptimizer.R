@@ -22,7 +22,7 @@ TunerFromOptimizer = R6Class("TunerFromOptimizer",
         assert_string(man, na.ok = TRUE)
 
         super$initialize(
-          id = optimizer$id,
+          id = if ("id" %in% names(optimizer)) optimizer$id else "tuner",
           param_set = optimizer$param_set,
           param_classes = optimizer$param_classes,
           properties = optimizer$properties,
