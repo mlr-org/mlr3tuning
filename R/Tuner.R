@@ -35,9 +35,16 @@
 #' @export
 Tuner = R6Class("Tuner",
   public = list(
+    #' @field id (`character(1)`)\cr
+    #'   Identifier of the object.
+    #'   Used in tables, plot and text output.
+    id = NULL,
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
+    #'
+    #' @param id (`character(1)`)\cr
+    #'   Identifier for the new instance.
     #'
     #' @param param_set ([paradox::ParamSet])\cr
     #'   Set of control parameters.
@@ -57,7 +64,8 @@ Tuner = R6Class("Tuner",
     #' @param label (`character(1)`)\cr
     #'   Label for this object.
     #'   Can be used in tables, plot and text output instead of the ID.
-    initialize = function(param_set, param_classes, properties, packages = character(), label = NA_character_, man = NA_character_) {
+    initialize = function(id, param_set, param_classes, properties, packages = character(), label = NA_character_, man = NA_character_) {
+      self$id = assert_string(id, min.chars = 1L)
       private$.param_set = assert_param_set(param_set)
       private$.param_classes = assert_subset(param_classes, c("ParamLgl", "ParamInt", "ParamDbl", "ParamFct", "ParamUty"))
       # has to have at least multi-crit or single-crit property
