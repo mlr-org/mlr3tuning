@@ -1,6 +1,6 @@
 # mlr3tuning 0.13.0.9000
 
-* feat: `Optimizer` and `Terminator` objects have the field `$id` now.
+* feat: `Tuner` objects have the field `$id` now.
 
 # mlr3tuning 0.13.0
 
