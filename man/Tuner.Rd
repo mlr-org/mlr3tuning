@@ -93,7 +93,7 @@ The referenced help package can be opened via method \verb{$help()}.}
 Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Tuner$new(
-  id,
+  id = "tuner",
   param_set,
   param_classes,
   properties,
