@@ -12,7 +12,7 @@
 # mlr3tuning 0.12.1
 
 * feat: Add a `as.data.table.DictionaryTuner` function.
-* feat: New `$help()` method which opens the manual page of an `Tuner`.
+* feat: New `$help()` method which opens the manual page of a `Tuner`.
 
 # mlr3tuning 0.12.0
 
