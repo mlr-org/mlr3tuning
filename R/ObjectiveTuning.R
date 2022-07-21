@@ -58,7 +58,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     #'   [TuningInstanceMultiCrit]. If `NULL` (default), benchmark result and
     #'   models cannot be stored.
     initialize = function(task, learner, resampling, measures, store_benchmark_result = TRUE, store_models = FALSE,
-      check_values = TRUE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, archive = NULL) {
+      check_values = TRUE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, archive = NULL, callbacks = NULL) {
       self$task = assert_task(as_task(task, clone = TRUE))
       self$learner = assert_learner(as_learner(learner, clone = TRUE))
       self$measures = assert_measures(as_measures(measures, clone = TRUE), task = self$task, learner = self$learner)
@@ -70,6 +70,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       self$store_models = assert_flag(store_models)
       self$archive = assert_r6(archive, "ArchiveTuning", null.ok = TRUE)
       if (is.null(self$archive)) self$allow_hotstart = self$store_benchmark_result = self$store_models = FALSE
+      self$callbacks = callbacks
 
       super$initialize(id = sprintf("%s_on_%s", self$learner$id, self$task$id), properties = "noisy",
         domain = self$learner$param_set, codomain = measures_to_codomain(self$measures),
@@ -85,6 +86,8 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
 
   private = list(
     .eval_many = function(xss, resampling) {
+      context = ContextEval$new(self)
+
       # create learners from set of hyperparameter configurations
       learners = map(xss, function(x) {
         learner = self$learner$clone(deep = TRUE)
@@ -94,33 +97,40 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       })
 
       # benchmark hyperparameter configurations
-      design = data.table(task = list(self$task), learner = learners, resampling = resampling)
+      private$.design = data.table(task = list(self$task), learner = learners, resampling = resampling)
+      call_back("on_eval_after_design", self$callbacks, context)
+
       # learner is already cloned, task and resampling are not changed
-      bmr = benchmark(design, store_models = self$store_models || self$allow_hotstart,
-        allow_hotstart = self$allow_hotstart, clone = character())
+      private$.benchmark_result = benchmark(private$.$design, store_models = self$store_models || self$allow_hotstart, allow_hotstart = self$allow_hotstart, clone = character())
+      call_back("on_eval_after_benchmark", self$callbacks, context)
 
       # aggregate performance scores
-      ydt = bmr$aggregate(self$measures, conditions = TRUE)[, c(self$codomain$target_ids, "warnings", "errors") , with = FALSE]
+      private$.aggregated_performance = private$.benchmark_result$aggregate(self$measures, conditions = TRUE)[, c(self$codomain$target_ids, "warnings", "errors"), with = FALSE]
 
       # add runtime to evaluations
-      time = map_dbl(bmr$resample_results$resample_result, function(rr) {
+      time = map_dbl(private$.benchmark_result$resample_results$resample_result, function(rr) {
         sum(map_dbl(get_private(rr)$.data$learner_states(get_private(rr)$.view), function(state) state$train_time + state$predict_time))
       })
-      set(ydt, j = "runtime_learners", value = time)
+      set(private$.aggregated_performance, j = "runtime_learners", value = time)
 
       # add to hotstart stack
       if (self$allow_hotstart) {
-        self$hotstart_stack$add(extract_benchmark_result_learners(bmr))
-        if (!self$store_models) bmr$discard(models = TRUE)
+        self$hotstart_stack$add(extract_benchmark_result_learners(private$.benchmark_result))
+        if (!self$store_models) private$.benchmark_result$discard(models = TRUE)
       }
 
       # store benchmark result in archive
       if (self$store_benchmark_result) {
-        self$archive$benchmark_result$combine(bmr)
-        set(ydt, j = "uhash", value = bmr$uhashes)
+        self$archive$benchmark_result$combine(private$.benchmark_result)
+        set(private$.aggregated_performance, j = "uhash", value = private$.benchmark_result$uhashes)
       }
 
-      ydt
-    }
+      call_back("on_eval_before_archive", self$callbacks, context)
+      private$.aggregated_performance
+    },
+
+    .design = NULL,
+    .benchmark_result = NULL,
+    .aggregated_performance = NULL
   )
 )
