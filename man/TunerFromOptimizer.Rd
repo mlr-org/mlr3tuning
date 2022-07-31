@@ -13,23 +13,23 @@ Internally used to transform \link[bbotk:Optimizer]{bbotk::Optimizer} to \link{T
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{TunerFromOptimizer$new()}}
-\item \href{#method-optimize}{\code{TunerFromOptimizer$optimize()}}
-\item \href{#method-clone}{\code{TunerFromOptimizer$clone()}}
+\item \href{#method-TunerFromOptimizer-new}{\code{TunerFromOptimizer$new()}}
+\item \href{#method-TunerFromOptimizer-optimize}{\code{TunerFromOptimizer$optimize()}}
+\item \href{#method-TunerFromOptimizer-clone}{\code{TunerFromOptimizer$clone()}}
 }
 }
-\if{html}{
-\out{<details open ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="format">}\href{../../mlr3tuning/html/Tuner.html#method-format}{\code{mlr3tuning::Tuner$format()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="help">}\href{../../mlr3tuning/html/Tuner.html#method-help}{\code{mlr3tuning::Tuner$help()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="print">}\href{../../mlr3tuning/html/Tuner.html#method-print}{\code{mlr3tuning::Tuner$print()}}\out{</span>}
-}
-\out{</details>}
-}
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="format"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-format'><code>mlr3tuning::Tuner$format()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="help"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-help'><code>mlr3tuning::Tuner$help()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="print"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-print'><code>mlr3tuning::Tuner$print()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-TunerFromOptimizer-new"></a>}}
+\if{latex}{\out{\hypertarget{method-TunerFromOptimizer-new}{}}}
 \subsection{Method \code{new()}}{
 Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
@@ -50,8 +50,8 @@ The referenced help package can be opened via method \verb{$help()}.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-optimize"></a>}}
-\if{latex}{\out{\hypertarget{method-optimize}{}}}
+\if{html}{\out{<a id="method-TunerFromOptimizer-optimize"></a>}}
+\if{latex}{\out{\hypertarget{method-TunerFromOptimizer-optimize}{}}}
 \subsection{Method \code{optimize()}}{
 Performs the tuning on a \link{TuningInstanceSingleCrit} /
 \link{TuningInstanceMultiCrit} until termination. The single evaluations and
@@ -74,8 +74,8 @@ The final result is returned.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-TunerFromOptimizer-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-TunerFromOptimizer-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

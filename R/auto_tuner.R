@@ -19,6 +19,7 @@
 #' @template param_measure
 #' @template param_search_space
 #' @template param_store_models
+#' @template param_callbacks
 #'
 #' @export
 #' @examples
@@ -30,7 +31,7 @@
 #'   term_evals = 4)
 #'
 #' at$train(tsk("pima"))
-auto_tuner = function(method, learner, resampling, measure = NULL, term_evals = NULL, term_time = NULL, search_space = NULL, store_models = FALSE, ...) {
+auto_tuner = function(method, learner, resampling, measure = NULL, term_evals = NULL, term_time = NULL, search_space = NULL, store_models = FALSE, callbacks = list(), ...) {
   tuner = if (is.character(method)) {
     assert_choice(method, mlr_tuners$keys())
     tnr(method, ...)
@@ -40,5 +41,5 @@ auto_tuner = function(method, learner, resampling, measure = NULL, term_evals = 
   terminator = terminator_selection(term_evals, term_time)
 
   AutoTuner$new(learner = learner, resampling = resampling, measure = measure, terminator = terminator, tuner = tuner,
-    search_space = search_space, store_models = store_models)
+    search_space = search_space, store_models = store_models, callbacks = callbacks)
 }

@@ -29,6 +29,7 @@
 #' @template param_store_models
 #' @template param_check_values
 #' @template param_store_benchmark_result
+#' @template param_callbacks
 #'
 #' @export
 #' @examples
@@ -123,7 +124,7 @@ AutoTuner = R6Class("AutoTuner",
     #' @param tuner ([Tuner])\cr
     #' Tuning algorithm to run.
     initialize = function(learner, resampling, measure = NULL, terminator, tuner, search_space = NULL,
-      store_tuning_instance = TRUE, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE) {
+      store_tuning_instance = TRUE, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, callbacks = list()) {
       learner = assert_learner(as_learner(learner, clone = TRUE))
 
       if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token")) > 0) {
@@ -140,6 +141,7 @@ AutoTuner = R6Class("AutoTuner",
       private$.store_tuning_instance = assert_flag(store_tuning_instance)
       ia$store_benchmark_result = assert_flag(store_benchmark_result)
       ia$store_models = assert_flag(store_models)
+      ia$callbacks = callbacks
 
       if (!private$.store_tuning_instance && ia$store_benchmark_result) {
         stop("Benchmark results can only be stored if store_tuning_instance is set to TRUE")

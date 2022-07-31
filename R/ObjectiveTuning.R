@@ -14,6 +14,7 @@
 #' @template param_store_benchmark_result
 #' @template param_allow_hotstart
 #' @template param_keep_hotstart_stack
+#' @template param_callbacks
 #'
 #' @export
 ObjectiveTuning = R6Class("ObjectiveTuning",
@@ -50,6 +51,10 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     #' @field keep_hotstart_stack (`logical(1)`).
     keep_hotstart_stack = NULL,
 
+    #' @field callbacks (List of [Callback]s)\cr
+    #' Callbacks.
+    callbacks = NULL,
+
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #'
@@ -58,7 +63,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     #'   [TuningInstanceMultiCrit]. If `NULL` (default), benchmark result and
     #'   models cannot be stored.
     initialize = function(task, learner, resampling, measures, store_benchmark_result = TRUE, store_models = FALSE,
-      check_values = TRUE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, archive = NULL, callbacks = NULL) {
+      check_values = TRUE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, archive = NULL, callbacks = list()) {
       self$task = assert_task(as_task(task, clone = TRUE))
       self$learner = assert_learner(as_learner(learner, clone = TRUE))
       self$measures = assert_measures(as_measures(measures, clone = TRUE), task = self$task, learner = self$learner)
@@ -70,7 +75,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       self$store_models = assert_flag(store_models)
       self$archive = assert_r6(archive, "ArchiveTuning", null.ok = TRUE)
       if (is.null(self$archive)) self$allow_hotstart = self$store_benchmark_result = self$store_models = FALSE
-      self$callbacks = callbacks
+      self$callbacks = assert_callbacks(callbacks)
 
       super$initialize(id = sprintf("%s_on_%s", self$learner$id, self$task$id), properties = "noisy",
         domain = self$learner$param_set, codomain = measures_to_codomain(self$measures),
@@ -101,7 +106,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       call_back("on_eval_after_design", self$callbacks, context)
 
       # learner is already cloned, task and resampling are not changed
-      private$.benchmark_result = benchmark(private$.$design, store_models = self$store_models || self$allow_hotstart, allow_hotstart = self$allow_hotstart, clone = character())
+      private$.benchmark_result = benchmark(private$.design, store_models = self$store_models || self$allow_hotstart, allow_hotstart = self$allow_hotstart, clone = character())
       call_back("on_eval_after_benchmark", self$callbacks, context)
 
       # aggregate performance scores

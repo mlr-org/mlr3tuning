@@ -33,30 +33,33 @@ by the \link{TuningInstanceSingleCrit} / \link{TuningInstanceMultiCrit}.
 \item{\code{allow_hotstart}}{(\code{logical(1)}).}
 
 \item{\code{keep_hotstart_stack}}{(\code{logical(1)}).}
+
+\item{\code{callbacks}}{(List of \link{Callback}s)\cr
+Callbacks.}
 }
 \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{ObjectiveTuning$new()}}
-\item \href{#method-clone}{\code{ObjectiveTuning$clone()}}
+\item \href{#method-ObjectiveTuning-new}{\code{ObjectiveTuning$new()}}
+\item \href{#method-ObjectiveTuning-clone}{\code{ObjectiveTuning$clone()}}
 }
 }
-\if{html}{
-\out{<details open ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="eval">}\href{../../bbotk/html/Objective.html#method-eval}{\code{bbotk::Objective$eval()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="eval_dt">}\href{../../bbotk/html/Objective.html#method-eval_dt}{\code{bbotk::Objective$eval_dt()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="eval_many">}\href{../../bbotk/html/Objective.html#method-eval_many}{\code{bbotk::Objective$eval_many()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="format">}\href{../../bbotk/html/Objective.html#method-format}{\code{bbotk::Objective$format()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="print">}\href{../../bbotk/html/Objective.html#method-print}{\code{bbotk::Objective$print()}}\out{</span>}
-}
-\out{</details>}
-}
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="eval"><a href='../../bbotk/html/Objective.html#method-Objective-eval'><code>bbotk::Objective$eval()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="eval_dt"><a href='../../bbotk/html/Objective.html#method-Objective-eval_dt'><code>bbotk::Objective$eval_dt()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="eval_many"><a href='../../bbotk/html/Objective.html#method-Objective-eval_many'><code>bbotk::Objective$eval_many()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="format"><a href='../../bbotk/html/Objective.html#method-Objective-format'><code>bbotk::Objective$format()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="print"><a href='../../bbotk/html/Objective.html#method-Objective-print'><code>bbotk::Objective$print()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-ObjectiveTuning-new"></a>}}
+\if{latex}{\out{\hypertarget{method-ObjectiveTuning-new}{}}}
 \subsection{Method \code{new()}}{
 Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
@@ -70,7 +73,8 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   check_values = TRUE,
   allow_hotstart = FALSE,
   keep_hotstart_stack = FALSE,
-  archive = NULL
+  archive = NULL,
+  callbacks = list()
 )}\if{html}{\out{</div>}}
 }
 
@@ -123,13 +127,16 @@ after tuning.}
 Reference to archive of \link{TuningInstanceSingleCrit} |
 \link{TuningInstanceMultiCrit}. If \code{NULL} (default), benchmark result and
 models cannot be stored.}
+
+\item{\code{callbacks}}{(list of \link[mlr3misc:Callback]{mlr3misc::Callback})\cr
+List of callbacks.}
 }
 \if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-ObjectiveTuning-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-ObjectiveTuning-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

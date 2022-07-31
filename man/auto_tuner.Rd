@@ -13,6 +13,7 @@ auto_tuner(
   term_time = NULL,
   search_space = NULL,
   store_models = FALSE,
+  callbacks = list(),
   ...
 )
 }
@@ -51,6 +52,9 @@ If \code{TRUE}, fitted models are stored in the benchmark result
 (\code{archive$benchmark_result}). If \code{store_benchmark_result = FALSE}, models
 are only stored temporarily and not accessible after the tuning. This
 combination is needed for measures that require a model.}
+
+\item{callbacks}{(list of \link[mlr3misc:Callback]{mlr3misc::Callback})\cr
+List of callbacks.}
 
 \item{...}{(named \code{list()})\cr
 Named arguments to be set as parameters of the tuner.}

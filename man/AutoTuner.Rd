@@ -122,27 +122,27 @@ Hash (unique identifier) for this object.}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{AutoTuner$new()}}
-\item \href{#method-base_learner}{\code{AutoTuner$base_learner()}}
-\item \href{#method-print}{\code{AutoTuner$print()}}
-\item \href{#method-clone}{\code{AutoTuner$clone()}}
+\item \href{#method-AutoTuner-new}{\code{AutoTuner$new()}}
+\item \href{#method-AutoTuner-base_learner}{\code{AutoTuner$base_learner()}}
+\item \href{#method-AutoTuner-print}{\code{AutoTuner$print()}}
+\item \href{#method-AutoTuner-clone}{\code{AutoTuner$clone()}}
 }
 }
-\if{html}{
-\out{<details ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="format">}\href{../../mlr3/html/Learner.html#method-format}{\code{mlr3::Learner$format()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="help">}\href{../../mlr3/html/Learner.html#method-help}{\code{mlr3::Learner$help()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="predict">}\href{../../mlr3/html/Learner.html#method-predict}{\code{mlr3::Learner$predict()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="predict_newdata">}\href{../../mlr3/html/Learner.html#method-predict_newdata}{\code{mlr3::Learner$predict_newdata()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="reset">}\href{../../mlr3/html/Learner.html#method-reset}{\code{mlr3::Learner$reset()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="train">}\href{../../mlr3/html/Learner.html#method-train}{\code{mlr3::Learner$train()}}\out{</span>}
-}
-\out{</details>}
-}
+\if{html}{\out{
+<details><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="format"><a href='../../mlr3/html/Learner.html#method-Learner-format'><code>mlr3::Learner$format()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="help"><a href='../../mlr3/html/Learner.html#method-Learner-help'><code>mlr3::Learner$help()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="predict"><a href='../../mlr3/html/Learner.html#method-Learner-predict'><code>mlr3::Learner$predict()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="predict_newdata"><a href='../../mlr3/html/Learner.html#method-Learner-predict_newdata'><code>mlr3::Learner$predict_newdata()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="reset"><a href='../../mlr3/html/Learner.html#method-Learner-reset'><code>mlr3::Learner$reset()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="train"><a href='../../mlr3/html/Learner.html#method-Learner-train'><code>mlr3::Learner$train()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-AutoTuner-new"></a>}}
+\if{latex}{\out{\hypertarget{method-AutoTuner-new}{}}}
 \subsection{Method \code{new()}}{
 Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
@@ -156,7 +156,8 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   store_tuning_instance = TRUE,
   store_benchmark_result = TRUE,
   store_models = FALSE,
-  check_values = FALSE
+  check_values = FALSE,
+  callbacks = list()
 )}\if{html}{\out{</div>}}
 }
 
@@ -204,13 +205,16 @@ combination is needed for measures that require a model.}
 If \code{TRUE}, hyperparameter values are checked before evaluation and
 performance scores after. If \code{FALSE} (default), values are unchecked but
 computational overhead is reduced.}
+
+\item{\code{callbacks}}{(list of \link[mlr3misc:Callback]{mlr3misc::Callback})\cr
+List of callbacks.}
 }
 \if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-base_learner"></a>}}
-\if{latex}{\out{\hypertarget{method-base_learner}{}}}
+\if{html}{\out{<a id="method-AutoTuner-base_learner"></a>}}
+\if{latex}{\out{\hypertarget{method-AutoTuner-base_learner}{}}}
 \subsection{Method \code{base_learner()}}{
 Extracts the base learner from nested learner objects like
 \code{GraphLearner} in \CRANpkg{mlr3pipelines}. If \code{recursive = 0}, the (tuned)
@@ -233,8 +237,8 @@ Printer.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-print"></a>}}
-\if{latex}{\out{\hypertarget{method-print}{}}}
+\if{html}{\out{<a id="method-AutoTuner-print"></a>}}
+\if{latex}{\out{\hypertarget{method-AutoTuner-print}{}}}
 \subsection{Method \code{print()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AutoTuner$print()}\if{html}{\out{</div>}}
@@ -249,8 +253,8 @@ Printer.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-AutoTuner-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-AutoTuner-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

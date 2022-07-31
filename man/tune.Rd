@@ -16,6 +16,7 @@ tune(
   store_models = FALSE,
   allow_hotstart = FALSE,
   keep_hotstart_stack = FALSE,
+  callbacks = list(),
   ...
 )
 }
@@ -66,6 +67,9 @@ Allow to hotstart learners with previously fitted models. See also
 \item{keep_hotstart_stack}{(\code{logical(1)})\cr
 If \code{TRUE}, \link[mlr3:HotstartStack]{mlr3::HotstartStack} is kept in \verb{$objective$hotstart_stack}
 after tuning.}
+
+\item{callbacks}{(list of \link[mlr3misc:Callback]{mlr3misc::Callback})\cr
+List of callbacks.}
 
 \item{...}{(named \code{list()})\cr
 Named arguments to be set as parameters of the tuner.}

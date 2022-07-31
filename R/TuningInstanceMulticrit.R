@@ -29,6 +29,7 @@
 #' @template param_check_values
 #' @template param_allow_hotstart
 #' @template param_keep_hotstart_stack
+#' @template param_callbacks
 #' @template param_xdt
 #' @template param_learner_param_vals
 #'
@@ -72,7 +73,7 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
     #' and a termination criterion.
     initialize = function(task, learner, resampling, measures, terminator, search_space = NULL,
       store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE,
-      keep_hotstart_stack = FALSE) {
+      keep_hotstart_stack = FALSE, callbacks = list()) {
       learner = assert_learner(as_learner(learner, clone = TRUE))
 
       if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token"))) {
@@ -94,7 +95,7 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
       objective = ObjectiveTuning$new(task, learner, resampling, measures, store_benchmark_result, store_models,
         check_values, allow_hotstart, keep_hotstart_stack, archive)
 
-      super$initialize(objective, search_space, terminator)
+      super$initialize(objective, search_space, terminator, callbacks = callbacks)
       # super class of instance initializes default archive, overwrite with tuning archive
       self$archive = archive
     },
