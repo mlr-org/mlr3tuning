@@ -50,10 +50,12 @@ Suggests:
     adagio,
     GenSA,
     irace,
+    mlr3learners,
     mlr3pipelines,
     nloptr,
     rpart,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    xgboost
 Remotes:
     mlr-org/mlr3misc@callbacks,
     mlr-org/bbotk@callbacks

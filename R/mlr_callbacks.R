@@ -1,13 +1,21 @@
 #' @title Early Stopping Callback
 #'
-#' @description
-#' Early Stopping Callback
-#'
 #' @name mlr3tuning.early_stopping
+#'
+#' @description
+#' This callback extract the optimal number of trees from XGBoost models and
+#'
+#' When training an XGBoost learner, early stopping can be used to find the optimal number of trees.
+#'
+#'
+#'
+#' @examples
+#' cllb("mlr3tuning.early_stopping")
 NULL
 
 callback_early_stopping = as_callback("mlr3tuning.early_stopping",
   label = "Early Stopping Callback",
+  man = "mlr3tuning::mlr3tuning.early_stopping",
   on_optimization_begin = function(callback, context) {
     learner = context$instance$objective$learner
 
@@ -15,13 +23,13 @@ callback_early_stopping = as_callback("mlr3tuning.early_stopping",
       stopf("%s is incompatible with %s", format(learner), format(callback))
     }
 
-    # store models temporary
-    callback$store_models = context$instance$objective$store_models
-    context$instance$objective$store_models = TRUE
-
     if (is.null(learner$param_set$values$early_stopping_rounds)) {
       stop("Early stopping is not activated. Set `early_stopping_rounds` parameter.")
     }
+
+    # store models temporary
+    callback$store_models = context$instance$objective$store_models
+    context$instance$objective$store_models = TRUE
   },
 
   on_eval_after_benchmark = function(callback, context) {
@@ -44,4 +52,31 @@ callback_early_stopping = as_callback("mlr3tuning.early_stopping",
   }
 )
 
-mlr_callbacks$add("early_stopping", callback_early_stopping)
+mlr_callbacks$add("mlr3tuning.early_stopping", callback_early_stopping)
+
+#' @title Backup Benchmark Result Callback
+#'
+#' @name mlr3tuning.backup
+#'
+#' @description
+#' This [Callback] writes the [BenchmarkResult] after each batch to disk.
+#'
+#' @examples
+#' cllb("mlr3tuning.backup", path = "backup.rds")
+NULL
+
+callback_backup = as_callback("mlr3tuning.backup",
+  label = "Backup Benchmark Result Callback",
+  man = "mlr3tuning::mlr3tuning.backup",
+  path = NULL,
+  on_optimization_begin = function(callback, context) {
+    assert_path_for_output(callback$path)
+  },
+
+  on_optimizer_after_eval = function(callback, context) {
+    if (file.exists(callback$path)) unlink(callback$path)
+    saveRDS(context$instance$archive$benchmark_result, callback$path)
+  }
+)
+
+mlr_callbacks$add("mlr3tuning.backup", callback_backup)

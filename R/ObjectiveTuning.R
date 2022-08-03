@@ -124,13 +124,14 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
         if (!self$store_models) private$.benchmark_result$discard(models = TRUE)
       }
 
+      call_back("on_eval_before_archive", self$callbacks, context)
+
       # store benchmark result in archive
       if (self$store_benchmark_result) {
         self$archive$benchmark_result$combine(private$.benchmark_result)
         set(private$.aggregated_performance, j = "uhash", value = private$.benchmark_result$uhashes)
       }
 
-      call_back("on_eval_before_archive", self$callbacks, context)
       private$.aggregated_performance
     },
 

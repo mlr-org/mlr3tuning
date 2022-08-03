@@ -18,6 +18,14 @@
 #' selected hyperparameter configuration and associated estimated performance
 #' values, by calling the method `instance$assign_result`.
 #'
+#' @section Callbacks:
+#' Callbacks allow the user customize the tuning.
+#' The dictionary [mlr3misc::mlr_callbacks] stores predefined [Callback] objects.
+#' Currently, the following callbacks are available:
+#'  * `early_stopping` - Extract the maximum number of boosting iterations
+#'
+#'
+#'
 #' @template param_task
 #' @template param_learner
 #' @template param_resampling
