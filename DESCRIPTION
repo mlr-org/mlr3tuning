@@ -44,7 +44,7 @@ Imports:
     checkmate (>= 2.0.0),
     data.table,
     lgr,
-    mlr3misc (>= 0.10.0),
+    mlr3misc (>= 0.10.0-9000),
     R6
 Suggests:
     adagio,
@@ -59,7 +59,7 @@ Suggests:
 Remotes:
     mlr-org/bbotk@callbacks,
     mlr-org/mlr3,
-    mlr-org/mlr3misc@callbacks
+    mlr-org/mlr3misc
 Config/testthat/edition: 3
 Config/testthat/parallel: true
 Encoding: UTF-8
