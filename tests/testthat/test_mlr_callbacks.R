@@ -12,7 +12,7 @@ test_that("early stopping callback works", {
     measures = msr("classif.ce"),
     term_evals = 4,
     batch_size = 2,
-    callbacks = cllbs("mlr3tuning.early_stopping")
+    callbacks = clbks("mlr3tuning.early_stopping")
   )
 
   expect_equal(instance$result_learner_param_vals$nrounds, 100)
@@ -25,7 +25,7 @@ test_that("early stopping callback works", {
     measure = msr("classif.ce"),
     term_evals = 2,
     batch_size = 4,
-    callbacks = cllbs("mlr3tuning.early_stopping")
+    callbacks = clbks("mlr3tuning.early_stopping")
   )
   at$train(tsk("pima"))
 
@@ -40,7 +40,7 @@ test_that("early stopping callback works", {
     measures = msr("classif.ce"),
     term_evals = 10,
     batch_size = 5,
-    callbacks = cllbs("mlr3tuning.early_stopping")
+    callbacks = clbks("mlr3tuning.early_stopping")
   ), "incompatible")
 })
 
