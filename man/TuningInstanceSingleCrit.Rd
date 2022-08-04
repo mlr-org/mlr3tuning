@@ -21,6 +21,16 @@ The tuner is also supposed to store its final result, consisting of a
 selected hyperparameter configuration and associated estimated performance
 values, by calling the method \code{instance$assign_result}.
 }
+\section{Callbacks}{
+
+Callbacks allow the user customize the tuning.
+The dictionary \link[mlr3misc:mlr_callbacks]{mlr3misc::mlr_callbacks} stores predefined \link{Callback} objects.
+Currently, the following callbacks are available:
+\itemize{
+\item \code{early_stopping} - Extract the maximum number of boosting iterations
+}
+}
+
 \examples{
 library(data.table)
 
@@ -125,6 +135,7 @@ and a termination criterion.
   check_values = FALSE,
   allow_hotstart = FALSE,
   keep_hotstart_stack = FALSE,
+  evaluate_default = FALSE,
   callbacks = list()
 )}\if{html}{\out{</div>}}
 }
@@ -181,6 +192,10 @@ Allow to hotstart learners with previously fitted models. See also
 \item{\code{keep_hotstart_stack}}{(\code{logical(1)})\cr
 If \code{TRUE}, \link[mlr3:HotstartStack]{mlr3::HotstartStack} is kept in \verb{$objective$hotstart_stack}
 after tuning.}
+
+\item{\code{evaluate_default}}{(\code{logical(1)})\cr
+If \code{TRUE}, learner is evaluated with hyperparameters set to their default
+values at the start of the optimization.}
 
 \item{\code{callbacks}}{(list of \link[mlr3misc:Callback]{mlr3misc::Callback})\cr
 List of callbacks.}

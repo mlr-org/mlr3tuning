@@ -4,5 +4,10 @@
 \alias{mlr3tuning.early_stopping}
 \title{Early Stopping Callback}
 \description{
-Early Stopping Callback
+This callback extract the optimal number of trees from XGBoost models and
+
+When training an XGBoost learner, early stopping can be used to find the optimal number of trees.
+}
+\examples{
+cllb("mlr3tuning.early_stopping")
 }

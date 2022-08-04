@@ -101,6 +101,7 @@ and a termination criterion.
   check_values = FALSE,
   allow_hotstart = FALSE,
   keep_hotstart_stack = FALSE,
+  evaluate_default = FALSE,
   callbacks = list()
 )}\if{html}{\out{</div>}}
 }
@@ -157,6 +158,10 @@ Allow to hotstart learners with previously fitted models. See also
 \item{\code{keep_hotstart_stack}}{(\code{logical(1)})\cr
 If \code{TRUE}, \link[mlr3:HotstartStack]{mlr3::HotstartStack} is kept in \verb{$objective$hotstart_stack}
 after tuning.}
+
+\item{\code{evaluate_default}}{(\code{logical(1)})\cr
+If \code{TRUE}, learner is evaluated with hyperparameters set to their default
+values at the start of the optimization.}
 
 \item{\code{callbacks}}{(list of \link[mlr3misc:Callback]{mlr3misc::Callback})\cr
 List of callbacks.}
