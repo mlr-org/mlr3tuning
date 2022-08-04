@@ -93,30 +93,30 @@ Score hyperparameter configurations on additional measures.
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{ArchiveTuning$new()}}
-\item \href{#method-learner}{\code{ArchiveTuning$learner()}}
-\item \href{#method-learners}{\code{ArchiveTuning$learners()}}
-\item \href{#method-learner_param_vals}{\code{ArchiveTuning$learner_param_vals()}}
-\item \href{#method-predictions}{\code{ArchiveTuning$predictions()}}
-\item \href{#method-resample_result}{\code{ArchiveTuning$resample_result()}}
-\item \href{#method-print}{\code{ArchiveTuning$print()}}
-\item \href{#method-clone}{\code{ArchiveTuning$clone()}}
+\item \href{#method-ArchiveTuning-new}{\code{ArchiveTuning$new()}}
+\item \href{#method-ArchiveTuning-learner}{\code{ArchiveTuning$learner()}}
+\item \href{#method-ArchiveTuning-learners}{\code{ArchiveTuning$learners()}}
+\item \href{#method-ArchiveTuning-learner_param_vals}{\code{ArchiveTuning$learner_param_vals()}}
+\item \href{#method-ArchiveTuning-predictions}{\code{ArchiveTuning$predictions()}}
+\item \href{#method-ArchiveTuning-resample_result}{\code{ArchiveTuning$resample_result()}}
+\item \href{#method-ArchiveTuning-print}{\code{ArchiveTuning$print()}}
+\item \href{#method-ArchiveTuning-clone}{\code{ArchiveTuning$clone()}}
 }
 }
-\if{html}{
-\out{<details open ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="add_evals">}\href{../../bbotk/html/Archive.html#method-add_evals}{\code{bbotk::Archive$add_evals()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="best">}\href{../../bbotk/html/Archive.html#method-best}{\code{bbotk::Archive$best()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="clear">}\href{../../bbotk/html/Archive.html#method-clear}{\code{bbotk::Archive$clear()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="format">}\href{../../bbotk/html/Archive.html#method-format}{\code{bbotk::Archive$format()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="nds_selection">}\href{../../bbotk/html/Archive.html#method-nds_selection}{\code{bbotk::Archive$nds_selection()}}\out{</span>}
-}
-\out{</details>}
-}
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="add_evals"><a href='../../bbotk/html/Archive.html#method-Archive-add_evals'><code>bbotk::Archive$add_evals()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="best"><a href='../../bbotk/html/Archive.html#method-Archive-best'><code>bbotk::Archive$best()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="clear"><a href='../../bbotk/html/Archive.html#method-Archive-clear'><code>bbotk::Archive$clear()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="format"><a href='../../bbotk/html/Archive.html#method-Archive-format'><code>bbotk::Archive$format()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="nds_selection"><a href='../../bbotk/html/Archive.html#method-Archive-nds_selection'><code>bbotk::Archive$nds_selection()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-ArchiveTuning-new"></a>}}
+\if{latex}{\out{\hypertarget{method-ArchiveTuning-new}{}}}
 \subsection{Method \code{new()}}{
 Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
@@ -143,8 +143,8 @@ validity.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-learner"></a>}}
-\if{latex}{\out{\hypertarget{method-learner}{}}}
+\if{html}{\out{<a id="method-ArchiveTuning-learner"></a>}}
+\if{latex}{\out{\hypertarget{method-ArchiveTuning-learner}{}}}
 \subsection{Method \code{learner()}}{
 Retrieve \link[mlr3:Learner]{mlr3::Learner} of the i-th evaluation, by position
 or by unique hash \code{uhash}. \code{i} and \code{uhash} are mutually exclusive.
@@ -167,8 +167,8 @@ The \code{uhash} value to filter for.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-learners"></a>}}
-\if{latex}{\out{\hypertarget{method-learners}{}}}
+\if{html}{\out{<a id="method-ArchiveTuning-learners"></a>}}
+\if{latex}{\out{\hypertarget{method-ArchiveTuning-learners}{}}}
 \subsection{Method \code{learners()}}{
 Retrieve list of trained \link[mlr3:Learner]{mlr3::Learner} objects of the i-th evaluation,
 by position or by unique hash \code{uhash}. \code{i} and \code{uhash} are mutually
@@ -190,8 +190,8 @@ The \code{uhash} value to filter for.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-learner_param_vals"></a>}}
-\if{latex}{\out{\hypertarget{method-learner_param_vals}{}}}
+\if{html}{\out{<a id="method-ArchiveTuning-learner_param_vals"></a>}}
+\if{latex}{\out{\hypertarget{method-ArchiveTuning-learner_param_vals}{}}}
 \subsection{Method \code{learner_param_vals()}}{
 Retrieve param values of the i-th evaluation, by position
 or by unique hash \code{uhash}. \code{i} and \code{uhash} are mutually exclusive.
@@ -212,8 +212,8 @@ The \code{uhash} value to filter for.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-predictions"></a>}}
-\if{latex}{\out{\hypertarget{method-predictions}{}}}
+\if{html}{\out{<a id="method-ArchiveTuning-predictions"></a>}}
+\if{latex}{\out{\hypertarget{method-ArchiveTuning-predictions}{}}}
 \subsection{Method \code{predictions()}}{
 Retrieve list of \link[mlr3:Prediction]{mlr3::Prediction} objects of the i-th evaluation, by
 position or by unique hash \code{uhash}. \code{i} and \code{uhash} are mutually
@@ -235,8 +235,8 @@ The \code{uhash} value to filter for.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-resample_result"></a>}}
-\if{latex}{\out{\hypertarget{method-resample_result}{}}}
+\if{html}{\out{<a id="method-ArchiveTuning-resample_result"></a>}}
+\if{latex}{\out{\hypertarget{method-ArchiveTuning-resample_result}{}}}
 \subsection{Method \code{resample_result()}}{
 Retrieve \link[mlr3:ResampleResult]{mlr3::ResampleResult} of the i-th evaluation, by position
 or by unique hash \code{uhash}. \code{i} and \code{uhash} are mutually exclusive.
@@ -257,8 +257,8 @@ The \code{uhash} value to filter for.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-print"></a>}}
-\if{latex}{\out{\hypertarget{method-print}{}}}
+\if{html}{\out{<a id="method-ArchiveTuning-print"></a>}}
+\if{latex}{\out{\hypertarget{method-ArchiveTuning-print}{}}}
 \subsection{Method \code{print()}}{
 Printer.
 \subsection{Usage}{
@@ -274,8 +274,8 @@ Printer.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-ArchiveTuning-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-ArchiveTuning-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

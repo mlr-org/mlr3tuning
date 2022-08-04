@@ -16,6 +16,7 @@ tune(
   store_models = FALSE,
   allow_hotstart = FALSE,
   keep_hotstart_stack = FALSE,
+  evaluate_default = FALSE,
   ...
 )
 }
@@ -66,6 +67,10 @@ Allow to hotstart learners with previously fitted models. See also
 \item{keep_hotstart_stack}{(\code{logical(1)})\cr
 If \code{TRUE}, \link[mlr3:HotstartStack]{mlr3::HotstartStack} is kept in \verb{$objective$hotstart_stack}
 after tuning.}
+
+\item{evaluate_default}{(\code{logical(1)})\cr
+If \code{TRUE}, learner is evaluated with hyperparameters set to their default
+values at the start of the optimization.}
 
 \item{...}{(named \code{list()})\cr
 Named arguments to be set as parameters of the tuner.}

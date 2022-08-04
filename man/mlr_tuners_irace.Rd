@@ -17,10 +17,12 @@ from package \CRANpkg{irace}.
 \section{Dictionary}{
 
 This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary}
-\link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:\preformatted{TunerIrace$new()
+\link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{TunerIrace$new()
 mlr_tuners$get("irace")
 tnr("irace")
-}
+}\if{html}{\out{</div>}}
 }
 
 \section{Parameters}{
@@ -123,23 +125,23 @@ Other Tuner:
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{TunerIrace$new()}}
-\item \href{#method-optimize}{\code{TunerIrace$optimize()}}
-\item \href{#method-clone}{\code{TunerIrace$clone()}}
+\item \href{#method-TunerIrace-new}{\code{TunerIrace$new()}}
+\item \href{#method-TunerIrace-optimize}{\code{TunerIrace$optimize()}}
+\item \href{#method-TunerIrace-clone}{\code{TunerIrace$clone()}}
 }
 }
-\if{html}{
-\out{<details open ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="format">}\href{../../mlr3tuning/html/Tuner.html#method-format}{\code{mlr3tuning::Tuner$format()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="help">}\href{../../mlr3tuning/html/Tuner.html#method-help}{\code{mlr3tuning::Tuner$help()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="print">}\href{../../mlr3tuning/html/Tuner.html#method-print}{\code{mlr3tuning::Tuner$print()}}\out{</span>}
-}
-\out{</details>}
-}
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="format"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-format'><code>mlr3tuning::Tuner$format()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="help"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-help'><code>mlr3tuning::Tuner$help()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="print"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-print'><code>mlr3tuning::Tuner$print()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-TunerIrace-new"></a>}}
+\if{latex}{\out{\hypertarget{method-TunerIrace-new}{}}}
 \subsection{Method \code{new()}}{
 Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
@@ -148,8 +150,8 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-optimize"></a>}}
-\if{latex}{\out{\hypertarget{method-optimize}{}}}
+\if{html}{\out{<a id="method-TunerIrace-optimize"></a>}}
+\if{latex}{\out{\hypertarget{method-TunerIrace-optimize}{}}}
 \subsection{Method \code{optimize()}}{
 Performs the tuning on a \link{TuningInstanceSingleCrit} until termination.
 The single evaluations and the final results will be written into the
@@ -171,8 +173,8 @@ result is returned.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-TunerIrace-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-TunerIrace-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{
