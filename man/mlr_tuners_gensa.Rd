@@ -18,6 +18,9 @@ Xiang Y, Gubian S, Suomela B, Hoeng J (2013).
 \description{
 Subclass for generalized simulated annealing tuning calling \code{\link[GenSA:GenSA]{GenSA::GenSA()}}
 from package \CRANpkg{GenSA}.
+
+In contrast to the \code{\link[GenSA:GenSA]{GenSA::GenSA()}} defaults, we set \code{smooth = FALSE} as a
+default.
 }
 \section{Dictionary}{
 
@@ -46,6 +49,12 @@ section on parallelization for more details).
 All \link{Tuner}s use a logger (as implemented in \CRANpkg{lgr}) from package
 \CRANpkg{bbotk}.
 Use \code{lgr::get_logger("bbotk")} to access and control the logger.
+}
+
+\section{Optimizer}{
+
+This \link{Tuner} is based on \link[bbotk:mlr_optimizers_gensa]{bbotk::OptimizerGenSA} which can be applied on any black box optimization problem.
+See also the documentation of \href{https://bbotk.mlr-org.com/}{bbotk}.
 }
 
 \section{Parameters}{
@@ -111,7 +120,8 @@ Other Tuner:
 \code{\link{mlr_tuners_grid_search}},
 \code{\link{mlr_tuners_irace}},
 \code{\link{mlr_tuners_nloptr}},
-\code{\link{mlr_tuners_random_search}}
+\code{\link{mlr_tuners_random_search}},
+\code{\link{mlr_tuners}}
 }
 \concept{Tuner}
 \section{Super classes}{
@@ -128,6 +138,7 @@ Other Tuner:
 \out{<details open ><summary>Inherited methods</summary>}
 \itemize{
 \item \out{<span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="format">}\href{../../mlr3tuning/html/Tuner.html#method-format}{\code{mlr3tuning::Tuner$format()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="help">}\href{../../mlr3tuning/html/Tuner.html#method-help}{\code{mlr3tuning::Tuner$help()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="print">}\href{../../mlr3tuning/html/Tuner.html#method-print}{\code{mlr3tuning::Tuner$print()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="mlr3tuning" data-topic="TunerFromOptimizer" data-id="optimize">}\href{../../mlr3tuning/html/TunerFromOptimizer.html#method-optimize}{\code{mlr3tuning::TunerFromOptimizer$optimize()}}\out{</span>}
 }

@@ -1,6 +1,20 @@
 test_that("mlr_tuners", {
-  expect_dictionary(mlr_tuners)
-  for (key in mlr_tuners$keys()) {
-    expect_tuner(tnr(key))
+  expect_dictionary(mlr_tuners, min_items = 1L)
+  keys = mlr_tuners$keys()
+
+  for (key in keys) {
+    tuner = tnr(key)
+    expect_r6(tuner, "Tuner")
   }
+})
+
+test_that("mlr_tuners sugar", {
+  expect_class(tnr("random_search"), "Tuner")
+  expect_class(tnrs(c("random_search", "random_search")), "list")
+})
+
+test_that("as.data.table objects parameter", {
+  tab = as.data.table(mlr_tuners, objects = TRUE)
+  expect_data_table(tab)
+  expect_list(tab$object, "Tuner", any.missing = FALSE)
 })

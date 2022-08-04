@@ -7,28 +7,46 @@
 \format{
 \link[R6:R6Class]{R6::R6Class} object inheriting from \link[mlr3misc:Dictionary]{mlr3misc::Dictionary}.
 }
-\usage{
-mlr_tuners
-}
 \description{
 A simple \link[mlr3misc:Dictionary]{mlr3misc::Dictionary} storing objects of class \link{Tuner}.
 Each tuner has an associated help page, see \code{mlr_tuners_[id]}.
 
 This dictionary can get populated with additional tuners by add-on packages.
 
-For a more convenient way to retrieve and construct tuner, see
-\code{\link[=tnr]{tnr()}}/\code{\link[=tnrs]{tnrs()}}.
+For a more convenient way to retrieve and construct tuner, see \code{\link[=tnr]{tnr()}}/\code{\link[=tnrs]{tnrs()}}.
 }
 \section{Methods}{
 
 See \link[mlr3misc:Dictionary]{mlr3misc::Dictionary}.
 }
 
+\section{S3 methods}{
+
+\itemize{
+\item \code{as.data.table(dict, ..., objects = FALSE)}\cr
+\link[mlr3misc:Dictionary]{mlr3misc::Dictionary} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
+Returns a \code{\link[data.table:data.table]{data.table::data.table()}} with fields "key", "label", "param_classes", "properties" and "packages" as columns.
+If \code{objects} is set to \code{TRUE}, the constructed objects are returned in the list column named \code{object}.
+}
+}
+
 \examples{
-mlr_tuners$get("grid_search")
+as.data.table(mlr_tuners)
+mlr_tuners$get("random_search")
 tnr("random_search")
 }
 \seealso{
 Sugar functions: \code{\link[=tnr]{tnr()}}, \code{\link[=tnrs]{tnrs()}}
+
+Other Tuner: 
+\code{\link{mlr_tuners_cmaes}},
+\code{\link{mlr_tuners_design_points}},
+\code{\link{mlr_tuners_gensa}},
+\code{\link{mlr_tuners_grid_search}},
+\code{\link{mlr_tuners_irace}},
+\code{\link{mlr_tuners_nloptr}},
+\code{\link{mlr_tuners_random_search}}
 }
+\concept{Dictionary}
+\concept{Tuner}
 \keyword{datasets}

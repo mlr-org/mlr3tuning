@@ -122,10 +122,8 @@ AutoTuner = R6Class("AutoTuner",
     #'
     #' @param tuner ([Tuner])\cr
     #' Tuning algorithm to run.
-    initialize = function(learner, resampling, measure, terminator, tuner,
-      search_space = NULL, store_tuning_instance = TRUE,
-      store_benchmark_result = TRUE, store_models = FALSE,
-      check_values = FALSE) {
+    initialize = function(learner, resampling, measure = NULL, terminator, tuner, search_space = NULL,
+      store_tuning_instance = TRUE, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE) {
       learner = assert_learner(as_learner(learner, clone = TRUE))
 
       if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token")) > 0) {
@@ -135,8 +133,8 @@ AutoTuner = R6Class("AutoTuner",
       ia = list()
       ia$learner = learner
       ia$resampling = assert_resampling(resampling, instantiated = FALSE)$clone()
-      ia$measure = assert_measure(as_measure(measure), learner = learner)
-      if(!is.null(search_space)) ia$search_space = assert_param_set(search_space)$clone()
+      if (!is.null(measure)) ia$measure = assert_measure(as_measure(measure), learner = learner)
+      if (!is.null(search_space)) ia$search_space = assert_param_set(search_space)$clone()
       ia$terminator = assert_terminator(terminator)$clone()
 
       private$.store_tuning_instance = assert_flag(store_tuning_instance)

@@ -3,8 +3,8 @@
 #' @description
 #' Function to create an [AutoTuner] object.
 #'
-#' @param method (`character(1)`)\cr
-#'  Key to retrieve tuner from [mlr_tuners] dictionary.
+#' @param method (`character(1)` | [Tuner])\cr
+#'  Key to retrieve tuner from [mlr_tuners] dictionary or [Tuner] object.
 #' @param term_evals (`integer(1)`)\cr
 #'  Number of allowed evaluations.
 #' @param term_time (`integer(1)`)\cr
@@ -30,11 +30,15 @@
 #'   term_evals = 4)
 #'
 #' at$train(tsk("pima"))
-auto_tuner = function(method, learner, resampling, measure, term_evals = NULL, term_time = NULL, search_space = NULL,
-  store_models = FALSE, ...) {
-  assert_choice(method, mlr_tuners$keys())
-  tuner = tnr(method, ...)
+auto_tuner = function(method, learner, resampling, measure = NULL, term_evals = NULL, term_time = NULL, search_space = NULL, store_models = FALSE, ...) {
+  tuner = if (is.character(method)) {
+    assert_choice(method, mlr_tuners$keys())
+    tnr(method, ...)
+  } else {
+    assert_tuner(method)
+  }
   terminator = terminator_selection(term_evals, term_time)
 
-  AutoTuner$new(learner, resampling, measure, terminator, tuner, search_space, store_models = store_models)
+  AutoTuner$new(learner = learner, resampling = resampling, measure = measure, terminator = terminator, tuner = tuner,
+    search_space = search_space, store_models = store_models)
 }

@@ -234,7 +234,7 @@ test_that("TuningInstanceSingleCrit and empty search space works", {
     task = tsk("pima"),
     learner = lrn("classif.rpart"),
     resampling = rsmp("cv", folds = 3),
-    measure = msr("classif.ce"),
+    measures = msr("classif.ce"),
     term_evals = 10,
     batch_size = 5
   )
@@ -252,7 +252,7 @@ test_that("TuningInstanceSingleCrit and empty search space works", {
     task = tsk("pima"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
-    measure = msr("classif.ce"),
+    measures = msr("classif.ce"),
     term_evals = 10,
     batch_size = 5
   )
@@ -277,7 +277,7 @@ test_that("assign_result works with one hyperparameter", {
 
   instance$assign_result(xdt, y)
   res = instance$result
-  expect_data_table(res, nrow = 1)
+  expect_data_table(res, nrows = 1)
   expect_equal(res$cp, 0.1)
   expect_equal(res$classif.ce, 0.8)
   expect_equal(res$learner_param_vals[[1]], list(cp = 0.1))
@@ -298,7 +298,7 @@ test_that("assign_result works with two hyperparameters", {
 
   instance$assign_result(xdt, y)
   res = instance$result
-  expect_data_table(res, nrow = 1)
+  expect_data_table(res, nrows = 1)
   expect_equal(res$cp, 0.1)
   expect_equal(res$minbucket, 1)
   expect_equal(res$classif.ce, 0.8)
@@ -319,7 +319,7 @@ test_that("assign_result works with two hyperparameters and one constant", {
 
   instance$assign_result(xdt, y)
   res = instance$result
-  expect_data_table(res, nrow = 1)
+  expect_data_table(res, nrows = 1)
   expect_equal(res$cp, 0.1)
   expect_equal(res$minbucket, 1)
   expect_equal(res$classif.ce, 0.8)
@@ -340,7 +340,7 @@ test_that("assign_result works with no hyperparameters and one constant", {
 
   instance$assign_result(xdt, y)
   res = instance$result
-  expect_data_table(res, nrow = 1)
+  expect_data_table(res, nrows = 1)
   expect_equal(res$classif.ce, 0.8)
   expect_equal(res$learner_param_vals[[1]], list(xval = 1))
 })
@@ -360,7 +360,7 @@ test_that("assign_result works with no hyperparameters and two constant", {
 
   instance$assign_result(xdt, y)
   res = instance$result
-  expect_data_table(res, nrow = 1)
+  expect_data_table(res, nrows = 1)
   expect_equal(res$classif.ce, 0.8)
   expect_equal(res$learner_param_vals[[1]], list(xval = 1, cp = 1))
 })
@@ -379,7 +379,7 @@ test_that("assign_result works with one hyperparameters and one constant", {
 
   instance$assign_result(xdt, y)
   res = instance$result
-  expect_data_table(res, nrow = 1)
+  expect_data_table(res, nrows = 1)
   expect_equal(res$cp, 0.1)
   expect_equal(res$classif.ce, 0.8)
   expect_equal(res$learner_param_vals[[1]], list(xval = 1, cp = 0.1))
@@ -400,7 +400,7 @@ test_that("assign_result works with no hyperparameter and constant", {
 
   instance$assign_result(xdt, y)
   res = instance$result
-  expect_data_table(res, nrow = 1)
+  expect_data_table(res, nrows = 1)
   expect_equal(res$classif.ce, 0.8)
   expect_list(res$learner_param_vals[[1]], len = 0)
 })

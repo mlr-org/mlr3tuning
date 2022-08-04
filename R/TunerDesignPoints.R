@@ -13,22 +13,24 @@
 #'
 #' @inheritSection bbotk::OptimizerDesignPoints Parameters
 #' @inheritSection bbotk::OptimizerDesignPoints Progress Bars
-#' 
+#'
 #' @template section_parallelization
 #' @template section_logging
+#' @templateVar optimizer bbotk::OptimizerDesignPoints
+#' @template section_optimizer
 #'
 #' @family Tuner
 #' @seealso Package \CRANpkg{mlr3hyperband} for hyperband tuning.
 #' @export
 #' @examples
 #' library(data.table)
-#' 
+#'
 #' # retrieve task
 #' task = tsk("pima")
-#' 
+#'
 #' # load learner and set search space
 #' learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
-#' 
+#'
 #' # hyperparameter tuning on the pima indians diabetes data set
 #' instance = tune(
 #'   method = "design_points",
@@ -41,10 +43,10 @@
 #'
 #' # best performing hyperparameter configuration
 #' instance$result
-#' 
+#'
 #' # all evaluated hyperparameter configuration
 #' as.data.table(instance$archive)
-#' 
+#'
 #' # fit final model on complete data set
 #' learner$param_set$values = instance$result_learner_param_vals
 #' learner$train(task)
@@ -56,7 +58,8 @@ TunerDesignPoints = R6Class("TunerDesignPoints",
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function() {
       super$initialize(
-        optimizer = OptimizerDesignPoints$new()
+        optimizer = OptimizerDesignPoints$new(),
+        man = "mlr3tuning::mlr_tuners_design_points"
       )
     }
   )

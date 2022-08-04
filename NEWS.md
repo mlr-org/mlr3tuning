@@ -1,17 +1,31 @@
-# mlr3tuning 0.11.0.9000
+# mlr3tuning 0.13.1
 
-* feat: `as_search_space()` function to create search spaces from `Learner` and
-  `ParamSet` objects. Allows to pass `TuningSpace` objects as `search_space` in
-  `TuningInstanceSingleCrit` and `TuningInstanceMultiCrit`.
-* feat: `keep_hotstart_stack` flag to remove `mlr3::HotstartStack` after tuning.
-* feat: Store errors and warnings in `Archive`.
+* feat: `Tuner` objects have the field `$id` now.
+
+# mlr3tuning 0.13.0
+
+* feat: Allow to pass `Tuner` objects as `method` in `tune()` and `auto_tuner()`.
+* docs: Link `Tuner` to help page of `bbotk::Optimizer`.
+* feat: `Tuner` objects have the optional field `$label` now.
+* feat: `as.data.table()` functions for objects of class `Dictionary` have been extended with additional columns.
+
+# mlr3tuning 0.12.1
+
+* feat: Add a `as.data.table.DictionaryTuner` function.
+* feat: New `$help()` method which opens the manual page of a `Tuner`.
+
+# mlr3tuning 0.12.0
+
+* feat: `as_search_space()` function to create search spaces from `Learner` and `ParamSet` objects.
+  Allow to pass `TuningSpace` objects as `search_space` in `TuningInstanceSingleCrit` and `TuningInstanceMultiCrit`.
+* feat: The `mlr3::HotstartStack` can now be removed after tuning with the `keep_hotstart_stack` flag.
+* feat: The `Archive` stores errors and warnings of the learners.
+* feat: When no measure is provided, the default measure is used in `auto_tuner()` and `tune_nested()`.
 
 # mlr3tuning 0.11.0
 
-* fix: `$assign_result()` method in `TuningInstanceSingleCrit` when search space
-  is empty.
-* feat: Default measure is used when no measure is supplied to
-  `TuningInstanceSingleCrit`.
+* fix: `$assign_result()` method in `TuningInstanceSingleCrit` when search space is empty.
+* feat: Default measure is used when no measure is supplied to `TuningInstanceSingleCrit`.
 
 # mlr3tuning 0.10.0
 

@@ -6,14 +6,19 @@
 #' Subclass for generalized simulated annealing tuning calling [GenSA::GenSA()]
 #' from package \CRANpkg{GenSA}.
 #'
+#' In contrast to the [GenSA::GenSA()] defaults, we set `smooth = FALSE` as a
+#' default.
+#'
 #' @templateVar id gensa
 #' @template section_dictionary_tuners
 #'
 #' @inheritSection bbotk::OptimizerGenSA Parameters
 #' @inheritSection bbotk::OptimizerGenSA Progress Bars
-#' 
+#'
 #' @template section_parallelization
 #' @template section_logging
+#' @templateVar optimizer bbotk::OptimizerGenSA
+#' @template section_optimizer
 #'
 #' @source
 #' `r format_bib("tsallis_1996", "xiang_2013")`
@@ -29,8 +34,11 @@ TunerGenSA = R6Class("TunerGenSA",
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function() {
+      optimizer = OptimizerGenSA$new()
+      optimizer$param_set$values$smooth = FALSE
       super$initialize(
-        optimizer = OptimizerGenSA$new()
+        optimizer = optimizer,
+        man = "mlr3tuning::mlr_tuners_gensa"
       )
     }
   )

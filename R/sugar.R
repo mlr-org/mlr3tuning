@@ -12,7 +12,7 @@
 #' @examples
 #' tnr("random_search")
 tnr = function(.key, ...) {
-  dictionary_sugar(mlr_tuners, .key, ...)
+  dictionary_sugar_get(mlr_tuners, .key, ...)
 }
 
 #' @rdname tnr

@@ -149,7 +149,7 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
 \if{html}{\out{<div class="r">}}\preformatted{AutoTuner$new(
   learner,
   resampling,
-  measure,
+  measure = NULL,
   terminator,
   tuner,
   search_space = NULL,
