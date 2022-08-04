@@ -36,7 +36,7 @@ License: LGPL-3
 URL: https://mlr3tuning.mlr-org.com, https://github.com/mlr-org/mlr3tuning
 BugReports: https://github.com/mlr-org/mlr3tuning/issues
 Depends:
-    mlr3 (>= 0.13.4-9000)),
+    mlr3 (>= 0.13.4-9000),
     paradox (>= 0.7.0),
     R (>= 3.1.0)
 Imports:

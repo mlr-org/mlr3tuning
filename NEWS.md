@@ -1,3 +1,7 @@
+# mlr3tuning 0.13.1.9000
+
+* feat: Add option `evaluate_default` to evaluate learners with hyperparameters set to their default values.
+
 # mlr3tuning 0.13.1
 
 * feat: `Tuner` objects have the field `$id` now.
