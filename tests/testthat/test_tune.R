@@ -37,7 +37,7 @@ test_that("evaluate_default works", {
     learner = learner,
     resampling = rsmp("cv", folds = 3),
     measure = msr("classif.ce"),
-    term_evals = 10,
+    term_evals = 2,
     evaluate_default = TRUE
   )
 
@@ -54,7 +54,7 @@ test_that("evaluate_default works with logscale", {
     learner = learner,
     resampling = rsmp("cv", folds = 3),
     measure = msr("classif.ce"),
-    term_evals = 10,
+    term_evals = 2,
     evaluate_default = TRUE
   )
 
@@ -71,7 +71,7 @@ test_that("evaluate_default errors with trafo", {
     learner = learner,
     resampling = rsmp("cv", folds = 3),
     measure = msr("classif.ce"),
-    term_evals = 10,
+    term_evals = 2,
     evaluate_default = TRUE
   ), "Cannot evaluate default hyperparameter values")
 })
@@ -87,7 +87,7 @@ test_that("evaluate_default works without transformation and with logscale", {
     learner = learner,
     resampling = rsmp("cv", folds = 3),
     measure = msr("classif.ce"),
-    term_evals = 10,
+    term_evals = 2,
     evaluate_default = TRUE
   )
 
@@ -109,7 +109,7 @@ test_that("evaluate_default errors without transformation and with logscale and 
     learner = learner,
     resampling = rsmp("cv", folds = 3),
     measure = msr("classif.ce"),
-    term_evals = 10,
+    term_evals = 2,
     evaluate_default = TRUE
   ), "Cannot evaluate default hyperparameter values")
 })
@@ -133,7 +133,7 @@ test_that("evaluate_default errors with extra trafo", {
     resampling = rsmp("cv", folds = 3),
     measure = msr("classif.ce"),
     search_space = search_space,
-    term_evals = 10,
+    term_evals = 2,
     evaluate_default = TRUE
   ), "Cannot evaluate default hyperparameter values")
 })
@@ -155,7 +155,7 @@ test_that("evaluate_default errors with old parameter set api", {
     resampling = rsmp("cv", folds = 3),
     measure = msr("classif.ce"),
     search_space = search_space,
-    term_evals = 10,
+    term_evals = 2,
     evaluate_default = TRUE
   ), "Cannot evaluate default hyperparameter values")
 })

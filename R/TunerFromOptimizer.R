@@ -43,10 +43,11 @@ TunerFromOptimizer = R6Class("TunerFromOptimizer",
       #'
       #' @return [data.table::data.table].
       optimize = function(inst) {
-        # We check for both classes since there is no TuningInstance super
-        # class anymore and OptimInstance would not ensure that we are in the
-        # scope of mlr3tuning
         assert_multi_class(inst, c("TuningInstanceSingleCrit", "TuningInstanceMultiCrit"))
+
+        # evaluate learner with default hyperparameter values
+        if (get_private(inst)$.evaluate_default) evaluate_default(inst)
+
         res = private$.optimizer$optimize(inst)
         if (!inst$objective$keep_hotstart_stack) inst$objective$hotstart_stack = NULL
         res

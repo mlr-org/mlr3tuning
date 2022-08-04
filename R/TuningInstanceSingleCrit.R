@@ -29,6 +29,7 @@
 #' @template param_check_values
 #' @template param_allow_hotstart
 #' @template param_keep_hotstart_stack
+#' @template param_evaluate_default
 #' @template param_xdt
 #' @template param_learner_param_vals
 #'
@@ -94,9 +95,8 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     #' This defines the resampled performance of a learner on a task, a
     #' feasibility region for the parameters the tuner is supposed to optimize,
     #' and a termination criterion.
-    initialize = function(task, learner, resampling, measure = NULL, terminator, search_space = NULL,
-      store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE,
-      keep_hotstart_stack = FALSE) {
+    initialize = function(task, learner, resampling, measure = NULL, terminator, search_space = NULL, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, evaluate_default = FALSE) {
+      private$.evaluate_default = assert_flag(evaluate_default)
       learner = assert_learner(as_learner(learner, clone = TRUE))
 
       if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token"))) {
@@ -110,14 +110,12 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
       }
 
       # create codomain from measure
-      measures = assert_measures(as_measures(measure, task_type = task$task_type, clone = TRUE), task = task,
-        learner = learner)
+      measures = assert_measures(as_measures(measure, task_type = task$task_type, clone = TRUE), task = task, learner = learner)
       codomain = measures_to_codomain(measures)
 
       # initialized specialized tuning archive and objective
       archive = ArchiveTuning$new(search_space, codomain, check_values)
-      objective = ObjectiveTuning$new(task, learner, resampling, measures, store_benchmark_result, store_models,
-        check_values, allow_hotstart, keep_hotstart_stack, archive)
+      objective = ObjectiveTuning$new(task, learner, resampling, measures, store_benchmark_result, store_models, check_values, allow_hotstart, keep_hotstart_stack, archive)
 
       super$initialize(objective, search_space, terminator)
       # super class of instance initializes default archive, overwrite with tuning archive
@@ -154,5 +152,9 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     result_learner_param_vals = function() {
       private$.result$learner_param_vals[[1]]
     }
+  ),
+
+  private = list(
+    .evaluate_default = NULL
   )
 )

@@ -63,25 +63,25 @@ List of param values for the optimal learner call.}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{TuningInstanceMultiCrit$new()}}
-\item \href{#method-assign_result}{\code{TuningInstanceMultiCrit$assign_result()}}
-\item \href{#method-clone}{\code{TuningInstanceMultiCrit$clone()}}
+\item \href{#method-TuningInstanceMultiCrit-new}{\code{TuningInstanceMultiCrit$new()}}
+\item \href{#method-TuningInstanceMultiCrit-assign_result}{\code{TuningInstanceMultiCrit$assign_result()}}
+\item \href{#method-TuningInstanceMultiCrit-clone}{\code{TuningInstanceMultiCrit$clone()}}
 }
 }
-\if{html}{
-\out{<details open ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="clear">}\href{../../bbotk/html/OptimInstance.html#method-clear}{\code{bbotk::OptimInstance$clear()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="eval_batch">}\href{../../bbotk/html/OptimInstance.html#method-eval_batch}{\code{bbotk::OptimInstance$eval_batch()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="format">}\href{../../bbotk/html/OptimInstance.html#method-format}{\code{bbotk::OptimInstance$format()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="objective_function">}\href{../../bbotk/html/OptimInstance.html#method-objective_function}{\code{bbotk::OptimInstance$objective_function()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="print">}\href{../../bbotk/html/OptimInstance.html#method-print}{\code{bbotk::OptimInstance$print()}}\out{</span>}
-}
-\out{</details>}
-}
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="clear"><a href='../../bbotk/html/OptimInstance.html#method-OptimInstance-clear'><code>bbotk::OptimInstance$clear()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="eval_batch"><a href='../../bbotk/html/OptimInstance.html#method-OptimInstance-eval_batch'><code>bbotk::OptimInstance$eval_batch()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="format"><a href='../../bbotk/html/OptimInstance.html#method-OptimInstance-format'><code>bbotk::OptimInstance$format()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="objective_function"><a href='../../bbotk/html/OptimInstance.html#method-OptimInstance-objective_function'><code>bbotk::OptimInstance$objective_function()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="print"><a href='../../bbotk/html/OptimInstance.html#method-OptimInstance-print'><code>bbotk::OptimInstance$print()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-TuningInstanceMultiCrit-new"></a>}}
+\if{latex}{\out{\hypertarget{method-TuningInstanceMultiCrit-new}{}}}
 \subsection{Method \code{new()}}{
 Creates a new instance of this \link[R6:R6Class]{R6} class.
 
@@ -100,7 +100,8 @@ and a termination criterion.
   store_models = FALSE,
   check_values = FALSE,
   allow_hotstart = FALSE,
-  keep_hotstart_stack = FALSE
+  keep_hotstart_stack = FALSE,
+  evaluate_default = FALSE
 )}\if{html}{\out{</div>}}
 }
 
@@ -156,13 +157,17 @@ Allow to hotstart learners with previously fitted models. See also
 \item{\code{keep_hotstart_stack}}{(\code{logical(1)})\cr
 If \code{TRUE}, \link[mlr3:HotstartStack]{mlr3::HotstartStack} is kept in \verb{$objective$hotstart_stack}
 after tuning.}
+
+\item{\code{evaluate_default}}{(\code{logical(1)})\cr
+If \code{TRUE}, learner is evaluated with hyperparameters set to their default
+values at the start of the optimization.}
 }
 \if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-assign_result"></a>}}
-\if{latex}{\out{\hypertarget{method-assign_result}{}}}
+\if{html}{\out{<a id="method-TuningInstanceMultiCrit-assign_result"></a>}}
+\if{latex}{\out{\hypertarget{method-TuningInstanceMultiCrit-assign_result}{}}}
 \subsection{Method \code{assign_result()}}{
 The \link{Tuner} object writes the best found points
 and estimated performance values here. For internal use.
@@ -188,8 +193,8 @@ Fixed parameter values of the learner that are neither part of the}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-TuningInstanceMultiCrit-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-TuningInstanceMultiCrit-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

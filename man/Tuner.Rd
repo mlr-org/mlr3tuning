@@ -78,17 +78,17 @@ The referenced help package can be opened via method \verb{$help()}.}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{Tuner$new()}}
-\item \href{#method-format}{\code{Tuner$format()}}
-\item \href{#method-print}{\code{Tuner$print()}}
-\item \href{#method-help}{\code{Tuner$help()}}
-\item \href{#method-optimize}{\code{Tuner$optimize()}}
-\item \href{#method-clone}{\code{Tuner$clone()}}
+\item \href{#method-Tuner-new}{\code{Tuner$new()}}
+\item \href{#method-Tuner-format}{\code{Tuner$format()}}
+\item \href{#method-Tuner-print}{\code{Tuner$print()}}
+\item \href{#method-Tuner-help}{\code{Tuner$help()}}
+\item \href{#method-Tuner-optimize}{\code{Tuner$optimize()}}
+\item \href{#method-Tuner-clone}{\code{Tuner$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-Tuner-new"></a>}}
+\if{latex}{\out{\hypertarget{method-Tuner-new}{}}}
 \subsection{Method \code{new()}}{
 Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
@@ -136,8 +136,8 @@ The referenced help package can be opened via method \verb{$help()}.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-format"></a>}}
-\if{latex}{\out{\hypertarget{method-format}{}}}
+\if{html}{\out{<a id="method-Tuner-format"></a>}}
+\if{latex}{\out{\hypertarget{method-Tuner-format}{}}}
 \subsection{Method \code{format()}}{
 Helper for print outputs.
 \subsection{Usage}{
@@ -146,8 +146,8 @@ Helper for print outputs.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-print"></a>}}
-\if{latex}{\out{\hypertarget{method-print}{}}}
+\if{html}{\out{<a id="method-Tuner-print"></a>}}
+\if{latex}{\out{\hypertarget{method-Tuner-print}{}}}
 \subsection{Method \code{print()}}{
 Print method.
 \subsection{Usage}{
@@ -159,8 +159,8 @@ Print method.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-help"></a>}}
-\if{latex}{\out{\hypertarget{method-help}{}}}
+\if{html}{\out{<a id="method-Tuner-help"></a>}}
+\if{latex}{\out{\hypertarget{method-Tuner-help}{}}}
 \subsection{Method \code{help()}}{
 Opens the corresponding help page referenced by field \verb{$man}.
 \subsection{Usage}{
@@ -169,8 +169,8 @@ Opens the corresponding help page referenced by field \verb{$man}.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-optimize"></a>}}
-\if{latex}{\out{\hypertarget{method-optimize}{}}}
+\if{html}{\out{<a id="method-Tuner-optimize"></a>}}
+\if{latex}{\out{\hypertarget{method-Tuner-optimize}{}}}
 \subsection{Method \code{optimize()}}{
 Performs the tuning on a \link{TuningInstanceSingleCrit} or \link{TuningInstanceMultiCrit} until termination.
 The single evaluations will be written into the \link{ArchiveTuning} that resides in the \link{TuningInstanceSingleCrit}/\link{TuningInstanceMultiCrit}.
@@ -191,8 +191,8 @@ The result will be written into the instance object.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-Tuner-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-Tuner-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{
