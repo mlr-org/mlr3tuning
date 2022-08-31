@@ -3,11 +3,11 @@
 #' @name mlr_tuners_gensa
 #'
 #' @description
-#' Subclass for generalized simulated annealing tuning calling [GenSA::GenSA()]
-#' from package \CRANpkg{GenSA}.
+#' Subclass for generalized simulated annealing tuning.
+#' Calls [GenSA::GenSA()] from package \CRANpkg{GenSA}.
 #'
-#' In contrast to the [GenSA::GenSA()] defaults, we set `smooth = FALSE` as a
-#' default.
+#' @details
+#' In contrast to the [GenSA::GenSA()] defaults, we set `smooth = FALSE` as a default.
 #'
 #' @templateVar id gensa
 #' @template section_dictionary_tuners

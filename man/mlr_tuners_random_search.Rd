@@ -12,7 +12,8 @@ Bergstra J, Bengio Y (2012).
 }
 \description{
 Subclass for random search tuning.
-
+}
+\details{
 The random points are sampled by \code{\link[paradox:generate_design_random]{paradox::generate_design_random()}}.
 }
 \section{Dictionary}{

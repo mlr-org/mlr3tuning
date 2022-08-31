@@ -1,9 +1,8 @@
-#' @title ObjectiveTuning
+#' @title Class for Tuning Objective
 #'
 #' @description
-#' Stores the objective function that estimates the performance of
-#' hyperparameter configurations. This class is usually constructed internally
-#' by the [TuningInstanceSingleCrit] / [TuningInstanceMultiCrit].
+#' Stores the objective function that estimates the performance of hyperparameter configurations.
+#' This class is usually constructed internally by the [TuningInstanceSingleCrit] or [TuningInstanceMultiCrit].
 #'
 #' @template param_task
 #' @template param_learner

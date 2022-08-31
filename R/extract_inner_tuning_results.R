@@ -35,6 +35,7 @@
 #'   If `TRUE`, tuning instances are added to the table.
 #' @param ... (any)\cr
 #'   Additional arguments.
+#'
 #' @return [data.table::data.table()].
 #'
 #' @export
@@ -52,12 +53,13 @@
 #' rr = resample(tsk("iris"), at, resampling_outer, store_models = TRUE)
 #'
 #' extract_inner_tuning_results(rr)
-extract_inner_tuning_results = function(x, ...) {
+extract_inner_tuning_results = function(x, tuning_instance, ...) {
    UseMethod("extract_inner_tuning_results", x)
 }
 
 #' @export
-extract_inner_tuning_results.ResampleResult = function(x, ..., tuning_instance = FALSE) {
+#' @rdname extract_inner_tuning_results
+extract_inner_tuning_results.ResampleResult = function(x, tuning_instance = FALSE, ...) {
   rr = assert_resample_result(x)
   if (is.null(rr$learners[[1]]$model$tuning_instance)) {
     return(data.table())
@@ -78,7 +80,8 @@ extract_inner_tuning_results.ResampleResult = function(x, ..., tuning_instance =
 }
 
 #' @export
-extract_inner_tuning_results.BenchmarkResult = function(x, ..., tuning_instance = FALSE) {
+#' @rdname extract_inner_tuning_results
+extract_inner_tuning_results.BenchmarkResult = function(x, tuning_instance = FALSE, ...) {
   bmr = assert_benchmark_result(x)
   tab = imap_dtr(bmr$resample_results$resample_result, function(rr, i) {
      data = extract_inner_tuning_results(rr, tuning_instance = tuning_instance)

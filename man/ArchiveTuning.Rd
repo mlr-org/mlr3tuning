@@ -2,12 +2,20 @@
 % Please edit documentation in R/ArchiveTuning.R
 \name{ArchiveTuning}
 \alias{ArchiveTuning}
-\title{Logging Object for Evaluated Hyperparameter Configurations}
+\title{Class for Logging Evaluated Hyperparameter Configurations}
 \description{
-Container around a \code{\link[data.table:data.table]{data.table::data.table()}} which stores all evaluated
-hyperparameter configurations and performance scores.
+The \link{ArchiveTuning} stores all evaluated hyperparameter configurations and performance scores.
 }
-\section{Data structure}{
+\details{
+The \link{ArchiveTuning} is a container around a \code{\link[data.table:data.table]{data.table::data.table()}}.
+Each row corresponds to a single evaluation of a hyperparameter configuration.
+See the section on Data Structure for more information.
+The archive stores additionally a \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} (\verb{$benchmark_result}) that records the resampling experiments.
+Each experiment corresponds to to a single evaluation of a hyperparameter configuration.
+The table (\verb{$data}) and the benchmark result (\verb{$benchmark_result}) are linked by the \code{uhash} column.
+If the archive is passed to \code{as.data.table()}, both are joined automatically.
+}
+\section{Data Structure}{
 
 
 The table (\verb{$data}) has the following columns:
@@ -17,45 +25,29 @@ The table (\verb{$data}) has the following columns:
 \item \code{x_domain} (\code{list()})\cr
 Lists of (transformed) hyperparameter values that are passed to the learner.
 \item \code{runtime_learners} (\code{numeric(1)})\cr
-Sum of training and predict times logged in learners per
-\link[mlr3:ResampleResult]{mlr3::ResampleResult} / evaluation. This does not include potential
-overhead time.
+Sum of training and predict times logged in learners per \link[mlr3:ResampleResult]{mlr3::ResampleResult} / evaluation.
+This does not include potential overhead time.
 \item \code{timestamp} (\code{POSIXct})\cr
 Time stamp when the evaluation was logged into the archive.
 \item \code{batch_nr} (\code{integer(1)})\cr
-Hyperparameters are evaluated in batches. Each batch has a unique batch
-number.
+Hyperparameters are evaluated in batches.
+Each batch has a unique batch number.
 \item \code{uhash} (\code{character(1)})\cr
-Connects each hyperparameter configuration to the resampling experiment
-stored in the \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}.
+Connects each hyperparameter configuration to the resampling experiment stored in the \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}.
 }
-
-Each row corresponds to a single evaluation of a hyperparameter
-configuration.
-
-The archive stores additionally a \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}
-(\verb{$benchmark_result}) that records the resampling experiments. Each
-experiment corresponds to to a single evaluation of a hyperparameter
-configuration. The table (\verb{$data}) and the benchmark result
-(\verb{$benchmark_result}) are linked by the \code{uhash} column. If the results are
-viewed with \code{as.data.table()}, both are joined automatically.
 }
 
 \section{Analysis}{
 
-
-For analyzing the tuning results, it is recommended to pass the archive to
-\code{as.data.table()}. The returned data table is joined with the benchmark
-result which adds the \link[mlr3:ResampleResult]{mlr3::ResampleResult} for each hyperparameter
-evaluation.
+For analyzing the tuning results, it is recommended to pass the \link{ArchiveTuning} to \code{as.data.table()}.
+The returned data table is joined with the benchmark result which adds the \link[mlr3:ResampleResult]{mlr3::ResampleResult} for each hyperparameter evaluation.
 
 The archive provides various getters (e.g. \verb{$learners()}) to ease the access.
-All getters extract by position (\code{i}) or unique hash (\code{uhash}). For a
-complete list of all getters see the methods section.
+All getters extract by position (\code{i}) or unique hash (\code{uhash}).
+For a complete list of all getters see the methods section.
 
-The benchmark result (\verb{$benchmark_result}) allows to score the hyperparameter
-configurations again on a different measure. Alternatively, measures can be
-supplied to \code{as.data.table()}.
+The benchmark result (\verb{$benchmark_result}) allows to score the hyperparameter configurations again on a different measure.
+Alternatively, measures can be supplied to \code{as.data.table()}.
 
 The \CRANpkg{mlr3viz} package provides visualizations for tuning results.
 }

@@ -3,7 +3,7 @@
 \name{mlr_tuners_irace}
 \alias{mlr_tuners_irace}
 \alias{TunerIrace}
-\title{Tuning via Iterated Racing.}
+\title{Hyperparameter Tuning with Iterated Racing.}
 \source{
 Lopez-Ibanez M, Dubois-Lacoste J, Caceres LP, Birattari M, Stuetzle T (2016).
 \dQuote{The irace package: Iterated racing for automatic algorithm configuration.}
@@ -11,8 +11,8 @@ Lopez-Ibanez M, Dubois-Lacoste J, Caceres LP, Birattari M, Stuetzle T (2016).
 \doi{https://doi.org/10.1016/j.orp.2016.09.002}.
 }
 \description{
-\code{TunerIrace} class that implements iterated racing. Calls \code{\link[irace:irace]{irace::irace()}}
-from package \CRANpkg{irace}.
+Subclass for iterated racing.
+Calls \code{\link[irace:irace]{irace::irace()}} from package \CRANpkg{irace}.
 }
 \section{Dictionary}{
 

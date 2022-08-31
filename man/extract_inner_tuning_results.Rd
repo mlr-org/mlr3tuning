@@ -2,18 +2,24 @@
 % Please edit documentation in R/extract_inner_tuning_results.R
 \name{extract_inner_tuning_results}
 \alias{extract_inner_tuning_results}
+\alias{extract_inner_tuning_results.ResampleResult}
+\alias{extract_inner_tuning_results.BenchmarkResult}
 \title{Extract Inner Tuning Results}
 \usage{
-extract_inner_tuning_results(x, ...)
+extract_inner_tuning_results(x, tuning_instance, ...)
+
+\method{extract_inner_tuning_results}{ResampleResult}(x, tuning_instance = FALSE, ...)
+
+\method{extract_inner_tuning_results}{BenchmarkResult}(x, tuning_instance = FALSE, ...)
 }
 \arguments{
 \item{x}{(\link[mlr3:ResampleResult]{mlr3::ResampleResult} | \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}).}
 
-\item{...}{(any)\cr
-Additional arguments.}
-
 \item{tuning_instance}{(\code{logical(1)})\cr
 If \code{TRUE}, tuning instances are added to the table.}
+
+\item{...}{(any)\cr
+Additional arguments.}
 }
 \value{
 \code{\link[data.table:data.table]{data.table::data.table()}}.

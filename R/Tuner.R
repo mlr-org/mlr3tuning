@@ -1,25 +1,15 @@
-#' @title Tuner
+#' @title Class for Tuning Algorithms
 #'
 #' @include mlr_tuners.R
 #'
 #' @description
-#' Abstract `Tuner` class that implements the base functionality each tuner must provide.
-#' A tuner is an object that describes the tuning strategy, i.e. how to optimize the black-box function and its feasible set defined by the [TuningInstanceSingleCrit] / [TuningInstanceMultiCrit] object.
+#' The [Tuner] implements the optimization algorithm.
 #'
-#' A tuner must write its result into the [TuningInstanceSingleCrit]/[TuningInstanceMultiCrit] using the `assign_result` method of the [bbotk::OptimInstance] at the end of its tuning in order to store the best selected hyperparameter configuration and its estimated performance vector.
-#'
-#' @section Private Methods:
-#' * `.optimize(instance)` -> `NULL`\cr
-#'   Abstract base method. Implement to specify tuning of your subclass.
-#'   See technical details sections.
-#' * `.assign_result(instance)` -> `NULL`\cr
-#'   Abstract base method. Implement to specify how the final configuration is selected.
-#'   See technical details sections.
-#'
-#' @section Technical Details and Subclasses:
+#' @details
+#' [Tuner] is a abstract base class that implements the base functionality each tuner must provide.
 #' A subclass is implemented in the following way:
 #'  * Inherit from Tuner.
-#'  * Specify the private abstract method `$.tune()` and use it to call into your optimizer.
+#'  * Specify the private abstract method `$.optimize()` and use it to call into your optimizer.
 #'  * You need to call `instance$eval_batch()` to evaluate design points.
 #'  * The batch evaluation is requested at the [TuningInstanceSingleCrit]/[TuningInstanceMultiCrit] object `instance`, so each batch is possibly executed in parallel via [mlr3::benchmark()], and all evaluations are stored inside of `instance$archive`.
 #'  * Before the batch evaluation, the [bbotk::Terminator] is checked, and if it is positive, an exception of class `"terminated_error"` is generated.
@@ -29,6 +19,14 @@
 #'    How many more depends on the setting of the batch size.
 #'  * Overwrite the private super-method `.assign_result()` if you want to decide yourself how to estimate the final configuration in the instance and its estimated performance.
 #'    The default behavior is: We pick the best resample-experiment, regarding the given measure, then assign its configuration and aggregated performance to the instance.
+#'
+#' @section Private Methods:
+#' * `.optimize(instance)` -> `NULL`\cr
+#'   Abstract base method. Implement to specify tuning of your subclass.
+#'   See details sections.
+#' * `.assign_result(instance)` -> `NULL`\cr
+#'   Abstract base method. Implement to specify how the final configuration is selected.
+#'   See details sections.
 #'
 #' @template param_man
 #'

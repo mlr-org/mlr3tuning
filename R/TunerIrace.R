@@ -1,11 +1,11 @@
-#' @title Tuning via Iterated Racing.
+#' @title Hyperparameter Tuning with Iterated Racing.
 #'
 #' @include Tuner.R
 #' @name mlr_tuners_irace
 #'
 #' @description
-#' `TunerIrace` class that implements iterated racing. Calls [irace::irace()]
-#' from package \CRANpkg{irace}.
+#' Subclass for iterated racing.
+#' Calls [irace::irace()] from package \CRANpkg{irace}.
 #'
 #' @templateVar id irace
 #' @template section_dictionary_tuners

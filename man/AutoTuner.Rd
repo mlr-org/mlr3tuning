@@ -2,45 +2,55 @@
 % Please edit documentation in R/AutoTuner.R
 \name{AutoTuner}
 \alias{AutoTuner}
-\title{AutoTuner}
+\title{Class for Automatic Tuning}
 \description{
-The \code{AutoTuner} is a \link[mlr3:Learner]{mlr3::Learner} which wraps another \link[mlr3:Learner]{mlr3::Learner}
-and performs the following steps during \verb{$train()}:
+The \link{AutoTuner} wraps a \link[mlr3:Learner]{mlr3::Learner} and augments it with an automatic tuning process for a given set of hyperparameters.
+The \code{\link[=auto_tuner]{auto_tuner()}} function creates an \link{AutoTuner} object.
+}
+\details{
+The \link{AutoTuner} is a \link[mlr3:Learner]{mlr3::Learner} which wraps another \link[mlr3:Learner]{mlr3::Learner} and performs the following steps during \verb{$train()}:
 \enumerate{
-\item The hyperparameters of the wrapped (inner) learner are trained on the
-training data via resampling.
-The tuning can be specified by providing a \link{Tuner}, a \link[bbotk:Terminator]{bbotk::Terminator},
-a search space as \link[paradox:ParamSet]{paradox::ParamSet}, a \link[mlr3:Resampling]{mlr3::Resampling} and a
-\link[mlr3:Measure]{mlr3::Measure}.
-\item The best found hyperparameter configuration is set as hyperparameters
-for the wrapped (inner) learner stored in \code{at$learner}. Access the tuned
-hyperparameters via \code{at$learner$param_set$values}.
-\item A final model is fit on the complete training data using the now
-parametrized wrapped learner. The respective model is available via field
-\code{at$learner$model}.
+\item The hyperparameters of the wrapped (inner) learner are trained on the training data via resampling.
+The tuning can be specified by providing a \link{Tuner}, a \link[bbotk:Terminator]{bbotk::Terminator}, a search space as \link[paradox:ParamSet]{paradox::ParamSet}, a \link[mlr3:Resampling]{mlr3::Resampling} and a \link[mlr3:Measure]{mlr3::Measure}.
+\item The best found hyperparameter configuration is set as hyperparameters for the wrapped (inner) learner stored in \code{at$learner}.
+Access the tuned hyperparameters via \code{at$tuning_result}.
+\item A final model is fit on the complete training data using the now parametrized wrapped learner.
+The respective model is available via field \code{at$learner$model}.
 }
 
-During \verb{$predict()} the \code{AutoTuner} just calls the predict method of the
-wrapped (inner) learner. A set timeout is disabled while fitting the final
-model.
-
-Note that this approach allows to perform nested resampling by passing an
-\link{AutoTuner} object to \code{\link[mlr3:resample]{mlr3::resample()}} or \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
-To access the inner resampling results, set \code{store_tuning_instance = TRUE}
-and execute \code{\link[mlr3:resample]{mlr3::resample()}} or \code{\link[mlr3:benchmark]{mlr3::benchmark()}} with
-\code{store_models = TRUE} (see examples).
+During \verb{$predict()} the \code{AutoTuner} just calls the predict method of the wrapped (inner) learner.
+A set timeout is disabled while fitting the final model.
 }
+\section{Resources}{
+
+\itemize{
+\item \href{https://mlr3book.mlr-org.com/optimization.html#autotuner}{book chapter} on automatic tuning.
+\item \href{https://mlr3book.mlr-org.com/optimization.html#nested-resampling}{book chapter} on nested resampling.
+\item \href{https://mlr-org.com/gallery/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/}{gallery post} on tuning and nested resampling.
+}
+}
+
+\section{Nested Resampling}{
+
+Nested resampling can be performed by passing an \link{AutoTuner} object to \code{\link[mlr3:resample]{mlr3::resample()}} or \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
+To access the inner resampling results, set \code{store_tuning_instance = TRUE} and execute \code{\link[mlr3:resample]{mlr3::resample()}} or \code{\link[mlr3:benchmark]{mlr3::benchmark()}} with \code{store_models = TRUE} (see examples).
+The \link[mlr3:Resampling]{mlr3::Resampling} passed to the \link{AutoTuner} is meant to be the inner resampling, operating on the training set of an arbitrary outer resampling.
+For this reason it is not feasible to pass an instantiated \link[mlr3:Resampling]{mlr3::Resampling} here.
+}
+
 \examples{
+# Automatic Tuning
+
 task = tsk("pima")
 train_set = sample(task$nrow, 0.8 * task$nrow)
 test_set = setdiff(seq_len(task$nrow), train_set)
 
-at = AutoTuner$new(
+at = auto_tuner(
+  method = tnr("random_search"),
   learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
-  resampling = rsmp("holdout"),
+  resampling = rsmp ("holdout"),
   measure = msr("classif.ce"),
-  terminator = trm("evals", n_evals = 5),
-  tuner = tnr("random_search"))
+  term_evals = 4)
 
 # tune hyperparameters and fit final model
 at$train(task, row_ids = train_set)
@@ -61,14 +71,16 @@ at$learner
 at$tuning_instance
 
 
-### nested resampling
+# Nested Resampling
 
-at = AutoTuner$new(
+at = auto_tuner(
+  method = tnr("random_search"),
   learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
-  resampling = rsmp("holdout"),
+  resampling = rsmp ("holdout"),
   measure = msr("classif.ce"),
-  terminator = trm("evals", n_evals = 5),
-  tuner = tnr("random_search"))
+  term_evals = 4)
+
+at$train(task)
 
 resampling_outer = rsmp("cv", folds = 3)
 rr = resample(task, at, resampling_outer, store_models = TRUE)
@@ -164,26 +176,30 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner})\cr
-Learner to tune, see \link{TuningInstanceSingleCrit}.}
+Learner to tune.}
 
 \item{\code{resampling}}{(\link[mlr3:Resampling]{mlr3::Resampling})\cr
-Resampling strategy during tuning, see \link{TuningInstanceSingleCrit}. This
-\link[mlr3:Resampling]{mlr3::Resampling} is meant to be the \strong{inner} resampling, operating
-on the training set of an arbitrary outer resampling. For this reason
-it is not feasible to pass an instantiated \link[mlr3:Resampling]{mlr3::Resampling} here.}
+Resampling that is used to evaluated the performance of the hyperparameter
+configurations. Uninstantiated resamplings are instantiated during
+construction so that all configurations are evaluated on the same data
+splits. Already instantiated resamplings are kept unchanged. Specialized
+\link{Tuner} change the resampling e.g. to evaluate a hyperparameter
+configuration on different data splits. This field, however, always returns
+the resampling passed in construction.}
 
 \item{\code{measure}}{(\link[mlr3:Measure]{mlr3::Measure})\cr
-Performance measure to optimize.}
+Measure to optimize. If \code{NULL}, default measure is used.}
 
-\item{\code{terminator}}{(\link[bbotk:Terminator]{bbotk::Terminator})\cr
-When to stop tuning, see \link{TuningInstanceSingleCrit}.}
+\item{\code{terminator}}{(\link{Terminator})\cr
+Stop criterion of the tuning process.}
 
 \item{\code{tuner}}{(\link{Tuner})\cr
 Tuning algorithm to run.}
 
 \item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
-Hyperparameter search space. If \code{NULL}, the search space is constructed
-from the \link{TuneToken} in the \code{ParamSet} of the learner.}
+Hyperparameter search space. If \code{NULL} (default), the search space is
+constructed from the \link{TuneToken} of the learner's parameter set
+(learner$param_set).}
 
 \item{\code{store_tuning_instance}}{(\code{logical(1)})\cr
 If \code{TRUE} (default), stores the internally created
