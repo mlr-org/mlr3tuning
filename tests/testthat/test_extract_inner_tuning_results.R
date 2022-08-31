@@ -150,6 +150,6 @@ test_that("extract_inner_tuning_results returns tuning_instance", {
   tab = extract_inner_tuning_results(bmr, tuning_instance = TRUE)
   expect_data_table(tab, nrows = 4)
   expect_named(tab, c("experiment", "iteration", "cp", "classif.ce", "learner_param_vals", "x_domain", "tuning_instance", "task_id", "learner_id", "resampling_id"))
-  expect_equal(unique(ibmr$experiment), c(1, 2))
+  expect_equal(unique(tab$experiment), c(1, 2))
 })
 
