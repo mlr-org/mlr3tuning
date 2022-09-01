@@ -36,7 +36,7 @@ test_that("evaluate_default works", {
     task = tsk("iris"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
-    measure = msr("classif.ce"),
+    measures = msr("classif.ce"),
     term_evals = 2,
     evaluate_default = TRUE
   )
@@ -53,7 +53,7 @@ test_that("evaluate_default works with logscale", {
     task = tsk("iris"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
-    measure = msr("classif.ce"),
+    measures = msr("classif.ce"),
     term_evals = 2,
     evaluate_default = TRUE
   )
@@ -70,7 +70,7 @@ test_that("evaluate_default errors with trafo", {
     task = tsk("iris"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
-    measure = msr("classif.ce"),
+    measures = msr("classif.ce"),
     term_evals = 2,
     evaluate_default = TRUE
   ), "Cannot evaluate default hyperparameter values")
@@ -86,7 +86,7 @@ test_that("evaluate_default works without transformation and with logscale", {
     task = tsk("iris"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
-    measure = msr("classif.ce"),
+    measures = msr("classif.ce"),
     term_evals = 2,
     evaluate_default = TRUE
   )
@@ -108,7 +108,7 @@ test_that("evaluate_default errors without transformation and with logscale and 
     task = tsk("iris"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
-    measure = msr("classif.ce"),
+    measures = msr("classif.ce"),
     term_evals = 2,
     evaluate_default = TRUE
   ), "Cannot evaluate default hyperparameter values")
@@ -131,7 +131,7 @@ test_that("evaluate_default errors with extra trafo", {
     task = tsk("iris"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
-    measure = msr("classif.ce"),
+    measures = msr("classif.ce"),
     search_space = search_space,
     term_evals = 2,
     evaluate_default = TRUE
@@ -153,7 +153,7 @@ test_that("evaluate_default errors with old parameter set api", {
     task = tsk("iris"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
-    measure = msr("classif.ce"),
+    measures = msr("classif.ce"),
     search_space = search_space,
     term_evals = 2,
     evaluate_default = TRUE
