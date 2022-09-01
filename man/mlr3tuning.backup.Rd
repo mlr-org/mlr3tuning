@@ -7,5 +7,5 @@
 This \link{Callback} writes the \link{BenchmarkResult} after each batch to disk.
 }
 \examples{
-cllb("mlr3tuning.backup", path = "backup.rds")
+clbk("mlr3tuning.backup", path = "backup.rds")
 }

@@ -3,14 +3,10 @@
 #' @name mlr3tuning.early_stopping
 #'
 #' @description
-#' This callback extract the optimal number of trees from XGBoost models and
-#'
 #' When training an XGBoost learner, early stopping can be used to find the optimal number of trees.
 #'
-#'
-#'
 #' @examples
-#' cllb("mlr3tuning.early_stopping")
+#' clbk("mlr3tuning.early_stopping")
 NULL
 
 callback_early_stopping = custom_callback("mlr3tuning.early_stopping",
@@ -63,7 +59,7 @@ mlr_callbacks$add("mlr3tuning.early_stopping", callback_early_stopping)
 #' This [Callback] writes the [BenchmarkResult] after each batch to disk.
 #'
 #' @examples
-#' cllb("mlr3tuning.backup", path = "backup.rds")
+#' clbk("mlr3tuning.backup", path = "backup.rds")
 NULL
 
 callback_backup = custom_callback("mlr3tuning.backup",
