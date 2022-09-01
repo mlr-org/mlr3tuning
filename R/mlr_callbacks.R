@@ -5,6 +5,11 @@
 #' @description
 #' When training an XGBoost learner, early stopping can be used to find the optimal number of trees.
 #'
+#' @details
+#' This [Callback] extracts the maximum number of trees found during resampling.
+#' The maximum number of trees are added to the [ArchiveTuning] in the column `"max_nrounds"`.
+#'
+#'
 #' @examples
 #' clbk("mlr3tuning.early_stopping")
 NULL
