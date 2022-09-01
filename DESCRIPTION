@@ -1,6 +1,6 @@
 Package: mlr3tuning
 Title: Tuning for 'mlr3'
-Version: 0.13.1.9000
+Version: 0.14.0.9000
 Authors@R:
     c(person(given = "Marc",
              family = "Becker",
@@ -36,7 +36,7 @@ License: LGPL-3
 URL: https://mlr3tuning.mlr-org.com, https://github.com/mlr-org/mlr3tuning
 BugReports: https://github.com/mlr-org/mlr3tuning/issues
 Depends:
-    mlr3 (>= 0.13.4-9000),
+    mlr3 (>= 0.14.0),
     paradox (>= 0.7.0),
     R (>= 3.1.0)
 Imports:
@@ -82,8 +82,8 @@ Collate:
     'TunerIrace.R'
     'TunerNLoptr.R'
     'TunerRandomSearch.R'
-    'TuningInstanceMulticrit.R'
     'TuningInstanceSingleCrit.R'
+    'TuningInstanceMulticrit.R'
     'as_search_space.R'
     'assertions.R'
     'auto_tuner.R'

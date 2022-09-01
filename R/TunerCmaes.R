@@ -3,8 +3,8 @@
 #' @name mlr_tuners_cmaes
 #'
 #' @description
-#' Subclass that implements CMA-ES calling [adagio::pureCMAES()]
-#' from package \CRANpkg{adagio}.
+#' Subclass for Covariance Matrix Adaptation Evolution Strategy (CMA-ES).
+#' Calls [adagio::pureCMAES()] from package \CRANpkg{adagio}.
 #'
 #' @templateVar id cmaes
 #' @template section_dictionary_tuners
@@ -13,13 +13,12 @@
 #' \describe{
 #' \item{`sigma`}{`numeric(1)`}
 #' \item{`start_values`}{`character(1)`\cr
-#' Create `random` start values or based on `center` of search space? In the
-#' latter case, it is the center of the parameters before a trafo is applied.}
+#' Create `random` start values or based on `center` of search space?
+#' In the latter case, it is the center of the parameters before a trafo is applied.}
 #' }
 #'
-#' For the meaning of the control parameters, see [adagio::pureCMAES()]. Note
-#' that we have removed all control parameters which refer to the termination of
-#' the algorithm and where our terminators allow to obtain the same behavior.
+#' For the meaning of the control parameters, see [adagio::pureCMAES()].
+#' Note that we have removed all control parameters which refer to the termination of the algorithm and where our terminators allow to obtain the same behavior.
 #'
 #' @template section_progress_bars
 #' @template section_logging

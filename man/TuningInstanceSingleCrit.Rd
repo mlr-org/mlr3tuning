@@ -2,25 +2,31 @@
 % Please edit documentation in R/TuningInstanceSingleCrit.R
 \name{TuningInstanceSingleCrit}
 \alias{TuningInstanceSingleCrit}
-\title{Single Criterion Tuning Instance}
+\title{Class for Single Criterion Tuning}
 \description{
-Specifies a general single-criteria tuning scenario, including objective
-function and archive for Tuners to act upon. This class stores an
-\link{ObjectiveTuning} object that encodes the black box objective function which
-a \link{Tuner} has to optimize. It allows the basic operations of querying the
-objective at design points (\verb{$eval_batch()}), storing the evaluations in the
-internal \link{ArchiveTuning} and accessing the final result (\verb{$result}).
-
-Evaluations of hyperparameter configurations are performed in batches by
-calling \code{\link[mlr3:benchmark]{mlr3::benchmark()}} internally. Before a batch is evaluated, the
-\link[bbotk:Terminator]{bbotk::Terminator} is queried for the remaining budget. If the available
-budget is exhausted, an exception is raised, and no further evaluations can
-be performed from this point on.
-
-The tuner is also supposed to store its final result, consisting of a
-selected hyperparameter configuration and associated estimated performance
-values, by calling the method \code{instance$assign_result}.
+The \link{TuningInstanceSingleCrit} specifies a tuning task for \link[=Tuner]{Tuners}.
+The instance is not created by the user but internally when the function \code{\link[=tune]{tune()}} is called.
 }
+\details{
+The instance contains an \link{ObjectiveTuning} object that encodes the black box objective function a \link{Tuner} has to optimize.
+The instance allows the basic operations of querying the objective at design points (\verb{$eval_batch()}).
+This operation is usually done by the \link{Tuner}.
+Evaluations of hyperparameter configurations are performed in batches by calling \code{\link[mlr3:benchmark]{mlr3::benchmark()}} internally.
+The evaluated hyperparameter configurations are stored in an \link[=ArchiveTuning]{Archive} (\verb{$archive}).
+Before a batch is evaluated, the \link[bbotk:Terminator]{bbotk::Terminator} is queried for the remaining budget.
+If the available budget is exhausted, an exception is raised, and no further evaluations can be performed from this point on.
+The tuner is also supposed to store its final result, consisting of a  selected hyperparameter configuration and associated estimated performance values, by calling the method \code{instance$assign_result}.
+}
+\section{Resources}{
+
+\itemize{
+\item \href{https://mlr3book.mlr-org.com/optimization.html#tuning}{book chapter} on hyperparameter optimization.
+\item \href{https://mlr3book.mlr-org.com/optimization.html#searchspace}{book chapter} on tuning spaces.
+\item \href{https://mlr-org.com/gallery/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/}{gallery post} on tuning.
+\item \href{https://mlr3tuningspaces.mlr-org.com/}{mlr3tuningspaces} extension package.
+}
+}
+
 \section{Callbacks}{
 
 Callbacks allow the user customize the tuning.
@@ -32,56 +38,21 @@ Currently, the following callbacks are available:
 }
 
 \examples{
-library(data.table)
+learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
 
-# define search space
-search_space = ps(
-  cp = p_dbl(lower = 0.001, upper = 0.1),
-  minsplit = p_int(lower = 1, upper = 10)
-)
-
-# initialize instance
-instance = TuningInstanceSingleCrit$new(
-  task = tsk("iris"),
-  learner = lrn("classif.rpart"),
-  resampling = rsmp("holdout"),
-  measure = msr("classif.ce"),
-  search_space = search_space,
-  terminator = trm("evals", n_evals = 5)
-)
-
-# generate design
-design = data.table(cp = c(0.05, 0.01), minsplit = c(5, 3))
-
-# eval design
-instance$eval_batch(design)
-
-# show archive
-instance$archive
-
-### error handling
-
-# get a learner which breaks with 50\% probability
-# set encapsulation + fallback
-learner = lrn("classif.debug", error_train = 0.5)
-learner$encapsulate = c(train = "evaluate", predict = "evaluate")
-learner$fallback = lrn("classif.featureless")
-
-# define search space
-search_space = ps(
- x = p_dbl(lower = 0, upper = 1)
-)
-
-instance = TuningInstanceSingleCrit$new(
-  task = tsk("wine"),
+instance = tune(
+  method = "random_search",
+  task = tsk("pima"),
   learner = learner,
-  resampling = rsmp("cv", folds = 3),
-  measure = msr("classif.ce"),
-  search_space = search_space,
-  terminator = trm("evals", n_evals = 5)
-)
+  resampling = rsmp ("holdout"),
+  measures = msr("classif.ce"),
+  term_evals = 4)
 
-instance$eval_batch(data.table(x = 1:5 / 5))
+# get optimized hyperparameters
+instance$result
+
+# apply hyperparameter values to learner
+learner$param_set$values = instance$result_learner_param_vals
 }
 \section{Super classes}{
 \code{\link[bbotk:OptimInstance]{bbotk::OptimInstance}} -> \code{\link[bbotk:OptimInstanceSingleCrit]{bbotk::OptimInstanceSingleCrit}} -> \code{TuningInstanceSingleCrit}

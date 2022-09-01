@@ -16,11 +16,11 @@ Xiang Y, Gubian S, Suomela B, Hoeng J (2013).
 \doi{10.32614/rj-2013-002}.
 }
 \description{
-Subclass for generalized simulated annealing tuning calling \code{\link[GenSA:GenSA]{GenSA::GenSA()}}
-from package \CRANpkg{GenSA}.
-
-In contrast to the \code{\link[GenSA:GenSA]{GenSA::GenSA()}} defaults, we set \code{smooth = FALSE} as a
-default.
+Subclass for generalized simulated annealing tuning.
+Calls \code{\link[GenSA:GenSA]{GenSA::GenSA()}} from package \CRANpkg{GenSA}.
+}
+\details{
+In contrast to the \code{\link[GenSA:GenSA]{GenSA::GenSA()}} defaults, we set \code{smooth = FALSE} as a default.
 }
 \section{Dictionary}{
 

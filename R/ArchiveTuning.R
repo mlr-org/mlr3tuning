@@ -1,57 +1,46 @@
-#' @title Logging Object for Evaluated Hyperparameter Configurations
+#' @title Class for Logging Evaluated Hyperparameter Configurations
 #'
 #' @description
-#' Container around a [data.table::data.table()] which stores all evaluated
-#' hyperparameter configurations and performance scores.
+#' The [ArchiveTuning] stores all evaluated hyperparameter configurations and performance scores.
 #'
-#' @template param_search_space
-#' @template param_codomain
+#' @details
+#' The [ArchiveTuning] is a container around a [data.table::data.table()].
+#' Each row corresponds to a single evaluation of a hyperparameter configuration.
+#' See the section on Data Structure for more information.
+#' The archive stores additionally a [mlr3::BenchmarkResult] (`$benchmark_result`) that records the resampling experiments.
+#' Each experiment corresponds to to a single evaluation of a hyperparameter configuration.
+#' The table (`$data`) and the benchmark result (`$benchmark_result`) are linked by the `uhash` column.
+#' If the archive is passed to `as.data.table()`, both are joined automatically.
 #'
-#' @section Data structure:
+#' @section Data Structure:
 #'
 #' The table (`$data`) has the following columns:
 #'
 #' * One column for each hyperparameter of the search space (`$search_space`).
 #' * One column for each performance measure (`$codomain`).
 #' * `x_domain` (`list()`)\cr
-#'   Lists of (transformed) hyperparameter values that are passed to the learner.
+#'     Lists of (transformed) hyperparameter values that are passed to the learner.
 #' * `runtime_learners` (`numeric(1)`)\cr
-#'   Sum of training and predict times logged in learners per
-#'   [mlr3::ResampleResult] / evaluation. This does not include potential
-#'   overhead time.
+#'     Sum of training and predict times logged in learners per [mlr3::ResampleResult] / evaluation.
+#'     This does not include potential overhead time.
 #' * `timestamp` (`POSIXct`)\cr
-#'   Time stamp when the evaluation was logged into the archive.
+#'     Time stamp when the evaluation was logged into the archive.
 #' * `batch_nr` (`integer(1)`)\cr
-#'   Hyperparameters are evaluated in batches. Each batch has a unique batch
-#'   number.
+#'     Hyperparameters are evaluated in batches.
+#'     Each batch has a unique batch number.
 #' * `uhash` (`character(1)`)\cr
-#'   Connects each hyperparameter configuration to the resampling experiment
-#'   stored in the [mlr3::BenchmarkResult].
-#'
-#' Each row corresponds to a single evaluation of a hyperparameter
-#' configuration.
-#'
-#' The archive stores additionally a [mlr3::BenchmarkResult]
-#' (`$benchmark_result`) that records the resampling experiments. Each
-#' experiment corresponds to to a single evaluation of a hyperparameter
-#' configuration. The table (`$data`) and the benchmark result
-#' (`$benchmark_result`) are linked by the `uhash` column. If the results are
-#' viewed with `as.data.table()`, both are joined automatically.
+#'     Connects each hyperparameter configuration to the resampling experiment stored in the [mlr3::BenchmarkResult].
 #'
 #' @section Analysis:
-#'
-#' For analyzing the tuning results, it is recommended to pass the archive to
-#' `as.data.table()`. The returned data table is joined with the benchmark
-#' result which adds the [mlr3::ResampleResult] for each hyperparameter
-#' evaluation.
+#' For analyzing the tuning results, it is recommended to pass the [ArchiveTuning] to `as.data.table()`.
+#' The returned data table is joined with the benchmark result which adds the [mlr3::ResampleResult] for each hyperparameter evaluation.
 #'
 #' The archive provides various getters (e.g. `$learners()`) to ease the access.
-#' All getters extract by position (`i`) or unique hash (`uhash`). For a
-#' complete list of all getters see the methods section.
+#' All getters extract by position (`i`) or unique hash (`uhash`).
+#' For a complete list of all getters see the methods section.
 #'
-#' The benchmark result (`$benchmark_result`) allows to score the hyperparameter
-#' configurations again on a different measure. Alternatively, measures can be
-#' supplied to `as.data.table()`.
+#' The benchmark result (`$benchmark_result`) allows to score the hyperparameter configurations again on a different measure.
+#' Alternatively, measures can be supplied to `as.data.table()`.
 #'
 #' The \CRANpkg{mlr3viz} package provides visualizations for tuning results.
 #'
@@ -68,6 +57,10 @@
 #'       excluded.
 #'     * `measures` (List of [mlr3::Measure])\cr
 #'       Score hyperparameter configurations on additional measures.
+#'
+#' @template param_search_space
+#' @template param_codomain
+#'
 #' @export
 ArchiveTuning = R6Class("ArchiveTuning",
   inherit = Archive,

@@ -2,11 +2,10 @@
 % Please edit documentation in R/ObjectiveTuning.R
 \name{ObjectiveTuning}
 \alias{ObjectiveTuning}
-\title{ObjectiveTuning}
+\title{Class for Tuning Objective}
 \description{
-Stores the objective function that estimates the performance of
-hyperparameter configurations. This class is usually constructed internally
-by the \link{TuningInstanceSingleCrit} / \link{TuningInstanceMultiCrit}.
+Stores the objective function that estimates the performance of hyperparameter configurations.
+This class is usually constructed internally by the \link{TuningInstanceSingleCrit} or \link{TuningInstanceMultiCrit}.
 }
 \section{Super class}{
 \code{\link[bbotk:Objective]{bbotk::Objective}} -> \code{ObjectiveTuning}

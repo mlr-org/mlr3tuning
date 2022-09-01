@@ -2,31 +2,16 @@
 % Please edit documentation in R/Tuner.R
 \name{Tuner}
 \alias{Tuner}
-\title{Tuner}
+\title{Class for Tuning Algorithms}
 \description{
-Abstract \code{Tuner} class that implements the base functionality each tuner must provide.
-A tuner is an object that describes the tuning strategy, i.e. how to optimize the black-box function and its feasible set defined by the \link{TuningInstanceSingleCrit} / \link{TuningInstanceMultiCrit} object.
-
-A tuner must write its result into the \link{TuningInstanceSingleCrit}/\link{TuningInstanceMultiCrit} using the \code{assign_result} method of the \link[bbotk:OptimInstance]{bbotk::OptimInstance} at the end of its tuning in order to store the best selected hyperparameter configuration and its estimated performance vector.
+The \link{Tuner} implements the optimization algorithm.
 }
-\section{Private Methods}{
-
-\itemize{
-\item \code{.optimize(instance)} -> \code{NULL}\cr
-Abstract base method. Implement to specify tuning of your subclass.
-See technical details sections.
-\item \code{.assign_result(instance)} -> \code{NULL}\cr
-Abstract base method. Implement to specify how the final configuration is selected.
-See technical details sections.
-}
-}
-
-\section{Technical Details and Subclasses}{
-
+\details{
+\link{Tuner} is a abstract base class that implements the base functionality each tuner must provide.
 A subclass is implemented in the following way:
 \itemize{
 \item Inherit from Tuner.
-\item Specify the private abstract method \verb{$.tune()} and use it to call into your optimizer.
+\item Specify the private abstract method \verb{$.optimize()} and use it to call into your optimizer.
 \item You need to call \code{instance$eval_batch()} to evaluate design points.
 \item The batch evaluation is requested at the \link{TuningInstanceSingleCrit}/\link{TuningInstanceMultiCrit} object \code{instance}, so each batch is possibly executed in parallel via \code{\link[mlr3:benchmark]{mlr3::benchmark()}}, and all evaluations are stored inside of \code{instance$archive}.
 \item Before the batch evaluation, the \link[bbotk:Terminator]{bbotk::Terminator} is checked, and if it is positive, an exception of class \code{"terminated_error"} is generated.
@@ -36,6 +21,17 @@ In the  later case the current batch of evaluations is still stored in \code{ins
 How many more depends on the setting of the batch size.
 \item Overwrite the private super-method \code{.assign_result()} if you want to decide yourself how to estimate the final configuration in the instance and its estimated performance.
 The default behavior is: We pick the best resample-experiment, regarding the given measure, then assign its configuration and aggregated performance to the instance.
+}
+}
+\section{Private Methods}{
+
+\itemize{
+\item \code{.optimize(instance)} -> \code{NULL}\cr
+Abstract base method. Implement to specify tuning of your subclass.
+See details sections.
+\item \code{.assign_result(instance)} -> \code{NULL}\cr
+Abstract base method. Implement to specify how the final configuration is selected.
+See details sections.
 }
 }
 

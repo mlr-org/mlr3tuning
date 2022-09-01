@@ -3,12 +3,12 @@
 \name{mlr_tuners_design_points}
 \alias{mlr_tuners_design_points}
 \alias{TunerDesignPoints}
-\title{Hyperparameter Tuning with via Design Points}
+\title{Hyperparameter Tuning with Design Points}
 \description{
 Subclass for tuning w.r.t. fixed design points.
 
-We simply search over a set of points fully specified by the user. The points
-in the design are evaluated in order as given.
+We simply search over a set of points fully specified by the user.
+The points in the design are evaluated in order as given.
 }
 \section{Dictionary}{
 

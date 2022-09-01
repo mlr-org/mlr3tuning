@@ -1,48 +1,58 @@
-#' @title AutoTuner
+#' @title Class for Automatic Tuning
 #'
 #' @description
-#' The `AutoTuner` is a [mlr3::Learner] which wraps another [mlr3::Learner]
-#' and performs the following steps during `$train()`:
+#' The [AutoTuner] wraps a [mlr3::Learner] and augments it with an automatic tuning process for a given set of hyperparameters.
+#' The [auto_tuner()] function creates an [AutoTuner] object.
 #'
-#' 1. The hyperparameters of the wrapped (inner) learner are trained on the
-#'    training data via resampling.
-#'    The tuning can be specified by providing a [Tuner], a [bbotk::Terminator],
-#'    a search space as [paradox::ParamSet], a [mlr3::Resampling] and a
-#'    [mlr3::Measure].
-#' 2. The best found hyperparameter configuration is set as hyperparameters
-#'    for the wrapped (inner) learner stored in `at$learner`. Access the tuned
-#'    hyperparameters via `at$learner$param_set$values`.
-#' 3. A final model is fit on the complete training data using the now
-#'    parametrized wrapped learner. The respective model is available via field
-#'    `at$learner$model`.
+#' @details
+#' The [AutoTuner] is a [mlr3::Learner] which wraps another [mlr3::Learner] and performs the following steps during `$train()`:
 #'
-#' During `$predict()` the `AutoTuner` just calls the predict method of the
-#' wrapped (inner) learner. A set timeout is disabled while fitting the final
-#' model.
+#' 1. The hyperparameters of the wrapped (inner) learner are trained on the training data via resampling.
+#'    The tuning can be specified by providing a [Tuner], a [bbotk::Terminator], a search space as [paradox::ParamSet], a [mlr3::Resampling] and a [mlr3::Measure].
+#' 2. The best found hyperparameter configuration is set as hyperparameters for the wrapped (inner) learner stored in `at$learner`.
+#'    Access the tuned hyperparameters via `at$tuning_result`.
+#' 3. A final model is fit on the complete training data using the now parametrized wrapped learner.
+#'    The respective model is available via field `at$learner$model`.
 #'
-#' Note that this approach allows to perform nested resampling by passing an
-#' [AutoTuner] object to [mlr3::resample()] or [mlr3::benchmark()].
-#' To access the inner resampling results, set `store_tuning_instance = TRUE`
-#' and execute [mlr3::resample()] or [mlr3::benchmark()] with
-#' `store_models = TRUE` (see examples).
+#' During `$predict()` the `AutoTuner` just calls the predict method of the wrapped (inner) learner.
+#' A set timeout is disabled while fitting the final model.
 #'
+#' @section Resources:
+#' * [book chapter](https://mlr3book.mlr-org.com/optimization.html#autotuner) on automatic tuning.
+#' * [book chapter](https://mlr3book.mlr-org.com/optimization.html#nested-resampling) on nested resampling.
+#' * [gallery post](https://mlr-org.com/gallery/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/) on tuning and nested resampling.
+#'
+#' @section Nested Resampling:
+#' Nested resampling can be performed by passing an [AutoTuner] object to [mlr3::resample()] or [mlr3::benchmark()].
+#' To access the inner resampling results, set `store_tuning_instance = TRUE` and execute [mlr3::resample()] or [mlr3::benchmark()] with `store_models = TRUE` (see examples).
+#' The [mlr3::Resampling] passed to the [AutoTuner] is meant to be the inner resampling, operating on the training set of an arbitrary outer resampling.
+#' For this reason it is not feasible to pass an instantiated [mlr3::Resampling] here.
+#'
+#' @template param_learner
+#' @template param_resampling
+#' @template param_measure
+#' @template param_terminator
+#' @template param_search_space
+#' @template param_store_tuning_instance
+#' @template param_store_benchmark_result
 #' @template param_store_models
 #' @template param_check_values
-#' @template param_store_benchmark_result
 #' @template param_callbacks
 #'
 #' @export
 #' @examples
+#' # Automatic Tuning
+#'
 #' task = tsk("pima")
 #' train_set = sample(task$nrow, 0.8 * task$nrow)
 #' test_set = setdiff(seq_len(task$nrow), train_set)
 #'
-#' at = AutoTuner$new(
+#' at = auto_tuner(
+#'   method = tnr("random_search"),
 #'   learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
-#'   resampling = rsmp("holdout"),
+#'   resampling = rsmp ("holdout"),
 #'   measure = msr("classif.ce"),
-#'   terminator = trm("evals", n_evals = 5),
-#'   tuner = tnr("random_search"))
+#'   term_evals = 4)
 #'
 #' # tune hyperparameters and fit final model
 #' at$train(task, row_ids = train_set)
@@ -63,14 +73,16 @@
 #' at$tuning_instance
 #'
 #'
-#' ### nested resampling
+#' # Nested Resampling
 #'
-#' at = AutoTuner$new(
+#' at = auto_tuner(
+#'   method = tnr("random_search"),
 #'   learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
-#'   resampling = rsmp("holdout"),
+#'   resampling = rsmp ("holdout"),
 #'   measure = msr("classif.ce"),
-#'   terminator = trm("evals", n_evals = 5),
-#'   tuner = tnr("random_search"))
+#'   term_evals = 4)
+#'
+#' at$train(task)
 #'
 #' resampling_outer = rsmp("cv", folds = 3)
 #' rr = resample(task, at, resampling_outer, store_models = TRUE)
@@ -97,34 +109,9 @@ AutoTuner = R6Class("AutoTuner",
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #'
-    #' @param learner ([mlr3::Learner])\cr
-    #' Learner to tune, see [TuningInstanceSingleCrit].
-    #'
-    #' @param resampling ([mlr3::Resampling])\cr
-    #' Resampling strategy during tuning, see [TuningInstanceSingleCrit]. This
-    #' [mlr3::Resampling] is meant to be the **inner** resampling, operating
-    #' on the training set of an arbitrary outer resampling. For this reason
-    #' it is not feasible to pass an instantiated [mlr3::Resampling] here.
-    #'
-    #' @param measure ([mlr3::Measure])\cr
-    #' Performance measure to optimize.
-    #'
-    #' @param search_space ([paradox::ParamSet])\cr
-    #' Hyperparameter search space. If `NULL`, the search space is constructed
-    #' from the [TuneToken] in the `ParamSet` of the learner.
-    #'
-    #' @param terminator ([bbotk::Terminator])\cr
-    #' When to stop tuning, see [TuningInstanceSingleCrit].
-    #'
-    #' @param store_tuning_instance (`logical(1)`)\cr
-    #' If `TRUE` (default), stores the internally created
-    #' [TuningInstanceSingleCrit] with all intermediate results in slot
-    #' `$tuning_instance`.
-    #'
     #' @param tuner ([Tuner])\cr
-    #' Tuning algorithm to run.
-    initialize = function(learner, resampling, measure = NULL, terminator, tuner, search_space = NULL,
-      store_tuning_instance = TRUE, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, callbacks = list()) {
+    #'   Tuning algorithm to run.
+    initialize = function(learner, resampling, measure = NULL, terminator, tuner, search_space = NULL, store_tuning_instance = TRUE, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, callbacks = list()) {
       learner = assert_learner(as_learner(learner, clone = TRUE))
 
       if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token")) > 0) {

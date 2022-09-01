@@ -1,7 +1,24 @@
-#' @title Function for Tuning
+#' @title Function for Tuning a Learner
+#'
+#' @include TuningInstanceSingleCrit.R ArchiveTuning.R
 #'
 #' @description
 #' Function to tune a [mlr3::Learner].
+#' The function internally creates a [TuningInstanceSingleCrit] or [TuningInstanceMultiCrit] which describe the tuning task.
+#' It executes the tuning with the [Tuner] (`method`) and returns the result with the tuning instance (`$result`).
+#' The [ArchiveTuning] (`$archive`) stores all evaluated hyperparameter configurations and performance scores.
+#'
+#' @details
+#' The [mlr3::Task], [mlr3::Learner], [mlr3::Resampling], [mlr3::Measure] and [Terminator] are used to construct a [TuningInstanceSingleCrit].
+#' If multiple performance [Measures][Measure] are supplied, a [TuningInstanceMultiCrit] is created.
+#' The parameter `term_evals` and `term_time` are shortcuts to create a [Terminator].
+#' If both parameters are passed, a [TerminatorCombo] is constructed.
+#' For other [Terminators][Terminator], pass one with `terminator`.
+#' If no termination criterion is needed, set `term_evals`, `term_time` and `terminator` to `NULL`.
+#' The search space is created from [paradox::TuneToken] or is supplied by `search_space`.
+#'
+#' @inheritSection TuningInstanceSingleCrit Resources
+#' @inheritSection ArchiveTuning Analysis
 #'
 #' @param method (`character(1)` | [Tuner])\cr
 #'  Key to retrieve tuner from [mlr_tuners] dictionary or [Tuner] object.
@@ -12,44 +29,35 @@
 #' @param ... (named `list()`)\cr
 #'  Named arguments to be set as parameters of the tuner.
 #'
-#' @return `TuningInstanceSingleCrit` | `TuningInstanceMultiCrit`
+#' @return [TuningInstanceSingleCrit] | [TuningInstanceMultiCrit]
 #'
 #' @template param_task
 #' @template param_learner
 #' @template param_resampling
 #' @template param_measures
+#' @template param_terminator
 #' @template param_search_space
+#' @template param_store_benchmark_result
 #' @template param_store_models
+#' @template param_check_values
 #' @template param_allow_hotstart
 #' @template param_keep_hotstart_stack
 #' @template param_evaluate_default
 #' @template param_callbacks
 #'
 #' @export
-#' @examples
-#' learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
-#'
-#' instance = tune(
-#'   method = "random_search",
-#'   task = tsk("pima"),
-#'   learner = learner,
-#'   resampling = rsmp ("holdout"),
-#'   measures = msr("classif.ce"),
-#'   term_evals = 4)
-#'
-#' # apply hyperparameter values to learner
-#' learner$param_set$values = instance$result_learner_param_vals
-tune = function(method, task, learner, resampling, measures = NULL, term_evals = NULL, term_time = NULL, search_space = NULL, store_models = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, evaluate_default = FALSE, callbacks = list(), ...) {
+#' @inherit TuningInstanceSingleCrit examples
+tune = function(method, task, learner, resampling, measures = NULL, term_evals = NULL, term_time = NULL, terminator = NULL, search_space = NULL, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, evaluate_default = FALSE, callbacks = list(), ...) {
   tuner = if (is.character(method)) {
     assert_choice(method, mlr_tuners$keys())
     tnr(method, ...)
   } else {
     assert_tuner(method)
   }
-  terminator = terminator_selection(term_evals, term_time)
+  terminator = terminator %??% terminator_selection(term_evals, term_time)
 
   TuningInstance = if (!is.list(measures)) TuningInstanceSingleCrit else TuningInstanceMultiCrit
-  instance = TuningInstance$new(task, learner, resampling, measures, terminator, search_space, store_models = store_models, allow_hotstart = allow_hotstart, keep_hotstart_stack = keep_hotstart_stack, evaluate_default = evaluate_default, callbacks = callbacks)
+  instance = TuningInstance$new(task = task, learner = learner, resampling = resampling, measure = measures, terminator = terminator, search_space = search_space, store_benchmark_result = store_benchmark_result, store_models = store_models, check_values =  check_values, allow_hotstart = allow_hotstart, keep_hotstart_stack = keep_hotstart_stack, evaluate_default = evaluate_default, callbacks = callbacks)
 
   tuner$optimize(instance)
   instance

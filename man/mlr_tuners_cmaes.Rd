@@ -10,8 +10,8 @@ Hansen N (2016).
 1604.00772.
 }
 \description{
-Subclass that implements CMA-ES calling \code{\link[adagio:cmaes]{adagio::pureCMAES()}}
-from package \CRANpkg{adagio}.
+Subclass for Covariance Matrix Adaptation Evolution Strategy (CMA-ES).
+Calls \code{\link[adagio:cmaes]{adagio::pureCMAES()}} from package \CRANpkg{adagio}.
 }
 \section{Dictionary}{
 
@@ -29,13 +29,12 @@ tnr("cmaes")
 \describe{
 \item{\code{sigma}}{\code{numeric(1)}}
 \item{\code{start_values}}{\code{character(1)}\cr
-Create \code{random} start values or based on \code{center} of search space? In the
-latter case, it is the center of the parameters before a trafo is applied.}
+Create \code{random} start values or based on \code{center} of search space?
+In the latter case, it is the center of the parameters before a trafo is applied.}
 }
 
-For the meaning of the control parameters, see \code{\link[adagio:cmaes]{adagio::pureCMAES()}}. Note
-that we have removed all control parameters which refer to the termination of
-the algorithm and where our terminators allow to obtain the same behavior.
+For the meaning of the control parameters, see \code{\link[adagio:cmaes]{adagio::pureCMAES()}}.
+Note that we have removed all control parameters which refer to the termination of the algorithm and where our terminators allow to obtain the same behavior.
 }
 
 \section{Progress Bars}{

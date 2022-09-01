@@ -19,5 +19,6 @@
 ^cran-comments\.md$
 ^CRAN-RELEASE$
 ^README\.Rmd$
+^README\.html$
 ^revdep$
 ^CRAN-SUBMISSION$
