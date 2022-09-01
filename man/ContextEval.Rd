@@ -17,7 +17,7 @@ data = data.table(x = runif(10), y = sample(c("A", "B"), 10, replace = TRUE))
 
 # context only allows to access column y
 ContextExample = R6Class("ContextExample",
-  inherit = Context,
+  inherit = mlr3misc::Context,
   public = list(
     data = NULL,
 

@@ -11,8 +11,13 @@ auto_tuner(
   measure = NULL,
   term_evals = NULL,
   term_time = NULL,
+  terminator = NULL,
   search_space = NULL,
+  store_tuning_instance = TRUE,
+  store_benchmark_result = TRUE,
   store_models = FALSE,
+  check_values = FALSE,
+  callbacks = list(),
   ...
 )
 }
@@ -41,22 +46,13 @@ Number of allowed evaluations.}
 \item{term_time}{(\code{integer(1)})\cr
 Maximum allowed time in seconds.}
 
+\item{terminator}{(\link{Terminator})\cr
+Stop criterion of the tuning process.}
+
 \item{search_space}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
 Hyperparameter search space. If \code{NULL} (default), the search space is
 constructed from the \link{TuneToken} of the learner's parameter set
 (learner$param_set).}
-
-\item{store_models}{(\code{logical(1)})\cr
-If \code{TRUE}, fitted models are stored in the benchmark result
-(\code{archive$benchmark_result}). If \code{store_benchmark_result = FALSE}, models
-are only stored temporarily and not accessible after the tuning. This
-combination is needed for measures that require a model.}
-
-\item{...}{(named \code{list()})\cr
-Named arguments to be set as parameters of the tuner.}
-
-\item{terminator}{(\link{Terminator})\cr
-Stop criterion of the tuning process.}
 
 \item{store_tuning_instance}{(\code{logical(1)})\cr
 If \code{TRUE} (default), stores the internally created
@@ -66,6 +62,23 @@ If \code{TRUE} (default), stores the internally created
 \item{store_benchmark_result}{(\code{logical(1)})\cr
 If \code{TRUE} (default), store resample result of evaluated hyperparameter
 configurations in archive as \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}.}
+
+\item{store_models}{(\code{logical(1)})\cr
+If \code{TRUE}, fitted models are stored in the benchmark result
+(\code{archive$benchmark_result}). If \code{store_benchmark_result = FALSE}, models
+are only stored temporarily and not accessible after the tuning. This
+combination is needed for measures that require a model.}
+
+\item{check_values}{(\code{logical(1)})\cr
+If \code{TRUE}, hyperparameter values are checked before evaluation and
+performance scores after. If \code{FALSE} (default), values are unchecked but
+computational overhead is reduced.}
+
+\item{callbacks}{(list of \link[mlr3misc:Callback]{mlr3misc::Callback})\cr
+List of callbacks.}
+
+\item{...}{(named \code{list()})\cr
+Named arguments to be set as parameters of the tuner.}
 }
 \value{
 \link{AutoTuner}.

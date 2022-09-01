@@ -74,7 +74,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       self$store_models = assert_flag(store_models)
       self$archive = assert_r6(archive, "ArchiveTuning", null.ok = TRUE)
       if (is.null(self$archive)) self$allow_hotstart = self$store_benchmark_result = self$store_models = FALSE
-      self$callbacks = assert_callbacks(callbacks)
+      self$callbacks = assert_callbacks(as_callbacks(callbacks))
 
       super$initialize(id = sprintf("%s_on_%s", self$learner$id, self$task$id), properties = "noisy",
         domain = self$learner$param_set, codomain = measures_to_codomain(self$measures),

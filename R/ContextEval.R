@@ -15,7 +15,7 @@
 #'
 #' # context only allows to access column y
 #' ContextExample = R6Class("ContextExample",
-#'   inherit = Context,
+#'   inherit = mlr3misc::Context,
 #'   public = list(
 #'     data = NULL,
 #'
