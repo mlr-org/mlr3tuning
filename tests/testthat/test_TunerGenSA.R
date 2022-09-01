@@ -31,7 +31,7 @@ test_that("TunerGenSA with int params and trafo", {
 
 test_that("TunerGenSA - Optimize wrapper with maximize measure", {
   inst = TEST_MAKE_INST1(measure = msr("dummy.cp.maximize.classif", function(pv)  pv$cp), n_dim = 1)
-  tt = TunerGenSA$new()
+  tt = tnr("gensa", smooth = TRUE)
   tt$optimize(inst)
 
   res = inst$archive$best()
