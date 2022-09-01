@@ -117,3 +117,39 @@ test_that("extract_inner_tuning_results function works", {
   expect_named(ibmr, c("experiment", "iteration", "cp", "minsplit", "x", "classif.ce", "learner_param_vals", "x_domain", "task_id", "learner_id", "resampling_id"))
   expect_equal(unique(ibmr$experiment), c(1, 2))
 })
+
+test_that("extract_inner_tuning_results returns tuning_instance", {
+  at = auto_tuner(
+    method = tnr("random_search"),
+    learner = lrn("classif.rpart"),
+    resampling = rsmp("holdout"),
+    term_evals = 4,
+    search_space = TEST_MAKE_PS1(n_dim = 1),
+    store_tuning_instance = TRUE
+  )
+  resampling_outer = rsmp("cv", folds = 2)
+  rr = resample(tsk("penguins"), at, resampling_outer, store_models = TRUE)
+
+  tab = extract_inner_tuning_results(rr, tuning_instance = TRUE)
+  expect_data_table(tab, nrows = 2)
+  expect_named(tab, c("iteration", "cp", "classif.ce", "learner_param_vals", "x_domain", "tuning_instance", "task_id", "learner_id", "resampling_id"))
+  expect_class(tab$tuning_instance[[1]], "TuningInstanceSingleCrit")
+
+  at = auto_tuner(
+    method = tnr("random_search"),
+    learner = lrn("classif.rpart"),
+    resampling = rsmp("holdout"),
+    term_evals = 4,
+    search_space = TEST_MAKE_PS1(n_dim = 1),
+    store_tuning_instance = TRUE
+  )
+  resampling_outer = rsmp("cv", folds = 2)
+  grid = benchmark_grid(tsk("iris"), list(at, at), resampling_outer)
+  bmr = benchmark(grid, store_models = TRUE)
+
+  tab = extract_inner_tuning_results(bmr, tuning_instance = TRUE)
+  expect_data_table(tab, nrows = 4)
+  expect_named(tab, c("experiment", "iteration", "cp", "classif.ce", "learner_param_vals", "x_domain", "tuning_instance", "task_id", "learner_id", "resampling_id"))
+  expect_equal(unique(tab$experiment), c(1, 2))
+})
+

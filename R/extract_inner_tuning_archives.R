@@ -1,50 +1,49 @@
 #' @title Extract Inner Tuning Archives
 #'
 #' @description
-#' Extract inner tuning archives of nested resampling. Implemented for
-#' [mlr3::ResampleResult] and [mlr3::BenchmarkResult]. The function iterates
-#' over the [AutoTuner] objects and binds the tuning archives to a
-#' [data.table::data.table()]. [AutoTuner] must be initialized with
-#' `store_tuning_instance = TRUE` and `resample()` or `benchmark()` must be
-#' called with `store_models = TRUE`.
+#' Extract inner tuning archives of nested resampling.
+#' Implemented for [mlr3::ResampleResult] and [mlr3::BenchmarkResult].
+#' The function iterates over the [AutoTuner] objects and binds the tuning archives to a [data.table::data.table()].
+#' [AutoTuner] must be initialized with `store_tuning_instance = TRUE` and [mlr3::resample()] or [mlr3::benchmark()] must be called with `store_models = TRUE`.
 #'
 #' @section Data structure:
 #'
 #' The returned data table has the following columns:
 #'
 #' * `experiment` (integer(1))\cr
-#'   Index, giving the according row number in the original benchmark grid.
+#'     Index, giving the according row number in the original benchmark grid.
 #' * `iteration` (integer(1))\cr
-#'   Iteration of the outer resampling.
+#'     Iteration of the outer resampling.
 #' * One column for each hyperparameter of the search spaces.
 #' * One column for each performance measure.
 #' * `runtime_learners` (`numeric(1)`)\cr
-#'   Sum of training and predict times logged in learners per
-#'   [mlr3::ResampleResult] / evaluation. This does not include potential
-#'   overhead time. 
+#'     Sum of training and predict times logged in learners per [mlr3::ResampleResult] / evaluation.
+#'     This does not include potential overhead time.
 #' * `timestamp` (`POSIXct`)\cr
-#'   Time stamp when the evaluation was logged into the archive.
+#'     Time stamp when the evaluation was logged into the archive.
 #' * `batch_nr` (`integer(1)`)\cr
-#'   Hyperparameters are evaluated in batches. Each batch has a unique batch
-#'   number.
+#'     Hyperparameters are evaluated in batches.
+#'     Each batch has a unique batch number.
 #' * `x_domain` (`list()`)\cr
-#'   List of transformed hyperparameter values. By default this column is
-#'   unnested.
+#'     List of transformed hyperparameter values.
+#'     By default this column is unnested.
 #' * `x_domain_*` (`any`)\cr
-#'   Separate column for each transformed hyperparameter.
+#'     Separate column for each transformed hyperparameter.
 #' * `resample_result` ([mlr3::ResampleResult])\cr
-#'   Resample result of the inner resampling.
+#'     Resample result of the inner resampling.
 #' * `task_id` (`character(1)`).
 #' * `learner_id` (`character(1)`).
 #' * `resampling_id` (`character(1)`).
 #'
 #' @param x ([mlr3::ResampleResult] | [mlr3::BenchmarkResult]).
 #' @param unnest (`character()`)\cr
-#'   Transforms list columns to separate columns. By default, `x_domain` is
-#'   unnested. Set to `NULL` if no column should be unnested.
+#'   Transforms list columns to separate columns.
+#'   By default, `x_domain` is unnested.
+#'   Set to `NULL` if no column should be unnested.
 #' @param exclude_columns (`character()`)\cr
-#'   Exclude columns from result table. Set to `NULL` if no column should be
-#'   excluded.
+#'   Exclude columns from result table.
+#'   Set to `NULL` if no column should be excluded.
+#'
 #' @return [data.table::data.table()].
 #'
 #' @export

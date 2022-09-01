@@ -2,7 +2,7 @@
 % Please edit documentation in R/auto_tuner.R
 \name{auto_tuner}
 \alias{auto_tuner}
-\title{Syntactic Sugar for Automatic Tuning}
+\title{Function for Automatic Tuning}
 \usage{
 auto_tuner(
   method,
@@ -11,8 +11,12 @@ auto_tuner(
   measure = NULL,
   term_evals = NULL,
   term_time = NULL,
+  terminator = NULL,
   search_space = NULL,
+  store_tuning_instance = TRUE,
+  store_benchmark_result = TRUE,
   store_models = FALSE,
+  check_values = FALSE,
   ...
 )
 }
@@ -41,10 +45,22 @@ Number of allowed evaluations.}
 \item{term_time}{(\code{integer(1)})\cr
 Maximum allowed time in seconds.}
 
+\item{terminator}{(\link{Terminator})\cr
+Stop criterion of the tuning process.}
+
 \item{search_space}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
 Hyperparameter search space. If \code{NULL} (default), the search space is
 constructed from the \link{TuneToken} of the learner's parameter set
 (learner$param_set).}
+
+\item{store_tuning_instance}{(\code{logical(1)})\cr
+If \code{TRUE} (default), stores the internally created
+\link{TuningInstanceSingleCrit} with all intermediate results in slot
+\verb{$tuning_instance}.}
+
+\item{store_benchmark_result}{(\code{logical(1)})\cr
+If \code{TRUE} (default), store resample result of evaluated hyperparameter
+configurations in archive as \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}.}
 
 \item{store_models}{(\code{logical(1)})\cr
 If \code{TRUE}, fitted models are stored in the benchmark result
@@ -52,18 +68,55 @@ If \code{TRUE}, fitted models are stored in the benchmark result
 are only stored temporarily and not accessible after the tuning. This
 combination is needed for measures that require a model.}
 
+\item{check_values}{(\code{logical(1)})\cr
+If \code{TRUE}, hyperparameter values are checked before evaluation and
+performance scores after. If \code{FALSE} (default), values are unchecked but
+computational overhead is reduced.}
+
 \item{...}{(named \code{list()})\cr
 Named arguments to be set as parameters of the tuner.}
 }
 \value{
-\link{AutoTuner}
+\link{AutoTuner}.
 }
 \description{
-Function to create an \link{AutoTuner} object.
+The \link{AutoTuner} wraps a \link[mlr3:Learner]{mlr3::Learner} and augments it with an automatic tuning process for a given set of hyperparameters.
+The \code{\link[=auto_tuner]{auto_tuner()}} function creates an \link{AutoTuner} object.
 }
+\details{
+The \link{AutoTuner} is a \link[mlr3:Learner]{mlr3::Learner} which wraps another \link[mlr3:Learner]{mlr3::Learner} and performs the following steps during \verb{$train()}:
+\enumerate{
+\item The hyperparameters of the wrapped (inner) learner are trained on the training data via resampling.
+The tuning can be specified by providing a \link{Tuner}, a \link[bbotk:Terminator]{bbotk::Terminator}, a search space as \link[paradox:ParamSet]{paradox::ParamSet}, a \link[mlr3:Resampling]{mlr3::Resampling} and a \link[mlr3:Measure]{mlr3::Measure}.
+\item The best found hyperparameter configuration is set as hyperparameters for the wrapped (inner) learner stored in \code{at$learner}.
+Access the tuned hyperparameters via \code{at$tuning_result}.
+\item A final model is fit on the complete training data using the now parametrized wrapped learner.
+The respective model is available via field \code{at$learner$model}.
+}
+
+During \verb{$predict()} the \code{AutoTuner} just calls the predict method of the wrapped (inner) learner.
+A set timeout is disabled while fitting the final model.
+}
+\section{Resources}{
+
+\itemize{
+\item \href{https://mlr3book.mlr-org.com/optimization.html#autotuner}{book chapter} on automatic tuning.
+\item \href{https://mlr3book.mlr-org.com/optimization.html#nested-resampling}{book chapter} on nested resampling.
+\item \href{https://mlr-org.com/gallery/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/}{gallery post} on tuning and nested resampling.
+}
+}
+
+\section{Nested Resampling}{
+
+Nested resampling can be performed by passing an \link{AutoTuner} object to \code{\link[mlr3:resample]{mlr3::resample()}} or \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
+To access the inner resampling results, set \code{store_tuning_instance = TRUE} and execute \code{\link[mlr3:resample]{mlr3::resample()}} or \code{\link[mlr3:benchmark]{mlr3::benchmark()}} with \code{store_models = TRUE} (see examples).
+The \link[mlr3:Resampling]{mlr3::Resampling} passed to the \link{AutoTuner} is meant to be the inner resampling, operating on the training set of an arbitrary outer resampling.
+For this reason it is not feasible to pass an instantiated \link[mlr3:Resampling]{mlr3::Resampling} here.
+}
+
 \examples{
 at = auto_tuner(
-  method = "random_search",
+  method = tnr("random_search"),
   learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
   resampling = rsmp ("holdout"),
   measure = msr("classif.ce"),

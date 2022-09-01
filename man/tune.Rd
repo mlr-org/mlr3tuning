@@ -2,7 +2,7 @@
 % Please edit documentation in R/tune.R
 \name{tune}
 \alias{tune}
-\title{Function for Tuning}
+\title{Function for Tuning a Learner}
 \usage{
 tune(
   method,
@@ -12,8 +12,11 @@ tune(
   measures = NULL,
   term_evals = NULL,
   term_time = NULL,
+  terminator = NULL,
   search_space = NULL,
+  store_benchmark_result = TRUE,
   store_models = FALSE,
+  check_values = FALSE,
   allow_hotstart = FALSE,
   keep_hotstart_stack = FALSE,
   evaluate_default = FALSE,
@@ -48,16 +51,28 @@ Number of allowed evaluations.}
 \item{term_time}{(\code{integer(1)})\cr
 Maximum allowed time in seconds.}
 
+\item{terminator}{(\link{Terminator})\cr
+Stop criterion of the tuning process.}
+
 \item{search_space}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
 Hyperparameter search space. If \code{NULL} (default), the search space is
 constructed from the \link{TuneToken} of the learner's parameter set
 (learner$param_set).}
+
+\item{store_benchmark_result}{(\code{logical(1)})\cr
+If \code{TRUE} (default), store resample result of evaluated hyperparameter
+configurations in archive as \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}.}
 
 \item{store_models}{(\code{logical(1)})\cr
 If \code{TRUE}, fitted models are stored in the benchmark result
 (\code{archive$benchmark_result}). If \code{store_benchmark_result = FALSE}, models
 are only stored temporarily and not accessible after the tuning. This
 combination is needed for measures that require a model.}
+
+\item{check_values}{(\code{logical(1)})\cr
+If \code{TRUE}, hyperparameter values are checked before evaluation and
+performance scores after. If \code{FALSE} (default), values are unchecked but
+computational overhead is reduced.}
 
 \item{allow_hotstart}{(\code{logical(1)})\cr
 Allow to hotstart learners with previously fitted models. See also
@@ -76,11 +91,48 @@ values at the start of the optimization.}
 Named arguments to be set as parameters of the tuner.}
 }
 \value{
-\code{TuningInstanceSingleCrit} | \code{TuningInstanceMultiCrit}
+\link{TuningInstanceSingleCrit} | \link{TuningInstanceMultiCrit}
 }
 \description{
 Function to tune a \link[mlr3:Learner]{mlr3::Learner}.
+The function internally creates a \link{TuningInstanceSingleCrit} or \link{TuningInstanceMultiCrit} which describe the tuning task.
+It executes the tuning with the \link{Tuner} (\code{method}) and returns the result with the tuning instance (\verb{$result}).
+The \link{ArchiveTuning} (\verb{$archive}) stores all evaluated hyperparameter configurations and performance scores.
 }
+\details{
+The \link[mlr3:Task]{mlr3::Task}, \link[mlr3:Learner]{mlr3::Learner}, \link[mlr3:Resampling]{mlr3::Resampling}, \link[mlr3:Measure]{mlr3::Measure} and \link{Terminator} are used to construct a \link{TuningInstanceSingleCrit}.
+If multiple performance \link[=Measure]{Measures} are supplied, a \link{TuningInstanceMultiCrit} is created.
+The parameter \code{term_evals} and \code{term_time} are shortcuts to create a \link{Terminator}.
+If both parameters are passed, a \link{TerminatorCombo} is constructed.
+For other \link[=Terminator]{Terminators}, pass one with \code{terminator}.
+If no termination criterion is needed, set \code{term_evals}, \code{term_time} and \code{terminator} to \code{NULL}.
+The search space is created from \link[paradox:to_tune]{paradox::TuneToken} or is supplied by \code{search_space}.
+}
+\section{Resources}{
+
+\itemize{
+\item \href{https://mlr3book.mlr-org.com/optimization.html#tuning}{book chapter} on hyperparameter optimization.
+\item \href{https://mlr3book.mlr-org.com/optimization.html#searchspace}{book chapter} on tuning spaces.
+\item \href{https://mlr-org.com/gallery/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/}{gallery post} on tuning.
+\item \href{https://mlr3tuningspaces.mlr-org.com/}{mlr3tuningspaces} extension package.
+}
+}
+
+\section{Analysis}{
+
+For analyzing the tuning results, it is recommended to pass the \link{ArchiveTuning} to \code{as.data.table()}.
+The returned data table is joined with the benchmark result which adds the \link[mlr3:ResampleResult]{mlr3::ResampleResult} for each hyperparameter evaluation.
+
+The archive provides various getters (e.g. \verb{$learners()}) to ease the access.
+All getters extract by position (\code{i}) or unique hash (\code{uhash}).
+For a complete list of all getters see the methods section.
+
+The benchmark result (\verb{$benchmark_result}) allows to score the hyperparameter configurations again on a different measure.
+Alternatively, measures can be supplied to \code{as.data.table()}.
+
+The \CRANpkg{mlr3viz} package provides visualizations for tuning results.
+}
+
 \examples{
 learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
 
@@ -91,6 +143,9 @@ instance = tune(
   resampling = rsmp ("holdout"),
   measures = msr("classif.ce"),
   term_evals = 4)
+
+# get optimized hyperparameters
+instance$result
 
 # apply hyperparameter values to learner
 learner$param_set$values = instance$result_learner_param_vals

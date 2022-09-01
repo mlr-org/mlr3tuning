@@ -6,6 +6,7 @@
 #' @description
 #' Subclass for random search tuning.
 #'
+#' @details
 #' The random points are sampled by [paradox::generate_design_random()].
 #'
 #' @templateVar id random_search

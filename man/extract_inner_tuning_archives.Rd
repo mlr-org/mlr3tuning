@@ -14,23 +14,22 @@ extract_inner_tuning_archives(
 \item{x}{(\link[mlr3:ResampleResult]{mlr3::ResampleResult} | \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}).}
 
 \item{unnest}{(\code{character()})\cr
-Transforms list columns to separate columns. By default, \code{x_domain} is
-unnested. Set to \code{NULL} if no column should be unnested.}
+Transforms list columns to separate columns.
+By default, \code{x_domain} is unnested.
+Set to \code{NULL} if no column should be unnested.}
 
 \item{exclude_columns}{(\code{character()})\cr
-Exclude columns from result table. Set to \code{NULL} if no column should be
-excluded.}
+Exclude columns from result table.
+Set to \code{NULL} if no column should be excluded.}
 }
 \value{
 \code{\link[data.table:data.table]{data.table::data.table()}}.
 }
 \description{
-Extract inner tuning archives of nested resampling. Implemented for
-\link[mlr3:ResampleResult]{mlr3::ResampleResult} and \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}. The function iterates
-over the \link{AutoTuner} objects and binds the tuning archives to a
-\code{\link[data.table:data.table]{data.table::data.table()}}. \link{AutoTuner} must be initialized with
-\code{store_tuning_instance = TRUE} and \code{resample()} or \code{benchmark()} must be
-called with \code{store_models = TRUE}.
+Extract inner tuning archives of nested resampling.
+Implemented for \link[mlr3:ResampleResult]{mlr3::ResampleResult} and \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}.
+The function iterates over the \link{AutoTuner} objects and binds the tuning archives to a \code{\link[data.table:data.table]{data.table::data.table()}}.
+\link{AutoTuner} must be initialized with \code{store_tuning_instance = TRUE} and \code{\link[mlr3:resample]{mlr3::resample()}} or \code{\link[mlr3:benchmark]{mlr3::benchmark()}} must be called with \code{store_models = TRUE}.
 }
 \section{Data structure}{
 
@@ -44,17 +43,16 @@ Iteration of the outer resampling.
 \item One column for each hyperparameter of the search spaces.
 \item One column for each performance measure.
 \item \code{runtime_learners} (\code{numeric(1)})\cr
-Sum of training and predict times logged in learners per
-\link[mlr3:ResampleResult]{mlr3::ResampleResult} / evaluation. This does not include potential
-overhead time.
+Sum of training and predict times logged in learners per \link[mlr3:ResampleResult]{mlr3::ResampleResult} / evaluation.
+This does not include potential overhead time.
 \item \code{timestamp} (\code{POSIXct})\cr
 Time stamp when the evaluation was logged into the archive.
 \item \code{batch_nr} (\code{integer(1)})\cr
-Hyperparameters are evaluated in batches. Each batch has a unique batch
-number.
+Hyperparameters are evaluated in batches.
+Each batch has a unique batch number.
 \item \code{x_domain} (\code{list()})\cr
-List of transformed hyperparameter values. By default this column is
-unnested.
+List of transformed hyperparameter values.
+By default this column is unnested.
 \item \verb{x_domain_*} (\code{any})\cr
 Separate column for each transformed hyperparameter.
 \item \code{resample_result} (\link[mlr3:ResampleResult]{mlr3::ResampleResult})\cr

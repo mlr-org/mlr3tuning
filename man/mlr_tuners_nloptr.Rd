@@ -10,16 +10,13 @@ Johnson, G S (2020).
 \url{https://github.com/stevengj/nlopt}.
 }
 \description{
-\code{TunerNLoptr} class that implements non-linear optimization. Calls
-\link[nloptr:nloptr]{nloptr::nloptr} from package \CRANpkg{nloptr}.
+Subclass for non-linear optimization (NLopt).
+Calls \link[nloptr:nloptr]{nloptr::nloptr} from package \CRANpkg{nloptr}.
 }
 \details{
-The termination conditions \code{stopval}, \code{maxtime} and \code{maxeval} of
-\code{\link[nloptr:nloptr]{nloptr::nloptr()}} are deactivated and replaced by the \link[bbotk:Terminator]{bbotk::Terminator}
-subclasses. The x and function value tolerance termination conditions
-(\code{xtol_rel = 10^-4}, \code{xtol_abs = rep(0.0, length(x0))},
-\code{ftol_rel = 0.0} and \code{ftol_abs = 0.0}) are still available and implemented with
-their package defaults. To deactivate these conditions, set them to \code{-1}.
+The termination conditions \code{stopval}, \code{maxtime} and \code{maxeval} of \code{\link[nloptr:nloptr]{nloptr::nloptr()}} are deactivated and replaced by the \link[bbotk:Terminator]{bbotk::Terminator} subclasses.
+The x and function value tolerance termination conditions (\code{xtol_rel = 10^-4}, \code{xtol_abs = rep(0.0, length(x0))}, \code{ftol_rel = 0.0} and \code{ftol_abs = 0.0}) are still available and implemented with their package defaults.
+To deactivate these conditions, set them to \code{-1}.
 }
 \section{Dictionary}{
 
