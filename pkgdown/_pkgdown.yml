@@ -60,6 +60,7 @@ reference:
       - auto_tuner
       - tune
       - tune_nested
+      - ti
       - extract_inner_tuning_archives
       - extract_inner_tuning_results
       - as_search_space
