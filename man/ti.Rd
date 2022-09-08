@@ -74,14 +74,6 @@ after tuning.}
 \item{evaluate_default}{(\code{logical(1)})\cr
 If \code{TRUE}, learner is evaluated with hyperparameters set to their default
 values at the start of the optimization.}
-
-\item{xdt}{(\code{data.table::data.table()})\cr
-Hyperparameter values as \code{data.table::data.table()}. Each row is one
-configuration. Contains values in the search space. Can contain additional
-columns for extra information.}
-
-\item{learner_param_vals}{(List of named \verb{list()s})\cr
-Fixed parameter values of the learner that are neither part of the}
 }
 \description{
 Function to construct a \link{TuningInstanceSingleCrit} or \link{TuningInstanceMultiCrit}.

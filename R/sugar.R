@@ -18,8 +18,8 @@
 #' # random search tuner with batch size of 5
 #' tnr("random_search", batch_size = 5)
 #'
-#' # clock time terminator with 20 seconds
-#' trm("clock_time", secs = 20)
+#' # run time terminator with 20 seconds
+#' trm("run_time", secs = 20)
 tnr = function(.key, ...) {
   dictionary_sugar_get(mlr_tuners, .key, ...)
 }
@@ -50,8 +50,6 @@ tnrs = function(.keys, ...) {
 #' @template param_allow_hotstart
 #' @template param_keep_hotstart_stack
 #' @template param_evaluate_default
-#' @template param_xdt
-#' @template param_learner_param_vals
 #'
 #' @inheritSection TuningInstanceSingleCrit Resources
 #'

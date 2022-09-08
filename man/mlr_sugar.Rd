@@ -38,6 +38,6 @@ Relies on \code{\link[mlr3misc:dictionary_sugar_get]{mlr3misc::dictionary_sugar_
 # random search tuner with batch size of 5
 tnr("random_search", batch_size = 5)
 
-# clock time terminator with 20 seconds
-trm("clock_time", secs = 20)
+# run time terminator with 20 seconds
+trm("run_time", secs = 20)
 }
