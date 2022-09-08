@@ -42,8 +42,9 @@ splits. Already instantiated resamplings are kept unchanged. Specialized
 configuration on different data splits. This field, however, always returns
 the resampling passed in construction.}
 
-\item{measures}{(list of \link[mlr3:Measure]{mlr3::Measure})\cr
-Measures to optimize.}
+\item{measures}{(\link[mlr3:Measure]{mlr3::Measure} or list of \link[mlr3:Measure]{mlr3::Measure})\cr
+A single measure creates a \link{TuningInstanceSingleCrit} and multiple measures a \link{TuningInstanceMultiCrit}.
+If \code{NULL}, default measure is used.}
 
 \item{term_evals}{(\code{integer(1)})\cr
 Number of allowed evaluations.}

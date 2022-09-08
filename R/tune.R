@@ -22,6 +22,9 @@
 #'
 #' @param method (`character(1)` | [Tuner])\cr
 #'  Key to retrieve tuner from [mlr_tuners] dictionary or [Tuner] object.
+#' @param measures ([mlr3::Measure] or list of [mlr3::Measure])\cr
+#'   A single measure creates a [TuningInstanceSingleCrit] and multiple measures a [TuningInstanceMultiCrit].
+#'   If `NULL`, default measure is used.
 #' @param term_evals (`integer(1)`)\cr
 #'  Number of allowed evaluations.
 #' @param term_time (`integer(1)`)\cr
@@ -34,7 +37,6 @@
 #' @template param_task
 #' @template param_learner
 #' @template param_resampling
-#' @template param_measures
 #' @template param_terminator
 #' @template param_search_space
 #' @template param_store_benchmark_result
