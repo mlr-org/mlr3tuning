@@ -4,7 +4,7 @@
 #'
 #' @description
 #' Function to tune a [mlr3::Learner].
-#' The function internally creates a [TuningInstanceSingleCrit] or [TuningInstanceMultiCrit] which describe the tuning task.
+#' The function internally creates a [TuningInstanceSingleCrit] or [TuningInstanceMultiCrit] which describe the tuning problem.
 #' It executes the tuning with the [Tuner] (`method`) and returns the result with the tuning instance (`$result`).
 #' The [ArchiveTuning] (`$archive`) stores all evaluated hyperparameter configurations and performance scores.
 #'

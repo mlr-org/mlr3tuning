@@ -74,6 +74,11 @@ For the meaning of the control parameters, see \code{\link[GenSA:GenSA]{GenSA::G
 have removed all control parameters which refer to the termination of the
 algorithm and where our terminators allow to obtain the same behavior.
 
+In contrast to the \code{\link[GenSA:GenSA]{GenSA::GenSA()}} defaults, we set \code{trace.mat = FALSE}.
+Note that \code{\link[GenSA:GenSA]{GenSA::GenSA()}} uses \code{smooth = TRUE} as a default.
+In the case of using this optimizer for Hyperparameter Optimization you may
+want to set \code{smooth = FALSE}.
+
 }
 
 \section{Progress Bars}{
