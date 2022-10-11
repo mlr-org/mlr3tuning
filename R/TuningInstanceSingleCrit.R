@@ -1,9 +1,8 @@
 #' @title Class for Single Criterion Tuning
 #
-#'
 #' @description
-#' The [TuningInstanceSingleCrit] specifies a tuning task for [Tuners][Tuner].
-#' The instance is not created by the user but internally when the function [tune()] is called.
+#' The [TuningInstanceSingleCrit] specifies a tuning problem for [Tuners][Tuner].
+#' The function [ti()] creates a [TuningInstanceSingleCrit] and the function [tune()] creates an instance internally.
 #'
 #' @details
 #' The instance contains an [ObjectiveTuning] object that encodes the black box objective function a [Tuner] has to optimize.
@@ -14,6 +13,8 @@
 #' Before a batch is evaluated, the [bbotk::Terminator] is queried for the remaining budget.
 #' If the available budget is exhausted, an exception is raised, and no further evaluations can be performed from this point on.
 #' The tuner is also supposed to store its final result, consisting of a  selected hyperparameter configuration and associated estimated performance values, by calling the method `instance$assign_result`.
+#'
+#' @inheritSection ArchiveTuning Analysis
 #'
 #' @section Resources:
 #' * [book chapter](https://mlr3book.mlr-org.com/optimization.html#tuning) on hyperparameter optimization.
@@ -39,31 +40,32 @@
 #'
 #' @export
 #' @examples
+#' # get learner and define search space
 #' learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
 #'
-#' instance = tune(
-#'   method = "random_search",
+#' # construct tuning instance
+#' instance = ti(
 #'   task = tsk("pima"),
 #'   learner = learner,
 #'   resampling = rsmp ("holdout"),
 #'   measures = msr("classif.ce"),
-#'   term_evals = 4)
+#'   terminator = trm("run_time", secs = 10)
+#' )
 #'
-#' # get optimized hyperparameters
+#' # get tuner
+#' tuner = tnr("random_search", batch_size = 10)
+#'
+#' # tune classification tree on pima data set
+#' tuner$optimize(instance)
+#'
+#' # get result
 #' instance$result
-#'
-#' # apply hyperparameter values to learner
-#' learner$param_set$values = instance$result_learner_param_vals
 TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
   inherit = OptimInstanceSingleCrit,
   public = list(
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
-    #'
-    #' This defines the resampled performance of a learner on a task, a
-    #' feasibility region for the parameters the tuner is supposed to optimize,
-    #' and a termination criterion.
     initialize = function(task, learner, resampling, measure = NULL, terminator, search_space = NULL, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, evaluate_default = FALSE, callbacks = list()) {
       private$.evaluate_default = assert_flag(evaluate_default)
       learner = assert_learner(as_learner(learner, clone = TRUE))
@@ -92,8 +94,7 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     },
 
     #' @description
-    #' The [Tuner] object writes the best found point
-    #' and estimated performance value here. For internal use.
+    #' The [Tuner] object writes the best found point and estimated performance value here. For internal use.
     #'
     #' @param y (`numeric(1)`)\cr
     #'   Optimal outcome.

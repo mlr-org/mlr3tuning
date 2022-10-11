@@ -4,8 +4,8 @@
 \alias{TuningInstanceSingleCrit}
 \title{Class for Single Criterion Tuning}
 \description{
-The \link{TuningInstanceSingleCrit} specifies a tuning task for \link[=Tuner]{Tuners}.
-The instance is not created by the user but internally when the function \code{\link[=tune]{tune()}} is called.
+The \link{TuningInstanceSingleCrit} specifies a tuning problem for \link[=Tuner]{Tuners}.
+The function \code{\link[=ti]{ti()}} creates a \link{TuningInstanceSingleCrit} and the function \code{\link[=tune]{tune()}} creates an instance internally.
 }
 \details{
 The instance contains an \link{ObjectiveTuning} object that encodes the black box objective function a \link{Tuner} has to optimize.
@@ -27,22 +27,42 @@ The tuner is also supposed to store its final result, consisting of a  selected 
 }
 }
 
+\section{Analysis}{
+
+For analyzing the tuning results, it is recommended to pass the \link{ArchiveTuning} to \code{as.data.table()}.
+The returned data table is joined with the benchmark result which adds the \link[mlr3:ResampleResult]{mlr3::ResampleResult} for each hyperparameter evaluation.
+
+The archive provides various getters (e.g. \verb{$learners()}) to ease the access.
+All getters extract by position (\code{i}) or unique hash (\code{uhash}).
+For a complete list of all getters see the methods section.
+
+The benchmark result (\verb{$benchmark_result}) allows to score the hyperparameter configurations again on a different measure.
+Alternatively, measures can be supplied to \code{as.data.table()}.
+
+The \CRANpkg{mlr3viz} package provides visualizations for tuning results.
+}
+
 \examples{
+# get learner and define search space
 learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
 
-instance = tune(
-  method = "random_search",
+# construct tuning instance
+instance = ti(
   task = tsk("pima"),
   learner = learner,
   resampling = rsmp ("holdout"),
   measures = msr("classif.ce"),
-  term_evals = 4)
+  terminator = trm("run_time", secs = 10)
+)
 
-# get optimized hyperparameters
+# get tuner
+tuner = tnr("random_search", batch_size = 10)
+
+# tune classification tree on pima data set
+tuner$optimize(instance)
+
+# get result
 instance$result
-
-# apply hyperparameter values to learner
-learner$param_set$values = instance$result_learner_param_vals
 }
 \section{Super classes}{
 \code{\link[bbotk:OptimInstance]{bbotk::OptimInstance}} -> \code{\link[bbotk:OptimInstanceSingleCrit]{bbotk::OptimInstanceSingleCrit}} -> \code{TuningInstanceSingleCrit}
@@ -79,10 +99,6 @@ Param values for the optimal learner call.}
 \if{latex}{\out{\hypertarget{method-TuningInstanceSingleCrit-new}{}}}
 \subsection{Method \code{new()}}{
 Creates a new instance of this \link[R6:R6Class]{R6} class.
-
-This defines the resampled performance of a learner on a task, a
-feasibility region for the parameters the tuner is supposed to optimize,
-and a termination criterion.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TuningInstanceSingleCrit$new(
   task,
@@ -168,8 +184,7 @@ List of callbacks.}
 \if{html}{\out{<a id="method-TuningInstanceSingleCrit-assign_result"></a>}}
 \if{latex}{\out{\hypertarget{method-TuningInstanceSingleCrit-assign_result}{}}}
 \subsection{Method \code{assign_result()}}{
-The \link{Tuner} object writes the best found point
-and estimated performance value here. For internal use.
+The \link{Tuner} object writes the best found point and estimated performance value here. For internal use.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TuningInstanceSingleCrit$assign_result(xdt, y, learner_param_vals = NULL)}\if{html}{\out{</div>}}
 }

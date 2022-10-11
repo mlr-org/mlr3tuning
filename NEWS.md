@@ -1,6 +1,7 @@
 # mlr3tuning 0.14.0.9000
 
 * feat: Add callbacks with `CallbackTuning`, `callback_tuning` and `mlr_callbacks`.
+* feat: Add `ti()` function to create a `TuningInstanceSingleCrit` or `TuningInstanceMultiCrit`.
 
 # mlr3tuning 0.14.0
 

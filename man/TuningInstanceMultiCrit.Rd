@@ -4,8 +4,8 @@
 \alias{TuningInstanceMultiCrit}
 \title{Class for Multi Criteria Tuning}
 \description{
-The \link{TuningInstanceMultiCrit} specifies a tuning task for \link[=Tuner]{Tuners}.
-The instance is not created by the user but internally when the function \code{\link[=tune]{tune()}} is called with more than one \link[mlr3:Measure]{mlr3::Measure}.
+The \link{TuningInstanceMultiCrit} specifies a tuning problem for \link[=Tuner]{Tuners}.
+The function \code{\link[=ti]{ti()}} creates a \link{TuningInstanceMultiCrit} and the function \code{\link[=tune]{tune()}} creates an instance internally.
 }
 \details{
 The instance contains an \link{ObjectiveTuning} object that encodes the black box objective function a \link{Tuner} has to optimize.
@@ -28,17 +28,25 @@ The tuner is also supposed to store its final result, consisting of a  selected 
 }
 
 \examples{
+# get learner and define search space
 learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
 
-instance = tune(
-  method = "random_search",
+# construct tuning instance
+instance = ti(
   task = tsk("pima"),
   learner = learner,
   resampling = rsmp ("holdout"),
-  measures = msrs(c("classif.ce", "classif.acc")),
-  term_evals = 4)
+  measures = msrs(c("classif.ce", "time_train")),
+  terminator = trm("run_time", secs = 10)
+)
 
-# get optimized hyperparameters
+# get tuner
+tuner = tnr("random_search", batch_size = 10)
+
+# tune classification tree on pima data set
+tuner$optimize(instance)
+
+# get result
 instance$result
 }
 \section{Super classes}{
@@ -76,10 +84,6 @@ List of param values for the optimal learner call.}
 \if{latex}{\out{\hypertarget{method-TuningInstanceMultiCrit-new}{}}}
 \subsection{Method \code{new()}}{
 Creates a new instance of this \link[R6:R6Class]{R6} class.
-
-This defines the resampled performance of a learner on a task, a
-feasibility region for the parameters the tuner is supposed to optimize,
-and a termination criterion.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TuningInstanceMultiCrit$new(
   task,
@@ -165,8 +169,8 @@ List of callbacks.}
 \if{html}{\out{<a id="method-TuningInstanceMultiCrit-assign_result"></a>}}
 \if{latex}{\out{\hypertarget{method-TuningInstanceMultiCrit-assign_result}{}}}
 \subsection{Method \code{assign_result()}}{
-The \link{Tuner} object writes the best found points
-and estimated performance values here. For internal use.
+The \link{Tuner} object writes the best found points and estimated performance values here.
+For internal use.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TuningInstanceMultiCrit$assign_result(xdt, ydt, learner_param_vals = NULL)}\if{html}{\out{</div>}}
 }
