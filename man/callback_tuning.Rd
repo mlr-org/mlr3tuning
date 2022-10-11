@@ -20,6 +20,16 @@ callback_tuning(
 )
 }
 \arguments{
+\item{id}{(\code{character(1)})\cr
+Identifier for the new instance.}
+
+\item{label}{(\code{character(1)})\cr
+Label for the new instance.}
+
+\item{man}{(\code{character(1)})\cr
+String in the format \verb{[pkg]::[topic]} pointing to a manual page for this object.
+The referenced help package can be opened via method \verb{$help()}.}
+
 \item{on_optimization_begin}{(\verb{function()})\cr
 Stage called at the beginning of the optimization.
 Called in \code{Optimizer$optimize()}.
