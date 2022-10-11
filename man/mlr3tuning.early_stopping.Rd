@@ -4,7 +4,11 @@
 \alias{mlr3tuning.early_stopping}
 \title{Early Stopping Callback}
 \description{
-When training an XGBoost learner, early stopping can be used to find the optimal number of trees.
+When tuning an XGBoost learner, early stopping can be used to find the optimal number of trees.
+}
+\details{
+This \link{Callback} extracts the maximum number of trees found during resampling.
+The maximum number of trees are added to the \link{ArchiveTuning} in the column \code{"max_nrounds"}.
 }
 \examples{
 clbk("mlr3tuning.early_stopping")

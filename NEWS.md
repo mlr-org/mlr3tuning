@@ -1,5 +1,7 @@
 # mlr3tuning 0.14.0.9000
 
+* feat: Add callbacks with `CallbackTuning`, `callback_tuning` and `mlr_callbacks`.
+
 # mlr3tuning 0.14.0
 
 * feat: Add option `evaluate_default` to evaluate learners with hyperparameters set to their default values.

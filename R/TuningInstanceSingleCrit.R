@@ -21,14 +21,6 @@
 #' * [gallery post](https://mlr-org.com/gallery/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/) on tuning.
 #' * [mlr3tuningspaces](https://mlr3tuningspaces.mlr-org.com/) extension package.
 #'
-#' @section Callbacks:
-#' Callbacks allow the user customize the tuning.
-#' The dictionary [mlr3misc::mlr_callbacks] stores predefined [Callback] objects.
-#' Currently, the following callbacks are available:
-#'  * `early_stopping` - Extract the maximum number of boosting iterations
-#'
-#'
-#'
 #' @template param_task
 #' @template param_learner
 #' @template param_resampling

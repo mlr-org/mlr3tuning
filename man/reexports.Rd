@@ -6,6 +6,9 @@
 \alias{mlr_terminators}
 \alias{trm}
 \alias{trms}
+\alias{mlr_callbacks}
+\alias{clbk}
+\alias{clbks}
 \title{Objects exported from other packages}
 \keyword{internal}
 \description{
@@ -14,5 +17,7 @@ below to see their documentation.
 
 \describe{
   \item{bbotk}{\code{\link[bbotk]{mlr_terminators}}, \code{\link[bbotk]{trm}}, \code{\link[bbotk:trm]{trms}}}
+
+  \item{mlr3misc}{\code{\link[mlr3misc]{clbk}}, \code{\link[mlr3misc:clbk]{clbks}}, \code{\link[mlr3misc]{mlr_callbacks}}}
 }}
 

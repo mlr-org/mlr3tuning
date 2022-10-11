@@ -10,11 +10,12 @@ test_that("early stopping callback works", {
     learner = lrn("classif.xgboost", eta = to_tune(1e-04, 1e-1, logscale = TRUE), early_stopping_rounds = 20, nrounds = 1000, early_stopping_set = "test"),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
-    term_evals = 4,
-    batch_size = 2,
+    term_evals = 2,
+    batch_size = 1,
     callbacks = clbk("mlr3tuning.early_stopping")
   )
 
+  expect_numeric(instance$archive$best()$max_nrounds)
   expect_equal(instance$archive$best()$max_nrounds, instance$result_learner_param_vals$nrounds)
   expect_equal(instance$result_learner_param_vals$early_stopping_set, "none")
   expect_null(instance$result_learner_param_vals$early_stopping_rounds)
@@ -25,11 +26,12 @@ test_that("early stopping callback works", {
     resampling = rsmp("cv", folds = 3),
     measure = msr("classif.ce"),
     term_evals = 2,
-    batch_size = 4,
+    batch_size = 1,
     callbacks = clbk("mlr3tuning.early_stopping")
   )
   at$train(tsk("pima"))
 
+  expect_numeric(instance$archive$best()$max_nrounds)
   expect_equal(at$tuning_instance$archive$best()$max_nrounds, at$learner$param_set$values$nrounds)
   expect_equal(at$learner$param_set$values$early_stopping_set, "none")
   expect_null(at$learner$param_set$values$early_stopping_rounds)

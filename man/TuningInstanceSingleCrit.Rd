@@ -27,16 +27,6 @@ The tuner is also supposed to store its final result, consisting of a  selected 
 }
 }
 
-\section{Callbacks}{
-
-Callbacks allow the user customize the tuning.
-The dictionary \link[mlr3misc:mlr_callbacks]{mlr3misc::mlr_callbacks} stores predefined \link{Callback} objects.
-Currently, the following callbacks are available:
-\itemize{
-\item \code{early_stopping} - Extract the maximum number of boosting iterations
-}
-}
-
 \examples{
 learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
 
