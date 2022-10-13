@@ -8,4 +8,16 @@ This \link{Callback} writes the \link{BenchmarkResult} after each batch to disk.
 }
 \examples{
 clbk("mlr3tuning.backup", path = "backup.rds")
+
+# tune classification tree on the pima data set
+instance = tune(
+  method = tnr("random_search"),
+  task = tsk("pima"),
+  learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
+  resampling = rsmp("cv", folds = 3),
+  measures = msr("classif.ce"),
+  term_evals = 4,
+  batch_size = 2,
+  callbacks = clbk("mlr3tuning.backup", path = "backup.rds")
+)
 }

@@ -4,14 +4,42 @@
 #' @name mlr3tuning.early_stopping
 #'
 #' @description
-#' When tuning an XGBoost learner, early stopping can be used to find the optimal number of trees.
+#' This [Callback] integrates early stopping into the hyperparameter tuning of an XGBoost learner.
+#' Early stopping estimates the optimal number of trees (`nrounds`) for a given hyperparameter configuration.
+#' Since early stopping is performed in each resampling iteration, there are several optimal `nrounds` values.
+#' The callback writes the maximum value to the archive in the `max_nrounds` column.
+#' In the best hyperparameter configuration (`instance$result`), the value of `nrounds` is replaced by `max_nrounds` and early stopping is deactivated.
 #'
 #' @details
-#' This [Callback] extracts the maximum number of trees found during resampling.
-#' The maximum number of trees are added to the [ArchiveTuning] in the column `"max_nrounds"`.
+#' Currently, the callback does not work with `GraphLearner`s from package \CRANpkg{mlr3pipelines}.
+#' The callback is compatible with the [AutoTuner].
+#' The final model is fitted with the best hyperparameter configuration and `max_nrounds` i.e. early stopping is not performed.
 #'
 #' @examples
 #' clbk("mlr3tuning.early_stopping")
+#'
+#' if (requireNamespace("mlr3learners") && requireNamespace("xgboost") ) {
+#'   library(mlr3learners)
+#'
+#'   # activate early stopping on the test set and set search space
+#'   learner = lrn("classif.xgboost",
+#'     eta = to_tune(1e-04, 1e-1, logscale = TRUE),
+#'     early_stopping_rounds = 20,
+#'     nrounds = 10000,
+#'     early_stopping_set = "test")
+#'
+#'   # tune xgboost on the pima data set
+#'   instance = tune(
+#'     method = tnr("random_search"),
+#'     task = tsk("pima"),
+#'     learner = learner,
+#'     resampling = rsmp("cv", folds = 3),
+#'     measures = msr("classif.ce"),
+#'     term_evals = 4,
+#'     batch_size = 2,
+#'     callbacks = clbk("mlr3tuning.early_stopping")
+#'   )
+#' }
 NULL
 
 load_callback_early_stopping = function() {
@@ -56,8 +84,6 @@ load_callback_early_stopping = function() {
   )
 }
 
-
-
 #' @title Backup Benchmark Result Callback
 #'
 #' @include CallbackTuning.R
@@ -68,6 +94,18 @@ load_callback_early_stopping = function() {
 #'
 #' @examples
 #' clbk("mlr3tuning.backup", path = "backup.rds")
+#'
+#' # tune classification tree on the pima data set
+#' instance = tune(
+#'   method = tnr("random_search"),
+#'   task = tsk("pima"),
+#'   learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
+#'   resampling = rsmp("cv", folds = 3),
+#'   measures = msr("classif.ce"),
+#'   term_evals = 4,
+#'   batch_size = 2,
+#'   callbacks = clbk("mlr3tuning.backup", path = "backup.rds")
+#' )
 NULL
 
 load_callback_backup = function() {
@@ -85,5 +123,3 @@ load_callback_backup = function() {
     fields = list(path = "bmr.rds")
   )
 }
-
-
