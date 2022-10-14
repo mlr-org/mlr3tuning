@@ -5,6 +5,7 @@
 #' Callbacks allow to customize the behavior of processes in mlr3tuning.
 #' The [callback_tuning()] function creates a [CallbackTuning].
 #' Predefined callbacks are stored in the [dictionary][mlr3misc::Dictionary] [mlr_callbacks] and can be retrieved with [clbk()].
+#' For more information on tuning callbacks see [callback_tuning()].
 #'
 #' @examples
 #' # write archive to disk
@@ -38,6 +39,7 @@ CallbackTuning = R6Class("CallbackTuning",
 #'
 #' @description
 #' Function to create a [CallbackTuning].
+#' Predefined callbacks are stored in the [dictionary][mlr3misc::Dictionary] [mlr_callbacks] and can be retrieved with [clbk()].
 #'
 #' Tuning callbacks can be called from different stages of tuning process.
 #' The stages are prefixed with `on_*`.

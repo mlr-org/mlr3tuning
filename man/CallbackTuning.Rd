@@ -8,6 +8,7 @@ Specialized \link[bbotk:CallbackOptimization]{bbotk::CallbackOptimization} for t
 Callbacks allow to customize the behavior of processes in mlr3tuning.
 The \code{\link[=callback_tuning]{callback_tuning()}} function creates a \link{CallbackTuning}.
 Predefined callbacks are stored in the \link[mlr3misc:Dictionary]{dictionary} \link{mlr_callbacks} and can be retrieved with \code{\link[=clbk]{clbk()}}.
+For more information on tuning callbacks see \code{\link[=callback_tuning]{callback_tuning()}}.
 }
 \examples{
 # write archive to disk

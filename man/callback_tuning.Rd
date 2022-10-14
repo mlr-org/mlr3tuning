@@ -80,6 +80,7 @@ List of additional fields.}
 }
 \description{
 Function to create a \link{CallbackTuning}.
+Predefined callbacks are stored in the \link[mlr3misc:Dictionary]{dictionary} \link{mlr_callbacks} and can be retrieved with \code{\link[=clbk]{clbk()}}.
 
 Tuning callbacks can be called from different stages of tuning process.
 The stages are prefixed with \verb{on_*}.
