@@ -8,7 +8,7 @@
 #' Early stopping estimates the optimal number of trees (`nrounds`) for a given hyperparameter configuration.
 #' Since early stopping is performed in each resampling iteration, there are several optimal `nrounds` values.
 #' The callback writes the maximum value to the archive in the `max_nrounds` column.
-#' In the best hyperparameter configuration (`instance$result`), the value of `nrounds` is replaced by `max_nrounds` and early stopping is deactivated.
+#' In the best hyperparameter configuration (`instance$result_learner_param_vals`), the value of `nrounds` is replaced by `max_nrounds` and early stopping is deactivated.
 #'
 #' @details
 #' Currently, the callback does not work with `GraphLearner`s from the package \CRANpkg{mlr3pipelines}.
@@ -93,7 +93,7 @@ load_callback_early_stopping = function() {
 #' @name mlr3tuning.backup
 #'
 #' @description
-#' This [CallbackTuning] writes the [BenchmarkResult] after each batch to disk.
+#' This [CallbackTuning] writes the [mlr3::BenchmarkResult] after each batch to disk.
 #'
 #' @examples
 #' clbk("mlr3tuning.backup", path = "backup.rds")

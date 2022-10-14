@@ -8,7 +8,7 @@ This \link{CallbackTuning} integrates early stopping into the hyperparameter tun
 Early stopping estimates the optimal number of trees (\code{nrounds}) for a given hyperparameter configuration.
 Since early stopping is performed in each resampling iteration, there are several optimal \code{nrounds} values.
 The callback writes the maximum value to the archive in the \code{max_nrounds} column.
-In the best hyperparameter configuration (\code{instance$result}), the value of \code{nrounds} is replaced by \code{max_nrounds} and early stopping is deactivated.
+In the best hyperparameter configuration (\code{instance$result_learner_param_vals}), the value of \code{nrounds} is replaced by \code{max_nrounds} and early stopping is deactivated.
 }
 \details{
 Currently, the callback does not work with \code{GraphLearner}s from the package \CRANpkg{mlr3pipelines}.
