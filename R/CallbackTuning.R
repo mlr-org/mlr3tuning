@@ -1,7 +1,7 @@
 #' @title Create Tuning Callback
 #'
 #' @description
-#' Specialized [mlr3misc::Callback] for tuning.
+#' Specialized [bbotk::CallbackOptimization] for tuning.
 #' Callbacks allow to customize the behavior of processes in mlr3tuning.
 #' The [callback_tuning()] function creates a [CallbackTuning].
 #' Predefined callbacks are stored in the [dictionary][mlr3misc::Dictionary] [mlr_callbacks] and can be retrieved with [clbk()].
@@ -39,6 +39,42 @@ CallbackTuning = R6Class("CallbackTuning",
 #' @description
 #' Function to create a [CallbackTuning].
 #'
+#' Tuning callbacks can be called from different stages of tuning process.
+#' The stages are prefixed with `on_*`.
+#'
+#' ```
+#' Start Tuning
+#'      - on_optimization_begin
+#'     Start Tuner Batch
+#'          - on_optimizer_before_eval
+#'         Start Evaluation
+#'              - on_eval_after_design
+#'              - on_eval_after_benchmark
+#'              - on_eval_before_archive
+#'         End Evaluation
+#'          - on_optimizer_after_eval
+#'     End Tuner Batch
+#'      - on_result
+#'      - on_optimization_end
+#' End Tuning
+#' ```
+#'
+#' See also the section on parameters for more information on the stages.
+#' A tuning callback works with [bbotk::ContextOptimization] and [ContextEval].
+#'
+#' @details
+#' A callback can write data to its state (`$state`), e.g. settings that affect the callback itself.
+#' Avoid writing large data the state.
+#' This can slow down the tuning process when the evaluation of configurations is parallelized.
+#'
+#' Tuning callbacks access two different contexts depending on the stage.
+#' The stages `on_eval_after_design`, `on_eval_after_benchmark`, `on_eval_before_archive` access [ContextEval].
+#' This context can be used to customize the evaluation of a batch of hyperparameter configurations.
+#' Changes to the state of callback are lost after the evaluation of a batch and changes to the tuning instance or the tuner are not possible.
+#' Persistent data should be written to the archive via `$aggregated_performance` (see [ContextEval]).
+#' The other stages access [ContextOptimization].
+#' This context can be used to modify the tuning instance, archive, tuner and final result.
+#'
 #' @param id (`character(1)`)\cr
 #'   Identifier for the new instance.
 #' @param label (`character(1)`)\cr
@@ -49,32 +85,40 @@ CallbackTuning = R6Class("CallbackTuning",
 #' @param on_optimization_begin (`function()`)\cr
 #'   Stage called at the beginning of the optimization.
 #'   Called in `Optimizer$optimize()`.
-#'   The functions must have two arguments named `callback` and `context`.
+#'   The function must have two arguments named `callback` and `context`.
+#'   The context available is [bbotk::ContextOptimization].
 #' @param on_optimizer_before_eval (`function()`)\cr
 #'   Stage called after the optimizer proposes points.
 #'   Called in `OptimInstance$eval_batch()`.
 #'   The functions must have two arguments named `callback` and `context`.
+#'   The context available is [bbotk::ContextOptimization].
 #' @param on_eval_after_design (`function()`)\cr
 #'   Stage called after design is created.
 #'   Called in `ObjectiveTuning$eval_many()`.
+#'   The context available is [ContextEval].
 #' @param on_eval_after_benchmark (`function()`)\cr
 #'   Stage called after hyperparameter configurations are evaluated.
 #'   Called in `ObjectiveTuning$eval_many()`.
+#'   The context available is [ContextEval].
 #' @param on_eval_before_archive (`function()`)\cr
 #'   Stage called before performance values are written to the archive.
 #'   Called in `ObjectiveTuning$eval_many()`.
+#'   The context available is [ContextEval].
 #' @param on_optimizer_after_eval (`function()`)\cr
 #'   Stage called after points are evaluated.
 #'   Called in `OptimInstance$eval_batch()`.
 #'   The functions must have two arguments named `callback` and `context`.
+#'   The context available is [bbotk::ContextOptimization].
 #' @param on_result (`function()`)\cr
 #'   Stage called after result are written.
 #'   Called in `OptimInstance$assign_result()`.
 #'   The functions must have two arguments named `callback` and `context`.
+#'   The context available is [bbotk::ContextOptimization].
 #' @param on_optimization_end (`function()`)\cr
 #'   Stage called at the end of the optimization.
 #'   Called in `Optimizer$optimize()`.
 #'   The functions must have two arguments named `callback` and `context`.
+#'   The context available is [bbotk::ContextOptimization].
 #' @param fields (list of `any`)\cr
 #'   List of additional fields.
 #'

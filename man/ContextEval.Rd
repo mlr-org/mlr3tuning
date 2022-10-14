@@ -2,45 +2,17 @@
 % Please edit documentation in R/ContextEval.R
 \name{ContextEval}
 \alias{ContextEval}
-\title{Context}
+\title{Evaluation Context}
 \description{
-This is the abstract base class for context objects.
-Context objects allow \link{Callback} objects to access and modify data.
-Access to data can be restricted with active bindings (see example).
+The \link{ContextEval} allows \link{CallbackTuning}s to access and modify data while a batch of hyperparameter configurations is evaluated.
+See section on active bindings for a list of modifiable objects.
+See \code{\link[=callback_tuning]{callback_tuning()}} for a list of stages which access \link{ContextEval}.
 }
-\examples{
-library(data.table)
-library(R6)
-
-# data table with column x an y
-data = data.table(x = runif(10), y = sample(c("A", "B"), 10, replace = TRUE))
-
-# context only allows to access column y
-ContextExample = R6Class("ContextExample",
-  inherit = mlr3misc::Context,
-  public = list(
-    data = NULL,
-
-    initialize = function(data) {
-        self$data = data
-    }
-  ),
-
-  active = list(
-    y = function(rhs) {
-      if (missing(rhs)) return(self$data$y)
-      self$data$y = rhs
-    }
-  )
-)
-
-context = ContextExample$new(data)
-
-# retrieve content of column y
-context$y
-
-# change content of column y to "C"
-context$y = "C"
+\details{
+This context is re-created each time a new batch of hyperparameter configurations is evaluated.
+Changes to \verb{$objective_tuning}, \verb{$design} \verb{$benchmark_result} are discarded after the function is finished.
+Modification on the data table in \verb{$aggregated_performance} are written to the archive.
+Any number of columns can be added.
 }
 \section{Super class}{
 \code{\link[mlr3misc:Context]{mlr3misc::Context}} -> \code{ContextEval}
@@ -55,6 +27,11 @@ context$y = "C"
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
+\item{\code{xss}}{(list())\cr
+The hyperparameter configurations of the latest batch.
+Contains the values on the learner scale i.e. transformations are applied.
+See \verb{$xdt} in \link[bbotk:ContextOptimization]{bbotk::ContextOptimization} for the untransformed values.}
+
 \item{\code{design}}{(\link[data.table:data.table]{data.table::data.table})\cr
 The benchmark design of the latest batch.}
 
@@ -62,7 +39,8 @@ The benchmark design of the latest batch.}
 The benchmark result of the latest batch.}
 
 \item{\code{aggregated_performance}}{(\link[data.table:data.table]{data.table::data.table})\cr
-Aggregated performance scores of the latest batch.}
+Aggregated performance scores of the latest batch.
+This data table is passed to the archive.}
 }
 \if{html}{\out{</div>}}
 }

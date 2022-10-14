@@ -1,2 +1,2 @@
-#' @param callbacks (list of [mlr3misc::Callback])\cr
+#' @param callbacks (list of [CallbackTuning])\cr
 #'   List of callbacks.

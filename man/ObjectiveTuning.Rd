@@ -33,8 +33,7 @@ This class is usually constructed internally by the \link{TuningInstanceSingleCr
 
 \item{\code{keep_hotstart_stack}}{(\code{logical(1)}).}
 
-\item{\code{callbacks}}{(List of \link{Callback}s)\cr
-Callbacks.}
+\item{\code{callbacks}}{(List of \link{CallbackTuning}s).}
 }
 \if{html}{\out{</div>}}
 }
@@ -127,7 +126,7 @@ Reference to archive of \link{TuningInstanceSingleCrit} |
 \link{TuningInstanceMultiCrit}. If \code{NULL} (default), benchmark result and
 models cannot be stored.}
 
-\item{\code{callbacks}}{(list of \link[mlr3misc:Callback]{mlr3misc::Callback})\cr
+\item{\code{callbacks}}{(list of \link{CallbackTuning})\cr
 List of callbacks.}
 }
 \if{html}{\out{</div>}}

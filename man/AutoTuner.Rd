@@ -222,7 +222,7 @@ If \code{TRUE}, hyperparameter values are checked before evaluation and
 performance scores after. If \code{FALSE} (default), values are unchecked but
 computational overhead is reduced.}
 
-\item{\code{callbacks}}{(list of \link[mlr3misc:Callback]{mlr3misc::Callback})\cr
+\item{\code{callbacks}}{(list of \link{CallbackTuning})\cr
 List of callbacks.}
 }
 \if{html}{\out{</div>}}

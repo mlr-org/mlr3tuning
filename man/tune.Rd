@@ -89,7 +89,7 @@ after tuning.}
 If \code{TRUE}, learner is evaluated with hyperparameters set to their default
 values at the start of the optimization.}
 
-\item{callbacks}{(list of \link[mlr3misc:Callback]{mlr3misc::Callback})\cr
+\item{callbacks}{(list of \link{CallbackTuning})\cr
 List of callbacks.}
 
 \item{...}{(named \code{list()})\cr

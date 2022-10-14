@@ -1,44 +1,17 @@
-#' @title Context
+#' @title Evaluation Context
 #'
 #' @description
-#' This is the abstract base class for context objects.
-#' Context objects allow [Callback] objects to access and modify data.
-#' Access to data can be restricted with active bindings (see example).
+#' The [ContextEval] allows [CallbackTuning]s to access and modify data while a batch of hyperparameter configurations is evaluated.
+#' See section on active bindings for a list of modifiable objects.
+#' See [callback_tuning()] for a list of stages which access [ContextEval].
+#'
+#' @details
+#' This context is re-created each time a new batch of hyperparameter configurations is evaluated.
+#' Changes to `$objective_tuning`, `$design` `$benchmark_result` are discarded after the function is finished.
+#' Modification on the data table in `$aggregated_performance` are written to the archive.
+#' Any number of columns can be added.
 #'
 #' @export
-#' @examples
-#' library(data.table)
-#' library(R6)
-#'
-#' # data table with column x an y
-#' data = data.table(x = runif(10), y = sample(c("A", "B"), 10, replace = TRUE))
-#'
-#' # context only allows to access column y
-#' ContextExample = R6Class("ContextExample",
-#'   inherit = mlr3misc::Context,
-#'   public = list(
-#'     data = NULL,
-#'
-#'     initialize = function(data) {
-#'         self$data = data
-#'     }
-#'   ),
-#'
-#'   active = list(
-#'     y = function(rhs) {
-#'       if (missing(rhs)) return(self$data$y)
-#'       self$data$y = rhs
-#'     }
-#'   )
-#' )
-#'
-#' context = ContextExample$new(data)
-#'
-#' # retrieve content of column y
-#' context$y
-#'
-#' # change content of column y to "C"
-#' context$y = "C"
 ContextEval = R6Class("ContextEval",
   inherit = mlr3misc::Context,
   public = list(
@@ -58,6 +31,18 @@ ContextEval = R6Class("ContextEval",
   ),
 
   active = list(
+    #' @field xss (list())\cr
+    #'   The hyperparameter configurations of the latest batch.
+    #'   Contains the values on the learner scale i.e. transformations are applied.
+    #'   See `$xdt` in [bbotk::ContextOptimization] for the untransformed values.
+    xss = function(rhs) {
+      if (missing(rhs)) {
+        return(get_private(self$objective_tuning)$.xss)
+      } else {
+        get_private(self$objective_tuning)$.xss = rhs
+      }
+    },
+
     #' @field design ([data.table::data.table])\cr
     #'   The benchmark design of the latest batch.
     design = function(rhs) {
@@ -80,6 +65,7 @@ ContextEval = R6Class("ContextEval",
 
     #' @field aggregated_performance ([data.table::data.table])\cr
     #'   Aggregated performance scores of the latest batch.
+    #'   This data table is passed to the archive.
     aggregated_performance = function(rhs) {
       if (missing(rhs)) {
         return(get_private(self$objective_tuning)$.aggregated_performance)

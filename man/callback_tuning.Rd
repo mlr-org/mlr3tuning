@@ -33,45 +33,88 @@ The referenced help package can be opened via method \verb{$help()}.}
 \item{on_optimization_begin}{(\verb{function()})\cr
 Stage called at the beginning of the optimization.
 Called in \code{Optimizer$optimize()}.
-The functions must have two arguments named \code{callback} and \code{context}.}
+The function must have two arguments named \code{callback} and \code{context}.
+The context available is \link[bbotk:ContextOptimization]{bbotk::ContextOptimization}.}
 
 \item{on_optimizer_before_eval}{(\verb{function()})\cr
 Stage called after the optimizer proposes points.
 Called in \code{OptimInstance$eval_batch()}.
-The functions must have two arguments named \code{callback} and \code{context}.}
+The functions must have two arguments named \code{callback} and \code{context}.
+The context available is \link[bbotk:ContextOptimization]{bbotk::ContextOptimization}.}
 
 \item{on_eval_after_design}{(\verb{function()})\cr
 Stage called after design is created.
-Called in \code{ObjectiveTuning$eval_many()}.}
+Called in \code{ObjectiveTuning$eval_many()}.
+The context available is \link{ContextEval}.}
 
 \item{on_eval_after_benchmark}{(\verb{function()})\cr
 Stage called after hyperparameter configurations are evaluated.
-Called in \code{ObjectiveTuning$eval_many()}.}
+Called in \code{ObjectiveTuning$eval_many()}.
+The context available is \link{ContextEval}.}
 
 \item{on_eval_before_archive}{(\verb{function()})\cr
 Stage called before performance values are written to the archive.
-Called in \code{ObjectiveTuning$eval_many()}.}
+Called in \code{ObjectiveTuning$eval_many()}.
+The context available is \link{ContextEval}.}
 
 \item{on_optimizer_after_eval}{(\verb{function()})\cr
 Stage called after points are evaluated.
 Called in \code{OptimInstance$eval_batch()}.
-The functions must have two arguments named \code{callback} and \code{context}.}
+The functions must have two arguments named \code{callback} and \code{context}.
+The context available is \link[bbotk:ContextOptimization]{bbotk::ContextOptimization}.}
 
 \item{on_result}{(\verb{function()})\cr
 Stage called after result are written.
 Called in \code{OptimInstance$assign_result()}.
-The functions must have two arguments named \code{callback} and \code{context}.}
+The functions must have two arguments named \code{callback} and \code{context}.
+The context available is \link[bbotk:ContextOptimization]{bbotk::ContextOptimization}.}
 
 \item{on_optimization_end}{(\verb{function()})\cr
 Stage called at the end of the optimization.
 Called in \code{Optimizer$optimize()}.
-The functions must have two arguments named \code{callback} and \code{context}.}
+The functions must have two arguments named \code{callback} and \code{context}.
+The context available is \link[bbotk:ContextOptimization]{bbotk::ContextOptimization}.}
 
 \item{fields}{(list of \code{any})\cr
 List of additional fields.}
 }
 \description{
 Function to create a \link{CallbackTuning}.
+
+Tuning callbacks can be called from different stages of tuning process.
+The stages are prefixed with \verb{on_*}.
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{Start Tuning
+     - on_optimization_begin
+    Start Tuner Batch
+         - on_optimizer_before_eval
+        Start Evaluation
+             - on_eval_after_design
+             - on_eval_after_benchmark
+             - on_eval_before_archive
+        End Evaluation
+         - on_optimizer_after_eval
+    End Tuner Batch
+     - on_result
+     - on_optimization_end
+End Tuning
+}\if{html}{\out{</div>}}
+
+See also the section on parameters for more information on the stages.
+A tuning callback works with \link[bbotk:ContextOptimization]{bbotk::ContextOptimization} and \link{ContextEval}.
+}
+\details{
+A callback can write data to its state (\verb{$state}), e.g. settings that affect the callback itself.
+Avoid writing large data the state.
+This can slow down the tuning process when the evaluation of configurations is parallelized.
+
+Tuning callbacks access two different contexts depending on the stage.
+The stages \code{on_eval_after_design}, \code{on_eval_after_benchmark}, \code{on_eval_before_archive} access \link{ContextEval}.
+This context can be used to customize the evaluation of a batch of hyperparameter configurations.
+Changes to the state of callback are lost after the evaluation of a batch and changes to the tuning instance or the tuner are not possible.
+Persistent data should be written to the archive via \verb{$aggregated_performance} (see \link{ContextEval}).
+The other stages access \link{ContextOptimization}.
+This context can be used to modify the tuning instance, archive, tuner and final result.
 }
 \examples{
 # write archive to disk

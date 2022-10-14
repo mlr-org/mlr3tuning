@@ -4,16 +4,19 @@
 #' @name mlr3tuning.early_stopping
 #'
 #' @description
-#' This [Callback] integrates early stopping into the hyperparameter tuning of an XGBoost learner.
+#' This [CallbackTuning] integrates early stopping into the hyperparameter tuning of an XGBoost learner.
 #' Early stopping estimates the optimal number of trees (`nrounds`) for a given hyperparameter configuration.
 #' Since early stopping is performed in each resampling iteration, there are several optimal `nrounds` values.
 #' The callback writes the maximum value to the archive in the `max_nrounds` column.
 #' In the best hyperparameter configuration (`instance$result`), the value of `nrounds` is replaced by `max_nrounds` and early stopping is deactivated.
 #'
 #' @details
-#' Currently, the callback does not work with `GraphLearner`s from package \CRANpkg{mlr3pipelines}.
+#' Currently, the callback does not work with `GraphLearner`s from the package \CRANpkg{mlr3pipelines}.
 #' The callback is compatible with the [AutoTuner].
 #' The final model is fitted with the best hyperparameter configuration and `max_nrounds` i.e. early stopping is not performed.
+#'
+#' @section Resources:
+#' * [gallery post](https://mlr-org.com/gallery/2022-04-06-early-stopping-with-xgboost/) on early stopping with XGBoost.
 #'
 #' @examples
 #' clbk("mlr3tuning.early_stopping")
@@ -90,7 +93,7 @@ load_callback_early_stopping = function() {
 #' @name mlr3tuning.backup
 #'
 #' @description
-#' This [Callback] writes the [BenchmarkResult] after each batch to disk.
+#' This [CallbackTuning] writes the [BenchmarkResult] after each batch to disk.
 #'
 #' @examples
 #' clbk("mlr3tuning.backup", path = "backup.rds")

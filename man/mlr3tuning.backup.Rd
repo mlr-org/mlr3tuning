@@ -4,7 +4,7 @@
 \alias{mlr3tuning.backup}
 \title{Backup Benchmark Result Callback}
 \description{
-This \link{Callback} writes the \link{BenchmarkResult} after each batch to disk.
+This \link{CallbackTuning} writes the \link{BenchmarkResult} after each batch to disk.
 }
 \examples{
 clbk("mlr3tuning.backup", path = "backup.rds")

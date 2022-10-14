@@ -50,8 +50,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     #' @field keep_hotstart_stack (`logical(1)`).
     keep_hotstart_stack = NULL,
 
-    #' @field callbacks (List of [Callback]s)\cr
-    #' Callbacks.
+    #' @field callbacks (List of [CallbackTuning]s).
     callbacks = NULL,
 
     #' @description
@@ -91,9 +90,10 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
   private = list(
     .eval_many = function(xss, resampling) {
       context = ContextEval$new(self)
+      private$.xss = xss
 
       # create learners from set of hyperparameter configurations
-      learners = map(xss, function(x) {
+      learners = map(private$.xss, function(x) {
         learner = self$learner$clone(deep = TRUE)
         learner$param_set$values = insert_named(learner$param_set$values, x)
         if (self$allow_hotstart) learner$hotstart_stack = self$hotstart_stack
@@ -134,6 +134,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       private$.aggregated_performance
     },
 
+    .xss = NULL,
     .design = NULL,
     .benchmark_result = NULL,
     .aggregated_performance = NULL
