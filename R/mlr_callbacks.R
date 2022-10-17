@@ -52,13 +52,13 @@ load_callback_early_stopping = function() {
     on_optimization_begin = function(callback, context) {
       learner = context$instance$objective$learner
 
-      if (any(c("LearnerClassifXgboost", "LearnerRegrXgboost", "LearnerSurvXgboost") %nin% class(learner))) {
+      if (all(c("LearnerClassifXgboost", "LearnerRegrXgboost", "LearnerSurvXgboost") %nin% class(learner))) {
         stopf("%s is incompatible with %s", format(learner), format(callback))
       }
 
-     if (is.null(learner$param_set$values$early_stopping_rounds)) {
+      if (is.null(learner$param_set$values$early_stopping_rounds)) {
         stop("Early stopping is not activated. Set `early_stopping_rounds` parameter.")
-     }
+      }
 
       # store models temporary
       callback$state$store_models = context$instance$objective$store_models
@@ -68,8 +68,7 @@ load_callback_early_stopping = function() {
     on_eval_after_benchmark = function(callback, context) {
       callback$state$max_nrounds = map_dbl(context$benchmark_result$resample_results$resample_result, function(rr) {
           max(map_dbl(get_private(rr)$.data$learner_states(get_private(rr)$.view), function(state) {
-              state$model$niter
-            }
+            state$model$niter # GraphLearner state$model$xgboost$model$niter
           }))
       })
     },
