@@ -68,7 +68,7 @@ load_callback_early_stopping = function() {
     on_eval_after_benchmark = function(callback, context) {
       callback$state$max_nrounds = map_dbl(context$benchmark_result$resample_results$resample_result, function(rr) {
           max(map_dbl(get_private(rr)$.data$learner_states(get_private(rr)$.view), function(state) {
-            state$model$niter # GraphLearner state$model$xgboost$model$niter
+            state$model$best_iteration # GraphLearner state$model$xgboost$model$niter
           }))
       })
     },
