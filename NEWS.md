@@ -1,7 +1,9 @@
-# mlr3tuning 0.14.0.9000
+# mlr3tuning 0.15.0
 
-* fix: `AutoTuner` has not accepted `TuningSpace` objects as search spaces.
+* fix: `AutoTuner` did not accept `TuningSpace` objects as search spaces.
 * feat: Add `ti()` function to create a `TuningInstanceSingleCrit` or `TuningInstanceMultiCrit`.
+* docs: Documentation has a technical details section now.
+* feat: New option for `extract_inner_tuning_results()` to return the tuning instances.
 
 # mlr3tuning 0.14.0
 

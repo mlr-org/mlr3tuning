@@ -139,19 +139,14 @@ The \CRANpkg{mlr3viz} package provides visualizations for tuning results.
 learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
 
 # construct tuning instance
-instance = ti(
+instance = tune(
+  method = tnr("random_search", batch_size = 2),
   task = tsk("pima"),
   learner = learner,
   resampling = rsmp ("holdout"),
   measures = msr("classif.ce"),
-  terminator = trm("run_time", secs = 10)
+  terminator = trm("evals", n_evals = 4)
 )
-
-# get tuner
-tuner = tnr("random_search", batch_size = 10)
-
-# tune classification tree on pima data set
-tuner$optimize(instance)
 
 # get result
 instance$result
