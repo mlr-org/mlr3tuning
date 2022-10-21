@@ -22,10 +22,6 @@ extract_benchmark_result_learners = function(bmr) {
   }))
 }
 
-catn = function(..., file = "") {
-  cat(paste0(..., collapse = "\n"), "\n", sep = "", file = file)
-}
-
 evaluate_default = function(inst) {
   # values are on the learner scale i.e. possible transformation are already applied
   xss = default_values(inst$objective$learner, inst$search_space, inst$objective$task)
