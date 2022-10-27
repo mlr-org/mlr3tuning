@@ -32,13 +32,11 @@ The referenced help package can be opened via method \verb{$help()}.}
 \item{on_optimization_begin}{(\verb{function()})\cr
 Stage called at the beginning of the optimization.
 Called in \code{Optimizer$optimize()}.
-The function must have two arguments named \code{callback} and \code{context}.
 The context available is \link[bbotk:ContextOptimization]{bbotk::ContextOptimization}.}
 
 \item{on_optimizer_before_eval}{(\verb{function()})\cr
 Stage called after the optimizer proposes points.
 Called in \code{OptimInstance$eval_batch()}.
-The functions must have two arguments named \code{callback} and \code{context}.
 The context available is \link[bbotk:ContextOptimization]{bbotk::ContextOptimization}.}
 
 \item{on_eval_after_design}{(\verb{function()})\cr
@@ -59,19 +57,16 @@ The context available is \link{ContextEval}.}
 \item{on_optimizer_after_eval}{(\verb{function()})\cr
 Stage called after points are evaluated.
 Called in \code{OptimInstance$eval_batch()}.
-The functions must have two arguments named \code{callback} and \code{context}.
 The context available is \link[bbotk:ContextOptimization]{bbotk::ContextOptimization}.}
 
 \item{on_result}{(\verb{function()})\cr
 Stage called after result are written.
 Called in \code{OptimInstance$assign_result()}.
-The functions must have two arguments named \code{callback} and \code{context}.
 The context available is \link[bbotk:ContextOptimization]{bbotk::ContextOptimization}.}
 
 \item{on_optimization_end}{(\verb{function()})\cr
 Stage called at the end of the optimization.
 Called in \code{Optimizer$optimize()}.
-The functions must have two arguments named \code{callback} and \code{context}.
 The context available is \link[bbotk:ContextOptimization]{bbotk::ContextOptimization}.}
 }
 \description{
@@ -101,6 +96,8 @@ See also the section on parameters for more information on the stages.
 A tuning callback works with \link[bbotk:ContextOptimization]{bbotk::ContextOptimization} and \link{ContextEval}.
 }
 \details{
+When implementing a callback, each functions must have two arguments named \code{callback} and \code{context}.
+
 A callback can write data to the state (\verb{$state}), e.g. settings that affect the callback itself.
 Avoid writing large data the state.
 This can slow down the tuning process when the evaluation of configurations is parallelized.

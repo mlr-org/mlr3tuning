@@ -65,6 +65,8 @@ CallbackTuning = R6Class("CallbackTuning",
 #' A tuning callback works with [bbotk::ContextOptimization] and [ContextEval].
 #'
 #' @details
+#' When implementing a callback, each functions must have two arguments named `callback` and `context`.
+#'
 #' A callback can write data to the state (`$state`), e.g. settings that affect the callback itself.
 #' Avoid writing large data the state.
 #' This can slow down the tuning process when the evaluation of configurations is parallelized.
@@ -88,12 +90,10 @@ CallbackTuning = R6Class("CallbackTuning",
 #' @param on_optimization_begin (`function()`)\cr
 #'   Stage called at the beginning of the optimization.
 #'   Called in `Optimizer$optimize()`.
-#'   The function must have two arguments named `callback` and `context`.
 #'   The context available is [bbotk::ContextOptimization].
 #' @param on_optimizer_before_eval (`function()`)\cr
 #'   Stage called after the optimizer proposes points.
 #'   Called in `OptimInstance$eval_batch()`.
-#'   The functions must have two arguments named `callback` and `context`.
 #'   The context available is [bbotk::ContextOptimization].
 #' @param on_eval_after_design (`function()`)\cr
 #'   Stage called after design is created.
@@ -110,17 +110,14 @@ CallbackTuning = R6Class("CallbackTuning",
 #' @param on_optimizer_after_eval (`function()`)\cr
 #'   Stage called after points are evaluated.
 #'   Called in `OptimInstance$eval_batch()`.
-#'   The functions must have two arguments named `callback` and `context`.
 #'   The context available is [bbotk::ContextOptimization].
 #' @param on_result (`function()`)\cr
 #'   Stage called after result are written.
 #'   Called in `OptimInstance$assign_result()`.
-#'   The functions must have two arguments named `callback` and `context`.
 #'   The context available is [bbotk::ContextOptimization].
 #' @param on_optimization_end (`function()`)\cr
 #'   Stage called at the end of the optimization.
 #'   Called in `Optimizer$optimize()`.
-#'   The functions must have two arguments named `callback` and `context`.
 #'   The context available is [bbotk::ContextOptimization].
 #'
 #' @export
