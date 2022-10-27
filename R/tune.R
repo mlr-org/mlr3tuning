@@ -48,7 +48,22 @@
 #' @template param_callbacks
 #'
 #' @export
-#' @inherit TuningInstanceSingleCrit examples
+#' @examples
+#' # get learner and define search space
+#' learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
+#'
+#' # construct tuning instance
+#' instance = tune(
+#'   method = tnr("random_search", batch_size = 2),
+#'   task = tsk("pima"),
+#'   learner = learner,
+#'   resampling = rsmp ("holdout"),
+#'   measures = msr("classif.ce"),
+#'   terminator = trm("evals", n_evals = 4)
+#' )
+#'
+#' # get result
+#' instance$result
 tune = function(method, task, learner, resampling, measures = NULL, term_evals = NULL, term_time = NULL, terminator = NULL, search_space = NULL, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, evaluate_default = FALSE, callbacks = list(), ...) {
   tuner = if (is.character(method)) {
     assert_choice(method, mlr_tuners$keys())

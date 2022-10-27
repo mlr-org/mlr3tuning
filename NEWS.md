@@ -1,9 +1,15 @@
-# mlr3tuning 0.14.0.9000
+# mlr3tuning 0.15.0.9000
 
 * feat: Add new callback that enables early stopping while tuning to `mlr_callbacks`.
 * feat: Add new callback that backups the benchmark result to disk after each batch.
 * feat: Create custom callbacks with the `callback_tuning()` function.
+
+# mlr3tuning 0.15.0
+
+* fix: `AutoTuner` did not accept `TuningSpace` objects as search spaces.
 * feat: Add `ti()` function to create a `TuningInstanceSingleCrit` or `TuningInstanceMultiCrit`.
+* docs: Documentation has a technical details section now.
+* feat: New option for `extract_inner_tuning_results()` to return the tuning instances.
 
 # mlr3tuning 0.14.0
 

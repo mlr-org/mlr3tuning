@@ -37,11 +37,11 @@ instance = ti(
   learner = learner,
   resampling = rsmp ("holdout"),
   measures = msrs(c("classif.ce", "time_train")),
-  terminator = trm("run_time", secs = 10)
+  terminator = trm("evals", n_evals = 4)
 )
 
 # get tuner
-tuner = tnr("random_search", batch_size = 10)
+tuner = tnr("random_search", batch_size = 2)
 
 # tune classification tree on pima data set
 tuner$optimize(instance)

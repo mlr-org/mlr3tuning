@@ -1,6 +1,6 @@
 Package: mlr3tuning
 Title: Tuning for 'mlr3'
-Version: 0.14.0.9000
+Version: 0.15.0.9000
 Authors@R:
     c(person(given = "Marc",
              family = "Becker",
@@ -40,7 +40,7 @@ Depends:
     paradox (>= 0.7.0),
     R (>= 3.1.0)
 Imports:
-    bbotk (>= 0.5.4.9000),
+    bbotk (>= 0.6.0),
     checkmate (>= 2.0.0),
     data.table,
     lgr,
@@ -57,7 +57,6 @@ Suggests:
     testthat (>= 3.0.0),
     xgboost
 Remotes:
-    mlr-org/bbotk,
     mlr-org/mlr3,
     mlr-org/mlr3learners@xgboost_early_stopping,
 Config/testthat/edition: 3
