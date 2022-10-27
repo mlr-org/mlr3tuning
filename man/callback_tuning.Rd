@@ -101,7 +101,7 @@ See also the section on parameters for more information on the stages.
 A tuning callback works with \link[bbotk:ContextOptimization]{bbotk::ContextOptimization} and \link{ContextEval}.
 }
 \details{
-A callback can write data to its state (\verb{$state}), e.g. settings that affect the callback itself.
+A callback can write data to the state (\verb{$state}), e.g. settings that affect the callback itself.
 Avoid writing large data the state.
 This can slow down the tuning process when the evaluation of configurations is parallelized.
 
@@ -112,6 +112,7 @@ Changes to the state of callback are lost after the evaluation of a batch and ch
 Persistent data should be written to the archive via \verb{$aggregated_performance} (see \link{ContextEval}).
 The other stages access \link{ContextOptimization}.
 This context can be used to modify the tuning instance, archive, tuner and final result.
+There are two different contexts because the evaluation can be parallelized i.e. multiple instances of \link{ContextEval} exists on different workers at the same time.
 }
 \examples{
 # write archive to disk

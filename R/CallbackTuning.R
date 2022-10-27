@@ -65,7 +65,7 @@ CallbackTuning = R6Class("CallbackTuning",
 #' A tuning callback works with [bbotk::ContextOptimization] and [ContextEval].
 #'
 #' @details
-#' A callback can write data to its state (`$state`), e.g. settings that affect the callback itself.
+#' A callback can write data to the state (`$state`), e.g. settings that affect the callback itself.
 #' Avoid writing large data the state.
 #' This can slow down the tuning process when the evaluation of configurations is parallelized.
 #'
@@ -76,6 +76,7 @@ CallbackTuning = R6Class("CallbackTuning",
 #' Persistent data should be written to the archive via `$aggregated_performance` (see [ContextEval]).
 #' The other stages access [ContextOptimization].
 #' This context can be used to modify the tuning instance, archive, tuner and final result.
+#' There are two different contexts because the evaluation can be parallelized i.e. multiple instances of [ContextEval] exists on different workers at the same time.
 #'
 #' @param id (`character(1)`)\cr
 #'   Identifier for the new instance.
