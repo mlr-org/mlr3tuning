@@ -116,13 +116,13 @@ load_callback_backup = function() {
     label = "Backup Benchmark Result Callback",
     man = "mlr3tuning::mlr3tuning.backup",
     on_optimization_begin = function(callback, context) {
+      if (is.null(callback$state$path)) callback$state$path = "bmr.rds"
       assert_path_for_output(callback$state$path)
     },
 
     on_optimizer_after_eval = function(callback, context) {
       if (file.exists(callback$state$path)) unlink(callback$state$path)
       saveRDS(context$instance$archive$benchmark_result, callback$state$path)
-    },
-    fields = list(path = "bmr.rds")
+    }
   )
 }

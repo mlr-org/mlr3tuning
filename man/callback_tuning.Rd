@@ -15,8 +15,7 @@ callback_tuning(
   on_eval_before_archive = NULL,
   on_optimizer_after_eval = NULL,
   on_result = NULL,
-  on_optimization_end = NULL,
-  fields = list()
+  on_optimization_end = NULL
 )
 }
 \arguments{
@@ -74,9 +73,6 @@ Stage called at the end of the optimization.
 Called in \code{Optimizer$optimize()}.
 The functions must have two arguments named \code{callback} and \code{context}.
 The context available is \link[bbotk:ContextOptimization]{bbotk::ContextOptimization}.}
-
-\item{fields}{(list of \code{any})\cr
-List of additional fields.}
 }
 \description{
 Function to create a \link{CallbackTuning}.

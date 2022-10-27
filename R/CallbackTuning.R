@@ -121,12 +121,10 @@ CallbackTuning = R6Class("CallbackTuning",
 #'   Called in `Optimizer$optimize()`.
 #'   The functions must have two arguments named `callback` and `context`.
 #'   The context available is [bbotk::ContextOptimization].
-#' @param fields (list of `any`)\cr
-#'   List of additional fields.
 #'
 #' @export
 #' @inherit CallbackTuning examples
-callback_tuning = function(id, label = NA_character_, man = NA_character_, on_optimization_begin = NULL, on_optimizer_before_eval = NULL, on_eval_after_design = NULL, on_eval_after_benchmark = NULL, on_eval_before_archive = NULL, on_optimizer_after_eval = NULL, on_result = NULL,  on_optimization_end = NULL, fields = list()) {
+callback_tuning = function(id, label = NA_character_, man = NA_character_, on_optimization_begin = NULL, on_optimizer_before_eval = NULL, on_eval_after_design = NULL, on_eval_after_benchmark = NULL, on_eval_before_archive = NULL, on_optimizer_after_eval = NULL, on_result = NULL,  on_optimization_end = NULL) {
   stages = discard(set_names(list(on_optimization_begin, on_optimizer_before_eval, on_eval_after_design, on_eval_after_benchmark, on_eval_before_archive, on_optimizer_after_eval, on_result, on_optimization_end), c("on_optimization_begin", "on_optimizer_before_eval", "on_eval_after_design", "on_eval_after_benchmark", "on_eval_before_archive", "on_optimizer_after_eval", "on_result",  "on_optimization_end")), is.null)
   walk(stages, function(stage) assert_function(stage, args = c("callback", "context")))
   callback = CallbackTuning$new(id, label, man)
