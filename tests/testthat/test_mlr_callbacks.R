@@ -49,7 +49,7 @@ test_that("early stopping callback works", {
 })
 
 test_that("backup callback works", {
-  on.exit(unlink("./backup.rds"))
+  file = tempfile(fileext = ".rds")
 
   instance = tune(
     method = "random_search",
@@ -59,9 +59,9 @@ test_that("backup callback works", {
     measures = msr("classif.ce"),
     term_evals = 4,
     batch_size = 2,
-    callbacks = clbk("mlr3tuning.backup", path = "./backup.rds")
+    callbacks = clbk("mlr3tuning.backup", path = file)
   )
 
-  expect_file_exists("./backup.rds")
-  expect_benchmark_result(readRDS("./backup.rds"))
+  expect_file_exists(file)
+  expect_benchmark_result(readRDS(file))
 })
