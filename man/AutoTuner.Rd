@@ -168,7 +168,8 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   store_tuning_instance = TRUE,
   store_benchmark_result = TRUE,
   store_models = FALSE,
-  check_values = FALSE
+  check_values = FALSE,
+  callbacks = list()
 )}\if{html}{\out{</div>}}
 }
 
@@ -220,6 +221,9 @@ combination is needed for measures that require a model.}
 If \code{TRUE}, hyperparameter values are checked before evaluation and
 performance scores after. If \code{FALSE} (default), values are unchecked but
 computational overhead is reduced.}
+
+\item{\code{callbacks}}{(list of \link{CallbackTuning})\cr
+List of callbacks.}
 }
 \if{html}{\out{</div>}}
 }

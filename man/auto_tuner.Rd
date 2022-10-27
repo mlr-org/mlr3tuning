@@ -17,6 +17,7 @@ auto_tuner(
   store_benchmark_result = TRUE,
   store_models = FALSE,
   check_values = FALSE,
+  callbacks = list(),
   ...
 )
 }
@@ -72,6 +73,9 @@ combination is needed for measures that require a model.}
 If \code{TRUE}, hyperparameter values are checked before evaluation and
 performance scores after. If \code{FALSE} (default), values are unchecked but
 computational overhead is reduced.}
+
+\item{callbacks}{(list of \link{CallbackTuning})\cr
+List of callbacks.}
 
 \item{...}{(named \code{list()})\cr
 Named arguments to be set as parameters of the tuner.}

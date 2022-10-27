@@ -12,6 +12,11 @@
   x = utils::getFromNamespace("mlr_reflections", ns = "mlr3")
   x$tuner_properties = "dependencies"
 
+  # callbacks
+  x = utils::getFromNamespace("mlr_callbacks", ns = "mlr3misc")
+  x$add("mlr3tuning.early_stopping", load_callback_early_stopping)
+  x$add("mlr3tuning.backup", load_callback_backup)
+
   assign("lg", lgr::get_logger("bbotk"), envir = parent.env(environment()))
   if (Sys.getenv("IN_PKGDOWN") == "true") {
     lg$set_threshold("warn")

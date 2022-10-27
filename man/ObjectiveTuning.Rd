@@ -32,6 +32,8 @@ This class is usually constructed internally by the \link{TuningInstanceSingleCr
 \item{\code{allow_hotstart}}{(\code{logical(1)}).}
 
 \item{\code{keep_hotstart_stack}}{(\code{logical(1)}).}
+
+\item{\code{callbacks}}{(List of \link{CallbackTuning}s).}
 }
 \if{html}{\out{</div>}}
 }
@@ -69,7 +71,8 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   check_values = TRUE,
   allow_hotstart = FALSE,
   keep_hotstart_stack = FALSE,
-  archive = NULL
+  archive = NULL,
+  callbacks = list()
 )}\if{html}{\out{</div>}}
 }
 
@@ -122,6 +125,9 @@ after tuning.}
 Reference to archive of \link{TuningInstanceSingleCrit} |
 \link{TuningInstanceMultiCrit}. If \code{NULL} (default), benchmark result and
 models cannot be stored.}
+
+\item{\code{callbacks}}{(list of \link{CallbackTuning})\cr
+List of callbacks.}
 }
 \if{html}{\out{</div>}}
 }

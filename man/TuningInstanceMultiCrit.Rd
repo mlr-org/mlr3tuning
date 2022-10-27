@@ -97,7 +97,8 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   check_values = FALSE,
   allow_hotstart = FALSE,
   keep_hotstart_stack = FALSE,
-  evaluate_default = FALSE
+  evaluate_default = FALSE,
+  callbacks = list()
 )}\if{html}{\out{</div>}}
 }
 
@@ -157,6 +158,9 @@ after tuning.}
 \item{\code{evaluate_default}}{(\code{logical(1)})\cr
 If \code{TRUE}, learner is evaluated with hyperparameters set to their default
 values at the start of the optimization.}
+
+\item{\code{callbacks}}{(list of \link{CallbackTuning})\cr
+List of callbacks.}
 }
 \if{html}{\out{</div>}}
 }
