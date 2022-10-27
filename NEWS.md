@@ -1,6 +1,8 @@
 # mlr3tuning 0.14.0.9000
 
-* feat: Add dictionary `mlr_callbacks` with predefined callbacks and `callback_tuning()` function to create custom callbacks.
+* feat: Add new callback that enables early stopping while tuning to `mlr_callbacks`.
+* feat: Add new callback that backups the benchmark result to disk after each batch.
+* feat: Create custom callbacks with the `callback_tuning()` function.
 * feat: Add `ti()` function to create a `TuningInstanceSingleCrit` or `TuningInstanceMultiCrit`.
 
 # mlr3tuning 0.14.0
