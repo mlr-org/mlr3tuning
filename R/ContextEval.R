@@ -64,8 +64,9 @@ ContextEval = R6Class("ContextEval",
     },
 
     #' @field aggregated_performance ([data.table::data.table])\cr
-    #'   Aggregated performance scores of the latest batch.
+    #'   Aggregated performance scores and training time of the latest batch.
     #'   This data table is passed to the archive.
+    #'   A callback can add additional columns which are also written to the archive.
     aggregated_performance = function(rhs) {
       if (missing(rhs)) {
         return(get_private(self$objective_tuning)$.aggregated_performance)
