@@ -128,7 +128,7 @@ AutoTuner = R6Class("AutoTuner",
       private$.store_tuning_instance = assert_flag(store_tuning_instance)
       ia$store_benchmark_result = assert_flag(store_benchmark_result)
       ia$store_models = assert_flag(store_models)
-      ia$callbacks = callbacks
+      ia$callbacks = assert_callbacks(callbacks)
 
       if (!private$.store_tuning_instance && ia$store_benchmark_result) {
         stop("Benchmark results can only be stored if store_tuning_instance is set to TRUE")
