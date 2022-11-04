@@ -36,7 +36,7 @@ License: LGPL-3
 URL: https://mlr3tuning.mlr-org.com, https://github.com/mlr-org/mlr3tuning
 BugReports: https://github.com/mlr-org/mlr3tuning/issues
 Depends:
-    mlr3 (>= 0.14.0-9000),
+    mlr3 (>= 0.14.1),
     paradox (>= 0.7.0),
     R (>= 3.1.0)
 Imports:
@@ -57,8 +57,7 @@ Suggests:
     testthat (>= 3.0.0),
     xgboost
 Remotes:
-    mlr-org/mlr3,
-    mlr-org/mlr3learners@xgboost_early_stopping,
+    mlr-org/mlr3learners
 Config/testthat/edition: 3
 Config/testthat/parallel: true
 Encoding: UTF-8
