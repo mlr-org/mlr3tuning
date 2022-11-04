@@ -82,11 +82,10 @@ TunerIrace = R6Class("TunerIrace",
     initialize = function() {
       optimizer = OptimizerIrace$new()
       optimizer$param_set$add(ParamInt$new("n_instances", lower = 1, default = 10))
-      optimizer$param_set$values = list(
+      optimizer$param_set$set_values(
         n_instances = 10,
-        targetRunnerParallel = target_runner_tuning,
-        debugLevel = 0,
-        logFile = tempfile(fileext = ".Rdata"))
+        targetRunnerParallel = target_runner_tuning
+      )
 
       super$initialize(
         optimizer = optimizer,
