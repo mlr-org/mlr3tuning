@@ -82,8 +82,6 @@
 #'   measure = msr("classif.ce"),
 #'   term_evals = 4)
 #'
-#' at$train(task)
-#'
 #' resampling_outer = rsmp("cv", folds = 3)
 #' rr = resample(task, at, resampling_outer, store_models = TRUE)
 #'
