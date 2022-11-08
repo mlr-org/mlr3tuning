@@ -18,21 +18,21 @@ The final model is fitted with the best hyperparameter configuration and \code{m
 \section{Resources}{
 
 \itemize{
-\item \href{https://mlr-org.com/gallery/2022-11-04-early-stopping-with-xgboost}{gallery post} on early stopping with XGBoost.
+\item \href{https://mlr-org.com/gallery.html}{gallery post} on early stopping with XGBoost.
 }
 }
 
 \examples{
 clbk("mlr3tuning.early_stopping")
-
+\donttest{
 if (requireNamespace("mlr3learners") && requireNamespace("xgboost") ) {
   library(mlr3learners)
 
   # activate early stopping on the test set and set search space
   learner = lrn("classif.xgboost",
-    eta = to_tune(1e-04, 1e-1, logscale = TRUE),
-    early_stopping_rounds = 20,
-    nrounds = 10000,
+    eta = to_tune(1e-02, 1e-1, logscale = TRUE),
+    early_stopping_rounds = 5,
+    nrounds = 100,
     early_stopping_set = "test")
 
   # tune xgboost on the pima data set
@@ -42,9 +42,9 @@ if (requireNamespace("mlr3learners") && requireNamespace("xgboost") ) {
     learner = learner,
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
-    term_evals = 4,
-    batch_size = 2,
+    term_evals = 10,
     callbacks = clbk("mlr3tuning.early_stopping")
   )
+}
 }
 }

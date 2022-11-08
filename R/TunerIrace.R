@@ -53,7 +53,7 @@
 #'
 #' # load learner and set search space
 #' learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
-#'
+#' \donttest{
 #' # hyperparameter tuning on the pima indians diabetes data set
 #' instance = tune(
 #'   method = "irace",
@@ -73,6 +73,7 @@
 #' # fit final model on complete data set
 #' learner$param_set$values = instance$result_learner_param_vals
 #' learner$train(task)
+#' }
 TunerIrace = R6Class("TunerIrace",
   inherit = TunerFromOptimizer,
   public = list(
