@@ -6,7 +6,11 @@ Bergstra
 Birattari
 CMA
 Caceres
+CallbackTuning
+CallbackTunings
 Codomain
+ContextEval
+ContextOptimization
 Dubois
 GenSA
 Gubian
@@ -14,11 +18,13 @@ Hoeng
 Hotstart
 HotstartStack
 Hotstarting
+Hyperband
 Ibanez
 Lacoste
 Mattermost
 NLopt
 ORCID
+ObjectiveTuning
 Parallelization
 Param
 ParamSet
@@ -34,6 +40,7 @@ TunerFromOptimizer
 TuningInstanceMultiCrit
 TuningInstanceSingleCrit
 Uninstantiated
+XGBoost
 Xiang
 bbotk
 cheatsheet
@@ -45,6 +52,7 @@ hotstart
 hotstarting
 hyperband
 irace
+mbo
 mlr
 nloptr
 parallelization
@@ -56,3 +64,4 @@ th
 trafo
 tuningspaces
 unnested
+untransformed
