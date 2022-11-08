@@ -24,7 +24,7 @@ The final model is fitted with the best hyperparameter configuration and \code{m
 
 \examples{
 clbk("mlr3tuning.early_stopping")
-
+\donttest{
 if (requireNamespace("mlr3learners") && requireNamespace("xgboost") ) {
   library(mlr3learners)
 
@@ -32,7 +32,7 @@ if (requireNamespace("mlr3learners") && requireNamespace("xgboost") ) {
   learner = lrn("classif.xgboost",
     eta = to_tune(1e-02, 1e-1, logscale = TRUE),
     early_stopping_rounds = 5,
-    nrounds = 20,
+    nrounds = 100,
     early_stopping_set = "test")
 
   # tune xgboost on the pima data set
@@ -42,8 +42,9 @@ if (requireNamespace("mlr3learners") && requireNamespace("xgboost") ) {
     learner = learner,
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
-    term_evals = 1,
+    term_evals = 10,
     callbacks = clbk("mlr3tuning.early_stopping")
   )
+}
 }
 }
