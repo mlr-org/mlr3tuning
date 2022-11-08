@@ -16,7 +16,7 @@
 #' The final model is fitted with the best hyperparameter configuration and `max_nrounds` i.e. early stopping is not performed.
 #'
 #' @section Resources:
-#' * [gallery post](https://mlr-org.com/gallery/2022-11-04-early-stopping-with-xgboost) on early stopping with XGBoost.
+#' * [gallery post](https://mlr-org.com/gallery.html) on early stopping with XGBoost.
 #'
 #' @examples
 #' clbk("mlr3tuning.early_stopping")
@@ -26,9 +26,9 @@
 #'
 #'   # activate early stopping on the test set and set search space
 #'   learner = lrn("classif.xgboost",
-#'     eta = to_tune(1e-04, 1e-1, logscale = TRUE),
-#'     early_stopping_rounds = 20,
-#'     nrounds = 10000,
+#'     eta = to_tune(1e-02, 1e-1, logscale = TRUE),
+#'     early_stopping_rounds = 5,
+#'     nrounds = 20,
 #'     early_stopping_set = "test")
 #'
 #'   # tune xgboost on the pima data set
@@ -38,8 +38,7 @@
 #'     learner = learner,
 #'     resampling = rsmp("cv", folds = 3),
 #'     measures = msr("classif.ce"),
-#'     term_evals = 4,
-#'     batch_size = 2,
+#'     term_evals = 1,
 #'     callbacks = clbk("mlr3tuning.early_stopping")
 #'   )
 #' }
@@ -107,7 +106,7 @@ load_callback_early_stopping = function() {
 #'   measures = msr("classif.ce"),
 #'   term_evals = 4,
 #'   batch_size = 2,
-#'   callbacks = clbk("mlr3tuning.backup", path = "backup.rds")
+#'   callbacks = clbk("mlr3tuning.backup", path = tempfile(fileext = ".rds"))
 #' )
 NULL
 

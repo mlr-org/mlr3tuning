@@ -18,6 +18,6 @@ instance = tune(
   measures = msr("classif.ce"),
   term_evals = 4,
   batch_size = 2,
-  callbacks = clbk("mlr3tuning.backup", path = "backup.rds")
+  callbacks = clbk("mlr3tuning.backup", path = tempfile(fileext = ".rds"))
 )
 }
