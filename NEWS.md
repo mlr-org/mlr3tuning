@@ -1,4 +1,6 @@
-# 0.16.0.9000
+# mlr3tuning 0.16.0.9000
+
+* feat: The methods `$importance()`, `$selected_features()`, `$oob_error()` and `$loglik()` are forwarded from the final model to the `AutoTuner` now.
 
 # mlr3tuning 0.16.0
 

@@ -162,6 +162,66 @@ AutoTuner = R6Class("AutoTuner",
       if (recursive == 0L) self$learner else self$learner$base_learner(recursive - 1L)
     },
 
+    #' @description
+    #' The importance scores of the final model.
+    #'
+    #' @return Named `numeric()`.
+    importance = function() {
+      if ("importance" %nin% self$instance_args$learner$properties) {
+        stopf("Learner ''%s' cannot calculate important scores.", self$instance_args$learner$id)
+      }
+      if (is.null(self$model$learner$model)) {
+        self$instance_args$learner$importance()
+      } else {
+        self$model$learner$importance()
+      }
+    },
+
+    #' @description
+    #' The selected_features of the final model.
+    #'
+    #' @return `character()`.
+    selected_features = function() {
+      if ("selected_features" %nin% self$instance_args$learner$properties) {
+        stopf("Learner ''%s' cannot select features.", self$instance_args$learner$id)
+      }
+      if (is.null(self$model$learner$model)) {
+        self$instance_args$learner$selected_features()
+      } else {
+        self$model$learner$selected_features()
+      }
+    },
+
+    #' @description
+    #' The out-of-bag error of the final model.
+    #'
+    #' @return `numeric(1)`.
+    oob_error = function() {
+      if ("oob_error" %nin% self$instance_args$learner$properties) {
+        stopf("Learner '%s' cannot calculate the out-of-bag error.", self$instance_args$learner$id)
+      }
+      if (is.null(self$model$learner$model)) {
+        self$instance_args$learner$oob_error()
+      } else {
+        self$model$learner$oob_error()
+      }
+    },
+
+    #' @description
+    #' The log-likelihood of the final model.
+    #'
+    #' @return `logLik`.
+    loglik = function() {
+      if ("loglik" %nin% self$instance_args$learner$properties) {
+        stopf("Learner '%s' cannot calculate the log-likelihood.", self$instance_args$learner$id)
+      }
+      if (is.null(self$model$learner$model)) {
+        self$instance_args$learner$loglik()
+      } else {
+        self$model$learner$loglik()
+      }
+    },
+
     #' Printer.
     #' @param ... (ignored).
     print = function() {

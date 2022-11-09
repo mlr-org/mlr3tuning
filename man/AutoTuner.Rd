@@ -134,6 +134,10 @@ Hash (unique identifier) for this object.}
 \itemize{
 \item \href{#method-AutoTuner-new}{\code{AutoTuner$new()}}
 \item \href{#method-AutoTuner-base_learner}{\code{AutoTuner$base_learner()}}
+\item \href{#method-AutoTuner-importance}{\code{AutoTuner$importance()}}
+\item \href{#method-AutoTuner-selected_features}{\code{AutoTuner$selected_features()}}
+\item \href{#method-AutoTuner-oob_error}{\code{AutoTuner$oob_error()}}
+\item \href{#method-AutoTuner-loglik}{\code{AutoTuner$loglik()}}
 \item \href{#method-AutoTuner-print}{\code{AutoTuner$print()}}
 \item \href{#method-AutoTuner-clone}{\code{AutoTuner$clone()}}
 }
@@ -247,6 +251,58 @@ Depth of recursion for multiple nested objects.}
 }
 \subsection{Returns}{
 \link{Learner}.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-AutoTuner-importance"></a>}}
+\if{latex}{\out{\hypertarget{method-AutoTuner-importance}{}}}
+\subsection{Method \code{importance()}}{
+The importance scores of the final model.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AutoTuner$importance()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+Named \code{numeric()}.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-AutoTuner-selected_features"></a>}}
+\if{latex}{\out{\hypertarget{method-AutoTuner-selected_features}{}}}
+\subsection{Method \code{selected_features()}}{
+The selected_features of the final model.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AutoTuner$selected_features()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+\code{character()}.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-AutoTuner-oob_error"></a>}}
+\if{latex}{\out{\hypertarget{method-AutoTuner-oob_error}{}}}
+\subsection{Method \code{oob_error()}}{
+The out-of-bag error of the final model.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AutoTuner$oob_error()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+\code{numeric(1)}.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-AutoTuner-loglik"></a>}}
+\if{latex}{\out{\hypertarget{method-AutoTuner-loglik}{}}}
+\subsection{Method \code{loglik()}}{
+The log-likelihood of the final model.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AutoTuner$loglik()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+\code{logLik}.
 Printer.
 }
 }
