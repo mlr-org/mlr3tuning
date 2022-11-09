@@ -406,7 +406,7 @@ test_that("AutoTuner selected_features method works", {
     batch_size = 2
   )
 
-  expect_error(at$selected_features((), "No model stored")
+  expect_error(at$selected_features(), "No model stored")
   at$train(tsk("penguins"))
   expect_character(at$selected_features())
 })
