@@ -406,52 +406,7 @@ test_that("AutoTuner selected_features method works", {
     batch_size = 2
   )
 
-  expect_error(at$importance(), "No model stored")
-  at$train(tsk("penguins"))
-  expect_numeric(at$importance(), len = 5)
-})
-
-test_that("AutoTuner selected_features method works", {
-  at = auto_tuner(
-    method = "random_search",
-    learner = lrn("classif.rpart"),
-    resampling = rsmp("cv", folds = 3),
-    measure = msr("classif.ce"),
-    term_evals = 4,
-    batch_size = 2
-  )
-
-  expect_error(at$importance(), "No model stored")
-  at$train(tsk("penguins"))
-  expect_character(at$selected_features())
-})
-
-test_that("AutoTuner selected_features method works", {
-  at = auto_tuner(
-    method = "random_search",
-    learner = lrn("classif.rpart"),
-    resampling = rsmp("cv", folds = 3),
-    measure = msr("classif.ce"),
-    term_evals = 4,
-    batch_size = 2
-  )
-
-  expect_error(at$importance(), "No model stored")
-  at$train(tsk("penguins"))
-  expect_character(at$selected_features())
-})
-
-test_that("AutoTuner oob_error method works", {
-  at = auto_tuner(
-    method = "random_search",
-    learner = lrn("classif.rpart"),
-    resampling = rsmp("cv", folds = 3),
-    measure = msr("classif.ce"),
-    term_evals = 4,
-    batch_size = 2
-  )
-
-  expect_error(at$importance(), "No model stored")
+  expect_error(at$selected_features((), "No model stored")
   at$train(tsk("penguins"))
   expect_character(at$selected_features())
 })
