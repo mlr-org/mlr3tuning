@@ -164,11 +164,13 @@ AutoTuner = R6Class("AutoTuner",
 
     #' @description
     #' The importance scores of the final model.
-    #' Returns NULL when the learner does not support the `$importance()` emthid
+    #'
     #' @return Named `numeric()`.
     importance = function() {
-      if ("importance" %nin% self$instance_args$learner$properties) return(NULL)
-      if (is.null(self$model)) {
+      if ("importance" %nin% self$instance_args$learner$properties) {
+        stopf("Learner ''%s' cannot calculate important scores.", self$instance_args$learner$id)
+      }
+      if (is.null(self$model$learner$model)) {
         self$instance_args$learner$importance()
       } else {
         self$model$learner$importance()
@@ -177,10 +179,13 @@ AutoTuner = R6Class("AutoTuner",
 
     #' @description
     #' The selected_features of the final model.
-    #' @return Named `numeric()`.
+    #'
+    #' @return `character()`.
     selected_features = function() {
-      if ("selected_features" %nin% self$instance_args$learner$properties) return(NULL)
-      if (is.null(self$model)) {
+      if ("selected_features" %nin% self$instance_args$learner$properties) {
+        stopf("Learner ''%s' cannot select features.", self$instance_args$learner$id)
+      }
+      if (is.null(self$model$learner$model)) {
         self$instance_args$learner$selected_features()
       } else {
         self$model$learner$selected_features()
@@ -189,10 +194,13 @@ AutoTuner = R6Class("AutoTuner",
 
     #' @description
     #' The out-of-bag error of the final model.
-    #' @return Named `numeric()`.
+    #'
+    #' @return `numeric(1)`.
     oob_error = function() {
-      if ("oob_error" %nin% self$instance_args$learner$properties) return(NULL)
-      if (is.null(self$model)) {
+      if ("oob_error" %nin% self$instance_args$learner$properties) {
+        stopf("Learner '%s' cannot calculate the out-of-bag error.", self$instance_args$learner$id)
+      }
+      if (is.null(self$model$learner$model)) {
         self$instance_args$learner$oob_error()
       } else {
         self$model$learner$oob_error()
@@ -201,10 +209,13 @@ AutoTuner = R6Class("AutoTuner",
 
     #' @description
     #' The log-likelihood of the final model.
-    #' @return Named `numeric()`.
+    #'
+    #' @return `logLik`.
     loglik = function() {
-      if ("loglik" %nin% self$instance_args$learner$properties) return(NULL)
-      if (is.null(self$model)) {
+      if ("loglik" %nin% self$instance_args$learner$properties) {
+        stopf("Learner '%s' cannot calculate the log-likelihood.", self$instance_args$learner$id)
+      }
+      if (is.null(self$model$learner$model)) {
         self$instance_args$learner$loglik()
       } else {
         self$model$learner$loglik()
