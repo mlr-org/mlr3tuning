@@ -101,14 +101,15 @@ AutoTuner = R6Class("AutoTuner",
     #' All arguments from construction to create the [TuningInstanceSingleCrit].
     instance_args = NULL,
 
-    #' @field tuner ([Tuner]).
+    #' @field tuner ([Tuner])\cr
+    #' Optimization algorithm.
     tuner = NULL,
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #'
     #' @param tuner ([Tuner])\cr
-    #'   Tuning algorithm to run.
+    #'   Optimization algorithm.
     initialize = function(learner, resampling, measure = NULL, terminator, tuner, search_space = NULL, store_tuning_instance = TRUE, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, callbacks = list()) {
       learner = assert_learner(as_learner(learner, clone = TRUE))
 
@@ -123,16 +124,12 @@ AutoTuner = R6Class("AutoTuner",
       if (!is.null(search_space)) ia$search_space = assert_param_set(as_search_space(search_space))$clone()
       ia$terminator = assert_terminator(terminator)$clone()
 
-      private$.store_tuning_instance = assert_flag(store_tuning_instance)
-      ia$store_benchmark_result = assert_flag(store_benchmark_result)
       ia$store_models = assert_flag(store_models)
-      ia$callbacks = assert_callbacks(as_callbacks(callbacks))
-
-      if (!private$.store_tuning_instance && ia$store_benchmark_result) {
-        stop("Benchmark results can only be stored if store_tuning_instance is set to TRUE")
-      }
+      ia$store_benchmark_result = assert_flag(store_benchmark_result) || ia$store_models
+      private$.store_tuning_instance = assert_flag(store_tuning_instance) || ia$store_benchmark_result
 
       ia$check_values = assert_flag(check_values)
+      ia$callbacks = assert_callbacks(as_callbacks(callbacks))
       self$instance_args = ia
       self$tuner = assert_tuner(tuner)$clone()
 
@@ -150,9 +147,8 @@ AutoTuner = R6Class("AutoTuner",
     },
 
     #' @description
-    #' Extracts the base learner from nested learner objects like
-    #' `GraphLearner` in \CRANpkg{mlr3pipelines}. If `recursive = 0`, the (tuned)
-    #' learner is returned.
+    #' Extracts the base learner from nested learner objects like `GraphLearner` in \CRANpkg{mlr3pipelines}.
+    #' If `recursive = 0`, the (tuned) learner is returned.
     #'
     #' @param recursive (`integer(1)`)\cr
     #'   Depth of recursion for multiple nested objects.
@@ -178,7 +174,7 @@ AutoTuner = R6Class("AutoTuner",
     },
 
     #' @description
-    #' The selected_features of the final model.
+    #' The selected features of the final model.
     #'
     #' @return `character()`.
     selected_features = function() {
@@ -320,13 +316,9 @@ AutoTuner = R6Class("AutoTuner",
       learner$train(task)
 
       # the return model is a list of "learner" and "tuning_instance"
-      result_model = list()
-      result_model$learner = learner
-
-      if (isTRUE(private$.store_tuning_instance)) {
-        result_model$tuning_instance = instance
-      }
-      return(result_model)
+      result_model = list(learner = learner)
+      if (private$.store_tuning_instance) result_model$tuning_instance = instance
+      result_model
     },
 
     .predict = function(task) {

@@ -55,9 +55,7 @@ constructed from the \link{TuneToken} of the learner's parameter set
 (learner$param_set).}
 
 \item{store_tuning_instance}{(\code{logical(1)})\cr
-If \code{TRUE} (default), stores the internally created
-\link{TuningInstanceSingleCrit} with all intermediate results in slot
-\verb{$tuning_instance}.}
+If \code{TRUE} (default), stores the internally created \link{TuningInstanceSingleCrit} with all intermediate results in slot \verb{$tuning_instance}.}
 
 \item{store_benchmark_result}{(\code{logical(1)})\cr
 If \code{TRUE} (default), store resample result of evaluated hyperparameter

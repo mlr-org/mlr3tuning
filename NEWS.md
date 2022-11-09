@@ -1,6 +1,8 @@
 # mlr3tuning 0.16.0.9000
 
 * feat: The methods `$importance()`, `$selected_features()`, `$oob_error()` and `$loglik()` are forwarded from the final model to the `AutoTuner` now.
+* refactor: The `AutoTuner` stores the instance and benchmark result if `store_models = TRUE`.
+* refactor: The `AutoTuner` stores the instance if `store_benchmark_result = TRUE`.
 
 # mlr3tuning 0.16.0
 
