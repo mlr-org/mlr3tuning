@@ -255,7 +255,7 @@ AutoTuner = R6Class("AutoTuner",
     #' Trained learner
     learner = function() {
       # if there is no trained learner, we return the one in instance args
-      if (is.null(self$model)) {
+      if (is.null(self$model$learner$model)) {
         self$instance_args$learner
       } else {
         self$model$learner
