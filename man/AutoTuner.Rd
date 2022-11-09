@@ -101,7 +101,8 @@ rr$aggregate()
 \item{\code{instance_args}}{(\code{list()})\cr
 All arguments from construction to create the \link{TuningInstanceSingleCrit}.}
 
-\item{\code{tuner}}{(\link{Tuner}).}
+\item{\code{tuner}}{(\link{Tuner})\cr
+Optimization algorithm.}
 }
 \if{html}{\out{</div>}}
 }
@@ -197,7 +198,7 @@ Measure to optimize. If \code{NULL}, default measure is used.}
 Stop criterion of the tuning process.}
 
 \item{\code{tuner}}{(\link{Tuner})\cr
-Tuning algorithm to run.}
+Optimization algorithm.}
 
 \item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
 Hyperparameter search space. If \code{NULL} (default), the search space is
@@ -205,9 +206,7 @@ constructed from the \link{TuneToken} of the learner's parameter set
 (learner$param_set).}
 
 \item{\code{store_tuning_instance}}{(\code{logical(1)})\cr
-If \code{TRUE} (default), stores the internally created
-\link{TuningInstanceSingleCrit} with all intermediate results in slot
-\verb{$tuning_instance}.}
+If \code{TRUE} (default), stores the internally created \link{TuningInstanceSingleCrit} with all intermediate results in slot \verb{$tuning_instance}.}
 
 \item{\code{store_benchmark_result}}{(\code{logical(1)})\cr
 If \code{TRUE} (default), store resample result of evaluated hyperparameter
@@ -234,9 +233,8 @@ List of callbacks.}
 \if{html}{\out{<a id="method-AutoTuner-base_learner"></a>}}
 \if{latex}{\out{\hypertarget{method-AutoTuner-base_learner}{}}}
 \subsection{Method \code{base_learner()}}{
-Extracts the base learner from nested learner objects like
-\code{GraphLearner} in \CRANpkg{mlr3pipelines}. If \code{recursive = 0}, the (tuned)
-learner is returned.
+Extracts the base learner from nested learner objects like \code{GraphLearner} in \CRANpkg{mlr3pipelines}.
+If \code{recursive = 0}, the (tuned) learner is returned.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AutoTuner$base_learner(recursive = Inf)}\if{html}{\out{</div>}}
 }
@@ -270,7 +268,7 @@ Named \code{numeric()}.
 \if{html}{\out{<a id="method-AutoTuner-selected_features"></a>}}
 \if{latex}{\out{\hypertarget{method-AutoTuner-selected_features}{}}}
 \subsection{Method \code{selected_features()}}{
-The selected_features of the final model.
+The selected features of the final model.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AutoTuner$selected_features()}\if{html}{\out{</div>}}
 }

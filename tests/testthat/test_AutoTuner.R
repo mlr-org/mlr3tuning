@@ -219,11 +219,23 @@ test_that("store_tuning_instance, store_benchmark_result and store_models flags 
 
   assert_null(at$tuning_instance)
 
-  expect_error(AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te,
+  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te,
+    tuner = tuner, ps, store_tuning_instance = FALSE, store_benchmark_result = FALSE,
+    store_models = TRUE)
+  at$train(task)
+
+  assert_r6(at$tuning_instance, "TuningInstanceSingleCrit")
+  assert_benchmark_result(at$tuning_instance$archive$benchmark_result)
+  assert_class(at$tuning_instance$archive$benchmark_result$resample_result(1)$learners[[1]]$model, "rpart")
+
+  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te,
     tuner = tuner, ps, store_tuning_instance = FALSE, store_benchmark_result = TRUE,
-    store_models = FALSE),
-    regexp = "Benchmark results can only be stored if store_tuning_instance is set to TRUE",
-    fixed = TRUE)
+    store_models = FALSE)
+  at$train(task)
+
+  assert_r6(at$tuning_instance, "TuningInstanceSingleCrit")
+  assert_benchmark_result(at$tuning_instance$archive$benchmark_result)
+  assert_null(at$tuning_instance$archive$benchmark_result$resample_result(1)$learners[[1]]$model)
 })
 
 test_that("predict_type works", {
