@@ -162,6 +162,55 @@ AutoTuner = R6Class("AutoTuner",
       if (recursive == 0L) self$learner else self$learner$base_learner(recursive - 1L)
     },
 
+    #' @description
+    #' The importance scores of the final model.
+    #' Returns NULL when the learner does not support the `$importance()` emthid
+    #' @return Named `numeric()`.
+    importance = function() {
+      if ("importance" %nin% self$instance_args$learner$properties) return(NULL)
+      if (is.null(self$model)) {
+        self$instance_args$learner$importance()
+      } else {
+        self$model$learner$importance()
+      }
+    },
+
+    #' @description
+    #' The selected_features of the final model.
+    #' @return Named `numeric()`.
+    selected_features = function() {
+      if ("selected_features" %nin% self$instance_args$learner$properties) return(NULL)
+      if (is.null(self$model)) {
+        self$instance_args$learner$selected_features()
+      } else {
+        self$model$learner$selected_features()
+      }
+    },
+
+    #' @description
+    #' The out-of-bag error of the final model.
+    #' @return Named `numeric()`.
+    oob_error = function() {
+      if ("oob_error" %nin% self$instance_args$learner$properties) return(NULL)
+      if (is.null(self$model)) {
+        self$instance_args$learner$oob_error()
+      } else {
+        self$model$learner$oob_error()
+      }
+    },
+
+    #' @description
+    #' The log-likelihood of the final model.
+    #' @return Named `numeric()`.
+    loglik = function() {
+      if ("loglik" %nin% self$instance_args$learner$properties) return(NULL)
+      if (is.null(self$model)) {
+        self$instance_args$learner$loglik()
+      } else {
+        self$model$learner$loglik()
+      }
+    },
+
     #' Printer.
     #' @param ... (ignored).
     print = function() {
