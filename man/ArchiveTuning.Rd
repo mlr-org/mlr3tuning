@@ -78,7 +78,8 @@ Score hyperparameter configurations on additional measures.
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{benchmark_result}}{(\link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}).}
+\item{\code{benchmark_result}}{(\link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult})\cr
+Benchmark result.}
 }
 \if{html}{\out{</div>}}
 }
@@ -124,12 +125,11 @@ constructed from the \link{TuneToken} of the learner's parameter set
 (learner$param_set).}
 
 \item{\code{codomain}}{(\link[bbotk:Codomain]{bbotk::Codomain})\cr
-Specifies codomain of objective function i.e. a set of performance
-measures. Internally created from provided \link[mlr3:Measure]{mlr3::Measure}s.}
+Specifies codomain of objective function i.e. a set of performance measures.
+Internally created from provided \link[mlr3:Measure]{mlr3::Measure}s.}
 
 \item{\code{check_values}}{(\code{logical(1)})\cr
-If \code{TRUE} (default), hyperparameter configurations are check for
-validity.}
+If \code{TRUE} (default), hyperparameter configurations are check for validity.}
 }
 \if{html}{\out{</div>}}
 }

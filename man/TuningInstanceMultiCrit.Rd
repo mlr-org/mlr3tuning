@@ -12,7 +12,7 @@ The instance contains an \link{ObjectiveTuning} object that encodes the black bo
 The instance allows the basic operations of querying the objective at design points (\verb{$eval_batch()}).
 This operation is usually done by the \link{Tuner}.
 Evaluations of hyperparameter configurations are performed in batches by calling \code{\link[mlr3:benchmark]{mlr3::benchmark()}} internally.
-The evaluated hyperparameter configurations are stored in an \link[=ArchiveTuning]{Archive} (\verb{$archive}).
+The evaluated hyperparameter configurations are stored in the \link[=ArchiveTuning]{Archive} (\verb{$archive}).
 Before a batch is evaluated, the \link[bbotk:Terminator]{bbotk::Terminator} is queried for the remaining budget.
 If the available budget is exhausted, an exception is raised, and no further evaluations can be performed from this point on.
 The tuner is also supposed to store its final result, consisting of a  selected hyperparameter configuration and associated estimated performance values, by calling the method \code{instance$assign_result}.
@@ -28,26 +28,34 @@ The tuner is also supposed to store its final result, consisting of a  selected 
 }
 
 \examples{
-# get learner and define search space
-learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
+# Hyperparameter optimization on the Palmer Penguins data set
+task = tsk("penguins")
 
-# construct tuning instance
+# Load learner and set search space
+learner = lrn("classif.rpart",
+  cp = to_tune(1e-04, 1e-1, logscale = TRUE)
+)
+
+# Construct tuning instance
 instance = ti(
-  task = tsk("pima"),
+  task = task,
   learner = learner,
-  resampling = rsmp ("holdout"),
+  resampling = rsmp("cv", folds = 3),
   measures = msrs(c("classif.ce", "time_train")),
   terminator = trm("evals", n_evals = 4)
 )
 
-# get tuner
+# Choose optimization algorithm
 tuner = tnr("random_search", batch_size = 2)
 
-# tune classification tree on pima data set
+# Run tuning
 tuner$optimize(instance)
 
-# get result
+# Optimal hyperparameter configurations
 instance$result
+
+# Inspect all evaluated configurations
+as.data.table(instance$archive)
 }
 \section{Super classes}{
 \code{\link[bbotk:OptimInstance]{bbotk::OptimInstance}} -> \code{\link[bbotk:OptimInstanceMultiCrit]{bbotk::OptimInstanceMultiCrit}} -> \code{TuningInstanceMultiCrit}

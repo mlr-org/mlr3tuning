@@ -27,26 +27,34 @@
 #'
 #' @export
 #' @examples
-#' # get learner and define search space
-#' learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
+#' # Hyperparameter optimization on the Palmer Penguins data set
+#' task = tsk("penguins")
 #'
-#' # construct tuning instance
+#' # Load learner and set search space
+#' learner = lrn("classif.rpart",
+#'   cp = to_tune(1e-04, 1e-1, logscale = TRUE)
+#' )
+#'
+#' # Construct tuning instance
 #' instance = ti(
-#'   task = tsk("pima"),
+#'   task = task,
 #'   learner = learner,
-#'   resampling = rsmp ("holdout"),
+#'   resampling = rsmp("cv", folds = 3),
 #'   measures = msrs(c("classif.ce", "time_train")),
 #'   terminator = trm("evals", n_evals = 4)
 #' )
 #'
-#' # get tuner
+#' # Choose optimization algorithm
 #' tuner = tnr("random_search", batch_size = 2)
 #'
-#' # tune classification tree on pima data set
+#' # Run tuning
 #' tuner$optimize(instance)
 #'
-#' # get result
+#' # Optimal hyperparameter configurations
 #' instance$result
+#'
+#' # Inspect all evaluated configurations
+#' as.data.table(instance$archive)
 TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
   inherit = OptimInstanceMultiCrit,
   public = list(

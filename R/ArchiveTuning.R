@@ -66,15 +66,15 @@ ArchiveTuning = R6Class("ArchiveTuning",
   inherit = Archive,
   public = list(
 
-    #' @field benchmark_result ([mlr3::BenchmarkResult]).
+    #' @field benchmark_result ([mlr3::BenchmarkResult])\cr
+    #' Benchmark result.
     benchmark_result = NULL,
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #'
     #' @param check_values (`logical(1)`)\cr
-    #'   If `TRUE` (default), hyperparameter configurations are check for
-    #'   validity.
+    #'   If `TRUE` (default), hyperparameter configurations are check for validity.
     initialize = function(search_space, codomain, check_values = TRUE) {
       super$initialize(search_space, codomain, check_values)
 
