@@ -139,10 +139,15 @@ The \CRANpkg{mlr3viz} package provides visualizations for tuning results.
 }
 
 \examples{
-# get learner and define search space
-learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
+# Hyperparameter optimization on the Palmer Penguins data set
+task = tsk("pima")
 
-# construct tuning instance
+# Load learner and set search space
+learner = lrn("classif.rpart",
+  cp = to_tune(1e-04, 1e-1, logscale = TRUE)
+)
+
+# Run tuning
 instance = tune(
   method = tnr("random_search", batch_size = 2),
   task = tsk("pima"),
@@ -152,6 +157,12 @@ instance = tune(
   terminator = trm("evals", n_evals = 4)
 )
 
-# get result
-instance$result
+# Set optimal hyperparameter configuration to learner
+learner$param_set$values = instance$result_learner_param_vals
+
+# Train the learner on the full data set
+learner$train(task)
+
+# Inspect all evaluated configurations
+as.data.table(instance$archive)
 }

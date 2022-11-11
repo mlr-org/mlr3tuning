@@ -1,6 +1,6 @@
 #' @title Class for Multi Criteria Tuning
 #'
-#' @include TuningInstanceSingleCrit.R
+#' @include TuningInstanceSingleCrit.R ArchiveTuning.R
 #'
 #' @description
 #' The [TuningInstanceMultiCrit] specifies a tuning problem for [Tuners][Tuner].
@@ -8,6 +8,7 @@
 #'
 #' @inherit TuningInstanceSingleCrit details
 #' @inheritSection TuningInstanceSingleCrit Resources
+#' @inheritSection ArchiveTuning Analysis
 #'
 #' @template param_task
 #' @template param_learner

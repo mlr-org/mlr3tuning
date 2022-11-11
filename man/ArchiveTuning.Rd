@@ -61,11 +61,9 @@ Returns a tabular view of all evaluated hyperparameter configurations.\cr
 \itemize{
 \item \code{x} (\link{ArchiveTuning})
 \item \code{unnest} (\code{character()})\cr
-Transforms list columns to separate columns. Set to \code{NULL} if no column
-should be unnested.
+Transforms list columns to separate columns. Set to \code{NULL} if no column should be unnested.
 \item \code{exclude_columns} (\code{character()})\cr
-Exclude columns from table. Set to \code{NULL} if no column should be
-excluded.
+Exclude columns from table. Set to \code{NULL} if no column should be excluded.
 \item \code{measures} (List of \link[mlr3:Measure]{mlr3::Measure})\cr
 Score hyperparameter configurations on additional measures.
 }
@@ -138,10 +136,9 @@ If \code{TRUE} (default), hyperparameter configurations are check for validity.}
 \if{html}{\out{<a id="method-ArchiveTuning-learner"></a>}}
 \if{latex}{\out{\hypertarget{method-ArchiveTuning-learner}{}}}
 \subsection{Method \code{learner()}}{
-Retrieve \link[mlr3:Learner]{mlr3::Learner} of the i-th evaluation, by position
-or by unique hash \code{uhash}. \code{i} and \code{uhash} are mutually exclusive.
-Learner does not contain a model. Use \verb{$learners()} to get learners with
-models.
+Retrieve \link[mlr3:Learner]{mlr3::Learner} of the i-th evaluation, by position or by unique hash \code{uhash}.
+\code{i} and \code{uhash} are mutually exclusive.
+Learner does not contain a model. Use \verb{$learners()} to get learners with models.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ArchiveTuning$learner(i = NULL, uhash = NULL)}\if{html}{\out{</div>}}
 }
@@ -162,9 +159,8 @@ The \code{uhash} value to filter for.}
 \if{html}{\out{<a id="method-ArchiveTuning-learners"></a>}}
 \if{latex}{\out{\hypertarget{method-ArchiveTuning-learners}{}}}
 \subsection{Method \code{learners()}}{
-Retrieve list of trained \link[mlr3:Learner]{mlr3::Learner} objects of the i-th evaluation,
-by position or by unique hash \code{uhash}. \code{i} and \code{uhash} are mutually
-exclusive.
+Retrieve list of trained \link[mlr3:Learner]{mlr3::Learner} objects of the i-th evaluation, by position or by unique hash \code{uhash}.
+\code{i} and \code{uhash} are mutually exclusive.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ArchiveTuning$learners(i = NULL, uhash = NULL)}\if{html}{\out{</div>}}
 }
@@ -185,8 +181,8 @@ The \code{uhash} value to filter for.}
 \if{html}{\out{<a id="method-ArchiveTuning-learner_param_vals"></a>}}
 \if{latex}{\out{\hypertarget{method-ArchiveTuning-learner_param_vals}{}}}
 \subsection{Method \code{learner_param_vals()}}{
-Retrieve param values of the i-th evaluation, by position
-or by unique hash \code{uhash}. \code{i} and \code{uhash} are mutually exclusive.
+Retrieve param values of the i-th evaluation, by position or by unique hash \code{uhash}.
+\code{i} and \code{uhash} are mutually exclusive.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ArchiveTuning$learner_param_vals(i = NULL, uhash = NULL)}\if{html}{\out{</div>}}
 }
@@ -207,9 +203,8 @@ The \code{uhash} value to filter for.}
 \if{html}{\out{<a id="method-ArchiveTuning-predictions"></a>}}
 \if{latex}{\out{\hypertarget{method-ArchiveTuning-predictions}{}}}
 \subsection{Method \code{predictions()}}{
-Retrieve list of \link[mlr3:Prediction]{mlr3::Prediction} objects of the i-th evaluation, by
-position or by unique hash \code{uhash}. \code{i} and \code{uhash} are mutually
-exclusive.
+Retrieve list of \link[mlr3:Prediction]{mlr3::Prediction} objects of the i-th evaluation, by position or by unique hash \code{uhash}.
+\code{i} and \code{uhash} are mutually exclusive.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ArchiveTuning$predictions(i = NULL, uhash = NULL)}\if{html}{\out{</div>}}
 }
@@ -230,8 +225,8 @@ The \code{uhash} value to filter for.}
 \if{html}{\out{<a id="method-ArchiveTuning-resample_result"></a>}}
 \if{latex}{\out{\hypertarget{method-ArchiveTuning-resample_result}{}}}
 \subsection{Method \code{resample_result()}}{
-Retrieve \link[mlr3:ResampleResult]{mlr3::ResampleResult} of the i-th evaluation, by position
-or by unique hash \code{uhash}. \code{i} and \code{uhash} are mutually exclusive.
+Retrieve \link[mlr3:ResampleResult]{mlr3::ResampleResult} of the i-th evaluation, by position or by unique hash \code{uhash}.
+\code{i} and \code{uhash} are mutually exclusive.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{ArchiveTuning$resample_result(i = NULL, uhash = NULL)}\if{html}{\out{</div>}}
 }
