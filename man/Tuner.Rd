@@ -59,7 +59,8 @@ Set of properties of the tuner.
 Must be a subset of \code{\link[mlr3:mlr_reflections]{mlr_reflections$tuner_properties}}.}
 
 \item{\code{packages}}{(\code{character()})\cr
-Set of required packages. Note that these packages will be loaded via \code{\link[=requireNamespace]{requireNamespace()}}, and are not attached.}
+Set of required packages.
+Note that these packages will be loaded via \code{\link[=requireNamespace]{requireNamespace()}}, and are not attached.}
 
 \item{\code{label}}{(\code{character(1)})\cr
 Label for this object.
@@ -140,6 +141,9 @@ Helper for print outputs.
 \if{html}{\out{<div class="r">}}\preformatted{Tuner$format()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+(\code{character()}).
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Tuner-print"></a>}}
@@ -183,7 +187,7 @@ The result will be written into the instance object.
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-\link[data.table:data.table]{data.table::data.table}
+\code{\link[data.table:data.table]{data.table::data.table()}}
 }
 }
 \if{html}{\out{<hr>}}

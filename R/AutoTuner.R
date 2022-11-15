@@ -43,22 +43,28 @@
 #' @examples
 #' # Automatic Tuning
 #'
-#' task = tsk("pima")
-#' train_set = sample(task$nrow, 0.8 * task$nrow)
-#' test_set = setdiff(seq_len(task$nrow), train_set)
+#' # split to train and external set
+#' task = tsk("penguins")
+#' split = partition(task, ratio = 0.8)
 #'
+#' # load learner and set search space
+#' learner = lrn("classif.rpart",
+#'   cp = to_tune(1e-04, 1e-1, logscale = TRUE)
+#' )
+#'
+#' # create auto tuner
 #' at = auto_tuner(
 #'   method = tnr("random_search"),
-#'   learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
+#'   learner = learner,
 #'   resampling = rsmp ("holdout"),
 #'   measure = msr("classif.ce"),
 #'   term_evals = 4)
 #'
 #' # tune hyperparameters and fit final model
-#' at$train(task, row_ids = train_set)
+#' at$train(task, row_ids = split$train)
 #'
 #' # predict with final model
-#' at$predict(task, row_ids = test_set)
+#' at$predict(task, row_ids = split$test)
 #'
 #' # show tuning result
 #' at$tuning_result
@@ -77,7 +83,7 @@
 #'
 #' at = auto_tuner(
 #'   method = tnr("random_search"),
-#'   learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
+#'   learner = learner,
 #'   resampling = rsmp ("holdout"),
 #'   measure = msr("classif.ce"),
 #'   term_evals = 4)

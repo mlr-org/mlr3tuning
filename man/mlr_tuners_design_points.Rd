@@ -70,22 +70,30 @@ combined with a \link[bbotk]{Terminator}. Simply wrap the function in
 }
 
 \examples{
-library(data.table)
-
-# retrieve task
-task = tsk("pima")
+# Hyperparameter Optimization
 
 # load learner and set search space
-learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
+learner = lrn("classif.rpart",
+  cp = to_tune(1e-04, 1e-1),
+  minsplit = to_tune(2, 128),
+  minbucket = to_tune(1, 64)
+)
 
-# hyperparameter tuning on the pima indians diabetes data set
+# create design
+design = mlr3misc::rowwise_table(
+  ~cp,   ~minsplit,  ~minbucket,
+  0.1,   2,          64,
+  0.01,  64,         32,
+  0.001, 128,        1
+)
+
+# run hyperparameter tuning on the Palmer Penguins data set
 instance = tune(
-  method = "design_points",
-  task = task,
+  method = tnr("design_points", design = design),
+  task = tsk("penguins"),
   learner = learner,
   resampling = rsmp("holdout"),
-  measure = msr("classif.ce"),
-  design = data.table(cp = c(log(1e-1), log(1e-2)))
+  measure = msr("classif.ce")
 )
 
 # best performing hyperparameter configuration
@@ -96,7 +104,7 @@ as.data.table(instance$archive)
 
 # fit final model on complete data set
 learner$param_set$values = instance$result_learner_param_vals
-learner$train(task)
+learner$train(tsk("penguins"))
 }
 \seealso{
 Package \CRANpkg{mlr3hyperband} for hyperband tuning.

@@ -59,10 +59,7 @@ See also the documentation of \href{https://bbotk.mlr-org.com/}{bbotk}.
 }
 
 \examples{
-library(data.table)
-
-# retrieve task
-task = tsk("pima")
+# Hyperparameter Optimization
 
 # load learner and set search space
 learner = lrn("classif.rpart",
@@ -71,10 +68,10 @@ learner = lrn("classif.rpart",
   minbucket = to_tune(p_dbl(1, 64, trafo = as.integer))
 )
 
-# hyperparameter tuning on the pima indians diabetes data set
+# run hyperparameter tuning on the Palmer Penguins data set
 instance = tune(
-  method = "cmaes",
-  task = task,
+  method = tnr("cmaes"),
+  task = tsk("penguins"),
   learner = learner,
   resampling = rsmp("holdout"),
   measure = msr("classif.ce"),
@@ -88,7 +85,7 @@ as.data.table(instance$archive)
 
 # fit final model on complete data set
 learner$param_set$values = instance$result_learner_param_vals
-learner$train(task)
+learner$train(tsk("penguins"))
 }
 \seealso{
 Package \CRANpkg{mlr3hyperband} for hyperband tuning.

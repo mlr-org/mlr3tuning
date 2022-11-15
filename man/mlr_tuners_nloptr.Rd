@@ -80,21 +80,21 @@ combined with a \link[bbotk]{Terminator}. Simply wrap the function in
 }
 
 \examples{
-\dontrun{
-# retrieve task
-task = tsk("pima")
+# Hyperparameter Optimization
+\donttest{
 
 # load learner and set search space
-learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
+learner = lrn("classif.rpart",
+  cp = to_tune(1e-04, 1e-1, logscale = TRUE)
+)
 
-# hyperparameter tuning on the pima indians diabetes data set
+# run hyperparameter tuning on the Palmer Penguins data set
 instance = tune(
-  method = "nloptr",
-  task = task,
+  method = tnr("nloptr", algorithm = "NLOPT_LN_BOBYQA"),
+  task = tsk("penguins"),
   learner = learner,
   resampling = rsmp("holdout"),
-  measure = msr("classif.ce"),
-  algorithm = "NLOPT_LN_BOBYQA"
+  measure = msr("classif.ce")
 )
 
 # best performing hyperparameter configuration
@@ -105,7 +105,7 @@ as.data.table(instance$archive)
 
 # fit final model on complete data set
 learner$param_set$values = instance$result_learner_param_vals
-learner$train(task)
+learner$train(tsk("penguins"))
 }
 }
 \seealso{
