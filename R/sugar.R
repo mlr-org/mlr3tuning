@@ -1,6 +1,5 @@
-#' @title Syntactic Sugar for Object Construction
+#' @title Syntactic Sugar for Tuning Objects Construction
 #'
-#' @name mlr_sugar
 #' @description
 #' Functions to retrieve objects, set parameters and assign to fields in one go.
 #' Relies on [mlr3misc::dictionary_sugar_get()] to extract objects from the respective [mlr3misc::Dictionary]:
@@ -24,13 +23,14 @@ tnr = function(.key, ...) {
   dictionary_sugar_get(mlr_tuners, .key, ...)
 }
 
-#' @rdname mlr_sugar
+
+#' @rdname tnr
 #' @export
 tnrs = function(.keys, ...) {
   dictionary_sugar_mget(mlr_tuners, .keys, ...)
 }
 
-#' @title Syntactic Sugar for Object Construction
+#' @title Syntactic Sugar for Tuning Instance Construction
 #'
 #' @description
 #' Function to construct a [TuningInstanceSingleCrit] or [TuningInstanceMultiCrit].

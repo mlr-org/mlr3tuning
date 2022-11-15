@@ -57,9 +57,8 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #'
     #' @param archive ([ArchiveTuning])\cr
-    #'   Reference to archive of [TuningInstanceSingleCrit] |
-    #'   [TuningInstanceMultiCrit]. If `NULL` (default), benchmark result and
-    #'   models cannot be stored.
+    #'   Reference to archive of [TuningInstanceSingleCrit] | [TuningInstanceMultiCrit].
+    #'   If `NULL` (default), benchmark result and models cannot be stored.
     initialize = function(task, learner, resampling, measures, store_benchmark_result = TRUE, store_models = FALSE, check_values = TRUE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, archive = NULL, callbacks = list()) {
       self$task = assert_task(as_task(task, clone = TRUE))
       self$learner = assert_learner(as_learner(learner, clone = TRUE))

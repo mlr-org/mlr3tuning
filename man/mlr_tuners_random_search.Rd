@@ -18,12 +18,9 @@ The random points are sampled by \code{\link[paradox:generate_design_random]{par
 }
 \section{Dictionary}{
 
-This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary}
-\link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:
+This \link{Tuner} can be instantiated with the associated sugar function \code{\link[=tnr]{tnr()}}:
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{TunerRandomSearch$new()
-mlr_tuners$get("random_search")
-tnr("random_search")
+\if{html}{\out{<div class="sourceCode">}}\preformatted{tnr("random_search")
 }\if{html}{\out{</div>}}
 }
 
@@ -61,6 +58,14 @@ See also the documentation of \href{https://bbotk.mlr-org.com/}{bbotk}.
 Maximum number of points to try in a batch.}
 }
 
+}
+
+\section{Resources}{
+
+\itemize{
+\item \href{https://mlr3book.mlr-org.com/optimization.html#sec-tuner}{book section} on tuners.
+\item \href{https://mlr3hyperband.mlr-org.com/}{mlr3hyperband} extension package for the Hyperband algorithm.
+}
 }
 
 \section{Progress Bars}{

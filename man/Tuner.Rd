@@ -35,6 +35,14 @@ See details sections.
 }
 }
 
+\section{Resources}{
+
+\itemize{
+\item \href{https://mlr3book.mlr-org.com/optimization.html#sec-tuner}{book section} on tuners.
+\item \href{https://mlr3hyperband.mlr-org.com/}{mlr3hyperband} extension package for the Hyperband algorithm.
+}
+}
+
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{

@@ -12,8 +12,8 @@
 #' @template section_dictionary_tuners
 #'
 #' @inheritSection bbotk::OptimizerDesignPoints Parameters
+#' @inheritSection Tuner Resources
 #' @inheritSection bbotk::OptimizerDesignPoints Progress Bars
-#'
 #' @template section_parallelization
 #' @template section_logging
 #' @templateVar optimizer bbotk::OptimizerDesignPoints

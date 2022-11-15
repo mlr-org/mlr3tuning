@@ -13,8 +13,8 @@
 #' @template section_dictionary_tuners
 #'
 #' @inheritSection bbotk::OptimizerGenSA Parameters
+#' @inheritSection Tuner Resources
 #' @inheritSection bbotk::OptimizerGenSA Progress Bars
-#'
 #' @template section_parallelization
 #' @template section_logging
 #' @templateVar optimizer bbotk::OptimizerGenSA
@@ -24,7 +24,6 @@
 #' `r format_bib("tsallis_1996", "xiang_2013")`
 #'
 #' @family Tuner
-#' @seealso Package \CRANpkg{mlr3hyperband} for hyperband tuning.
 #' @export
 #' @template example
 TunerGenSA = R6Class("TunerGenSA",

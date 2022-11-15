@@ -15,19 +15,15 @@ Calls \code{\link[adagio:cmaes]{adagio::pureCMAES()}} from package \CRANpkg{adag
 }
 \section{Dictionary}{
 
-This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary}
-\link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:
+This \link{Tuner} can be instantiated with the associated sugar function \code{\link[=tnr]{tnr()}}:
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{TunerCmaes$new()
-mlr_tuners$get("cmaes")
-tnr("cmaes")
+\if{html}{\out{<div class="sourceCode">}}\preformatted{tnr("cmaes")
 }\if{html}{\out{</div>}}
 }
 
-\section{Parameters}{
+\section{Control Parameters}{
 
 \describe{
-\item{\code{sigma}}{\code{numeric(1)}}
 \item{\code{start_values}}{\code{character(1)}\cr
 Create \code{random} start values or based on \code{center} of search space?
 In the latter case, it is the center of the parameters before a trafo is applied.}
@@ -56,6 +52,14 @@ Use \code{lgr::get_logger("bbotk")} to access and control the logger.
 
 This \link{Tuner} is based on \link[bbotk:mlr_optimizers_cmaes]{bbotk::OptimizerCmaes} which can be applied on any black box optimization problem.
 See also the documentation of \href{https://bbotk.mlr-org.com/}{bbotk}.
+}
+
+\section{Resources}{
+
+\itemize{
+\item \href{https://mlr3book.mlr-org.com/optimization.html#sec-tuner}{book section} on tuners.
+\item \href{https://mlr3hyperband.mlr-org.com/}{mlr3hyperband} extension package for the Hyperband algorithm.
+}
 }
 
 \examples{
@@ -88,8 +92,6 @@ learner$param_set$values = instance$result_learner_param_vals
 learner$train(tsk("penguins"))
 }
 \seealso{
-Package \CRANpkg{mlr3hyperband} for hyperband tuning.
-
 Other Tuner: 
 \code{\link{mlr_tuners_design_points}},
 \code{\link{mlr_tuners_gensa}},

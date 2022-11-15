@@ -9,17 +9,17 @@
 #' @templateVar id cmaes
 #' @template section_dictionary_tuners
 #'
-#' @section Parameters:
+#' @section Control Parameters:
 #' \describe{
-#' \item{`sigma`}{`numeric(1)`}
 #' \item{`start_values`}{`character(1)`\cr
-#' Create `random` start values or based on `center` of search space?
-#' In the latter case, it is the center of the parameters before a trafo is applied.}
+#'   Create `random` start values or based on `center` of search space?
+#'   In the latter case, it is the center of the parameters before a trafo is applied.}
 #' }
 #'
 #' For the meaning of the control parameters, see [adagio::pureCMAES()].
 #' Note that we have removed all control parameters which refer to the termination of the algorithm and where our terminators allow to obtain the same behavior.
 #'
+#' @inheritSection Tuner Resources
 #' @template section_progress_bars
 #' @template section_logging
 #' @templateVar optimizer bbotk::OptimizerCmaes
@@ -29,7 +29,6 @@
 #' `r format_bib("hansen_2016")`
 #'
 #' @family Tuner
-#' @seealso Package \CRANpkg{mlr3hyperband} for hyperband tuning.
 #' @export
 #' @examples
 #' # Hyperparameter Optimization

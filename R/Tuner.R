@@ -28,6 +28,10 @@
 #'   Abstract base method. Implement to specify how the final configuration is selected.
 #'   See details sections.
 #'
+#' @section Resources:
+#' * [book section](https://mlr3book.mlr-org.com/optimization.html#sec-tuner) on tuners.
+#' * [mlr3hyperband](https://mlr3hyperband.mlr-org.com/) extension package for the Hyperband algorithm.
+#'
 #' @template param_man
 #'
 #' @export

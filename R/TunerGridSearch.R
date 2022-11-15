@@ -13,17 +13,17 @@
 #' @templateVar id grid_search
 #' @template section_dictionary_tuners
 #'
-#' @section Parameters:
+#' @section Control Parameters:
 #' \describe{
 #' \item{`resolution`}{`integer(1)`\cr
-#' Resolution of the grid, see [paradox::generate_design_grid()].}
+#'   Resolution of the grid, see [paradox::generate_design_grid()].}
 #' \item{`param_resolutions`}{named `integer()`\cr
-#' Resolution per parameter, named by parameter ID, see
-#' [paradox::generate_design_grid()].}
+#'   Resolution per parameter, named by parameter ID, see [paradox::generate_design_grid()].}
 #' \item{`batch_size`}{`integer(1)`\cr
-#' Maximum number of points to try in a batch.}
+#'   Maximum number of points to try in a batch.}
 #' }
 #'
+#' @inheritSection Tuner Resources
 #' @template section_progress_bars
 #' @template section_parallelization
 #' @template section_logging
@@ -31,7 +31,6 @@
 #' @template section_optimizer
 #'
 #' @family Tuner
-#' @seealso Package \CRANpkg{mlr3hyperband} for hyperband tuning.
 #' @export
 #' @template example
 TunerGridSearch = R6Class("TunerGridSearch",

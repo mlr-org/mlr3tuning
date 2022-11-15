@@ -2,7 +2,7 @@
 % Please edit documentation in R/sugar.R
 \name{ti}
 \alias{ti}
-\title{Syntactic Sugar for Object Construction}
+\title{Syntactic Sugar for Tuning Instance Construction}
 \usage{
 ti(
   task,

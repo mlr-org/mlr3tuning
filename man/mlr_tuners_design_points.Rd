@@ -12,12 +12,9 @@ The points in the design are evaluated in order as given.
 }
 \section{Dictionary}{
 
-This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary}
-\link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:
+This \link{Tuner} can be instantiated with the associated sugar function \code{\link[=tnr]{tnr()}}:
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{TunerDesignPoints$new()
-mlr_tuners$get("design_points")
-tnr("design_points")
+\if{html}{\out{<div class="sourceCode">}}\preformatted{tnr("design_points")
 }\if{html}{\out{</div>}}
 }
 
@@ -57,6 +54,14 @@ Maximum number of configurations to try in a batch.}
 Design points to try in search, one per row.}
 }
 
+}
+
+\section{Resources}{
+
+\itemize{
+\item \href{https://mlr3book.mlr-org.com/optimization.html#sec-tuner}{book section} on tuners.
+\item \href{https://mlr3hyperband.mlr-org.com/}{mlr3hyperband} extension package for the Hyperband algorithm.
+}
 }
 
 \section{Progress Bars}{

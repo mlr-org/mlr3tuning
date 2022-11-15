@@ -122,9 +122,8 @@ If \code{TRUE}, \link[mlr3:HotstartStack]{mlr3::HotstartStack} is kept in \verb{
 after tuning.}
 
 \item{\code{archive}}{(\link{ArchiveTuning})\cr
-Reference to archive of \link{TuningInstanceSingleCrit} |
-\link{TuningInstanceMultiCrit}. If \code{NULL} (default), benchmark result and
-models cannot be stored.}
+Reference to archive of \link{TuningInstanceSingleCrit} | \link{TuningInstanceMultiCrit}.
+If \code{NULL} (default), benchmark result and models cannot be stored.}
 
 \item{\code{callbacks}}{(list of \link{CallbackTuning})\cr
 List of callbacks.}

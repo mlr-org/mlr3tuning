@@ -16,16 +16,13 @@ Calls \code{\link[irace:irace]{irace::irace()}} from package \CRANpkg{irace}.
 }
 \section{Dictionary}{
 
-This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary}
-\link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:
+This \link{Tuner} can be instantiated with the associated sugar function \code{\link[=tnr]{tnr()}}:
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{TunerIrace$new()
-mlr_tuners$get("irace")
-tnr("irace")
+\if{html}{\out{<div class="sourceCode">}}\preformatted{tnr("irace")
 }\if{html}{\out{</div>}}
 }
 
-\section{Parameters}{
+\section{Control Parameters}{
 
 \describe{
 \item{\code{n_instances}}{\code{integer(1)}\cr
@@ -55,9 +52,8 @@ Identifies configurations across races and steps.
 
 \section{Result}{
 
-The tuning result (\code{instance$result}) is the best performing elite of
-the final race. The reported performance is the average performance estimated
-on all used instances.
+The tuning result (\code{instance$result}) is the best performing elite of the final race.
+The reported performance is the average performance estimated  on all used instances.
 }
 
 \section{Progress Bars}{
@@ -79,6 +75,14 @@ Use \code{lgr::get_logger("bbotk")} to access and control the logger.
 
 This \link{Tuner} is based on \link[bbotk:mlr_optimizers_irace]{bbotk::OptimizerIrace} which can be applied on any black box optimization problem.
 See also the documentation of \href{https://bbotk.mlr-org.com/}{bbotk}.
+}
+
+\section{Resources}{
+
+\itemize{
+\item \href{https://mlr3book.mlr-org.com/optimization.html#sec-tuner}{book section} on tuners.
+\item \href{https://mlr3hyperband.mlr-org.com/}{mlr3hyperband} extension package for the Hyperband algorithm.
+}
 }
 
 \examples{

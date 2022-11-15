@@ -20,12 +20,9 @@ To deactivate these conditions, set them to \code{-1}.
 }
 \section{Dictionary}{
 
-This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary}
-\link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:
+This \link{Tuner} can be instantiated with the associated sugar function \code{\link[=tnr]{tnr()}}:
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{TunerNLoptr$new()
-mlr_tuners$get("nloptr")
-tnr("nloptr")
+\if{html}{\out{<div class="sourceCode">}}\preformatted{tnr("nloptr")
 }\if{html}{\out{</div>}}
 }
 
@@ -69,6 +66,14 @@ defaults. To deactivate these conditions, set them to \code{-1}.
 
 }
 
+\section{Resources}{
+
+\itemize{
+\item \href{https://mlr3book.mlr-org.com/optimization.html#sec-tuner}{book section} on tuners.
+\item \href{https://mlr3hyperband.mlr-org.com/}{mlr3hyperband} extension package for the Hyperband algorithm.
+}
+}
+
 \section{Progress Bars}{
 
 
@@ -109,8 +114,6 @@ learner$train(tsk("penguins"))
 }
 }
 \seealso{
-Package \CRANpkg{mlr3hyperband} for hyperband tuning.
-
 Other Tuner: 
 \code{\link{mlr_tuners_cmaes}},
 \code{\link{mlr_tuners_design_points}},

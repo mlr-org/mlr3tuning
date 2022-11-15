@@ -16,14 +16,13 @@
 #' @template section_dictionary_tuners
 #'
 #' @inheritSection bbotk::OptimizerNLoptr Parameters
+#' @inheritSection Tuner Resources
 #' @inheritSection bbotk::OptimizerNLoptr Progress Bars
-#'
 #' @template section_logging
 #' @templateVar optimizer bbotk::OptimizerNLoptr
 #' @template section_optimizer
 #'
 #' @family Tuner
-#' @seealso Package \CRANpkg{mlr3hyperband} for hyperband tuning.
 #' @source
 #' `r format_bib("johnson_2014")`
 #'

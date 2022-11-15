@@ -40,10 +40,14 @@
 #'
 #' @export
 #' @examples
-#' learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
+#' # Nested Resampling on Palmer Penguins Data Set
 #'
+#' learner = lrn("classif.rpart",
+#'   cp = to_tune(1e-04, 1e-1, logscale = TRUE))
+#'
+#' # create auto tuner
 #' at = auto_tuner(
-#'   method = "grid_search",
+#'   method = tnr("random_search"),
 #'   learner = learner,
 #'   resampling = rsmp ("holdout"),
 #'   measure = msr("classif.ce"),
@@ -52,6 +56,7 @@
 #' resampling_outer = rsmp("cv", folds = 2)
 #' rr = resample(tsk("iris"), at, resampling_outer, store_models = TRUE)
 #'
+#' # extract inner results
 #' extract_inner_tuning_results(rr)
 extract_inner_tuning_results = function(x, tuning_instance, ...) {
    UseMethod("extract_inner_tuning_results", x)
