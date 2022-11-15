@@ -14,23 +14,19 @@ If not, the points of the grid are evaluated in a  random order.
 }
 \section{Dictionary}{
 
-This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary}
-\link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:
+This \link{Tuner} can be instantiated with the associated sugar function \code{\link[=tnr]{tnr()}}:
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{TunerGridSearch$new()
-mlr_tuners$get("grid_search")
-tnr("grid_search")
+\if{html}{\out{<div class="sourceCode">}}\preformatted{tnr("grid_search")
 }\if{html}{\out{</div>}}
 }
 
-\section{Parameters}{
+\section{Control Parameters}{
 
 \describe{
 \item{\code{resolution}}{\code{integer(1)}\cr
 Resolution of the grid, see \code{\link[paradox:generate_design_grid]{paradox::generate_design_grid()}}.}
 \item{\code{param_resolutions}}{named \code{integer()}\cr
-Resolution per parameter, named by parameter ID, see
-\code{\link[paradox:generate_design_grid]{paradox::generate_design_grid()}}.}
+Resolution per parameter, named by parameter ID, see \code{\link[paradox:generate_design_grid]{paradox::generate_design_grid()}}.}
 \item{\code{batch_size}}{\code{integer(1)}\cr
 Maximum number of points to try in a batch.}
 }
@@ -70,17 +66,26 @@ This \link{Tuner} is based on \link[bbotk:mlr_optimizers_grid_search]{bbotk::Opt
 See also the documentation of \href{https://bbotk.mlr-org.com/}{bbotk}.
 }
 
+\section{Resources}{
+
+\itemize{
+\item \href{https://mlr3book.mlr-org.com/optimization.html#sec-tuner}{book section} on tuners.
+\item \href{https://mlr3hyperband.mlr-org.com/}{mlr3hyperband} extension package for the Hyperband algorithm.
+}
+}
+
 \examples{
-# retrieve task
-task = tsk("pima")
+# Hyperparameter Optimization
 
 # load learner and set search space
-learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
+learner = lrn("classif.rpart",
+  cp = to_tune(1e-04, 1e-1, logscale = TRUE)
+)
 
-# hyperparameter tuning on the pima indians diabetes data set
+# run hyperparameter tuning on the Palmer Penguins data set
 instance = tune(
   method = "grid_search",
-  task = task,
+  task = tsk("penguins"),
   learner = learner,
   resampling = rsmp("holdout"),
   measure = msr("classif.ce"),
@@ -95,11 +100,9 @@ as.data.table(instance$archive)
 
 # fit final model on complete data set
 learner$param_set$values = instance$result_learner_param_vals
-learner$train(task)
+learner$train(tsk("penguins"))
 }
 \seealso{
-Package \CRANpkg{mlr3hyperband} for hyperband tuning.
-
 Other Tuner: 
 \code{\link{mlr_tuners_cmaes}},
 \code{\link{mlr_tuners_design_points}},

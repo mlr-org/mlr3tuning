@@ -12,12 +12,9 @@ The points in the design are evaluated in order as given.
 }
 \section{Dictionary}{
 
-This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary}
-\link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:
+This \link{Tuner} can be instantiated with the associated sugar function \code{\link[=tnr]{tnr()}}:
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{TunerDesignPoints$new()
-mlr_tuners$get("design_points")
-tnr("design_points")
+\if{html}{\out{<div class="sourceCode">}}\preformatted{tnr("design_points")
 }\if{html}{\out{</div>}}
 }
 
@@ -59,6 +56,14 @@ Design points to try in search, one per row.}
 
 }
 
+\section{Resources}{
+
+\itemize{
+\item \href{https://mlr3book.mlr-org.com/optimization.html#sec-tuner}{book section} on tuners.
+\item \href{https://mlr3hyperband.mlr-org.com/}{mlr3hyperband} extension package for the Hyperband algorithm.
+}
+}
+
 \section{Progress Bars}{
 
 
@@ -70,22 +75,30 @@ combined with a \link[bbotk]{Terminator}. Simply wrap the function in
 }
 
 \examples{
-library(data.table)
-
-# retrieve task
-task = tsk("pima")
+# Hyperparameter Optimization
 
 # load learner and set search space
-learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
+learner = lrn("classif.rpart",
+  cp = to_tune(1e-04, 1e-1),
+  minsplit = to_tune(2, 128),
+  minbucket = to_tune(1, 64)
+)
 
-# hyperparameter tuning on the pima indians diabetes data set
+# create design
+design = mlr3misc::rowwise_table(
+  ~cp,   ~minsplit,  ~minbucket,
+  0.1,   2,          64,
+  0.01,  64,         32,
+  0.001, 128,        1
+)
+
+# run hyperparameter tuning on the Palmer Penguins data set
 instance = tune(
-  method = "design_points",
-  task = task,
+  method = tnr("design_points", design = design),
+  task = tsk("penguins"),
   learner = learner,
   resampling = rsmp("holdout"),
-  measure = msr("classif.ce"),
-  design = data.table(cp = c(log(1e-1), log(1e-2)))
+  measure = msr("classif.ce")
 )
 
 # best performing hyperparameter configuration
@@ -96,7 +109,7 @@ as.data.table(instance$archive)
 
 # fit final model on complete data set
 learner$param_set$values = instance$result_learner_param_vals
-learner$train(task)
+learner$train(tsk("penguins"))
 }
 \seealso{
 Package \CRANpkg{mlr3hyperband} for hyperband tuning.

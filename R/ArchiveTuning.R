@@ -50,11 +50,9 @@
 #' [ArchiveTuning] -> [data.table::data.table()]\cr
 #'     * `x` ([ArchiveTuning])
 #'     * `unnest` (`character()`)\cr
-#'       Transforms list columns to separate columns. Set to `NULL` if no column
-#'       should be unnested.
+#'       Transforms list columns to separate columns. Set to `NULL` if no column should be unnested.
 #'     * `exclude_columns` (`character()`)\cr
-#'       Exclude columns from table. Set to `NULL` if no column should be
-#'       excluded.
+#'       Exclude columns from table. Set to `NULL` if no column should be excluded.
 #'     * `measures` (List of [mlr3::Measure])\cr
 #'       Score hyperparameter configurations on additional measures.
 #'
@@ -66,15 +64,15 @@ ArchiveTuning = R6Class("ArchiveTuning",
   inherit = Archive,
   public = list(
 
-    #' @field benchmark_result ([mlr3::BenchmarkResult]).
+    #' @field benchmark_result ([mlr3::BenchmarkResult])\cr
+    #' Benchmark result.
     benchmark_result = NULL,
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #'
     #' @param check_values (`logical(1)`)\cr
-    #'   If `TRUE` (default), hyperparameter configurations are check for
-    #'   validity.
+    #'   If `TRUE` (default), hyperparameter configurations are check for validity.
     initialize = function(search_space, codomain, check_values = TRUE) {
       super$initialize(search_space, codomain, check_values)
 
@@ -83,13 +81,13 @@ ArchiveTuning = R6Class("ArchiveTuning",
     },
 
     #' @description
-    #' Retrieve [mlr3::Learner] of the i-th evaluation, by position
-    #' or by unique hash `uhash`. `i` and `uhash` are mutually exclusive.
-    #' Learner does not contain a model. Use `$learners()` to get learners with
-    #' models.
+    #' Retrieve [mlr3::Learner] of the i-th evaluation, by position or by unique hash `uhash`.
+    #' `i` and `uhash` are mutually exclusive.
+    #' Learner does not contain a model. Use `$learners()` to get learners with models.
     #'
     #' @param i (`integer(1)`)\cr
     #'   The iteration value to filter for.
+    #'
     #' @param uhash (`logical(1)`)\cr
     #'   The `uhash` value to filter for.
     learner = function(i = NULL, uhash = NULL) {
@@ -97,12 +95,12 @@ ArchiveTuning = R6Class("ArchiveTuning",
     },
 
     #' @description
-    #' Retrieve list of trained [mlr3::Learner] objects of the i-th evaluation,
-    #' by position or by unique hash `uhash`. `i` and `uhash` are mutually
-    #' exclusive.
+    #' Retrieve list of trained [mlr3::Learner] objects of the i-th evaluation, by position or by unique hash `uhash`.
+    #' `i` and `uhash` are mutually exclusive.
     #'
     #' @param i (`integer(1)`)\cr
     #'   The iteration value to filter for.
+    #'
     #' @param uhash (`logical(1)`)\cr
     #'   The `uhash` value to filter for.
     learners = function(i = NULL, uhash = NULL) {
@@ -110,11 +108,12 @@ ArchiveTuning = R6Class("ArchiveTuning",
     },
 
     #' @description
-    #' Retrieve param values of the i-th evaluation, by position
-    #' or by unique hash `uhash`. `i` and `uhash` are mutually exclusive.
+    #' Retrieve param values of the i-th evaluation, by position or by unique hash `uhash`.
+    #' `i` and `uhash` are mutually exclusive.
     #'
     #' @param i (`integer(1)`)\cr
     #'   The iteration value to filter for.
+    #'
     #' @param uhash (`logical(1)`)\cr
     #'   The `uhash` value to filter for.
     learner_param_vals = function(i = NULL, uhash = NULL) {
@@ -122,12 +121,12 @@ ArchiveTuning = R6Class("ArchiveTuning",
     },
 
     #' @description
-    #' Retrieve list of [mlr3::Prediction] objects of the i-th evaluation, by
-    #' position or by unique hash `uhash`. `i` and `uhash` are mutually
-    #' exclusive.
+    #' Retrieve list of [mlr3::Prediction] objects of the i-th evaluation, by position or by unique hash `uhash`.
+    #' `i` and `uhash` are mutually exclusive.
     #'
     #' @param i (`integer(1)`)\cr
     #'   The iteration value to filter for.
+    #'
     #' @param uhash (`logical(1)`)\cr
     #'   The `uhash` value to filter for.
     predictions = function(i = NULL, uhash = NULL) {
@@ -135,11 +134,12 @@ ArchiveTuning = R6Class("ArchiveTuning",
     },
 
     #' @description
-    #' Retrieve [mlr3::ResampleResult] of the i-th evaluation, by position
-    #' or by unique hash `uhash`. `i` and `uhash` are mutually exclusive.
+    #' Retrieve [mlr3::ResampleResult] of the i-th evaluation, by position or by unique hash `uhash`.
+    #' `i` and `uhash` are mutually exclusive.
     #'
     #' @param i (`integer(1)`)\cr
     #'   The iteration value to filter for.
+    #'
     #' @param uhash (`logical(1)`)\cr
     #'   The `uhash` value to filter for.
     resample_result = function(i = NULL, uhash = NULL) {

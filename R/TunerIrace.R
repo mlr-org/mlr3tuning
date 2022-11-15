@@ -10,10 +10,10 @@
 #' @templateVar id irace
 #' @template section_dictionary_tuners
 #'
-#' @section Parameters:
+#' @section Control Parameters:
 #' \describe{
 #' \item{`n_instances`}{`integer(1)`\cr
-#' Number of resampling instances.}
+#'   Number of resampling instances.}
 #' }
 #'
 #' For the meaning of all other parameters, see [irace::defaultScenario()]. Note
@@ -33,10 +33,10 @@
 #'    Identifies configurations across races and steps.
 #'
 #' @section Result:
-#' The tuning result (`instance$result`) is the best performing elite of
-#' the final race. The reported performance is the average performance estimated
-#' on all used instances.
+#' The tuning result (`instance$result`) is the best performing elite of the final race.
+#' The reported performance is the average performance estimated  on all used instances.
 #'
+#' @inheritSection Tuner Resources
 #' @template section_progress_bars
 #' @template section_logging
 #' @templateVar optimizer bbotk::OptimizerIrace

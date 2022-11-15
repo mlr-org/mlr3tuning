@@ -118,7 +118,7 @@ The search space is created from \link[paradox:to_tune]{paradox::TuneToken} or i
 \itemize{
 \item \href{https://mlr3book.mlr-org.com/optimization.html#tuning}{book chapter} on hyperparameter optimization.
 \item \href{https://mlr3book.mlr-org.com/optimization.html#searchspace}{book chapter} on tuning spaces.
-\item \href{https://mlr-org.com/gallery/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/practical-tuning-series-tune-a-support-vector-machine.html}{gallery post} on tuning.
+\item \href{https://mlr-org.com/gallery/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/practical-tuning-series-tune-a-support-vector-machine.html}{gallery post} on tuning an svm.
 \item \href{https://mlr3tuningspaces.mlr-org.com/}{mlr3tuningspaces} extension package.
 }
 }
@@ -139,10 +139,15 @@ The \CRANpkg{mlr3viz} package provides visualizations for tuning results.
 }
 
 \examples{
-# get learner and define search space
-learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
+# Hyperparameter optimization on the Palmer Penguins data set
+task = tsk("pima")
 
-# construct tuning instance
+# Load learner and set search space
+learner = lrn("classif.rpart",
+  cp = to_tune(1e-04, 1e-1, logscale = TRUE)
+)
+
+# Run tuning
 instance = tune(
   method = tnr("random_search", batch_size = 2),
   task = tsk("pima"),
@@ -152,6 +157,12 @@ instance = tune(
   terminator = trm("evals", n_evals = 4)
 )
 
-# get result
-instance$result
+# Set optimal hyperparameter configuration to learner
+learner$param_set$values = instance$result_learner_param_vals
+
+# Train the learner on the full data set
+learner$train(task)
+
+# Inspect all evaluated configurations
+as.data.table(instance$archive)
 }

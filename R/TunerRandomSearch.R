@@ -13,8 +13,8 @@
 #' @template section_dictionary_tuners
 #'
 #' @inheritSection bbotk::OptimizerRandomSearch Parameters
+#' @inheritSection Tuner Resources
 #' @inheritSection bbotk::OptimizerRandomSearch Progress Bars
-#'
 #' @template section_parallelization
 #' @template section_logging
 #' @templateVar optimizer bbotk::OptimizerRandomSearch

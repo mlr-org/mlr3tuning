@@ -12,7 +12,7 @@ The instance contains an \link{ObjectiveTuning} object that encodes the black bo
 The instance allows the basic operations of querying the objective at design points (\verb{$eval_batch()}).
 This operation is usually done by the \link{Tuner}.
 Evaluations of hyperparameter configurations are performed in batches by calling \code{\link[mlr3:benchmark]{mlr3::benchmark()}} internally.
-The evaluated hyperparameter configurations are stored in an \link[=ArchiveTuning]{Archive} (\verb{$archive}).
+The evaluated hyperparameter configurations are stored in the \link[=ArchiveTuning]{Archive} (\verb{$archive}).
 Before a batch is evaluated, the \link[bbotk:Terminator]{bbotk::Terminator} is queried for the remaining budget.
 If the available budget is exhausted, an exception is raised, and no further evaluations can be performed from this point on.
 The tuner is also supposed to store its final result, consisting of a  selected hyperparameter configuration and associated estimated performance values, by calling the method \code{instance$assign_result}.
@@ -22,7 +22,7 @@ The tuner is also supposed to store its final result, consisting of a  selected 
 \itemize{
 \item \href{https://mlr3book.mlr-org.com/optimization.html#tuning}{book chapter} on hyperparameter optimization.
 \item \href{https://mlr3book.mlr-org.com/optimization.html#searchspace}{book chapter} on tuning spaces.
-\item \href{https://mlr-org.com/gallery/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/practical-tuning-series-tune-a-support-vector-machine.html}{gallery post} on tuning.
+\item \href{https://mlr-org.com/gallery/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/practical-tuning-series-tune-a-support-vector-machine.html}{gallery post} on tuning an svm.
 \item \href{https://mlr3tuningspaces.mlr-org.com/}{mlr3tuningspaces} extension package.
 }
 }
@@ -43,26 +43,37 @@ The \CRANpkg{mlr3viz} package provides visualizations for tuning results.
 }
 
 \examples{
-# get learner and define search space
-learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
+# Hyperparameter optimization on the Palmer Penguins data set
+task = tsk("penguins")
 
-# construct tuning instance
+# Load learner and set search space
+learner = lrn("classif.rpart",
+  cp = to_tune(1e-04, 1e-1, logscale = TRUE)
+)
+
+# Construct tuning instance
 instance = ti(
-  task = tsk("pima"),
+  task = task,
   learner = learner,
-  resampling = rsmp ("holdout"),
+  resampling = rsmp("cv", folds = 3),
   measures = msr("classif.ce"),
   terminator = trm("evals", n_evals = 4)
 )
 
-# get tuner
+# Choose optimization algorithm
 tuner = tnr("random_search", batch_size = 2)
 
-# tune classification tree on pima data set
+# Run tuning
 tuner$optimize(instance)
 
-# get result
-instance$result
+# Set optimal hyperparameter configuration to learner
+learner$param_set$values = instance$result_learner_param_vals
+
+# Train the learner on the full data set
+learner$train(task)
+
+# Inspect all evaluated configurations
+as.data.table(instance$archive)
 }
 \section{Super classes}{
 \code{\link[bbotk:OptimInstance]{bbotk::OptimInstance}} -> \code{\link[bbotk:OptimInstanceSingleCrit]{bbotk::OptimInstanceSingleCrit}} -> \code{TuningInstanceSingleCrit}
@@ -184,7 +195,8 @@ List of callbacks.}
 \if{html}{\out{<a id="method-TuningInstanceSingleCrit-assign_result"></a>}}
 \if{latex}{\out{\hypertarget{method-TuningInstanceSingleCrit-assign_result}{}}}
 \subsection{Method \code{assign_result()}}{
-The \link{Tuner} object writes the best found point and estimated performance value here. For internal use.
+The \link{Tuner} object writes the best found point and estimated performance value here.
+For internal use.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TuningInstanceSingleCrit$assign_result(xdt, y, learner_param_vals = NULL)}\if{html}{\out{</div>}}
 }

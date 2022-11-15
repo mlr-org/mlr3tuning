@@ -18,12 +18,9 @@ The random points are sampled by \code{\link[paradox:generate_design_random]{par
 }
 \section{Dictionary}{
 
-This \link{Tuner} can be instantiated via the \link[mlr3misc:Dictionary]{dictionary}
-\link{mlr_tuners} or with the associated sugar function \code{\link[=tnr]{tnr()}}:
+This \link{Tuner} can be instantiated with the associated sugar function \code{\link[=tnr]{tnr()}}:
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{TunerRandomSearch$new()
-mlr_tuners$get("random_search")
-tnr("random_search")
+\if{html}{\out{<div class="sourceCode">}}\preformatted{tnr("random_search")
 }\if{html}{\out{</div>}}
 }
 
@@ -63,6 +60,14 @@ Maximum number of points to try in a batch.}
 
 }
 
+\section{Resources}{
+
+\itemize{
+\item \href{https://mlr3book.mlr-org.com/optimization.html#sec-tuner}{book section} on tuners.
+\item \href{https://mlr3hyperband.mlr-org.com/}{mlr3hyperband} extension package for the Hyperband algorithm.
+}
+}
+
 \section{Progress Bars}{
 
 
@@ -74,16 +79,17 @@ combined with a \link[bbotk]{Terminator}. Simply wrap the function in
 }
 
 \examples{
-# retrieve task
-task = tsk("pima")
+# Hyperparameter Optimization
 
 # load learner and set search space
-learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
+learner = lrn("classif.rpart",
+  cp = to_tune(1e-04, 1e-1, logscale = TRUE)
+)
 
-# hyperparameter tuning on the pima indians diabetes data set
+# run hyperparameter tuning on the Palmer Penguins data set
 instance = tune(
   method = "random_search",
-  task = task,
+  task = tsk("penguins"),
   learner = learner,
   resampling = rsmp("holdout"),
   measure = msr("classif.ce"),
@@ -98,7 +104,7 @@ as.data.table(instance$archive)
 
 # fit final model on complete data set
 learner$param_set$values = instance$result_learner_param_vals
-learner$train(task)
+learner$train(tsk("penguins"))
 }
 \seealso{
 Package \CRANpkg{mlr3hyperband} for hyperband tuning.
