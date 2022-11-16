@@ -16,4 +16,4 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: mlr-org/actions@rcmdcheck/rcmdcheck
+    - uses: mlr-org/actions/rcmdcheck@rcmdcheck
