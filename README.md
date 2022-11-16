@@ -1,7 +1,7 @@
 
-# mlr3tuning
+# mlr3tuning <img src="man/figures/logo.png" align="right" width = "120" />
 
-Test Package website: [release](https://mlr3tuning.mlr-org.com/) |
+Package website: [release](https://mlr3tuning.mlr-org.com/) |
 [dev](https://mlr3tuning.mlr-org.com/dev/)
 
 <!-- badges: start -->
@@ -87,10 +87,10 @@ remotes::install_github("mlr-org/mlr3tuning")
 
 ### Basic Hyperparameter Optimization
 
-We optimize a support vector machine on the
+We optimize the `cost` and `gamma` hyperparameters of a support vector
+machine on the
 [Sonar](https://mlr3.mlr-org.com/reference/mlr_tasks_sonar.html) data
-set as a small example here. We tune the the `cost` and `gamma`
-hyperparameter.
+set.
 
 ``` r
 library("mlr3verse")
@@ -179,7 +179,7 @@ library(mlr3viz)
 autoplot(instance, type = "surface")
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+<img src="man/figures/mlr3viz.png" />
 
 We fit a final model with optimized hyperparameters to make predictions
 on new data.
