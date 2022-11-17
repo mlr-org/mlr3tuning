@@ -17,6 +17,9 @@ jobs:
 
     name: ${{ matrix.config.dev-package }}
 
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+
     strategy:
       fail-fast: false
       matrix:
