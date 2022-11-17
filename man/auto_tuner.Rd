@@ -102,9 +102,9 @@ A set timeout is disabled while fitting the final model.
 \section{Resources}{
 
 \itemize{
-\item \href{https://mlr3book.mlr-org.com/optimization.html#autotuner}{book chapter} on automatic tuning.
-\item \href{https://mlr3book.mlr-org.com/optimization.html#nested-resampling}{book chapter} on nested resampling.
-\item \href{https://mlr-org.com/gallery/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/practical-tuning-series-tune-a-support-vector-machine.html}{gallery post} on tuning and nested resampling.
+\item \href{https://mlr3book.mlr-org.com/optimization.html#sec-autotuner}{book chapter} on automatic tuning.
+\item \href{https://mlr3book.mlr-org.com/optimization.html#sec-nested-resampling}{book chapter} on nested resampling.
+\item \href{https://mlr-org.com/gallery/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/}{gallery post} on tuning and nested resampling.
 }
 }
 

@@ -16,7 +16,7 @@
 #' The final model is fitted with the best hyperparameter configuration and `max_nrounds` i.e. early stopping is not performed.
 #'
 #' @section Resources:
-#' * [gallery post](https://mlr-org.com/gallery.html) on early stopping with XGBoost.
+#' * [gallery post](https://mlr-org.com/gallery/2022-11-04-early-stopping-with-xgboost/) on early stopping with XGBoost.
 #'
 #' @examples
 #' clbk("mlr3tuning.early_stopping")

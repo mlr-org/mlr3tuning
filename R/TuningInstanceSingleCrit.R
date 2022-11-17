@@ -17,9 +17,9 @@
 #' @inheritSection ArchiveTuning Analysis
 #'
 #' @section Resources:
-#' * [book chapter](https://mlr3book.mlr-org.com/optimization.html#tuning) on hyperparameter optimization.
-#' * [book chapter](https://mlr3book.mlr-org.com/optimization.html#searchspace) on tuning spaces.
-#' * [gallery post](https://mlr-org.com/gallery/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/practical-tuning-series-tune-a-support-vector-machine.html) on tuning an svm.
+#' * [book chapter](https://mlr3book.mlr-org.com/optimization.html) on hyperparameter optimization.
+#' * [book chapter](https://mlr3book.mlr-org.com/technical.html#sec-tuning-space) on tuning spaces.
+#' * [gallery post](https://mlr-org.com/gallery/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/) on tuning an svm.
 #' * [mlr3tuningspaces](https://mlr3tuningspaces.mlr-org.com/) extension package.
 #'
 #' @template param_task
