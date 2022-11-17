@@ -33,9 +33,7 @@ jobs:
           needs: website
 
       - name: Install template
-        run: |
-          install.packages("remotes")
-          remotes::install_github("mlr-org/mlr3pkgdowntemplate")
+        run: pak::pkg_install("mlr-org/mlr3pkgdowntemplate")
         shell: Rscript {0}
 
       - name: Build site

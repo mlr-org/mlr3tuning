@@ -36,14 +36,11 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: |
-            any::rcmdcheck
-            any::remotes
+          extra-packages: any::rcmdcheck
           needs: check
 
       - name: Install dev versions
-        run: |
-          remotes::install_github('${{ matrix.config.dev-package }}')
+        run: pak::pkg_install('${{ matrix.config.dev-package }}')
         shell: Rscript {0}
 
       - uses: r-lib/actions/check-r-package@v2
