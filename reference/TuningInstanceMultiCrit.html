@@ -326,27 +326,27 @@ Fixed parameter values of the learner that are neither part of the</p></dd>
 <span class="r-in"><span><span class="co"># Run tuning</span></span></span>
 <span class="r-in"><span><span class="va">tuner</span><span class="op">$</span><span class="fu">optimize</span><span class="op">(</span><span class="va">instance</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp learner_param_vals  x_domain classif.ce  time_train</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -7.606699          &lt;list[2]&gt; &lt;list[1]&gt; 0.05240275 0.005000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -4.381769          &lt;list[2]&gt; &lt;list[1]&gt; 0.05819985 0.004333333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -2.970714          &lt;list[2]&gt; &lt;list[1]&gt; 0.06399695 0.003666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -8.782729          &lt;list[2]&gt; &lt;list[1]&gt; 0.06109840 0.004333333</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Optimal hyperparameter configurations</span></span></span>
 <span class="r-in"><span><span class="va">instance</span><span class="op">$</span><span class="va">result</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp learner_param_vals  x_domain classif.ce  time_train</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -7.606699          &lt;list[2]&gt; &lt;list[1]&gt; 0.05240275 0.005000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -4.381769          &lt;list[2]&gt; &lt;list[1]&gt; 0.05819985 0.004333333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -2.970714          &lt;list[2]&gt; &lt;list[1]&gt; 0.06399695 0.003666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -8.782729          &lt;list[2]&gt; &lt;list[1]&gt; 0.06109840 0.004333333</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Inspect all evaluated configurations</span></span></span>
 <span class="r-in"><span><span class="fu">as.data.table</span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp classif.ce  time_train  x_domain_cp runtime_learners</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -7.606699 0.05240275 0.005000000 0.0004971099            0.030</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -2.801891 0.05819985 0.004666667 0.0606951840            0.025</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -4.370269 0.05819985 0.004333333 0.0126478387            0.025</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -4.381769 0.05819985 0.004333333 0.0125032192            0.040</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -4.001124 0.06399695 0.004000000 0.0182950637            0.025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -2.970714 0.06399695 0.003666667 0.0512667004            0.020</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -8.782729 0.06109840 0.004333333 0.0001533589            0.025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -3.994426 0.06399695 0.004000000 0.0184180095            0.035</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              timestamp batch_nr warnings errors      resample_result</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 2022-11-17 18:01:32        1        0      0 &lt;ResampleResult[21]&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 2022-11-17 18:01:32        1        0      0 &lt;ResampleResult[21]&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 2022-11-17 18:01:32        2        0      0 &lt;ResampleResult[21]&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 2022-11-17 18:01:32        2        0      0 &lt;ResampleResult[21]&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 2022-11-17 18:59:59        1        0      0 &lt;ResampleResult[21]&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 2022-11-17 18:59:59        1        0      0 &lt;ResampleResult[21]&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 2022-11-17 19:00:00        2        0      0 &lt;ResampleResult[21]&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 2022-11-17 19:00:00        2        0      0 &lt;ResampleResult[21]&gt;</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
