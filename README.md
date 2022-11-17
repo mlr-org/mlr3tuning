@@ -5,10 +5,7 @@ Package website: [release](https://mlr3tuning.mlr-org.com/) |
 [dev](https://mlr3tuning.mlr-org.com/dev/)
 
 <!-- badges: start -->
-
-[![tic](https://github.com/mlr-org/mlr3tuning/workflows/tic/badge.svg?branch=main)](https://github.com/mlr-org/mlr3tuning/actions)
-[![CRAN
-Status](https://www.r-pkg.org/badges/version-ago/mlr3tuning)](https://cran.r-project.org/package=mlr3tuning)
+[![CRAN Status](https://www.r-pkg.org/badges/version-ago/mlr3tuning)](https://cran.r-project.org/package=mlr3tuning)
 [![StackOverflow](https://img.shields.io/badge/stackoverflow-mlr3-orange.svg)](https://stackoverflow.com/questions/tagged/mlr3)
 [![Mattermost](https://img.shields.io/badge/chat-mattermost-orange.svg)](https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/)
 <!-- badges: end -->
@@ -163,7 +160,7 @@ as.data.table(instance$archive)[, list(cost, gamma, classif.ce, batch_nr, resamp
     ##  3:   5.756463   5.756463  0.4662526        3 <ResampleResult[21]>
     ##  4:  -5.756463  -5.756463  0.4662526        4 <ResampleResult[21]>
     ##  5: -11.512925   0.000000  0.4662526        5 <ResampleResult[21]>
-    ## ---                                                               
+    ## ---
     ## 16:   5.756463   0.000000  0.4662526       16 <ResampleResult[21]>
     ## 17:  -5.756463   0.000000  0.4662526       17 <ResampleResult[21]>
     ## 18:   5.756463  -5.756463  0.1779158       18 <ResampleResult[21]>
