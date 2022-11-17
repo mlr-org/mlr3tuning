@@ -9,10 +9,10 @@ on:
   schedule:
     - cron: "0 4 * * *"
 
-name: R-CMD-check
+name: r-cmd-check
 
 jobs:
-  check-package:
+  r-cmd-check:
     runs-on: ${{ matrix.config.os }}
 
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
