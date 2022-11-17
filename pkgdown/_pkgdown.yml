@@ -2,6 +2,7 @@ url: https://mlr3tuning.mlr-org.com
 
 template:
   bootstrap: 5
+  package: mlr3pkgdowntemplate
 
 development:
   mode: auto
