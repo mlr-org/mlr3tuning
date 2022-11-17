@@ -40,5 +40,6 @@ jobs:
       - name: Install Dev Versions
         run: |
           remotes::install_github(${{ matrix.config.dev-package }})
+        shell: Rscript {0}
 
       - uses: r-lib/actions/check-r-package@v2
