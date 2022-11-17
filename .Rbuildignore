@@ -22,3 +22,4 @@
 ^README\.html$
 ^revdep$
 ^CRAN-SUBMISSION$
+^man/figures$

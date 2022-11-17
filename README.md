@@ -1,5 +1,5 @@
 
-# mlr3tuning
+# mlr3tuning <img src="man/figures/logo.png" align="right" width = "120" />
 
 Package website: [release](https://mlr3tuning.mlr-org.com/) |
 [dev](https://mlr3tuning.mlr-org.com/dev/)
@@ -48,7 +48,7 @@ There are several sections about hyperparameter optimization in the
 [mlr3book](https://mlr3book.mlr-org.com).
 
   - Getting started with [Hyperparameter
-    Optimization](https://mlr3book.mlr-org.com/optimization.html)
+    Optimization](https://mlr3book.mlr-org.com/optimization.html).
   - [Tune](https://mlr3book.mlr-org.com/optimization.html#sec-tuning-instance)
     a simple classification tree on the Palmer Penguins data set.
   - Learn about [Tuning
@@ -59,12 +59,12 @@ There are several sections about hyperparameter optimization in the
 The [gallery](https://mlr-org.com/gallery.html#category:tuning) features
 a collection of case studies and demos about optimization.
 
-  - [Practical Tuning
-    Series](https://mlr-org.com/gallery.html#category:practical_tuning_series)
-  - [Tuning Search
-    Spaces](https://mlr3book.mlr-org.com/optimization.html#searchspace)
-  - [Nested
-    Resampling](https://mlr3book.mlr-org.com/optimization.html#nested-resampling)
+  - Learn more advanced methods with the [Practical Tuning
+    Series](https://mlr-org.com/gallery.html#category:practical_tuning_series).
+  - Optimize an rpart classification tree with only a [few lines of
+    code](https://mlr-org.com/gallery/2022-11-10-hyperparameter-optimization-on-the-palmer-penguins/).
+  - Tune an XGBoost model with [early
+    stopping](https://mlr-org.com/gallery/2022-11-04-early-stopping-with-xgboost/).
 
 The [cheatsheet](https://cheatsheets.mlr-org.com/mlr3tuning.pdf)
 summarizes the most important functions of mlr3tuning.
@@ -87,227 +87,104 @@ remotes::install_github("mlr-org/mlr3tuning")
 
 ### Basic Hyperparameter Optimization
 
+We optimize the `cost` and `gamma` hyperparameters of a support vector
+machine on the
+[Sonar](https://mlr3.mlr-org.com/reference/mlr_tasks_sonar.html) data
+set.
+
 ``` r
-library("mlr3tuning")
+library("mlr3verse")
 
-# load learner and set search space
-learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
+learner = lrn("classif.svm",
+  cost  = to_tune(1e-5, 1e5, logscale = TRUE),
+  gamma = to_tune(1e-5, 1e5, logscale = TRUE),
+  kernel = "radial",
+  type = "C-classification"
+)
+```
 
-# hyperparameter tuning on the Pima Indians Diabetes data set
-instance = tune(
-  method = tnr("random_search"),
-  task = tsk("pima"),
+We construct a tuning instance with the `ti()` function. The tuning
+instance describes the tuning problem.
+
+``` r
+instance = ti(
+  task = tsk("sonar"),
   learner = learner,
   resampling = rsmp("cv", folds = 3),
-  measure = msr("classif.ce"),
-  term_evals = 10,
-  batch_size = 5
+  measures = msr("classif.ce"),
+  terminator = trm("evals", n_evals = 20)
 )
-
-# best performing hyperparameter configuration
-instance$result
+instance
 ```
 
-    ##           cp learner_param_vals  x_domain classif.ce
-    ## 1: -3.879799          <list[2]> <list[1]>       0.25
+    ## <TuningInstanceSingleCrit>
+    ## * State:  Not optimized
+    ## * Objective: <ObjectiveTuning:classif.svm_on_sonar>
+    ## * Search Space:
+    ##       id    class     lower    upper nlevels
+    ## 1:  cost ParamDbl -11.51293 11.51293     Inf
+    ## 2: gamma ParamDbl -11.51293 11.51293     Inf
+    ## * Terminator: <TerminatorEvals>
+
+We select a simple grid search as the optimization algorithm.
 
 ``` r
-# all evaluated hyperparameter configuration
-as.data.table(instance$archive)[, list(batch_nr, cp, classif.ce, resample_result)]
+tuner = tnr("grid_search", resolution = 5)
+tuner
 ```
 
-    ##     batch_nr        cp classif.ce      resample_result
-    ##  1:        1 -6.355096  0.2786458 <ResampleResult[21]>
-    ##  2:        2 -7.539553  0.2786458 <ResampleResult[21]>
-    ##  3:        3 -3.879799  0.2500000 <ResampleResult[21]>
-    ##  4:        4 -4.703298  0.2773438 <ResampleResult[21]>
-    ##  5:        5 -7.457379  0.2786458 <ResampleResult[21]>
-    ##  6:        6 -8.298748  0.2786458 <ResampleResult[21]>
-    ##  7:        7 -6.290041  0.2786458 <ResampleResult[21]>
-    ##  8:        8 -7.631330  0.2786458 <ResampleResult[21]>
-    ##  9:        9 -4.470716  0.2734375 <ResampleResult[21]>
-    ## 10:       10 -7.082225  0.2786458 <ResampleResult[21]>
+    ## <TunerGridSearch>: Grid Search
+    ## * Parameters: resolution=5, batch_size=1
+    ## * Parameter classes: ParamLgl, ParamInt, ParamDbl, ParamFct
+    ## * Properties: dependencies, single-crit, multi-crit
+    ## * Packages: mlr3tuning
+
+To start the tuning, we simply pass the tuning instance to the tuner.
 
 ``` r
-# fit the final model on the complete data set
+tuner$optimize(instance)
+```
+
+    ##        cost     gamma learner_param_vals  x_domain classif.ce
+    ## 1: 11.51293 -5.756463          <list[4]> <list[2]>  0.1779158
+
+The tuner returns the best hyperparameter configuration and the
+corresponding measured performance.
+
+The archive contains all evaluated hyperparameter configurations.
+
+``` r
+as.data.table(instance$archive)[, list(cost, gamma, classif.ce, batch_nr, resample_result)]
+```
+
+    ##           cost      gamma classif.ce batch_nr      resample_result
+    ##  1:  11.512925  -5.756463  0.1779158        1 <ResampleResult[21]>
+    ##  2:  11.512925  11.512925  0.4662526        2 <ResampleResult[21]>
+    ##  3:   5.756463   5.756463  0.4662526        3 <ResampleResult[21]>
+    ##  4:  -5.756463  -5.756463  0.4662526        4 <ResampleResult[21]>
+    ##  5: -11.512925   0.000000  0.4662526        5 <ResampleResult[21]>
+    ## ---                                                               
+    ## 16:   5.756463   0.000000  0.4662526       16 <ResampleResult[21]>
+    ## 17:  -5.756463   0.000000  0.4662526       17 <ResampleResult[21]>
+    ## 18:   5.756463  -5.756463  0.1779158       18 <ResampleResult[21]>
+    ## 19:  -5.756463  11.512925  0.4662526       19 <ResampleResult[21]>
+    ## 20:  -5.756463 -11.512925  0.4662526       20 <ResampleResult[21]>
+
+The [mlr3viz](https://mlr3viz.mlr-org.com/) package visualizes tuning
+results.
+
+``` r
+library(mlr3viz)
+
+autoplot(instance, type = "surface")
+```
+
+<img src="man/figures/mlr3viz.png" />
+
+We fit a final model with optimized hyperparameters to make predictions
+on new data.
+
+``` r
 learner$param_set$values = instance$result_learner_param_vals
-learner$train(tsk("pima"))
-```
-
-### Automatic Tuning
-
-``` r
-# construct auto tuner
-at = auto_tuner(
-  method = tnr("random_search"),
-  learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
-  resampling = rsmp("cv", folds = 3),
-  measure = msr("classif.ce"),
-  term_evals = 10,
-  batch_size = 5
-)
-
-# train/test split
-task = tsk("pima")
-train_set = sample(task$nrow, 0.8 * task$nrow)
-test_set = setdiff(seq_len(task$nrow), train_set)
-
-# tune hyperparameters and fit the final model on the complete data set in one go
-at$train(task, row_ids = train_set)
-
-# best performing hyperparameter configuration
-at$tuning_result
-```
-
-    ##           cp learner_param_vals  x_domain classif.ce
-    ## 1: -2.923195          <list[2]> <list[1]>  0.2426909
-
-``` r
-# all evaluated hyperparameter configuration
-as.data.table(at$archive)[, list(batch_nr, cp, classif.ce, resample_result)]
-```
-
-    ##     batch_nr        cp classif.ce      resample_result
-    ##  1:        1 -8.546511  0.2948350 <ResampleResult[21]>
-    ##  2:        2 -3.721661  0.2557389 <ResampleResult[21]>
-    ##  3:        3 -9.192468  0.2948350 <ResampleResult[21]>
-    ##  4:        4 -2.923195  0.2426909 <ResampleResult[21]>
-    ##  5:        5 -7.448214  0.2948350 <ResampleResult[21]>
-    ##  6:        6 -6.073759  0.2915830 <ResampleResult[21]>
-    ##  7:        7 -5.082615  0.2915830 <ResampleResult[21]>
-    ##  8:        8 -4.925975  0.2932090 <ResampleResult[21]>
-    ##  9:        9 -5.051991  0.2915830 <ResampleResult[21]>
-    ## 10:       10 -2.365374  0.2541288 <ResampleResult[21]>
-
-``` r
-# predict on new data
-at$predict(task, row_ids = test_set)
-```
-
-    ## <PredictionClassif> for 154 observations:
-    ##     row_ids truth response
-    ##           3   pos      neg
-    ##           6   neg      neg
-    ##          11   neg      neg
-    ## ---                       
-    ##         761   neg      neg
-    ##         766   neg      neg
-    ##         767   pos      neg
-
-### Nested resampling
-
-``` r
-# construct auto tuner with inner resampling
-at = auto_tuner(
-  method = tnr("random_search"),
-  learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
-  resampling = rsmp("cv", folds = 3),
-  measure = msr("classif.ce"),
-  term_evals = 10,
-  batch_size = 5
-)
-
-# specify outer resampling
-resampling_outer = rsmp("cv", folds = 3)
-
-# run nested resampling
-rr = resample(tsk("pima"), at, resampling_outer, store_models = TRUE)
-
-# aggregated performance of all outer resampling iterations
-rr$aggregate()
-```
-
-    ## classif.ce 
-    ##  0.2721354
-
-``` r
-# performance scores of the outer resampling
-rr$score()[, list(iteration, classif.ce)]
-```
-
-    ##    iteration classif.ce
-    ## 1:         1  0.2968750
-    ## 2:         2  0.2695312
-    ## 3:         3  0.2500000
-
-``` r
-# inner resampling results
-extract_inner_tuning_results(rr)[, list(iteration, cp, classif.ce)]
-```
-
-    ##    iteration        cp classif.ce
-    ## 1:         1 -3.953194  0.2324848
-    ## 2:         2 -2.575506  0.2519207
-    ## 3:         3 -3.357545  0.2733861
-
-``` r
-# inner resampling archives
-extract_inner_tuning_archives(rr)[, list(iteration, cp, classif.ce)]
-```
-
-    ##     iteration        cp classif.ce
-    ##  1:         1 -7.772494  0.2480908
-    ##  2:         1 -3.383309  0.2383328
-    ##  3:         1 -5.479227  0.2480908
-    ##  4:         1 -5.032661  0.2480908
-    ##  5:         1 -3.953194  0.2324848
-    ## ---                               
-    ## 26:         3 -6.172105  0.2948515
-    ## 27:         3 -3.819965  0.2772732
-    ## 28:         3 -8.426387  0.2948515
-    ## 29:         3 -3.357545  0.2733861
-    ## 30:         3 -9.201862  0.2948515
-
-### Hotstart
-
-``` r
-library("mlr3learners")
-
-# load learner and set search space
-learner = lrn("classif.xgboost",
-  eta = to_tune(),
-  nrounds = to_tune(500, 2500)
-)
-
-# hyperparameter tuning on the Pima Indians Diabetes data set
-instance = tune(
-  method = tnr("grid_search"),
-  task = tsk("pima"),
-  learner = learner,
-  resampling = rsmp("cv", folds = 3),
-  measure = msr("classif.ce"),
-  allow_hotstart = TRUE,
-  resolution = 5,
-  batch_size = 5
-)
-
-# best performing hyperparameter configuration
-instance$result
-```
-
-    ##    nrounds       eta learner_param_vals  x_domain classif.ce
-    ## 1:     500 0.5555556          <list[4]> <list[2]>  0.2591146
-
-``` r
-# all evaluated hyperparameter configuration
-as.data.table(instance$archive)[, list(batch_nr, eta, nrounds, classif.ce, resample_result)]
-```
-
-    ##      batch_nr       eta nrounds classif.ce      resample_result
-    ##   1:        1 0.0000000     500  0.4908854 <ResampleResult[21]>
-    ##   2:        2 0.1111111     500  0.2721354 <ResampleResult[21]>
-    ##   3:        3 0.2222222     500  0.2734375 <ResampleResult[21]>
-    ##   4:        4 0.3333333     500  0.2734375 <ResampleResult[21]>
-    ##   5:        5 0.4444444     500  0.2734375 <ResampleResult[21]>
-    ##  ---                                                           
-    ##  96:       96 0.5555556    2500  0.2656250 <ResampleResult[21]>
-    ##  97:       97 0.6666667    2500  0.2747396 <ResampleResult[21]>
-    ##  98:       98 0.7777778    2500  0.2838542 <ResampleResult[21]>
-    ##  99:       99 0.8888889    2500  0.2851562 <ResampleResult[21]>
-    ## 100:      100 1.0000000    2500  0.2721354 <ResampleResult[21]>
-
-``` r
-# fit the final model on the complete data set
-learner$param_set$values = instance$result_learner_param_vals
-learner$train(tsk("pima"))
+learner$train(tsk("sonar"))
 ```
