@@ -9,20 +9,19 @@ on:
   schedule:
     - cron: "0 4 * * *"
 
-name: check-package
+name: R-CMD-check
 
 jobs:
   check-package:
     runs-on: ${{ matrix.config.os }}
 
-    name: rcmdcheck ${{ matrix.config.os }} (${{ matrix.config.r }})
+    name: ${{ matrix.config.dev-package }}
 
     strategy:
       fail-fast: false
       matrix:
         config:
-          - {os: ubuntu-latest,   r: 'devel'}
-          - {os: ubuntu-latest,   r: 'release'}
+          - {os: ubuntu-latest, r: 'release', dev-package: 'mlr-org/bbotk'}
 
     steps:
       - uses: actions/checkout@v3
@@ -33,7 +32,13 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::rcmdcheck
+          extra-packages: |
+            any::rcmdcheck
+            any::remotes
           needs: check
+
+      - name: Install Dev Versions
+        run: |
+          remotes::install_github(${{ matrix.config.dev-package }})
 
       - uses: r-lib/actions/check-r-package@v2
