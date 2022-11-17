@@ -9,7 +9,7 @@ on:
   schedule:
     - cron: "0 4 * * *"
 
-name: R-CMD-check
+name: dev-check
 
 jobs:
   check-package:
@@ -39,7 +39,7 @@ jobs:
 
       - name: Install Dev Versions
         run: |
-          remotes::install_github(${{ matrix.config.dev-package }})
+          remotes::install_github('${{ matrix.config.dev-package }}')
         shell: Rscript {0}
 
       - uses: r-lib/actions/check-r-package@v2
