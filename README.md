@@ -85,8 +85,6 @@ remotes::install_github("mlr-org/mlr3tuning")
 
 ## Examples
 
-### Basic Hyperparameter Optimization
-
 We optimize the `cost` and `gamma` hyperparameters of a support vector
 machine on the
 [Sonar](https://mlr3.mlr-org.com/reference/mlr_tasks_sonar.html) data
@@ -112,7 +110,7 @@ instance = ti(
   learner = learner,
   resampling = rsmp("cv", folds = 3),
   measures = msr("classif.ce"),
-  terminator = trm("evals", n_evals = 20)
+  terminator = trm("none")
 )
 instance
 ```
@@ -124,7 +122,7 @@ instance
     ##       id    class     lower    upper nlevels
     ## 1:  cost ParamDbl -11.51293 11.51293     Inf
     ## 2: gamma ParamDbl -11.51293 11.51293     Inf
-    ## * Terminator: <TerminatorEvals>
+    ## * Terminator: <TerminatorNone>
 
 We select a simple grid search as the optimization algorithm.
 
@@ -154,7 +152,7 @@ corresponding measured performance.
 The archive contains all evaluated hyperparameter configurations.
 
 ``` r
-as.data.table(instance$archive)[, list(cost, gamma, classif.ce, batch_nr, resample_result)]
+as.data.table(instance$archive)[, .(cost, gamma, classif.ce, batch_nr, resample_result)]
 ```
 
     ##           cost      gamma classif.ce batch_nr      resample_result
@@ -164,11 +162,11 @@ as.data.table(instance$archive)[, list(cost, gamma, classif.ce, batch_nr, resamp
     ##  4:  -5.756463  -5.756463  0.4662526        4 <ResampleResult[21]>
     ##  5: -11.512925   0.000000  0.4662526        5 <ResampleResult[21]>
     ## ---                                                               
-    ## 16:   5.756463   0.000000  0.4662526       16 <ResampleResult[21]>
-    ## 17:  -5.756463   0.000000  0.4662526       17 <ResampleResult[21]>
-    ## 18:   5.756463  -5.756463  0.1779158       18 <ResampleResult[21]>
-    ## 19:  -5.756463  11.512925  0.4662526       19 <ResampleResult[21]>
-    ## 20:  -5.756463 -11.512925  0.4662526       20 <ResampleResult[21]>
+    ## 21: -11.512925  -5.756463  0.4662526       21 <ResampleResult[21]>
+    ## 22:  11.512925   0.000000  0.4662526       22 <ResampleResult[21]>
+    ## 23:   5.756463  11.512925  0.4662526       23 <ResampleResult[21]>
+    ## 24:  11.512925 -11.512925  0.2498965       24 <ResampleResult[21]>
+    ## 25: -11.512925   5.756463  0.4662526       25 <ResampleResult[21]>
 
 The [mlr3viz](https://mlr3viz.mlr-org.com/) package visualizes tuning
 results.
@@ -179,7 +177,7 @@ library(mlr3viz)
 autoplot(instance, type = "surface")
 ```
 
-<img src="man/figures/mlr3viz.png" />
+<img src="man/figures/mlr3viz.png" style = "max-width: 80%; height: auto;" />
 
 We fit a final model with optimized hyperparameters to make predictions
 on new data.

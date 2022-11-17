@@ -10,7 +10,9 @@ options(
     datatable.print.nrows = 10,
     datatable.print.class = FALSE,
     datatable.print.keys = FALSE,
-    width = 200)
+    width = 100)
+# mute load messages
+library("mlr3tuning")
 ```
 
 # mlr3tuning <img src="man/figures/logo.png" align="right" width = "120" />
@@ -71,13 +73,6 @@ remotes::install_github("mlr-org/mlr3tuning")
 
 ## Examples
 
-```{r, include = FALSE}
-# mute load messages
-library("mlr3tuning")
-```
-
-### Basic Hyperparameter Optimization
-
 We optimize the `cost` and `gamma` hyperparameters of a support vector machine on the [Sonar](https://mlr3.mlr-org.com/reference/mlr_tasks_sonar.html) data set.
 
 ```{r}
@@ -100,7 +95,7 @@ instance = ti(
   learner = learner,
   resampling = rsmp("cv", folds = 3),
   measures = msr("classif.ce"),
-  terminator = trm("evals", n_evals = 20)
+  terminator = trm("none")
 )
 instance
 ```
@@ -123,7 +118,7 @@ The tuner returns the best hyperparameter configuration and the corresponding me
 The archive contains all evaluated hyperparameter configurations.
 
 ```{r}
-as.data.table(instance$archive)[, list(cost, gamma, classif.ce, batch_nr, resample_result)]
+as.data.table(instance$archive)[, .(cost, gamma, classif.ce, batch_nr, resample_result)]
 ```
 
 The [mlr3viz](https://mlr3viz.mlr-org.com/) package visualizes tuning results.
@@ -134,7 +129,7 @@ library(mlr3viz)
 autoplot(instance, type = "surface")
 ```
 
-<img src="man/figures/mlr3viz.png" />
+<img src="man/figures/mlr3viz.png" style = "max-width: 80%; height: auto;" />
 
 We fit a final model with optimized hyperparameters to make predictions on new data.
 
