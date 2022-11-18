@@ -239,18 +239,18 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 <span class="r-in"><span><span class="co"># best performing hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="va">instance</span><span class="op">$</span><span class="va">result</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      cp minsplit minbucket learner_param_vals  x_domain classif.ce</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 0.01       64        32          &lt;list[4]&gt; &lt;list[3]&gt; 0.07826087</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 0.01       64        32          &lt;list[4]&gt; &lt;list[3]&gt; 0.04347826</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># all evaluated hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       cp minsplit minbucket classif.ce x_domain_cp x_domain_minsplit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 0.100        2        64 0.14782609       0.100                 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 0.010       64        32 0.07826087       0.010                64</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 0.001      128         1 0.07826087       0.001               128</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 0.100        2        64 0.24347826       0.100                 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 0.010       64        32 0.04347826       0.010                64</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 0.001      128         1 0.04347826       0.001               128</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    x_domain_minbucket runtime_learners           timestamp batch_nr warnings</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:                 64            0.008 2022-11-18 08:28:30        1        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:                 32            0.008 2022-11-18 08:28:30        2        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:                  1            0.007 2022-11-18 08:28:30        3        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:                 64            0.009 2022-11-18 11:55:53        1        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:                 32            0.009 2022-11-18 11:55:53        2        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:                  1            0.011 2022-11-18 11:55:53        3        0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    errors      resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:      0 &lt;ResampleResult[21]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:      0 &lt;ResampleResult[21]&gt;</span>
