@@ -65,6 +65,8 @@ a collection of case studies and demos about optimization.
     code](https://mlr-org.com/gallery/2022-11-10-hyperparameter-optimization-on-the-palmer-penguins/).
   - Tune an XGBoost model with [early
     stopping](https://mlr-org.com/gallery/2022-11-04-early-stopping-with-xgboost/).
+  - Make us of proven [search
+    space](https://mlr-org.com/gallery/2021-07-06-introduction-to-mlr3tuningspaces/).
 
 The [cheatsheet](https://cheatsheets.mlr-org.com/mlr3tuning.pdf)
 summarizes the most important functions of mlr3tuning.
