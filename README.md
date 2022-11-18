@@ -6,6 +6,7 @@ Package website: [release](https://mlr3tuning.mlr-org.com/) |
 
 <!-- badges: start -->
 
+[![r-cmd-check](https://github.com/mlr-org/mlr3tuning/actions/workflows/r-cmd-check.yml/badge.svg)](https://github.com/mlr-org/mlr3tuning/actions/workflows/r-cmd-check.yml)
 [![CRAN
 Status](https://www.r-pkg.org/badges/version-ago/mlr3tuning)](https://cran.r-project.org/package=mlr3tuning)
 [![StackOverflow](https://img.shields.io/badge/stackoverflow-mlr3-orange.svg)](https://stackoverflow.com/questions/tagged/mlr3)
