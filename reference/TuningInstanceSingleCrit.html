@@ -326,7 +326,7 @@ Fixed parameter values of the learner that are neither part of the</p></dd>
 <span class="r-in"><span><span class="co"># Run tuning</span></span></span>
 <span class="r-in"><span><span class="va">tuner</span><span class="op">$</span><span class="fu">optimize</span><span class="op">(</span><span class="va">instance</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp learner_param_vals  x_domain classif.ce</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -3.357136          &lt;list[2]&gt; &lt;list[1]&gt; 0.05812357</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -5.274089          &lt;list[2]&gt; &lt;list[1]&gt; 0.05517417</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Set optimal hyperparameter configuration to learner</span></span></span>
 <span class="r-in"><span><span class="va">learner</span><span class="op">$</span><span class="va">param_set</span><span class="op">$</span><span class="va">values</span> <span class="op">=</span> <span class="va">instance</span><span class="op">$</span><span class="va">result_learner_param_vals</span></span></span>
@@ -337,10 +337,10 @@ Fixed parameter values of the learner that are neither part of the</p></dd>
 <span class="r-in"><span><span class="co"># Inspect all evaluated configurations</span></span></span>
 <span class="r-in"><span><span class="fu">as.data.table</span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp classif.ce  x_domain_cp runtime_learners           timestamp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -3.357136 0.05812357 0.0348348951            0.032 2022-11-17 19:04:13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -5.225193 0.06097127 0.0053793214            0.050 2022-11-17 19:04:13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -2.718849 0.05812357 0.0659506458            0.243 2022-11-17 19:04:14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -7.110600 0.06097127 0.0008164049            0.031 2022-11-17 19:04:14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -5.274089 0.05517417 0.0051226197            0.029 2022-11-18 08:14:39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -8.580326 0.05517417 0.0001877638            0.042 2022-11-18 08:14:39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -8.276041 0.05517417 0.0002545428            0.208 2022-11-18 08:14:39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -7.178142 0.05517417 0.0007630844            0.026 2022-11-18 08:14:39</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    batch_nr warnings errors      resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:        1        0      0 &lt;ResampleResult[21]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:        1        0      0 &lt;ResampleResult[21]&gt;</span>
