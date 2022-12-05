@@ -98,3 +98,5 @@ CRAN-RELEASE
 README.html
 revdep
 CRAN-SUBMISSION
+renv/
+renv.lock
