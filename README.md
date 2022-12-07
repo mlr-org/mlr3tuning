@@ -14,7 +14,7 @@ Status](https://www.r-pkg.org/badges/version-ago/mlr3tuning)](https://cran.r-pro
 <!-- badges: end -->
 
 *mlr3tuning* is the hyperparameter optimization package of the
-[mlr3](https://mlr-org.com/) ecosystem. It features highly configurable
+[mlr3](https://mlr-org.com) ecosystem. It features highly configurable
 search spaces via the [paradox](https://github.com/mlr-org/paradox)
 package and finds optimal hyperparameter configurations for any mlr3
 [learner](https://github.com/mlr-org/mlr3learners). mlr3tuning works
@@ -56,17 +56,17 @@ There are several sections about hyperparameter optimization in the
   - Estimate Model Performance with [Nested
     Resampling](https://mlr3book.mlr-org.com/optimization.html#sec-model-performance).
 
-The [gallery](https://mlr-org.com/gallery.html#category:tuning) features
-a collection of case studies and demos about optimization.
+The [gallery](https://mlr-org.com/gallery-all-optimization.html)
+features a collection of case studies and demos about optimization.
 
   - Learn more advanced methods with the [Practical Tuning
-    Series](https://mlr-org.com/gallery.html#category:practical_tuning_series).
+    Series](https://mlr-org.com/gallery/series/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/).
   - Optimize an rpart classification tree with only a [few lines of
-    code](https://mlr-org.com/gallery/2022-11-10-hyperparameter-optimization-on-the-palmer-penguins/).
+    code](https://mlr-org.com/gallery/optimization/2022-11-10-hyperparameter-optimization-on-the-palmer-penguins/).
   - Tune an XGBoost model with [early
-    stopping](https://mlr-org.com/gallery/2022-11-04-early-stopping-with-xgboost/).
+    stopping](https://mlr-org.com/gallery/optimization/2022-11-04-early-stopping-with-xgboost/).
   - Make us of proven [search
-    space](https://mlr-org.com/gallery/2021-07-06-introduction-to-mlr3tuningspaces/).
+    space](https://mlr-org.com/gallery/optimization/2021-07-06-introduction-to-mlr3tuningspaces/).
 
 The [cheatsheet](https://cheatsheets.mlr-org.com/mlr3tuning.pdf)
 summarizes the most important functions of mlr3tuning.
@@ -163,7 +163,7 @@ as.data.table(instance$archive)[, .(cost, gamma, classif.ce, batch_nr, resample_
     ##  3:   5.756463   5.756463  0.4662526        3 <ResampleResult[21]>
     ##  4:  -5.756463  -5.756463  0.4662526        4 <ResampleResult[21]>
     ##  5: -11.512925   0.000000  0.4662526        5 <ResampleResult[21]>
-    ## ---                                                               
+    ## ---
     ## 21: -11.512925  -5.756463  0.4662526       21 <ResampleResult[21]>
     ## 22:  11.512925   0.000000  0.4662526       22 <ResampleResult[21]>
     ## 23:   5.756463  11.512925  0.4662526       23 <ResampleResult[21]>

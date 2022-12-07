@@ -87,7 +87,7 @@ Function to construct a \link{TuningInstanceSingleCrit} or \link{TuningInstanceM
 \itemize{
 \item \href{https://mlr3book.mlr-org.com/optimization.html}{book chapter} on hyperparameter optimization.
 \item \href{https://mlr3book.mlr-org.com/technical.html#sec-tuning-space}{book chapter} on tuning spaces.
-\item \href{https://mlr-org.com/gallery/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/}{gallery post} on tuning an svm.
+\item \href{https://mlr-org.com/gallery/series/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/}{gallery post} on tuning an svm.
 \item \href{https://mlr3tuningspaces.mlr-org.com/}{mlr3tuningspaces} extension package.
 }
 }
