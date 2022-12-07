@@ -18,7 +18,7 @@ The final model is fitted with the best hyperparameter configuration and \code{m
 \section{Resources}{
 
 \itemize{
-\item \href{https://mlr-org.com/gallery/2022-11-04-early-stopping-with-xgboost/}{gallery post} on early stopping with XGBoost.
+\item \href{https://mlr-org.com/gallery/optimization/2022-11-04-early-stopping-with-xgboost/}{gallery post} on early stopping with XGBoost.
 }
 }
 

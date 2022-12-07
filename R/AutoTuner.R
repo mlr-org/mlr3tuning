@@ -20,7 +20,7 @@
 #' @section Resources:
 #' * [book chapter](https://mlr3book.mlr-org.com/optimization.html#sec-autotuner) on automatic tuning.
 #' * [book chapter](https://mlr3book.mlr-org.com/optimization.html#sec-nested-resampling) on nested resampling.
-#' * [gallery post](https://mlr-org.com/gallery/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/) on tuning and nested resampling.
+#' * [gallery post](https://mlr-org.com/gallery/series/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/) on tuning and nested resampling.
 #'
 #' @section Nested Resampling:
 #' Nested resampling can be performed by passing an [AutoTuner] object to [mlr3::resample()] or [mlr3::benchmark()].
