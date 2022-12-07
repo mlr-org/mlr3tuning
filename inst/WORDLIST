@@ -15,7 +15,6 @@ Dubois
 GenSA
 Gubian
 Hoeng
-Hotstart
 HotstartStack
 Hotstarting
 Hyperband
@@ -45,6 +44,7 @@ Xiang
 bbotk
 cheatsheet
 cloneable
+cmd
 codomain
 dev
 getters
@@ -59,6 +59,7 @@ parallelization
 parallelize
 param
 parametrized
+rpart
 subclasses
 svm
 th
