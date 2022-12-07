@@ -4,7 +4,7 @@
 \name{mlr3tuning-package}
 \alias{mlr3tuning}
 \alias{mlr3tuning-package}
-\title{mlr3tuning: Tuning for 'mlr3'}
+\title{mlr3tuning: Hyperparameter Optimization for 'mlr3'}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 

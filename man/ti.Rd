@@ -16,7 +16,8 @@ ti(
   check_values = FALSE,
   allow_hotstart = FALSE,
   keep_hotstart_stack = FALSE,
-  evaluate_default = FALSE
+  evaluate_default = FALSE,
+  callbacks = list()
 )
 }
 \arguments{
@@ -74,6 +75,9 @@ after tuning.}
 \item{evaluate_default}{(\code{logical(1)})\cr
 If \code{TRUE}, learner is evaluated with hyperparameters set to their default
 values at the start of the optimization.}
+
+\item{callbacks}{(list of \link{CallbackTuning})\cr
+List of callbacks.}
 }
 \description{
 Function to construct a \link{TuningInstanceSingleCrit} or \link{TuningInstanceMultiCrit}.

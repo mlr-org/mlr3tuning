@@ -50,12 +50,13 @@ tnrs = function(.keys, ...) {
 #' @template param_allow_hotstart
 #' @template param_keep_hotstart_stack
 #' @template param_evaluate_default
+#' @template param_callbacks
 #'
 #' @inheritSection TuningInstanceSingleCrit Resources
 #'
 #' @export
 #' @inherit TuningInstanceSingleCrit examples
-ti = function(task, learner, resampling, measures = NULL, terminator, search_space = NULL, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, evaluate_default = FALSE) {
+ti = function(task, learner, resampling, measures = NULL, terminator, search_space = NULL, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, evaluate_default = FALSE, callbacks = list()) {
   TuningInstance = if (!is.list(measures)) TuningInstanceSingleCrit else TuningInstanceMultiCrit
-  TuningInstance$new(task, learner, resampling, measures, terminator, search_space, store_benchmark_result, store_models, check_values, allow_hotstart, keep_hotstart_stack, evaluate_default)
+  TuningInstance$new(task, learner, resampling, measures, terminator, search_space, store_benchmark_result, store_models, check_values, allow_hotstart, keep_hotstart_stack, evaluate_default, callbacks)
 }
