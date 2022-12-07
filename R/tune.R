@@ -85,7 +85,20 @@ tune = function(method, task, learner, resampling, measures = NULL, term_evals =
   terminator = terminator %??% terminator_selection(term_evals, term_time)
 
   TuningInstance = if (!is.list(measures)) TuningInstanceSingleCrit else TuningInstanceMultiCrit
-  instance = TuningInstance$new(task, learner, resampling, measures, terminator, search_space, store_benchmark_result, store_models, check_values, allow_hotstart, keep_hotstart_stack, evaluate_default, callbacks)
+  instance = TuningInstance$new(
+    task = task,
+    learner = learner,
+    resampling = resampling,
+    measures,
+    terminator = terminator,
+    search_space = search_space,
+    store_benchmark_result = store_benchmark_result,
+    store_models = store_models,
+    check_values = check_values,
+    allow_hotstart = allow_hotstart,
+    keep_hotstart_stack = keep_hotstart_stack,
+    evaluate_default = evaluate_default,
+    callbacks = callbacks)
 
   tuner$optimize(instance)
   instance
