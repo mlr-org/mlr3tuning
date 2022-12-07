@@ -16,7 +16,7 @@ The ArchiveTuning ($archive) stores all evaluated hyperparameter configurations 
     
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.17.0.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.17.1.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -240,7 +240,7 @@ The search space is created from <a href="https://paradox.mlr-org.com/reference/
 
 <ul><li><p><a href="https://mlr3book.mlr-org.com/optimization.html" class="external-link">book chapter</a> on hyperparameter optimization.</p></li>
 <li><p><a href="https://mlr3book.mlr-org.com/technical.html#sec-tuning-space" class="external-link">book chapter</a> on tuning spaces.</p></li>
-<li><p><a href="https://mlr-org.com/gallery/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/" class="external-link">gallery post</a> on tuning an svm.</p></li>
+<li><p><a href="https://mlr-org.com/gallery/series/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/" class="external-link">gallery post</a> on tuning an svm.</p></li>
 <li><p><a href="https://mlr3tuningspaces.mlr-org.com/" class="external-link">mlr3tuningspaces</a> extension package.</p></li>
 </ul></div>
     <div class="section level2">
@@ -286,10 +286,10 @@ Alternatively, measures can be supplied to <code><a href="https://Rdatatable.git
 <span class="r-in"><span><span class="co"># Inspect all evaluated configurations</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp classif.ce  x_domain_cp runtime_learners           timestamp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -8.742113  0.2382812 0.0001597161            0.016 2022-12-07 10:47:37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -8.527680  0.2382812 0.0001979136            0.015 2022-12-07 10:47:37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -6.544928  0.2382812 0.0014373874            0.016 2022-12-07 10:47:37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -7.565082  0.2382812 0.0005182351            0.015 2022-12-07 10:47:37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -8.802075  0.2460938 0.0001504206            0.013 2022-12-07 17:08:45</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -3.934589  0.2656250 0.0195537298            0.013 2022-12-07 17:08:45</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -7.588825  0.2460938 0.0005060751            0.013 2022-12-07 17:08:45</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -4.918091  0.2460938 0.0073130768            0.013 2022-12-07 17:08:45</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    batch_nr warnings errors      resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:        1        0      0 &lt;ResampleResult[21]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:        1        0      0 &lt;ResampleResult[21]&gt;</span>

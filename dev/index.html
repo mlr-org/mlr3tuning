@@ -51,7 +51,7 @@
     
     <a class="navbar-brand me-2" href="index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.17.0.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.17.1.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -122,7 +122,7 @@
 <p>Package website: <a href="https://mlr3tuning.mlr-org.com/">release</a> | <a href="https://mlr3tuning.mlr-org.com/dev/">dev</a></p>
 <!-- badges: start -->
 
-<p><em>mlr3tuning</em> is the hyperparameter optimization package of the <a href="https://mlr-org.com/" class="external-link">mlr3</a> ecosystem. It features highly configurable search spaces via the <a href="https://github.com/mlr-org/paradox" class="external-link">paradox</a> package and finds optimal hyperparameter configurations for any mlr3 <a href="https://github.com/mlr-org/mlr3learners" class="external-link">learner</a>. mlr3tuning works with several optimization algorithms e.g. Random Search, Iterated Racing, Bayesian Optimization (in <a href="https://github.com/mlr-org/mlr3mbo" class="external-link">mlr3mbo</a>) and Hyperband (in <a href="https://github.com/mlr-org/mlr3hyperband" class="external-link">mlr3hyperband</a>). Moreover, it can <a href="https://mlr3book.mlr-org.com/optimization.html#sec-autotuner" class="external-link">automatically</a> optimize learners and estimate the performance of optimized models with <a href="https://mlr3book.mlr-org.com/optimization.html#sec-nested-resampling" class="external-link">nested resampling</a>. The package is built on the optimization framework <a href="https://github.com/mlr-org/bbotk" class="external-link">bbotk</a>.</p>
+<p><em>mlr3tuning</em> is the hyperparameter optimization package of the <a href="https://mlr-org.com" class="external-link">mlr3</a> ecosystem. It features highly configurable search spaces via the <a href="https://github.com/mlr-org/paradox" class="external-link">paradox</a> package and finds optimal hyperparameter configurations for any mlr3 <a href="https://github.com/mlr-org/mlr3learners" class="external-link">learner</a>. mlr3tuning works with several optimization algorithms e.g. Random Search, Iterated Racing, Bayesian Optimization (in <a href="https://github.com/mlr-org/mlr3mbo" class="external-link">mlr3mbo</a>) and Hyperband (in <a href="https://github.com/mlr-org/mlr3hyperband" class="external-link">mlr3hyperband</a>). Moreover, it can <a href="https://mlr3book.mlr-org.com/optimization.html#sec-autotuner" class="external-link">automatically</a> optimize learners and estimate the performance of optimized models with <a href="https://mlr3book.mlr-org.com/optimization.html#sec-nested-resampling" class="external-link">nested resampling</a>. The package is built on the optimization framework <a href="https://github.com/mlr-org/bbotk" class="external-link">bbotk</a>.</p>
 <div class="section level2">
 <h2 id="extension-packages">Extension packages<a class="anchor" aria-label="anchor" href="#extension-packages"></a>
 </h2>
@@ -147,12 +147,12 @@
 <li>Learn about <a href="https://mlr3book.mlr-org.com/technical.html#sec-tuning-space" class="external-link">Tuning Spaces</a>.</li>
 <li>Estimate Model Performance with <a href="https://mlr3book.mlr-org.com/optimization.html#sec-model-performance" class="external-link">Nested Resampling</a>.</li>
 </ul>
-<p>The <a href="https://mlr-org.com/gallery.html#category:tuning" class="external-link">gallery</a> features a collection of case studies and demos about optimization.</p>
+<p>The <a href="https://mlr-org.com/gallery-all-optimization.html" class="external-link">gallery</a> features a collection of case studies and demos about optimization.</p>
 <ul>
-<li>Learn more advanced methods with the <a href="https://mlr-org.com/gallery.html#category:practical_tuning_series" class="external-link">Practical Tuning Series</a>.</li>
-<li>Optimize an rpart classification tree with only a <a href="https://mlr-org.com/gallery/2022-11-10-hyperparameter-optimization-on-the-palmer-penguins/" class="external-link">few lines of code</a>.</li>
-<li>Tune an XGBoost model with <a href="https://mlr-org.com/gallery/2022-11-04-early-stopping-with-xgboost/" class="external-link">early stopping</a>.</li>
-<li>Make us of proven <a href="https://mlr-org.com/gallery/2021-07-06-introduction-to-mlr3tuningspaces/" class="external-link">search space</a>.</li>
+<li>Learn more advanced methods with the <a href="https://mlr-org.com/gallery/series/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/" class="external-link">Practical Tuning Series</a>.</li>
+<li>Optimize an rpart classification tree with only a <a href="https://mlr-org.com/gallery/optimization/2022-11-10-hyperparameter-optimization-on-the-palmer-penguins/" class="external-link">few lines of code</a>.</li>
+<li>Tune an XGBoost model with <a href="https://mlr-org.com/gallery/optimization/2022-11-04-early-stopping-with-xgboost/" class="external-link">early stopping</a>.</li>
+<li>Make us of proven <a href="https://mlr-org.com/gallery/optimization/2021-07-06-introduction-to-mlr3tuningspaces/" class="external-link">search space</a>.</li>
 </ul>
 <p>The <a href="https://cheatsheets.mlr-org.com/mlr3tuning.pdf" class="external-link">cheatsheet</a> summarizes the most important functions of mlr3tuning.</p>
 </div>
@@ -221,7 +221,7 @@
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="do">##  3:   5.756463   5.756463  0.4662526        3 &lt;ResampleResult[21]&gt;</span></span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="do">##  4:  -5.756463  -5.756463  0.4662526        4 &lt;ResampleResult[21]&gt;</span></span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="do">##  5: -11.512925   0.000000  0.4662526        5 &lt;ResampleResult[21]&gt;</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="do">## ---                                                               </span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="do">## ---</span></span>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 21: -11.512925  -5.756463  0.4662526       21 &lt;ResampleResult[21]&gt;</span></span>
 <span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 22:  11.512925   0.000000  0.4662526       22 &lt;ResampleResult[21]&gt;</span></span>
 <span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 23:   5.756463  11.512925  0.4662526       23 &lt;ResampleResult[21]&gt;</span></span>
