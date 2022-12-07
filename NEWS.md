@@ -1,5 +1,7 @@
 # mlr3tuning 0.17.1.9000
 
+* fix: Standalone `Tuner` did not create a `ContextOptimization`.
+
 # mlr3tuning 0.17.1
 
 * fix: The `ti()` function did not accept callbacks.
