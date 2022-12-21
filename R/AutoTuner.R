@@ -23,10 +23,11 @@
 #' * [gallery post](https://mlr-org.com/gallery/series/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/) on tuning and nested resampling.
 #'
 #' @section Nested Resampling:
-#' Nested resampling can be performed by passing an [AutoTuner] object to [mlr3::resample()] or [mlr3::benchmark()].
+#' Nested resampling is performed by passing an [AutoTuner] to [mlr3::resample()] or [mlr3::benchmark()].
 #' To access the inner resampling results, set `store_tuning_instance = TRUE` and execute [mlr3::resample()] or [mlr3::benchmark()] with `store_models = TRUE` (see examples).
 #' The [mlr3::Resampling] passed to the [AutoTuner] is meant to be the inner resampling, operating on the training set of an arbitrary outer resampling.
-#' For this reason it is not feasible to pass an instantiated [mlr3::Resampling] here.
+#' For this reason, the inner resampling should be not instantiated.
+#' If an instantiated resampling is passed, the [AutoTuner] fails when a row id of the inner resampling is not present in the training set of the outer resampling.
 #'
 #' @template param_learner
 #' @template param_resampling
@@ -125,7 +126,7 @@ AutoTuner = R6Class("AutoTuner",
 
       ia = list()
       ia$learner = learner
-      ia$resampling = assert_resampling(resampling, instantiated = FALSE)$clone()
+      ia$resampling = assert_resampling(resampling)$clone()
       if (!is.null(measure)) ia$measure = assert_measure(as_measure(measure), learner = learner)
       if (!is.null(search_space)) ia$search_space = assert_param_set(as_search_space(search_space))$clone()
       ia$terminator = assert_terminator(terminator)$clone()
@@ -309,6 +310,22 @@ AutoTuner = R6Class("AutoTuner",
       # construct instance from args; then tune
       ia = self$instance_args
       ia$task = task
+
+      # check if task contains all row ids required for instantiated resampling
+      if (ia$resampling$is_instantiated) {
+        imap(ia$resampling$instance$train, function(x, i) {
+          if (!test_subset(x, task$row_ids)) {
+            stopf("Train set %i of inner resampling '%s' contains row ids not present in task '%s': {%s}", i, ia$resampling$id, task$id, paste(setdiff(x, task$row_ids), collapse = ", "))
+          }
+        })
+
+        imap(ia$resampling$instance$test, function(x, i) {
+          if (!test_subset(x, task$row_ids)) {
+            stopf("Test set %i of inner resampling '%s' contains row ids not present in task '%s': {%s}", i, ia$resampling$id, task$id, paste(setdiff(x, task$row_ids), collapse = ", "))
+          }
+        })
+      }
+
       instance = do.call(TuningInstanceSingleCrit$new, ia)
       self$tuner$optimize(instance)
 

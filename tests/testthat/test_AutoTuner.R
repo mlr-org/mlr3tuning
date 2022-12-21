@@ -51,16 +51,6 @@ test_that("AutoTuner / resample", {
   })
 })
 
-test_that("Custom resampling is not allowed", {
-  measure = msr("classif.ce")
-  te = trm("evals", n_evals = 4)
-  task = tsk("iris")
-  ps = TEST_MAKE_PS1()
-  tuner = TunerRandomSearch$new()
-  r = rsmp("holdout")$instantiate(task)
-  expect_error(AutoTuner$new(lrn("classif.rpart"), r, measure, te, tuner, ps), "instantiated")
-})
-
 test_that("nested resamppling results are consistent ", {
   # we had a bad pointer bug due to missing cloning here
   # https://github.com/mlr-org/mlr3/issues/428
@@ -449,3 +439,131 @@ test_that("AutoTuner loglik method works", {
   expect_error(at$loglik(), "cannot calculate the log-likelihood.")
 })
 
+
+test_that("AutoTuner works with instantiated resampling", {
+  learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
+  task = tsk("penguins")
+
+  resampling_inner = rsmp("custom")
+  resampling_inner$instantiate(task,
+    train_sets = list(c(1:10, 161:170, 281:290)),
+    test_sets = list(c(11:20, 171:180, 291:300))
+  )
+
+  at = auto_tuner(
+    method = tnr("random_search"),
+    learner = learner,
+    resampling = resampling_inner,
+    measure = msr("classif.ce"),
+    term_evals = 4)
+
+  at$train(task)
+})
+
+test_that("AutoTuner errors when train set is not a subset of task ids", {
+  learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
+  task = tsk("penguins")
+  task$filter(seq(20))
+
+  resampling_inner = rsmp("custom")
+  resampling_inner$instantiate(task,
+    train_sets = list(11:15),
+    test_sets = list(1:5)
+  )
+
+  at = auto_tuner(
+    method = tnr("random_search"),
+    learner = learner,
+    resampling = resampling_inner,
+    measure = msr("classif.ce"),
+    term_evals = 4)
+
+  resampling_outer = rsmp("custom")
+  resampling_outer$instantiate(task,
+    train_sets = list(1:10),
+    test_sets = list(11:20)
+  )
+
+  expect_error(resample(task, at, resampling_outer, store_models = TRUE), "Train set 1")
+})
+
+test_that("AutoTuner errors when second train set is not a subset of task ids", {
+  learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
+  task = tsk("penguins")
+  task$filter(seq(40))
+
+  resampling_inner = rsmp("custom")
+  resampling_inner$instantiate(task,
+    train_sets = list(1:10, 21:30),
+    test_sets = list(31:40, 11:20)
+  )
+
+  at = auto_tuner(
+    method = tnr("random_search"),
+    learner = learner,
+    resampling = resampling_inner,
+    measure = msr("classif.ce"),
+    term_evals = 4)
+
+  resampling_outer = rsmp("custom")
+  resampling_outer$instantiate(task,
+    train_sets = list(1:20),
+    test_sets = list(21:40)
+  )
+
+  expect_error(resample(task, at, resampling_outer, store_models = TRUE), "Train set 2")
+})
+
+test_that("AutoTuner errors when test set is not a subset of task ids", {
+  learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
+  task = tsk("penguins")
+  task$filter(seq(20))
+
+  resampling_inner = rsmp("custom")
+  resampling_inner$instantiate(task,
+    train_sets = list(1:5),
+    test_sets = list(11:16)
+  )
+
+  at = auto_tuner(
+    method = tnr("random_search"),
+    learner = learner,
+    resampling = resampling_inner,
+    measure = msr("classif.ce"),
+    term_evals = 4)
+
+  resampling_outer = rsmp("custom")
+  resampling_outer$instantiate(task,
+    train_sets = list(1:10),
+    test_sets = list(11:20)
+  )
+
+  expect_error(resample(task, at, resampling_outer, store_models = TRUE), "Test set 1")
+})
+
+test_that("AutoTuner errors when second test set is not a subset of task ids", {
+  learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
+  task = tsk("penguins")
+  task$filter(seq(40))
+
+  resampling_inner = rsmp("custom")
+  resampling_inner$instantiate(task,
+    train_sets = list(1:10, 11:20),
+    test_sets = list(11:20, 21:30)
+  )
+
+  at = auto_tuner(
+    method = tnr("random_search"),
+    learner = learner,
+    resampling = resampling_inner,
+    measure = msr("classif.ce"),
+    term_evals = 4)
+
+  resampling_outer = rsmp("custom")
+  resampling_outer$instantiate(task,
+    train_sets = list(1:20),
+    test_sets = list(21:40)
+  )
+
+  expect_error(resample(task, at, resampling_outer, store_models = TRUE), "Test set 2")
+})

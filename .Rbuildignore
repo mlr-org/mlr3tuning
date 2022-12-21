@@ -22,3 +22,4 @@
 ^revdep$
 ^CRAN-SUBMISSION$
 ^man/figures$
+.vscode
