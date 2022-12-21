@@ -23,10 +23,11 @@
 #' * [gallery post](https://mlr-org.com/gallery/series/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/) on tuning and nested resampling.
 #'
 #' @section Nested Resampling:
-#' Nested resampling can be performed by passing an [AutoTuner] object to [mlr3::resample()] or [mlr3::benchmark()].
+#' Nested resampling is performed by passing an [AutoTuner] to [mlr3::resample()] or [mlr3::benchmark()].
 #' To access the inner resampling results, set `store_tuning_instance = TRUE` and execute [mlr3::resample()] or [mlr3::benchmark()] with `store_models = TRUE` (see examples).
 #' The [mlr3::Resampling] passed to the [AutoTuner] is meant to be the inner resampling, operating on the training set of an arbitrary outer resampling.
-#' For this reason it is not feasible to pass an instantiated [mlr3::Resampling] here.
+#' For this reason, the inner resampling should be not instantiated.
+#' If an instantiated resampling is passed, the [AutoTuner] fails when a row id of the inner resampling is not present in the training set of the outer resampling.
 #'
 #' @template param_learner
 #' @template param_resampling

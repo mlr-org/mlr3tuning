@@ -29,13 +29,11 @@ Key to retrieve tuner from \link{mlr_tuners} dictionary or \link{Tuner} object.}
 Learner to tune.}
 
 \item{resampling}{(\link[mlr3:Resampling]{mlr3::Resampling})\cr
-Resampling that is used to evaluated the performance of the hyperparameter
-configurations. Uninstantiated resamplings are instantiated during
-construction so that all configurations are evaluated on the same data
-splits. Already instantiated resamplings are kept unchanged. Specialized
-\link{Tuner} change the resampling e.g. to evaluate a hyperparameter
-configuration on different data splits. This field, however, always returns
-the resampling passed in construction.}
+Resampling that is used to evaluate the performance of the hyperparameter configurations.
+Uninstantiated resamplings are instantiated during construction so that all configurations are evaluated on the same data splits.
+Already instantiated resamplings are kept unchanged.
+Specialized \link{Tuner} change the resampling e.g. to evaluate a hyperparameter configuration on different data splits.
+This field, however, always returns the resampling passed in construction.}
 
 \item{measure}{(\link[mlr3:Measure]{mlr3::Measure})\cr
 Measure to optimize. If \code{NULL}, default measure is used.}
@@ -110,10 +108,11 @@ A set timeout is disabled while fitting the final model.
 
 \section{Nested Resampling}{
 
-Nested resampling can be performed by passing an \link{AutoTuner} object to \code{\link[mlr3:resample]{mlr3::resample()}} or \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
+Nested resampling is performed by passing an \link{AutoTuner} to \code{\link[mlr3:resample]{mlr3::resample()}} or \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
 To access the inner resampling results, set \code{store_tuning_instance = TRUE} and execute \code{\link[mlr3:resample]{mlr3::resample()}} or \code{\link[mlr3:benchmark]{mlr3::benchmark()}} with \code{store_models = TRUE} (see examples).
 The \link[mlr3:Resampling]{mlr3::Resampling} passed to the \link{AutoTuner} is meant to be the inner resampling, operating on the training set of an arbitrary outer resampling.
-For this reason it is not feasible to pass an instantiated \link[mlr3:Resampling]{mlr3::Resampling} here.
+For this reason, the inner resampling should be not instantiated.
+If an instantiated resampling is passed, the \link{AutoTuner} fails when a row id of the inner resampling is not present in the training set of the outer resampling.
 }
 
 \examples{
