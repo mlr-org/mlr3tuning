@@ -125,7 +125,7 @@ AutoTuner = R6Class("AutoTuner",
 
       ia = list()
       ia$learner = learner
-      ia$resampling = assert_resampling(resampling, instantiated = FALSE)$clone()
+      ia$resampling = assert_resampling(resampling)$clone()
       if (!is.null(measure)) ia$measure = assert_measure(as_measure(measure), learner = learner)
       if (!is.null(search_space)) ia$search_space = assert_param_set(as_search_space(search_space))$clone()
       ia$terminator = assert_terminator(terminator)$clone()
@@ -309,6 +309,22 @@ AutoTuner = R6Class("AutoTuner",
       # construct instance from args; then tune
       ia = self$instance_args
       ia$task = task
+
+      # check if task contains all row ids required for instantiated resampling
+      if (ia$resampling$is_instantiated) {
+        imap(ia$resampling$instance$train, function(x, i) {
+          if (!test_subset(x, task$row_ids)) {
+            stopf("Train set %i of inner resampling '%s' contains row ids not present in task '%s': {%s}", i, ia$resampling$id, task$id, paste(setdiff(x, task$row_ids), collapse = ", "))
+          }
+        })
+
+        imap(ia$resampling$instance$test, function(x, i) {
+          if (!test_subset(x, task$row_ids)) {
+            stopf("Test set %i of inner resampling '%s' contains row ids not present in task '%s': {%s}", i, ia$resampling$id, task$id, paste(setdiff(x, task$row_ids), collapse = ", "))
+          }
+        })
+      }
+
       instance = do.call(TuningInstanceSingleCrit$new, ia)
       self$tuner$optimize(instance)
 
