@@ -14,7 +14,7 @@ Status](https://www.r-pkg.org/badges/version-ago/mlr3tuning)](https://cran.r-pro
 <!-- badges: end -->
 
 *mlr3tuning* is the hyperparameter optimization package of the
-[mlr3](https://mlr-org.com) ecosystem. It features highly configurable
+[mlr3](https://mlr-org.com/) ecosystem. It features highly configurable
 search spaces via the [paradox](https://github.com/mlr-org/paradox)
 package and finds optimal hyperparameter configurations for any mlr3
 [learner](https://github.com/mlr-org/mlr3learners). mlr3tuning works
@@ -163,7 +163,7 @@ as.data.table(instance$archive)[, .(cost, gamma, classif.ce, batch_nr, resample_
     ##  3:   5.756463   5.756463  0.4662526        3 <ResampleResult[21]>
     ##  4:  -5.756463  -5.756463  0.4662526        4 <ResampleResult[21]>
     ##  5: -11.512925   0.000000  0.4662526        5 <ResampleResult[21]>
-    ## ---
+    ## ---                                                               
     ## 21: -11.512925  -5.756463  0.4662526       21 <ResampleResult[21]>
     ## 22:  11.512925   0.000000  0.4662526       22 <ResampleResult[21]>
     ## 23:   5.756463  11.512925  0.4662526       23 <ResampleResult[21]>
