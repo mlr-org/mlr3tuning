@@ -12,7 +12,7 @@ Calls nloptr::nloptr from package nloptr."><meta property="og:image" content="ht
     
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.17.1.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.17.2.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -247,22 +247,22 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># best performing hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="va">instance</span><span class="op">$</span><span class="va">result</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          cp learner_param_vals  x_domain classif.ce</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -7.89147          &lt;list[2]&gt; &lt;list[1]&gt; 0.06086957</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           cp learner_param_vals  x_domain classif.ce</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -8.265161          &lt;list[2]&gt; &lt;list[1]&gt; 0.03478261</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># all evaluated hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            cp classif.ce  x_domain_cp runtime_learners           timestamp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -7.891470 0.06086957 0.0003739195            0.009 2022-12-21 12:17:21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -7.891470 0.06086957 0.0003739195            0.008 2022-12-21 12:17:21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -7.891470 0.06086957 0.0003739195            0.009 2022-12-21 12:17:21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -6.902317 0.06086957 0.0010054529            0.009 2022-12-21 12:17:21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -8.880623 0.06086957 0.0001390575            0.008 2022-12-21 12:17:21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -7.881578 0.06086957 0.0003776365            0.007 2022-12-21 12:17:21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -7.901362 0.06086957 0.0003702391            0.008 2022-12-21 12:17:21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -7.891371 0.06086957 0.0003739565            0.008 2022-12-21 12:17:21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -7.891569 0.06086957 0.0003738825            0.008 2022-12-21 12:17:21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -7.891470 0.06086957 0.0003739195            0.009 2022-12-21 12:17:21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -8.265161 0.03478261 0.0002573274            0.007 2022-12-22 07:49:03</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -8.265161 0.03478261 0.0002573274            0.008 2022-12-22 07:49:04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -8.265161 0.03478261 0.0002573274            0.008 2022-12-22 07:49:04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -7.556277 0.03478261 0.0005228182            0.007 2022-12-22 07:49:04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -8.974046 0.03478261 0.0001266548            0.008 2022-12-22 07:49:04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -8.258072 0.03478261 0.0002591581            0.008 2022-12-22 07:49:04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -8.272250 0.03478261 0.0002555097            0.008 2022-12-22 07:49:04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -8.265090 0.03478261 0.0002573457            0.008 2022-12-22 07:49:04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -8.265232 0.03478261 0.0002573092            0.008 2022-12-22 07:49:04</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -8.265161 0.03478261 0.0002573274            0.008 2022-12-22 07:49:04</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     batch_nr warnings errors      resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:        1        0      0 &lt;ResampleResult[21]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  2:        2        0      0 &lt;ResampleResult[21]&gt;</span>
