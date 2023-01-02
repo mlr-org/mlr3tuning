@@ -216,7 +216,7 @@ List of callbacks.</p></dd>
 <span class="r-in"><span><span class="co"># Run tuning</span></span></span>
 <span class="r-in"><span><span class="va">tuner</span><span class="op">$</span><span class="fu">optimize</span><span class="op">(</span><span class="va">instance</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp learner_param_vals  x_domain classif.ce</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -9.182483          &lt;list[2]&gt; &lt;list[1]&gt; 0.06399695</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -7.638557          &lt;list[2]&gt; &lt;list[1]&gt; 0.07256547</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Set optimal hyperparameter configuration to learner</span></span></span>
 <span class="r-in"><span><span class="va">learner</span><span class="op">$</span><span class="va">param_set</span><span class="op">$</span><span class="va">values</span> <span class="op">=</span> <span class="va">instance</span><span class="op">$</span><span class="va">result_learner_param_vals</span></span></span>
@@ -227,10 +227,10 @@ List of callbacks.</p></dd>
 <span class="r-in"><span><span class="co"># Inspect all evaluated configurations</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp classif.ce  x_domain_cp runtime_learners           timestamp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -9.182483 0.06399695 0.0001028249            0.023 2022-12-22 07:49:06</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -4.266155 0.06399695 0.0140356439            0.022 2022-12-22 07:49:06</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -5.206295 0.06399695 0.0054819469            0.022 2022-12-22 07:49:06</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -5.291673 0.06399695 0.0050333333            0.022 2022-12-22 07:49:06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -7.638557 0.07256547 0.0004815227            0.022 2023-01-02 11:08:31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -8.745755 0.07256547 0.0001591355            0.022 2023-01-02 11:08:31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -8.415865 0.07256547 0.0002213280            0.021 2023-01-02 11:08:31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -5.915169 0.07256547 0.0026982047            0.022 2023-01-02 11:08:31</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    batch_nr warnings errors      resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:        1        0      0 &lt;ResampleResult[21]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:        1        0      0 &lt;ResampleResult[21]&gt;</span>
