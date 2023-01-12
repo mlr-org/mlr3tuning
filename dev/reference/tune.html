@@ -158,7 +158,7 @@ Stop criterion of the tuning process.</p></dd>
 
 
 <dt>search_space</dt>
-<dd><p>(<a href="https://rdrr.io/pkg/paradox/man/ParamSet.html" class="external-link">paradox::ParamSet</a>)<br>
+<dd><p>(<a href="https://paradox.mlr-org.com/reference/ParamSet.html" class="external-link">paradox::ParamSet</a>)<br>
 Hyperparameter search space. If <code>NULL</code> (default), the search space is
 constructed from the TuneToken of the learner's parameter set
 (learner$param_set).</p></dd>
@@ -230,7 +230,7 @@ The parameter <code>term_evals</code> and <code>term_time</code> are shortcuts t
 If both parameters are passed, a TerminatorCombo is constructed.
 For other Terminators, pass one with <code>terminator</code>.
 If no termination criterion is needed, set <code>term_evals</code>, <code>term_time</code> and <code>terminator</code> to <code>NULL</code>.
-The search space is created from <a href="https://rdrr.io/pkg/paradox/man/to_tune.html" class="external-link">paradox::TuneToken</a> or is supplied by <code>search_space</code>.</p>
+The search space is created from <a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">paradox::TuneToken</a> or is supplied by <code>search_space</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a></h2>
@@ -284,10 +284,10 @@ Alternatively, measures can be supplied to <code><a href="https://Rdatatable.git
 <span class="r-in"><span><span class="co"># Inspect all evaluated configurations</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp classif.ce  x_domain_cp runtime_learners           timestamp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -8.044699  0.2539062 0.0003207979            0.011 2023-01-02 11:08:32</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -5.760373  0.2539062 0.0031499355            0.011 2023-01-02 11:08:32</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -4.084571  0.2304688 0.0168303562            0.012 2023-01-02 11:08:32</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -5.485158  0.2539062 0.0041478785            0.012 2023-01-02 11:08:32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -5.205531   0.234375 0.0054861362            0.029 2023-01-12 10:55:14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -8.020933   0.234375 0.0003285135            0.011 2023-01-12 10:55:14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -3.416853   0.312500 0.0328155435            0.011 2023-01-12 10:55:14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -2.494096   0.312500 0.0825710373            0.010 2023-01-12 10:55:14</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    batch_nr warnings errors      resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:        1        0      0 &lt;ResampleResult[21]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:        1        0      0 &lt;ResampleResult[21]&gt;</span>

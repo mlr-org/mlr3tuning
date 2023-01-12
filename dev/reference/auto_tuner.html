@@ -143,7 +143,7 @@ Stop criterion of the tuning process.</p></dd>
 
 
 <dt>search_space</dt>
-<dd><p>(<a href="https://rdrr.io/pkg/paradox/man/ParamSet.html" class="external-link">paradox::ParamSet</a>)<br>
+<dd><p>(<a href="https://paradox.mlr-org.com/reference/ParamSet.html" class="external-link">paradox::ParamSet</a>)<br>
 Hyperparameter search space. If <code>NULL</code> (default), the search space is
 constructed from the TuneToken of the learner's parameter set
 (learner$param_set).</p></dd>
@@ -194,7 +194,7 @@ Named arguments to be set as parameters of the tuner.</p></dd>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The <a href="AutoTuner.html">AutoTuner</a> is a <a href="https://mlr3.mlr-org.com/reference/Learner.html" class="external-link">mlr3::Learner</a> which wraps another <a href="https://mlr3.mlr-org.com/reference/Learner.html" class="external-link">mlr3::Learner</a> and performs the following steps during <code>$train()</code>:</p><ol><li><p>The hyperparameters of the wrapped (inner) learner are trained on the training data via resampling.
-The tuning can be specified by providing a <a href="Tuner.html">Tuner</a>, a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" class="external-link">bbotk::Terminator</a>, a search space as <a href="https://rdrr.io/pkg/paradox/man/ParamSet.html" class="external-link">paradox::ParamSet</a>, a <a href="https://mlr3.mlr-org.com/reference/Resampling.html" class="external-link">mlr3::Resampling</a> and a <a href="https://mlr3.mlr-org.com/reference/Measure.html" class="external-link">mlr3::Measure</a>.</p></li>
+The tuning can be specified by providing a <a href="Tuner.html">Tuner</a>, a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" class="external-link">bbotk::Terminator</a>, a search space as <a href="https://paradox.mlr-org.com/reference/ParamSet.html" class="external-link">paradox::ParamSet</a>, a <a href="https://mlr3.mlr-org.com/reference/Resampling.html" class="external-link">mlr3::Resampling</a> and a <a href="https://mlr3.mlr-org.com/reference/Measure.html" class="external-link">mlr3::Measure</a>.</p></li>
 <li><p>The best found hyperparameter configuration is set as hyperparameters for the wrapped (inner) learner stored in <code>at$learner</code>.
 Access the tuned hyperparameters via <code>at$tuning_result</code>.</p></li>
 <li><p>A final model is fit on the complete training data using the now parametrized wrapped learner.

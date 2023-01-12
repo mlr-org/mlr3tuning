@@ -106,7 +106,7 @@ The final model is fitted with the best hyperparameter configuration and <code>m
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/mlr3misc/man/clbk.html" class="external-link">clbk</a></span><span class="op">(</span><span class="st">"mlr3tuning.early_stopping"</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://mlr3misc.mlr-org.com/reference/clbk.html" class="external-link">clbk</a></span><span class="op">(</span><span class="st">"mlr3tuning.early_stopping"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;CallbackTuning:mlr3tuning.early_stopping&gt;: Early Stopping Callback</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> * Active Stages: on_eval_before_archive, on_eval_after_benchmark,</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   on_result, on_optimization_begin</span>
@@ -129,7 +129,7 @@ The final model is fitted with the best hyperparameter configuration and <code>m
 <span class="r-in"><span>    resampling <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">rsmp</a></span><span class="op">(</span><span class="st">"cv"</span>, folds <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    measures <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">msr</a></span><span class="op">(</span><span class="st">"classif.ce"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    term_evals <span class="op">=</span> <span class="fl">10</span>,</span></span>
-<span class="r-in"><span>    callbacks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/mlr3misc/man/clbk.html" class="external-link">clbk</a></span><span class="op">(</span><span class="st">"mlr3tuning.early_stopping"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    callbacks <span class="op">=</span> <span class="fu"><a href="https://mlr3misc.mlr-org.com/reference/clbk.html" class="external-link">clbk</a></span><span class="op">(</span><span class="st">"mlr3tuning.early_stopping"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required namespace: mlr3learners</span>

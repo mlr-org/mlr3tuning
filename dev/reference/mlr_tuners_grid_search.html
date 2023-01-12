@@ -81,7 +81,7 @@
 
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The grid is constructed as a Cartesian product over discretized values per parameter, see <code><a href="https://rdrr.io/pkg/paradox/man/generate_design_grid.html" class="external-link">paradox::generate_design_grid()</a></code>.
+    <p>The grid is constructed as a Cartesian product over discretized values per parameter, see <code><a href="https://paradox.mlr-org.com/reference/generate_design_grid.html" class="external-link">paradox::generate_design_grid()</a></code>.
 If the learner supports hotstarting, the grid is sorted by the hotstart parameter (see also <a href="https://mlr3.mlr-org.com/reference/HotstartStack.html" class="external-link">mlr3::HotstartStack</a>).
 If not, the points of the grid are evaluated in a  random order.</p>
     </div>
@@ -98,11 +98,11 @@ If not, the points of the grid are evaluated in a  random order.</p>
 
 <dl><dt><code>resolution</code></dt>
 <dd><p><code>integer(1)</code><br>
-Resolution of the grid, see <code><a href="https://rdrr.io/pkg/paradox/man/generate_design_grid.html" class="external-link">paradox::generate_design_grid()</a></code>.</p></dd>
+Resolution of the grid, see <code><a href="https://paradox.mlr-org.com/reference/generate_design_grid.html" class="external-link">paradox::generate_design_grid()</a></code>.</p></dd>
 
 <dt><code>param_resolutions</code></dt>
 <dd><p>named <code><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer()</a></code><br>
-Resolution per parameter, named by parameter ID, see <code><a href="https://rdrr.io/pkg/paradox/man/generate_design_grid.html" class="external-link">paradox::generate_design_grid()</a></code>.</p></dd>
+Resolution per parameter, named by parameter ID, see <code><a href="https://paradox.mlr-org.com/reference/generate_design_grid.html" class="external-link">paradox::generate_design_grid()</a></code>.</p></dd>
 
 <dt><code>batch_size</code></dt>
 <dd><p><code>integer(1)</code><br>
@@ -231,21 +231,21 @@ See also the documentation of <a href="https://bbotk.mlr-org.com/" class="extern
 <span class="r-in"><span><span class="co"># best performing hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="va">instance</span><span class="op">$</span><span class="va">result</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp learner_param_vals  x_domain classif.ce</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -5.372699          &lt;list[2]&gt; &lt;list[1]&gt; 0.08695652</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -8.442812          &lt;list[2]&gt; &lt;list[1]&gt; 0.06956522</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># all evaluated hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            cp classif.ce  x_domain_cp runtime_learners           timestamp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -5.372699 0.08695652 0.0046415888            0.007 2023-01-02 11:08:23</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -2.302585 0.08695652 0.1000000000            0.008 2023-01-02 11:08:23</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -4.605170 0.08695652 0.0100000000            0.008 2023-01-02 11:08:23</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -9.210340 0.08695652 0.0001000000            0.008 2023-01-02 11:08:23</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -7.675284 0.08695652 0.0004641589            0.007 2023-01-02 11:08:23</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -6.907755 0.08695652 0.0010000000            0.008 2023-01-02 11:08:23</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -8.442812 0.08695652 0.0002154435            0.025 2023-01-02 11:08:23</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -3.070113 0.08695652 0.0464158883            0.008 2023-01-02 11:08:23</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -3.837642 0.08695652 0.0215443469            0.008 2023-01-02 11:08:23</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -6.140227 0.08695652 0.0021544347            0.008 2023-01-02 11:08:23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -8.442812 0.06956522 0.0002154435            0.009 2023-01-12 10:55:05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -6.140227 0.06956522 0.0021544347            0.008 2023-01-12 10:55:06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -6.907755 0.06956522 0.0010000000            0.008 2023-01-12 10:55:06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -7.675284 0.06956522 0.0004641589            0.008 2023-01-12 10:55:06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -3.070113 0.06956522 0.0464158883            0.008 2023-01-12 10:55:06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -9.210340 0.06956522 0.0001000000            0.008 2023-01-12 10:55:06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -4.605170 0.06956522 0.0100000000            0.009 2023-01-12 10:55:06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -2.302585 0.06956522 0.1000000000            0.007 2023-01-12 10:55:06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -3.837642 0.06956522 0.0215443469            0.008 2023-01-12 10:55:06</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -5.372699 0.06956522 0.0046415888            0.007 2023-01-12 10:55:06</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     batch_nr warnings errors      resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:        1        0      0 &lt;ResampleResult[21]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  2:        2        0      0 &lt;ResampleResult[21]&gt;</span>
