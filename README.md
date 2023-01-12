@@ -179,7 +179,7 @@ library(mlr3viz)
 autoplot(instance, type = "surface")
 ```
 
-<img src="man/figures/mlr3viz.png" style = "max-width: 80%; height: auto;" />
+<img src="man/figures/plot.png"/>
 
 We fit a final model with optimized hyperparameters to make predictions
 on new data.
