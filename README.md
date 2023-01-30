@@ -67,6 +67,9 @@ features a collection of case studies and demos about optimization.
     stopping](https://mlr-org.com/gallery/optimization/2022-11-04-early-stopping-with-xgboost/).
   - Make us of proven [search
     space](https://mlr-org.com/gallery/optimization/2021-07-06-introduction-to-mlr3tuningspaces/).
+  - Learn about
+    [hotstarting](https://mlr-org.com/gallery/optimization/2023-01-16-hotstart/)
+    models.
 
 The [cheatsheet](https://cheatsheets.mlr-org.com/mlr3tuning.pdf)
 summarizes the most important functions of mlr3tuning.
