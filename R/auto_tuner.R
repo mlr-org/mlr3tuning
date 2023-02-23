@@ -25,6 +25,9 @@
 #' @template param_store_benchmark_result
 #' @template param_store_models
 #' @template param_check_values
+#' @template param_allow_hotstart
+#' @template param_keep_hotstart_stack
+#' @template param_evaluate_default
 #' @template param_callbacks
 #'
 #' @export
@@ -37,7 +40,7 @@
 #'   term_evals = 4)
 #'
 #' at$train(tsk("pima"))
-auto_tuner = function(method, learner, resampling, measure = NULL, term_evals = NULL, term_time = NULL, terminator = NULL, search_space = NULL, store_tuning_instance = TRUE, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, callbacks = list(), ...) {
+auto_tuner = function(method, learner, resampling, measure = NULL, term_evals = NULL, term_time = NULL, terminator = NULL, search_space = NULL, store_tuning_instance = TRUE, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, evaluate_default = FALSE, callbacks = list(), ...) {
   tuner = if (is.character(method)) {
     assert_choice(method, mlr_tuners$keys())
     tnr(method, ...)
@@ -46,5 +49,19 @@ auto_tuner = function(method, learner, resampling, measure = NULL, term_evals = 
   }
   terminator = terminator %??% terminator_selection(term_evals, term_time)
 
-  AutoTuner$new(learner = learner, resampling = resampling, measure = measure, terminator = terminator, tuner = tuner, search_space = search_space, store_tuning_instance = store_tuning_instance, store_benchmark_result = store_benchmark_result, store_models = store_models, check_values = check_values, callbacks = callbacks)
+  AutoTuner$new(
+    learner = learner,
+    resampling = resampling,
+    measure = measure,
+    terminator = terminator,
+    tuner = tuner,
+    search_space = search_space,
+    store_tuning_instance = store_tuning_instance,
+    store_benchmark_result = store_benchmark_result,
+    store_models = store_models,
+    check_values = check_values,
+    callbacks = callbacks,
+    allow_hotstart = allow_hotstart,
+    keep_hotstart_stack = keep_hotstart_stack,
+    evaluate_default = evaluate_default)
 }
