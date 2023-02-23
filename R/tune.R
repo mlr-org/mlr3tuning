@@ -75,7 +75,7 @@
 #'
 #' # Inspect all evaluated configurations
 #' as.data.table(instance$archive)
-tune = function(method, task, learner, resampling, measures = NULL, term_evals = NULL, term_time = NULL, terminator = NULL, search_space = NULL, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, evaluate_default = FALSE, callbacks = list(), ...) {
+tune = function(method, task, learner, resampling, measures = NULL, term_evals = NULL, term_time = NULL, terminator = NULL, search_space = NULL, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, hotstart_limit = NULL, evaluate_default = FALSE, callbacks = list(), ...) {
   tuner = if (is.character(method)) {
     assert_choice(method, mlr_tuners$keys())
     tnr(method, ...)
@@ -97,6 +97,7 @@ tune = function(method, task, learner, resampling, measures = NULL, term_evals =
     check_values = check_values,
     allow_hotstart = allow_hotstart,
     keep_hotstart_stack = keep_hotstart_stack,
+    hotstart_limit = hotstart_limit,
     evaluate_default = evaluate_default,
     callbacks = callbacks)
 

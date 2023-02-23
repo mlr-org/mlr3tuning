@@ -40,7 +40,7 @@
 #'   term_evals = 4)
 #'
 #' at$train(tsk("pima"))
-auto_tuner = function(method, learner, resampling, measure = NULL, term_evals = NULL, term_time = NULL, terminator = NULL, search_space = NULL, store_tuning_instance = TRUE, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, evaluate_default = FALSE, callbacks = list(), ...) {
+auto_tuner = function(method, learner, resampling, measure = NULL, term_evals = NULL, term_time = NULL, terminator = NULL, search_space = NULL, store_tuning_instance = TRUE, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, hotstart_limit = NULL, evaluate_default = FALSE, callbacks = list(), ...) {
   tuner = if (is.character(method)) {
     assert_choice(method, mlr_tuners$keys())
     tnr(method, ...)
@@ -63,5 +63,6 @@ auto_tuner = function(method, learner, resampling, measure = NULL, term_evals = 
     callbacks = callbacks,
     allow_hotstart = allow_hotstart,
     keep_hotstart_stack = keep_hotstart_stack,
+    horstart_limit = hotstart_limit,
     evaluate_default = evaluate_default)
 }

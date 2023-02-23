@@ -53,13 +53,15 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     #' @field callbacks (List of [CallbackTuning]s).
     callbacks = NULL,
 
+    hotstart_limit = NULL,
+
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #'
     #' @param archive ([ArchiveTuning])\cr
     #'   Reference to archive of [TuningInstanceSingleCrit] | [TuningInstanceMultiCrit].
     #'   If `NULL` (default), benchmark result and models cannot be stored.
-    initialize = function(task, learner, resampling, measures, store_benchmark_result = TRUE, store_models = FALSE, check_values = TRUE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, archive = NULL, callbacks = list()) {
+    initialize = function(task, learner, resampling, measures, store_benchmark_result = TRUE, store_models = FALSE, check_values = TRUE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, hotstart_limit = NULL, archive = NULL, callbacks = list()) {
       self$task = assert_task(as_task(task, clone = TRUE))
       self$learner = assert_learner(as_learner(learner, clone = TRUE))
       self$measures = assert_measures(as_measures(measures, clone = TRUE), task = self$task, learner = self$learner)
@@ -68,6 +70,8 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       self$allow_hotstart = assert_flag(allow_hotstart) && any(c("hotstart_forward", "hotstart_backward") %in% learner$properties)
       if (self$allow_hotstart) self$hotstart_stack = HotstartStack$new()
       self$keep_hotstart_stack = assert_flag(keep_hotstart_stack)
+      self$hotstart_limit = hotstart_limit
+      if (self$allow_hotstart && is.null(self$hotstart_limit)) self$hotstart_limit = -Inf
       self$store_models = assert_flag(store_models)
       self$archive = assert_r6(archive, "ArchiveTuning", null.ok = TRUE)
       if (is.null(self$archive)) self$allow_hotstart = self$store_benchmark_result = self$store_models = FALSE
@@ -89,12 +93,19 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     .eval_many = function(xss, resampling) {
       context = ContextEval$new(self)
       private$.xss = xss
+      allow_hotstart = self$allow_hotstart
+
+      # check hotstart limit
+      if (allow_hotstart) {
+        hotstart_id = self$learner$param_set$ids(tags = "hotstart")
+        if (!any(map_dbl(xss, hotstart_id) >= self$hotstart_limit)) allow_hotstart = FALSE
+      }
 
       # create learners from set of hyperparameter configurations
       learners = map(private$.xss, function(x) {
         learner = self$learner$clone(deep = TRUE)
         learner$param_set$values = insert_named(learner$param_set$values, x)
-        if (self$allow_hotstart) learner$hotstart_stack = self$hotstart_stack
+        if (allow_hotstart) learner$hotstart_stack = self$hotstart_stack
         learner
       })
 
@@ -103,7 +114,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       call_back("on_eval_after_design", self$callbacks, context)
 
       # learner is already cloned, task and resampling are not changed
-      private$.benchmark_result = benchmark(private$.design, store_models = self$store_models || self$allow_hotstart, allow_hotstart = self$allow_hotstart, clone = character())
+      private$.benchmark_result = benchmark(private$.design, store_models = self$store_models || allow_hotstart, allow_hotstart = self$allow_hotstart, clone = character())
       call_back("on_eval_after_benchmark", self$callbacks, context)
 
       # aggregate performance scores
@@ -116,7 +127,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       set(private$.aggregated_performance, j = "runtime_learners", value = time)
 
       # add to hotstart stack
-      if (self$allow_hotstart) {
+      if (allow_hotstart) {
         self$hotstart_stack$add(extract_benchmark_result_learners(private$.benchmark_result))
         if (!self$store_models) private$.benchmark_result$discard(models = TRUE)
       }

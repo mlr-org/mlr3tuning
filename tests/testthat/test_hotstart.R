@@ -136,3 +136,25 @@ test_that("objects are cloned", {
       expect_different_address(learner$param_set, get_private(bmr)$.data$data$learners$learner[[1]]$param_set)
   })
 })
+
+test_that("hotstart limit works forwards", {
+  task = tsk("pima")
+  learner = lrn("classif.debug", x = to_tune(), iter = to_tune(1, 100))
+
+  instance = tune(
+    method = "grid_search",
+    task = task,
+    learner = learner,
+    resampling = rsmp("holdout"),
+    measures = msr("classif.ce"),
+    batch_size = 5,
+    resolution = 5,
+    store_models = TRUE,
+    allow_hotstart = TRUE,
+    hotstart_limit = 50
+  )
+
+  ids = map(extract_benchmark_result_learners(instance$archive$benchmark_result), function(l) l$model$id)
+  expect_equal(length(unique(ids)), 15)
+  expect_equal(unique(instance$archive$data$iter), c(1, 25, 50, 75, 100))
+})
