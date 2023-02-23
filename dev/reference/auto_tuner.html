@@ -96,6 +96,9 @@ The <code>auto_tuner()</code> function creates an <a href="AutoTuner.html">AutoT
 <span>  store_benchmark_result <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  store_models <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  check_values <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  allow_hotstart <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  keep_hotstart_stack <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  evaluate_default <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  callbacks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -173,6 +176,25 @@ combination is needed for measures that require a model.</p></dd>
 If <code>TRUE</code>, hyperparameter values are checked before evaluation and
 performance scores after. If <code>FALSE</code> (default), values are unchecked but
 computational overhead is reduced.</p></dd>
+
+
+<dt>allow_hotstart</dt>
+<dd><p>(<code>logical(1)</code>)<br>
+Allow to hotstart learners with previously fitted models. See also
+<a href="https://mlr3.mlr-org.com/reference/HotstartStack.html" class="external-link">mlr3::HotstartStack</a>. The learner must support hotstarting. Sets
+<code>store_models = TRUE</code>.</p></dd>
+
+
+<dt>keep_hotstart_stack</dt>
+<dd><p>(<code>logical(1)</code>)<br>
+If <code>TRUE</code>, <a href="https://mlr3.mlr-org.com/reference/HotstartStack.html" class="external-link">mlr3::HotstartStack</a> is kept in <code>$objective$hotstart_stack</code>
+after tuning.</p></dd>
+
+
+<dt>evaluate_default</dt>
+<dd><p>(<code>logical(1)</code>)<br>
+If <code>TRUE</code>, learner is evaluated with hyperparameters set to their default
+values at the start of the optimization.</p></dd>
 
 
 <dt>callbacks</dt>
