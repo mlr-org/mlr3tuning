@@ -63,6 +63,6 @@ auto_tuner = function(method, learner, resampling, measure = NULL, term_evals = 
     callbacks = callbacks,
     allow_hotstart = allow_hotstart,
     keep_hotstart_stack = keep_hotstart_stack,
-    horstart_limit = hotstart_limit,
+    hotstart_limit = hotstart_limit,
     evaluate_default = evaluate_default)
 }
