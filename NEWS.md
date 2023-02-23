@@ -1,5 +1,7 @@
 # mlr3tuning (development version)
 
+* fix: Add `allow_hotstarting`, `keep_hotstart_stack` and `keep_models` flags to `AutoTuner` and `auto_tuner()`.
+
 # mlr3tuning 0.17.2
 
 * feat: `AutoTuner` accepts instantiated resamplings now.
