@@ -17,6 +17,8 @@
 #' During `$predict()` the `AutoTuner` just calls the predict method of the wrapped (inner) learner.
 #' A set timeout is disabled while fitting the final model.
 #'
+#' @inheritSection TuningInstanceSingleCrit Default Measures
+#'
 #' @section Resources:
 #' * [book chapter](https://mlr3book.mlr-org.com/optimization.html#sec-autotuner) on automatic tuning.
 #' * [book chapter](https://mlr3book.mlr-org.com/optimization.html#sec-nested-resampling) on nested resampling.

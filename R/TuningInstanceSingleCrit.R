@@ -14,6 +14,20 @@
 #' If the available budget is exhausted, an exception is raised, and no further evaluations can be performed from this point on.
 #' The tuner is also supposed to store its final result, consisting of a  selected hyperparameter configuration and associated estimated performance values, by calling the method `instance$assign_result`.
 #'
+#' @section Default Measures:
+#' If no measure is passed, the default measure is used.
+#' The default measure depends on the task type.
+#'
+#' | Task           | Default Measure     | Package               |
+#' |----------------|---------------------|-----------------------|
+#' | `"classif"`    | `"classif.ce"`      | \CRANpkg{mlr3}        |
+#' | `"regr"`       | `"regr.mse"`        | \CRANpkg{mlr3}        |
+#' | `"surv"`       | `"surv.cindex"`     | \CRANpkg{mlr3proba}   |
+#' | `"dens"`       | `"dens.logloss"`    | \CRANpkg{mlr3proba}   |
+#' | `"classif_st"` | `"classif.ce"`      | \CRANpkg{mlr3spatial} |
+#' | `"regr_st"`    | `"regr.mse"`        | \CRANpkg{mlr3spatial} |
+#' | `"clust"`      | `"clust.dunn"`      | \CRANpkg{mlr3cluster} |
+#'
 #' @inheritSection ArchiveTuning Analysis
 #'
 #' @section Resources:

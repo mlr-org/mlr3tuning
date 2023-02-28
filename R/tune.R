@@ -17,6 +17,7 @@
 #' If no termination criterion is needed, set `term_evals`, `term_time` and `terminator` to `NULL`.
 #' The search space is created from [paradox::TuneToken] or is supplied by `search_space`.
 #'
+#' @inheritSection TuningInstanceSingleCrit Default Measures
 #' @inheritSection TuningInstanceSingleCrit Resources
 #' @inheritSection ArchiveTuning Analysis
 #'
