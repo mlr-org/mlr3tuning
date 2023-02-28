@@ -17,6 +17,8 @@
 #' During `$predict()` the `AutoTuner` just calls the predict method of the wrapped (inner) learner.
 #' A set timeout is disabled while fitting the final model.
 #'
+#' @inheritSection TuningInstanceSingleCrit Default Measures
+#'
 #' @section Resources:
 #' There are several sections about hyperparameter optimization in the [mlr3book](https://mlr3book.mlr-org.com).
 #'

@@ -35,6 +35,8 @@
 #'
 #' The [gallery](https://mlr-org.com/gallery-all-optimization.html) features a collection of case studies and demos about optimization.
 #'
+#'  - Use the [Hyperband](https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/) optimizer with different budget parameters.
+#'
 #' @section Extension Packages:
 #' Additional tuners are provided by the following packages.
 #'

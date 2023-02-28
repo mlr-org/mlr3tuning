@@ -41,6 +41,21 @@ For this reason, the inner resampling should be not instantiated.
 If an instantiated resampling is passed, the \link{AutoTuner} fails when a row id of the inner resampling is not present in the training set of the outer resampling.
 }
 
+\section{Default Measures}{
+
+If no measure is passed, the default measure is used.
+The default measure depends on the task type.\tabular{lll}{
+   Task \tab Default Measure \tab Package \cr
+   \code{"classif"} \tab \code{"classif.ce"} \tab \CRANpkg{mlr3} \cr
+   \code{"regr"} \tab \code{"regr.mse"} \tab \CRANpkg{mlr3} \cr
+   \code{"surv"} \tab \code{"surv.cindex"} \tab \CRANpkg{mlr3proba} \cr
+   \code{"dens"} \tab \code{"dens.logloss"} \tab \CRANpkg{mlr3proba} \cr
+   \code{"classif_st"} \tab \code{"classif.ce"} \tab \CRANpkg{mlr3spatial} \cr
+   \code{"regr_st"} \tab \code{"regr.mse"} \tab \CRANpkg{mlr3spatial} \cr
+   \code{"clust"} \tab \code{"clust.dunn"} \tab \CRANpkg{mlr3cluster} \cr
+}
+}
+
 \examples{
 # Automatic Tuning
 

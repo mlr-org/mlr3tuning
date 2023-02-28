@@ -17,6 +17,21 @@ Before a batch is evaluated, the \link[bbotk:Terminator]{bbotk::Terminator} is q
 If the available budget is exhausted, an exception is raised, and no further evaluations can be performed from this point on.
 The tuner is also supposed to store its final result, consisting of a  selected hyperparameter configuration and associated estimated performance values, by calling the method \code{instance$assign_result}.
 }
+\section{Default Measures}{
+
+If no measure is passed, the default measure is used.
+The default measure depends on the task type.\tabular{lll}{
+   Task \tab Default Measure \tab Package \cr
+   \code{"classif"} \tab \code{"classif.ce"} \tab \CRANpkg{mlr3} \cr
+   \code{"regr"} \tab \code{"regr.mse"} \tab \CRANpkg{mlr3} \cr
+   \code{"surv"} \tab \code{"surv.cindex"} \tab \CRANpkg{mlr3proba} \cr
+   \code{"dens"} \tab \code{"dens.logloss"} \tab \CRANpkg{mlr3proba} \cr
+   \code{"classif_st"} \tab \code{"classif.ce"} \tab \CRANpkg{mlr3spatial} \cr
+   \code{"regr_st"} \tab \code{"regr.mse"} \tab \CRANpkg{mlr3spatial} \cr
+   \code{"clust"} \tab \code{"clust.dunn"} \tab \CRANpkg{mlr3cluster} \cr
+}
+}
+
 \section{Resources}{
 
 There are several sections about hyperparameter optimization in the \href{https://mlr3book.mlr-org.com}{mlr3book}.
@@ -29,9 +44,10 @@ There are several sections about hyperparameter optimization in the \href{https:
 The \href{https://mlr-org.com/gallery-all-optimization.html}{gallery} features a collection of case studies and demos about optimization.
 \itemize{
 \item Learn more advanced methods with the \href{https://mlr-org.com/gallery/series/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/}{practical tuning series}.
-\item Tune an XGBoost model with \href{https://mlr-org.com/gallery/optimization/2022-11-04-early-stopping-with-xgboost/}{early stopping}.
+\item Simultaneously optimize hyperparameters and use \href{https://mlr-org.com/gallery/optimization/2022-11-04-early-stopping-with-xgboost/}{early stopping} with XGBoost.
 \item Make us of proven \href{https://mlr-org.com/gallery/optimization/2021-07-06-introduction-to-mlr3tuningspaces/}{search space}.
 \item Learn about \href{https://mlr-org.com/gallery/optimization/2023-01-16-hotstart/}{hotstarting} models.
+\item Run the \href{https://mlr-org.com/gallery/optimization/2023-01-31-default-configuration/}{default hyperparameter configuration} of learners as a baseline.
 }
 }
 

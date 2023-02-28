@@ -48,12 +48,13 @@ There are several sections about hyperparameter optimization in the [mlr3book](h
 * [Tune](https://mlr3book.mlr-org.com/optimization.html#sec-tuning-instance) a simple classification tree on the Palmer Penguins data set.
 * Learn about [tuning spaces](https://mlr3book.mlr-org.com/technical.html#sec-tuning-space).
 * Estimate the model performance with [nested resampling](https://mlr3book.mlr-org.com/optimization.html#sec-model-performance).
+* Learn about [multi-objective optimization](https://mlr3book.mlr-org.com/optimization.html#sec-multi-metrics-tuning).
 
 The [gallery](https://mlr-org.com/gallery-all-optimization.html) features a collection of case studies and demos about optimization.
 
 * Learn more advanced methods with the [Practical Tuning Series](https://mlr-org.com/gallery/series/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/).
 * Optimize an rpart classification tree with only a [few lines of code](https://mlr-org.com/gallery/optimization/2022-11-10-hyperparameter-optimization-on-the-palmer-penguins/).
-* Simultaneously optimize hyperparameters and use [early stopping](https://mlr-org.com/gallery/optimization/2022-11-04-early-stopping-with-xgboost/) with XGBoost. Tune an XGBoost model with.
+* Simultaneously optimize hyperparameters and use [early stopping](https://mlr-org.com/gallery/optimization/2022-11-04-early-stopping-with-xgboost/) with XGBoost.
 * Make us of proven [search space](https://mlr-org.com/gallery/optimization/2021-07-06-introduction-to-mlr3tuningspaces/).
 * Learn about [hotstarting](https://mlr-org.com/gallery/optimization/2023-01-16-hotstart/) models.
 * Run the [default hyperparameter configuration](https://mlr-org.com/gallery/optimization/2023-01-31-default-configuration/) of learners as a baseline.

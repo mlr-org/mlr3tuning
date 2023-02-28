@@ -55,6 +55,8 @@ There are several sections about hyperparameter optimization in the
     spaces](https://mlr3book.mlr-org.com/technical.html#sec-tuning-space).
   - Estimate the model performance with [nested
     resampling](https://mlr3book.mlr-org.com/optimization.html#sec-model-performance).
+  - Learn about [multi-objective
+    optimization](https://mlr3book.mlr-org.com/optimization.html#sec-multi-metrics-tuning).
 
 The [gallery](https://mlr-org.com/gallery-all-optimization.html)
 features a collection of case studies and demos about optimization.
@@ -65,7 +67,7 @@ features a collection of case studies and demos about optimization.
     code](https://mlr-org.com/gallery/optimization/2022-11-10-hyperparameter-optimization-on-the-palmer-penguins/).
   - Simultaneously optimize hyperparameters and use [early
     stopping](https://mlr-org.com/gallery/optimization/2022-11-04-early-stopping-with-xgboost/)
-    with XGBoost. Tune an XGBoost model with.
+    with XGBoost.
   - Make us of proven [search
     space](https://mlr-org.com/gallery/optimization/2021-07-06-introduction-to-mlr3tuningspaces/).
   - Learn about

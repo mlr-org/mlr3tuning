@@ -92,9 +92,10 @@ There are several sections about hyperparameter optimization in the \href{https:
 The \href{https://mlr-org.com/gallery-all-optimization.html}{gallery} features a collection of case studies and demos about optimization.
 \itemize{
 \item Learn more advanced methods with the \href{https://mlr-org.com/gallery/series/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/}{practical tuning series}.
-\item Tune an XGBoost model with \href{https://mlr-org.com/gallery/optimization/2022-11-04-early-stopping-with-xgboost/}{early stopping}.
+\item Simultaneously optimize hyperparameters and use \href{https://mlr-org.com/gallery/optimization/2022-11-04-early-stopping-with-xgboost/}{early stopping} with XGBoost.
 \item Make us of proven \href{https://mlr-org.com/gallery/optimization/2021-07-06-introduction-to-mlr3tuningspaces/}{search space}.
 \item Learn about \href{https://mlr-org.com/gallery/optimization/2023-01-16-hotstart/}{hotstarting} models.
+\item Run the \href{https://mlr-org.com/gallery/optimization/2023-01-31-default-configuration/}{default hyperparameter configuration} of learners as a baseline.
 }
 }
 

@@ -1,6 +1,7 @@
 #' @title Function for Automatic Tuning
 #'
 #' @inherit AutoTuner description
+#' @inheritSection TuningInstanceSingleCrit Default Measures
 #' @inheritSection AutoTuner Resources
 #' @inherit AutoTuner details
 #' @inheritSection AutoTuner Nested Resampling

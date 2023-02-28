@@ -30,6 +30,8 @@
 #'  - Make us of proven [search space](https://mlr-org.com/gallery/optimization/2021-07-06-introduction-to-mlr3tuningspaces/).
 #'  - Learn about [hotstarting](https://mlr-org.com/gallery/optimization/2023-01-16-hotstart/) models.
 #'
+#' @inheritSection TuningInstanceSingleCrit Default Measures
+#'
 #' @inheritSection ArchiveTuning Analysis
 #'
 #' @param method (`character(1)` | [Tuner])\cr
