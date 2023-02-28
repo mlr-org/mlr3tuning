@@ -94,6 +94,12 @@ If the available budget is exhausted, an exception is raised, and no further eva
 The tuner is also supposed to store its final result, consisting of a  selected hyperparameter configuration and associated estimated performance values, by calling the method <code>instance$assign_result</code>.</p>
     </div>
     <div class="section level2">
+    <h2 id="default-measures">Default Measures<a class="anchor" aria-label="anchor" href="#default-measures"></a></h2>
+    
+
+<p>If no measure is passed, the default measure is used.
+The default measure depends on the task type.</p><table class="table table"><tr><td>Task</td><td>Default Measure</td><td>Package</td></tr><tr><td><code>"classif"</code></td><td><code>"classif.ce"</code></td><td><a href="https://CRAN.R-project.org/package=mlr3" class="external-link"><span class="pkg">mlr3</span></a></td></tr><tr><td><code>"regr"</code></td><td><code>"regr.mse"</code></td><td><a href="https://CRAN.R-project.org/package=mlr3" class="external-link"><span class="pkg">mlr3</span></a></td></tr><tr><td><code>"surv"</code></td><td><code>"surv.cindex"</code></td><td><a href="https://CRAN.R-project.org/package=mlr3proba" class="external-link"><span class="pkg">mlr3proba</span></a></td></tr><tr><td><code>"dens"</code></td><td><code>"dens.logloss"</code></td><td><a href="https://CRAN.R-project.org/package=mlr3proba" class="external-link"><span class="pkg">mlr3proba</span></a></td></tr><tr><td><code>"classif_st"</code></td><td><code>"classif.ce"</code></td><td><a href="https://CRAN.R-project.org/package=mlr3spatial" class="external-link"><span class="pkg">mlr3spatial</span></a></td></tr><tr><td><code>"regr_st"</code></td><td><code>"regr.mse"</code></td><td><a href="https://CRAN.R-project.org/package=mlr3spatial" class="external-link"><span class="pkg">mlr3spatial</span></a></td></tr><tr><td><code>"clust"</code></td><td><code>"clust.dunn"</code></td><td><a href="https://CRAN.R-project.org/package=mlr3cluster" class="external-link"><span class="pkg">mlr3cluster</span></a></td></tr></table></div>
+    <div class="section level2">
     <h2 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a></h2>
     
 
@@ -324,7 +330,7 @@ Fixed parameter values of the learner that are neither part of the</p></dd>
 <span class="r-in"><span><span class="co"># Run tuning</span></span></span>
 <span class="r-in"><span><span class="va">tuner</span><span class="op">$</span><span class="fu">optimize</span><span class="op">(</span><span class="va">instance</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp learner_param_vals  x_domain classif.ce</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -2.340165          &lt;list[2]&gt; &lt;list[1]&gt; 0.05532672</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -5.222182          &lt;list[2]&gt; &lt;list[1]&gt; 0.05227562</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Set optimal hyperparameter configuration to learner</span></span></span>
 <span class="r-in"><span><span class="va">learner</span><span class="op">$</span><span class="va">param_set</span><span class="op">$</span><span class="va">values</span> <span class="op">=</span> <span class="va">instance</span><span class="op">$</span><span class="va">result_learner_param_vals</span></span></span>
@@ -335,10 +341,10 @@ Fixed parameter values of the learner that are neither part of the</p></dd>
 <span class="r-in"><span><span class="co"># Inspect all evaluated configurations</span></span></span>
 <span class="r-in"><span><span class="fu">as.data.table</span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp classif.ce x_domain_cp runtime_learners           timestamp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -2.340165 0.05532672  0.09631175            0.025 2023-02-23 14:56:08</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -5.953083 0.05822527  0.00259782            0.025 2023-02-23 14:56:08</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -5.255319 0.05822527  0.00521968            0.023 2023-02-23 14:56:09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -3.429809 0.05532672  0.03239312            0.025 2023-02-23 14:56:09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -2.934619 0.06099669 0.053150967            0.025 2023-02-28 11:14:12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -4.743014 0.05807272 0.008712350            0.024 2023-02-28 11:14:12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -5.222182 0.05227562 0.005395544            0.023 2023-02-28 11:14:13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -3.404870 0.06099669 0.033211123            0.023 2023-02-28 11:14:13</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    batch_nr warnings errors      resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:        1        0      0 &lt;ResampleResult[21]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:        1        0      0 &lt;ResampleResult[21]&gt;</span>

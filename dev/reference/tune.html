@@ -233,6 +233,12 @@ If no termination criterion is needed, set <code>term_evals</code>, <code>term_t
 The search space is created from <a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">paradox::TuneToken</a> or is supplied by <code>search_space</code>.</p>
     </div>
     <div class="section level2">
+    <h2 id="default-measures">Default Measures<a class="anchor" aria-label="anchor" href="#default-measures"></a></h2>
+    
+
+<p>If no measure is passed, the default measure is used.
+The default measure depends on the task type.</p><table class="table table"><tr><td>Task</td><td>Default Measure</td><td>Package</td></tr><tr><td><code>"classif"</code></td><td><code>"classif.ce"</code></td><td><a href="https://CRAN.R-project.org/package=mlr3" class="external-link"><span class="pkg">mlr3</span></a></td></tr><tr><td><code>"regr"</code></td><td><code>"regr.mse"</code></td><td><a href="https://CRAN.R-project.org/package=mlr3" class="external-link"><span class="pkg">mlr3</span></a></td></tr><tr><td><code>"surv"</code></td><td><code>"surv.cindex"</code></td><td><a href="https://CRAN.R-project.org/package=mlr3proba" class="external-link"><span class="pkg">mlr3proba</span></a></td></tr><tr><td><code>"dens"</code></td><td><code>"dens.logloss"</code></td><td><a href="https://CRAN.R-project.org/package=mlr3proba" class="external-link"><span class="pkg">mlr3proba</span></a></td></tr><tr><td><code>"classif_st"</code></td><td><code>"classif.ce"</code></td><td><a href="https://CRAN.R-project.org/package=mlr3spatial" class="external-link"><span class="pkg">mlr3spatial</span></a></td></tr><tr><td><code>"regr_st"</code></td><td><code>"regr.mse"</code></td><td><a href="https://CRAN.R-project.org/package=mlr3spatial" class="external-link"><span class="pkg">mlr3spatial</span></a></td></tr><tr><td><code>"clust"</code></td><td><code>"clust.dunn"</code></td><td><a href="https://CRAN.R-project.org/package=mlr3cluster" class="external-link"><span class="pkg">mlr3cluster</span></a></td></tr></table></div>
+    <div class="section level2">
     <h2 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a></h2>
     
 
@@ -283,11 +289,11 @@ Alternatively, measures can be supplied to <code><a href="https://Rdatatable.git
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Inspect all evaluated configurations</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           cp classif.ce  x_domain_cp runtime_learners           timestamp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -8.784787  0.2539062 0.0001530436            0.013 2023-02-23 14:56:37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -2.873461  0.2187500 0.0565030127            0.012 2023-02-23 14:56:37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -4.106099  0.2187500 0.0164719049            0.013 2023-02-23 14:56:37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -8.127686  0.2539062 0.0002952505            0.014 2023-02-23 14:56:37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           cp classif.ce x_domain_cp runtime_learners           timestamp</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -6.208332   0.250000 0.002012592            0.011 2023-02-28 11:14:40</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -2.724494   0.234375 0.065579385            0.011 2023-02-28 11:14:40</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -6.675748   0.250000 0.001261128            0.012 2023-02-28 11:14:40</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -3.201154   0.234375 0.040715194            0.012 2023-02-28 11:14:40</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    batch_nr warnings errors      resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:        1        0      0 &lt;ResampleResult[21]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:        1        0      0 &lt;ResampleResult[21]&gt;</span>

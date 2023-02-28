@@ -225,6 +225,12 @@ The respective model is available via field <code>at$learner$model</code>.</p></
 A set timeout is disabled while fitting the final model.</p>
     </div>
     <div class="section level2">
+    <h2 id="default-measures">Default Measures<a class="anchor" aria-label="anchor" href="#default-measures"></a></h2>
+    
+
+<p>If no measure is passed, the default measure is used.
+The default measure depends on the task type.</p><table class="table table"><tr><td>Task</td><td>Default Measure</td><td>Package</td></tr><tr><td><code>"classif"</code></td><td><code>"classif.ce"</code></td><td><a href="https://CRAN.R-project.org/package=mlr3" class="external-link"><span class="pkg">mlr3</span></a></td></tr><tr><td><code>"regr"</code></td><td><code>"regr.mse"</code></td><td><a href="https://CRAN.R-project.org/package=mlr3" class="external-link"><span class="pkg">mlr3</span></a></td></tr><tr><td><code>"surv"</code></td><td><code>"surv.cindex"</code></td><td><a href="https://CRAN.R-project.org/package=mlr3proba" class="external-link"><span class="pkg">mlr3proba</span></a></td></tr><tr><td><code>"dens"</code></td><td><code>"dens.logloss"</code></td><td><a href="https://CRAN.R-project.org/package=mlr3proba" class="external-link"><span class="pkg">mlr3proba</span></a></td></tr><tr><td><code>"classif_st"</code></td><td><code>"classif.ce"</code></td><td><a href="https://CRAN.R-project.org/package=mlr3spatial" class="external-link"><span class="pkg">mlr3spatial</span></a></td></tr><tr><td><code>"regr_st"</code></td><td><code>"regr.mse"</code></td><td><a href="https://CRAN.R-project.org/package=mlr3spatial" class="external-link"><span class="pkg">mlr3spatial</span></a></td></tr><tr><td><code>"clust"</code></td><td><code>"clust.dunn"</code></td><td><a href="https://CRAN.R-project.org/package=mlr3cluster" class="external-link"><span class="pkg">mlr3cluster</span></a></td></tr></table></div>
+    <div class="section level2">
     <h2 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a></h2>
     
 
