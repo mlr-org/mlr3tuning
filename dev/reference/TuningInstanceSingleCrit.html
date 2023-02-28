@@ -103,10 +103,23 @@ The default measure depends on the task type.</p><table class="table table"><tr>
     <h2 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a></h2>
     
 
-<ul><li><p><a href="https://mlr3book.mlr-org.com/optimization.html" class="external-link">book chapter</a> on hyperparameter optimization.</p></li>
-<li><p><a href="https://mlr3book.mlr-org.com/technical.html#sec-tuning-space" class="external-link">book chapter</a> on tuning spaces.</p></li>
-<li><p><a href="https://mlr-org.com/gallery/series/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/" class="external-link">gallery post</a> on tuning an svm.</p></li>
-<li><p><a href="https://mlr3tuningspaces.mlr-org.com/" class="external-link">mlr3tuningspaces</a> extension package.</p></li>
+<p>There are several sections about hyperparameter optimization in the <a href="https://mlr3book.mlr-org.com" class="external-link">mlr3book</a>.</p><ul><li><p>Getting started with <a href="https://mlr3book.mlr-org.com/optimization.html" class="external-link">hyperparameter optimization</a>.</p></li>
+<li><p><a href="https://mlr3book.mlr-org.com/optimization.html#sec-tuning-instance" class="external-link">Tune</a> a simple classification tree on the Palmer Penguins data set.</p></li>
+<li><p>Learn about <a href="https://mlr3book.mlr-org.com/technical.html#sec-tuning-space" class="external-link">tuning spaces</a>.</p></li>
+</ul><p>The <a href="https://mlr-org.com/gallery-all-optimization.html" class="external-link">gallery</a> features a collection of case studies and demos about optimization.</p><ul><li><p>Learn more advanced methods with the <a href="https://mlr-org.com/gallery/series/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/" class="external-link">practical tuning series</a>.</p></li>
+<li><p>Simultaneously optimize hyperparameters and use <a href="https://mlr-org.com/gallery/optimization/2022-11-04-early-stopping-with-xgboost/" class="external-link">early stopping</a> with XGBoost.</p></li>
+<li><p>Make us of proven <a href="https://mlr-org.com/gallery/optimization/2021-07-06-introduction-to-mlr3tuningspaces/" class="external-link">search space</a>.</p></li>
+<li><p>Learn about <a href="https://mlr-org.com/gallery/optimization/2023-01-16-hotstart/" class="external-link">hotstarting</a> models.</p></li>
+<li><p>Run the <a href="https://mlr-org.com/gallery/optimization/2023-01-31-default-configuration/" class="external-link">default hyperparameter configuration</a> of learners as a baseline.</p></li>
+</ul></div>
+    <div class="section level2">
+    <h2 id="extension-packages">Extension Packages<a class="anchor" aria-label="anchor" href="#extension-packages"></a></h2>
+    
+
+
+<p>mlr3tuning is extended by the following packages.</p><ul><li><p><a href="https://github.com/mlr-org/mlr3tuningspaces" class="external-link">mlr3tuningspaces</a> is a collection of search spaces from scientific articles for commonly used learners.</p></li>
+<li><p><a href="https://github.com/mlr-org/mlr3hyperband" class="external-link">mlr3hyperband</a> adds the Hyperband and Successive Halving algorithm.</p></li>
+<li><p><a href="https://github.com/mlr-org/mlr3mbo" class="external-link">mlr3mbo</a> adds Bayesian optimization methods.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="analysis">Analysis<a class="anchor" aria-label="anchor" href="#analysis"></a></h2>
@@ -330,7 +343,7 @@ Fixed parameter values of the learner that are neither part of the</p></dd>
 <span class="r-in"><span><span class="co"># Run tuning</span></span></span>
 <span class="r-in"><span><span class="va">tuner</span><span class="op">$</span><span class="fu">optimize</span><span class="op">(</span><span class="va">instance</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp learner_param_vals  x_domain classif.ce</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -5.222182          &lt;list[2]&gt; &lt;list[1]&gt; 0.05227562</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -7.704512          &lt;list[2]&gt; &lt;list[1]&gt; 0.05222476</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Set optimal hyperparameter configuration to learner</span></span></span>
 <span class="r-in"><span><span class="va">learner</span><span class="op">$</span><span class="va">param_set</span><span class="op">$</span><span class="va">values</span> <span class="op">=</span> <span class="va">instance</span><span class="op">$</span><span class="va">result_learner_param_vals</span></span></span>
@@ -340,11 +353,11 @@ Fixed parameter values of the learner that are neither part of the</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Inspect all evaluated configurations</span></span></span>
 <span class="r-in"><span><span class="fu">as.data.table</span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           cp classif.ce x_domain_cp runtime_learners           timestamp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -2.934619 0.06099669 0.053150967            0.025 2023-02-28 11:14:12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -4.743014 0.05807272 0.008712350            0.024 2023-02-28 11:14:12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -5.222182 0.05227562 0.005395544            0.023 2023-02-28 11:14:13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -3.404870 0.06099669 0.033211123            0.023 2023-02-28 11:14:13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           cp classif.ce  x_domain_cp runtime_learners           timestamp</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -7.704512 0.05222476 0.0004507885            0.026 2023-02-28 11:50:45</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -6.083026 0.05222476 0.0022812634            0.021 2023-02-28 11:50:45</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -8.179659 0.05222476 0.0002802975            0.025 2023-02-28 11:50:45</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -2.967755 0.05807272 0.0514185904            0.023 2023-02-28 11:50:45</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    batch_nr warnings errors      resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:        1        0      0 &lt;ResampleResult[21]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:        1        0      0 &lt;ResampleResult[21]&gt;</span>
