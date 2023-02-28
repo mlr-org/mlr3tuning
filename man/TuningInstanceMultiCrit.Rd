@@ -19,12 +19,12 @@ The tuner is also supposed to store its final result, consisting of a  selected 
 }
 \section{Resources}{
 
+There are several sections about hyperparameter optimization in the \href{https://mlr3book.mlr-org.com}{mlr3book}.
 \itemize{
-\item \href{https://mlr3book.mlr-org.com/optimization.html}{book chapter} on hyperparameter optimization.
-\item \href{https://mlr3book.mlr-org.com/technical.html#sec-tuning-space}{book chapter} on tuning spaces.
-\item \href{https://mlr-org.com/gallery/series/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/}{gallery post} on tuning an svm.
-\item \href{https://mlr3tuningspaces.mlr-org.com/}{mlr3tuningspaces} extension package.
+\item Learn about \href{https://mlr3book.mlr-org.com/optimization.html#sec-multi-metrics-tuning}{multi-objective optimization}.
 }
+
+The \href{https://mlr-org.com/gallery-all-optimization.html}{gallery} features a collection of case studies and demos about optimization.
 }
 
 \section{Analysis}{
