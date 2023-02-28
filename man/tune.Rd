@@ -111,6 +111,23 @@ For other \link[=Terminator]{Terminators}, pass one with \code{terminator}.
 If no termination criterion is needed, set \code{term_evals}, \code{term_time} and \code{terminator} to \code{NULL}.
 The search space is created from \link[paradox:to_tune]{paradox::TuneToken} or is supplied by \code{search_space}.
 }
+\section{Resources}{
+
+There are several sections about hyperparameter optimization in the \href{https://mlr3book.mlr-org.com}{mlr3book}.
+\itemize{
+\item Simplify tuning with the \href{https://mlr3book.mlr-org.com/optimization.html#sec-simplified-tuning}{\code{tune()}} function.
+\item Learn about \href{https://mlr3book.mlr-org.com/technical.html#sec-tuning-space}{tuning spaces}.
+}
+
+The \href{https://mlr-org.com/gallery-all-optimization.html}{gallery} features a collection of case studies and demos about optimization.
+\itemize{
+\item Optimize an rpart classification tree with only a \href{https://mlr-org.com/gallery/optimization/2022-11-10-hyperparameter-optimization-on-the-palmer-penguins/}{few lines of code}.
+\item Tune an XGBoost model with \href{https://mlr-org.com/gallery/optimization/2022-11-04-early-stopping-with-xgboost/}{early stopping}.
+\item Make us of proven \href{https://mlr-org.com/gallery/optimization/2021-07-06-introduction-to-mlr3tuningspaces/}{search space}.
+\item Learn about \href{https://mlr-org.com/gallery/optimization/2023-01-16-hotstart/}{hotstarting} models.
+}
+}
+
 \section{Default Measures}{
 
 If no measure is passed, the default measure is used.
@@ -123,16 +140,6 @@ The default measure depends on the task type.\tabular{lll}{
    \code{"classif_st"} \tab \code{"classif.ce"} \tab \CRANpkg{mlr3spatial} \cr
    \code{"regr_st"} \tab \code{"regr.mse"} \tab \CRANpkg{mlr3spatial} \cr
    \code{"clust"} \tab \code{"clust.dunn"} \tab \CRANpkg{mlr3cluster} \cr
-}
-}
-
-\section{Resources}{
-
-\itemize{
-\item \href{https://mlr3book.mlr-org.com/optimization.html}{book chapter} on hyperparameter optimization.
-\item \href{https://mlr3book.mlr-org.com/technical.html#sec-tuning-space}{book chapter} on tuning spaces.
-\item \href{https://mlr-org.com/gallery/series/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/}{gallery post} on tuning an svm.
-\item \href{https://mlr3tuningspaces.mlr-org.com/}{mlr3tuningspaces} extension package.
 }
 }
 

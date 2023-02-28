@@ -7,7 +7,14 @@
 #' The function [ti()] creates a [TuningInstanceMultiCrit] and the function [tune()] creates an instance internally.
 #'
 #' @inherit TuningInstanceSingleCrit details
-#' @inheritSection TuningInstanceSingleCrit Resources
+#'
+#' @section Resources:
+#' There are several sections about hyperparameter optimization in the [mlr3book](https://mlr3book.mlr-org.com).
+#'
+#'  - Learn about [multi-objective optimization](https://mlr3book.mlr-org.com/optimization.html#sec-multi-metrics-tuning).
+#'
+#' The [gallery](https://mlr-org.com/gallery-all-optimization.html) features a collection of case studies and demos about optimization.
+#'
 #' @inheritSection ArchiveTuning Analysis
 #'
 #' @template param_task

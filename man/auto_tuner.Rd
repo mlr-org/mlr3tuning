@@ -130,11 +130,13 @@ The default measure depends on the task type.\tabular{lll}{
 
 \section{Resources}{
 
+There are several sections about hyperparameter optimization in the \href{https://mlr3book.mlr-org.com}{mlr3book}.
 \itemize{
-\item \href{https://mlr3book.mlr-org.com/optimization.html#sec-autotuner}{book chapter} on automatic tuning.
-\item \href{https://mlr3book.mlr-org.com/optimization.html#sec-nested-resampling}{book chapter} on nested resampling.
-\item \href{https://mlr-org.com/gallery/series/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/}{gallery post} on tuning and nested resampling.
+\item \href{https://mlr3book.mlr-org.com/optimization.html#sec-autotuner}{Automate} the tuning.
+\item Estimate the model performance with \href{https://mlr3book.mlr-org.com/optimization.html#sec-model-performance}{nested resampling}.
 }
+
+The \href{https://mlr-org.com/gallery-all-optimization.html}{gallery} features a collection of case studies and demos about optimization.
 }
 
 \section{Nested Resampling}{
