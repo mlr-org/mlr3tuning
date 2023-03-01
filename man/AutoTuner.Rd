@@ -68,7 +68,7 @@ learner = lrn("classif.rpart",
 
 # create auto tuner
 at = auto_tuner(
-  method = tnr("random_search"),
+  tuner = tnr("random_search"),
   learner = learner,
   resampling = rsmp ("holdout"),
   measure = msr("classif.ce"),
@@ -96,7 +96,7 @@ at$tuning_instance
 # Nested Resampling
 
 at = auto_tuner(
-  method = tnr("random_search"),
+  tuner = tnr("random_search"),
   learner = learner,
   resampling = rsmp ("holdout"),
   measure = msr("classif.ce"),
@@ -184,11 +184,11 @@ Hash (unique identifier) for this object.}
 Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AutoTuner$new(
+  tuner,
   learner,
   resampling,
   measure = NULL,
   terminator,
-  tuner,
   search_space = NULL,
   store_tuning_instance = TRUE,
   store_benchmark_result = TRUE,
@@ -204,6 +204,9 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{tuner}}{(\link{Tuner})\cr
+Optimization algorithm.}
+
 \item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner})\cr
 Learner to tune.}
 
@@ -219,9 +222,6 @@ Measure to optimize. If \code{NULL}, default measure is used.}
 
 \item{\code{terminator}}{(\link{Terminator})\cr
 Stop criterion of the tuning process.}
-
-\item{\code{tuner}}{(\link{Tuner})\cr
-Optimization algorithm.}
 
 \item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
 Hyperparameter search space. If \code{NULL} (default), the search space is

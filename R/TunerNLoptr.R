@@ -38,7 +38,7 @@
 #'
 #' # run hyperparameter tuning on the Palmer Penguins data set
 #' instance = tune(
-#'   method = tnr("nloptr", algorithm = "NLOPT_LN_BOBYQA"),
+#'   tuner = tnr("nloptr", algorithm = "NLOPT_LN_BOBYQA"),
 #'   task = tsk("penguins"),
 #'   learner = learner,
 #'   resampling = rsmp("holdout"),

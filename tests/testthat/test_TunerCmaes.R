@@ -9,7 +9,7 @@ expect_tuner(tnr("cmaes"))
   )
 
   instance = tune(
-    method = "cmaes",
+    tuner = tnr("cmaes"),
     task = tsk("pima"),
     learner = learner,
     resampling = rsmp("holdout"),

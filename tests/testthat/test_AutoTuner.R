@@ -32,7 +32,7 @@ test_that("AutoTuner / resample", {
   param_set = TEST_MAKE_PS1()
   te = trm("evals", n_evals = inner_evals)
   tuner = tnr("grid_search", resolution = 3)
-  at = AutoTuner$new(lrn("classif.rpart", predict_type = "prob"), r_inner, ms, te, tuner, param_set)
+  at = AutoTuner$new(tuner, lrn("classif.rpart", predict_type = "prob"), r_inner, ms, te, param_set)
 
   expect_null(at$tuning_instance)
   expect_equal(at$predict_type, "prob")
@@ -85,7 +85,7 @@ test_that("AT training does not change learner in instance args", {
   # https://github.com/mlr-org/mlr3/issues/428
   task = tsk("iris")
   ps = TEST_MAKE_PS1()
-  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), trm("evals", n_evals = 3), TunerRandomSearch$new(), ps)
+  at = AutoTuner$new(TunerRandomSearch$new(), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), trm("evals", n_evals = 3), ps)
   expect_equal(at$instance_args$learner$param_set$values, list(xval = 0))
   at$train(task)
   expect_equal(at$instance_args$learner$param_set$values, list(xval = 0))
@@ -276,7 +276,7 @@ test_that("AutoTuner get_base_learner method works", {
   # simple learner
   learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
   at = auto_tuner(
-    method = "random_search",
+    tuner = tnr("random_search"),
     learner = learner,
     resampling = rsmp("holdout"),
     measure = msr("classif.ce"),
@@ -294,7 +294,7 @@ test_that("AutoTuner get_base_learner method works", {
   learner$id = "graphlearner.classif.rpart"
 
   at = auto_tuner(
-    method = "random_search",
+    tuner = tnr("random_search"),
     learner = learner,
     resampling = rsmp("holdout"),
     measure = msr("classif.ce"),
@@ -353,12 +353,11 @@ test_that("AutoTuner hash works #647 in mlr3", {
 
 test_that("AutoTuner works with empty search space", {
   at = auto_tuner(
-    method = "random_search",
+    tuner = tnr("random_search", batch_size = 5),
     learner = lrn("classif.rpart"),
     resampling = rsmp("cv", folds = 3),
     measure = msr("classif.ce"),
-    term_evals = 10,
-    batch_size = 5
+    term_evals = 10
   )
 
   at$train(tsk("pima"))
@@ -370,12 +369,11 @@ test_that("AutoTuner works with empty search space", {
   learner$param_set$values$xval = NULL
 
   at = auto_tuner(
-    method = "random_search",
+    tuner = tnr("random_search", batch_size = 5),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
     measure = msr("classif.ce"),
-    term_evals = 10,
-    batch_size = 5
+    term_evals = 10
   )
 
   at$train(tsk("pima"))
@@ -385,12 +383,11 @@ test_that("AutoTuner works with empty search space", {
 
 test_that("AutoTuner importance method works", {
   at = auto_tuner(
-    method = "random_search",
+    tuner = tnr("random_search", batch_size = 2),
     learner = lrn("classif.rpart"),
     resampling = rsmp("cv", folds = 3),
     measure = msr("classif.ce"),
-    term_evals = 4,
-    batch_size = 2
+    term_evals = 4
   )
 
   expect_error(at$importance(), "No model stored")
@@ -400,12 +397,11 @@ test_that("AutoTuner importance method works", {
 
 test_that("AutoTuner selected_features method works", {
   at = auto_tuner(
-    method = "random_search",
+    tuner = tnr("random_search", batch_size = 2),
     learner = lrn("classif.rpart"),
     resampling = rsmp("cv", folds = 3),
     measure = msr("classif.ce"),
-    term_evals = 4,
-    batch_size = 2
+    term_evals = 4
   )
 
   expect_error(at$selected_features(), "No model stored")
@@ -415,12 +411,11 @@ test_that("AutoTuner selected_features method works", {
 
 test_that("AutoTuner oob_error method works", {
   at = auto_tuner(
-    method = "random_search",
+    tuner = tnr("random_search", batch_size = 2),
     learner = lrn("classif.rpart"),
     resampling = rsmp("cv", folds = 3),
     measure = msr("classif.ce"),
-    term_evals = 4,
-    batch_size = 2
+    term_evals = 4
   )
 
   expect_error(at$oob_error(), "cannot calculate the out-of-bag error.")
@@ -428,12 +423,11 @@ test_that("AutoTuner oob_error method works", {
 
 test_that("AutoTuner loglik method works", {
   at = auto_tuner(
-    method = "random_search",
+    tuner = tnr("random_search", batch_size = 2),
     learner = lrn("classif.rpart"),
     resampling = rsmp("cv", folds = 3),
     measure = msr("classif.ce"),
-    term_evals = 4,
-    batch_size = 2
+    term_evals = 4
   )
 
   expect_error(at$loglik(), "cannot calculate the log-likelihood.")
@@ -451,7 +445,7 @@ test_that("AutoTuner works with instantiated resampling", {
   )
 
   at = auto_tuner(
-    method = tnr("random_search"),
+    tuner =  tnr("random_search"),
     learner = learner,
     resampling = resampling_inner,
     measure = msr("classif.ce"),
@@ -472,7 +466,7 @@ test_that("AutoTuner errors when train set is not a subset of task ids", {
   )
 
   at = auto_tuner(
-    method = tnr("random_search"),
+    tuner =  tnr("random_search"),
     learner = learner,
     resampling = resampling_inner,
     measure = msr("classif.ce"),
@@ -499,7 +493,7 @@ test_that("AutoTuner errors when second train set is not a subset of task ids", 
   )
 
   at = auto_tuner(
-    method = tnr("random_search"),
+    tuner =  tnr("random_search"),
     learner = learner,
     resampling = resampling_inner,
     measure = msr("classif.ce"),
@@ -526,7 +520,7 @@ test_that("AutoTuner errors when test set is not a subset of task ids", {
   )
 
   at = auto_tuner(
-    method = tnr("random_search"),
+    tuner =  tnr("random_search"),
     learner = learner,
     resampling = resampling_inner,
     measure = msr("classif.ce"),
@@ -553,7 +547,7 @@ test_that("AutoTuner errors when second test set is not a subset of task ids", {
   )
 
   at = auto_tuner(
-    method = tnr("random_search"),
+    tuner =  tnr("random_search"),
     learner = learner,
     resampling = resampling_inner,
     measure = msr("classif.ce"),

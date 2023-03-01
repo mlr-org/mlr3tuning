@@ -5,7 +5,7 @@
 \title{Function for Automatic Tuning}
 \usage{
 auto_tuner(
-  method,
+  tuner,
   learner,
   resampling,
   measure = NULL,
@@ -20,13 +20,12 @@ auto_tuner(
   allow_hotstart = FALSE,
   keep_hotstart_stack = FALSE,
   evaluate_default = FALSE,
-  callbacks = list(),
-  ...
+  callbacks = list()
 )
 }
 \arguments{
-\item{method}{(\code{character(1)} | \link{Tuner})\cr
-Key to retrieve tuner from \link{mlr_tuners} dictionary or \link{Tuner} object.}
+\item{tuner}{(\link{Tuner})\cr
+Optimization algorithm.}
 
 \item{learner}{(\link[mlr3:Learner]{mlr3::Learner})\cr
 Learner to tune.}
@@ -42,10 +41,12 @@ This field, however, always returns the resampling passed in construction.}
 Measure to optimize. If \code{NULL}, default measure is used.}
 
 \item{term_evals}{(\code{integer(1)})\cr
-Number of allowed evaluations.}
+Number of allowed evaluations.
+Ignored if \code{terminator} is passed.}
 
 \item{term_time}{(\code{integer(1)})\cr
-Maximum allowed time in seconds.}
+Maximum allowed time in seconds.
+Ignored if \code{terminator} is passed.}
 
 \item{terminator}{(\link{Terminator})\cr
 Stop criterion of the tuning process.}
@@ -88,9 +89,6 @@ values at the start of the optimization.}
 
 \item{callbacks}{(list of \link{CallbackTuning})\cr
 List of callbacks.}
-
-\item{...}{(named \code{list()})\cr
-Named arguments to be set as parameters of the tuner.}
 }
 \value{
 \link{AutoTuner}.
@@ -148,7 +146,7 @@ If an instantiated resampling is passed, the \link{AutoTuner} fails when a row i
 
 \examples{
 at = auto_tuner(
-  method = tnr("random_search"),
+  tuner = tnr("random_search"),
   learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
   resampling = rsmp ("holdout"),
   measure = msr("classif.ce"),

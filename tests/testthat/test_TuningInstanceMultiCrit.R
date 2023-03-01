@@ -120,13 +120,12 @@ test_that("TuneToken and result_learner_param_vals works", {
 test_that("TuningInstanceMultiCrit and empty search space works", {
   # xval constant
   instance = tune(
-    method = "random_search",
+    tuner = tnr("random_search", batch_size = 5),
     task = tsk("pima"),
     learner = lrn("classif.rpart"),
     resampling = rsmp("cv", folds = 3),
     measures = msrs(c("classif.ce", "classif.acc")),
-    term_evals = 10,
-    batch_size = 5
+    term_evals = 10
   )
 
   expect_data_table(instance$result)
@@ -135,13 +134,12 @@ test_that("TuningInstanceMultiCrit and empty search space works", {
 
   # xval and cp constant
   instance = tune(
-    method = "random_search",
+    tuner = tnr("random_search", batch_size = 5),
     task = tsk("pima"),
     learner = lrn("classif.rpart", xval = 0, cp = 0.1),
     resampling = rsmp("cv", folds = 3),
     measures = msrs(c("classif.ce", "classif.acc")),
-    term_evals = 10,
-    batch_size = 5
+    term_evals = 10
   )
 
   expect_data_table(instance$result)
@@ -153,13 +151,12 @@ test_that("TuningInstanceMultiCrit and empty search space works", {
   learner$param_set$values$xval = NULL
 
   instance = tune(
-    method = "random_search",
+    tuner = tnr("random_search", batch_size = 5),
     task = tsk("pima"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
     measures = msrs(c("classif.ce", "classif.acc")),
-    term_evals = 10,
-    batch_size = 5
+    term_evals = 10
   )
 
   expect_data_table(instance$result)

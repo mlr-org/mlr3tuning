@@ -56,7 +56,7 @@
 #' \donttest{
 #' # hyperparameter tuning on the pima indians diabetes data set
 #' instance = tune(
-#'   method = "irace",
+#'   tuner = tnr("irace"),
 #'   task = task,
 #'   learner = learner,
 #'   resampling = rsmp("holdout"),

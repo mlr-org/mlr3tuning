@@ -120,7 +120,7 @@ test_that("extract_inner_tuning_results function works", {
 
 test_that("extract_inner_tuning_results returns tuning_instance", {
   at = auto_tuner(
-    method = tnr("random_search"),
+    tuner =  tnr("random_search"),
     learner = lrn("classif.rpart"),
     resampling = rsmp("holdout"),
     term_evals = 4,
@@ -136,7 +136,7 @@ test_that("extract_inner_tuning_results returns tuning_instance", {
   expect_class(tab$tuning_instance[[1]], "TuningInstanceSingleCrit")
 
   at = auto_tuner(
-    method = tnr("random_search"),
+    tuner =  tnr("random_search"),
     learner = lrn("classif.rpart"),
     resampling = rsmp("holdout"),
     term_evals = 4,

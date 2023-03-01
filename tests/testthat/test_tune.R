@@ -1,7 +1,7 @@
 test_that("tune function works with one measure", {
   learner = lrn("classif.rpart", minsplit =  to_tune(1, 10))
-  instance = tune(method = "random_search", task = tsk("pima"), learner = learner, resampling = rsmp ("holdout"),
-    measures = msr("classif.ce"), term_evals = 2, batch_size = 1)
+  instance = tune(tuner = tnr("random_search", batch_size = 1), task = tsk("pima"), learner = learner, resampling = rsmp ("holdout"),
+    measures = msr("classif.ce"), term_evals = 2)
 
   expect_class(instance, "TuningInstanceSingleCrit")
   expect_data_table(instance$archive$data, nrows = 2)
@@ -10,8 +10,8 @@ test_that("tune function works with one measure", {
 
 test_that("tune function works with multiple measures", {
   learner = lrn("classif.rpart", minsplit =  to_tune(1, 10))
-  instance = tune(method = "random_search", task = tsk("pima"), learner = learner, resampling = rsmp ("holdout"),
-    measures = msrs(c("classif.ce", "classif.acc")), term_evals = 2, batch_size = 1)
+  instance = tune(tuner = tnr("random_search", batch_size = 1), task = tsk("pima"), learner = learner, resampling = rsmp ("holdout"),
+    measures = msrs(c("classif.ce", "classif.acc")), term_evals = 2)
 
   expect_class(instance, "TuningInstanceMultiCrit")
   expect_data_table(instance$archive$data, nrows = 2)
@@ -20,7 +20,7 @@ test_that("tune function works with multiple measures", {
 
 test_that("tune function works without measure", {
   learner = lrn("classif.rpart", minsplit =  to_tune(1, 10))
-  instance = tune(method = "random_search", task = tsk("pima"),
+  instance = tune(tuner = tnr("random_search"), task = tsk("pima"),
     learner = learner, resampling = rsmp ("holdout"), term_evals = 2)
 
   expect_measure(instance$objective$measures[[1]])
@@ -28,7 +28,7 @@ test_that("tune function works without measure", {
 
 test_that("tune interface is equal to TuningInstanceSingleCrit", {
   tune_args = formalArgs(tune)
-  tune_args = tune_args[tune_args != "method" & tune_args != "..."]
+  tune_args = tune_args[tune_args != "tuner" & tune_args != "..."]
   tune_args[tune_args == "measures"] = "measure"
 
   instance_args = formalArgs(TuningInstanceSingleCrit$public_methods$initialize)
@@ -39,7 +39,7 @@ test_that("tune interface is equal to TuningInstanceSingleCrit", {
 
 test_that("tune interface is equal to TuningInstanceMultiCrit", {
   tune_args = formalArgs(tune)
-  tune_args = tune_args[tune_args != "method" & tune_args != "..."]
+  tune_args = tune_args[tune_args != "tuner" & tune_args != "..."]
 
   instance_args = formalArgs(TuningInstanceMultiCrit$public_methods$initialize)
   instance_args = c(instance_args, "term_evals", "term_time")
@@ -53,7 +53,7 @@ test_that("evaluate_default works", {
   learner = lrn("classif.rpart", cp = to_tune(1e-3, 1))
 
   instance = tune(
-    method = "random_search",
+    tuner = tnr("random_search"),
     task = tsk("iris"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
@@ -70,7 +70,7 @@ test_that("evaluate_default works with logscale", {
   learner = lrn("classif.rpart", cp = to_tune(1e-3, 1, logscale = TRUE))
 
   instance = tune(
-    method = "random_search",
+    tuner = tnr("random_search"),
     task = tsk("iris"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
@@ -87,7 +87,7 @@ test_that("evaluate_default errors with trafo", {
   learner = lrn("classif.rpart", cp = to_tune(p_dbl(-10, 0, trafo = function(x) 10^x)))
 
   expect_error(tune(
-    method = "random_search",
+    tuner = tnr("random_search"),
     task = tsk("iris"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
@@ -103,7 +103,7 @@ test_that("evaluate_default works without transformation and with logscale", {
     minbucket = to_tune(1, 20))
 
   instance = tune(
-    method = "random_search",
+    tuner = tnr("random_search"),
     task = tsk("iris"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
@@ -125,7 +125,7 @@ test_that("evaluate_default errors without transformation and with logscale and 
     minsplit = to_tune(p_int(0, 3, trafo = function(x) 2^x)))
 
   expect_error(tune(
-    method = "random_search",
+    tuner = tnr("random_search"),
     task = tsk("iris"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
@@ -148,7 +148,7 @@ test_that("evaluate_default errors with extra trafo", {
   )
 
   expect_error(tune(
-    method = "random_search",
+    tuner = tnr("random_search"),
     task = tsk("iris"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
@@ -170,7 +170,7 @@ test_that("evaluate_default errors with old parameter set api", {
   }
 
   expect_error(tune(
-    method = "random_search",
+    tuner = tnr("random_search"),
     task = tsk("iris"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
@@ -181,12 +181,3 @@ test_that("evaluate_default errors with old parameter set api", {
   ), "Cannot evaluate default hyperparameter values")
 })
 
-test_that("tune function accepts string input for method", {
-  learner = lrn("classif.rpart", minsplit =  to_tune(1, 10))
-  instance = tune(method = "random_search", task = tsk("pima"), learner = learner, resampling = rsmp ("holdout"),
-    measures = msr("classif.ce"), term_evals = 2, batch_size = 1)
-
-  expect_class(instance, "TuningInstanceSingleCrit")
-  expect_data_table(instance$archive$data, nrows = 2)
-  expect_class(instance$terminator, "TerminatorEvals")
-})

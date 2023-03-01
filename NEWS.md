@@ -1,5 +1,9 @@
 # mlr3tuning (development version)
 
+* BREAKING CHANGE: The `method` parameter of `tune()`, `tune_nested()` and `auto_tuner()` is renamed to `tuner`.
+  Only `Tuner` objects are accepted now.
+  Arguments to the tuner cannot be passed with `...` anymore.
+* BREAKING CHANGE: The `tuner` parameter of `AutoTuner` is moved to the first position to achieve consistency with the other functions.
 * docs: Add list of default measures when no measure is passed.
 * fix: Add `allow_hotstarting`, `keep_hotstart_stack` and `keep_models` flags to `AutoTuner` and `auto_tuner()`.
 

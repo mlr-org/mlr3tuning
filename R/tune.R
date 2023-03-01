@@ -5,7 +5,7 @@
 #' @description
 #' Function to tune a [mlr3::Learner].
 #' The function internally creates a [TuningInstanceSingleCrit] or [TuningInstanceMultiCrit] which describe the tuning problem.
-#' It executes the tuning with the [Tuner] (`method`) and returns the result with the tuning instance (`$result`).
+#' It executes the tuning with the [Tuner] (`tuner`) and returns the result with the tuning instance (`$result`).
 #' The [ArchiveTuning] (`$archive`) stores all evaluated hyperparameter configurations and performance scores.
 #'
 #' @details
@@ -21,8 +21,6 @@
 #' @inheritSection TuningInstanceSingleCrit Resources
 #' @inheritSection ArchiveTuning Analysis
 #'
-#' @param method (`character(1)` | [Tuner])\cr
-#'  Key to retrieve tuner from [mlr_tuners] dictionary or [Tuner] object.
 #' @param measures ([mlr3::Measure] or list of [mlr3::Measure])\cr
 #'   A single measure creates a [TuningInstanceSingleCrit] and multiple measures a [TuningInstanceMultiCrit].
 #'   If `NULL`, default measure is used.
@@ -30,15 +28,16 @@
 #'  Number of allowed evaluations.
 #' @param term_time (`integer(1)`)\cr
 #'  Maximum allowed time in seconds.
-#' @param ... (named `list()`)\cr
-#'  Named arguments to be set as parameters of the tuner.
 #'
 #' @return [TuningInstanceSingleCrit] | [TuningInstanceMultiCrit]
 #'
+#' @template param_tuner
 #' @template param_task
 #' @template param_learner
 #' @template param_resampling
 #' @template param_terminator
+#' @template param_term_evals
+#' @template param_term_time
 #' @template param_search_space
 #' @template param_store_benchmark_result
 #' @template param_store_models
@@ -60,7 +59,7 @@
 #'
 #' # Run tuning
 #' instance = tune(
-#'   method = tnr("random_search", batch_size = 2),
+#'   tuner = tnr("random_search", batch_size = 2),
 #'   task = tsk("pima"),
 #'   learner = learner,
 #'   resampling = rsmp ("holdout"),
@@ -76,13 +75,8 @@
 #'
 #' # Inspect all evaluated configurations
 #' as.data.table(instance$archive)
-tune = function(method, task, learner, resampling, measures = NULL, term_evals = NULL, term_time = NULL, terminator = NULL, search_space = NULL, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, evaluate_default = FALSE, callbacks = list(), ...) {
-  tuner = if (is.character(method)) {
-    assert_choice(method, mlr_tuners$keys())
-    tnr(method, ...)
-  } else {
-    assert_tuner(method)
-  }
+tune = function(tuner, task, learner, resampling, measures = NULL, term_evals = NULL, term_time = NULL, terminator = NULL, search_space = NULL, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, evaluate_default = FALSE, callbacks = list()) {
+  assert_tuner(tuner)
   terminator = terminator %??% terminator_selection(term_evals, term_time)
 
   TuningInstance = if (!is.list(measures)) TuningInstanceSingleCrit else TuningInstanceMultiCrit
