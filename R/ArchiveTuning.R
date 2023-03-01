@@ -151,8 +151,8 @@ ArchiveTuning = R6Class("ArchiveTuning",
     #'
     #' @param ... (ignored).
     print = function() {
-      catf(format(self))
-      print(as.data.table(self, unnest = NULL, exclude_columns = c("x_domain", "uhash")), digits=2)
+      catf("%s with %i evaluations", format(self), self$n_evals)
+      print(as.data.table(self, unnest = NULL, exclude_columns = c("x_domain", "uhash", "timestamp", "runtime_learners", "resample_result")), digits = 2)
     }
   )
 )
