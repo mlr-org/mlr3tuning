@@ -99,7 +99,7 @@ design = mlr3misc::rowwise_table(
 
 # run hyperparameter tuning on the Palmer Penguins data set
 instance = tune(
-  method = tnr("design_points", design = design),
+  tuner = tnr("design_points", design = design),
   task = tsk("penguins"),
   learner = learner,
   resampling = rsmp("holdout"),

@@ -93,7 +93,7 @@ learner = lrn("classif.rpart",
 
 # run hyperparameter tuning on the Palmer Penguins data set
 instance = tune(
-  method = "random_search",
+  tuner = tnr("random_search"),
   task = tsk("penguins"),
   learner = learner,
   resampling = rsmp("holdout"),

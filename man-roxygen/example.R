@@ -8,7 +8,7 @@
 #'
 #' # run hyperparameter tuning on the Palmer Penguins data set
 #' instance = tune(
-#'   method = "<%= id %>",
+#'   tuner = tnr("<%= id %>"),
 #'   task = tsk("penguins"),
 #'   learner = learner,
 #'   resampling = rsmp("holdout"),

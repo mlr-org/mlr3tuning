@@ -3,13 +3,11 @@ test_that("hotstart works forwards", {
   learner = lrn("classif.debug", x = to_tune(), iter = to_tune(1, 100))
 
   instance = tune(
-    method = "grid_search",
+    tuner = tnr("grid_search", batch_size = 5, resolution = 5),
     task = task,
     learner = learner,
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
-    batch_size = 5,
-    resolution = 5,
     store_models = TRUE,
     allow_hotstart = TRUE
   )
@@ -26,13 +24,11 @@ test_that("hotstart works backwards", {
   learner$properties[learner$properties %in% "hotstart_forward"] = "hotstart_backward"
 
   instance = tune(
-    method = "grid_search",
+    tuner = tnr("grid_search", batch_size = 5, resolution = 5),
     task = task,
     learner = learner,
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
-    batch_size = 5,
-    resolution = 5,
     store_models = TRUE,
     allow_hotstart = TRUE
   )
@@ -49,13 +45,11 @@ test_that("hotstart works forwards and backwards", {
   learner$properties = c(learner$properties, "hotstart_backward")
 
   instance = tune(
-    method = "grid_search",
+    tuner = tnr("grid_search", batch_size = 5, resolution = 5),
     task = task,
     learner = learner,
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
-    batch_size = 5,
-    resolution = 5,
     store_models = TRUE,
     allow_hotstart = TRUE
   )
@@ -71,13 +65,11 @@ test_that("hotstart flag is not set to TRUE if learners does not support hotstar
   learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1))
 
   instance = tune(
-    method = "grid_search",
+    tuner = tnr("grid_search", batch_size = 5, resolution = 5),
     task = task,
     learner = learner,
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
-    batch_size = 5,
-    resolution = 5,
     store_models = TRUE,
     allow_hotstart = TRUE
   )
@@ -90,13 +82,11 @@ test_that("models are discarded after storing them in the stack", {
   learner = lrn("classif.debug", x = to_tune(), iter = to_tune(1, 100))
 
   instance = tune(
-    method = "grid_search",
+    tuner = tnr("grid_search", batch_size = 5, resolution = 5),
     task = task,
     learner = learner,
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
-    batch_size = 5,
-    resolution = 5,
     store_models = FALSE,
     allow_hotstart = TRUE,
     keep_hotstart_stack = TRUE
@@ -115,13 +105,11 @@ test_that("objects are cloned", {
   learner = lrn("classif.debug", x = to_tune(), iter = to_tune(1, 100))
 
   instance = tune(
-    method = "grid_search",
+    tuner = tnr("grid_search", batch_size = 5, resolution = 5),
     task = task,
     learner = learner,
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
-    batch_size = 5,
-    resolution = 5,
     allow_hotstart = TRUE,
     keep_hotstart_stack = TRUE
   )

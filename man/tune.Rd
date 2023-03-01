@@ -5,7 +5,7 @@
 \title{Function for Tuning a Learner}
 \usage{
 tune(
-  method,
+  tuner,
   task,
   learner,
   resampling,
@@ -20,13 +20,12 @@ tune(
   allow_hotstart = FALSE,
   keep_hotstart_stack = FALSE,
   evaluate_default = FALSE,
-  callbacks = list(),
-  ...
+  callbacks = list()
 )
 }
 \arguments{
-\item{method}{(\code{character(1)} | \link{Tuner})\cr
-Key to retrieve tuner from \link{mlr_tuners} dictionary or \link{Tuner} object.}
+\item{tuner}{(\link{Tuner})\cr
+Optimization algorithm.}
 
 \item{task}{(\link[mlr3:Task]{mlr3::Task})\cr
 Task to operate on.}
@@ -46,10 +45,12 @@ A single measure creates a \link{TuningInstanceSingleCrit} and multiple measures
 If \code{NULL}, default measure is used.}
 
 \item{term_evals}{(\code{integer(1)})\cr
-Number of allowed evaluations.}
+Number of allowed evaluations.
+Ignored if \code{terminator} is passed.}
 
 \item{term_time}{(\code{integer(1)})\cr
-Maximum allowed time in seconds.}
+Maximum allowed time in seconds.
+Ignored if \code{terminator} is passed.}
 
 \item{terminator}{(\link{Terminator})\cr
 Stop criterion of the tuning process.}
@@ -89,9 +90,6 @@ values at the start of the optimization.}
 
 \item{callbacks}{(list of \link{CallbackTuning})\cr
 List of callbacks.}
-
-\item{...}{(named \code{list()})\cr
-Named arguments to be set as parameters of the tuner.}
 }
 \value{
 \link{TuningInstanceSingleCrit} | \link{TuningInstanceMultiCrit}
@@ -99,7 +97,7 @@ Named arguments to be set as parameters of the tuner.}
 \description{
 Function to tune a \link[mlr3:Learner]{mlr3::Learner}.
 The function internally creates a \link{TuningInstanceSingleCrit} or \link{TuningInstanceMultiCrit} which describe the tuning problem.
-It executes the tuning with the \link{Tuner} (\code{method}) and returns the result with the tuning instance (\verb{$result}).
+It executes the tuning with the \link{Tuner} (\code{tuner}) and returns the result with the tuning instance (\verb{$result}).
 The \link{ArchiveTuning} (\verb{$archive}) stores all evaluated hyperparameter configurations and performance scores.
 }
 \details{
@@ -169,7 +167,7 @@ learner = lrn("classif.rpart",
 
 # Run tuning
 instance = tune(
-  method = tnr("random_search", batch_size = 2),
+  tuner = tnr("random_search", batch_size = 2),
   task = tsk("pima"),
   learner = learner,
   resampling = rsmp ("holdout"),

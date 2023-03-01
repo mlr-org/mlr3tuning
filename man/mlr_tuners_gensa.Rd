@@ -111,7 +111,7 @@ learner = lrn("classif.rpart",
 
 # run hyperparameter tuning on the Palmer Penguins data set
 instance = tune(
-  method = "gensa",
+  tuner = tnr("gensa"),
   task = tsk("penguins"),
   learner = learner,
   resampling = rsmp("holdout"),

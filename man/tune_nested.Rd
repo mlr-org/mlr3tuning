@@ -5,7 +5,7 @@
 \title{Function for Nested Resampling}
 \usage{
 tune_nested(
-  method,
+  tuner,
   task,
   learner,
   inner_resampling,
@@ -13,13 +13,21 @@ tune_nested(
   measure = NULL,
   term_evals = NULL,
   term_time = NULL,
+  terminator = NULL,
   search_space = NULL,
-  ...
+  store_tuning_instance = TRUE,
+  store_benchmark_result = TRUE,
+  store_models = FALSE,
+  check_values = FALSE,
+  allow_hotstart = FALSE,
+  keep_hotstart_stack = FALSE,
+  evaluate_default = FALSE,
+  callbacks = list()
 )
 }
 \arguments{
-\item{method}{(\code{character(1)})\cr
-Key to retrieve tuner from \link{mlr_tuners} dictionary.}
+\item{tuner}{(\link{Tuner})\cr
+Optimization algorithm.}
 
 \item{task}{(\link[mlr3:Task]{mlr3::Task})\cr
 Task to operate on.}
@@ -37,18 +45,54 @@ Resampling used for the outer loop.}
 Measure to optimize. If \code{NULL}, default measure is used.}
 
 \item{term_evals}{(\code{integer(1)})\cr
-Number of allowed evaluations.}
+Number of allowed evaluations.
+Ignored if \code{terminator} is passed.}
 
 \item{term_time}{(\code{integer(1)})\cr
-Maximum allowed time in seconds.}
+Maximum allowed time in seconds.
+Ignored if \code{terminator} is passed.}
+
+\item{terminator}{(\link{Terminator})\cr
+Stop criterion of the tuning process.}
 
 \item{search_space}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
 Hyperparameter search space. If \code{NULL} (default), the search space is
 constructed from the \link{TuneToken} of the learner's parameter set
 (learner$param_set).}
 
-\item{...}{(named \code{list()})\cr
-Named arguments to be set as parameters of the tuner.}
+\item{store_tuning_instance}{(\code{logical(1)})\cr
+If \code{TRUE} (default), stores the internally created \link{TuningInstanceSingleCrit} with all intermediate results in slot \verb{$tuning_instance}.}
+
+\item{store_benchmark_result}{(\code{logical(1)})\cr
+If \code{TRUE} (default), store resample result of evaluated hyperparameter
+configurations in archive as \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}.}
+
+\item{store_models}{(\code{logical(1)})\cr
+If \code{TRUE}, fitted models are stored in the benchmark result
+(\code{archive$benchmark_result}). If \code{store_benchmark_result = FALSE}, models
+are only stored temporarily and not accessible after the tuning. This
+combination is needed for measures that require a model.}
+
+\item{check_values}{(\code{logical(1)})\cr
+If \code{TRUE}, hyperparameter values are checked before evaluation and
+performance scores after. If \code{FALSE} (default), values are unchecked but
+computational overhead is reduced.}
+
+\item{allow_hotstart}{(\code{logical(1)})\cr
+Allow to hotstart learners with previously fitted models. See also
+\link[mlr3:HotstartStack]{mlr3::HotstartStack}. The learner must support hotstarting. Sets
+\code{store_models = TRUE}.}
+
+\item{keep_hotstart_stack}{(\code{logical(1)})\cr
+If \code{TRUE}, \link[mlr3:HotstartStack]{mlr3::HotstartStack} is kept in \verb{$objective$hotstart_stack}
+after tuning.}
+
+\item{evaluate_default}{(\code{logical(1)})\cr
+If \code{TRUE}, learner is evaluated with hyperparameters set to their default
+values at the start of the optimization.}
+
+\item{callbacks}{(list of \link{CallbackTuning})\cr
+List of callbacks.}
 }
 \value{
 \link[mlr3:ResampleResult]{mlr3::ResampleResult}
@@ -59,14 +103,13 @@ Function to conduct nested resampling.
 \examples{
 # Nested resampling on Palmer Penguins data set
 rr = tune_nested(
-  method = "random_search",
+  tuner = tnr("random_search", batch_size = 2),
   task = tsk("penguins"),
   learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
   inner_resampling = rsmp ("holdout"),
   outer_resampling = rsmp("cv", folds = 2),
   measure = msr("classif.ce"),
-  term_evals = 2,
-  batch_size = 2)
+  term_evals = 2)
 
 # Performance scores estimated on the outer resampling
 rr$score()

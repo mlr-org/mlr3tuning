@@ -71,7 +71,7 @@ learner = lrn("classif.rpart",
 
 # create auto tuner
 at = auto_tuner(
-  method = tnr("random_search"),
+  tuner = tnr("random_search"),
   learner = learner,
   resampling = rsmp ("holdout"),
   measure = msr("classif.ce"),

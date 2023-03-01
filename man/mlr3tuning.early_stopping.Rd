@@ -37,7 +37,7 @@ if (requireNamespace("mlr3learners") && requireNamespace("xgboost") ) {
 
   # tune xgboost on the pima data set
   instance = tune(
-    method = tnr("random_search"),
+    tuner = tnr("random_search"),
     task = tsk("pima"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),

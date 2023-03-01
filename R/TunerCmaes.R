@@ -42,7 +42,7 @@
 #'
 #' # run hyperparameter tuning on the Palmer Penguins data set
 #' instance = tune(
-#'   method = tnr("cmaes"),
+#'   tuner = tnr("cmaes"),
 #'   task = tsk("penguins"),
 #'   learner = learner,
 #'   resampling = rsmp("holdout"),

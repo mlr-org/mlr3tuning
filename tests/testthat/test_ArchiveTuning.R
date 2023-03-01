@@ -184,9 +184,9 @@ test_that("ArchiveTuning as.data.table function works", {
     }
   )
 
-  instance = tune(method = "random_search", task = tsk("pima"), learner = lrn("classif.rpart"),
+  instance = tune(tuner = tnr("random_search", batch_size = 2), task = tsk("pima"), learner = lrn("classif.rpart"),
     resampling = rsmp("holdout"), measures = msr("classif.ce"), search_space = search_space,
-    term_evals = 4, batch_size = 2)
+    term_evals = 4)
 
   tab = as.data.table(instance$archive)
   expect_data_table(tab, nrows = 4, ncols = 11)
@@ -206,9 +206,9 @@ test_that("ArchiveTuning as.data.table function works", {
     }
   )
 
-  instance = tune(method = "random_search", task = tsk("pima"), learner = lrn("classif.rpart"),
+  instance = tune(tuner = tnr("random_search", batch_size = 2), task = tsk("pima"), learner = lrn("classif.rpart"),
     resampling = rsmp("holdout"), measures = msr("classif.ce"), search_space = search_space,
-    term_evals = 100, batch_size = 2)
+    term_evals = 100)
 
   tab = as.data.table(instance$archive)
   expect_data_table(tab, nrows = 100, ncols = 11)
