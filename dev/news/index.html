@@ -75,7 +75,9 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="mlr3tuning-development-version">mlr3tuning (development version)<a class="anchor" aria-label="anchor" href="#mlr3tuning-development-version"></a></h2>
-<ul><li>docs: Update resources sections.</li>
+<ul><li>BREAKING CHANGE: The <code>method</code> parameter of <code><a href="../reference/tune.html">tune()</a></code>, <code><a href="../reference/tune_nested.html">tune_nested()</a></code> and <code><a href="../reference/auto_tuner.html">auto_tuner()</a></code> is renamed to <code>tuner</code>. Only <code>Tuner</code> objects are accepted now. Arguments to the tuner cannot be passed with <code>...</code> anymore.</li>
+<li>BREAKING CHANGE: The <code>tuner</code> parameter of <code>AutoTuner</code> is moved to the first position to achieve consistency with the other functions.</li>
+<li>docs: Update resources sections.</li>
 <li>docs: Add list of default measures.</li>
 <li>fix: Add <code>allow_hotstarting</code>, <code>keep_hotstart_stack</code> and <code>keep_models</code> flags to <code>AutoTuner</code> and <code><a href="../reference/auto_tuner.html">auto_tuner()</a></code>.</li>
 </ul></div>

@@ -161,7 +161,7 @@ Resample result of the inner resampling.</p></li>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># create auto tuner</span></span></span>
 <span class="r-in"><span><span class="va">at</span> <span class="op">=</span> <span class="fu"><a href="auto_tuner.html">auto_tuner</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  method <span class="op">=</span> <span class="fu"><a href="tnr.html">tnr</a></span><span class="op">(</span><span class="st">"random_search"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  tuner <span class="op">=</span> <span class="fu"><a href="tnr.html">tnr</a></span><span class="op">(</span><span class="st">"random_search"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  learner <span class="op">=</span> <span class="va">learner</span>,</span></span>
 <span class="r-in"><span>  resampling <span class="op">=</span> <span class="fu">rsmp</span> <span class="op">(</span><span class="st">"holdout"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  measure <span class="op">=</span> <span class="fu">msr</span><span class="op">(</span><span class="st">"classif.ce"</span><span class="op">)</span>,</span></span>
@@ -173,23 +173,23 @@ Resample result of the inner resampling.</p></li>
 <span class="r-in"><span><span class="co"># extract inner archives</span></span></span>
 <span class="r-in"><span><span class="fu">extract_inner_tuning_archives</span><span class="op">(</span><span class="va">rr</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    iteration        cp classif.ce  x_domain_cp runtime_learners</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:         1 -2.528860       0.00 0.0797498992            0.005</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:         1 -2.750538       0.00 0.0638934885            0.006</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:         1 -7.881995       0.00 0.0003774793            0.007</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:         1 -6.045289       0.00 0.0023689961            0.006</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:         2 -7.755213       0.08 0.0004285030            0.007</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6:         2 -5.760968       0.08 0.0031480636            0.006</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7:         2 -2.916602       0.08 0.0541172681            0.007</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8:         2 -7.286815       0.08 0.0006845050            0.006</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:         1 -7.996939       0.04 0.0003364911            0.008</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:         1 -5.188385       0.04 0.0055810151            0.008</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:         1 -7.346582       0.04 0.0006447923            0.008</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:         1 -8.289121       0.04 0.0002512352            0.008</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:         2 -4.502770       0.04 0.0110782709            0.009</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6:         2 -5.860560       0.04 0.0028496482            0.008</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7:         2 -7.916050       0.04 0.0003648407            0.007</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8:         2 -4.404734       0.04 0.0122193515            0.007</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              timestamp batch_nr warnings errors      resample_result task_id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 2023-03-01 10:32:22        1        0      0 &lt;ResampleResult[21]&gt;    iris</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 2023-03-01 10:32:22        2        0      0 &lt;ResampleResult[21]&gt;    iris</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 2023-03-01 10:32:22        3        0      0 &lt;ResampleResult[21]&gt;    iris</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 2023-03-01 10:32:22        4        0      0 &lt;ResampleResult[21]&gt;    iris</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 2023-03-01 10:32:22        1        0      0 &lt;ResampleResult[21]&gt;    iris</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 2023-03-01 10:32:22        2        0      0 &lt;ResampleResult[21]&gt;    iris</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7: 2023-03-01 10:32:23        3        0      0 &lt;ResampleResult[21]&gt;    iris</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8: 2023-03-01 10:32:23        4        0      0 &lt;ResampleResult[21]&gt;    iris</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 2023-03-01 10:36:20        1        0      0 &lt;ResampleResult[21]&gt;    iris</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 2023-03-01 10:36:20        2        0      0 &lt;ResampleResult[21]&gt;    iris</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 2023-03-01 10:36:20        3        0      0 &lt;ResampleResult[21]&gt;    iris</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 2023-03-01 10:36:21        4        0      0 &lt;ResampleResult[21]&gt;    iris</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 2023-03-01 10:36:21        1        0      0 &lt;ResampleResult[21]&gt;    iris</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 2023-03-01 10:36:21        2        0      0 &lt;ResampleResult[21]&gt;    iris</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7: 2023-03-01 10:36:21        3        0      0 &lt;ResampleResult[21]&gt;    iris</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8: 2023-03-01 10:36:21        4        0      0 &lt;ResampleResult[21]&gt;    iris</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             learner_id resampling_id</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1: classif.rpart.tuned            cv</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2: classif.rpart.tuned            cv</span>

@@ -81,7 +81,7 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">tune_nested</span><span class="op">(</span></span>
-<span>  <span class="va">method</span>,</span>
+<span>  <span class="va">tuner</span>,</span>
 <span>  <span class="va">task</span>,</span>
 <span>  <span class="va">learner</span>,</span>
 <span>  <span class="va">inner_resampling</span>,</span>
@@ -89,16 +89,24 @@
 <span>  measure <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  term_evals <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  term_time <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  terminator <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  search_space <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  <span class="va">...</span></span>
+<span>  store_tuning_instance <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  store_benchmark_result <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  store_models <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  check_values <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  allow_hotstart <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  keep_hotstart_stack <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  evaluate_default <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  callbacks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>method</dt>
-<dd><p>(<code>character(1)</code>)<br>
-Key to retrieve tuner from <a href="mlr_tuners.html">mlr_tuners</a> dictionary.</p></dd>
+    <dl><dt>tuner</dt>
+<dd><p>(<a href="Tuner.html">Tuner</a>)<br>
+Optimization algorithm.</p></dd>
 
 
 <dt>task</dt>
@@ -128,12 +136,19 @@ Measure to optimize. If <code>NULL</code>, default measure is used.</p></dd>
 
 <dt>term_evals</dt>
 <dd><p>(<code>integer(1)</code>)<br>
-Number of allowed evaluations.</p></dd>
+Number of allowed evaluations.
+Ignored if <code>terminator</code> is passed.</p></dd>
 
 
 <dt>term_time</dt>
 <dd><p>(<code>integer(1)</code>)<br>
-Maximum allowed time in seconds.</p></dd>
+Maximum allowed time in seconds.
+Ignored if <code>terminator</code> is passed.</p></dd>
+
+
+<dt>terminator</dt>
+<dd><p>(Terminator)<br>
+Stop criterion of the tuning process.</p></dd>
 
 
 <dt>search_space</dt>
@@ -143,9 +158,54 @@ constructed from the TuneToken of the learner's parameter set
 (learner$param_set).</p></dd>
 
 
-<dt>...</dt>
-<dd><p>(named <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code>)<br>
-Named arguments to be set as parameters of the tuner.</p></dd>
+<dt>store_tuning_instance</dt>
+<dd><p>(<code>logical(1)</code>)<br>
+If <code>TRUE</code> (default), stores the internally created <a href="TuningInstanceSingleCrit.html">TuningInstanceSingleCrit</a> with all intermediate results in slot <code>$tuning_instance</code>.</p></dd>
+
+
+<dt>store_benchmark_result</dt>
+<dd><p>(<code>logical(1)</code>)<br>
+If <code>TRUE</code> (default), store resample result of evaluated hyperparameter
+configurations in archive as <a href="https://mlr3.mlr-org.com/reference/BenchmarkResult.html" class="external-link">mlr3::BenchmarkResult</a>.</p></dd>
+
+
+<dt>store_models</dt>
+<dd><p>(<code>logical(1)</code>)<br>
+If <code>TRUE</code>, fitted models are stored in the benchmark result
+(<code>archive$benchmark_result</code>). If <code>store_benchmark_result = FALSE</code>, models
+are only stored temporarily and not accessible after the tuning. This
+combination is needed for measures that require a model.</p></dd>
+
+
+<dt>check_values</dt>
+<dd><p>(<code>logical(1)</code>)<br>
+If <code>TRUE</code>, hyperparameter values are checked before evaluation and
+performance scores after. If <code>FALSE</code> (default), values are unchecked but
+computational overhead is reduced.</p></dd>
+
+
+<dt>allow_hotstart</dt>
+<dd><p>(<code>logical(1)</code>)<br>
+Allow to hotstart learners with previously fitted models. See also
+<a href="https://mlr3.mlr-org.com/reference/HotstartStack.html" class="external-link">mlr3::HotstartStack</a>. The learner must support hotstarting. Sets
+<code>store_models = TRUE</code>.</p></dd>
+
+
+<dt>keep_hotstart_stack</dt>
+<dd><p>(<code>logical(1)</code>)<br>
+If <code>TRUE</code>, <a href="https://mlr3.mlr-org.com/reference/HotstartStack.html" class="external-link">mlr3::HotstartStack</a> is kept in <code>$objective$hotstart_stack</code>
+after tuning.</p></dd>
+
+
+<dt>evaluate_default</dt>
+<dd><p>(<code>logical(1)</code>)<br>
+If <code>TRUE</code>, learner is evaluated with hyperparameters set to their default
+values at the start of the optimization.</p></dd>
+
+
+<dt>callbacks</dt>
+<dd><p>(list of <a href="CallbackTuning.html">CallbackTuning</a>)<br>
+List of callbacks.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -161,14 +221,13 @@ Named arguments to be set as parameters of the tuner.</p></dd>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Nested resampling on Palmer Penguins data set</span></span></span>
 <span class="r-in"><span><span class="va">rr</span> <span class="op">=</span> <span class="fu">tune_nested</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  method <span class="op">=</span> <span class="st">"random_search"</span>,</span></span>
+<span class="r-in"><span>  tuner <span class="op">=</span> <span class="fu"><a href="tnr.html">tnr</a></span><span class="op">(</span><span class="st">"random_search"</span>, batch_size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  task <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">tsk</a></span><span class="op">(</span><span class="st">"penguins"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  learner <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"classif.rpart"</span>, cp <span class="op">=</span> <span class="fu">to_tune</span><span class="op">(</span><span class="fl">1e-04</span>, <span class="fl">1e-1</span>, logscale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  inner_resampling <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">rsmp</a></span> <span class="op">(</span><span class="st">"holdout"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  outer_resampling <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">rsmp</a></span><span class="op">(</span><span class="st">"cv"</span>, folds <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  measure <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">msr</a></span><span class="op">(</span><span class="st">"classif.ce"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  term_evals <span class="op">=</span> <span class="fl">2</span>,</span></span>
-<span class="r-in"><span>  batch_size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  term_evals <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Performance scores estimated on the outer resampling</span></span></span>
 <span class="r-in"><span><span class="va">rr</span><span class="op">$</span><span class="fu">score</span><span class="op">(</span><span class="op">)</span></span></span>
@@ -179,13 +238,13 @@ Named arguments to be set as parameters of the tuner.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1: &lt;ResamplingCV[20]&gt;            cv         1 &lt;PredictionClassif[20]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2: &lt;ResamplingCV[20]&gt;            cv         2 &lt;PredictionClassif[20]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    classif.ce</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 0.05813953</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 0.09302326</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 0.05232558</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 0.06976744</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Unbiased performance of the final model trained on the full data set</span></span></span>
 <span class="r-in"><span><span class="va">rr</span><span class="op">$</span><span class="fu">aggregate</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> classif.ce </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  0.0755814 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.06104651 </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

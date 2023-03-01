@@ -152,7 +152,7 @@ Optionally, tuning instances.</p></li>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># create auto tuner</span></span></span>
 <span class="r-in"><span><span class="va">at</span> <span class="op">=</span> <span class="fu"><a href="auto_tuner.html">auto_tuner</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  method <span class="op">=</span> <span class="fu"><a href="tnr.html">tnr</a></span><span class="op">(</span><span class="st">"random_search"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  tuner <span class="op">=</span> <span class="fu"><a href="tnr.html">tnr</a></span><span class="op">(</span><span class="st">"random_search"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  learner <span class="op">=</span> <span class="va">learner</span>,</span></span>
 <span class="r-in"><span>  resampling <span class="op">=</span> <span class="fu">rsmp</span> <span class="op">(</span><span class="st">"holdout"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  measure <span class="op">=</span> <span class="fu">msr</span><span class="op">(</span><span class="st">"classif.ce"</span><span class="op">)</span>,</span></span>
@@ -164,8 +164,8 @@ Optionally, tuning instances.</p></li>
 <span class="r-in"><span><span class="co"># extract inner results</span></span></span>
 <span class="r-in"><span><span class="fu">extract_inner_tuning_results</span><span class="op">(</span><span class="va">rr</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    iteration        cp classif.ce learner_param_vals  x_domain task_id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:         1 -2.925021       0.00          &lt;list[2]&gt; &lt;list[1]&gt;    iris</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:         2 -8.861758       0.12          &lt;list[2]&gt; &lt;list[1]&gt;    iris</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:         1 -2.644976       0.00          &lt;list[2]&gt; &lt;list[1]&gt;    iris</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:         2 -3.026940       0.16          &lt;list[2]&gt; &lt;list[1]&gt;    iris</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             learner_id resampling_id</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1: classif.rpart.tuned            cv</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2: classif.rpart.tuned            cv</span>
