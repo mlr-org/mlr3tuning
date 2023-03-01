@@ -20,15 +20,15 @@
 #' @section Resources:
 #' There are several sections about hyperparameter optimization in the [mlr3book](https://mlr3book.mlr-org.com).
 #'
-#'  - Simplify tuning with the [`tune()`](https://mlr3book.mlr-org.com/optimization.html#sec-simplified-tuning) function.
-#'  - Learn about [tuning spaces](https://mlr3book.mlr-org.com/technical.html#sec-tuning-space).
+#'  * Simplify tuning with the [`tune()`](https://mlr3book.mlr-org.com/optimization.html#sec-simplified-tuning) function.
+#'  * Learn about [tuning spaces](https://mlr3book.mlr-org.com/technical.html#sec-tuning-space).
 #'
 #' The [gallery](https://mlr-org.com/gallery-all-optimization.html) features a collection of case studies and demos about optimization.
 #'
-#'  - Optimize an rpart classification tree with only a [few lines of code](https://mlr-org.com/gallery/optimization/2022-11-10-hyperparameter-optimization-on-the-palmer-penguins/).
-#'  - Tune an XGBoost model with [early stopping](https://mlr-org.com/gallery/optimization/2022-11-04-early-stopping-with-xgboost/).
-#'  - Make us of proven [search space](https://mlr-org.com/gallery/optimization/2021-07-06-introduction-to-mlr3tuningspaces/).
-#'  - Learn about [hotstarting](https://mlr-org.com/gallery/optimization/2023-01-16-hotstart/) models.
+#'  * Optimize an rpart classification tree with only a [few lines of code](https://mlr-org.com/gallery/optimization/2022-11-10-hyperparameter-optimization-on-the-palmer-penguins/).
+#'  * Tune an XGBoost model with [early stopping](https://mlr-org.com/gallery/optimization/2022-11-04-early-stopping-with-xgboost/).
+#'  * Make us of proven [search space](https://mlr-org.com/gallery/optimization/2021-07-06-introduction-to-mlr3tuningspaces/).
+#'  * Learn about [hotstarting](https://mlr-org.com/gallery/optimization/2023-01-16-hotstart/) models.
 #'
 #' @inheritSection TuningInstanceSingleCrit Default Measures
 #'

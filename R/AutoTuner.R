@@ -22,8 +22,8 @@
 #' @section Resources:
 #' There are several sections about hyperparameter optimization in the [mlr3book](https://mlr3book.mlr-org.com).
 #'
-#'  - [Automate](https://mlr3book.mlr-org.com/optimization.html#sec-autotuner) the tuning.
-#'  - Estimate the model performance with [nested resampling](https://mlr3book.mlr-org.com/optimization.html#sec-model-performance).
+#'  * [Automate](https://mlr3book.mlr-org.com/optimization.html#sec-autotuner) the tuning.
+#'  * Estimate the model performance with [nested resampling](https://mlr3book.mlr-org.com/optimization.html#sec-model-performance).
 #'
 #' The [gallery](https://mlr-org.com/gallery-all-optimization.html) features a collection of case studies and demos about optimization.
 #'

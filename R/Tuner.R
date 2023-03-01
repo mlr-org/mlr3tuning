@@ -31,17 +31,17 @@
 #' @section Resources:
 #' There are several sections about hyperparameter optimization in the [mlr3book](https://mlr3book.mlr-org.com).
 #'
-#'  - Learn more about [tuners](https://mlr3book.mlr-org.com/optimization.html#sec-tuner).
+#'  * Learn more about [tuners](https://mlr3book.mlr-org.com/optimization.html#sec-tuner).
 #'
 #' The [gallery](https://mlr-org.com/gallery-all-optimization.html) features a collection of case studies and demos about optimization.
 #'
-#'  - Use the [Hyperband](https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/) optimizer with different budget parameters.
+#'  * Use the [Hyperband](https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/) optimizer with different budget parameters.
 #'
 #' @section Extension Packages:
 #' Additional tuners are provided by the following packages.
 #'
-#'  - [mlr3hyperband](https://github.com/mlr-org/mlr3hyperband) adds the Hyperband and Successive Halving algorithm.
-#'  - [mlr3mbo](https://github.com/mlr-org/mlr3mbo) adds Bayesian optimization methods.
+#'  * [mlr3hyperband](https://github.com/mlr-org/mlr3hyperband) adds the Hyperband and Successive Halving algorithm.
+#'  * [mlr3mbo](https://github.com/mlr-org/mlr3mbo) adds Bayesian optimization methods.
 #'
 #' @template param_man
 #'
