@@ -88,7 +88,12 @@
 #'
 #' # Inspect all evaluated configurations
 #' as.data.table(instance$archive)
-tune = function(tuner, task, learner, resampling, measures = NULL, term_evals = NULL, term_time = NULL, terminator = NULL, search_space = NULL, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, evaluate_default = FALSE, callbacks = list()) {
+tune = function(tuner, task, learner, resampling, measures = NULL, term_evals = NULL, term_time = NULL, terminator = NULL, search_space = NULL, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, evaluate_default = FALSE, callbacks = list(), method) {
+  if (!missing(method)) {
+    message("The `method` argument is deprecated and will be removed in a future release. Please use `tuner` instead.")
+    tuner = method
+  }
+
   assert_tuner(tuner)
   terminator = terminator %??% terminator_selection(term_evals, term_time)
 
