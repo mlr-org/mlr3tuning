@@ -20,7 +20,8 @@ tune(
   allow_hotstart = FALSE,
   keep_hotstart_stack = FALSE,
   evaluate_default = FALSE,
-  callbacks = list()
+  callbacks = list(),
+  method
 )
 }
 \arguments{
@@ -90,6 +91,9 @@ values at the start of the optimization.}
 
 \item{callbacks}{(list of \link{CallbackTuning})\cr
 List of callbacks.}
+
+\item{method}{\cr
+Deprecated. Use \code{tuner} instead.}
 }
 \value{
 \link{TuningInstanceSingleCrit} | \link{TuningInstanceMultiCrit}

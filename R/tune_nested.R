@@ -26,6 +26,7 @@
 #' @template param_keep_hotstart_stack
 #' @template param_evaluate_default
 #' @template param_callbacks
+#' @template param_method
 #'
 #' @export
 #' @examples
