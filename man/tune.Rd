@@ -92,7 +92,7 @@ values at the start of the optimization.}
 \item{callbacks}{(list of \link{CallbackTuning})\cr
 List of callbacks.}
 
-\item{method}{\cr
+\item{method}{(\code{character(1)})\cr
 Deprecated. Use \code{tuner} instead.}
 }
 \value{

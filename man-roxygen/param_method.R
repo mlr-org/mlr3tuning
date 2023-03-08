@@ -1,2 +1,2 @@
-#' @param method \cr
+#' @param method (`character(1)`)\cr
 #'   Deprecated. Use `tuner` instead.
