@@ -12,7 +12,7 @@ The auto_tuner() function creates an AutoTuner object."><meta property="og:image
     
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.17.2.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.18.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -99,7 +99,8 @@ The <code>auto_tuner()</code> function creates an <a href="AutoTuner.html">AutoT
 <span>  allow_hotstart <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  keep_hotstart_stack <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  evaluate_default <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  callbacks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  callbacks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="va">method</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -201,6 +202,11 @@ values at the start of the optimization.</p></dd>
 <dt>callbacks</dt>
 <dd><p>(list of <a href="CallbackTuning.html">CallbackTuning</a>)<br>
 List of callbacks.</p></dd>
+
+
+<dt>method</dt>
+<dd><p>(<code>character(1)</code>)<br>
+Deprecated. Use <code>tuner</code> instead.</p></dd>
 
 </dl></div>
     <div class="section level2">

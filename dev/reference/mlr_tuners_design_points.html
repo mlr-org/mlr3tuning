@@ -14,7 +14,7 @@ The points in the design are evaluated in order as given."><meta property="og:im
     
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.17.2.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.18.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -239,18 +239,18 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 <span class="r-in"><span><span class="co"># best performing hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="va">instance</span><span class="op">$</span><span class="va">result</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      cp minsplit minbucket learner_param_vals  x_domain classif.ce</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 0.01       64        32          &lt;list[4]&gt; &lt;list[3]&gt; 0.09565217</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 0.01       64        32          &lt;list[4]&gt; &lt;list[3]&gt; 0.04347826</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># all evaluated hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       cp minsplit minbucket classif.ce x_domain_cp x_domain_minsplit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 0.100        2        64 0.16521739       0.100                 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 0.010       64        32 0.09565217       0.010                64</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 0.001      128         1 0.09565217       0.001               128</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 0.100        2        64 0.15652174       0.100                 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 0.010       64        32 0.04347826       0.010                64</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 0.001      128         1 0.04347826       0.001               128</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    x_domain_minbucket runtime_learners           timestamp batch_nr warnings</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:                 64            0.009 2023-03-01 10:36:34        1        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:                 32            0.012 2023-03-01 10:36:34        2        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:                  1            0.009 2023-03-01 10:36:34        3        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:                 64            0.008 2023-03-09 07:21:40        1        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:                 32            0.007 2023-03-09 07:21:40        2        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:                  1            0.006 2023-03-09 07:21:40        3        0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    errors      resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:      0 &lt;ResampleResult[21]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:      0 &lt;ResampleResult[21]&gt;</span>

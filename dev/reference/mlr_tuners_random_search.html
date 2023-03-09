@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.17.2.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.18.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -230,22 +230,22 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># best performing hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="va">instance</span><span class="op">$</span><span class="va">result</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           cp learner_param_vals  x_domain classif.ce</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -8.826691          &lt;list[2]&gt; &lt;list[1]&gt; 0.09565217</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          cp learner_param_vals  x_domain classif.ce</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -8.75201          &lt;list[2]&gt; &lt;list[1]&gt; 0.03478261</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># all evaluated hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            cp classif.ce  x_domain_cp runtime_learners           timestamp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -8.826691 0.09565217 0.0001467631            0.009 2023-03-01 10:36:45</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -6.529149 0.09565217 0.0014602478            0.009 2023-03-01 10:36:45</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -8.630639 0.09565217 0.0001785506            0.009 2023-03-01 10:36:45</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -2.960025 0.09565217 0.0518176094            0.009 2023-03-01 10:36:45</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -7.237438 0.09565217 0.0007191519            0.010 2023-03-01 10:36:45</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -6.098866 0.09565217 0.0022454137            0.008 2023-03-01 10:36:45</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -9.135787 0.09565217 0.0001077403            0.008 2023-03-01 10:36:45</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -2.938461 0.09565217 0.0529471739            0.008 2023-03-01 10:36:45</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -2.762747 0.09565217 0.0631181261            0.011 2023-03-01 10:36:45</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -2.907189 0.09565217 0.0546290590            0.010 2023-03-01 10:36:45</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -8.752010 0.03478261 0.0001581431            0.007 2023-03-09 07:21:49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -5.882875 0.03478261 0.0027867613            0.008 2023-03-09 07:21:49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -2.637205 0.04347826 0.0715610336            0.007 2023-03-09 07:21:49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -9.206008 0.03478261 0.0001004342            0.008 2023-03-09 07:21:49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -8.718925 0.03478261 0.0001634628            0.007 2023-03-09 07:21:49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -7.792233 0.03478261 0.0004129299            0.008 2023-03-09 07:21:49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -3.838331 0.04347826 0.0215294995            0.007 2023-03-09 07:21:49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -4.109505 0.04347826 0.0164158961            0.006 2023-03-09 07:21:49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -2.377304 0.04347826 0.0928003927            0.007 2023-03-09 07:21:49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -6.541012 0.03478261 0.0014430275            0.007 2023-03-09 07:21:49</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     batch_nr warnings errors      resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:        1        0      0 &lt;ResampleResult[21]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  2:        2        0      0 &lt;ResampleResult[21]&gt;</span>
