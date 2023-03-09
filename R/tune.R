@@ -20,15 +20,15 @@
 #' @section Resources:
 #' There are several sections about hyperparameter optimization in the [mlr3book](https://mlr3book.mlr-org.com).
 #'
-#'  - Simplify tuning with the [`tune()`](https://mlr3book.mlr-org.com/optimization.html#sec-simplified-tuning) function.
-#'  - Learn about [tuning spaces](https://mlr3book.mlr-org.com/technical.html#sec-tuning-space).
+#'  * Simplify tuning with the [`tune()`](https://mlr3book.mlr-org.com/optimization.html#sec-simplified-tuning) function.
+#'  * Learn about [tuning spaces](https://mlr3book.mlr-org.com/technical.html#sec-tuning-space).
 #'
 #' The [gallery](https://mlr-org.com/gallery-all-optimization.html) features a collection of case studies and demos about optimization.
 #'
-#'  - Optimize an rpart classification tree with only a [few lines of code](https://mlr-org.com/gallery/optimization/2022-11-10-hyperparameter-optimization-on-the-palmer-penguins/).
-#'  - Tune an XGBoost model with [early stopping](https://mlr-org.com/gallery/optimization/2022-11-04-early-stopping-with-xgboost/).
-#'  - Make us of proven [search space](https://mlr-org.com/gallery/optimization/2021-07-06-introduction-to-mlr3tuningspaces/).
-#'  - Learn about [hotstarting](https://mlr-org.com/gallery/optimization/2023-01-16-hotstart/) models.
+#'  * Optimize an rpart classification tree with only a [few lines of code](https://mlr-org.com/gallery/optimization/2022-11-10-hyperparameter-optimization-on-the-palmer-penguins/).
+#'  * Tune an XGBoost model with [early stopping](https://mlr-org.com/gallery/optimization/2022-11-04-early-stopping-with-xgboost/).
+#'  * Make us of proven [search space](https://mlr-org.com/gallery/optimization/2021-07-06-introduction-to-mlr3tuningspaces/).
+#'  * Learn about [hotstarting](https://mlr-org.com/gallery/optimization/2023-01-16-hotstart/) models.
 #'
 #' @inheritSection TuningInstanceSingleCrit Default Measures
 #'
@@ -59,6 +59,7 @@
 #' @template param_keep_hotstart_stack
 #' @template param_evaluate_default
 #' @template param_callbacks
+#' @template param_method
 #'
 #' @export
 #' @examples
@@ -88,7 +89,12 @@
 #'
 #' # Inspect all evaluated configurations
 #' as.data.table(instance$archive)
-tune = function(tuner, task, learner, resampling, measures = NULL, term_evals = NULL, term_time = NULL, terminator = NULL, search_space = NULL, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, evaluate_default = FALSE, callbacks = list()) {
+tune = function(tuner, task, learner, resampling, measures = NULL, term_evals = NULL, term_time = NULL, terminator = NULL, search_space = NULL, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, evaluate_default = FALSE, callbacks = list(), method) {
+  if (!missing(method)) {
+    message("The `method` argument is deprecated and will be removed in a future release. Please use `tuner` instead.")
+    tuner = method
+  }
+
   assert_tuner(tuner)
   terminator = terminator %??% terminator_selection(term_evals, term_time)
 

@@ -53,6 +53,7 @@ tnrs = function(.keys, ...) {
 #' @template param_callbacks
 #'
 #' @inheritSection TuningInstanceSingleCrit Resources
+#' @inheritSection TuningInstanceSingleCrit Default Measures
 #'
 #' @export
 #' @inherit TuningInstanceSingleCrit examples
