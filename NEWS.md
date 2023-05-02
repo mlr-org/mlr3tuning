@@ -1,5 +1,7 @@
 # mlr3tuning (development version)
 
+* feat: Add new callback that scores the configurations on additional measures while tuning.
+
 # mlr3tuning 0.18.0
 
 * BREAKING CHANGE: The `method` parameter of `tune()`, `tune_nested()` and `auto_tuner()` is renamed to `tuner`.
