@@ -167,7 +167,7 @@ load_callback_backup = function() {
 #'   resampling = rsmp("cv", folds = 3),
 #'   measures = msr("classif.ce"),
 #'   term_evals = 4,
-#'   callbacks = clbk("mlr3tuning.measures", measures = msr("classif.ce", predict_sets = "holdout"))
+#'   callbacks = clbk("mlr3tuning.measures", measures = msr("classif.ce", predict_sets = "holdout", id = "classif.ce_holdout"))
 #' )
 NULL
 
