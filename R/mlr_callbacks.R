@@ -125,3 +125,67 @@ load_callback_backup = function() {
     }
   )
 }
+
+#' @title Measure Callback
+#'
+#' @include CallbackTuning.R
+#' @name mlr3tuning.measures
+#'
+#' @description
+#' This [CallbackTuning] scores the hyperparameter configurations on additional measures while tuning.
+#' Usually, the configurations can be scored on additional measures after tuning (see [ArchiveTuning]).
+#' However, if the memory is not sufficient to store the [mlr3::BenchmarkResult], it is necessary to score the additional measures while tuning.
+#' The measures are not taken into account by the tuner.
+#'
+#' @examples
+#' clbk("mlr3tuning.measures")
+#'
+#' # additionally score the configurations on the accuracy measure
+#' instance = tune(
+#'   tuner = tnr("random_search", batch_size = 2),
+#'   task = tsk("pima"),
+#'   learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
+#'   resampling = rsmp("cv", folds = 3),
+#'   measures = msr("classif.ce"),
+#'   term_evals = 4,
+#'   callbacks = clbk("mlr3tuning.measures", measures = msr("classif.acc"))
+#' )
+#'
+#' # score the configurations on the holdout set
+#' task = tsk("pima")
+#' splits = partition(task, ratio = 0.8)
+#' task$row_roles$use = splits$train
+#' task$row_roles$holdout = splits$test
+#'
+#' learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
+#' learner$predict_sets = c("test", "holdout")
+#'
+#' instance = tune(
+#'   tuner = tnr("random_search", batch_size = 2),
+#'   task = task,
+#'   learner = learner,
+#'   resampling = rsmp("cv", folds = 3),
+#'   measures = msr("classif.ce"),
+#'   term_evals = 4,
+#'   callbacks = clbk("mlr3tuning.measures", measures = msr("classif.ce", predict_sets = "holdout", id = "classif.ce_holdout"))
+#' )
+NULL
+
+load_callback_measures = function() {
+  callback_tuning("mlr3tuning.measures",
+    label = "Additional Measures Callback",
+    man = "mlr3tuning::mlr3tuning.measures",
+    on_optimization_begin = function(callback, context) {
+      callback$state$measures = assert_measures(as_measures(callback$state$measures, clone = TRUE))
+      callback$state$ids = map_chr(callback$state$measures, "id")
+      assert_names(callback$state$ids, type = "unique", .var.name = "measures")
+      if (any(callback$state$ids %in% map_chr(context$instance$objective$measures, "id"))) {
+        stopf("The measure id(s) '%s' are already used by the instance. Please pass the measures with a different id.", as_short_string(callback$state$ids))
+      }
+    },
+
+    on_eval_before_archive = function(callback, context) {
+      set(context$aggregated_performance, j = callback$state$ids, value = context$benchmark_result$aggregate(callback$state$measures)[, callback$state$ids, with = FALSE])
+    }
+  )
+}
