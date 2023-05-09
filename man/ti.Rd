@@ -17,7 +17,8 @@ ti(
   allow_hotstart = FALSE,
   keep_hotstart_stack = FALSE,
   evaluate_default = FALSE,
-  callbacks = list()
+  callbacks = list(),
+  use_redis = FALSE
 )
 }
 \arguments{

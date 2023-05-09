@@ -159,7 +159,8 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   allow_hotstart = FALSE,
   keep_hotstart_stack = FALSE,
   evaluate_default = FALSE,
-  callbacks = list()
+  callbacks = list(),
+  use_redis = FALSE
 )}\if{html}{\out{</div>}}
 }
 

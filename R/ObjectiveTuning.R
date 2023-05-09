@@ -53,13 +53,17 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     #' @field callbacks (List of [CallbackTuning]s).
     callbacks = NULL,
 
+    redis_config = NULL,
+
+    promises = NULL,
+
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #'
     #' @param archive ([ArchiveTuning])\cr
     #'   Reference to archive of [TuningInstanceSingleCrit] | [TuningInstanceMultiCrit].
     #'   If `NULL` (default), benchmark result and models cannot be stored.
-    initialize = function(task, learner, resampling, measures, store_benchmark_result = TRUE, store_models = FALSE, check_values = TRUE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, archive = NULL, callbacks = list()) {
+    initialize = function(task, learner, resampling, measures, store_benchmark_result = TRUE, store_models = FALSE, check_values = TRUE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, archive = NULL, callbacks = list(), use_redis = FALSE) {
       self$task = assert_task(as_task(task, clone = TRUE))
       self$learner = assert_learner(as_learner(learner, clone = TRUE))
       self$measures = assert_measures(as_measures(measures, clone = TRUE), task = self$task, learner = self$learner)
@@ -82,6 +86,8 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       if (!resampling$is_instantiated) resampling$instantiate(task)
       self$resampling = resampling
       self$constants$values$resampling = list(resampling)
+
+      if (assert_flag(use_redis)) self$redis_config = redux::redis_config()
     }
   ),
 
@@ -90,37 +96,54 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       context = ContextEval$new(self)
       private$.xss = xss
 
-      # create learners from set of hyperparameter configurations
-      learners = map(private$.xss, function(x) {
-        learner = self$learner$clone(deep = TRUE)
-        learner$param_set$values = insert_named(learner$param_set$values, x)
-        if (self$allow_hotstart) learner$hotstart_stack = self$hotstart_stack
-        learner
-      })
+      if (!is.null(self$redis_config) &&  future::nbrOfWorkers() > 1) {
+        # Push xss to queue
+        r = redux::hiredis(self$redis_config)
+        bin_xss = map(xss, redux::object_to_bin)
+        r$LPUSH("queue", bin_xss)
 
-      # benchmark hyperparameter configurations
-      private$.design = data.table(task = list(self$task), learner = learners, resampling = resampling)
-      call_back("on_eval_after_design", self$callbacks, context)
+        # collect results
+        private$.aggregated_performance = NULL
+        repeat({
+          res = r$BLPOP("result", timeout = 0)
+          if (all(future::resolved(self$promises))) future::value(self$promises) # errors
+          zz = redux::bin_to_object(res[[2]])
+          print(zz)
+          private$.aggregated_performance = rbindlist(list(private$.aggregated_performance, zz), fill = TRUE)
+          if (nrow(private$.aggregated_performance) == length(xss)) break
+        })
+      } else {
+        # create learners from set of hyperparameter configurations
+        learners = map(private$.xss, function(x) {
+          learner = self$learner$clone(deep = TRUE)
+          learner$param_set$values = insert_named(learner$param_set$values, x)
+          if (self$allow_hotstart) learner$hotstart_stack = self$hotstart_stack
+          learner
+        })
 
-      # learner is already cloned, task and resampling are not changed
-      private$.benchmark_result = benchmark(private$.design, store_models = self$store_models || self$allow_hotstart, allow_hotstart = self$allow_hotstart, clone = character())
-      call_back("on_eval_after_benchmark", self$callbacks, context)
+        # benchmark hyperparameter configurations
+        private$.design = data.table(task = list(self$task), learner = learners, resampling = resampling)
+        call_back("on_eval_after_design", self$callbacks, context)
 
-      # aggregate performance scores
-      private$.aggregated_performance = private$.benchmark_result$aggregate(self$measures, conditions = TRUE)[, c(self$codomain$target_ids, "warnings", "errors"), with = FALSE]
+        # learner is already cloned, task and resampling are not changed
+        private$.benchmark_result = benchmark(private$.design, store_models = self$store_models || self$allow_hotstart, allow_hotstart = self$allow_hotstart, clone = character())
+        call_back("on_eval_after_benchmark", self$callbacks, context)
 
-      # add runtime to evaluations
-      time = map_dbl(private$.benchmark_result$resample_results$resample_result, function(rr) {
-        sum(map_dbl(get_private(rr)$.data$learner_states(get_private(rr)$.view), function(state) state$train_time + state$predict_time))
-      })
-      set(private$.aggregated_performance, j = "runtime_learners", value = time)
+        # aggregate performance scores
+        private$.aggregated_performance = private$.benchmark_result$aggregate(self$measures, conditions = TRUE)[, c(self$codomain$target_ids, "warnings", "errors"), with = FALSE]
 
-      # add to hotstart stack
-      if (self$allow_hotstart) {
-        self$hotstart_stack$add(extract_benchmark_result_learners(private$.benchmark_result))
-        if (!self$store_models) private$.benchmark_result$discard(models = TRUE)
+        # add runtime to evaluations
+        time = map_dbl(private$.benchmark_result$resample_results$resample_result, function(rr) {
+          sum(map_dbl(get_private(rr)$.data$learner_states(get_private(rr)$.view), function(state) state$train_time + state$predict_time))
+        })
+        set(private$.aggregated_performance, j = "runtime_learners", value = time)
+
+        # add to hotstart stack
+        if (self$allow_hotstart) {
+          self$hotstart_stack$add(extract_benchmark_result_learners(private$.benchmark_result))
+          if (!self$store_models) private$.benchmark_result$discard(models = TRUE)
+        }
       }
-
       call_back("on_eval_before_archive", self$callbacks, context)
 
       # store benchmark result in archive
@@ -128,7 +151,6 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
         self$archive$benchmark_result$combine(private$.benchmark_result)
         set(private$.aggregated_performance, j = "uhash", value = private$.benchmark_result$uhashes)
       }
-
       private$.aggregated_performance
     },
 

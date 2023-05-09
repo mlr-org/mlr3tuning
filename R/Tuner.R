@@ -131,12 +131,15 @@ Tuner = R6Class("Tuner",
       inst$.__enclos_env__$private$.context = ContextOptimization$new(instance = inst, optimizer = self)
       call_back("on_optimization_begin", inst$callbacks, get_private(inst)$.context)
 
+      if (!is.null(inst$objective$redis_config)) start_workers(inst)
+
       # evaluate learner with default hyperparameter values
       if (get_private(inst)$.evaluate_default) evaluate_default(inst)
 
       result = optimize_default(inst, self, private)
       call_back("on_optimization_end", inst$callbacks, get_private(inst)$.context)
       if (!inst$objective$keep_hotstart_stack) inst$objective$hotstart_stack = NULL
+      if (!is.null(inst$objective$redis_config)) kill_workers(inst)
       result
     }
   ),
@@ -219,4 +222,3 @@ Tuner = R6Class("Tuner",
     .man = NULL
   )
 )
-

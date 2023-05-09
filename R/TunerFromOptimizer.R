@@ -45,11 +45,14 @@ TunerFromOptimizer = R6Class("TunerFromOptimizer",
       optimize = function(inst) {
         assert_multi_class(inst, c("TuningInstanceSingleCrit", "TuningInstanceMultiCrit"))
 
+        if (!is.null(inst$objective$redis_config)) start_workers(inst)
+
         # evaluate learner with default hyperparameter values
         if (get_private(inst)$.evaluate_default) evaluate_default(inst)
 
         res = private$.optimizer$optimize(inst)
         if (!inst$objective$keep_hotstart_stack) inst$objective$hotstart_stack = NULL
+        if (!is.null(inst$objective$redis_config)) kill_workers(inst)
         res
       }
     ),
