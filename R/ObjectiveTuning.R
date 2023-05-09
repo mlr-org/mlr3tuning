@@ -106,10 +106,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
         private$.aggregated_performance = NULL
         repeat({
           res = r$BLPOP("result", timeout = 0)
-          if (all(future::resolved(self$promises))) future::value(self$promises) # errors
-          zz = redux::bin_to_object(res[[2]])
-          print(zz)
-          private$.aggregated_performance = rbindlist(list(private$.aggregated_performance, zz), fill = TRUE)
+          private$.aggregated_performance = rbindlist(list(private$.aggregated_performance, redux::bin_to_object(res[[2]])), fill = TRUE)
           if (nrow(private$.aggregated_performance) == length(xss)) break
         })
       } else {

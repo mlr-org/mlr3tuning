@@ -35,9 +35,9 @@ evaluate_default = function(inst) {
 workhorse = function(task, learner, resampling, measure, store_benchmark_result, store_models, callbacks, config) {
   r = redux::hiredis(config)
   while (r$GET("terminate") == "0") {
-    bin_xss = r$RPOP("queue")
+    bin_xss = r$BRPOP("queue", timeout = 1)
     if (!is.null(bin_xss)) {
-      xss = redux::bin_to_object(bin_xss)
+      xss = redux::bin_to_object(bin_xss[[2]])
       learner = learner$clone(deep = TRUE)
       learner$param_set$set_values(.values = xss)
       rr = resample(task, learner, resampling, store_models = store_models, clone = character())
@@ -46,8 +46,6 @@ workhorse = function(task, learner, resampling, measure, store_benchmark_result,
       set(ydt , j = "runtime_learners", value = runtime_learners)
       if (store_benchmark_result) set(ydt , j = "resample_result", value = list(rr))
       r$LPUSH("result", redux::object_to_bin(ydt))
-    } else {
-      Sys.sleep(0.1)
     }
   }
 }
