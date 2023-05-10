@@ -51,6 +51,7 @@ workhorse = function(task, learner, resampling, measure, store_benchmark_result,
 }
 
 start_workers = function(inst) {
+  start_time = Sys.time()
   n = future::nbrOfWorkers()
   r = redux::hiredis(inst$objective$redis_config)
   r$FLUSHDB()
@@ -65,6 +66,8 @@ start_workers = function(inst) {
     store_models = inst$objective$store_models,
     callbacks = inst$objective$callbacks,
     config = inst$objective$redis_config)))
+
+   lg$info(sprintf("Started %s workers in %s seconds.", n, as.integer(difftime(Sys.time(), start_time, units = "secs"))))
 }
 
 kill_workers = function(inst) {
