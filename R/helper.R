@@ -41,11 +41,11 @@ workhorse = function(task, learner, resampling, measure, store_benchmark_result,
       learner = learner$clone(deep = TRUE)
       learner$param_set$set_values(.values = xss)
       rr = resample(task, learner, resampling, store_models = store_models, clone = character())
-      ydt = as.data.table(as.list(rr$aggregate()))
       runtime_learners = sum(map_dbl(get_private(rr)$.data$learner_states(get_private(rr)$.view), function(state) state$train_time + state$predict_time))
-      set(ydt , j = "runtime_learners", value = runtime_learners)
-      if (store_benchmark_result) set(ydt , j = "resample_result", value = list(rr))
-      r$LPUSH("result", redux::object_to_bin(ydt))
+      r$HSET(bin_xss[[2]], measure$id, rr$aggregate())
+      r$HSET(bin_xss[[2]], "runtime_learners", runtime_learners)
+      if (store_benchmark_result) r$HSET(bin_xss[[2]], "resample_result", redux::object_to_bin(rr))
+      r$INCR("evals")
     }
   }
 }
@@ -60,7 +60,7 @@ start_workers = function(inst) {
     task = inst$objective$task,
     learner = inst$objective$learner,
     resampling = inst$objective$resampling,
-    measure = inst$objective$measure,
+    measure = instance$objective$measures[[1]],
     store_benchmark_result = inst$objective$store_benchmark_result,
     store_models = inst$objective$store_models,
     callbacks = inst$objective$callbacks,

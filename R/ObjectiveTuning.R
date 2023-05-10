@@ -95,20 +95,22 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     .eval_many = function(xss, resampling) {
       context = ContextEval$new(self)
       private$.xss = xss
+      columns_ids = c(self$measures[[1]]$id, "runtime_learners")
 
       if (!is.null(self$redis_config) &&  future::nbrOfWorkers() > 1) {
         # Push xss to queue
         r = redux::hiredis(self$redis_config)
         bin_xss = map(xss, redux::object_to_bin)
         r$LPUSH("queue", bin_xss)
+        r$SET("evals", 0)
 
         # collect results
-        private$.aggregated_performance = NULL
-        repeat({
-          res = r$BLPOP("result", timeout = 0)
-          private$.aggregated_performance = rbindlist(list(private$.aggregated_performance, redux::bin_to_object(res[[2]])), fill = TRUE)
-          if (nrow(private$.aggregated_performance) == length(xss)) break
-        })
+        while(as.integer(r$GET("evals")) < length(xss)) {
+          Sys.sleep(0.05)
+        }
+        res = r$pipeline(.commands = map(bin_xss, function(key) redux::redis$HMGET(key, columns_ids)))
+        private$.aggregated_performance = set_names(rbindlist(res), columns_ids)
+        private$.aggregated_performance[, (columns_ids) := lapply(.SD, as.numeric), .SDcols = columns_ids]
       } else {
         # create learners from set of hyperparameter configurations
         learners = map(private$.xss, function(x) {
