@@ -107,6 +107,11 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
         # collect results
         while(as.integer(r$GET("evals")) < length(xss)) {
           Sys.sleep(0.05)
+          if (all(future::resolved(self$promises))) {
+             print(self$promises)
+             print(future::value(self$promises))
+             break
+          }
         }
         res = r$pipeline(.commands = map(bin_xss, function(key) redux::redis$HMGET(key, columns_ids)))
         private$.aggregated_performance = set_names(rbindlist(res), columns_ids)
