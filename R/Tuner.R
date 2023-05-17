@@ -83,7 +83,8 @@ Tuner = R6Class("Tuner",
       private$.param_set = assert_param_set(param_set)
       private$.param_classes = assert_subset(param_classes, c("ParamLgl", "ParamInt", "ParamDbl", "ParamFct", "ParamUty"))
       # has to have at least multi-crit or single-crit property
-      private$.properties = assert_subset(properties, bbotk_reflections$optimizer_properties, empty.ok = FALSE)
+      # private$.properties = assert_subset(properties, bbotk_reflections$optimizer_properties, empty.ok = FALSE)
+      private$.properties = properties
       private$.packages = union("mlr3tuning", assert_character(packages, any.missing = FALSE, min.chars = 1L))
       private$.label = assert_string(label, na.ok = TRUE)
       private$.man = assert_string(man, na.ok = TRUE)
@@ -131,15 +132,18 @@ Tuner = R6Class("Tuner",
       inst$.__enclos_env__$private$.context = ContextOptimization$new(instance = inst, optimizer = self)
       call_back("on_optimization_begin", inst$callbacks, get_private(inst)$.context)
 
-      if (!is.null(inst$objective$redis_config)) start_workers(inst)
-
       # evaluate learner with default hyperparameter values
       if (get_private(inst)$.evaluate_default) evaluate_default(inst)
+
+      if ("async" %in% self$properties) {
+        inst$archive = ArchiveRedisTuning$new(inst$search_space, inst$objective$codomain, inst$objective$check_values, instance_id = inst$instance_id)
+        inst$start_workers()
+      }
 
       result = optimize_default(inst, self, private)
       call_back("on_optimization_end", inst$callbacks, get_private(inst)$.context)
       if (!inst$objective$keep_hotstart_stack) inst$objective$hotstart_stack = NULL
-      if (!is.null(inst$objective$redis_config)) kill_workers(inst)
+      if ("async" %in% self$properties) inst$terminate_workers()
       result
     }
   ),

@@ -53,17 +53,13 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     #' @field callbacks (List of [CallbackTuning]s).
     callbacks = NULL,
 
-    redis_config = NULL,
-
-    promises = NULL,
-
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #'
     #' @param archive ([ArchiveTuning])\cr
     #'   Reference to archive of [TuningInstanceSingleCrit] | [TuningInstanceMultiCrit].
     #'   If `NULL` (default), benchmark result and models cannot be stored.
-    initialize = function(task, learner, resampling, measures, store_benchmark_result = TRUE, store_models = FALSE, check_values = TRUE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, archive = NULL, callbacks = list(), use_redis = FALSE) {
+    initialize = function(task, learner, resampling, measures, store_benchmark_result = TRUE, store_models = FALSE, check_values = TRUE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, archive = NULL, callbacks = list()) {
       self$task = assert_task(as_task(task, clone = TRUE))
       self$learner = assert_learner(as_learner(learner, clone = TRUE))
       self$measures = assert_measures(as_measures(measures, clone = TRUE), task = self$task, learner = self$learner)
@@ -86,8 +82,6 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       if (!resampling$is_instantiated) resampling$instantiate(task)
       self$resampling = resampling
       self$constants$values$resampling = list(resampling)
-
-      if (assert_flag(use_redis)) self$redis_config = redux::redis_config()
     }
   ),
 
@@ -95,28 +89,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     .eval_many = function(xss, resampling) {
       context = ContextEval$new(self)
       private$.xss = xss
-      columns_ids = c(self$measures[[1]]$id, "runtime_learners")
 
-      if (!is.null(self$redis_config) &&  future::nbrOfWorkers() > 1) {
-        # Push xss to queue
-        r = redux::hiredis(self$redis_config)
-        bin_xss = map(xss, redux::object_to_bin)
-        r$LPUSH("queue", bin_xss)
-        r$SET("evals", 0)
-
-        # collect results
-        while(as.integer(r$GET("evals")) < length(xss)) {
-          Sys.sleep(0.05)
-          if (all(future::resolved(self$promises))) {
-             print(self$promises)
-             print(future::value(self$promises))
-             break
-          }
-        }
-        res = r$pipeline(.commands = map(bin_xss, function(key) redux::redis$HMGET(key, columns_ids)))
-        private$.aggregated_performance = set_names(rbindlist(res), columns_ids)
-        private$.aggregated_performance[, (columns_ids) := lapply(.SD, as.numeric), .SDcols = columns_ids]
-      } else {
         # create learners from set of hyperparameter configurations
         learners = map(private$.xss, function(x) {
           learner = self$learner$clone(deep = TRUE)
@@ -147,7 +120,6 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
           self$hotstart_stack$add(extract_benchmark_result_learners(private$.benchmark_result))
           if (!self$store_models) private$.benchmark_result$discard(models = TRUE)
         }
-      }
       call_back("on_eval_before_archive", self$callbacks, context)
 
       # store benchmark result in archive
@@ -156,6 +128,18 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
         set(private$.aggregated_performance, j = "uhash", value = private$.benchmark_result$uhashes)
       }
       private$.aggregated_performance
+    },
+
+    .eval = function(xs, ...) {
+      learner = self$learner$clone(deep = TRUE)
+      learner$param_set$set_values(.values = xs)
+      rr = resample(self$task, learner, self$resampling, store_models = self$store_models, clone = character())
+      aggregated_performance = as.list(rr$aggregate(self$measures))
+      runtime_learners = sum(map_dbl(get_private(rr)$.data$learner_states(get_private(rr)$.view), function(state) state$train_time + state$predict_time))
+      res = c(aggregated_performance, list(runtime_learners = runtime_learners))
+      if (!self$store_models) rr$discard(models = TRUE)
+      if (self$store_benchmark_result) res = c(res, list(resample_result = list(rr)))
+      res
     },
 
     .xss = NULL,

@@ -104,11 +104,22 @@
 #' as.data.table(instance$archive)
 TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
   inherit = OptimInstanceSingleCrit,
+
   public = list(
+
+    #' @field promises (`list()`)\cr
+    #' List of promises.
+    promises = NULL,
+
+    #' @field instance_id (`character(1)`)\cr
+    #' Unique identifier of the instance.
+    instance_id = NULL,
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
-    initialize = function(task, learner, resampling, measure = NULL, terminator, search_space = NULL, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, evaluate_default = FALSE, callbacks = list(), use_redis = FALSE) {
+    initialize = function(task, learner, resampling, measure = NULL, terminator, search_space = NULL, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, evaluate_default = FALSE, callbacks = list()) {
+      self$instance_id = uuid::UUIDgenerate()
+
       private$.evaluate_default = assert_flag(evaluate_default)
       learner = assert_learner(as_learner(learner, clone = TRUE))
 
@@ -128,11 +139,57 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
 
       # initialized specialized tuning archive and objective
       archive = ArchiveTuning$new(search_space, codomain, check_values)
-      objective = ObjectiveTuning$new(task, learner, resampling, measures, store_benchmark_result, store_models, check_values, allow_hotstart, keep_hotstart_stack, archive, callbacks, use_redis)
+      objective = ObjectiveTuning$new(task, learner, resampling, measures, store_benchmark_result, store_models, check_values, allow_hotstart, keep_hotstart_stack, archive, callbacks)
 
       super$initialize(objective, search_space, terminator, callbacks = callbacks)
       # super class of instance initializes default archive, overwrite with tuning archive
       self$archive = archive
+    },
+
+    #' @description
+    #' Asynchronously evaluates the objective function at the given points.
+    #'
+    #' @param xdt (`data.table::data.table()`)\cr
+    #' x values as `data.table()` with one point per row.
+    #' Contains the value in the *search space* of the [OptimInstance] object.
+    #' Can contain additional columns for extra information.
+    eval_async = function(xdt) {
+      private$.xdt = xdt
+      call_back("on_optimizer_before_eval", self$callbacks, private$.context)
+      # update progressor
+      if (!is.null(self$progressor)) self$progressor$update(self$terminator, self$archive)
+
+      if (self$is_terminated) stop(bbotk:::terminated_error(self))
+      assert_data_table(xdt)
+      assert_names(colnames(xdt), must.include = self$search_space$ids())
+
+      lg$info("Evaluating %i configuration(s)", max(1, nrow(xdt)))
+
+      xss = transform_xdt_to_xss(private$.xdt, self$search_space)
+      self$archive$write_xdt_xss(private$.xdt, xss)
+
+      # catch errors on the workers
+      if (any(future::resolved(self$promises))) stop("Error on the workers.")
+
+      print(self$archive$n_evals)
+    },
+
+    #' @description
+    #' Starts the workers.
+    start_workers = function()  {
+      objective = self$objective
+      archive = self$archive
+      self$promises = replicate(self$archive$n_workers,
+        future::future(mlr3tuning::wrapper_async(objective, archive),
+        seed = TRUE,
+        packages = "mlr3tuning"))
+    },
+
+    #' @description
+    #' Terminates the workers.
+    terminate_workers = function() {
+      r = self$archive$connector
+      r$SET("terminated", TRUE)
     },
 
     #' @description
@@ -171,3 +228,24 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     .evaluate_default = NULL
   )
 )
+
+#' @title Wrapper
+#'
+#' @description
+#' Wrapper function for asynchronous evaluation of the objective function.
+#'
+#' @param objective ([ObjectiveTuning])\cr
+#'  Objective function.
+#' @param archive ([ArchiveTuning])\cr
+#' Archive of evaluated points.
+#'
+#' @export
+wrapper_async = function(objective, archive) {
+  while (!archive$terminated) {
+    xs = archive$pop_xs()
+    if (!is.null(xs)) {
+      ys = objective$eval(xs$xs)
+      archive$write_ys(xs$key, ys)
+    }
+  }
+}

@@ -11,7 +11,7 @@ Hansen N (2016).
 }
 \description{
 Subclass for Covariance Matrix Adaptation Evolution Strategy (CMA-ES).
-Calls \code{\link[adagio:pureCMAES]{adagio::pureCMAES()}} from package \CRANpkg{adagio}.
+Calls \code{\link[adagio:cmaes]{adagio::pureCMAES()}} from package \CRANpkg{adagio}.
 }
 \section{Dictionary}{
 
@@ -29,7 +29,7 @@ Create \code{random} start values or based on \code{center} of search space?
 In the latter case, it is the center of the parameters before a trafo is applied.}
 }
 
-For the meaning of the control parameters, see \code{\link[adagio:pureCMAES]{adagio::pureCMAES()}}.
+For the meaning of the control parameters, see \code{\link[adagio:cmaes]{adagio::pureCMAES()}}.
 Note that we have removed all control parameters which refer to the termination of the algorithm and where our terminators allow to obtain the same behavior.
 }
 
@@ -98,6 +98,7 @@ learner$train(tsk("penguins"))
 }
 \seealso{
 Other Tuner: 
+\code{\link{mlr_tuners_async_random_search}},
 \code{\link{mlr_tuners_design_points}},
 \code{\link{mlr_tuners_gensa}},
 \code{\link{mlr_tuners_grid_search}},

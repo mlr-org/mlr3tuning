@@ -113,6 +113,17 @@ as.data.table(instance$archive)
 \section{Super classes}{
 \code{\link[bbotk:OptimInstance]{bbotk::OptimInstance}} -> \code{\link[bbotk:OptimInstanceSingleCrit]{bbotk::OptimInstanceSingleCrit}} -> \code{TuningInstanceSingleCrit}
 }
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{promises}}{(\code{list()})\cr
+List of promises.}
+
+\item{\code{instance_id}}{(\code{character(1)})\cr
+Unique identifier of the instance.}
+}
+\if{html}{\out{</div>}}
+}
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
@@ -125,6 +136,9 @@ Param values for the optimal learner call.}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-TuningInstanceSingleCrit-new}{\code{TuningInstanceSingleCrit$new()}}
+\item \href{#method-TuningInstanceSingleCrit-eval_async}{\code{TuningInstanceSingleCrit$eval_async()}}
+\item \href{#method-TuningInstanceSingleCrit-start_workers}{\code{TuningInstanceSingleCrit$start_workers()}}
+\item \href{#method-TuningInstanceSingleCrit-terminate_workers}{\code{TuningInstanceSingleCrit$terminate_workers()}}
 \item \href{#method-TuningInstanceSingleCrit-assign_result}{\code{TuningInstanceSingleCrit$assign_result()}}
 \item \href{#method-TuningInstanceSingleCrit-clone}{\code{TuningInstanceSingleCrit$clone()}}
 }
@@ -159,8 +173,7 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   allow_hotstart = FALSE,
   keep_hotstart_stack = FALSE,
   evaluate_default = FALSE,
-  callbacks = list(),
-  use_redis = FALSE
+  callbacks = list()
 )}\if{html}{\out{</div>}}
 }
 
@@ -224,6 +237,46 @@ List of callbacks.}
 }
 \if{html}{\out{</div>}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TuningInstanceSingleCrit-eval_async"></a>}}
+\if{latex}{\out{\hypertarget{method-TuningInstanceSingleCrit-eval_async}{}}}
+\subsection{Method \code{eval_async()}}{
+Asynchronously evaluates the objective function at the given points.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TuningInstanceSingleCrit$eval_async(xdt)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{xdt}}{(\code{data.table::data.table()})\cr
+x values as \code{data.table()} with one point per row.
+Contains the value in the \emph{search space} of the \link{OptimInstance} object.
+Can contain additional columns for extra information.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TuningInstanceSingleCrit-start_workers"></a>}}
+\if{latex}{\out{\hypertarget{method-TuningInstanceSingleCrit-start_workers}{}}}
+\subsection{Method \code{start_workers()}}{
+Starts the workers.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TuningInstanceSingleCrit$start_workers()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TuningInstanceSingleCrit-terminate_workers"></a>}}
+\if{latex}{\out{\hypertarget{method-TuningInstanceSingleCrit-terminate_workers}{}}}
+\subsection{Method \code{terminate_workers()}}{
+Terminates the workers.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TuningInstanceSingleCrit$terminate_workers()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TuningInstanceSingleCrit-assign_result"></a>}}

@@ -5,6 +5,7 @@
 #' @import mlr3misc
 #' @import bbotk
 #' @importFrom R6 R6Class
+#' @importFrom utils head tail
 "_PACKAGE"
 
 .onLoad = function(libname, pkgname) {
