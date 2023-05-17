@@ -163,7 +163,7 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
       assert_data_table(xdt)
       assert_names(colnames(xdt), must.include = self$search_space$ids())
 
-      lg$info("Sending %i configuration(s) to %i workers", max(1, nrow(xdt)), self$archive$n_workers)
+      lg$info("Sending %i configuration(s) to workers", max(1, nrow(xdt)))
 
       xss = transform_xdt_to_xss(private$.xdt, self$search_space)
       self$archive$write_xdt_xss(private$.xdt, xss)
@@ -177,6 +177,8 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     start_workers = function()  {
       objective = self$objective
       archive = self$archive
+
+      lg$info("Starting %i workers", self$archive$n_workers)
       self$promises = replicate(self$archive$n_workers,
         future::future(mlr3tuning::wrapper_async(objective, archive),
         seed = TRUE,
@@ -187,19 +189,9 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     #' Terminates the workers.
     terminate_workers = function() {
       r = self$archive$connector
+
+      lg$info("Terminating %i workers", self$archive$n_workers)
       r$SET(get_private(self$archive)$.get_key("terminated"), TRUE)
-
-      # try to terminate workers for 10 seconds
-      time = Sys.time()
-      while (difftime(Sys.time(), time, units = "secs") < 10) {
-        if (all(future::resolved(self$promises))) break
-      }
-
-      if (all(future::resolved(self$promises))) {
-        lg$info("Terminating %i workers", self$archive$n_workers)
-      } else {
-        warning("Workers could not be terminated.")
-      }
     },
 
     #' @description
