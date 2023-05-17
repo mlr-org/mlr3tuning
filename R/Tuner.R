@@ -144,6 +144,7 @@ Tuner = R6Class("Tuner",
       call_back("on_optimization_end", inst$callbacks, get_private(inst)$.context)
       if (!inst$objective$keep_hotstart_stack) inst$objective$hotstart_stack = NULL
       if ("async" %in% self$properties) inst$terminate_workers()
+      inst$archive$finish_time = Sys.time()
       result
     }
   ),

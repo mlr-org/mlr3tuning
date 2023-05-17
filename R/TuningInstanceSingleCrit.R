@@ -163,15 +163,13 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
       assert_data_table(xdt)
       assert_names(colnames(xdt), must.include = self$search_space$ids())
 
-      lg$info("Evaluating %i configuration(s)", max(1, nrow(xdt)))
+      lg$info("Sending %i configuration(s) to %i workers", max(1, nrow(xdt)), self$archive$n_workers)
 
       xss = transform_xdt_to_xss(private$.xdt, self$search_space)
       self$archive$write_xdt_xss(private$.xdt, xss)
 
-      # catch errors on the workers
+      # if futures resolve, an error occurred on the workers
       if (any(future::resolved(self$promises))) stop("Error on the workers.")
-
-      print(self$archive$n_evals)
     },
 
     #' @description
@@ -189,7 +187,19 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     #' Terminates the workers.
     terminate_workers = function() {
       r = self$archive$connector
-      r$SET("terminated", TRUE)
+      r$SET(get_private(self$archive)$.get_key("terminated"), TRUE)
+
+      # try to terminate workers for 10 seconds
+      time = Sys.time()
+      while (difftime(Sys.time(), time, units = "secs") < 10) {
+        if (all(future::resolved(self$promises))) break
+      }
+
+      if (all(future::resolved(self$promises))) {
+        lg$info("Terminating %i workers", self$archive$n_workers)
+      } else {
+        warning("Workers could not be terminated.")
+      }
     },
 
     #' @description

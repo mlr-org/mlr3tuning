@@ -108,17 +108,26 @@ ArchiveRedisTuning = R6::R6Class("ArchiveRedisTuning",
     #' Pops all keys from result queue and reads `"xdt"`, `"xss"` and `"ys"` from redis hashes.
     sync_data = function() {
       r = self$connector
+
+      # get keys from result queue
       keys = r$command(list("LPOP", private$.get_key("queue_result"), r$LLEN(private$.get_key("queue_result"))))
-      field_xdt = private$.get_key("xdt")
-      xdt = rbindlist(map(keys, function(key) redux::bin_to_object(r$HGET(key, field_xdt))))
-      field_xss = private$.get_key("xss")
-      xss = map(keys, function(key) redux::bin_to_object(r$HGET(key, field_xss)))
-      field_ys = private$.get_key("ys")
-      ydt = rbindlist(map(keys, function(key) redux::bin_to_object(r$HGET(key, field_ys))))
-      xydt = cbind(xdt, ydt)
-      set(xydt, j = "x_domain", value = xss)
-      private$.data = rbindlist(list(private$.data, xydt), fill = TRUE, use.names = TRUE)
-      setkeyv(private$.data, self$cols_y)
+      if (!is.null(keys)) {
+        lg$info("Receiving %i configuration(s)", length(keys))
+
+        # read data from redis hashes
+        field_xdt = private$.get_key("xdt")
+        xdt = rbindlist(map(keys, function(key) redux::bin_to_object(r$HGET(key, field_xdt))))
+        field_xss = private$.get_key("xss")
+        xss = map(keys, function(key) redux::bin_to_object(r$HGET(key, field_xss)))
+        field_ys = private$.get_key("ys")
+        ydt = rbindlist(map(keys, function(key) redux::bin_to_object(r$HGET(key, field_ys))))
+
+        # bind to local data table
+        xydt = cbind(xdt, ydt)
+        set(xydt, j = "x_domain", value = xss)
+        private$.data = rbindlist(list(private$.data, xydt), fill = TRUE, use.names = TRUE)
+        setkeyv(private$.data, self$cols_y)
+      }
       invisible(private$.data)
     },
 
