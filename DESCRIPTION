@@ -63,7 +63,6 @@ Collate:
     'ObjectiveTuning.R'
     'mlr_tuners.R'
     'Tuner.R'
-    'TunerAsyncHyperband.R'
     'TunerAsyncRandomSearch.R'
     'TunerCmaes.R'
     'TunerDesignPoints.R'

@@ -207,7 +207,7 @@ ArchiveRedisTuning = R6::R6Class("ArchiveRedisTuning",
       as.integer(r$GET(private$.get_key("n_results"))) %??% 0
     },
 
-    #' @field n_in_progress ([integer])\cr
+    #' @field length_queue_eval ([integer])\cr
     #' Number of evaluations in queue.
     length_queue_eval = function() {
       r = self$connector

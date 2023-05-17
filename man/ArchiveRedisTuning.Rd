@@ -45,6 +45,9 @@ Number of free workers.}
 
 \item{\code{n_evals}}{(\link{integer})\cr
 Number of performed evaluations.}
+
+\item{\code{length_queue_eval}}{(\link{integer})\cr
+Number of evaluations in queue.}
 }
 \if{html}{\out{</div>}}
 }
