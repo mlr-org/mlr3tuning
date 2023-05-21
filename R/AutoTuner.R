@@ -311,8 +311,14 @@ AutoTuner = R6Class("AutoTuner",
     #' Hash (unique identifier) for this object.
     hash = function(rhs) {
       assert_ro_binding(rhs)
-      calculate_hash(class(self), self$id, self$param_set$values, private$.predict_type, self$fallback$hash, self$instance_args,
-        private$.store_tuning_instance)
+      calculate_hash(class(self), self$id, self$param_set$values, private$.predict_type, self$fallback$hash, self$parallel_predict, self$tuner, self$instance_args, private$.store_tuning_instance)
+    },
+
+    #' @field phash (`character(1)`)\cr
+    #' Hash (unique identifier) for this partial object, excluding some components which are varied systematically during tuning (parameter values) or feature selection (feature names).
+    phash = function(rhs) {
+      assert_ro_binding(rhs)
+      self$hash
     }
   ),
 
