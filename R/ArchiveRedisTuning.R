@@ -20,6 +20,10 @@ ArchiveRedisTuning = R6::R6Class("ArchiveRedisTuning",
     #' Unique identifier of the instance.
     instance_id = NULL,
 
+    #' @field allow_hotstart ([logical])\cr
+    #' Whether to allow hotstart.
+    allow_hotstart = NULL,
+
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #'
@@ -31,10 +35,11 @@ ArchiveRedisTuning = R6::R6Class("ArchiveRedisTuning",
     #'  Number of workers.
     #' @param instance_id (`character(1)`)\cr
     #' Unique identifier of the instance.
-    initialize = function(search_space, codomain, check_values = TRUE, config = redux::redis_config(), n_workers = future::nbrOfFreeWorkers(), instance_id = uuid::UUIDgenerate()) {
+    initialize = function(search_space, codomain, check_values = TRUE, config = redux::redis_config(), n_workers = future::nbrOfFreeWorkers(), instance_id = uuid::UUIDgenerate(), allow_hotstart = FALSE) {
       self$config = assert_class(config, "redis_config")
       self$n_workers = assert_integer(n_workers, min.len = 1)
       self$instance_id = assert_string(instance_id)
+      self$allow_hotstart = assert_flag(allow_hotstart)
       r = self$connector
       r$SET(private$.get_key("n_evals"), 0)
       r$SET(private$.get_key("n_results"), 0)
@@ -54,16 +59,27 @@ ArchiveRedisTuning = R6::R6Class("ArchiveRedisTuning",
       assert_data_table(xdt, min.rows = 1L)
       r = self$connector
       keys = uuid::UUIDgenerate(n = nrow(xdt))
+
       # serialize R objects
       bin_xdt = map(transpose_list(xdt), function(xs) redux::object_to_bin(xs))
       bin_xss = map(xss, function(xs) redux::object_to_bin(xs))
+
+      if (lg$threshold > 400) {
+        size = object.size(bin_xdt) + object.size(bin_xss)
+        lg$debug("Serializing %i row(s) with a size of %s", nrow(xdt), format(size, units = "auto"))
+      }
+
       # add each point to its own hash
       field_xdt = private$.get_key("xdt")
       field_xss = private$.get_key("xss")
       r$pipeline(.commands = pmap(list(keys, bin_xdt), function(key, bin_x) redux::redis$HSET(key, field_xdt, bin_x)))
       r$pipeline(.commands = pmap(list(keys, bin_xss), function(key, bin_xs) redux::redis$HSET(key, field_xss, bin_xs)))
       # add points to queue
-      r$command(c("LPUSH", private$.get_key("queue_eval"), keys))
+      if (self$allow_hotstart) {
+        r$pipeline(.commands = pmap(list(xdt$worker_pid, keys), function(worker_pid, key) redux::redis$LPUSH(sprintf("%s:%s", private$.get_key("queue_eval"), worker_pid), key)))
+      } else {
+        r$command(c("LPUSH", private$.get_key("queue_eval:0"), keys))
+      }
       # add points to set of all points
       r$command(c("SADD", private$.get_key("keys"), keys))
       # increment evals counter
@@ -80,7 +96,10 @@ ArchiveRedisTuning = R6::R6Class("ArchiveRedisTuning",
     pop_xs = function(timeout = 1) {
       assert_int(timeout, lower = 0)
       r = self$connector
-      key = r$BRPOP(private$.get_key("queue_eval"), timeout)[[2]]
+
+      # read from global and worker queues
+      key = r$command(c("BLMPOP", timeout, 2, sprintf("%s:%s", private$.get_key("queue_eval"), Sys.getpid()), private$.get_key("queue_eval:0"), "LEFT"))[[2]][[1]]
+
       if (is.null(key)) return(NULL)
       list(key = key, xs = redux::bin_to_object(r$HGET(key, private$.get_key("xss"))))
     },
@@ -122,6 +141,11 @@ ArchiveRedisTuning = R6::R6Class("ArchiveRedisTuning",
         field_ys = private$.get_key("ys")
         ydt = rbindlist(map(keys, function(key) redux::bin_to_object(r$HGET(key, field_ys))))
 
+        if (lg$threshold > 400) {
+          size = object.size(xdt) + object.size(xss) + object.size(ydt)
+          lg$debug("Deserializing %i row(s) with a size of %s", nrow(xdt), format(size, units = "auto"))
+        }
+
         # bind to local data table
         xydt = cbind(xdt, ydt)
         set(xydt, j = "x_domain", value = xss)
@@ -160,7 +184,8 @@ ArchiveRedisTuning = R6::R6Class("ArchiveRedisTuning",
     reset = function() {
       r = self$connector
       walk(self$all_keys, function(key) r$DEL(key))
-      r$DEL(private$.get_key("queue_eval"))
+      r$DEL(private$.get_key("queue_eval:0"))
+      if (self$allow_hotstart) r$DEL(private$.get_key("queue_eval:"))
       r$DEL(private$.get_key("queue_result"))
       r$DEL(private$.get_key("keys"))
       r$DEL(private$.get_key("n_evals"))
@@ -217,10 +242,10 @@ ArchiveRedisTuning = R6::R6Class("ArchiveRedisTuning",
     },
 
     #' @field length_queue_eval ([integer])\cr
-    #' Number of evaluations in queue.
+    #' Number of evaluations in global queue.
     length_queue_eval = function() {
       r = self$connector
-      as.integer(r$LLEN(private$.get_key("queue_eval")))  %??% 0
+      as.integer(r$LLEN(private$.get_key("queue_eval:0")))  %??% 0
     }
   ),
 

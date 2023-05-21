@@ -136,7 +136,7 @@ Tuner = R6Class("Tuner",
       if (get_private(inst)$.evaluate_default) evaluate_default(inst)
 
       if ("async" %in% self$properties) {
-        inst$archive = ArchiveRedisTuning$new(inst$search_space, inst$objective$codomain, inst$objective$check_values, instance_id = inst$instance_id)
+        inst$archive = ArchiveRedisTuning$new(inst$search_space, inst$objective$codomain, inst$objective$check_values, instance_id = inst$instance_id, allow_hotstart = inst$objective$allow_hotstart)
         inst$start_workers()
       }
 

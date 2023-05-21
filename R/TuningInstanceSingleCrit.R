@@ -247,6 +247,7 @@ wrapper_async = function(objective, archive) {
     xs = archive$pop_xs()
     if (!is.null(xs)) {
       ys = objective$eval(xs$xs)
+      ys$pid = Sys.getpid()
       archive$write_ys(xs$key, ys)
     }
   }

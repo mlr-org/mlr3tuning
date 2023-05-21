@@ -133,10 +133,15 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     .eval = function(xs, ...) {
       learner = self$learner$clone(deep = TRUE)
       learner$param_set$set_values(.values = xs)
-      rr = resample(self$task, learner, self$resampling, store_models = self$store_models, clone = character())
+      if (self$allow_hotstart) learner$hotstart_stack = self$hotstart_stack
+
+      rr = resample(self$task, learner, self$resampling, store_models = self$store_models, allow_hotstart = self$allow_hotstart, clone = character())
+
       aggregated_performance = as.list(rr$aggregate(self$measures))
       runtime_learners = sum(map_dbl(get_private(rr)$.data$learner_states(get_private(rr)$.view), function(state) state$train_time + state$predict_time))
       res = c(aggregated_performance, list(runtime_learners = runtime_learners))
+
+      if (self$allow_hotstart) self$hotstart_stack$add(rr$learners)
       if (!self$store_models) rr$discard(models = TRUE)
       if (self$store_benchmark_result) res = c(res, list(resample_result = list(rr)))
       res

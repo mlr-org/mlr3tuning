@@ -152,7 +152,8 @@ get_job = function(s_max, eta, r_min, archive, sampler, budget_id, integer_budge
       if (length(promotable)) {
         ri = r_min * eta^(s + 1)
         if (integer_budget) ri = as.integer(round(ri))
-        xdt = candidates[get("asha_id") == promotable[1], c(archive$cols_x, "asha_id"), with = FALSE]
+        xdt = candidates[get("asha_id") == promotable[1], c(archive$cols_x, "asha_id", "pid"), with = FALSE]
+        setnames(xdt, c(archive$cols_x, "asha_id", "worker_pid"))
         set(xdt, j = budget_id, value = ri)
         set(xdt, j = "stage", value = s + 1L)
         return(xdt)
@@ -164,8 +165,9 @@ get_job = function(s_max, eta, r_min, archive, sampler, budget_id, integer_budge
   xdt = sampler$sample(1)$data
   if (integer_budget) r_min = as.integer(round(r_min))
   set(xdt, j = budget_id, value = r_min)
-  asha_id = if (!nrow(archive$data)) 1L else nrow(archive$data[list(0), , on = "stage"]) + 1L
+  asha_id = uuid::UUIDgenerate()
   set(xdt, j = "asha_id", value = asha_id)
+  set(xdt, j = "worker_pid", value = 0)
   set(xdt, j = "stage", value = 0L)
   xdt
 }
