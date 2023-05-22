@@ -1,5 +1,7 @@
 # mlr3tuning (development version)
 
+* fix: Add `$phash()` method to `AutoTuner`.
+* fix: Include `Tuner` in hash of  `AutoTuner`.
 * feat: Add new callback that scores the configurations on additional measures while tuning.
 
 # mlr3tuning 0.18.0
