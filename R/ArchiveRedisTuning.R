@@ -67,6 +67,7 @@ ArchiveRedisTuning = R6::R6Class("ArchiveRedisTuning",
       if (lg$threshold > 400) {
         size = object.size(bin_xdt) + object.size(bin_xss)
         lg$debug("Serializing %i row(s) with a size of %s", nrow(xdt), format(size, units = "auto"))
+        lg$debug(capture.output(print(xdt, class = FALSE, row.names = FALSE, print.keys = FALSE)))
       }
 
       # add each point to its own hash
@@ -135,20 +136,25 @@ ArchiveRedisTuning = R6::R6Class("ArchiveRedisTuning",
 
         # read data from redis hashes
         field_xdt = private$.get_key("xdt")
-        xdt = rbindlist(map(keys, function(key) redux::bin_to_object(r$HGET(key, field_xdt))))
+        xdt = rbindlist(map(keys, function(key) redux::bin_to_object(r$HGET(key, field_xdt))), fill = TRUE, use.names = TRUE)
         field_xss = private$.get_key("xss")
         xss = map(keys, function(key) redux::bin_to_object(r$HGET(key, field_xss)))
         field_ys = private$.get_key("ys")
-        ydt = rbindlist(map(keys, function(key) redux::bin_to_object(r$HGET(key, field_ys))))
+        ydt = rbindlist(map(keys, function(key) redux::bin_to_object(r$HGET(key, field_ys))), fill = TRUE, use.names = TRUE)
 
         if (lg$threshold > 400) {
           size = object.size(xdt) + object.size(xss) + object.size(ydt)
           lg$debug("Deserializing %i row(s) with a size of %s", nrow(xdt), format(size, units = "auto"))
         }
 
-        # bind to local data table
+
         xydt = cbind(xdt, ydt)
         set(xydt, j = "x_domain", value = xss)
+        set(xydt, j = "timestamp", value = Sys.time())
+
+        lg$info(capture.output(print(xydt, class = FALSE, row.names = FALSE, print.keys = FALSE)))
+
+        # bind to local data table
         private$.data = rbindlist(list(private$.data, xydt), fill = TRUE, use.names = TRUE)
         setkeyv(private$.data, self$cols_y)
       }
