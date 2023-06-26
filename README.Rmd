@@ -29,7 +29,7 @@ Package website: [release](https://mlr3tuning.mlr-org.com/) | [dev](https://mlr3
 *mlr3tuning* is the hyperparameter optimization package of the [mlr3](https://mlr-org.com/) ecosystem.
 It features highly configurable search spaces via the [paradox](https://github.com/mlr-org/paradox) package and finds optimal hyperparameter configurations for any mlr3 [learner](https://github.com/mlr-org/mlr3learners).
 mlr3tuning works with several optimization algorithms e.g. Random Search, Iterated Racing, Bayesian Optimization (in [mlr3mbo](https://github.com/mlr-org/mlr3mbo)) and Hyperband (in [mlr3hyperband](https://github.com/mlr-org/mlr3hyperband)).
-Moreover, it can [automatically](https://mlr3book.mlr-org.com/optimization.html#sec-autotuner) optimize learners and estimate the performance of optimized models with [nested resampling](https://mlr3book.mlr-org.com/optimization.html#sec-nested-resampling).
+Moreover, it can [automatically](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-autotuner) optimize learners and estimate the performance of optimized models with [nested resampling](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-nested-resampling).
 The package is built on the optimization framework [bbotk](https://github.com/mlr-org/bbotk).
 
 ## Extension packages
@@ -44,11 +44,11 @@ mlr3tuning is extended by the following packages.
 
 There are several sections about hyperparameter optimization in the [mlr3book](https://mlr3book.mlr-org.com).
 
-* Getting started with [hyperparameter optimization](https://mlr3book.mlr-org.com/optimization.html).
-* [Tune](https://mlr3book.mlr-org.com/optimization.html#sec-tuning-instance) a simple classification tree on the Palmer Penguins data set.
-* Learn about [tuning spaces](https://mlr3book.mlr-org.com/technical.html#sec-tuning-space).
-* Estimate the model performance with [nested resampling](https://mlr3book.mlr-org.com/optimization.html#sec-model-performance).
-* Learn about [multi-objective optimization](https://mlr3book.mlr-org.com/optimization.html#sec-multi-metrics-tuning).
+* Getting started with [hyperparameter optimization](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html).
+* [Tune](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-model-tuning) a simple classification tree on the Sonar data set.
+* Learn about [tuning spaces](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-defining-search-spaces).
+* Estimate the model performance with [nested resampling](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-nested-resampling).
+* Learn about [multi-objective optimization](https://mlr3book.mlr-org.com/chapters/chapter5/advanced_tuning_methods_and_black_box_optimization.html#sec-multi-metrics-tuning).
 
 The [gallery](https://mlr-org.com/gallery-all-optimization.html) features a collection of case studies and demos about optimization.
 

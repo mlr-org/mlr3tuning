@@ -36,9 +36,9 @@ The default measure depends on the task type.\tabular{lll}{
 
 There are several sections about hyperparameter optimization in the \href{https://mlr3book.mlr-org.com}{mlr3book}.
 \itemize{
-\item Getting started with \href{https://mlr3book.mlr-org.com/optimization.html}{hyperparameter optimization}.
-\item \href{https://mlr3book.mlr-org.com/optimization.html#sec-tuning-instance}{Tune} a simple classification tree on the Palmer Penguins data set.
-\item Learn about \href{https://mlr3book.mlr-org.com/technical.html#sec-tuning-space}{tuning spaces}.
+\item Getting started with \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html}{hyperparameter optimization}.
+\item \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-model-tuning}{Tune} a simple classification tree on the Sonar data set.
+\item Learn about \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-defining-search-spaces}{tuning spaces}.
 }
 
 The \href{https://mlr-org.com/gallery-all-optimization.html}{gallery} features a collection of case studies and demos about optimization.

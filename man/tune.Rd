@@ -117,8 +117,8 @@ The search space is created from \link[paradox:to_tune]{paradox::TuneToken} or i
 
 There are several sections about hyperparameter optimization in the \href{https://mlr3book.mlr-org.com}{mlr3book}.
 \itemize{
-\item Simplify tuning with the \href{https://mlr3book.mlr-org.com/optimization.html#sec-simplified-tuning}{\code{tune()}} function.
-\item Learn about \href{https://mlr3book.mlr-org.com/technical.html#sec-tuning-space}{tuning spaces}.
+\item Simplify tuning with the \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-autotuner}{\code{tune()}} function.
+\item Learn about \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-defining-search-spaces}{tuning spaces}.
 }
 
 The \href{https://mlr-org.com/gallery-all-optimization.html}{gallery} features a collection of case studies and demos about optimization.

@@ -11,7 +11,7 @@
 #' @section Resources:
 #' There are several sections about hyperparameter optimization in the [mlr3book](https://mlr3book.mlr-org.com).
 #'
-#'  * Learn about [multi-objective optimization](https://mlr3book.mlr-org.com/optimization.html#sec-multi-metrics-tuning).
+#'  * Learn about [multi-objective optimization](https://mlr3book.mlr-org.com/chapters/chapter5/advanced_tuning_methods_and_black_box_optimization.html#sec-multi-metrics-tuning).
 #'
 #' The [gallery](https://mlr-org.com/gallery-all-optimization.html) features a collection of case studies and demos about optimization.
 #'
