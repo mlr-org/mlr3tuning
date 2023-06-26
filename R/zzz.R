@@ -16,6 +16,7 @@
   x = utils::getFromNamespace("mlr_callbacks", ns = "mlr3misc")
   x$add("mlr3tuning.early_stopping", load_callback_early_stopping)
   x$add("mlr3tuning.backup", load_callback_backup)
+  x$add("mlr3tuning.measures", load_callback_measures)
 
   assign("lg", lgr::get_logger("bbotk"), envir = parent.env(environment()))
   if (Sys.getenv("IN_PKGDOWN") == "true") {

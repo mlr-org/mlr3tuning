@@ -70,6 +70,7 @@ reference:
       - callback_tuning
       - mlr3tuning.backup
       - mlr3tuning.early_stopping
+      - mlr3tuning.measures
   - title: Converters
     contents:
       - as_search_space
