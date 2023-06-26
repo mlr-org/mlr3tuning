@@ -131,25 +131,35 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     },
 
     .eval = function(xs, ...) {
-      learner = self$learner$clone(deep = TRUE)
-      learner$param_set$set_values(.values = xs)
-      if (self$allow_hotstart) learner$hotstart_stack = self$hotstart_stack
+      context = ContextEvalAsync$new(self)
+      private$.xs = xs
 
-      rr = resample(self$task, learner, self$resampling, store_models = self$store_models, allow_hotstart = self$allow_hotstart, clone = character())
+      learner = self$learner$clone(deep = TRUE)
+      learner$param_set$set_values(.values = private$.xs)
+      if (self$allow_hotstart) learner$hotstart_stack = self$hotstart_stack
+      call_back("on_eval_after_design", self$callbacks, context)
+
+      private$.resample_result = resample(self$task, learner, self$resampling, store_models = self$store_models, allow_hotstart = self$allow_hotstart, clone = character())
+      call_back("on_eval_after_benchmark", self$callbacks, context)
 
       aggregated_performance = as.list(rr$aggregate(self$measures))
       runtime_learners = sum(map_dbl(get_private(rr)$.data$learner_states(get_private(rr)$.view), function(state) state$train_time + state$predict_time))
-      res = c(aggregated_performance, list(runtime_learners = runtime_learners))
+      private$.res = c(aggregated_performance, list(runtime_learners = runtime_learners))
 
       if (self$allow_hotstart) self$hotstart_stack$add(rr$learners)
       if (!self$store_models) rr$discard(models = TRUE)
       if (self$store_benchmark_result) res = c(res, list(resample_result = list(rr)))
-      res
+
+      call_back("on_eval_before_archive", self$callbacks, context)
+      private$.res
     },
 
+    .xs = NULL,
     .xss = NULL,
     .design = NULL,
+    .resample_result = NULL,
     .benchmark_result = NULL,
-    .aggregated_performance = NULL
+    .aggregated_performance = NULL,
+    .res = NULL,
   )
 )

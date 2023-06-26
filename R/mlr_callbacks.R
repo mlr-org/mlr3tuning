@@ -87,6 +87,47 @@ load_callback_early_stopping = function() {
   )
 }
 
+load_callback_async_early_stopping = function() {
+  callback_tuning("mlr3tuning.async_early_stopping",
+    label = "Async Early Stopping Callback",
+    man = "mlr3tuning::mlr3tuning.async_early_stopping",
+    on_optimization_begin = function(callback, context) {
+      learner = context$instance$objective$learner
+
+      if (all(c("LearnerClassifXgboost", "LearnerRegrXgboost", "LearnerSurvXgboost") %nin% class(learner))) {
+        stopf("%s is incompatible with %s", format(learner), format(callback))
+      }
+
+      if (is.null(learner$param_set$values$early_stopping_rounds)) {
+        stop("Early stopping is not activated. Set `early_stopping_rounds` parameter.")
+      }
+
+      # store models temporary
+      callback$state$store_models = context$instance$objective$store_models
+      context$instance$objective$store_models = TRUE
+    },
+
+    on_eval_after_benchmark = function(callback, context) {
+      callback$state$max_nrounds = max(map_dbl(get_private(context$resample_result)$.data$learner_states(get_private(context$resample_result)$.view), function(state) {
+        state$model$best_iteration
+      }))
+    },
+
+    on_eval_before_archive = function(callback, context) {
+      context$res = c(context$res, list(max_nrounds = callback$state$max_nrounds))
+      if (!callback$state$store_models) context$benchmark_result$discard(models = TRUE)
+    },
+
+    on_result = function(callback, context) {
+      context$result$learner_param_vals[[1]]$early_stopping_rounds = NULL
+      context$result$learner_param_vals[[1]]$nrounds = context$instance$archive$best()$max_nrounds
+      context$result$learner_param_vals[[1]]$early_stopping_set = "none"
+      context$instance$objective$store_models = callback$state$store_models
+    }
+  )
+}
+
+
 #' @title Backup Benchmark Result Callback
 #'
 #' @include CallbackTuning.R
@@ -186,6 +227,9 @@ load_callback_measures = function() {
     },
 
     on_eval_before_archive = function(callback, context) {
+      if (is.null(context$aggregated_performance)) {
+        context$aggregated_performance = data.table()
+      }
       set(context$aggregated_performance, j = callback$state$ids, value = context$benchmark_result$aggregate(callback$state$measures)[, callback$state$ids, with = FALSE])
     }
   )
