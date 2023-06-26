@@ -39,9 +39,11 @@ Suggests:
     adagio,
     GenSA,
     irace,
+    knitr,
     mlr3learners (>= 0.5.5),
     mlr3pipelines,
     nloptr,
+    rmarkdown,
     rpart,
     testthat (>= 3.0.0),
     xgboost
@@ -82,3 +84,4 @@ Collate:
     'tune.R'
     'tune_nested.R'
     'zzz.R'
+VignetteBuilder: knitr
