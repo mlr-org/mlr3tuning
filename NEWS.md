@@ -1,4 +1,4 @@
-# mlr3tuning (development version)
+# mlr3tuning 0.19.0
 
 * fix: Add `$phash()` method to `AutoTuner`.
 * fix: Include `Tuner` in hash of  `AutoTuner`.
