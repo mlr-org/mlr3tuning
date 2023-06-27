@@ -21,7 +21,7 @@ The tuner is also supposed to store its final result, consisting of a  selected 
 
 There are several sections about hyperparameter optimization in the \href{https://mlr3book.mlr-org.com}{mlr3book}.
 \itemize{
-\item Learn about \href{https://mlr3book.mlr-org.com/optimization.html#sec-multi-metrics-tuning}{multi-objective optimization}.
+\item Learn about \href{https://mlr3book.mlr-org.com/chapters/chapter5/advanced_tuning_methods_and_black_box_optimization.html#sec-multi-metrics-tuning}{multi-objective optimization}.
 }
 
 The \href{https://mlr-org.com/gallery-all-optimization.html}{gallery} features a collection of case studies and demos about optimization.
