@@ -16,7 +16,7 @@ AutoTuner must be initialized with store_tuning_instance = TRUE and mlr3::resamp
     
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.18.0.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.19.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -176,23 +176,23 @@ Resample result of the inner resampling.</p></li>
 <span class="r-in"><span><span class="co"># extract inner archives</span></span></span>
 <span class="r-in"><span><span class="fu">extract_inner_tuning_archives</span><span class="op">(</span><span class="va">rr</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    iteration        cp classif.ce  x_domain_cp runtime_learners</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:         1 -5.161490       0.08 0.0057331507            0.007</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:         1 -8.392303       0.08 0.0002266049            0.005</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:         1 -6.984066       0.08 0.0009265287            0.007</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:         1 -6.306352       0.08 0.0018246774            0.006</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:         2 -5.937771       0.00 0.0026379022            0.006</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6:         2 -2.493608       0.00 0.0826113542            0.007</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7:         2 -9.080529       0.00 0.0001138614            0.006</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8:         2 -3.528397       0.00 0.0293519408            0.007</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:         1 -4.541864       0.00 0.0106535311            0.009</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:         1 -5.679704       0.00 0.0034145686            0.010</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:         1 -6.306548       0.00 0.0018243197            0.012</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:         1 -9.189467       0.00 0.0001021093            0.010</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:         2 -6.314801       0.08 0.0018093264            0.010</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6:         2 -9.138641       0.08 0.0001074333            0.010</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7:         2 -5.359320       0.08 0.0047041036            0.011</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8:         2 -7.445561       0.08 0.0005840284            0.010</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              timestamp batch_nr warnings errors      resample_result task_id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 2023-06-26 15:06:16        1        0      0 &lt;ResampleResult[21]&gt;    iris</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 2023-06-26 15:06:17        2        0      0 &lt;ResampleResult[21]&gt;    iris</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 2023-06-26 15:06:17        3        0      0 &lt;ResampleResult[21]&gt;    iris</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 2023-06-26 15:06:17        4        0      0 &lt;ResampleResult[21]&gt;    iris</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 2023-06-26 15:06:17        1        0      0 &lt;ResampleResult[21]&gt;    iris</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 2023-06-26 15:06:17        2        0      0 &lt;ResampleResult[21]&gt;    iris</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7: 2023-06-26 15:06:17        3        0      0 &lt;ResampleResult[21]&gt;    iris</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8: 2023-06-26 15:06:17        4        0      0 &lt;ResampleResult[21]&gt;    iris</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 2023-06-27 06:13:12        1        0      0 &lt;ResampleResult[21]&gt;    iris</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 2023-06-27 06:13:12        2        0      0 &lt;ResampleResult[21]&gt;    iris</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 2023-06-27 06:13:12        3        0      0 &lt;ResampleResult[21]&gt;    iris</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 2023-06-27 06:13:12        4        0      0 &lt;ResampleResult[21]&gt;    iris</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 2023-06-27 06:13:12        1        0      0 &lt;ResampleResult[21]&gt;    iris</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 2023-06-27 06:13:12        2        0      0 &lt;ResampleResult[21]&gt;    iris</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7: 2023-06-27 06:13:13        3        0      0 &lt;ResampleResult[21]&gt;    iris</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8: 2023-06-27 06:13:13        4        0      0 &lt;ResampleResult[21]&gt;    iris</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             learner_id resampling_id</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1: classif.rpart.tuned            cv</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2: classif.rpart.tuned            cv</span>

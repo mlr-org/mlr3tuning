@@ -16,7 +16,7 @@ The ArchiveTuning ($archive) stores all evaluated hyperparameter configurations 
     
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.18.0.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.19.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -241,8 +241,8 @@ The search space is created from <a href="https://paradox.mlr-org.com/reference/
     <h2 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a></h2>
     
 
-<p>There are several sections about hyperparameter optimization in the <a href="https://mlr3book.mlr-org.com" class="external-link">mlr3book</a>.</p><ul><li><p>Simplify tuning with the <a href="https://mlr3book.mlr-org.com/optimization.html#sec-simplified-tuning" class="external-link"><code>tune()</code></a> function.</p></li>
-<li><p>Learn about <a href="https://mlr3book.mlr-org.com/technical.html#sec-tuning-space" class="external-link">tuning spaces</a>.</p></li>
+<p>There are several sections about hyperparameter optimization in the <a href="https://mlr3book.mlr-org.com" class="external-link">mlr3book</a>.</p><ul><li><p>Simplify tuning with the <a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-autotuner" class="external-link"><code>tune()</code></a> function.</p></li>
+<li><p>Learn about <a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-defining-search-spaces" class="external-link">tuning spaces</a>.</p></li>
 </ul><p>The <a href="https://mlr-org.com/gallery-all-optimization.html" class="external-link">gallery</a> features a collection of case studies and demos about optimization.</p><ul><li><p>Optimize an rpart classification tree with only a <a href="https://mlr-org.com/gallery/optimization/2022-11-10-hyperparameter-optimization-on-the-palmer-penguins/" class="external-link">few lines of code</a>.</p></li>
 <li><p>Tune an XGBoost model with <a href="https://mlr-org.com/gallery/optimization/2022-11-04-early-stopping-with-xgboost/" class="external-link">early stopping</a>.</p></li>
 <li><p>Make us of proven <a href="https://mlr-org.com/gallery/optimization/2021-07-06-introduction-to-mlr3tuningspaces/" class="external-link">search space</a>.</p></li>
@@ -296,11 +296,11 @@ Alternatively, measures can be supplied to <code><a href="https://Rdatatable.git
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Inspect all evaluated configurations</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           cp classif.ce x_domain_cp runtime_learners           timestamp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -5.052031  0.2421875 0.006396326            0.012 2023-06-26 15:06:43</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -5.838518  0.2773438 0.002913157            0.011 2023-06-26 15:06:43</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -3.880661  0.2421875 0.020637170            0.012 2023-06-26 15:06:43</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -2.705104  0.2031250 0.066863364            0.012 2023-06-26 15:06:43</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           cp classif.ce  x_domain_cp runtime_learners           timestamp</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -2.682569  0.2734375 0.0683872740            0.019 2023-06-27 06:13:51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -5.224875  0.2773438 0.0053810327            0.020 2023-06-27 06:13:51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -8.388237  0.2773438 0.0002275279            0.020 2023-06-27 06:13:51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -4.155913  0.2578125 0.0156714824            0.119 2023-06-27 06:13:51</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    batch_nr warnings errors      resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:        1        0      0 &lt;ResampleResult[21]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:        1        0      0 &lt;ResampleResult[21]&gt;</span>

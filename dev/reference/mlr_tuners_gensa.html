@@ -12,7 +12,7 @@ Calls GenSA::GenSA() from package GenSA."><meta property="og:image" content="htt
     
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.18.0.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.19.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -170,7 +170,7 @@ want to set <code>smooth = FALSE</code>.</p>
     <h2 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a></h2>
     
 
-<p>There are several sections about hyperparameter optimization in the <a href="https://mlr3book.mlr-org.com" class="external-link">mlr3book</a>.</p><ul><li><p>Learn more about <a href="https://mlr3book.mlr-org.com/optimization.html#sec-tuner" class="external-link">tuners</a>.</p></li>
+<p>There are several sections about hyperparameter optimization in the <a href="https://mlr3book.mlr-org.com" class="external-link">mlr3book</a>.</p><ul><li><p>Learn more about <a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-tuner" class="external-link">tuners</a>.</p></li>
 </ul><p>The <a href="https://mlr-org.com/gallery-all-optimization.html" class="external-link">gallery</a> features a collection of case studies and demos about optimization.</p><ul><li><p>Use the <a href="https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/" class="external-link">Hyperband</a> optimizer with different budget parameters.</p></li>
 </ul></div>
     <div class="section level2">
@@ -262,21 +262,21 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 <span class="r-in"><span><span class="co"># best performing hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="va">instance</span><span class="op">$</span><span class="va">result</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp learner_param_vals  x_domain classif.ce</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -7.933787          &lt;list[2]&gt; &lt;list[1]&gt; 0.07826087</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -6.815038          &lt;list[2]&gt; &lt;list[1]&gt; 0.06086957</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># all evaluated hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            cp classif.ce  x_domain_cp runtime_learners           timestamp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -7.933787 0.07826087 0.0003584264            0.007 2023-06-26 15:06:32</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -5.063459 0.07826087 0.0063236470            0.007 2023-06-26 15:06:32</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -2.873985 0.07826087 0.0564734470            0.007 2023-06-26 15:06:32</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -7.933787 0.07826087 0.0003584264            0.007 2023-06-26 15:06:32</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -7.933787 0.07826087 0.0003584264            0.007 2023-06-26 15:06:32</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -7.933787 0.07826087 0.0003584264            0.007 2023-06-26 15:06:32</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -7.140408 0.07826087 0.0007924284            0.007 2023-06-26 15:06:32</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -8.727166 0.07826087 0.0001621213            0.008 2023-06-26 15:06:32</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -7.537098 0.07826087 0.0005329421            0.008 2023-06-26 15:06:32</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -8.330477 0.07826087 0.0002410571            0.008 2023-06-26 15:06:33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -6.815038 0.06086957 0.0010971517            0.012 2023-06-27 06:13:34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -3.944710 0.06086957 0.0193568327            0.011 2023-06-27 06:13:34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -8.662991 0.06086957 0.0001728666            0.012 2023-06-27 06:13:34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -6.815038 0.06086957 0.0010971517            0.012 2023-06-27 06:13:34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -6.815038 0.06086957 0.0010971517            0.012 2023-06-27 06:13:34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -6.815038 0.06086957 0.0010971517            0.011 2023-06-27 06:13:34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -6.133534 0.06086957 0.0021689024            0.012 2023-06-27 06:13:34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -7.496542 0.06086957 0.0005550005            0.012 2023-06-27 06:13:34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -6.474286 0.06086957 0.0015426001            0.012 2023-06-27 06:13:35</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -7.155790 0.06086957 0.0007803331            0.012 2023-06-27 06:13:35</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     batch_nr warnings errors      resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:        1        0      0 &lt;ResampleResult[21]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  2:        2        0      0 &lt;ResampleResult[21]&gt;</span>

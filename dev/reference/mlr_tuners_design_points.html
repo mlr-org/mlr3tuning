@@ -14,7 +14,7 @@ The points in the design are evaluated in order as given."><meta property="og:im
     
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.18.0.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.19.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -142,7 +142,7 @@ Design points to try in search, one per row.</p></dd>
     <h2 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a></h2>
     
 
-<p>There are several sections about hyperparameter optimization in the <a href="https://mlr3book.mlr-org.com" class="external-link">mlr3book</a>.</p><ul><li><p>Learn more about <a href="https://mlr3book.mlr-org.com/optimization.html#sec-tuner" class="external-link">tuners</a>.</p></li>
+<p>There are several sections about hyperparameter optimization in the <a href="https://mlr3book.mlr-org.com" class="external-link">mlr3book</a>.</p><ul><li><p>Learn more about <a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-tuner" class="external-link">tuners</a>.</p></li>
 </ul><p>The <a href="https://mlr-org.com/gallery-all-optimization.html" class="external-link">gallery</a> features a collection of case studies and demos about optimization.</p><ul><li><p>Use the <a href="https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/" class="external-link">Hyperband</a> optimizer with different budget parameters.</p></li>
 </ul></div>
     <div class="section level2">
@@ -242,18 +242,18 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 <span class="r-in"><span><span class="co"># best performing hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="va">instance</span><span class="op">$</span><span class="va">result</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      cp minsplit minbucket learner_param_vals  x_domain classif.ce</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 0.01       64        32          &lt;list[4]&gt; &lt;list[3]&gt; 0.04347826</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 0.01       64        32          &lt;list[4]&gt; &lt;list[3]&gt; 0.03478261</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># all evaluated hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       cp minsplit minbucket classif.ce x_domain_cp x_domain_minsplit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 0.100        2        64 0.06086957       0.100                 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 0.010       64        32 0.04347826       0.010                64</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 0.001      128         1 0.04347826       0.001               128</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 0.100        2        64 0.13913043       0.100                 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 0.010       64        32 0.03478261       0.010                64</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 0.001      128         1 0.03478261       0.001               128</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    x_domain_minbucket runtime_learners           timestamp batch_nr warnings</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:                 64            0.007 2023-06-26 15:06:31        1        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:                 32            0.007 2023-06-26 15:06:31        2        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:                  1            0.007 2023-06-26 15:06:31        3        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:                 64            0.012 2023-06-27 06:13:32        1        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:                 32            0.013 2023-06-27 06:13:32        2        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:                  1            0.012 2023-06-27 06:13:33        3        0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    errors      resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:      0 &lt;ResampleResult[21]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:      0 &lt;ResampleResult[21]&gt;</span>
