@@ -50,7 +50,7 @@ There are several sections about hyperparameter optimization in the
   - Getting started with [hyperparameter
     optimization](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html).
   - [Tune](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-model-tuning)
-    a simple classification tree on the Sonar data set.
+    a support vector machine on the Sonar data set.
   - Learn about [tuning
     spaces](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-defining-search-spaces).
   - Estimate the model performance with [nested
