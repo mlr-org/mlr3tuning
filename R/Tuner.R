@@ -31,7 +31,7 @@
 #' @section Resources:
 #' There are several sections about hyperparameter optimization in the [mlr3book](https://mlr3book.mlr-org.com).
 #'
-#'  * Learn more about [tuners](https://mlr3book.mlr-org.com/optimization.html#sec-tuner).
+#'  * Learn more about [tuners](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-tuner).
 #'
 #' The [gallery](https://mlr-org.com/gallery-all-optimization.html) features a collection of case studies and demos about optimization.
 #'

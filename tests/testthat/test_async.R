@@ -79,3 +79,7 @@ test_that("Async Random Search", {
 
   tuner$optimize(instance)
 })
+
+test_that("async callbacks work", {
+  
+})

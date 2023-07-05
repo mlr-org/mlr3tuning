@@ -160,6 +160,6 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     .resample_result = NULL,
     .benchmark_result = NULL,
     .aggregated_performance = NULL,
-    .res = NULL,
+    .res = NULL
   )
 )

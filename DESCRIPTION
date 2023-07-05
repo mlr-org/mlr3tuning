@@ -1,6 +1,6 @@
 Package: mlr3tuning
 Title: Hyperparameter Optimization for 'mlr3'
-Version: 0.18.0.9000
+Version: 0.19.0.9000
 Authors@R: c(
     person("Marc", "Becker", , "marcbecker@posteo.de", role = c("cre", "aut"),
            comment = c(ORCID = "0000-0002-8115-0400")),
@@ -41,9 +41,11 @@ Suggests:
     future,
     GenSA,
     irace,
+    knitr,
     mlr3learners (>= 0.5.5),
     mlr3pipelines,
     nloptr,
+    rmarkdown,
     rpart,
     redux,
     testthat (>= 3.0.0),
@@ -62,6 +64,7 @@ Collate:
     'AutoTuner.R'
     'CallbackTuning.R'
     'ContextEval.R'
+    'ContextEvalAsync.R'
     'ObjectiveTuning.R'
     'mlr_tuners.R'
     'Tuner.R'
@@ -90,3 +93,4 @@ Collate:
     'tune.R'
     'tune_nested.R'
     'zzz.R'
+VignetteBuilder: knitr

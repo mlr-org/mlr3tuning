@@ -134,8 +134,8 @@ The default measure depends on the task type.\tabular{lll}{
 
 There are several sections about hyperparameter optimization in the \href{https://mlr3book.mlr-org.com}{mlr3book}.
 \itemize{
-\item \href{https://mlr3book.mlr-org.com/optimization.html#sec-autotuner}{Automate} the tuning.
-\item Estimate the model performance with \href{https://mlr3book.mlr-org.com/optimization.html#sec-model-performance}{nested resampling}.
+\item \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-autotuner}{Automate} the tuning.
+\item Estimate the model performance with \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-nested-resampling}{nested resampling}.
 }
 
 The \href{https://mlr-org.com/gallery-all-optimization.html}{gallery} features a collection of case studies and demos about optimization.

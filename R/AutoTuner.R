@@ -22,8 +22,8 @@
 #' @section Resources:
 #' There are several sections about hyperparameter optimization in the [mlr3book](https://mlr3book.mlr-org.com).
 #'
-#'  * [Automate](https://mlr3book.mlr-org.com/optimization.html#sec-autotuner) the tuning.
-#'  * Estimate the model performance with [nested resampling](https://mlr3book.mlr-org.com/optimization.html#sec-model-performance).
+#'  * [Automate](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-autotuner) the tuning.
+#'  * Estimate the model performance with [nested resampling](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-nested-resampling).
 #'
 #' The [gallery](https://mlr-org.com/gallery-all-optimization.html) features a collection of case studies and demos about optimization.
 #'
@@ -311,8 +311,14 @@ AutoTuner = R6Class("AutoTuner",
     #' Hash (unique identifier) for this object.
     hash = function(rhs) {
       assert_ro_binding(rhs)
-      calculate_hash(class(self), self$id, self$param_set$values, private$.predict_type, self$fallback$hash, self$instance_args,
-        private$.store_tuning_instance)
+      calculate_hash(class(self), self$id, self$param_set$values, private$.predict_type, self$fallback$hash, self$parallel_predict, self$tuner, self$instance_args, private$.store_tuning_instance)
+    },
+
+    #' @field phash (`character(1)`)\cr
+    #' Hash (unique identifier) for this partial object, excluding some components which are varied systematically during tuning (parameter values) or feature selection (feature names).
+    phash = function(rhs) {
+      assert_ro_binding(rhs)
+      self$hash
     }
   ),
 

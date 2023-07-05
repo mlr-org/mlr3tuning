@@ -23,10 +23,10 @@ Racing, Bayesian Optimization (in
 [mlr3mbo](https://github.com/mlr-org/mlr3mbo)) and Hyperband (in
 [mlr3hyperband](https://github.com/mlr-org/mlr3hyperband)). Moreover, it
 can
-[automatically](https://mlr3book.mlr-org.com/optimization.html#sec-autotuner)
+[automatically](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-autotuner)
 optimize learners and estimate the performance of optimized models with
 [nested
-resampling](https://mlr3book.mlr-org.com/optimization.html#sec-nested-resampling).
+resampling](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-nested-resampling).
 The package is built on the optimization framework
 [bbotk](https://github.com/mlr-org/bbotk).
 
@@ -48,15 +48,15 @@ There are several sections about hyperparameter optimization in the
 [mlr3book](https://mlr3book.mlr-org.com).
 
   - Getting started with [hyperparameter
-    optimization](https://mlr3book.mlr-org.com/optimization.html).
-  - [Tune](https://mlr3book.mlr-org.com/optimization.html#sec-tuning-instance)
-    a simple classification tree on the Palmer Penguins data set.
+    optimization](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html).
+  - [Tune](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-model-tuning)
+    a simple classification tree on the Sonar data set.
   - Learn about [tuning
-    spaces](https://mlr3book.mlr-org.com/technical.html#sec-tuning-space).
+    spaces](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-defining-search-spaces).
   - Estimate the model performance with [nested
-    resampling](https://mlr3book.mlr-org.com/optimization.html#sec-model-performance).
+    resampling](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-nested-resampling).
   - Learn about [multi-objective
-    optimization](https://mlr3book.mlr-org.com/optimization.html#sec-multi-metrics-tuning).
+    optimization](https://mlr3book.mlr-org.com/chapters/chapter5/advanced_tuning_methods_and_black_box_optimization.html#sec-multi-metrics-tuning).
 
 The [gallery](https://mlr-org.com/gallery-all-optimization.html)
 features a collection of case studies and demos about optimization.
@@ -158,7 +158,7 @@ tuner$optimize(instance)
 ```
 
     ##        cost     gamma learner_param_vals  x_domain classif.ce
-    ## 1: 11.51293 -5.756463          <list[4]> <list[2]>  0.1779158
+    ## 1: 5.756463 -5.756463          <list[4]> <list[2]>  0.1637681
 
 The tuner returns the best hyperparameter configuration and the
 corresponding measured performance.
@@ -170,17 +170,17 @@ as.data.table(instance$archive)[, .(cost, gamma, classif.ce, batch_nr, resample_
 ```
 
     ##           cost      gamma classif.ce batch_nr      resample_result
-    ##  1:  11.512925  -5.756463  0.1779158        1 <ResampleResult[21]>
-    ##  2:  11.512925  11.512925  0.4662526        2 <ResampleResult[21]>
-    ##  3:   5.756463   5.756463  0.4662526        3 <ResampleResult[21]>
-    ##  4:  -5.756463  -5.756463  0.4662526        4 <ResampleResult[21]>
-    ##  5: -11.512925   0.000000  0.4662526        5 <ResampleResult[21]>
+    ##  1:  -5.756463   5.756463  0.4665977        1 <ResampleResult[21]>
+    ##  2:   5.756463  -5.756463  0.1637681        2 <ResampleResult[21]>
+    ##  3:  11.512925   5.756463  0.4665977        3 <ResampleResult[21]>
+    ##  4:   5.756463  11.512925  0.4665977        4 <ResampleResult[21]>
+    ##  5: -11.512925 -11.512925  0.4665977        5 <ResampleResult[21]>
     ## ---                                                               
-    ## 21: -11.512925  -5.756463  0.4662526       21 <ResampleResult[21]>
-    ## 22:  11.512925   0.000000  0.4662526       22 <ResampleResult[21]>
-    ## 23:   5.756463  11.512925  0.4662526       23 <ResampleResult[21]>
-    ## 24:  11.512925 -11.512925  0.2498965       24 <ResampleResult[21]>
-    ## 25: -11.512925   5.756463  0.4662526       25 <ResampleResult[21]>
+    ## 21:  -5.756463  -5.756463  0.4665977       21 <ResampleResult[21]>
+    ## 22:  11.512925  11.512925  0.4665977       22 <ResampleResult[21]>
+    ## 23: -11.512925  11.512925  0.4665977       23 <ResampleResult[21]>
+    ## 24:  11.512925  -5.756463  0.1637681       24 <ResampleResult[21]>
+    ## 25:   0.000000  -5.756463  0.2599034       25 <ResampleResult[21]>
 
 The [mlr3viz](https://mlr3viz.mlr-org.com/) package visualizes tuning
 results.

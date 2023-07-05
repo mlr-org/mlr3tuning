@@ -182,3 +182,7 @@ revdep/
 # misc
 Meta/
 attic/
+<<<<<<< HEAD
+=======
+inst/doc
+>>>>>>> main

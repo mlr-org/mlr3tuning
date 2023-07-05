@@ -33,9 +33,9 @@
 #' @section Resources:
 #' There are several sections about hyperparameter optimization in the [mlr3book](https://mlr3book.mlr-org.com).
 #'
-#'  * Getting started with [hyperparameter optimization](https://mlr3book.mlr-org.com/optimization.html).
-#'  * [Tune](https://mlr3book.mlr-org.com/optimization.html#sec-tuning-instance) a simple classification tree on the Palmer Penguins data set.
-#'  * Learn about [tuning spaces](https://mlr3book.mlr-org.com/technical.html#sec-tuning-space).
+#'  * Getting started with [hyperparameter optimization](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html).
+#'  * [Tune](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-model-tuning) a simple classification tree on the Sonar data set.
+#'  * Learn about [tuning spaces](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-defining-search-spaces).
 #'
 #' The [gallery](https://mlr-org.com/gallery-all-optimization.html) features a collection of case studies and demos about optimization.
 #'
