@@ -28,16 +28,33 @@
 #' @export
 #' @template example
 TunerRandomSearch = R6Class("TunerRandomSearch",
-  inherit = TunerFromOptimizer,
+  inherit = Tuner,
   public = list(
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function() {
       super$initialize(
-        optimizer = OptimizerRandomSearch$new(),
-        man = "mlr3tuning::mlr_tuners_random_search"
+        id = "random_search",
+        param_set = ps(),
+        param_classes = c("ParamLgl", "ParamInt", "ParamDbl", "ParamFct"),
+        properties = c("dependencies", "single-crit", "multi-crit"),
+        label = "Random Search",
+        man = "mlr3tuning::mlr_optimizers_random_search"
       )
+    }
+  ),
+
+  private = list(
+    .optimize = function(inst) {
+      sampler = SamplerUnif$new(inst$search_space)
+      n = inst$server$free_workers * 10
+      repeat { # iterate until we have an exception from eval_batch
+        if (inst$server$n_queued_tasks < n) {
+          design = sampler$sample(n)
+          inst$eval_batch(design$data)
+        }
+      }
     }
   )
 )

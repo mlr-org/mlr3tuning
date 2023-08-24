@@ -64,6 +64,8 @@ ArchiveTuning = R6Class("ArchiveTuning",
   inherit = Archive,
   public = list(
 
+    server = NULL,
+
     #' @field benchmark_result ([mlr3::BenchmarkResult])\cr
     #' Benchmark result.
     benchmark_result = NULL,
@@ -73,8 +75,9 @@ ArchiveTuning = R6Class("ArchiveTuning",
     #'
     #' @param check_values (`logical(1)`)\cr
     #'   If `TRUE` (default), hyperparameter configurations are check for validity.
-    initialize = function(search_space, codomain, check_values = TRUE) {
+    initialize = function(search_space, codomain, check_values = TRUE, server = NULL) {
       super$initialize(search_space, codomain, check_values)
+      self$server = assert_class(server, "Server")
 
       # initialize empty benchmark result
       self$benchmark_result = BenchmarkResult$new()
@@ -153,6 +156,41 @@ ArchiveTuning = R6Class("ArchiveTuning",
     print = function() {
       catf("%s with %i evaluations", format(self), self$n_evals)
       print(as.data.table(self, unnest = NULL, exclude_columns = c("x_domain", "uhash", "timestamp", "runtime_learners", "resample_result")), digits = 2)
+    },
+
+    #' @description
+    #' Returns the best scoring evaluation(s). For single-crit optimization,
+    #' the solution that minimizes / maximizes the objective function.
+    #' For multi-crit optimization, the Pareto set / front.
+    #'
+    #' @param batch (`integer()`)\cr
+    #'  The batch number(s) to limit the best results to. Default is
+    #'  all batches.
+    #' @param n_select (`integer(1L)`)\cr
+    #'   Amount of points to select. Ignored for multi-crit optimization.
+    #'
+    #' @return [data.table::data.table()]
+    best = function(n_select = 1) {
+      tab = self$data
+      assert_int(n_select, lower = 1L, upper = nrow(tab))
+
+      max_to_min = self$codomain$maximization_to_minimization
+      if (self$codomain$target_length == 1L) {
+        setorderv(tab, self$cols_y, order = max_to_min, na.last = TRUE)
+        res = tab[seq_len(n_select), ]
+      } else {
+        ymat = t(as.matrix(tab[, self$cols_y, with = FALSE]))
+        ymat = max_to_min * ymat
+        res = tab[!is_dominated(ymat)]
+      }
+
+      return(res)
+    }
+  ),
+
+  active = list(
+    data = function(rhs) {
+      self$server$data
     }
   )
 )

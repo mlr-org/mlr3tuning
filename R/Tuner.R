@@ -131,6 +131,9 @@ Tuner = R6Class("Tuner",
       inst$.__enclos_env__$private$.context = ContextOptimization$new(instance = inst, optimizer = self)
       call_back("on_optimization_begin", inst$callbacks, get_private(inst)$.context)
 
+      # start workers
+      inst$server$start_workers(inst$objective$eval, as_list = TRUE, packages = "mlr3")
+
       # evaluate learner with default hyperparameter values
       if (get_private(inst)$.evaluate_default) evaluate_default(inst)
 

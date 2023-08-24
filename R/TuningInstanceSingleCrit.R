@@ -106,9 +106,18 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
   inherit = OptimInstanceSingleCrit,
   public = list(
 
+    config = NULL,
+
+    server = NULL,
+
+    instance_id = NULL,
+
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
-    initialize = function(task, learner, resampling, measure = NULL, terminator, search_space = NULL, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, evaluate_default = FALSE, callbacks = list()) {
+    initialize = function(task, learner, resampling, measure = NULL, terminator, search_space = NULL, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, evaluate_default = FALSE, callbacks = list(), config = redux::redis_config(), instance_id = uuid::UUIDgenerate()) {
+      self$instance_id = assert_string(instance_id)
+      self$config = assert_class(config, "redis_config")
+      self$server = rush::Server$new(id = "instance_id", config = config)
       private$.evaluate_default = assert_flag(evaluate_default)
       learner = assert_learner(as_learner(learner, clone = TRUE))
 
@@ -127,12 +136,31 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
       codomain = measures_to_codomain(measures)
 
       # initialized specialized tuning archive and objective
-      archive = ArchiveTuning$new(search_space, codomain, check_values)
+      archive = ArchiveTuning$new(search_space, codomain, check_values, server = self$server)
       objective = ObjectiveTuning$new(task, learner, resampling, measures, store_benchmark_result, store_models, check_values, allow_hotstart, keep_hotstart_stack, archive, callbacks)
 
       super$initialize(objective, search_space, terminator, callbacks = callbacks)
       # super class of instance initializes default archive, overwrite with tuning archive
       self$archive = archive
+    },
+
+    eval_batch = function(xdt) {
+      private$.xdt = xdt
+      call_back("on_optimizer_before_eval", self$callbacks, private$.context)
+
+      # update progressor
+      if (!is.null(self$progressor)) self$progressor$update(self$terminator, self$archive)
+
+      if (self$is_terminated) stop(bbotk:::terminated_error(self))
+      assert_data_table(xdt)
+      assert_names(colnames(xdt), must.include = self$search_space$ids())
+      xss = transform_xdt_to_xss(private$.xdt, self$search_space)
+      setnames(xdt, names(xdt), paste0("untransformed_", names(xdt)))
+      untransformed_xss = transpose_list(xdt)
+      self$server$push_tasks(xss, extra = untransformed_xss)
+
+      # check if an error occurred on workers
+      self$server$check_workers()
     },
 
     #' @description

@@ -86,55 +86,34 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
   ),
 
   private = list(
-    .eval_many = function(xss, resampling) {
-      context = ContextEval$new(self)
-      private$.xss = xss
+    .eval = function(xs, ...) {
+      #context = ContextEvalAsync$new(self)
+      private$.xs = xs
 
-      # create learners from set of hyperparameter configurations
-      learners = map(private$.xss, function(x) {
-        learner = self$learner$clone(deep = TRUE)
-        learner$param_set$values = insert_named(learner$param_set$values, x)
-        if (self$allow_hotstart) learner$hotstart_stack = self$hotstart_stack
-        learner
-      })
+      learner = self$learner$clone(deep = TRUE)
+      learner$param_set$set_values(.values = private$.xs)
+      if (self$allow_hotstart) learner$hotstart_stack = self$hotstart_stack
+      #call_back("on_eval_after_design", self$callbacks, context)
 
-      # benchmark hyperparameter configurations
-      private$.design = data.table(task = list(self$task), learner = learners, resampling = resampling)
-      call_back("on_eval_after_design", self$callbacks, context)
+      private$.resample_result = resample(self$task, learner, self$resampling, store_models = self$store_models, allow_hotstart = self$allow_hotstart, clone = character())
+      #call_back("on_eval_after_benchmark", self$callbacks, context)
 
-      # learner is already cloned, task and resampling are not changed
-      private$.benchmark_result = benchmark(private$.design, store_models = self$store_models || self$allow_hotstart, allow_hotstart = self$allow_hotstart, clone = character())
-      call_back("on_eval_after_benchmark", self$callbacks, context)
+      aggregated_performance = as.list(private$.resample_result$aggregate(self$measures))
+      runtime_learners = sum(map_dbl(get_private(private$.resample_result)$.data$learner_states(get_private(private$.resample_result)$.view), function(state) state$train_time + state$predict_time))
+      private$.res = c(aggregated_performance, list(runtime_learners = runtime_learners))
 
-      # aggregate performance scores
-      private$.aggregated_performance = private$.benchmark_result$aggregate(self$measures, conditions = TRUE)[, c(self$codomain$target_ids, "warnings", "errors"), with = FALSE]
-
-      # add runtime to evaluations
-      time = map_dbl(private$.benchmark_result$resample_results$resample_result, function(rr) {
-        sum(map_dbl(get_private(rr)$.data$learner_states(get_private(rr)$.view), function(state) state$train_time + state$predict_time))
-      })
-      set(private$.aggregated_performance, j = "runtime_learners", value = time)
-
-      # add to hotstart stack
-      if (self$allow_hotstart) {
-        self$hotstart_stack$add(extract_benchmark_result_learners(private$.benchmark_result))
-        if (!self$store_models) private$.benchmark_result$discard(models = TRUE)
-      }
+      if (self$allow_hotstart) self$hotstart_stack$add(private$.resample_result$learners)
+      if (!self$store_models) private$.resample_result$discard(models = TRUE)
+      if (self$store_benchmark_result) private$.res = c(private$.res, list(resample_result = list(private$.resample_result)))
 
       call_back("on_eval_before_archive", self$callbacks, context)
-
-      # store benchmark result in archive
-      if (self$store_benchmark_result) {
-        self$archive$benchmark_result$combine(private$.benchmark_result)
-        set(private$.aggregated_performance, j = "uhash", value = private$.benchmark_result$uhashes)
-      }
-
-      private$.aggregated_performance
+      private$.res
     },
 
-    .xss = NULL,
+    .xs = NULL,
     .design = NULL,
-    .benchmark_result = NULL,
-    .aggregated_performance = NULL
+    .resample_result = NULL,
+    .aggregated_performance = NULL,
+    .res = NULL
   )
 )
