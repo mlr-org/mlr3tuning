@@ -264,31 +264,6 @@ If an instantiated resampling is passed, the <a href="AutoTuner.html">AutoTuner<
 <span class="r-in"><span>  term_evals <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">at</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="fu">tsk</span><span class="op">(</span><span class="st">"pima"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Called from: .__ObjectiveTuning__initialize(self = self, private = private, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     super = super, task = task, learner = learner, resampling = resampling, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     measures = measures, store_benchmark_result = store_benchmark_result, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     store_models = store_models, check_values = check_values, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     allow_hotstart = allow_hotstart, keep_hotstart_stack = keep_hotstart_stack, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     archive = archive, callbacks = callbacks)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$measures = assert_measures(as_measures(measures), task = self$task, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     learner = self$learner)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$store_benchmark_result = assert_flag(store_benchmark_result)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$allow_hotstart = assert_flag(allow_hotstart) &amp;&amp; any(c("hotstart_forward", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "hotstart_backward") %in% learner$properties)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (self$allow_hotstart) self$hotstart_stack = HotstartStack$new()</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$keep_hotstart_stack = assert_flag(keep_hotstart_stack)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$store_models = assert_flag(store_models)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$archive = assert_r6(archive, "ArchiveTuning", null.ok = TRUE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (is.null(self$archive)) self$allow_hotstart = self$store_benchmark_result = self$store_models = FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$callbacks = assert_callbacks(as_callbacks(callbacks))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: super$initialize(id = sprintf("%s_on_%s", self$learner$id, self$task$id), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     properties = "noisy", domain = self$learner$param_set, codomain = measures_to_codomain(self$measures), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     constants = ps(resampling = p_uty()), check_values = check_values)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: resampling = assert_resampling(as_resampling(resampling, clone = TRUE))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (!resampling$is_instantiated) resampling$instantiate(task)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: resampling$instantiate(task)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$resampling = resampling</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$constants$values$resampling = list(resampling)</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

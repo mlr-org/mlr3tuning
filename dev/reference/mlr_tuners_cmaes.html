@@ -216,61 +216,36 @@ See also the documentation of <a href="https://bbotk.mlr-org.com/" class="extern
 <span class="r-in"><span>  resampling <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">rsmp</a></span><span class="op">(</span><span class="st">"holdout"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  measure <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">msr</a></span><span class="op">(</span><span class="st">"classif.ce"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  term_evals <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Called from: .__ObjectiveTuning__initialize(self = self, private = private, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     super = super, task = task, learner = learner, resampling = resampling, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     measures = measures, store_benchmark_result = store_benchmark_result, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     store_models = store_models, check_values = check_values, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     allow_hotstart = allow_hotstart, keep_hotstart_stack = keep_hotstart_stack, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     archive = archive, callbacks = callbacks)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$measures = assert_measures(as_measures(measures), task = self$task, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     learner = self$learner)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$store_benchmark_result = assert_flag(store_benchmark_result)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$allow_hotstart = assert_flag(allow_hotstart) &amp;&amp; any(c("hotstart_forward", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "hotstart_backward") %in% learner$properties)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (self$allow_hotstart) self$hotstart_stack = HotstartStack$new()</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$keep_hotstart_stack = assert_flag(keep_hotstart_stack)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$store_models = assert_flag(store_models)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$archive = assert_r6(archive, "ArchiveTuning", null.ok = TRUE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (is.null(self$archive)) self$allow_hotstart = self$store_benchmark_result = self$store_models = FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$callbacks = assert_callbacks(as_callbacks(callbacks))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: super$initialize(id = sprintf("%s_on_%s", self$learner$id, self$task$id), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     properties = "noisy", domain = self$learner$param_set, codomain = measures_to_codomain(self$measures), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     constants = ps(resampling = p_uty()), check_values = check_values)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: resampling = assert_resampling(as_resampling(resampling, clone = TRUE))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (!resampling$is_instantiated) resampling$instantiate(task)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: resampling$instantiate(task)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$resampling = resampling</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$constants$values$resampling = list(resampling)</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># best performing hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="va">instance</span><span class="op">$</span><span class="va">result</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          cp minsplit minbucket learner_param_vals  x_domain classif.ce</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -9.21034 92.05582         1          &lt;list[4]&gt; &lt;list[3]&gt; 0.08695652</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -7.47725        2  2.790387          &lt;list[4]&gt; &lt;list[3]&gt; 0.03478261</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># all evaluated hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            cp  minsplit minbucket classif.ce  x_domain_cp x_domain_minsplit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -9.210340  92.05582  1.000000 0.08695652 0.0001000000                92</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -3.694311 128.00000 49.397298 0.10434783 0.0248645905               128</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -9.210340 128.00000 11.585049 0.08695652 0.0001000000               128</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -7.368399 128.00000  1.000000 0.08695652 0.0006308777               128</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -2.302585 128.00000 30.305567 0.08695652 0.1000000000               128</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -2.302585  82.08651  6.695811 0.08695652 0.1000000000                82</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -2.302585 117.21579  1.000000 0.08695652 0.1000000000               117</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -9.210340 107.25112  1.000000 0.08695652 0.0001000000               107</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -7.785408  93.24205  5.481789 0.08695652 0.0004157577                93</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -2.302585 128.00000 29.158637 0.08695652 0.1000000000               128</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            cp minsplit minbucket classif.ce  x_domain_cp x_domain_minsplit</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -3.347384 18.08296 64.000000 0.15652174 0.0351762485                18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -9.210340 20.49988 18.000824 0.06956522 0.0001000000                20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -5.920918  2.00000 64.000000 0.15652174 0.0026827368                 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -8.223260  2.00000 34.723895 0.06956522 0.0002683389                 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -4.376180  2.00000 38.592795 0.06956522 0.0125733007                 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -2.302585 41.49067  1.000000 0.06956522 0.1000000000                41</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -3.583701 52.86749  1.000000 0.06956522 0.0277727217                52</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -9.210340 82.73131 25.236449 0.06956522 0.0001000000                82</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -7.477250  2.00000  2.790387 0.03478261 0.0005658115                 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -6.629536 38.30739 45.048857 0.09565217 0.0013207757                38</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     x_domain_minbucket runtime_learners           timestamp batch_nr warnings</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:                  1            0.009 2023-08-25 17:19:57        1        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:                 49            0.010 2023-08-25 17:19:57        2        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:                 11            0.009 2023-08-25 17:19:57        3        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:                  1            0.008 2023-08-25 17:19:57        4        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:                 30            0.010 2023-08-25 17:19:58        5        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:                  6            0.010 2023-08-25 17:19:58        6        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:                  1            0.009 2023-08-25 17:19:58        7        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:                  1            0.009 2023-08-25 17:19:58        8        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:                  5            0.009 2023-08-25 17:19:58        9        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:                 29            0.010 2023-08-25 17:19:58       10        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:                 64            0.010 2023-08-25 17:23:27        1        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:                 18            0.032 2023-08-25 17:23:27        2        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:                 64            0.009 2023-08-25 17:23:27        3        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:                 34            0.011 2023-08-25 17:23:27        4        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:                 38            0.010 2023-08-25 17:23:27        5        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:                  1            0.010 2023-08-25 17:23:27        6        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:                  1            0.010 2023-08-25 17:23:27        7        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:                 25            0.009 2023-08-25 17:23:27        8        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:                  2            0.010 2023-08-25 17:23:27        9        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:                 45            0.013 2023-08-25 17:23:27       10        0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     errors      resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:      0 &lt;ResampleResult[21]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  2:      0 &lt;ResampleResult[21]&gt;</span>

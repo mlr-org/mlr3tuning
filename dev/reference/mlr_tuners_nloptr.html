@@ -247,50 +247,32 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 <span class="r-in"><span>  resampling <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">rsmp</a></span><span class="op">(</span><span class="st">"holdout"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  measure <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">msr</a></span><span class="op">(</span><span class="st">"classif.ce"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Called from: .__ObjectiveTuning__initialize(self = self, private = private, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     super = super, task = task, learner = learner, resampling = resampling, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     measures = measures, store_benchmark_result = store_benchmark_result, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     store_models = store_models, check_values = check_values, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     allow_hotstart = allow_hotstart, keep_hotstart_stack = keep_hotstart_stack, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     archive = archive, callbacks = callbacks)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$measures = assert_measures(as_measures(measures), task = self$task, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     learner = self$learner)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$store_benchmark_result = assert_flag(store_benchmark_result)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$allow_hotstart = assert_flag(allow_hotstart) &amp;&amp; any(c("hotstart_forward", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "hotstart_backward") %in% learner$properties)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (self$allow_hotstart) self$hotstart_stack = HotstartStack$new()</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$keep_hotstart_stack = assert_flag(keep_hotstart_stack)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$store_models = assert_flag(store_models)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$archive = assert_r6(archive, "ArchiveTuning", null.ok = TRUE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (is.null(self$archive)) self$allow_hotstart = self$store_benchmark_result = self$store_models = FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$callbacks = assert_callbacks(as_callbacks(callbacks))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: super$initialize(id = sprintf("%s_on_%s", self$learner$id, self$task$id), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     properties = "noisy", domain = self$learner$param_set, codomain = measures_to_codomain(self$measures), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     constants = ps(resampling = p_uty()), check_values = check_values)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: resampling = assert_resampling(as_resampling(resampling, clone = TRUE))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (!resampling$is_instantiated) resampling$instantiate(task)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: resampling$instantiate(task)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$resampling = resampling</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$constants$values$resampling = list(resampling)</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># best performing hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="va">instance</span><span class="op">$</span><span class="va">result</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp learner_param_vals  x_domain classif.ce</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -9.099381          &lt;list[2]&gt; &lt;list[1]&gt;  0.1130435</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -6.488449          &lt;list[2]&gt; &lt;list[1]&gt; 0.07826087</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># all evaluated hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            cp classif.ce  x_domain_cp runtime_learners           timestamp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -9.099381  0.1130435 0.0001117349            0.009 2023-08-25 17:20:09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -9.099381  0.1130435 0.0001117349            0.010 2023-08-25 17:20:09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -9.099381  0.1130435 0.0001117349            0.012 2023-08-25 17:20:09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -9.016162  0.1130435 0.0001214313            0.009 2023-08-25 17:20:09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -9.182601  0.1130435 0.0001028128            0.012 2023-08-25 17:20:09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -9.098549  0.1130435 0.0001118279            0.011 2023-08-25 17:20:10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -9.100213  0.1130435 0.0001116420            0.010 2023-08-25 17:20:10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -9.099373  0.1130435 0.0001117359            0.009 2023-08-25 17:20:10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -9.099390  0.1130435 0.0001117340            0.009 2023-08-25 17:20:10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -9.099381  0.1130435 0.0001117349            0.009 2023-08-25 17:20:10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -6.488449 0.07826087 0.0015209058            0.010 2023-08-25 17:23:39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -6.488449 0.07826087 0.0015209058            0.009 2023-08-25 17:23:39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -6.488449 0.07826087 0.0015209058            0.009 2023-08-25 17:23:39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -4.761510 0.08695652 0.0085526816            0.012 2023-08-25 17:23:39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -8.215388 0.07826087 0.0002704595            0.009 2023-08-25 17:23:39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -7.351919 0.07826087 0.0006413606            0.009 2023-08-25 17:23:39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -6.920184 0.07826087 0.0009876483            0.011 2023-08-25 17:23:39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -6.704317 0.07826087 0.0012256100            0.009 2023-08-25 17:23:39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -6.596383 0.07826087 0.0013652975            0.010 2023-08-25 17:23:39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -6.542416 0.07826087 0.0014410027            0.010 2023-08-25 17:23:39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11: -6.445276 0.07826087 0.0015880066            0.010 2023-08-25 17:23:40</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12: -6.531623 0.07826087 0.0014566403            0.009 2023-08-25 17:23:40</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13: -6.505719 0.07826087 0.0014948661            0.010 2023-08-25 17:23:40</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14: -6.503383 0.07826087 0.0014983610            0.010 2023-08-25 17:23:40</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15: -6.486722 0.07826087 0.0015235345            0.010 2023-08-25 17:23:40</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16: -6.488622 0.07826087 0.0015206431            0.009 2023-08-25 17:23:40</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17: -6.488449 0.07826087 0.0015209058            0.010 2023-08-25 17:23:40</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     batch_nr warnings errors      resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:        1        0      0 &lt;ResampleResult[21]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  2:        2        0      0 &lt;ResampleResult[21]&gt;</span>
@@ -302,6 +284,13 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 <span class="r-out co"><span class="r-pr">#&gt;</span>  8:        8        0      0 &lt;ResampleResult[21]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  9:        9        0      0 &lt;ResampleResult[21]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10:       10        0      0 &lt;ResampleResult[21]&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:       11        0      0 &lt;ResampleResult[21]&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:       12        0      0 &lt;ResampleResult[21]&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13:       13        0      0 &lt;ResampleResult[21]&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14:       14        0      0 &lt;ResampleResult[21]&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15:       15        0      0 &lt;ResampleResult[21]&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16:       16        0      0 &lt;ResampleResult[21]&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17:       17        0      0 &lt;ResampleResult[21]&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># fit final model on complete data set</span></span></span>
 <span class="r-in"><span><span class="va">learner</span><span class="op">$</span><span class="va">param_set</span><span class="op">$</span><span class="va">values</span> <span class="op">=</span> <span class="va">instance</span><span class="op">$</span><span class="va">result_learner_param_vals</span></span></span>

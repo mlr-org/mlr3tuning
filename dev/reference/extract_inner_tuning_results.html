@@ -163,62 +163,12 @@ Optionally, tuning instances.</p></li>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">resampling_outer</span> <span class="op">=</span> <span class="fu">rsmp</span><span class="op">(</span><span class="st">"cv"</span>, folds <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">rr</span> <span class="op">=</span> <span class="fu">resample</span><span class="op">(</span><span class="fu">tsk</span><span class="op">(</span><span class="st">"iris"</span><span class="op">)</span>, <span class="va">at</span>, <span class="va">resampling_outer</span>, store_models <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Called from: .__ObjectiveTuning__initialize(self = self, private = private, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     super = super, task = task, learner = learner, resampling = resampling, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     measures = measures, store_benchmark_result = store_benchmark_result, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     store_models = store_models, check_values = check_values, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     allow_hotstart = allow_hotstart, keep_hotstart_stack = keep_hotstart_stack, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     archive = archive, callbacks = callbacks)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$measures = assert_measures(as_measures(measures), task = self$task, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     learner = self$learner)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$store_benchmark_result = assert_flag(store_benchmark_result)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$allow_hotstart = assert_flag(allow_hotstart) &amp;&amp; any(c("hotstart_forward", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "hotstart_backward") %in% learner$properties)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (self$allow_hotstart) self$hotstart_stack = HotstartStack$new()</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$keep_hotstart_stack = assert_flag(keep_hotstart_stack)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$store_models = assert_flag(store_models)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$archive = assert_r6(archive, "ArchiveTuning", null.ok = TRUE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (is.null(self$archive)) self$allow_hotstart = self$store_benchmark_result = self$store_models = FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$callbacks = assert_callbacks(as_callbacks(callbacks))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: super$initialize(id = sprintf("%s_on_%s", self$learner$id, self$task$id), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     properties = "noisy", domain = self$learner$param_set, codomain = measures_to_codomain(self$measures), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     constants = ps(resampling = p_uty()), check_values = check_values)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: resampling = assert_resampling(as_resampling(resampling, clone = TRUE))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (!resampling$is_instantiated) resampling$instantiate(task)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: resampling$instantiate(task)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$resampling = resampling</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$constants$values$resampling = list(resampling)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Called from: .__ObjectiveTuning__initialize(self = self, private = private, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     super = super, task = task, learner = learner, resampling = resampling, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     measures = measures, store_benchmark_result = store_benchmark_result, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     store_models = store_models, check_values = check_values, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     allow_hotstart = allow_hotstart, keep_hotstart_stack = keep_hotstart_stack, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     archive = archive, callbacks = callbacks)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$measures = assert_measures(as_measures(measures), task = self$task, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     learner = self$learner)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$store_benchmark_result = assert_flag(store_benchmark_result)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$allow_hotstart = assert_flag(allow_hotstart) &amp;&amp; any(c("hotstart_forward", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "hotstart_backward") %in% learner$properties)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (self$allow_hotstart) self$hotstart_stack = HotstartStack$new()</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$keep_hotstart_stack = assert_flag(keep_hotstart_stack)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$store_models = assert_flag(store_models)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$archive = assert_r6(archive, "ArchiveTuning", null.ok = TRUE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (is.null(self$archive)) self$allow_hotstart = self$store_benchmark_result = self$store_models = FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$callbacks = assert_callbacks(as_callbacks(callbacks))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: super$initialize(id = sprintf("%s_on_%s", self$learner$id, self$task$id), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     properties = "noisy", domain = self$learner$param_set, codomain = measures_to_codomain(self$measures), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     constants = ps(resampling = p_uty()), check_values = check_values)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: resampling = assert_resampling(as_resampling(resampling, clone = TRUE))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (!resampling$is_instantiated) resampling$instantiate(task)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: resampling$instantiate(task)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$resampling = resampling</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$constants$values$resampling = list(resampling)</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># extract inner results</span></span></span>
 <span class="r-in"><span><span class="fu">extract_inner_tuning_results</span><span class="op">(</span><span class="va">rr</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    iteration        cp classif.ce learner_param_vals  x_domain task_id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:         1 -3.948757       0.16          &lt;list[2]&gt; &lt;list[1]&gt;    iris</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:         2 -7.830098       0.04          &lt;list[2]&gt; &lt;list[1]&gt;    iris</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:         1 -3.551498       0.04          &lt;list[2]&gt; &lt;list[1]&gt;    iris</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:         2 -5.758940       0.04          &lt;list[2]&gt; &lt;list[1]&gt;    iris</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             learner_id resampling_id</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1: classif.rpart.tuned            cv</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2: classif.rpart.tuned            cv</span>

@@ -256,52 +256,27 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 <span class="r-in"><span>  measure <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">msr</a></span><span class="op">(</span><span class="st">"classif.ce"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  term_evals <span class="op">=</span> <span class="fl">10</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Called from: .__ObjectiveTuning__initialize(self = self, private = private, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     super = super, task = task, learner = learner, resampling = resampling, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     measures = measures, store_benchmark_result = store_benchmark_result, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     store_models = store_models, check_values = check_values, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     allow_hotstart = allow_hotstart, keep_hotstart_stack = keep_hotstart_stack, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     archive = archive, callbacks = callbacks)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$measures = assert_measures(as_measures(measures), task = self$task, </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     learner = self$learner)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$store_benchmark_result = assert_flag(store_benchmark_result)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$allow_hotstart = assert_flag(allow_hotstart) &amp;&amp; any(c("hotstart_forward", </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     "hotstart_backward") %in% learner$properties)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (self$allow_hotstart) self$hotstart_stack = HotstartStack$new()</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$keep_hotstart_stack = assert_flag(keep_hotstart_stack)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$store_models = assert_flag(store_models)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$archive = assert_r6(archive, "ArchiveTuning", null.ok = TRUE)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (is.null(self$archive)) self$allow_hotstart = self$store_benchmark_result = self$store_models = FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$callbacks = assert_callbacks(as_callbacks(callbacks))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: super$initialize(id = sprintf("%s_on_%s", self$learner$id, self$task$id), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     properties = "noisy", domain = self$learner$param_set, codomain = measures_to_codomain(self$measures), </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     constants = ps(resampling = p_uty()), check_values = check_values)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: resampling = assert_resampling(as_resampling(resampling, clone = TRUE))</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: if (!resampling$is_instantiated) resampling$instantiate(task)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: resampling$instantiate(task)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$resampling = resampling</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> debug: self$constants$values$resampling = list(resampling)</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>one-dimensional optimization by Nelder-Mead is unreliable:</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> use "Brent" or optimize() directly</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># best performing hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="va">instance</span><span class="op">$</span><span class="va">result</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp learner_param_vals  x_domain classif.ce</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -7.646859          &lt;list[2]&gt; &lt;list[1]&gt; 0.06956522</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -5.930925          &lt;list[2]&gt; &lt;list[1]&gt; 0.06956522</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># all evaluated hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            cp classif.ce  x_domain_cp runtime_learners           timestamp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -7.646859 0.06956522 0.0004775416            0.009 2023-08-25 17:20:00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -4.776531 0.06956522 0.0084251721            0.009 2023-08-25 17:20:00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -2.587057 0.06956522 0.0752411559            0.010 2023-08-25 17:20:00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -7.646859 0.06956522 0.0004775416            0.009 2023-08-25 17:20:00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -7.646859 0.06956522 0.0004775416            0.009 2023-08-25 17:20:01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -7.646859 0.06956522 0.0004775416            0.010 2023-08-25 17:20:01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -6.882173 0.06956522 0.0010259119            0.010 2023-08-25 17:20:01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -8.411545 0.06956522 0.0002222861            0.011 2023-08-25 17:20:01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -7.264516 0.06956522 0.0006999397            0.010 2023-08-25 17:20:01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -8.029202 0.06956522 0.0003258080            0.010 2023-08-25 17:20:01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -5.930925 0.06956522 0.0026560237            0.010 2023-08-25 17:23:30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -3.060597 0.07826087 0.0468597065            0.010 2023-08-25 17:23:30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -7.778878 0.06956522 0.0004184815            0.010 2023-08-25 17:23:30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -5.930925 0.06956522 0.0026560237            0.009 2023-08-25 17:23:30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -5.930925 0.06956522 0.0026560237            0.010 2023-08-25 17:23:30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -5.930925 0.06956522 0.0026560237            0.009 2023-08-25 17:23:30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -5.337833 0.06956522 0.0048062766            0.009 2023-08-25 17:23:31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -6.524018 0.06956522 0.0014677603            0.010 2023-08-25 17:23:31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -5.634379 0.06956522 0.0035728958            0.010 2023-08-25 17:23:31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -6.227471 0.06956522 0.0019744382            0.009 2023-08-25 17:23:31</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     batch_nr warnings errors      resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:        1        0      0 &lt;ResampleResult[21]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  2:        2        0      0 &lt;ResampleResult[21]&gt;</span>
