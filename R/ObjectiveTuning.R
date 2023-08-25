@@ -62,7 +62,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     initialize = function(task, learner, resampling, measures, store_benchmark_result = TRUE, store_models = FALSE, check_values = TRUE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, archive = NULL, callbacks = list()) {
       self$task = assert_task(as_task(task, clone = TRUE))
       self$learner = assert_learner(as_learner(learner, clone = TRUE))
-      self$measures = assert_measures(as_measures(measures, clone = TRUE), task = self$task, learner = self$learner)
+      self$measures = assert_measures(as_measures(measures, clone = FALSE), task = self$task, learner = self$learner)
 
       self$store_benchmark_result = assert_flag(store_benchmark_result)
       self$allow_hotstart = assert_flag(allow_hotstart) && any(c("hotstart_forward", "hotstart_backward") %in% learner$properties)
@@ -91,15 +91,16 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       private$.xss = xss
 
       # create learners from set of hyperparameter configurations
-      learners = map(private$.xss, function(x) {
-        learner = self$learner$clone(deep = TRUE)
-        learner$param_set$values = insert_named(learner$param_set$values, x)
-        if (self$allow_hotstart) learner$hotstart_stack = self$hotstart_stack
-        learner
-      })
+      #learners = map(private$.xss, function(x) {
+      #  learner = self$learner$clone(deep = TRUE)
+      #  learner$param_set$values = insert_named(learner$param_set$values, x)
+      #  if (self$allow_hotstart) learner$hotstart_stack = self$hotstart_stack
+      #  learner
+      # })
 
       # benchmark hyperparameter configurations
-      private$.design = data.table(task = list(self$task), learner = learners, resampling = resampling)
+      private$.design = benchmark_grid(self$task, self$learner, resampling, param_values = list(xss))
+      #private$.design = data.table(task = list(self$task), learner = learners, resampling = resampling)
       call_back("on_eval_after_design", self$callbacks, context)
 
       # learner is already cloned, task and resampling are not changed
