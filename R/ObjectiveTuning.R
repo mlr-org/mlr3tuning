@@ -100,8 +100,8 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       # })
 
       # benchmark hyperparameter configurations
-      private$.design = benchmark_grid(self$task, self$learner, resampling, param_values = list(xss))
-      #private$.design = data.table(task = list(self$task), learner = learners, resampling = resampling)
+      # private$.design = benchmark_grid(self$task, self$learner, resampling, param_values = list(xss))
+      private$.design = data.table(task = list(self$task), learner = list(self$learner), resampling = resampling, param_value = list(xss))
       call_back("on_eval_after_design", self$callbacks, context)
 
       # learner is already cloned, task and resampling are not changed
