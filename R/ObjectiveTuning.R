@@ -62,7 +62,8 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     initialize = function(task, learner, resampling, measures, store_benchmark_result = TRUE, store_models = FALSE, check_values = TRUE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, archive = NULL, callbacks = list()) {
       self$task = assert_task(as_task(task, clone = TRUE))
       self$learner = assert_learner(as_learner(learner, clone = TRUE))
-      self$measures = assert_measures(as_measures(measures, clone = TRUE), task = self$task, learner = self$learner)
+      browser()
+      self$measures = assert_measures(as_measures(measures), task = self$task, learner = self$learner)
 
       self$store_benchmark_result = assert_flag(store_benchmark_result)
       self$allow_hotstart = assert_flag(allow_hotstart) && any(c("hotstart_forward", "hotstart_backward") %in% learner$properties)
