@@ -150,6 +150,6 @@ test_that("objects are cloned", {
   bmr = archive$benchmark_result
 
   expect_same_address(obj$task, bmr$tasks$task[[1]])
-  expect_different_address(obj$learner, get_private(bmr)$.data$data$learners$learner[[1]])
-  expect_same_address(obj$resampling, bmr$resamplings$resampling[[1]])
+  expect_different_address(obj$learner, bmr$learners$learner[[1]])
+  expect_different_address(obj$resampling, bmr$resamplings$resampling[[1]])
 })

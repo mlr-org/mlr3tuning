@@ -91,17 +91,19 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       context = ContextEval$new(self)
       private$.xss = xss
 
-      # create learners from set of hyperparameter configurations
-      #learners = map(private$.xss, function(x) {
-      #  learner = self$learner$clone(deep = TRUE)
-      #  learner$param_set$values = insert_named(learner$param_set$values, x)
-      #  if (self$allow_hotstart) learner$hotstart_stack = self$hotstart_stack
-      #  learner
-      # })
+      if (self$allow_hotstart) {
+        # create learners from set of hyperparameter configurations and hotstart models
+        learners = map(private$.xss, function(x) {
+          learner = self$learner$clone(deep = TRUE)
+          learner$param_set$values = insert_named(learner$param_set$values, x)
+          learner$hotstart_stack = self$hotstart_stack
+          learner
+        })
+        private$.design = data.table(task = list(self$task), learner = learners, resampling = resampling)
+      } else {
+        private$.design = benchmark_grid(self$task, self$learner, resampling, param_values = list(xss))
+      }
 
-      # benchmark hyperparameter configurations
-      # private$.design = benchmark_grid(self$task, self$learner, resampling, param_values = list(xss))
-      private$.design = data.table(task = list(self$task), learner = list(self$learner), resampling = resampling, param_value = list(xss))
       call_back("on_eval_after_design", self$callbacks, context)
 
       # learner is already cloned, task and resampling are not changed
