@@ -40,7 +40,6 @@ test_tuner = function(key, ..., n_dim = 1L, term_evals = 2L, real_evals = term_e
 # test an implemented subclass tuner by running a test with dependent params
 # returns: tune_result and instance
 test_tuner_dependencies = function(key, ..., term_evals = 2L) {
-  browser()
   term = trm("evals", n_evals = term_evals)
   ll = LearnerRegrDepParams$new()
   inst = TuningInstanceSingleCrit$new(tsk("boston_housing"), ll, rsmp("holdout"), msr("regr.mse"), term, ll$param_set)
