@@ -96,7 +96,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       context = ContextEval$new(self)
       private$.xss = xss
 
-      if (self$allow_hotstart) {
+      private$.design = if (self$allow_hotstart) {
         # create learners from set of hyperparameter configurations and hotstart models
         learners = map(private$.xss, function(x) {
           learner = self$learner$clone(deep = TRUE)
@@ -104,9 +104,12 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
           learner$hotstart_stack = self$hotstart_stack
           learner
         })
-        private$.design = data.table(task = list(self$task), learner = learners, resampling = resampling)
+        data.table(task = list(self$task), learner = learners, resampling = resampling)
+      } else if (length(resampling) > 1) {
+        param_values = map(xss, function(xs) list(xs))
+        data.table(task = list(self$task), learner = list(self$learner), resampling = resampling, param_values = param_values)
       } else {
-        private$.design = benchmark_grid(self$task, self$learner, resampling, param_values = list(xss))
+        benchmark_grid(self$task, self$learner, resampling, param_values = list(xss))
       }
 
       call_back("on_eval_after_design", self$callbacks, context)
