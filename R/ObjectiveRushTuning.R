@@ -86,7 +86,7 @@ ObjectiveRushTuning = R6Class("ObjectiveRushTuning",
       self$learner$param_set$set_values(.values = xs)
       if (self$allow_hotstart) self$learner$hotstart_stack = self$hotstart_stack
 
-      resample_result = resample(self$task, self$learner, self$resampling, store_models = self$store_models, allow_hotstart = self$allow_hotstart, clone = character(0))
+      resample_result = resample(self$task, self$learner, self$resampling, store_models = self$store_models || self$allow_hotstart, allow_hotstart = self$allow_hotstart, clone = character(0))
       aggregated_performance = as.list(resample_result$aggregate(self$measures))
 
       runtime_learners = sum(map_dbl(get_private(resample_result)$.data$learner_states(get_private(resample_result)$.view), function(state) state$train_time + state$predict_time))
