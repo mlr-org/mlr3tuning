@@ -71,7 +71,7 @@ Collate:
     'TunerIrace.R'
     'TunerNLoptr.R'
     'TunerRandomSearch.R'
-    'TunerSuccessiveHalving.R'
+    'TunerSHA.R'
     'TuningInstanceSingleCrit.R'
     'TuningInstanceMulticrit.R'
     'as_search_space.R'
