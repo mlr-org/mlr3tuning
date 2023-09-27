@@ -54,10 +54,12 @@ NeedsCompilation: no
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Collate:
+    'ArchiveRushTuning.R'
     'ArchiveTuning.R'
     'AutoTuner.R'
     'CallbackTuning.R'
     'ContextEval.R'
+    'ObjectiveRushTuning.R'
     'ObjectiveTuning.R'
     'mlr_tuners.R'
     'Tuner.R'
@@ -69,6 +71,7 @@ Collate:
     'TunerIrace.R'
     'TunerNLoptr.R'
     'TunerRandomSearch.R'
+    'TunerSuccessiveHalving.R'
     'TuningInstanceSingleCrit.R'
     'TuningInstanceMulticrit.R'
     'as_search_space.R'
