@@ -141,6 +141,27 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     },
 
     #' @description
+    #' Start workers with `future`.
+    #'
+    #' @param n_workers (`integer(1)`)\cr
+    #' Number of workers to be started.
+    #' If `NULL` the maximum number of free workers is used.
+    #' @param host (`character(1)`)\cr
+    #' Local or remote host.
+    #' @param heartbeat_period (`integer(1)`)\cr
+    #' Period of the heartbeat in seconds.
+    #' @param heartbeat_expire (`integer(1)`)\cr
+    #' Time to live of the heartbeat in seconds.
+    start_workers = function(n_workers = NULL, host = "local", heartbeat_period = NULL, heartbeat_expire = NULL) {
+      super$start_workers(
+        n_workers = n_workers,
+        packages = c(instance$objective$learner$packages, "mlr3tuning"),
+        host = host,
+        heartbeat_period = heartbeat_period,
+        heartbeat_expire = heartbeat_expire)
+    },
+
+    #' @description
     #' The [Tuner] object writes the best found point and estimated performance value here.
     #' For internal use.
     #'

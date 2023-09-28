@@ -45,6 +45,7 @@ Suggests:
     nloptr,
     rmarkdown,
     rpart,
+    rush,
     testthat (>= 3.0.0),
     xgboost
 Config/testthat/edition: 3
