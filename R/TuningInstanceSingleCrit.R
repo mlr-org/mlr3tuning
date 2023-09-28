@@ -155,7 +155,7 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     start_workers = function(n_workers = NULL, host = "local", heartbeat_period = NULL, heartbeat_expire = NULL) {
       super$start_workers(
         n_workers = n_workers,
-        packages = c(instance$objective$learner$packages, "mlr3tuning"),
+        packages = c(self$objective$learner$packages, "mlr3tuning"),
         host = host,
         heartbeat_period = heartbeat_period,
         heartbeat_expire = heartbeat_expire)
