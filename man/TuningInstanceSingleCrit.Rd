@@ -130,13 +130,16 @@ Param values for the optimal learner call.}
 }
 }
 \if{html}{\out{
-<details open><summary>Inherited methods</summary>
+<details><summary>Inherited methods</summary>
 <ul>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="clear"><a href='../../bbotk/html/OptimInstance.html#method-OptimInstance-clear'><code>bbotk::OptimInstance$clear()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="create_worker_script"><a href='../../bbotk/html/OptimInstance.html#method-OptimInstance-create_worker_script'><code>bbotk::OptimInstance$create_worker_script()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="eval_async"><a href='../../bbotk/html/OptimInstance.html#method-OptimInstance-eval_async'><code>bbotk::OptimInstance$eval_async()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="eval_batch"><a href='../../bbotk/html/OptimInstance.html#method-OptimInstance-eval_batch'><code>bbotk::OptimInstance$eval_batch()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="format"><a href='../../bbotk/html/OptimInstance.html#method-OptimInstance-format'><code>bbotk::OptimInstance$format()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="objective_function"><a href='../../bbotk/html/OptimInstance.html#method-OptimInstance-objective_function'><code>bbotk::OptimInstance$objective_function()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="print"><a href='../../bbotk/html/OptimInstance.html#method-OptimInstance-print'><code>bbotk::OptimInstance$print()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="start_workers"><a href='../../bbotk/html/OptimInstance.html#method-OptimInstance-start_workers'><code>bbotk::OptimInstance$start_workers()</code></a></span></li>
 </ul>
 </details>
 }}
@@ -159,7 +162,9 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   allow_hotstart = FALSE,
   keep_hotstart_stack = FALSE,
   evaluate_default = FALSE,
-  callbacks = list()
+  callbacks = list(),
+  rush = NULL,
+  freeze_archive = FALSE
 )}\if{html}{\out{</div>}}
 }
 

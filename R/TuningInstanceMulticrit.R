@@ -69,7 +69,7 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
-    initialize = function(task, learner, resampling, measures, terminator, search_space = NULL, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, evaluate_default = FALSE, callbacks = list()) {
+    initialize = function(task, learner, resampling, measures, terminator, search_space = NULL, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, evaluate_default = FALSE, callbacks = list(), rush = NULL, freeze_archive = FALSE) {
       private$.evaluate_default = assert_flag(evaluate_default)
       learner = assert_learner(as_learner(learner, clone = TRUE))
 
@@ -88,10 +88,15 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
       codomain = measures_to_codomain(measures)
 
       # initialized specialized tuning archive and objective
-      archive = ArchiveTuning$new(search_space, codomain, check_values)
-      objective = ObjectiveTuning$new(task, learner, resampling, measures, store_benchmark_result, store_models, check_values, allow_hotstart, keep_hotstart_stack, archive, callbacks)
+      if (is.null(rush)) {
+        archive = ArchiveTuning$new(search_space, codomain, check_values)
+        objective = ObjectiveTuning$new(task, learner, resampling, measures, store_benchmark_result, store_models, check_values, allow_hotstart, keep_hotstart_stack, archive, callbacks)
+      } else {
+        archive = ArchiveRushTuning$new(search_space, codomain, check_values, rush)
+        objective = ObjectiveRushTuning$new(task, learner, resampling, measures, store_benchmark_result, store_models, check_values, allow_hotstart, keep_hotstart_stack, archive, callbacks)
+      }
 
-      super$initialize(objective, search_space, terminator, callbacks = callbacks)
+      super$initialize(objective, search_space, terminator, callbacks = callbacks, rush = rush, freeze_archive = freeze_archive)
       # super class of instance initializes default archive, overwrite with tuning archive
       self$archive = archive
     },
