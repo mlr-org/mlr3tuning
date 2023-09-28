@@ -158,11 +158,11 @@ ArchiveTuning = R6Class("ArchiveTuning",
 )
 
 #' @export
-as.data.table.ArchiveTuning = function(x, ..., unnest = "x_domain", exclude_columns = "uhash", measures = NULL) {
+as.data.table.ArchiveRushTuning = function(x, ..., unnest = "x_domain", exclude_columns = "uhash", measures = NULL) {
   if (nrow(x$data) == 0) return(data.table())
   # default values for unnest and exclude_columns might be not present in archive
   if ("x_domain" %nin% names(x$data)) unnest = setdiff(unnest, "x_domain")
-  if (!x$benchmark_result$n_resample_results) exclude_columns = exclude_columns[exclude_columns %nin% "uhash"]
+  if (!x$benchmark_result$n_resample_results) exclude_columns = exclude_columns[exclude_columns %nin% c("uhash", "resample_result")]
 
   assert_subset(unnest, names(x$data))
   cols_y_extra = NULL
@@ -188,7 +188,7 @@ as.data.table.ArchiveTuning = function(x, ..., unnest = "x_domain", exclude_colu
     setdiff(x_domain_ids, exclude_columns)
   } else NULL
 
-  setcolorder(tab, c(x$cols_x, x$cols_y, cols_y_extra, cols_x_domain, "runtime_learners", "timestamp", "batch_nr"))
+  setcolorder(tab, c(x$cols_x, x$cols_y, cols_y_extra, cols_x_domain, "runtime_learners", "timestamp"))
   assert_subset(exclude_columns, names(tab))
   tab[, setdiff(names(tab), exclude_columns), with = FALSE]
 }

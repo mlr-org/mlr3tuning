@@ -30,6 +30,8 @@ test_that("tuning with rush works", {
   tuner = tnr("random_search")
 
   expect_data_table(tuner$optimize(instance), nrows = 1)
+
+  expect_data_table(as.data.table(instance$archive))
 })
 
 test_that("freeze archive works", {

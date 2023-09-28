@@ -154,22 +154,24 @@ ArchiveRushTuning = R6Class("ArchiveRushTuning",
     #' @field benchmark_result ([mlr3::BenchmarkResult])\cr
     #' Benchmark result.
     benchmark_result = function() {
-      if (is.null(self$data$resample_result)) BenchmarkResult$new()
+      if (is.null(self$data$resample_result)) return(BenchmarkResult$new())
       as_benchmark_result(self$data$resample_result)
     }
   )
 )
 
 #' @export
-as.data.table.ArchiveRushTuning = function(x, ..., exclude_columns = "uhash", measures = NULL) {
+as.data.table.ArchiveTuning = function(x, ..., unnest = "x_domain", exclude_columns = "uhash", measures = NULL) {
   if (nrow(x$data) == 0) return(data.table())
   # default values for unnest and exclude_columns might be not present in archive
+  if ("x_domain" %nin% names(x$data)) unnest = setdiff(unnest, "x_domain")
   if (!x$benchmark_result$n_resample_results) exclude_columns = exclude_columns[exclude_columns %nin% "uhash"]
 
+  assert_subset(unnest, names(x$data))
   cols_y_extra = NULL
 
   # unnest data
-  tab = copy(x$data)
+  tab = unnest(copy(x$data), unnest, prefix = "{col}_")
 
   if (x$benchmark_result$n_resample_results) {
     # add extra measures
