@@ -72,7 +72,7 @@ test_that("rush objective with multiple measures works", {
   xs = list("cp" = 0.01)
   y = objective$eval(xs)
 
-  expect_list(y, len = 2)
+  expect_list(y, len = 3)
   expect_names(names(y), permutation.of = c("classif.ce", "classif.acc", "runtime_learners"))
   expect_number(y$classif.ce)
   expect_number(y$classif.acc)

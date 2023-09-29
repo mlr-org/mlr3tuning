@@ -405,3 +405,61 @@ test_that("assign_result works with no hyperparameter and constant", {
 
 # rush -------------------------------------------------------------------------
 
+test_that("TuningInstanceSingleCrit works with rush", {
+  skip_on_cran()
+  skip_on_ci()
+
+  config = start_flush_redis()
+  rush = Rush$new("test", config)
+
+  instance = ti(
+    task = tsk("pima"),
+    learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
+    resampling = rsmp("cv", folds = 3),
+    measures = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 3),
+    store_models = FALSE,
+    store_benchmark_result = FALSE,
+    rush = rush,
+    freeze_archive = FALSE
+  )
+
+  future::plan("multisession", workers = 2)
+  instance$start_workers()
+  rush$await_workers(2)
+
+  tuner = tnr("random_search")
+
+  expect_data_table(tuner$optimize(instance), nrows = 1)
+  expect_data_table(as.data.table(instance$archive), nrows = 3)
+})
+
+test_that("freeze archive works", {
+  skip_on_cran()
+  skip_on_ci()
+
+  config = start_flush_redis()
+  rush = Rush$new("test", config)
+
+  instance = ti(
+    task = tsk("pima"),
+    learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
+    resampling = rsmp("cv", folds = 3),
+    measures = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 3),
+    store_models = FALSE,
+    store_benchmark_result = FALSE,
+    rush = rush,
+    freeze_archive = TRUE
+  )
+
+  future::plan("multisession", workers = 2)
+  instance$start_workers()
+  rush$await_workers(2)
+
+  tuner = tnr("random_search")
+  tuner$optimize(instance)
+
+  expect_null(instance$archive$rush)
+  expect_data_table(as.data.table(instance$archive), nrows = 3)
+})

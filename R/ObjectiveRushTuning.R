@@ -65,6 +65,7 @@ ObjectiveRushTuning = R6Class("ObjectiveRushTuning",
       self$store_benchmark_result = assert_flag(store_benchmark_result)
       self$allow_hotstart = assert_flag(allow_hotstart) && any(c("hotstart_forward", "hotstart_backward") %in% learner$properties)
       if (self$allow_hotstart) self$hotstart_stack = HotstartStack$new()
+      self$keep_hotstart_stack = FALSE
       self$callbacks = assert_callbacks(as_callbacks(callbacks))
 
       super$initialize(
