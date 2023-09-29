@@ -447,25 +447,25 @@ Printer.</p>
 <span class="r-in"><span><span class="va">at</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">task</span>, row_ids <span class="op">=</span> <span class="va">split</span><span class="op">$</span><span class="va">test</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;PredictionClassif&gt; for 69 observations:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     row_ids     truth  response</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           1    Adelie    Adelie</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           8    Adelie    Adelie</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          13    Adelie    Adelie</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          15    Adelie    Adelie</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          19    Adelie    Adelie</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---                            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         323 Chinstrap Chinstrap</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         332 Chinstrap Chinstrap</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         343 Chinstrap Chinstrap</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         337 Chinstrap Chinstrap</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         341 Chinstrap    Adelie</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         342 Chinstrap Chinstrap</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># show tuning result</span></span></span>
 <span class="r-in"><span><span class="va">at</span><span class="op">$</span><span class="va">tuning_result</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp learner_param_vals  x_domain classif.ce</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -5.346668          &lt;list[2]&gt; &lt;list[1]&gt; 0.07608696</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -5.027408          &lt;list[2]&gt; &lt;list[1]&gt; 0.05434783</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># model slot contains trained learner and tuning instance</span></span></span>
 <span class="r-in"><span><span class="va">at</span><span class="op">$</span><span class="va">model</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $learner</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;LearnerClassifRpart:classif.rpart&gt;: Classification Tree</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> * Model: rpart</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * Parameters: xval=0, cp=0.004764</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> * Parameters: xval=0, cp=0.006556</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> * Packages: mlr3, rpart</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> * Predict Types:  [response], prob</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> * Feature Types: logical, integer, numeric, factor, ordered</span>
@@ -482,20 +482,20 @@ Printer.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> * Terminator: &lt;TerminatorEvals&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> * Result:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp classif.ce</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -5.346668 0.07608696</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -5.027408 0.05434783</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> * Archive:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp classif.ce</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -5.346668 0.07608696</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -6.258017 0.07608696</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -7.767946 0.07608696</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -4.097004 0.07608696</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -5.027408 0.05434783</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -2.397067 0.05434783</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -2.756671 0.05434783</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -7.011733 0.05434783</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># shortcut trained learner</span></span></span>
 <span class="r-in"><span><span class="va">at</span><span class="op">$</span><span class="va">learner</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;LearnerClassifRpart:classif.rpart&gt;: Classification Tree</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> * Model: rpart</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * Parameters: xval=0, cp=0.004764</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> * Parameters: xval=0, cp=0.006556</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> * Packages: mlr3, rpart</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> * Predict Types:  [response], prob</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> * Feature Types: logical, integer, numeric, factor, ordered</span>
@@ -513,13 +513,13 @@ Printer.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> * Terminator: &lt;TerminatorEvals&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> * Result:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp classif.ce</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -5.346668 0.07608696</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -5.027408 0.05434783</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> * Archive:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp classif.ce</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -5.346668 0.07608696</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -6.258017 0.07608696</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -7.767946 0.07608696</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -4.097004 0.07608696</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -5.027408 0.05434783</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -2.397067 0.05434783</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -2.756671 0.05434783</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -7.011733 0.05434783</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Nested Resampling</span></span></span>
@@ -537,9 +537,9 @@ Printer.</p>
 <span class="r-in"><span><span class="co"># retrieve inner tuning results.</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="extract_inner_tuning_results.html">extract_inner_tuning_results</a></span><span class="op">(</span><span class="va">rr</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    iteration        cp classif.ce learner_param_vals  x_domain  task_id</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:         1 -2.531542 0.07894737          &lt;list[2]&gt; &lt;list[1]&gt; penguins</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:         2 -5.184589 0.13157895          &lt;list[2]&gt; &lt;list[1]&gt; penguins</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:         3 -6.041568 0.03896104          &lt;list[2]&gt; &lt;list[1]&gt; penguins</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:         1 -6.369479 0.01315789          &lt;list[2]&gt; &lt;list[1]&gt; penguins</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:         2 -7.020691 0.06578947          &lt;list[2]&gt; &lt;list[1]&gt; penguins</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:         3 -2.649738 0.06493506          &lt;list[2]&gt; &lt;list[1]&gt; penguins</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             learner_id resampling_id</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1: classif.rpart.tuned            cv</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2: classif.rpart.tuned            cv</span>
@@ -548,15 +548,15 @@ Printer.</p>
 <span class="r-in"><span><span class="co"># performance scores estimated on the outer resampling</span></span></span>
 <span class="r-in"><span><span class="va">rr</span><span class="op">$</span><span class="fu">score</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     task_id          learner_id resampling_id iteration classif.ce</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: penguins classif.rpart.tuned            cv         1 0.08695652</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: penguins classif.rpart.tuned            cv         2 0.02608696</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: penguins classif.rpart.tuned            cv         3 0.04385965</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: penguins classif.rpart.tuned            cv         1 0.07826087</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: penguins classif.rpart.tuned            cv         2 0.05217391</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: penguins classif.rpart.tuned            cv         3 0.05263158</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Hidden columns: task, learner, resampling, prediction</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># unbiased performance of the final model trained on the full data set</span></span></span>
 <span class="r-in"><span><span class="va">rr</span><span class="op">$</span><span class="fu">aggregate</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> classif.ce </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.05230104 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.06102212 </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
