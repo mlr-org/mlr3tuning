@@ -26,6 +26,10 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     #' @field learner ([mlr3::Learner]).
     learner = NULL,
 
+    #' @field default_values (named list).
+    #'  Default hyperparameter values of the learner.
+    default_values = NULL,
+
      #' @field resampling ([mlr3::Resampling]).
     resampling = NULL,
 
@@ -62,6 +66,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     initialize = function(task, learner, resampling, measures, store_benchmark_result = TRUE, store_models = FALSE, check_values = TRUE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, archive = NULL, callbacks = list()) {
       self$task = assert_task(as_task(task, clone = TRUE))
       self$learner = assert_learner(as_learner(learner, clone = TRUE))
+      self$default_values = self$learner$param_set$values
       learner$param_set$assert_values = FALSE
       self$measures = assert_measures(as_measures(measures), task = self$task, learner = self$learner)
 
@@ -91,20 +96,30 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       context = ContextEvalMany$new(self)
       private$.xss = xss
 
-      # create learners from set of hyperparameter configurations
-      learners = map(private$.xss, function(x) {
-        learner = self$learner$clone(deep = TRUE)
-        learner$param_set$values = insert_named(learner$param_set$values, x)
-        if (self$allow_hotstart) learner$hotstart_stack = self$hotstart_stack
-        learner
-      })
+      private$.design = if (self$allow_hotstart) {
+        # create learners from set of hyperparameter configurations and hotstart models
+        learners = map(private$.xss, function(x) {
+          learner = self$learner$clone(deep = TRUE)
+          learner$param_set$values = insert_named(learner$param_set$values, x)
+          learner$hotstart_stack = self$hotstart_stack
+          learner
+        })
+        data.table(task = list(self$task), learner = learners, resampling = resampling)
+      } else if (length(resampling) > 1) {
+        param_values = map(xss, function(xs) list(xs))
+        data.table(task = list(self$task), learner = list(self$learner), resampling = resampling, param_values = param_values)
+      } else {
+        benchmark_grid(self$task, self$learner, resampling, param_values = list(xss))
+      }
 
-      # benchmark hyperparameter configurations
-      private$.design = data.table(task = list(self$task), learner = learners, resampling = resampling)
       call_back("on_eval_after_design", self$callbacks, context)
 
       # learner is already cloned, task and resampling are not changed
-      private$.benchmark_result = benchmark(private$.design, store_models = self$store_models || self$allow_hotstart, allow_hotstart = self$allow_hotstart, clone = character())
+      private$.benchmark_result = benchmark(
+        design = private$.design,
+        store_models = self$store_models || self$allow_hotstart,
+        allow_hotstart = self$allow_hotstart,
+        clone = character(0))
       call_back("on_eval_after_benchmark", self$callbacks, context)
 
       # aggregate performance scores
@@ -129,6 +144,10 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
         self$archive$benchmark_result$combine(private$.benchmark_result)
         set(private$.aggregated_performance, j = "uhash", value = private$.benchmark_result$uhashes)
       }
+
+      # learner is not cloned anymore
+      # restore default values
+      self$learner$param_set$set_values(.values = self$default_values, .insert = FALSE)
 
       private$.aggregated_performance
     },

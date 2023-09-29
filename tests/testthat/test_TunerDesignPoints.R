@@ -14,4 +14,3 @@ test_that("TunerDesignPoints", {
 
   expect_error(test_tuner("design_points", term_evals = 2L, real_evals = 2, n_dim = 1L))
 })
-
