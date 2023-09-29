@@ -68,6 +68,8 @@
 #' @template param_callbacks
 #' @template param_xdt
 #' @template param_learner_param_vals
+#' @template param_rush
+#' @template param_freeze_archive
 #'
 #' @export
 #' @examples

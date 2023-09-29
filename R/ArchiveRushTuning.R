@@ -58,6 +58,7 @@
 #'
 #' @template param_search_space
 #' @template param_codomain
+#' @template param_rush
 #'
 #' @export
 ArchiveRushTuning = R6Class("ArchiveRushTuning",

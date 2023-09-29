@@ -13,6 +13,9 @@ This class is usually constructed internally by the \link{TuningInstanceSingleCr
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
+\item{\code{default_values}}{(named \code{list()}).
+Default hyperparameter values of the learner.}
+
 \item{\code{task}}{(\link[mlr3:Task]{mlr3::Task}).}
 
 \item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner}).}

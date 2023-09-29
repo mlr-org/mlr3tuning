@@ -187,6 +187,14 @@ values at the start of the optimization.}
 
 \item{\code{callbacks}}{(list of \link{CallbackTuning})\cr
 List of callbacks.}
+
+\item{\code{rush}}{(\link{Rush})\cr
+If a rush instance is supplied, the tuning runs without batches.}
+
+\item{\code{freeze_archive}}{(\code{logical(1)})\cr
+If \code{TRUE}, the archive is copied from redis to a local data.table after tuning.
+This is helpful when the tuning is run on a remote machine and the archive is serialized.
+Only used if \code{rush} is supplied.}
 }
 \if{html}{\out{</div>}}
 }

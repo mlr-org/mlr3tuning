@@ -14,6 +14,8 @@
 #' @template param_allow_hotstart
 #' @template param_callbacks
 #'
+#' @template field_default_values
+#'
 #' @export
 ObjectiveRushTuning = R6Class("ObjectiveRushTuning",
   inherit = Objective,
