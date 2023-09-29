@@ -15,6 +15,8 @@
 #' @template param_keep_hotstart_stack
 #' @template param_callbacks
 #'
+#' @template field_default_values
+#'
 #' @export
 ObjectiveTuning = R6Class("ObjectiveTuning",
   inherit = Objective,
@@ -26,8 +28,6 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     #' @field learner ([mlr3::Learner]).
     learner = NULL,
 
-    #' @field default_values (named list).
-    #'  Default hyperparameter values of the learner.
     default_values = NULL,
 
      #' @field resampling ([mlr3::Resampling]).

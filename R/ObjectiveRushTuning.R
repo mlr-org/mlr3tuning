@@ -12,7 +12,6 @@
 #' @template param_check_values
 #' @template param_store_benchmark_result
 #' @template param_allow_hotstart
-#' @template param_keep_hotstart_stack
 #' @template param_callbacks
 #'
 #' @export
@@ -25,6 +24,8 @@ ObjectiveRushTuning = R6Class("ObjectiveRushTuning",
 
     #' @field learner ([mlr3::Learner]).
     learner = NULL,
+
+    default_values = NULL,
 
      #' @field resampling ([mlr3::Resampling]).
     resampling = NULL,
@@ -52,49 +53,44 @@ ObjectiveRushTuning = R6Class("ObjectiveRushTuning",
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
-    #'
-    #' @param archive ([ArchiveTuning])\cr
-    #'   Reference to archive of [TuningInstanceSingleCrit] | [TuningInstanceMultiCrit].
-    #'   If `NULL` (default), benchmark result and models cannot be stored.
-    initialize = function(task, learner, resampling, measures, store_benchmark_result = TRUE, store_models = FALSE, check_values = TRUE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, callbacks = list()) {
+    initialize = function(task, learner, resampling, measures, store_benchmark_result = TRUE, store_models = FALSE, check_values = TRUE, allow_hotstart = FALSE, callbacks = list()) {
       self$task = assert_task(as_task(task, clone = TRUE))
       self$learner = assert_learner(as_learner(learner, clone = TRUE))
       learner$param_set$assert_values = FALSE
       self$measures = assert_measures(as_measures(measures), task = self$task, learner = self$learner)
       self$resampling = resampling
       self$store_models = assert_flag(store_models)
-
-
       self$store_benchmark_result = assert_flag(store_benchmark_result)
       self$allow_hotstart = assert_flag(allow_hotstart) && any(c("hotstart_forward", "hotstart_backward") %in% learner$properties)
       if (self$allow_hotstart) self$hotstart_stack = HotstartStack$new()
-      self$keep_hotstart_stack = assert_flag(keep_hotstart_stack)
       self$callbacks = assert_callbacks(as_callbacks(callbacks))
 
-      super$initialize(id = sprintf("%s_on_%s", self$learner$id, self$task$id), properties = "noisy",
-        domain = self$learner$param_set, codomain = measures_to_codomain(self$measures),
-        constants = ps(), check_values = check_values)
+      super$initialize(
+        id = sprintf("%s_on_%s", self$learner$id, self$task$id),
+        properties = "noisy",
+        domain = self$learner$param_set,
+        codomain = measures_to_codomain(self$measures),
+        constants = ps(),
+        check_values = check_values)
     }
   ),
 
   private = list(
     .eval = function(xs) {
       context = ContextEval$new(self)
-      private$.xs = xs
 
+      # combining default values and hyperparameter configuration avoids cloning
+      private$.xs = insert_named(self$default_values, xs)
       call_back("on_eval_after_xs", self$callbacks, context)
-
       self$learner$param_set$set_values(.values = private$.xs)
       if (self$allow_hotstart) self$learner$hotstart_stack = self$hotstart_stack
 
       private$.resample_result = resample(self$task, self$learner, self$resampling, store_models = TRUE, allow_hotstart = self$allow_hotstart, clone = character(0))
-
       call_back("on_eval_after_resample", self$callbacks, context)
-      private$.aggregated_performance = as.list(private$.resample_result$aggregate(self$measures))
 
+      private$.aggregated_performance = as.list(private$.resample_result$aggregate(self$measures))
       runtime_learners = extract_runtime(private$.resample_result)
       private$.aggregated_performance = c(private$.aggregated_performance, list(runtime_learners = runtime_learners))
-
       if (self$allow_hotstart) self$hotstart_stack$add(private$.resample_result$learners)
       if (!self$store_models) private$.resample_result$discard(models = TRUE)
       if (self$store_benchmark_result) private$.aggregated_performance = c(private$.aggregated_performance, list(resample_result = list(private$.resample_result)))
