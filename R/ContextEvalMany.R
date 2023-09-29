@@ -1,18 +1,18 @@
 #' @title Evaluation Context
 #'
 #' @description
-#' The [ContextEval] allows [CallbackTuning]s to access and modify data while a hyperparameter configuration is evaluated.
-#' See the section on active bindings for a list of modifiable objects.
-#' See [callback_tuning()] for a list of stages that access [ContextEval].
+#' The [ContextEvalMany] allows [CallbackTuning]s to access and modify data while a batch of hyperparameter configurations is evaluated.
+#' See section on active bindings for a list of modifiable objects.
+#' See [callback_tuning()] for a list of stages which access [ContextEval].
 #'
 #' @details
 #' This context is re-created each time a new batch of hyperparameter configurations is evaluated.
-#' Changes to `$objective_tuning`, `$resample_result` are discarded after the function is finished.
+#' Changes to `$objective_tuning`, `$design` `$benchmark_result` are discarded after the function is finished.
 #' Modification on the data table in `$aggregated_performance` are written to the archive.
 #' Any number of columns can be added.
 #'
 #' @export
-ContextEval = R6Class("ContextEval",
+ContextEvalMany = R6Class("ContextEvalMany",
   inherit = mlr3misc::Context,
   public = list(
 
@@ -26,30 +26,40 @@ ContextEval = R6Class("ContextEval",
     #'   Identifier for the new callback.
     #' @param objective_tuning [ObjectiveTuning].
     initialize = function(objective_tuning) {
-      self$objective_tuning = assert_r6(objective_tuning, "ObjectiveRushTuning")
+      self$objective_tuning = assert_r6(objective_tuning, "ObjectiveTuning")
     }
   ),
 
   active = list(
-    #' @field xs (list())\cr
-    #'   The hyperparameter configuration currently evaluated.
+    #' @field xss (list())\cr
+    #'   The hyperparameter configurations of the latest batch.
     #'   Contains the values on the learner scale i.e. transformations are applied.
     #'   See `$xdt` in [bbotk::ContextOptimization] for the untransformed values.
-    xs = function(rhs) {
+    xss = function(rhs) {
       if (missing(rhs)) {
-        return(get_private(self$objective_tuning)$.xs)
+        return(get_private(self$objective_tuning)$.xss)
       } else {
-        self$objective_tuning$.__enclos_env__$private$.xs = rhs
+       self$objective_tuning$.__enclos_env__$private$.xss = rhs
       }
     },
 
-    #' @field resample_result ([mlr3::BenchmarkResult])\cr
-    #'   The resample result of the hyperparameter configuration currently evaluated.
-    resample_result = function(rhs) {
+    #' @field design ([data.table::data.table])\cr
+    #'   The benchmark design of the latest batch.
+    design = function(rhs) {
       if (missing(rhs)) {
-        return(get_private(self$objective_tuning)$.resample_result)
+        return(get_private(self$objective_tuning)$.design)
       } else {
-        self$objective_tuning$.__enclos_env__$private$.resample_result = rhs
+        self$objective_tuning$.__enclos_env__$private$.design = rhs
+      }
+    },
+
+    #' @field benchmark_result ([mlr3::BenchmarkResult])\cr
+    #'   The benchmark result of the latest batch.
+    benchmark_result = function(rhs) {
+      if (missing(rhs)) {
+        return(get_private(self$objective_tuning)$.benchmark_result)
+      } else {
+        self$objective_tuning$.__enclos_env__$private$.benchmark_result = rhs
       }
     },
 

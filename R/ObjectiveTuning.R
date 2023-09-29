@@ -88,7 +88,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
 
   private = list(
     .eval_many = function(xss, resampling) {
-      context = ContextEval$new(self)
+      context = ContextEvalMany$new(self)
       private$.xss = xss
 
       # create learners from set of hyperparameter configurations
@@ -112,7 +112,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
 
       # add runtime to evaluations
       time = map_dbl(private$.benchmark_result$resample_results$resample_result, function(rr) {
-        sum(map_dbl(get_private(rr)$.data$learner_states(get_private(rr)$.view), function(state) state$train_time + state$predict_time))
+        extract_runtime(rr)
       })
       set(private$.aggregated_performance, j = "runtime_learners", value = time)
 

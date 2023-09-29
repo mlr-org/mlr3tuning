@@ -49,6 +49,7 @@ load_callback_early_stopping = function() {
   callback_tuning("mlr3tuning.early_stopping",
     label = "Early Stopping Callback",
     man = "mlr3tuning::mlr3tuning.early_stopping",
+
     on_optimization_begin = function(callback, context) {
       learner = context$instance$objective$learner
 
@@ -76,6 +77,51 @@ load_callback_early_stopping = function() {
     on_eval_before_archive = function(callback, context) {
       set(context$aggregated_performance, j = "max_nrounds", value = callback$state$max_nrounds)
       if (!callback$state$store_models) context$benchmark_result$discard(models = TRUE)
+    },
+
+    on_result = function(callback, context) {
+      context$result$learner_param_vals[[1]]$early_stopping_rounds = NULL
+      context$result$learner_param_vals[[1]]$nrounds = context$instance$archive$best()$max_nrounds
+      context$result$learner_param_vals[[1]]$early_stopping_set = "none"
+      context$instance$objective$store_models = callback$state$store_models
+    }
+  )
+}
+
+load_callback_rush_early_stopping = function() {
+  callback_rush_tuning("mlr3tuning.rush_early_stopping",
+    label = "Rush Early Stopping Callback",
+    man = "mlr3tuning::mlr3tuning.early_stopping",
+    on_optimization_begin = function(callback, context) {
+      learner = context$instance$objective$learner
+
+      if (all(c("LearnerClassifXgboost", "LearnerRegrXgboost", "LearnerSurvXgboost") %nin% class(learner))) {
+        stopf("%s is incompatible with %s", format(learner), format(callback))
+      }
+
+      if (is.null(learner$param_set$values$early_stopping_rounds)) {
+        stop("Early stopping is not activated. Set `early_stopping_rounds` parameter.")
+      }
+    },
+
+    on_eval_after_xs = function(callback, context) {
+      # save user setting
+      if (is.null(callback$state$store_models)) {
+        callback$state$store_models = context$objective_tuning$store_models
+        context$objective_tuning$store_models = TRUE
+      }
+    },
+
+    on_eval_after_resample = function(callback, context) {
+      states = get_private(context$resample_result)$.data$learner_states(get_private(context$resample_result)$.view)
+      callback$state$max_nrounds = max(map_dbl(states, function(state) {
+        state$model$best_iteration # GraphLearner state$model$xgboost$model$niter
+      }))
+    },
+
+    on_eval_before_archive = function(callback, context) {
+      context$aggregated_performance = c(context$aggregated_performance, list(max_nrounds = callback$state$max_nrounds))
+      if (!callback$state$store_models) context$resample_result$discard(models = TRUE)
     },
 
     on_result = function(callback, context) {

@@ -38,9 +38,6 @@ ObjectiveRushTuning = R6Class("ObjectiveRushTuning",
     #' @field store_benchmark_result (`logical(1)`).
     store_benchmark_result = NULL,
 
-    #' @field archive ([ArchiveTuning]).
-    archive = NULL,
-
     #' @field hotstart_stack ([mlr3::HotstartStack]).
     hotstart_stack = NULL,
 
@@ -82,21 +79,32 @@ ObjectiveRushTuning = R6Class("ObjectiveRushTuning",
 
   private = list(
     .eval = function(xs) {
+      context = ContextEval$new(self)
+      private$.xs = xs
 
-      self$learner$param_set$set_values(.values = xs)
+      call_back("on_eval_after_xs", self$callbacks, context)
+
+      self$learner$param_set$set_values(.values = private$.xs)
       if (self$allow_hotstart) self$learner$hotstart_stack = self$hotstart_stack
 
-      resample_result = resample(self$task, self$learner, self$resampling, store_models = self$store_models || self$allow_hotstart, allow_hotstart = self$allow_hotstart, clone = character(0))
-      aggregated_performance = as.list(resample_result$aggregate(self$measures))
+      private$.resample_result = resample(self$task, self$learner, self$resampling, store_models = TRUE, allow_hotstart = self$allow_hotstart, clone = character(0))
 
-      runtime_learners = sum(map_dbl(get_private(resample_result)$.data$learner_states(get_private(resample_result)$.view), function(state) state$train_time + state$predict_time))
-      extra = list(runtime_learners = runtime_learners)
+      call_back("on_eval_after_resample", self$callbacks, context)
+      private$.aggregated_performance = as.list(private$.resample_result$aggregate(self$measures))
 
-      if (self$allow_hotstart) self$hotstart_stack$add(resample_result$learners)
-      if (!self$store_models) resample_result$discard(models = TRUE)
-      if (self$store_benchmark_result) extra = c(extra, list(resample_result = list(resample_result)))
+      runtime_learners = extract_runtime(private$.resample_result)
+      private$.aggregated_performance = c(private$.aggregated_performance, list(runtime_learners = runtime_learners))
 
-      c(aggregated_performance, extra)
-    }
+      if (self$allow_hotstart) self$hotstart_stack$add(private$.resample_result$learners)
+      if (!self$store_models) private$.resample_result$discard(models = TRUE)
+      if (self$store_benchmark_result) private$.aggregated_performance = c(private$.aggregated_performance, list(resample_result = list(private$.resample_result)))
+
+      call_back("on_eval_before_archive", self$callbacks, context)
+      private$.aggregated_performance
+    },
+
+    .xs  = NULL,
+    .resample_result = NULL,
+    .aggregated_performance = NULL
   )
 )

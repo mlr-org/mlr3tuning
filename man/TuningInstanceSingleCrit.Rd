@@ -125,6 +125,7 @@ Param values for the optimal learner call.}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-TuningInstanceSingleCrit-new}{\code{TuningInstanceSingleCrit$new()}}
+\item \href{#method-TuningInstanceSingleCrit-start_workers}{\code{TuningInstanceSingleCrit$start_workers()}}
 \item \href{#method-TuningInstanceSingleCrit-assign_result}{\code{TuningInstanceSingleCrit$assign_result()}}
 \item \href{#method-TuningInstanceSingleCrit-clone}{\code{TuningInstanceSingleCrit$clone()}}
 }
@@ -139,7 +140,6 @@ Param values for the optimal learner call.}
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="format"><a href='../../bbotk/html/OptimInstance.html#method-OptimInstance-format'><code>bbotk::OptimInstance$format()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="objective_function"><a href='../../bbotk/html/OptimInstance.html#method-OptimInstance-objective_function'><code>bbotk::OptimInstance$objective_function()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="print"><a href='../../bbotk/html/OptimInstance.html#method-OptimInstance-print'><code>bbotk::OptimInstance$print()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="start_workers"><a href='../../bbotk/html/OptimInstance.html#method-OptimInstance-start_workers'><code>bbotk::OptimInstance$start_workers()</code></a></span></li>
 </ul>
 </details>
 }}
@@ -225,6 +225,39 @@ values at the start of the optimization.}
 
 \item{\code{callbacks}}{(list of \link{CallbackTuning})\cr
 List of callbacks.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TuningInstanceSingleCrit-start_workers"></a>}}
+\if{latex}{\out{\hypertarget{method-TuningInstanceSingleCrit-start_workers}{}}}
+\subsection{Method \code{start_workers()}}{
+Start workers with \code{future}.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TuningInstanceSingleCrit$start_workers(
+  n_workers = NULL,
+  host = "local",
+  heartbeat_period = NULL,
+  heartbeat_expire = NULL
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{n_workers}}{(\code{integer(1)})\cr
+Number of workers to be started.
+If \code{NULL} the maximum number of free workers is used.}
+
+\item{\code{host}}{(\code{character(1)})\cr
+Local or remote host.}
+
+\item{\code{heartbeat_period}}{(\code{integer(1)})\cr
+Period of the heartbeat in seconds.}
+
+\item{\code{heartbeat_expire}}{(\code{integer(1)})\cr
+Time to live of the heartbeat in seconds.}
 }
 \if{html}{\out{</div>}}
 }

@@ -100,6 +100,7 @@ Benchmark result.}
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveRush" data-id="best"><a href='../../bbotk/html/ArchiveRush.html#method-ArchiveRush-best'><code>bbotk::ArchiveRush$best()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveRush" data-id="clear"><a href='../../bbotk/html/ArchiveRush.html#method-ArchiveRush-clear'><code>bbotk::ArchiveRush$clear()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveRush" data-id="format"><a href='../../bbotk/html/ArchiveRush.html#method-ArchiveRush-format'><code>bbotk::ArchiveRush$format()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveRush" data-id="freeze"><a href='../../bbotk/html/ArchiveRush.html#method-ArchiveRush-freeze'><code>bbotk::ArchiveRush$freeze()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveRush" data-id="nds_selection"><a href='../../bbotk/html/ArchiveRush.html#method-ArchiveRush-nds_selection'><code>bbotk::ArchiveRush$nds_selection()</code></a></span></li>
 </ul>
 </details>
