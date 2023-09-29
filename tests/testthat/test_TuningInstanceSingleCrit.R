@@ -402,3 +402,6 @@ test_that("assign_result works with no hyperparameter and constant", {
   expect_equal(res$classif.ce, 0.8)
   expect_list(res$learner_param_vals[[1]], len = 0)
 })
+
+# rush -------------------------------------------------------------------------
+
