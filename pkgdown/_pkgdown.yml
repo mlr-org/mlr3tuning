@@ -46,7 +46,9 @@ reference:
       - TuningInstanceMultiCrit
       - ti
       - ObjectiveTuning
+      - ObjectiveRushTuning
       - ArchiveTuning
+      - ArchiveRushTuning
       - tune
   - title: Tuners
     contents:
@@ -69,8 +71,11 @@ reference:
   - title: Callbacks
     contents:
       - CallbackTuning
+      - CallbackRushTuning
       - ContextEval
+      - ContextEvalMany
       - callback_tuning
+      - callback_rush_tuning
       - mlr3tuning.backup
       - mlr3tuning.early_stopping
       - mlr3tuning.measures
