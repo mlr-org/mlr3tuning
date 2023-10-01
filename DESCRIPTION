@@ -37,12 +37,14 @@ Imports:
     R6
 Suggests:
     adagio,
+    future,
     GenSA,
     irace,
     knitr,
     mlr3learners (>= 0.5.5),
     mlr3pipelines,
     nloptr,
+    redux,
     rmarkdown,
     rpart,
     rush,

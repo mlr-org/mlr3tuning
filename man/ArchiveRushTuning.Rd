@@ -4,10 +4,10 @@
 \alias{ArchiveRushTuning}
 \title{Class for Logging Evaluated Hyperparameter Configurations}
 \description{
-The \link{ArchiveRedisTuning} stores all evaluated hyperparameter configurations and performance scores.
+The \link{ArchiveRushTuning} stores all evaluated hyperparameter configurations and performance scores.
 }
 \details{
-The \link{ArchiveRedisTuning} is a container around a \code{\link[data.table:data.table]{data.table::data.table()}}.
+The \link{ArchiveRushTuning} is a container around a \code{\link[data.table:data.table]{data.table::data.table()}}.
 Each row corresponds to a single evaluation of a hyperparameter configuration.
 See the section on Data Structure for more information.
 The archive stores additionally a \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} (\verb{$benchmark_result}) that records the resampling experiments.
@@ -129,7 +129,7 @@ Internally created from provided \link[mlr3:Measure]{mlr3::Measure}s.}
 \item{\code{check_values}}{(\code{logical(1)})\cr
 If \code{TRUE} (default), hyperparameter configurations are check for validity.}
 
-\item{\code{rush}}{(\link{Rush})\cr
+\item{\code{rush}}{(\link[rush:Rush]{rush::Rush})\cr
 If a rush instance is supplied, the tuning runs without batches.}
 }
 \if{html}{\out{</div>}}

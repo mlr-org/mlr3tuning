@@ -1,10 +1,10 @@
 #' @title Class for Logging Evaluated Hyperparameter Configurations
 #'
 #' @description
-#' The [ArchiveRedisTuning] stores all evaluated hyperparameter configurations and performance scores.
+#' The [ArchiveRushTuning] stores all evaluated hyperparameter configurations and performance scores.
 #'
 #' @details
-#' The [ArchiveRedisTuning] is a container around a [data.table::data.table()].
+#' The [ArchiveRushTuning] is a container around a [data.table::data.table()].
 #' Each row corresponds to a single evaluation of a hyperparameter configuration.
 #' See the section on Data Structure for more information.
 #' The archive stores additionally a [mlr3::BenchmarkResult] (`$benchmark_result`) that records the resampling experiments.

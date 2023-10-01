@@ -188,7 +188,7 @@ values at the start of the optimization.}
 \item{\code{callbacks}}{(list of \link{CallbackTuning})\cr
 List of callbacks.}
 
-\item{\code{rush}}{(\link{Rush})\cr
+\item{\code{rush}}{(\link[rush:Rush]{rush::Rush})\cr
 If a rush instance is supplied, the tuning runs without batches.}
 
 \item{\code{freeze_archive}}{(\code{logical(1)})\cr
