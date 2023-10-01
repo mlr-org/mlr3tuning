@@ -15,6 +15,7 @@
   # callbacks
   x = utils::getFromNamespace("mlr_callbacks", ns = "mlr3misc")
   x$add("mlr3tuning.rush_early_stopping", load_callback_rush_early_stopping)
+  x$add("mlr3tuning.rush_measures", load_callback_rush_measures)
   x$add("mlr3tuning.early_stopping", load_callback_early_stopping)
   x$add("mlr3tuning.backup", load_callback_backup)
   x$add("mlr3tuning.measures", load_callback_measures)

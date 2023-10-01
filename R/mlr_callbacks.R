@@ -236,3 +236,26 @@ load_callback_measures = function() {
     }
   )
 }
+
+load_callback_rush_measures = function() {
+  callback_rush_tuning("mlr3tuning.rush_measures",
+    label = "Additional Rush Measures Callback",
+    man = "mlr3tuning::mlr3tuning.measures",
+
+    on_optimization_begin = function(callback, context) {
+      assert_measures(callback$state$measures)
+      ids = map_chr(callback$state$measures, "id")
+      assert_names(ids, type = "unique", .var.name = "measures")
+      if (any(ids %in% map_chr(context$instance$objective$measures, "id"))) {
+        stopf("The measure id(s) '%s' are already used by the instance. Please pass the measures with a different id.", as_short_string(ids))
+      }
+    },
+
+    on_eval_before_archive = function(callback, context) {
+      ids = map_chr(callback$state$measures, "id")
+      scores = as.list(context$resample_result$aggregate(callback$state$measures))
+      context$aggregated_performance = c(context$aggregated_performance, scores)
+    }
+  )
+}
+
