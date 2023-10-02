@@ -461,3 +461,33 @@ test_that("freeze archive works", {
   expect_null(instance$archive$rush)
   expect_data_table(as.data.table(instance$archive), nrows = 3)
 })
+
+test_that("log messages are captured on the workers", {
+  skip_on_cran()
+  skip_on_ci()
+
+  config = start_flush_redis()
+  future::plan("multisession", workers = 2L)
+  rush = Rush$new("test", config)
+
+  instance = ti(
+    task = tsk("pima"),
+    learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
+    resampling = rsmp("cv", folds = 3),
+    measures = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 3),
+    store_models = FALSE,
+    store_benchmark_result = FALSE,
+    rush = rush,
+    start_workers = TRUE,
+    freeze_archive = FALSE
+  )
+
+  expect_equal(rush$n_workers, 2)
+
+  tuner = tnr("random_search")
+
+  tuner$optimize(instance)
+
+  expect_character(unlist(as.data.table(instance$archive)$log), len = 9)
+})
