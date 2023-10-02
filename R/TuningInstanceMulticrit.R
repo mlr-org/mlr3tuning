@@ -33,6 +33,7 @@
 #' @template param_xdt
 #' @template param_learner_param_vals
 #' @template param_rush
+#' @template param_start_workers
 #' @template param_freeze_archive
 #'
 #' @export
@@ -71,7 +72,24 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
-    initialize = function(task, learner, resampling, measures, terminator, search_space = NULL, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, evaluate_default = FALSE, callbacks = list(), rush = NULL, freeze_archive = FALSE) {
+    initialize = function(
+      task,
+      learner,
+      resampling,
+      measures,
+      terminator,
+      search_space = NULL,
+      store_benchmark_result = TRUE,
+      store_models = FALSE,
+      check_values = FALSE,
+      allow_hotstart = FALSE,
+      keep_hotstart_stack = FALSE,
+      evaluate_default = FALSE,
+      callbacks = list(),
+      rush = NULL,
+      start_workers = TRUE,
+      freeze_archive = FALSE) {
+
       private$.evaluate_default = assert_flag(evaluate_default)
       learner = assert_learner(as_learner(learner, clone = TRUE))
 

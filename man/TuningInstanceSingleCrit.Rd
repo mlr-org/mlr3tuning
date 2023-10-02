@@ -164,6 +164,7 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   evaluate_default = FALSE,
   callbacks = list(),
   rush = NULL,
+  start_workers = TRUE,
   freeze_archive = FALSE
 )}\if{html}{\out{</div>}}
 }
@@ -228,6 +229,9 @@ List of callbacks.}
 
 \item{\code{rush}}{(\link[rush:Rush]{rush::Rush})\cr
 If a rush instance is supplied, the tuning runs without batches.}
+
+\item{\code{start_workers}}{(\code{logical(1)})\cr
+If \code{TRUE}, the workers are started immediately with \code{future} on all available cores.}
 
 \item{\code{freeze_archive}}{(\code{logical(1)})\cr
 If \code{TRUE}, the archive is copied from redis to a local data.table after tuning.

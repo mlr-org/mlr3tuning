@@ -69,6 +69,7 @@
 #' @template param_xdt
 #' @template param_learner_param_vals
 #' @template param_rush
+#' @template param_start_workers
 #' @template param_freeze_archive
 #'
 #' @export
@@ -110,7 +111,24 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
-    initialize = function(task, learner, resampling, measure = NULL, terminator, search_space = NULL, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, evaluate_default = FALSE, callbacks = list(), rush = NULL, freeze_archive = FALSE) {
+    initialize = function(
+      task,
+      learner,
+      resampling,
+      measure = NULL,
+      terminator,
+      search_space = NULL,
+      store_benchmark_result = TRUE,
+      store_models = FALSE,
+      check_values = FALSE,
+      allow_hotstart = FALSE,
+      keep_hotstart_stack = FALSE,
+      evaluate_default = FALSE,
+      callbacks = list(),
+      rush = NULL,
+      start_workers = TRUE,
+      freeze_archive = FALSE) {
+
       private$.evaluate_default = assert_flag(evaluate_default)
       learner = assert_learner(as_learner(learner, clone = TRUE))
 
@@ -131,7 +149,18 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
       # initialized specialized tuning archive and objective
       if (is.null(rush)) {
         archive = ArchiveTuning$new(search_space, codomain, check_values)
-        objective = ObjectiveTuning$new(task, learner, resampling, measures, store_benchmark_result, store_models, check_values, allow_hotstart, keep_hotstart_stack, archive, callbacks)
+        objective = ObjectiveTuning$new(
+          task,
+          learner,
+          resampling,
+          measures,
+          store_benchmark_result,
+          store_models,
+          check_values,
+          allow_hotstart,
+          keep_hotstart_stack,
+          archive,
+          callbacks)
       } else {
         archive = ArchiveRushTuning$new(
           search_space = search_space,
@@ -150,7 +179,14 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
           callbacks = callbacks)
       }
 
-      super$initialize(objective, search_space, terminator, callbacks = callbacks, rush = rush, freeze_archive = freeze_archive)
+      super$initialize(
+        objective,
+        search_space,
+        terminator,
+        callbacks = callbacks,
+        rush = rush,
+        start_workers = start_workers,
+        freeze_archive = freeze_archive)
       # super class of instance initializes default archive, overwrite with tuning archive
       self$archive = archive
     },

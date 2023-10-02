@@ -59,6 +59,8 @@
 #' @template param_keep_hotstart_stack
 #' @template param_evaluate_default
 #' @template param_callbacks
+#' @template param_rush
+#' @template param_freeze_archive
 #' @template param_method
 #'
 #' @export
@@ -89,7 +91,7 @@
 #'
 #' # Inspect all evaluated configurations
 #' as.data.table(instance$archive)
-tune = function(tuner, task, learner, resampling, measures = NULL, term_evals = NULL, term_time = NULL, terminator = NULL, search_space = NULL, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, evaluate_default = FALSE, callbacks = list(), method) {
+tune = function(tuner, task, learner, resampling, measures = NULL, term_evals = NULL, term_time = NULL, terminator = NULL, search_space = NULL, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, evaluate_default = FALSE, callbacks = list(), rush = NULL, freeze_archive = FALSE, method) {
   if (!missing(method)) {
     message("The `method` argument is deprecated and will be removed in a future release. Please use `tuner` instead.")
     tuner = method
@@ -112,7 +114,10 @@ tune = function(tuner, task, learner, resampling, measures = NULL, term_evals = 
     allow_hotstart = allow_hotstart,
     keep_hotstart_stack = keep_hotstart_stack,
     evaluate_default = evaluate_default,
-    callbacks = callbacks)
+    callbacks = callbacks,
+    rush = rush,
+    start_workers = TRUE,
+    freeze_archive = freeze_archive)
 
   tuner$optimize(instance)
   instance

@@ -21,6 +21,8 @@ tune(
   keep_hotstart_stack = FALSE,
   evaluate_default = FALSE,
   callbacks = list(),
+  rush = NULL,
+  freeze_archive = FALSE,
   method
 )
 }
@@ -91,6 +93,14 @@ values at the start of the optimization.}
 
 \item{callbacks}{(list of \link{CallbackTuning})\cr
 List of callbacks.}
+
+\item{rush}{(\link[rush:Rush]{rush::Rush})\cr
+If a rush instance is supplied, the tuning runs without batches.}
+
+\item{freeze_archive}{(\code{logical(1)})\cr
+If \code{TRUE}, the archive is copied from redis to a local data.table after tuning.
+This is helpful when the tuning is run on a remote machine and the archive is serialized.
+Only used if \code{rush} is supplied.}
 
 \item{method}{(\code{character(1)})\cr
 Deprecated. Use \code{tuner} instead.}

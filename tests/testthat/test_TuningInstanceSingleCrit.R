@@ -410,6 +410,7 @@ test_that("TuningInstanceSingleCrit works with rush", {
   skip_on_ci()
 
   config = start_flush_redis()
+  future::plan("multisession", workers = 2L)
   rush = Rush$new("test", config)
 
   instance = ti(
@@ -421,12 +422,11 @@ test_that("TuningInstanceSingleCrit works with rush", {
     store_models = FALSE,
     store_benchmark_result = FALSE,
     rush = rush,
+    start_workers = TRUE,
     freeze_archive = FALSE
   )
 
-  future::plan("multisession", workers = 2)
-  instance$start_workers()
-  rush$await_workers(2)
+  expect_equal(rush$n_workers, 2)
 
   tuner = tnr("random_search")
 
@@ -439,6 +439,7 @@ test_that("freeze archive works", {
   skip_on_ci()
 
   config = start_flush_redis()
+  future::plan("multisession", workers = 2L)
   rush = Rush$new("test", config)
 
   instance = ti(
@@ -450,12 +451,9 @@ test_that("freeze archive works", {
     store_models = FALSE,
     store_benchmark_result = FALSE,
     rush = rush,
+    start_workers = TRUE,
     freeze_archive = TRUE
   )
-
-  future::plan("multisession", workers = 2)
-  instance$start_workers()
-  rush$await_workers(2)
 
   tuner = tnr("random_search")
   tuner$optimize(instance)
