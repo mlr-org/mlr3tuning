@@ -82,11 +82,17 @@ ObjectiveRushTuning = R6Class("ObjectiveRushTuning",
     .eval = function(xs) {
       context = ContextEval$new(self)
 
+      lg$debug("Evaluating hyperparameter configuration %s.", as_short_string(xs))
+
       # combining default values and hyperparameter configuration avoids cloning
       private$.xs = insert_named(self$default_values, xs)
       call_back("on_eval_after_xs", self$callbacks, context)
       self$learner$param_set$set_values(.values = private$.xs)
-      if (self$allow_hotstart) self$learner$hotstart_stack = self$hotstart_stack
+
+      if (self$allow_hotstart) {
+        lg$debug("Adding hotstart stack to learner.")
+        self$learner$hotstart_stack = self$hotstart_stack
+      }
 
       private$.resample_result = resample(self$task, self$learner, self$resampling, store_models = TRUE, allow_hotstart = self$allow_hotstart, clone = character(0))
       call_back("on_eval_after_resample", self$callbacks, context)
@@ -95,8 +101,14 @@ ObjectiveRushTuning = R6Class("ObjectiveRushTuning",
       runtime_learners = extract_runtime(private$.resample_result)
       private$.aggregated_performance = c(private$.aggregated_performance, list(runtime_learners = runtime_learners))
       if (self$allow_hotstart) self$hotstart_stack$add(private$.resample_result$learners)
-      if (!self$store_models) private$.resample_result$discard(models = TRUE)
-      if (self$store_benchmark_result) private$.aggregated_performance = c(private$.aggregated_performance, list(resample_result = list(private$.resample_result)))
+      if (!self$store_models) {
+        lg$debug("Discarding models.")
+        private$.resample_result$discard(models = TRUE)
+      }
+      if (self$store_benchmark_result) {
+        lg$debug("Storing resample result.")
+        private$.aggregated_performance = c(private$.aggregated_performance, list(benchmark_result = private$.resample_result))
+      }
 
       call_back("on_eval_before_archive", self$callbacks, context)
       private$.aggregated_performance
