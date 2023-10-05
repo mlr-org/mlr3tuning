@@ -127,30 +127,30 @@ test_that("objects are cloned", {
 
 # rush -------------------------------------------------------------------------
 
-# test_that("hotstart works with rush" {
-#   config = start_flush_redis()
-#   future::plan("multisession", workers = 2L)
-#   rush = Rush$new("test", config)
+test_that("hotstart works with rush" {
+  config = start_flush_redis()
+  future::plan("multisession", workers = 2L)
+  rush = Rush$new("test", config)
 
-#   instance = ti(
-#     task = tsk("pima"),
-#     learner = lrn("classif.debug", x = to_tune(), iter = to_tune(1, 100)),
-#     resampling = rsmp("cv", folds = 3),
-#     measures = msr("classif.ce"),
-#     terminator = trm("evals", n_evals = 3),
-#     store_models = FALSE,
-#     store_benchmark_result = FALSE,
-#     allow_hotstart = TRUE,
-#     rush = rush,
-#     start_workers = TRUE,
-#     freeze_archive = FALSE
-#   )
+  instance = ti(
+    task = tsk("pima"),
+    learner = lrn("classif.debug", x = to_tune(), iter = to_tune(1, 100)),
+    resampling = rsmp("cv", folds = 3),
+    measures = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 3),
+    store_models = FALSE,
+    store_benchmark_result = FALSE,
+    allow_hotstart = TRUE,
+    rush = rush,
+    lgr_thresholds = c(rush = "debug", bbotk = "debug", mlr3 = "debug"),
+    start_workers = TRUE,
+    freeze_archive = FALSE
+  )
 
-#   rush$await_workers(2)
+  tuner = tnr("grid_search", resolution = 5)
+  tuner$optimize(instance)
 
-#   tuner = tnr("grid_search", resolution = 5)
-#   tuner$optimize(instance)
-
-#   # FIXME: add test
-#   unlist(as.data.table(instance$archive)$log)
-# })
+  messages = rush$read_log()$msg
+  messages = messages[grep("hotstarting", messages)]
+  expect_true(length(messages) > 0)
+})
