@@ -89,42 +89,23 @@ test_that("rush early stopping callback works", {
   library(mlr3learners) # nolint
   library(mlr3pipelines) # nolint
 
-  # check stages in objective
-  callback = clbk("mlr3tuning.rush_early_stopping")
-  callback$state$store_models = TRUE
-
-  objective = ObjectiveRushTuning$new(
-    task = tsk("pima"),
-    learner = lrn("classif.xgboost", eta = to_tune(1e-04, 1e-1, logscale = TRUE), early_stopping_rounds = 20, nrounds = 1000, early_stopping_set = "test"),
-    resampling = rsmp("cv", folds = 3),
-    measures = msr("classif.ce"),
-    callbacks = callback,
-    store_models = TRUE
-  )
-
-  expect_number(objective$eval(list(eta = 1e-04))$max_nrounds)
-
-  # test all stages
   config = start_flush_redis()
   rush = Rush$new("test", config)
+  future::plan("multisession", workers = 2)
 
   instance = ti(
     task = tsk("pima"),
-    learner = lrn("classif.xgboost", eta = to_tune(1e-04, 1e-1, logscale = TRUE), early_stopping_rounds = 20, nrounds = 1000, early_stopping_set = "test"),
+    learner = lrn("classif.xgboost", eta = to_tune(1e-04, 1e-1, logscale = TRUE), early_stopping_rounds = 2, nrounds = 10, early_stopping_set = "test"),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 2),
     callbacks = clbk("mlr3tuning.rush_early_stopping"),
     store_models = TRUE,
-    rush = rush
+    rush = rush,
+    start_workers = TRUE
   )
 
   tuner = tnr("random_search")
-
-  future::plan("multisession", workers = 2)
-  instance$start_workers()
-  rush$await_workers(2)
-
   tuner$optimize(instance)
 
   expect_numeric(instance$archive$best()$max_nrounds)
@@ -139,28 +120,16 @@ test_that("rush measures callback works", {
   skip_if_not_installed("mlr3learners")
   skip_if_not_installed("xgboost")
 
+  config = start_flush_redis()
+  rush = Rush$new("test", config)
+  future::plan("multisession", workers = 2)
+
   task = tsk("pima")
   splits = partition(task, ratio = 0.8, stratify = TRUE)
   task$row_roles$use = splits$train
   task$row_roles$holdout = splits$test
 
-  # check stages in objective
   callback = clbk("mlr3tuning.rush_measures", measures = list(msr("classif.ce", predict_sets = "holdout", id = "classif.ce_holdout")))
-
-  objective = ObjectiveRushTuning$new(
-    task = task,
-    learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1), predict_sets = c("test", "holdout")),
-    resampling = rsmp("cv", folds = 3),
-    measures = msr("classif.ce"),
-    callbacks = callback,
-    store_models = TRUE
-  )
-
-  expect_numeric(objective$eval(list(cp = 0.1))$classif.ce_holdout)
-
-  # test all stages
-  config = start_flush_redis()
-  rush = Rush$new("test", config)
 
   instance = ti(
     task = tsk("pima"),
@@ -170,15 +139,11 @@ test_that("rush measures callback works", {
     terminator = trm("evals", n_evals = 2),
     callbacks = callback,
     store_models = TRUE,
-    rush = rush
+    rush = rush,
+    start_workers = TRUE
   )
 
   tuner = tnr("random_search")
-
-  future::plan("multisession", workers = 2)
-  instance$start_workers()
-  rush$await_workers(2)
-
   tuner$optimize(instance)
 
   expect_numeric(instance$archive$data$classif.ce_holdout)

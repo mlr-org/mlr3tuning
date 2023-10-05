@@ -70,6 +70,7 @@
 #' @template param_learner_param_vals
 #' @template param_rush
 #' @template param_start_workers
+#' @template param_lgr_thresholds
 #' @template param_freeze_archive
 #'
 #' @export
@@ -127,6 +128,7 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
       callbacks = list(),
       rush = NULL,
       start_workers = TRUE,
+      lgr_thresholds = NULL,
       freeze_archive = FALSE) {
 
       private$.evaluate_default = assert_flag(evaluate_default)
@@ -186,7 +188,9 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
         callbacks = callbacks,
         rush = rush,
         start_workers = start_workers,
+        lgr_thresholds = lgr_thresholds,
         freeze_archive = freeze_archive)
+
       # super class of instance initializes default archive, overwrite with tuning archive
       self$archive = archive
     },
@@ -203,13 +207,17 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     #' Period of the heartbeat in seconds.
     #' @param heartbeat_expire (`integer(1)`)\cr
     #' Time to live of the heartbeat in seconds.
-    start_workers = function(n_workers = NULL, host = "local", heartbeat_period = NULL, heartbeat_expire = NULL) {
+    #' @param await_workers (`logical(1)`)\cr
+    #' Whether to wait until all workers are available.
+    start_workers = function(n_workers = NULL, host = "local", heartbeat_period = NULL, heartbeat_expire = NULL, lgr_thresholds = NULL, await_workers = TRUE) {
       super$start_workers(
         n_workers = n_workers,
         packages = c(self$objective$learner$packages, "mlr3tuning"),
         host = host,
         heartbeat_period = heartbeat_period,
-        heartbeat_expire = heartbeat_expire)
+        heartbeat_expire = heartbeat_expire,
+        lgr_thresholds = lgr_thresholds,
+        await_workers = await_workers)
     },
 
     #' @description

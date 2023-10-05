@@ -491,3 +491,35 @@ test_that("log messages are captured on the workers", {
 
   expect_character(unlist(as.data.table(instance$archive)$log), len = 9)
 })
+
+test_that("log messages are saved", {
+  skip_on_cran()
+  skip_on_ci()
+
+  config = start_flush_redis()
+  future::plan("multisession", workers = 2L)
+  rush = Rush$new("test", config)
+
+  instance = ti(
+    task = tsk("pima"),
+    learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
+    resampling = rsmp("cv", folds = 3),
+    measures = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 10),
+    store_models = FALSE,
+    store_benchmark_result = FALSE,
+    rush = rush,
+    start_workers = TRUE,
+    lgr_thresholds = c(rush = "debug", mlr3 = "info"),
+    freeze_archive = FALSE
+  )
+
+  tuner = tnr("random_search")
+  tuner$optimize(instance)
+
+
+  log = rush$read_log()
+  expect_data_table(log, nrows = 70)
+  expect_names(names(log), must.include = c("worker_id", "timestamp", "logger", "msg"))
+  expect_subset(log$logger, c("rush", "mlr3"))
+})

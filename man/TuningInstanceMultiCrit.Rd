@@ -127,6 +127,7 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   callbacks = list(),
   rush = NULL,
   start_workers = TRUE,
+  lgr_thresholds = NULL,
   freeze_archive = FALSE
 )}\if{html}{\out{</div>}}
 }
@@ -194,6 +195,10 @@ If a rush instance is supplied, the tuning runs without batches.}
 
 \item{\code{start_workers}}{(\code{logical(1)})\cr
 If \code{TRUE}, the workers are started immediately with \code{future} on all available cores.}
+
+\item{\code{lgr_thresholds}}{(named \code{character()} or \code{numeric()})\cr
+Thresholds for the \code{lgr} package e.g. c(rush = "debug", bbotk = "info", mlr3 = "info").
+If \code{NULL}, no log messages from the workers are saved.}
 
 \item{\code{freeze_archive}}{(\code{logical(1)})\cr
 If \code{TRUE}, the archive is copied from redis to a local data.table after tuning.

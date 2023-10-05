@@ -53,6 +53,7 @@ tnrs = function(.keys, ...) {
 #' @template param_callbacks
 #' @template param_rush
 #' @template param_start_workers
+#' @template param_lgr_thresholds
 #' @template param_freeze_archive
 #'
 #' @inheritSection TuningInstanceSingleCrit Resources
@@ -76,6 +77,7 @@ ti = function(
   callbacks = list(),
   rush = NULL,
   start_workers = TRUE,
+  lgr_thresholds = NULL,
   freeze_archive = FALSE) {
 
   TuningInstance = if (!is.list(measures)) TuningInstanceSingleCrit else TuningInstanceMultiCrit
@@ -95,5 +97,6 @@ ti = function(
     callbacks = callbacks,
     rush = rush,
     start_workers = start_workers,
+    lgr_thresholds = lgr_thresholds,
     freeze_archive = freeze_archive)
 }

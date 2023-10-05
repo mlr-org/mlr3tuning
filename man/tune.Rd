@@ -22,6 +22,7 @@ tune(
   evaluate_default = FALSE,
   callbacks = list(),
   rush = NULL,
+  lgr_thresholds = NULL,
   freeze_archive = FALSE,
   method
 )
@@ -96,6 +97,10 @@ List of callbacks.}
 
 \item{rush}{(\link[rush:Rush]{rush::Rush})\cr
 If a rush instance is supplied, the tuning runs without batches.}
+
+\item{lgr_thresholds}{(named \code{character()} or \code{numeric()})\cr
+Thresholds for the \code{lgr} package e.g. c(rush = "debug", bbotk = "info", mlr3 = "info").
+If \code{NULL}, no log messages from the workers are saved.}
 
 \item{freeze_archive}{(\code{logical(1)})\cr
 If \code{TRUE}, the archive is copied from redis to a local data.table after tuning.

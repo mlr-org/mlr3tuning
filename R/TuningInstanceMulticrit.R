@@ -34,6 +34,7 @@
 #' @template param_learner_param_vals
 #' @template param_rush
 #' @template param_start_workers
+#' @template param_lgr_thresholds
 #' @template param_freeze_archive
 #'
 #' @export
@@ -88,6 +89,7 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
       callbacks = list(),
       rush = NULL,
       start_workers = TRUE,
+      lgr_thresholds = NULL,
       freeze_archive = FALSE) {
 
       private$.evaluate_default = assert_flag(evaluate_default)
@@ -104,19 +106,55 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
       }
 
       # create codomain from measure
-      measures = assert_measures(as_measures(measures, clone = TRUE), task = task, learner = learner)
+      measures = assert_measures(as_measures(measures), task = task, learner = learner)
       codomain = measures_to_codomain(measures)
 
       # initialized specialized tuning archive and objective
       if (is.null(rush)) {
-        archive = ArchiveTuning$new(search_space, codomain, check_values)
-        objective = ObjectiveTuning$new(task, learner, resampling, measures, store_benchmark_result, store_models, check_values, allow_hotstart, keep_hotstart_stack, archive, callbacks)
+        archive = ArchiveTuning$new(
+          search_space = search_space,
+          codomain = codomain,
+          check_values = check_values
+        )
+        objective = ObjectiveTuning$new(
+          task = task,
+          learner = learner,
+          resampling = resampling,
+          measures = measures,
+          store_benchmark_result = store_benchmark_result,
+          store_models = store_models,
+          check_values =  check_values,
+          allow_hotstart = allow_hotstart,
+          keep_hotstart_stack = keep_hotstart_stack,
+          archive = archive,
+          callbacks = callbacks)
       } else {
-        archive = ArchiveRushTuning$new(search_space, codomain, check_values, rush)
-        objective = ObjectiveRushTuning$new(task, learner, resampling, measures, store_benchmark_result, store_models, check_values, allow_hotstart, keep_hotstart_stack, archive, callbacks)
+        archive = ArchiveRushTuning$new(
+          search_space = search_space,
+          codomain = codomain,
+          check_values = check_values,
+          rush = rush)
+        objective = ObjectiveRushTuning$new(
+          task = task,
+          learner = learner,
+          resampling = resampling,
+          measures = measures,
+          store_benchmark_result = store_benchmark_result,
+          store_models = store_models,
+          check_values = check_values,
+          allow_hotstart = allow_hotstart,
+          callbacks = callbacks)
       }
 
-      super$initialize(objective, search_space, terminator, callbacks = callbacks, rush = rush, freeze_archive = freeze_archive)
+      super$initialize(
+        objective = objective,
+        search_space = search_space,
+        terminator = terminator,
+        callbacks = callbacks,
+        rush = rush,
+        lgr_thresholds = lgr_thresholds,
+        freeze_archive = freeze_archive)
+
       # super class of instance initializes default archive, overwrite with tuning archive
       self$archive = archive
     },
