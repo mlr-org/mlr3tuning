@@ -1,6 +1,6 @@
 # mlr3tuning (development version)
 
-
+* fix: Passing a terminator in `tune_nested()` did not work.
 
 # mlr3tuning 0.19.0
 
