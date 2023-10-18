@@ -34,8 +34,8 @@ test_that("store benchmark result works", {
   expect_names(names(y), permutation.of = c("classif.ce", "runtime_learners", "resample_result"))
   expect_number(y$classif.ce)
   expect_number(y$runtime_learners)
-  expect_resample_result(y$resample_result[[1]])
-  expect_null(y$resample_result[[1]]$learners[[1]]$model)
+  expect_resample_result(y$resample_result)
+  expect_null(y$resample_result$learners[[1]]$model)
 })
 
 test_that("store models works", {
@@ -55,8 +55,8 @@ test_that("store models works", {
   expect_names(names(y), permutation.of = c("classif.ce", "runtime_learners", "resample_result"))
   expect_number(y$classif.ce)
   expect_number(y$runtime_learners)
-  expect_resample_result(y$resample_result[[1]])
-  expect_class(y$resample_result[[1]]$learners[[1]]$model, "rpart")
+  expect_resample_result(y$resample_result)
+  expect_class(y$resample_result$learners[[1]]$model, "rpart")
 })
 
 test_that("rush objective with multiple measures works", {

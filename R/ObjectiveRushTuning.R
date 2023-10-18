@@ -124,7 +124,7 @@ ObjectiveRushTuning = R6Class("ObjectiveRushTuning",
       }
       if (self$store_benchmark_result) {
         lg$debug("Storing resample result.")
-        private$.aggregated_performance = c(private$.aggregated_performance, list(benchmark_result = private$.resample_result))
+        private$.aggregated_performance = c(private$.aggregated_performance, list(resample_result = private$.resample_result))
       }
 
       call_back("on_eval_before_archive", self$callbacks, context)
