@@ -125,6 +125,29 @@ test_that("objects are cloned", {
   })
 })
 
+test_that("hotstart threshold works", {
+  task = tsk("pima")
+  learner = lrn("classif.debug", x = to_tune(), iter = to_tune(1, 100))
+
+  instance = ti(
+    task = task,
+    learner = learner,
+    resampling = rsmp("holdout"),
+    measures = msr("classif.ce"),
+    terminator = trm("none"),
+    store_models = TRUE,
+    allow_hotstart = TRUE,
+    keep_hotstart_stack = TRUE,
+    hotstart_threshold = 50,
+  )
+
+  tuner = tnr("grid_search", batch_size = 5, resolution = 5)
+  tuner$optimize(instance)
+
+  hotstart_values = map_int(instance$objective$hotstart_stack$stack$start_learner, function(learner) learner$param_set$values$iter)
+  expect_true(all(hotstart_values >= 50))
+})
+
 # rush -------------------------------------------------------------------------
 
 test_that("hotstart works with rush" {

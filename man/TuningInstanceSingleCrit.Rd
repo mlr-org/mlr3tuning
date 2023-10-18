@@ -160,6 +160,7 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   store_models = FALSE,
   check_values = FALSE,
   allow_hotstart = FALSE,
+  hotstart_threshold = NULL,
   keep_hotstart_stack = FALSE,
   evaluate_default = FALSE,
   callbacks = list(),
@@ -216,6 +217,10 @@ computational overhead is reduced.}
 Allow to hotstart learners with previously fitted models. See also
 \link[mlr3:HotstartStack]{mlr3::HotstartStack}. The learner must support hotstarting. Sets
 \code{store_models = TRUE}.}
+
+\item{\code{hotstart_threshold}}{(\code{numeric(1)})\cr
+Threshold for storing learners in the stack.
+If the value of the hotstart parameter is below this threshold, the learner is not added to the stack.}
 
 \item{\code{keep_hotstart_stack}}{(\code{logical(1)})\cr
 If \code{TRUE}, \link[mlr3:HotstartStack]{mlr3::HotstartStack} is kept in \verb{$objective$hotstart_stack}

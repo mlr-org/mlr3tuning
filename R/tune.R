@@ -56,6 +56,7 @@
 #' @template param_store_models
 #' @template param_check_values
 #' @template param_allow_hotstart
+#' @template param_hotstart_threshold
 #' @template param_keep_hotstart_stack
 #' @template param_evaluate_default
 #' @template param_callbacks
@@ -106,6 +107,7 @@ tune = function(
   store_models = FALSE,
   check_values = FALSE,
   allow_hotstart = FALSE,
+  hotstart_threshold = NULL,
   keep_hotstart_stack = FALSE,
   evaluate_default = FALSE,
   callbacks = list(),
@@ -134,6 +136,7 @@ tune = function(
     store_models = store_models,
     check_values = check_values,
     allow_hotstart = allow_hotstart,
+    hotstart_threshold = hotstart_threshold,
     keep_hotstart_stack = keep_hotstart_stack,
     evaluate_default = evaluate_default,
     callbacks = callbacks,

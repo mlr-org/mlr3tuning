@@ -63,6 +63,7 @@
 #' @template param_store_models
 #' @template param_check_values
 #' @template param_allow_hotstart
+#' @template param_hotstart_threshold
 #' @template param_keep_hotstart_stack
 #' @template param_evaluate_default
 #' @template param_callbacks
@@ -123,6 +124,7 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
       store_models = FALSE,
       check_values = FALSE,
       allow_hotstart = FALSE,
+      hotstart_threshold = NULL,
       keep_hotstart_stack = FALSE,
       evaluate_default = FALSE,
       callbacks = list(),
@@ -150,25 +152,30 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
 
       # initialized specialized tuning archive and objective
       if (is.null(rush)) {
-        archive = ArchiveTuning$new(search_space, codomain, check_values)
+        archive = ArchiveTuning$new(
+          search_space = search_space,
+          codomain = codomain,
+          check_values = check_values)
         objective = ObjectiveTuning$new(
-          task,
-          learner,
-          resampling,
-          measures,
-          store_benchmark_result,
-          store_models,
-          check_values,
-          allow_hotstart,
-          keep_hotstart_stack,
-          archive,
-          callbacks)
+          task = task,
+          learner = learner,
+          resampling = resampling,
+          measures = measures,
+          store_benchmark_result = store_benchmark_result,
+          store_models = store_models,
+          check_values = check_values,
+          allow_hotstart = allow_hotstart,
+          hotstart_threshold = hotstart_threshold,
+          keep_hotstart_stack = keep_hotstart_stack,
+          archive = archive,
+          callbacks = callbacks)
       } else {
         archive = ArchiveRushTuning$new(
           search_space = search_space,
           codomain = codomain,
           check_values = check_values,
           rush = rush)
+
         objective = ObjectiveRushTuning$new(
           task = task,
           learner = learner,
@@ -178,6 +185,7 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
           store_models = store_models,
           check_values = check_values,
           allow_hotstart = allow_hotstart,
+          hotstart_threshold = hotstart_threshold,
           callbacks = callbacks)
       }
 

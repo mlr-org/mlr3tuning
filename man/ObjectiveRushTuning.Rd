@@ -71,6 +71,7 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   store_models = FALSE,
   check_values = TRUE,
   allow_hotstart = FALSE,
+  hotstart_threshold = NULL,
   callbacks = list()
 )}\if{html}{\out{</div>}}
 }
@@ -113,6 +114,10 @@ computational overhead is reduced.}
 Allow to hotstart learners with previously fitted models. See also
 \link[mlr3:HotstartStack]{mlr3::HotstartStack}. The learner must support hotstarting. Sets
 \code{store_models = TRUE}.}
+
+\item{\code{hotstart_threshold}}{(\code{numeric(1)})\cr
+Threshold for storing learners in the stack.
+If the value of the hotstart parameter is below this threshold, the learner is not added to the stack.}
 
 \item{\code{callbacks}}{(list of \link{CallbackTuning})\cr
 List of callbacks.}

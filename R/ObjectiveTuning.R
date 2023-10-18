@@ -12,6 +12,7 @@
 #' @template param_check_values
 #' @template param_store_benchmark_result
 #' @template param_allow_hotstart
+#' @template param_hotstart_threshold
 #' @template param_keep_hotstart_stack
 #' @template param_callbacks
 #'
@@ -63,16 +64,35 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     #' @param archive ([ArchiveTuning])\cr
     #'   Reference to archive of [TuningInstanceSingleCrit] | [TuningInstanceMultiCrit].
     #'   If `NULL` (default), benchmark result and models cannot be stored.
-    initialize = function(task, learner, resampling, measures, store_benchmark_result = TRUE, store_models = FALSE, check_values = TRUE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, archive = NULL, callbacks = list()) {
+    initialize = function(
+      task,
+      learner,
+      resampling,
+      measures,
+      store_benchmark_result = TRUE,
+      store_models = FALSE,
+      check_values = TRUE,
+      allow_hotstart = FALSE,
+      hotstart_threshold = NULL,
+      keep_hotstart_stack = FALSE,
+      archive = NULL,
+      callbacks = list()) {
+
       self$task = assert_task(as_task(task, clone = TRUE))
       self$learner = assert_learner(as_learner(learner, clone = TRUE))
       self$default_values = self$learner$param_set$values
-      learner$param_set$assert_values = FALSE
+      self$learner$param_set$assert_values = FALSE
       self$measures = assert_measures(as_measures(measures), task = self$task, learner = self$learner)
 
       self$store_benchmark_result = assert_flag(store_benchmark_result)
       self$allow_hotstart = assert_flag(allow_hotstart) && any(c("hotstart_forward", "hotstart_backward") %in% learner$properties)
-      if (self$allow_hotstart) self$hotstart_stack = HotstartStack$new()
+      if (self$allow_hotstart) {
+        if (!is.null(hotstart_threshold)) {
+          hotstart_threshold = set_names(assert_numeric(hotstart_threshold), self$learner$param_set$ids(tags = "hotstart"))
+        }
+
+        self$hotstart_stack = HotstartStack$new(hotstart_threshold = hotstart_threshold)
+      }
       self$keep_hotstart_stack = assert_flag(keep_hotstart_stack)
       self$store_models = assert_flag(store_models)
       self$archive = assert_r6(archive, "ArchiveTuning", null.ok = TRUE)

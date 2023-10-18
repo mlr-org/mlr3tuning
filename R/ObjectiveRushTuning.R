@@ -12,6 +12,7 @@
 #' @template param_check_values
 #' @template param_store_benchmark_result
 #' @template param_allow_hotstart
+#' @template param_hotstart_threshold
 #' @template param_callbacks
 #'
 #' @template field_default_values
@@ -55,16 +56,32 @@ ObjectiveRushTuning = R6Class("ObjectiveRushTuning",
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
-    initialize = function(task, learner, resampling, measures, store_benchmark_result = TRUE, store_models = FALSE, check_values = TRUE, allow_hotstart = FALSE, callbacks = list()) {
+    initialize = function(
+      task,
+      learner,
+      resampling,
+      measures,
+      store_benchmark_result = TRUE,
+      store_models = FALSE,
+      check_values = TRUE,
+      allow_hotstart = FALSE,
+      hotstart_threshold = NULL,
+      callbacks = list()) {
+
       self$task = assert_task(as_task(task, clone = TRUE))
       self$learner = assert_learner(as_learner(learner, clone = TRUE))
-      learner$param_set$assert_values = FALSE
+      self$learner$param_set$assert_values = FALSE
       self$measures = assert_measures(as_measures(measures), task = self$task, learner = self$learner)
       self$resampling = resampling
       self$store_models = assert_flag(store_models)
       self$store_benchmark_result = assert_flag(store_benchmark_result)
       self$allow_hotstart = assert_flag(allow_hotstart) && any(c("hotstart_forward", "hotstart_backward") %in% learner$properties)
-      if (self$allow_hotstart) self$hotstart_stack = HotstartStack$new()
+      if (self$allow_hotstart) {
+        if (!is.null(hotstart_threshold)) {
+          hotstart_threshold = set_names(assert_numeric(hotstart_threshold), self$learner$param_set$ids(tags = "hotstart"))
+        }
+        self$hotstart_stack = HotstartStack$new(hotstart_threshold = hotstart_threshold)
+      }
       self$keep_hotstart_stack = FALSE
       self$callbacks = assert_callbacks(as_callbacks(callbacks))
 
