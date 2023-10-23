@@ -44,6 +44,8 @@ reference:
     contents:
       - TuningInstanceSingleCrit
       - TuningInstanceMultiCrit
+      - TuningInstanceRushSingleCrit
+      - TuningInstanceRushMultiCrit
       - ti
       - ObjectiveTuning
       - ObjectiveRushTuning

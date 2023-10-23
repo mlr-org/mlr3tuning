@@ -70,8 +70,12 @@ ArchiveRushTuning = R6Class("ArchiveRushTuning",
     #'
     #' @param check_values (`logical(1)`)\cr
     #'   If `TRUE` (default), hyperparameter configurations are check for validity.
-    initialize = function(search_space, codomain, check_values = TRUE, rush) {
-      super$initialize(search_space, codomain, check_values, rush)
+    initialize = function(search_space, codomain, rush) {
+      super$initialize(
+        search_space = search_space,
+        codomain = codomain,
+        rush = rush)
+      private$.benchmark_result = BenchmarkResult$new()
     },
 
     #' @description
@@ -147,6 +151,14 @@ ArchiveRushTuning = R6Class("ArchiveRushTuning",
     print = function() {
       catf("%s with %i evaluations", format(self), self$n_evals)
       print(as.data.table(self, unnest = NULL, exclude_columns = c("x_domain", "uhash", "timestamp", "runtime_learners", "resample_result")), digits = 2)
+    },
+
+    #' @description
+    #' Copy the data from rush to a local [data.table::data.table()].
+    freeze = function() {
+      # copy benchmark result to cache
+      self$benchmark_result
+      super$freeze()
     }
   ),
 
@@ -155,18 +167,29 @@ ArchiveRushTuning = R6Class("ArchiveRushTuning",
     #' @field benchmark_result ([mlr3::BenchmarkResult])\cr
     #' Benchmark result.
     benchmark_result = function() {
-      if (is.null(self$data$resample_result)) return(BenchmarkResult$new())
-      as_benchmark_result(self$data$resample_result)
+      # return cached benchmark result when archive is frozen
+      if (is.null(self$rush)) return(private$.benchmark_result)
+
+      # cache benchmark result
+      if (self$rush$n_finished_tasks > private$.benchmark_result$n_resample_results) {
+        bmrs = map(self$data$resample_result, as_benchmark_result)
+        init = BenchmarkResult$new()
+        private$.benchmark_result = Reduce(function(lhs, rhs) lhs$combine(rhs), bmrs, init = init)
+      }
+      private$.benchmark_result
     }
+  ),
+
+  private = list(
+    .benchmark_result = NULL
   )
 )
 
 #' @export
-as.data.table.ArchiveRushTuning = function(x, ..., unnest = "x_domain", exclude_columns = "uhash", measures = NULL) {
+as.data.table.ArchiveRushTuning = function(x, ..., unnest = "x_domain", exclude_columns = NULL, measures = NULL) {
   if (nrow(x$data) == 0) return(data.table())
   # default values for unnest and exclude_columns might be not present in archive
   if ("x_domain" %nin% names(x$data)) unnest = setdiff(unnest, "x_domain")
-  if (!x$benchmark_result$n_resample_results) exclude_columns = exclude_columns[exclude_columns %nin% "uhash"]
 
   assert_subset(unnest, names(x$data))
   cols_y_extra = NULL
@@ -174,17 +197,14 @@ as.data.table.ArchiveRushTuning = function(x, ..., unnest = "x_domain", exclude_
   # unnest data
   tab = unnest(copy(x$data), unnest, prefix = "{col}_")
 
-  if (x$benchmark_result$n_resample_results) {
-    # add extra measures
-    if (!is.null(measures)) {
-      measures = assert_measures(as_measures(measures), learner = x$learners(1)[[1]], task = x$resample_result(1)$task)
-      cols_y_extra = map_chr(measures, "id")
-      tab = cbind(tab, x$benchmark_result$aggregate(measures)[, cols_y_extra, with = FALSE])
-    }
-    # add resample results
-    tab = merge(tab, x$benchmark_result$resample_results[, c("uhash", "resample_result"), with = FALSE], by = "uhash",
-      sort = FALSE)
+  # add extra measures
+  if (!is.null(measures) && !is.null(x$data$resample_result)) {
+    measures = assert_measures(as_measures(measures), learner = x$learners(1)[[1]], task = x$resample_result(1)$task)
+    cols_y_extra = map_chr(measures, "id")
+    scores = map_dtr(x$data$resample_result, function(rr) as.data.table(as.list(rr$aggregate(measures))))
+    tab = cbind(tab, scores)
   }
+
   cols_x_domain =  if ("x_domain" %in% unnest) {
     # get all ids of x_domain
     # trafo could add unknown ids

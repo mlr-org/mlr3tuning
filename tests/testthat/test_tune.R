@@ -28,11 +28,10 @@ test_that("tune function works without measure", {
 
 test_that("tune interface is equal to TuningInstanceSingleCrit", {
   tune_args = formalArgs(tune)
-  tune_args = tune_args[tune_args %nin% c("tuner", "method", "...")]
+  tune_args = tune_args[tune_args %nin% c("tuner", "method", "...", "rush")]
   tune_args[tune_args == "measures"] = "measure"
 
   instance_args = formalArgs(TuningInstanceSingleCrit$public_methods$initialize)
-  instance_args = instance_args[instance_args %nin% "start_workers"]
   instance_args = c(instance_args, "term_evals", "term_time")
 
   expect_set_equal(tune_args, instance_args)
@@ -40,10 +39,30 @@ test_that("tune interface is equal to TuningInstanceSingleCrit", {
 
 test_that("tune interface is equal to TuningInstanceMultiCrit", {
   tune_args = formalArgs(tune)
-  tune_args = tune_args[tune_args %nin% c("tuner", "method", "start_workers", "...")]
+  tune_args = tune_args[tune_args %nin% c("tuner", "method", "...", "rush")]
 
   instance_args = formalArgs(TuningInstanceMultiCrit$public_methods$initialize)
-  instance_args = instance_args[instance_args %nin% "start_workers"]
+  instance_args = c(instance_args, "term_evals", "term_time")
+
+  expect_set_equal(tune_args, instance_args)
+})
+
+test_that("tune interface is equal to TuningInstanceRushSingleCrit", {
+  tune_args = formalArgs(tune)
+  tune_args = tune_args[tune_args %nin% c("tuner", "method", "...")]
+  tune_args[tune_args == "measures"] = "measure"
+
+  instance_args = formalArgs(TuningInstanceRushSingleCrit$public_methods$initialize)
+  instance_args = c(instance_args, "term_evals", "term_time")
+
+  expect_set_equal(tune_args, instance_args)
+})
+
+test_that("tune interface is equal to TuningInstanceRushMultiCrit", {
+  tune_args = formalArgs(tune)
+  tune_args = tune_args[tune_args %nin% c("tuner", "method", "...")]
+
+  instance_args = formalArgs(TuningInstanceRushMultiCrit$public_methods$initialize)
   instance_args = c(instance_args, "term_evals", "term_time")
 
   expect_set_equal(tune_args, instance_args)

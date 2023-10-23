@@ -90,7 +90,6 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
         if (!is.null(hotstart_threshold)) {
           hotstart_threshold = set_names(assert_numeric(hotstart_threshold), self$learner$param_set$ids(tags = "hotstart"))
         }
-
         self$hotstart_stack = HotstartStack$new(hotstart_threshold = hotstart_threshold)
       }
       self$keep_hotstart_stack = assert_flag(keep_hotstart_stack)

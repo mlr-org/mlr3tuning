@@ -61,8 +61,6 @@
 #' @template param_evaluate_default
 #' @template param_callbacks
 #' @template param_rush
-#' @template param_lgr_thresholds
-#' @template param_freeze_archive
 #' @template param_method
 #'
 #' @export
@@ -112,8 +110,6 @@ tune = function(
   evaluate_default = FALSE,
   callbacks = list(),
   rush = NULL,
-  lgr_thresholds = NULL,
-  freeze_archive = FALSE,
   method) {
 
   if (!missing(method)) {
@@ -124,29 +120,50 @@ tune = function(
   assert_tuner(tuner)
   terminator = terminator %??% terminator_selection(term_evals, term_time)
 
-  TuningInstance = if (!is.list(measures)) TuningInstanceSingleCrit else TuningInstanceMultiCrit
-  instance = TuningInstance$new(
-    task = task,
-    learner = learner,
-    resampling = resampling,
-    measures,
-    terminator = terminator,
-    search_space = search_space,
-    store_benchmark_result = store_benchmark_result,
-    store_models = store_models,
-    check_values = check_values,
-    allow_hotstart = allow_hotstart,
-    hotstart_threshold = hotstart_threshold,
-    keep_hotstart_stack = keep_hotstart_stack,
-    evaluate_default = evaluate_default,
-    callbacks = callbacks,
-    rush = rush,
-    start_workers = TRUE,
-    lgr_thresholds = lgr_thresholds,
-    freeze_archive = freeze_archive)
+  if (is.null(rush)) {
+    TuningInstance = if (!is.list(measures)) TuningInstanceSingleCrit else TuningInstanceMultiCrit
+    instance = TuningInstance$new(
+      task = task,
+      learner = learner,
+      resampling = resampling,
+      measures,
+      terminator = terminator,
+      search_space = search_space,
+      store_benchmark_result = store_benchmark_result,
+      store_models = store_models,
+      check_values = check_values,
+      allow_hotstart = allow_hotstart,
+      hotstart_threshold = hotstart_threshold,
+      keep_hotstart_stack = keep_hotstart_stack,
+      evaluate_default = evaluate_default,
+      callbacks = callbacks)
 
-  tuner$optimize(instance)
-  instance
+    tuner$optimize(instance)
+    instance
+  } else {
+    TuningInstance = if (!is.list(measures)) TuningInstanceRushSingleCrit else TuningInstanceRushMultiCrit
+    instance = TuningInstance$new(
+      task = task,
+      learner = learner,
+      resampling = resampling,
+      measures,
+      terminator = terminator,
+      search_space = search_space,
+      store_benchmark_result = store_benchmark_result,
+      store_models = store_models,
+      check_values = check_values,
+      allow_hotstart = allow_hotstart,
+      hotstart_threshold = hotstart_threshold,
+      keep_hotstart_stack = keep_hotstart_stack,
+      evaluate_default = evaluate_default,
+      callbacks = callbacks,
+      rush = rush)
+
+    instance$start_worker(await_workers = TRUE)
+
+    tuner$optimize(instance)
+    instance
+  }
 }
 
 terminator_selection = function(term_evals, term_time) {

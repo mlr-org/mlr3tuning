@@ -150,25 +150,24 @@ test_that("hotstart threshold works", {
 
 # rush -------------------------------------------------------------------------
 
-test_that("hotstart works with rush" {
-  config = start_flush_redis()
-  future::plan("multisession", workers = 2L)
-  rush = Rush$new("test", config)
+test_that("hotstart works with rush", {
+  skip_on_cran()
+  skip_on_ci()
 
-  instance = ti(
+  rush = rsh()
+  instance = TuningInstanceRushSingleCrit$new(
     task = tsk("pima"),
     learner = lrn("classif.debug", x = to_tune(), iter = to_tune(1, 100)),
     resampling = rsmp("cv", folds = 3),
-    measures = msr("classif.ce"),
+    measure = msr("classif.ce"),
     terminator = trm("evals", n_evals = 3),
-    store_models = FALSE,
-    store_benchmark_result = FALSE,
     allow_hotstart = TRUE,
-    rush = rush,
-    lgr_thresholds = c(rush = "debug", bbotk = "debug", mlr3 = "debug"),
-    start_workers = TRUE,
-    freeze_archive = FALSE
+    rush = rush
   )
+  future::plan("cluster", workers = 1L)
+  instance$start_workers(await_workers = TRUE, lgr_thresholds = c(rush = "debug", bbotk = "debug", mlr3 = "debug"))
+  pids = rush$worker_info$pid
+  on.exit({clean_on_exit(pids)}, add = TRUE)
 
   tuner = tnr("grid_search", resolution = 5)
   tuner$optimize(instance)

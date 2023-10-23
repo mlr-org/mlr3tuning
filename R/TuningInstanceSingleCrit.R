@@ -69,10 +69,6 @@
 #' @template param_callbacks
 #' @template param_xdt
 #' @template param_learner_param_vals
-#' @template param_rush
-#' @template param_start_workers
-#' @template param_lgr_thresholds
-#' @template param_freeze_archive
 #'
 #' @export
 #' @examples
@@ -127,12 +123,8 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
       hotstart_threshold = NULL,
       keep_hotstart_stack = FALSE,
       evaluate_default = FALSE,
-      callbacks = list(),
-      rush = NULL,
-      start_workers = TRUE,
-      lgr_thresholds = NULL,
-      freeze_archive = FALSE) {
-
+      callbacks = list()
+      ) {
       private$.evaluate_default = assert_flag(evaluate_default)
       learner = assert_learner(as_learner(learner, clone = TRUE))
 
@@ -150,74 +142,54 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
       measures = assert_measures(as_measures(measure, task_type = task$task_type), task = task, learner = learner)
       codomain = measures_to_codomain(measures)
 
-      # initialized specialized tuning archive and objective
-      if (is.null(rush)) {
-        archive = ArchiveTuning$new(
-          search_space = search_space,
-          codomain = codomain,
-          check_values = check_values)
-        objective = ObjectiveTuning$new(
-          task = task,
-          learner = learner,
-          resampling = resampling,
-          measures = measures,
-          store_benchmark_result = store_benchmark_result,
-          store_models = store_models,
-          check_values = check_values,
-          allow_hotstart = allow_hotstart,
-          hotstart_threshold = hotstart_threshold,
-          keep_hotstart_stack = keep_hotstart_stack,
-          archive = archive,
-          callbacks = callbacks)
-      } else {
-        archive = ArchiveRushTuning$new(
-          search_space = search_space,
-          codomain = codomain,
-          check_values = check_values,
-          rush = rush)
+      archive = ArchiveTuning$new(
+        search_space = search_space,
+        codomain = codomain,
+        check_values = check_values)
 
-        objective = ObjectiveRushTuning$new(
-          task = task,
-          learner = learner,
-          resampling = resampling,
-          measures = measures,
-          store_benchmark_result = store_benchmark_result,
-          store_models = store_models,
-          check_values = check_values,
-          allow_hotstart = allow_hotstart,
-          hotstart_threshold = hotstart_threshold,
-          callbacks = callbacks)
-      }
+      objective = ObjectiveTuning$new(
+        task = task,
+        learner = learner,
+        resampling = resampling,
+        measures = measures,
+        store_benchmark_result = store_benchmark_result,
+        store_models = store_models,
+        check_values = check_values,
+        allow_hotstart = allow_hotstart,
+        hotstart_threshold = hotstart_threshold,
+        keep_hotstart_stack = keep_hotstart_stack,
+        archive = archive,
+        callbacks = callbacks)
 
       super$initialize(
-        objective,
-        search_space,
-        terminator,
+        objective = objective,
+        search_space = search_space,
+        terminator = terminator,
         callbacks = callbacks,
-        rush = rush,
-        start_workers = start_workers,
-        lgr_thresholds = lgr_thresholds,
-        freeze_archive = freeze_archive)
-
-      # super class of instance initializes default archive, overwrite with tuning archive
-      self$archive = archive
+        archive = archive)
     },
 
     #' @description
     #' Start workers with `future`.
     #'
-    #' @param n_workers (`integer(1)`)\cr
-    #' Number of workers to be started.
-    #' If `NULL` the maximum number of free workers is used.
-    #' @param host (`character(1)`)\cr
-    #' Local or remote host.
-    #' @param heartbeat_period (`integer(1)`)\cr
-    #' Period of the heartbeat in seconds.
-    #' @param heartbeat_expire (`integer(1)`)\cr
-    #' Time to live of the heartbeat in seconds.
-    #' @param await_workers (`logical(1)`)\cr
-    #' Whether to wait until all workers are available.
-    start_workers = function(n_workers = NULL, host = "local", heartbeat_period = NULL, heartbeat_expire = NULL, lgr_thresholds = NULL, await_workers = TRUE) {
+    #' @template param_n_workers
+    #' @template param_host
+    #' @template param_heartbeat_period
+    #' @template param_heartbeat_expire
+    #' @template param_lgr_thresholds
+    #' @template param_await_workers
+    #' @template param_freeze_archive
+    #' @template param_detect_lost_tasks
+    start_workers = function(
+      n_workers = NULL,
+      host = "local",
+      heartbeat_period = NULL,
+      heartbeat_expire = NULL,
+      lgr_thresholds = NULL,
+      await_workers = TRUE,
+      detect_lost_tasks = FALSE,
+      freeze_archive = FALSE
+      ) {
       super$start_workers(
         n_workers = n_workers,
         packages = c(self$objective$learner$packages, "mlr3tuning"),
@@ -225,7 +197,9 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
         heartbeat_period = heartbeat_period,
         heartbeat_expire = heartbeat_expire,
         lgr_thresholds = lgr_thresholds,
-        await_workers = await_workers)
+        await_workers = await_workers,
+        detect_lost_tasks = detect_lost_tasks,
+        freeze_archive = freeze_archive)
     },
 
     #' @description

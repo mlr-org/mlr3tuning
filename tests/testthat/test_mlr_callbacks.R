@@ -89,21 +89,21 @@ test_that("rush early stopping callback works", {
   library(mlr3learners) # nolint
   library(mlr3pipelines) # nolint
 
-  config = start_flush_redis()
-  rush = Rush$new("test", config)
-  future::plan("multisession", workers = 2)
-
-  instance = ti(
+  rush = rsh()
+  instance = TuningInstanceRushSingleCrit$new(
     task = tsk("pima"),
     learner = lrn("classif.xgboost", eta = to_tune(1e-04, 1e-1, logscale = TRUE), early_stopping_rounds = 2, nrounds = 10, early_stopping_set = "test"),
     resampling = rsmp("cv", folds = 3),
-    measures = msr("classif.ce"),
-    terminator = trm("evals", n_evals = 2),
+    measure = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 3),
+    allow_hotstart = TRUE,
     callbacks = clbk("mlr3tuning.rush_early_stopping"),
-    store_models = TRUE,
-    rush = rush,
-    start_workers = TRUE
+    rush = rush
   )
+  future::plan("cluster", workers = 1L)
+  instance$start_workers(await_workers = TRUE, lgr_thresholds = c(rush = "debug", bbotk = "debug", mlr3 = "debug"))
+  pids = rush$worker_info$pid
+  on.exit({clean_on_exit(pids)}, add = TRUE)
 
   tuner = tnr("random_search")
   tuner$optimize(instance)
@@ -112,39 +112,34 @@ test_that("rush early stopping callback works", {
   expect_equal(instance$archive$best()$max_nrounds, instance$result_learner_param_vals$nrounds)
   expect_equal(instance$result_learner_param_vals$early_stopping_set, "none")
   expect_null(instance$result_learner_param_vals$early_stopping_rounds)
+
+  rush$reset()
 })
 
 test_that("rush measures callback works", {
   skip_on_cran()
   skip_on_ci()
-  skip_if_not_installed("mlr3learners")
-  skip_if_not_installed("xgboost")
 
-  config = start_flush_redis()
-  rush = Rush$new("test", config)
-  future::plan("multisession", workers = 2)
-
-  task = tsk("pima")
-  splits = partition(task, ratio = 0.8, stratify = TRUE)
-  task$row_roles$use = splits$train
-  task$row_roles$holdout = splits$test
-
-  callback = clbk("mlr3tuning.rush_measures", measures = list(msr("classif.ce", predict_sets = "holdout", id = "classif.ce_holdout")))
-
-  instance = ti(
+  rush = rsh()
+  instance = TuningInstanceRushSingleCrit$new(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1), predict_sets = c("test", "holdout")),
     resampling = rsmp("cv", folds = 3),
-    measures = msr("classif.ce"),
-    terminator = trm("evals", n_evals = 2),
-    callbacks = callback,
-    store_models = TRUE,
-    rush = rush,
-    start_workers = TRUE
+    measure = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 3),
+    allow_hotstart = TRUE,
+    callbacks = clbk("mlr3tuning.rush_measures", measures = list(msr("classif.ce", predict_sets = "holdout", id = "classif.ce_holdout"))),
+    rush = rush
   )
+  future::plan("cluster", workers = 1L)
+  instance$start_workers(await_workers = TRUE, lgr_thresholds = c(rush = "debug", bbotk = "debug", mlr3 = "debug"))
+  pids = rush$worker_info$pid
+  on.exit({clean_on_exit(pids)}, add = TRUE)
 
   tuner = tnr("random_search")
   tuner$optimize(instance)
 
   expect_numeric(instance$archive$data$classif.ce_holdout)
+
+  rush$reset()
 })

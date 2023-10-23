@@ -127,7 +127,7 @@ Tuner = R6Class("Tuner",
     #'
     #' @return [data.table::data.table()]
     optimize = function(inst) {
-      assert_multi_class(inst, c("TuningInstanceSingleCrit", "TuningInstanceMultiCrit"))
+      assert_multi_class(inst, c("TuningInstanceSingleCrit", "TuningInstanceMultiCrit", "TuningInstanceRushSingleCrit", "TuningInstanceRushMultiCrit"))
       inst$.__enclos_env__$private$.context = ContextOptimization$new(instance = inst, optimizer = self)
       call_back("on_optimization_begin", inst$callbacks, get_private(inst)$.context)
 
@@ -207,7 +207,7 @@ Tuner = R6Class("Tuner",
     .optimize = function(inst) stop("abstract"),
 
     .assign_result = function(inst) {
-      assert_multi_class(inst, c("TuningInstanceSingleCrit", "TuningInstanceMultiCrit"))
+      assert_multi_class(inst, c("TuningInstanceSingleCrit", "TuningInstanceMultiCrit", "TuningInstanceRushSingleCrit", "TuningInstanceRushMultiCrit"))
       assign_result_default(inst)
     },
 

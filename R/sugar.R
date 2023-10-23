@@ -53,9 +53,6 @@ tnrs = function(.keys, ...) {
 #' @template param_evaluate_default
 #' @template param_callbacks
 #' @template param_rush
-#' @template param_start_workers
-#' @template param_lgr_thresholds
-#' @template param_freeze_archive
 #'
 #' @inheritSection TuningInstanceSingleCrit Resources
 #' @inheritSection TuningInstanceSingleCrit Default Measures
@@ -77,29 +74,42 @@ ti = function(
   keep_hotstart_stack = FALSE,
   evaluate_default = FALSE,
   callbacks = list(),
-  rush = NULL,
-  start_workers = TRUE,
-  lgr_thresholds = NULL,
-  freeze_archive = FALSE) {
+  rush = NULL) {
 
-  TuningInstance = if (!is.list(measures)) TuningInstanceSingleCrit else TuningInstanceMultiCrit
-  TuningInstance$new(
-    task = task,
-    learner = learner,
-    resampling = resampling,
-    measures,
-    terminator = terminator,
-    search_space = search_space,
-    store_benchmark_result = store_benchmark_result,
-    store_models = store_models,
-    check_values = check_values,
-    allow_hotstart = allow_hotstart,
-    hotstart_threshold = hotstart_threshold,
-    keep_hotstart_stack = keep_hotstart_stack,
-    evaluate_default = evaluate_default,
-    callbacks = callbacks,
-    rush = rush,
-    start_workers = start_workers,
-    lgr_thresholds = lgr_thresholds,
-    freeze_archive = freeze_archive)
+  if (is.null(rush)) {
+    TuningInstance = if (!is.list(measures)) TuningInstanceSingleCrit else TuningInstanceMultiCrit
+    TuningInstance$new(
+      task = task,
+      learner = learner,
+      resampling = resampling,
+      measures,
+      terminator = terminator,
+      search_space = search_space,
+      store_benchmark_result = store_benchmark_result,
+      store_models = store_models,
+      check_values = check_values,
+      allow_hotstart = allow_hotstart,
+      hotstart_threshold = hotstart_threshold,
+      keep_hotstart_stack = keep_hotstart_stack,
+      evaluate_default = evaluate_default,
+      callbacks = callbacks)
+  } else {
+    TuningInstance = if (!is.list(measures)) TuningInstanceRushSingleCrit else TuningInstanceRushMultiCrit
+    TuningInstance$new(
+      task = task,
+      learner = learner,
+      resampling = resampling,
+      measures,
+      terminator = terminator,
+      search_space = search_space,
+      store_benchmark_result = store_benchmark_result,
+      store_models = store_models,
+      check_values = check_values,
+      allow_hotstart = allow_hotstart,
+      hotstart_threshold = hotstart_threshold,
+      keep_hotstart_stack = keep_hotstart_stack,
+      evaluate_default = evaluate_default,
+      callbacks = callbacks,
+      rush = rush)
+  }
 }

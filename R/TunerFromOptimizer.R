@@ -43,7 +43,7 @@ TunerFromOptimizer = R6Class("TunerFromOptimizer",
       #'
       #' @return [data.table::data.table].
       optimize = function(inst) {
-        assert_multi_class(inst, c("TuningInstanceSingleCrit", "TuningInstanceMultiCrit"))
+        assert_multi_class(inst, c("TuningInstanceSingleCrit", "TuningInstanceMultiCrit", "TuningInstanceRushSingleCrit", "TuningInstanceRushMultiCrit"))
 
         # evaluate learner with default hyperparameter values
         if (get_private(inst)$.evaluate_default) evaluate_default(inst)

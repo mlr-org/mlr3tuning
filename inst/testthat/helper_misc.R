@@ -141,3 +141,8 @@ MAKE_GL = function() {
   g$add_edge("subsample", "classif.rpart")
   GraphLearner$new(g)
 }
+
+clean_on_exit = function(pids) {
+  future::plan("sequential")
+  walk(pids, tools::pskill)
+}

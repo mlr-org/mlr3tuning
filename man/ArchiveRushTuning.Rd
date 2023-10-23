@@ -91,6 +91,7 @@ Benchmark result.}
 \item \href{#method-ArchiveRushTuning-predictions}{\code{ArchiveRushTuning$predictions()}}
 \item \href{#method-ArchiveRushTuning-resample_result}{\code{ArchiveRushTuning$resample_result()}}
 \item \href{#method-ArchiveRushTuning-print}{\code{ArchiveRushTuning$print()}}
+\item \href{#method-ArchiveRushTuning-freeze}{\code{ArchiveRushTuning$freeze()}}
 \item \href{#method-ArchiveRushTuning-clone}{\code{ArchiveRushTuning$clone()}}
 }
 }
@@ -100,7 +101,6 @@ Benchmark result.}
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveRush" data-id="best"><a href='../../bbotk/html/ArchiveRush.html#method-ArchiveRush-best'><code>bbotk::ArchiveRush$best()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveRush" data-id="clear"><a href='../../bbotk/html/ArchiveRush.html#method-ArchiveRush-clear'><code>bbotk::ArchiveRush$clear()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveRush" data-id="format"><a href='../../bbotk/html/ArchiveRush.html#method-ArchiveRush-format'><code>bbotk::ArchiveRush$format()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveRush" data-id="freeze"><a href='../../bbotk/html/ArchiveRush.html#method-ArchiveRush-freeze'><code>bbotk::ArchiveRush$freeze()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveRush" data-id="nds_selection"><a href='../../bbotk/html/ArchiveRush.html#method-ArchiveRush-nds_selection'><code>bbotk::ArchiveRush$nds_selection()</code></a></span></li>
 </ul>
 </details>
@@ -111,7 +111,7 @@ Benchmark result.}
 \subsection{Method \code{new()}}{
 Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ArchiveRushTuning$new(search_space, codomain, check_values = TRUE, rush)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ArchiveRushTuning$new(search_space, codomain, rush)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -126,11 +126,11 @@ constructed from the \link{TuneToken} of the learner's parameter set
 Specifies codomain of objective function i.e. a set of performance measures.
 Internally created from provided \link[mlr3:Measure]{mlr3::Measure}s.}
 
+\item{\code{rush}}{(\code{Rush})\cr
+If a rush instance is supplied, the tuning runs without batches.}
+
 \item{\code{check_values}}{(\code{logical(1)})\cr
 If \code{TRUE} (default), hyperparameter configurations are check for validity.}
-
-\item{\code{rush}}{(\link[rush:Rush]{rush::Rush})\cr
-If a rush instance is supplied, the tuning runs without batches.}
 }
 \if{html}{\out{</div>}}
 }
@@ -262,6 +262,16 @@ Printer.
 }
 \if{html}{\out{</div>}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-ArchiveRushTuning-freeze"></a>}}
+\if{latex}{\out{\hypertarget{method-ArchiveRushTuning-freeze}{}}}
+\subsection{Method \code{freeze()}}{
+Copy the data from rush to a local \code{\link[data.table:data.table]{data.table::data.table()}}.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ArchiveRushTuning$freeze()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ArchiveRushTuning-clone"></a>}}
