@@ -1,5 +1,6 @@
 # mlr3tuning (development version)
 
+* fix: Set `store_benchmark_result = TRUE` if `store_models = TRUE` when creating a tuning instance.
 * fix: Passing a terminator in `tune_nested()` did not work.
 
 # mlr3tuning 0.19.0
