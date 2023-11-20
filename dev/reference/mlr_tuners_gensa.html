@@ -12,7 +12,7 @@ Calls GenSA::GenSA() from package GenSA."><meta property="og:image" content="htt
     
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.19.0.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.19.1.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -262,21 +262,21 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 <span class="r-in"><span><span class="co"># best performing hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="va">instance</span><span class="op">$</span><span class="va">result</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp learner_param_vals  x_domain classif.ce</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -3.434468          &lt;list[2]&gt; &lt;list[1]&gt; 0.05217391</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -3.108443          &lt;list[2]&gt; &lt;list[1]&gt; 0.06086957</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># all evaluated hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            cp classif.ce  x_domain_cp runtime_learners           timestamp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -3.434468 0.05217391 0.0322425698            0.009 2023-11-13 20:25:01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -7.471895 0.06086957 0.0005688493            0.012 2023-11-13 20:25:01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -5.282420 0.06086957 0.0050801196            0.010 2023-11-13 20:25:01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -3.434468 0.05217391 0.0322425698            0.011 2023-11-13 20:25:02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -3.434468 0.05217391 0.0322425698            0.010 2023-11-13 20:25:02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -3.434468 0.05217391 0.0322425698            0.010 2023-11-13 20:25:02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -3.091021 0.05217391 0.0454555256            0.010 2023-11-13 20:25:02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -3.777914 0.06086957 0.0228703396            0.010 2023-11-13 20:25:02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -3.262744 0.05217391 0.0382831942            0.011 2023-11-13 20:25:02</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -3.606191 0.05217391 0.0271550828            0.010 2023-11-13 20:25:02</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            cp classif.ce x_domain_cp runtime_learners           timestamp</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -5.978771 0.09565217 0.002531935            0.006 2023-11-20 17:52:52</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -3.108443 0.06086957 0.044670438            0.005 2023-11-20 17:52:52</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -4.566549 0.06086957 0.010393762            0.005 2023-11-20 17:52:52</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -3.108443 0.06086957 0.044670438            0.006 2023-11-20 17:52:52</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -3.108443 0.06086957 0.044670438            0.006 2023-11-20 17:52:52</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -3.108443 0.06086957 0.044670438            0.005 2023-11-20 17:52:52</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -2.797599 0.06086957 0.060956242            0.006 2023-11-20 17:52:52</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -3.419288 0.06086957 0.032735745            0.006 2023-11-20 17:52:52</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -3.263866 0.06086957 0.038240294            0.005 2023-11-20 17:52:52</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -2.953021 0.06086957 0.052181817            0.005 2023-11-20 17:52:52</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     batch_nr warnings errors      resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:        1        0      0 &lt;ResampleResult[21]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  2:        2        0      0 &lt;ResampleResult[21]&gt;</span>

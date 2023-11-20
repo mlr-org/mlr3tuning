@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.19.0.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.19.1.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -229,7 +229,7 @@ The default measure depends on the task type.</p><table class="table table"><tr>
 <span class="r-in"><span><span class="co"># Run tuning</span></span></span>
 <span class="r-in"><span><span class="va">tuner</span><span class="op">$</span><span class="fu">optimize</span><span class="op">(</span><span class="va">instance</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp learner_param_vals  x_domain classif.ce</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -8.783271          &lt;list[2]&gt; &lt;list[1]&gt; 0.05225019</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -6.276181          &lt;list[2]&gt; &lt;list[1]&gt; 0.06684465</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Set optimal hyperparameter configuration to learner</span></span></span>
 <span class="r-in"><span><span class="va">learner</span><span class="op">$</span><span class="va">param_set</span><span class="op">$</span><span class="va">values</span> <span class="op">=</span> <span class="va">instance</span><span class="op">$</span><span class="va">result_learner_param_vals</span></span></span>
@@ -240,10 +240,10 @@ The default measure depends on the task type.</p><table class="table table"><tr>
 <span class="r-in"><span><span class="co"># Inspect all evaluated configurations</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp classif.ce  x_domain_cp runtime_learners           timestamp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -8.783271 0.05225019 0.0001532759            0.030 2023-11-13 20:25:13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -5.139576 0.05225019 0.0058601743            0.031 2023-11-13 20:25:13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -3.315476 0.06969235 0.0363167612            0.030 2023-11-13 20:25:13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -2.748866 0.06969235 0.0640003896            0.031 2023-11-13 20:25:13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -6.276181 0.06684465 0.0018805680            0.019 2023-11-20 17:52:59</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -4.721538 0.06974320 0.0089014769            0.018 2023-11-20 17:52:59</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -7.129822 0.06684465 0.0008008615            0.014 2023-11-20 17:52:59</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -7.074204 0.06684465 0.0008466659            0.015 2023-11-20 17:52:59</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    batch_nr warnings errors      resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:        1        0      0 &lt;ResampleResult[21]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:        1        0      0 &lt;ResampleResult[21]&gt;</span>

@@ -12,7 +12,7 @@ Calls nloptr::nloptr from package nloptr."><meta property="og:image" content="ht
     
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.19.0.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.19.1.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -251,22 +251,25 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 <span class="r-in"><span><span class="co"># best performing hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="va">instance</span><span class="op">$</span><span class="va">result</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp learner_param_vals  x_domain classif.ce</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -8.600695          &lt;list[2]&gt; &lt;list[1]&gt; 0.06956522</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -3.216857          &lt;list[2]&gt; &lt;list[1]&gt; 0.04347826</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># all evaluated hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            cp classif.ce  x_domain_cp runtime_learners           timestamp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -8.600695 0.06956522 0.0001839779            0.012 2023-11-13 20:25:09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -8.600695 0.06956522 0.0001839779            0.011 2023-11-13 20:25:09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -8.600695 0.06956522 0.0001839779            0.009 2023-11-13 20:25:09</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -8.143460 0.06956522 0.0002906298            0.010 2023-11-13 20:25:10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -9.057929 0.06956522 0.0001164639            0.009 2023-11-13 20:25:10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -8.596122 0.06956522 0.0001848211            0.011 2023-11-13 20:25:10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -8.605267 0.06956522 0.0001831387            0.011 2023-11-13 20:25:10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -8.600237 0.06956522 0.0001840621            0.021 2023-11-13 20:25:10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -8.601152 0.06956522 0.0001838938            0.011 2023-11-13 20:25:10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -8.600649 0.06956522 0.0001839864            0.011 2023-11-13 20:25:10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11: -8.600695 0.06956522 0.0001839779            0.013 2023-11-13 20:25:10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            cp classif.ce x_domain_cp runtime_learners           timestamp</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -3.216857 0.04347826  0.04008082            0.005 2023-11-20 17:52:56</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -3.216857 0.04347826  0.04008082            0.005 2023-11-20 17:52:56</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -3.216857 0.04347826  0.04008082            0.005 2023-11-20 17:52:56</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -2.531153 0.04347826  0.07956721            0.006 2023-11-20 17:52:56</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -3.902562 0.05217391  0.02019012            0.005 2023-11-20 17:52:56</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -2.874005 0.04347826  0.05647228            0.006 2023-11-20 17:52:57</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -3.045431 0.04347826  0.04757578            0.006 2023-11-20 17:52:57</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -3.148287 0.04347826  0.04292559            0.006 2023-11-20 17:52:57</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -3.182572 0.04347826  0.04147882            0.005 2023-11-20 17:52:57</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -3.234000 0.04347826  0.03939958            0.005 2023-11-20 17:52:57</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11: -3.216172 0.04347826  0.04010831            0.006 2023-11-20 17:52:57</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12: -3.216172 0.04347826  0.04010831            0.006 2023-11-20 17:52:57</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13: -3.217543 0.04347826  0.04005334            0.005 2023-11-20 17:52:57</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14: -3.216857 0.04347826  0.04008082            0.006 2023-11-20 17:52:57</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     batch_nr warnings errors      resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:        1        0      0 &lt;ResampleResult[21]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  2:        2        0      0 &lt;ResampleResult[21]&gt;</span>
@@ -279,6 +282,9 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 <span class="r-out co"><span class="r-pr">#&gt;</span>  9:        9        0      0 &lt;ResampleResult[21]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10:       10        0      0 &lt;ResampleResult[21]&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 11:       11        0      0 &lt;ResampleResult[21]&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:       12        0      0 &lt;ResampleResult[21]&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13:       13        0      0 &lt;ResampleResult[21]&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14:       14        0      0 &lt;ResampleResult[21]&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># fit final model on complete data set</span></span></span>
 <span class="r-in"><span><span class="va">learner</span><span class="op">$</span><span class="va">param_set</span><span class="op">$</span><span class="va">values</span> <span class="op">=</span> <span class="va">instance</span><span class="op">$</span><span class="va">result_learner_param_vals</span></span></span>
