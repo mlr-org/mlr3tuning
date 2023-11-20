@@ -1,4 +1,5 @@
 test_that("early stopping callback works", {
+  skip_on_cran()
   skip_if_not_installed("mlr3learners")
   skip_if_not_installed("xgboost")
   library(mlr3learners) # nolint

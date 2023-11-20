@@ -1,7 +1,7 @@
 
 # mlr3tuning <img src="man/figures/logo.png" align="right" width = "120" />
 
-Package website: [release](https://mlr3tuning.mlr-org.com/) |
+Package website: [release](https://mlr3tuning.mlr-org.com/) \|
 [dev](https://mlr3tuning.mlr-org.com/dev/)
 
 <!-- badges: start -->
@@ -34,12 +34,12 @@ The package is built on the optimization framework
 
 mlr3tuning is extended by the following packages.
 
-  - [mlr3tuningspaces](https://github.com/mlr-org/mlr3tuningspaces) is a
+-   [mlr3tuningspaces](https://github.com/mlr-org/mlr3tuningspaces) is a
     collection of search spaces from scientific articles for commonly
     used learners.
-  - [mlr3hyperband](https://github.com/mlr-org/mlr3hyperband) adds the
+-   [mlr3hyperband](https://github.com/mlr-org/mlr3hyperband) adds the
     Hyperband and Successive Halving algorithm.
-  - [mlr3mbo](https://github.com/mlr-org/mlr3mbo) adds Bayesian
+-   [mlr3mbo](https://github.com/mlr-org/mlr3mbo) adds Bayesian
     Optimization methods.
 
 ## Resources
@@ -47,36 +47,36 @@ mlr3tuning is extended by the following packages.
 There are several sections about hyperparameter optimization in the
 [mlr3book](https://mlr3book.mlr-org.com).
 
-  - Getting started with [hyperparameter
+-   Getting started with [hyperparameter
     optimization](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html).
-  - [Tune](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-model-tuning)
+-   [Tune](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-model-tuning)
     a support vector machine on the Sonar data set.
-  - Learn about [tuning
+-   Learn about [tuning
     spaces](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-defining-search-spaces).
-  - Estimate the model performance with [nested
+-   Estimate the model performance with [nested
     resampling](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-nested-resampling).
-  - Learn about [multi-objective
+-   Learn about [multi-objective
     optimization](https://mlr3book.mlr-org.com/chapters/chapter5/advanced_tuning_methods_and_black_box_optimization.html#sec-multi-metrics-tuning).
 
 The [gallery](https://mlr-org.com/gallery-all-optimization.html)
 features a collection of case studies and demos about optimization.
 
-  - Learn more advanced methods with the [Practical Tuning
+-   Learn more advanced methods with the [Practical Tuning
     Series](https://mlr-org.com/gallery/series/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/).
-  - Optimize an rpart classification tree with only a [few lines of
+-   Optimize an rpart classification tree with only a [few lines of
     code](https://mlr-org.com/gallery/optimization/2022-11-10-hyperparameter-optimization-on-the-palmer-penguins/).
-  - Simultaneously optimize hyperparameters and use [early
+-   Simultaneously optimize hyperparameters and use [early
     stopping](https://mlr-org.com/gallery/optimization/2022-11-04-early-stopping-with-xgboost/)
     with XGBoost.
-  - Make us of proven [search
+-   Make us of proven [search
     space](https://mlr-org.com/gallery/optimization/2021-07-06-introduction-to-mlr3tuningspaces/).
-  - Learn about
+-   Learn about
     [hotstarting](https://mlr-org.com/gallery/optimization/2023-01-16-hotstart/)
     models.
-  - Run the [default hyperparameter
+-   Run the [default hyperparameter
     configuration](https://mlr-org.com/gallery/optimization/2023-01-31-default-configuration/)
     of learners as a baseline.
-  - Use the
+-   Use the
     [Hyperband](https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/)
     optimizer with different budget parameters.
 
