@@ -84,7 +84,8 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       self$learner$param_set$assert_values = FALSE
       self$measures = assert_measures(as_measures(measures), task = self$task, learner = self$learner)
 
-      self$store_benchmark_result = assert_flag(store_benchmark_result)
+      self$store_models = assert_flag(store_models)
+      self$store_benchmark_result = assert_flag(store_benchmark_result) || self$store_models
       self$allow_hotstart = assert_flag(allow_hotstart) && any(c("hotstart_forward", "hotstart_backward") %in% learner$properties)
       if (self$allow_hotstart) {
         if (!is.null(hotstart_threshold)) {
@@ -93,7 +94,6 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
         self$hotstart_stack = HotstartStack$new(hotstart_threshold = hotstart_threshold)
       }
       self$keep_hotstart_stack = assert_flag(keep_hotstart_stack)
-      self$store_models = assert_flag(store_models)
       self$archive = assert_r6(archive, "ArchiveTuning", null.ok = TRUE)
       if (is.null(self$archive)) self$allow_hotstart = self$store_benchmark_result = self$store_models = FALSE
       self$callbacks = assert_callbacks(as_callbacks(callbacks))
