@@ -1,7 +1,7 @@
 measures_to_codomain = function(measures) {
-  Codomain$new(map(as_measures(measures), function(s) {
-    ParamDbl$new(id = s$id, tags = ifelse(s$minimize, "minimize", "maximize"))
-  }))
+  tags = map_chr(as_measures(measures), function(s) if(s$minimize) "minimize" else "maximize")
+  params = map(tags, function(tag) p_dbl(tags = tag))
+  Codomain$new(invoke(ps, .args = params))
 }
 
 extract_benchmark_result_learners = function(bmr) {
