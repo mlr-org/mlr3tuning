@@ -68,7 +68,7 @@ test_that("check_values flag with parameter set dependencies", {
     rsmp("holdout"), msr("regr.mse"), terminator, search_space,
     check_values = TRUE)
   expect_error(tuner$optimize(inst),
-    regexp = "The parameter 'yy' can only be set")
+    regexp = "yy.* can only be set")
 })
 
 test_that("search space from TuneToken works", {
