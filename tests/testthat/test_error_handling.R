@@ -1,8 +1,8 @@
 test_that("failing learner", {
   learner = lrn("classif.debug")
-  param_set = ParamSet$new(list(
-      ParamDbl$new("x", lower = 0, upper = 1)
-  ))
+  param_set = ps(
+      x = p_dbl(lower = 0, upper = 1)
+  )
   learner$param_set$values$error_train = 0.5
 
   tt = tnr("random_search")
@@ -25,9 +25,9 @@ test_that("failing learner", {
 
 test_that("predictions missing", {
   learner = lrn("classif.debug")
-  param_set = ParamSet$new(list(
-      ParamDbl$new("x", lower = 0, upper = 1)
-  ))
+  param_set = ps(
+      x = p_dbl(lower = 0, upper = 1)
+  )
   learner$param_set$values$predict_missing = 0.5
 
   tt = tnr("random_search")

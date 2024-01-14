@@ -1,8 +1,8 @@
 test_that("simple exp trafo works", {
   ll = lrn("classif.rpart")
-  ps = ParamSet$new(params = list(
-    ParamDbl$new("cp", lower = -8, upper = -2)
-  ))
+  ps = ps(
+    cp = p_dbl(lower = -8, upper = -2)
+  )
   ps$trafo = function(x, param_set) {
     x$cp = 2^x$cp
     return(x)
@@ -21,9 +21,9 @@ test_that("simple exp trafo works", {
 
 test_that("trafo where param names change", {
   ll = lrn("classif.rpart")
-  ps = ParamSet$new(params = list(
-    ParamFct$new("foo", levels = c("a", "b"))
-  ))
+  ps = ps(
+    foo = p_fct(levels = c("a", "b"))
+  )
   ps$trafo = function(x, param_set) {
     if (x$foo == "a")
       x$cp = 0.11

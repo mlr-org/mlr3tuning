@@ -6,10 +6,10 @@ test_that("tuning with multiple objectives", {
   measure_ids = c("classif.fpr", "classif.tpr")
   measures = msrs(measure_ids)
 
-  tune_ps = ParamSet$new(list(
-    ParamDbl$new("cp", lower = 0.001, upper = 0.1),
-    ParamInt$new("minsplit", lower = 1, upper = 10)
-  ))
+  tune_ps = ps(
+    cp = p_dbl(lower = 0.001, upper = 0.1),
+    minsplit = p_int(lower = 1, upper = 10)
+  )
 
   terminator = trm("evals", n_evals = 10)
   tuner = tnr("random_search")
@@ -51,10 +51,10 @@ test_that("store_benchmark_result and store_models flag works", {
 test_that("check_values flag with parameter set dependencies", {
   learner = LearnerRegrDepParams$new()
   learner$param_set$values$xx = "a"
-  search_space = ParamSet$new(list(
-    ParamDbl$new("cp", lower = 0.1, upper = 0.3),
-    ParamDbl$new("yy", lower = 0.1, upper = 0.3)
-  ))
+  search_space = ps(
+    cp = p_dbl(lower = 0.1, upper = 0.3),
+    yy = p_dbl(lower = 0.1, upper = 0.3)
+  )
   terminator = trm("evals", n_evals = 20)
   tuner = tnr("random_search")
 
@@ -82,9 +82,9 @@ test_that("search space from TuneToken works", {
   expect_r6(instance$search_space, "ParamSet")
   expect_equal(instance$search_space$ids(), "cp")
 
-  ps = ParamSet$new(list(
-    ParamDbl$new("cp", lower = 0.1, upper = 0.3)
-  ))
+  ps = ps(
+    cp = p_dbl(lower = 0.1, upper = 0.3)
+  )
 
   expect_error(TuningInstanceMultiCrit$new(task = tsk("iris"), learner = learner,
     resampling = rsmp("holdout"), measures = msrs(c("classif.acc", "classif.ce")),

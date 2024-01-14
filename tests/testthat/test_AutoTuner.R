@@ -56,9 +56,9 @@ test_that("nested resamppling results are consistent ", {
   # https://github.com/mlr-org/mlr3/issues/428
   # this resulted in different tuning results stored in models than used in final training
 
-  ps = ParamSet$new(list(
-    ParamDbl$new("cp", lower = 0.001, upper = 0.1),
-    ParamInt$new("minsplit", lower = 1, upper = 10)))
+  ps = ps(
+    cp = p_dbl(lower = 0.001, upper = 0.1),
+    minsplit = p_int(lower = 1, upper = 10))
 
 
   lrn = AutoTuner$new(
@@ -99,9 +99,9 @@ test_that("AutoTuner works with graphlearner", {
   task = tsk("iris")
   ms = MeasureDummyCPClassif$new(fun = function(pv) if (pv$classif.rpart.cp == 0.2) 0 else 1)
   te = trm("evals", n_evals = 4)
-  ps = ParamSet$new(list(
-    ParamDbl$new("classif.rpart.cp", lower = 0.1, upper = 0.3)
-  ))
+  ps = ps(
+    classif.rpart.cp = p_dbl(lower = 0.1, upper = 0.3)
+  )
   tuner = tnr("grid_search", resolution = 3)
   at = AutoTuner$new(
     learner = gl,
@@ -136,9 +136,9 @@ test_that("Nested resampling works with graphlearner", {
   task = tsk("iris")
   ms = MeasureDummyCPClassif$new(fun = function(pv) if (pv$classif.rpart.cp == 0.2) 0 else 1)
   te = trm("evals", n_evals = 4)
-  ps = ParamSet$new(list(
-    ParamDbl$new("classif.rpart.cp", lower = 0.1, upper = 0.3)
-  ))
+  ps = ps(
+    classif.rpart.cp = p_dbl(lower = 0.1, upper = 0.3)
+  )
   tuner = tnr("grid_search", resolution = 3)
   at = AutoTuner$new(
     learner = gl,
@@ -258,9 +258,9 @@ test_that("search space from TuneToken works", {
   at$train(tsk("iris"))
   expect_equal(at$tuning_instance$search_space$ids(), "cp")
 
-  ps = ParamSet$new(list(
-    ParamDbl$new("cp", lower = 0.1, upper = 0.3)
-  ))
+  ps = ps(
+    cp = p_dbl(lower = 0.1, upper = 0.3)
+  )
 
   expect_error(AutoTuner$new(learner = learner, resampling = rsmp("holdout"),
     measure = msr("classif.ce"), terminator = trm("evals", n_evals = 1),
