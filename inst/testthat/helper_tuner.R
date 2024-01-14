@@ -9,10 +9,10 @@ test_tuner = function(key, ..., n_dim = 1L, term_evals = 2L, real_evals = term_e
       cp = p_dbl(lower = 0.1, upper = 0.3)
     )
   } else if (n_dim == 2) {
-    ParamSet$new(params = list(
+    ps(
       cp = p_dbl(lower = 0.1, upper = 0.3),
       minsplit = p_int(lower = 1, upper = 9)
-    ))
+    )
   }
   term = trm("evals", n_evals = term_evals)
   inst = TuningInstanceSingleCrit$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), term, search_space)
