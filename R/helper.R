@@ -3,7 +3,7 @@ measures_to_codomain = function(measures) {
   domains = map(measures, function(s) {
     if ("set_id" %in% names(ps())) {
       # old paradox
-      ParamDbl$new(id = s$id, tags = ifelse(s$minimize, "minimize", "maximize"))
+      get("ParamDbl")$new(id = s$id, tags = ifelse(s$minimize, "minimize", "maximize"))
     } else {
       p_dbl(tags = ifelse(s$minimize, "minimize", "maximize"))
     }

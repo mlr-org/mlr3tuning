@@ -116,12 +116,13 @@ test_that("non-scalar hyperpars (#201)", {
 
   learner = mlr3pipelines::po("select") %>>% lrn("classif.rpart")
 
-  search_space = ParamSet$new(list(
-    ParamInt$new("classif.rpart.minsplit", 1, 1)))
-  search_space$trafo = function(x, param_set) {
-    x$select.selector = mlr3pipelines::selector_all()
-    return(x)
-  }
+  search_space = ps(
+    classif.rpart.minsplit = p_int(1, 1),
+    .extra_trafo = function(x, param_set) {
+      x$select.selector = mlr3pipelines::selector_all()
+      return(x)
+    }
+  )
 
   inst = TuningInstanceSingleCrit$new(tsk("iris"), learner, rsmp("holdout"),
     msr("classif.ce"), trm("evals", n_evals = 1), search_space,
