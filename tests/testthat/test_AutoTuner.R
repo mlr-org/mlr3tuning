@@ -8,13 +8,14 @@ test_that("AutoTuner / train+predict", {
   expect_learner(at)
   at$train(task)
   expect_learner(at)
-  expect_equal(at$learner$param_set$values, list(xval = 0, cp = 0.2))
+
+  expect_equal(sortnames(at$learner$param_set$values), list(xval = 0, cp = 0.2))
   inst = at$tuning_instance
   a = at$archive$data
   expect_data_table(a, nrows = 3L)
   r = at$tuning_result
   expect_equal(r$x_domain[[1]], list(cp = 0.2))
-  expect_equal(r$learner_param_vals[[1]], list(xval = 0, cp = 0.2))
+  expect_equal(sortnames(r$learner_param_vals[[1]]), list(xval = 0, cp = 0.2))
   prd = at$predict(task)
   expect_prediction(prd)
   expect_s3_class(at$learner$model, "rpart")
@@ -39,11 +40,12 @@ test_that("AutoTuner / resample", {
 
   rr = resample(tsk("iris"), at, r_outer, store_models = TRUE)
 
+
   # check tuning results of all outer folds
   expect_equal(length(rr$learners), outer_folds)
   lapply(rr$learners, function(ll) {
     assert_r6(ll, "AutoTuner")
-    expect_equal(ll$learner$param_set$values, list(xval = 0, cp = 0.2))
+    expect_equal(sortnames(ll$learner$param_set$values), list(xval = 0, cp = 0.2))
     inst = ll$tuning_instance
     assert_r6(inst, "TuningInstanceSingleCrit")
     expect_data_table(inst$archive$data, nrows = inner_evals)

@@ -15,12 +15,8 @@ test_that("TunerGenSA", {
 test_that("TunerGenSA with int params and trafo", {
   ps = ps(
     cp = p_dbl(lower = 0.001, upper = 0.1),
-    minsplit = p_dbl(lower = 1, upper = 10)
+    minsplit = p_dbl(lower = 1, upper = 10, trafo = function(x) as.integer(round(x)))
   )
-  ps$trafo = function(x, param_set) {
-    x$minsplit = as.integer(round(x$minsplit))
-    return(x)
-  }
   te = trm("evals", n_evals = 2)
   inst = TuningInstanceSingleCrit$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), te, ps)
   tt = TunerGenSA$new()

@@ -51,7 +51,7 @@ test_that("we get a result when some subordinate params are not fulfilled", {
 })
 
 test_that("print method workds", {
-  param_set = ParamSet$new(list(ParamLgl$new("p1")))
+  param_set = ps(p1 = p_lgl())
   param_set$values$p1 = TRUE
   param_classes = "ParamLgl"
   properties = "single-crit"
@@ -70,7 +70,7 @@ test_that("print method workds", {
 })
 
 test_that("optimize does not work in abstract class", {
-  param_set = ParamSet$new(list(ParamLgl$new("p1")))
+  param_set = ps(p1 = p_lgl())
   param_set$values$p1 = TRUE
   param_classes = "ParamDbl"
   properties = "single-crit"
@@ -145,7 +145,7 @@ test_that("Tuner works with instantiated resampling", {
 })
 
 test_that("Tuner active bindings work", {
-  param_set = ParamSet$new(list(ParamLgl$new("p1")))
+  param_set = ps(p1 = p_lgl())
   param_set$values$p1 = TRUE
   param_classes = "ParamLgl"
   properties = "single-crit"
@@ -163,7 +163,7 @@ test_that("Tuner active bindings work", {
   expect_equal(tuner$properties, properties)
   expect_subset(packages, tuner$packages)
 
-  expect_error({tuner$param_set = ParamSet$new(list(ParamLgl$new("p2")))},
+  expect_error({tuner$param_set = ps(p2 = p_lgl())},
     regexp = "$param_set is read-only",
     fixed = TRUE)
 
