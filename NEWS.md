@@ -1,5 +1,15 @@
 # mlr3tuning (development version)
 
+# mlr3tuning 0.19.2
+
+* refactor: Change thread limits.
+
+# mlr3tuning 0.19.1
+
+* refactor: Speed up the tuning process by minimizing the number of deep clones and parameter checks.
+* fix: Set `store_benchmark_result = TRUE` if `store_models = TRUE` when creating a tuning instance.
+* fix: Passing a terminator in `tune_nested()` did not work.
+
 # mlr3tuning 0.19.0
 
 * fix: Add `$phash()` method to `AutoTuner`.

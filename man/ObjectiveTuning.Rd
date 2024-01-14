@@ -17,6 +17,9 @@ This class is usually constructed internally by the \link{TuningInstanceSingleCr
 
 \item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner}).}
 
+\item{\code{default_values}}{(named list).
+Default hyperparameter values of the learner.}
+
 \item{\code{resampling}}{(\link[mlr3:Resampling]{mlr3::Resampling}).}
 
 \item{\code{measures}}{(list of \link[mlr3:Measure]{mlr3::Measure}).}
