@@ -1,10 +1,15 @@
 measures_to_codomain = function(measures) {
   measures = as_measures(measures)
   domains = map(measures, function(s) {
-    p_dbl(tags = ifelse(s$minimize, "minimize", "maximize"))
+    if ("set_id" %in% names(ps())) {
+      # old paradox
+      ParamDbl$new(id = s$id, tags = ifelse(s$minimize, "minimize", "maximize"))
+    } else {
+      p_dbl(tags = ifelse(s$minimize, "minimize", "maximize"))
+    }
   })
   names(domains) = ids(measures)
-  Codomain$new(ParamSet$new(domains))
+  Codomain$new(domains)
 }
 
 extract_benchmark_result_learners = function(bmr) {
