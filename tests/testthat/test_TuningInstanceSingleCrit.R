@@ -360,7 +360,7 @@ test_that("assign_result works with no hyperparameters and two constant", {
   res = instance$result
   expect_data_table(res, nrows = 1)
   expect_equal(res$classif.ce, 0.8)
-  expect_equal(res$learner_param_vals[[1]], list(xval = 1, cp = 1))
+  expect_equal(sortnames(res$learner_param_vals[[1]]), list(xval = 1, cp = 1))
 })
 
 test_that("assign_result works with one hyperparameters and one constant", {
