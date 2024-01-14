@@ -1,5 +1,7 @@
 # mlr3tuning (development version)
 
+* Compatibility with new paradox version 1.0.0.
+
 # mlr3tuning 0.19.2
 
 * refactor: Change thread limits.
