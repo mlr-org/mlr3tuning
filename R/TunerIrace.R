@@ -135,9 +135,11 @@ target_runner_tuning = function(experiment, exec.target.runner, scenario, target
     # add configuration and instance id to archive
     set(configuration, j = "configuration", value = e$id.configuration)
     set(configuration, j = "instance", value = e$id.instance)
-    # fix logicals
-    configuration[, map(.SD, function(x) ifelse(x %in% c("TRUE", "FALSE"), as.logical(x), x))]
+    configuration
   })
+  # fix logicals
+  lgl_params = as.data.table(tuning_instance$search_space)[class == "ParamLgl", id]
+  if (length(lgl_params)) xdt[, (lgl_params) := lapply(.SD, as.logical), .SDcols = lgl_params]
 
   # provide experiment instances to objective
   tuning_instance$objective$constants$values$resampling = map(experiment, function(e) e$instance)
