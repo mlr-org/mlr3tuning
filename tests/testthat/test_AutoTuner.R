@@ -5,6 +5,7 @@ test_that("AutoTuner / train+predict", {
   ms = MeasureDummyCPClassif$new(fun = function(pv) if (pv$cp == 0.2) 0 else 1) # lets fake a measure, so we control the best config
   tuner = tnr("grid_search", resolution = 3)
   at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, ps)
+  expect_false("marshal" %in% at$properties)
   expect_learner(at)
   at$train(task)
   expect_learner(at)
@@ -560,4 +561,16 @@ test_that("AutoTuner errors when second test set is not a subset of task ids", {
   )
 
   expect_error(resample(task, at, resampling_outer, store_models = TRUE), "Test set 2")
+})
+
+test_that("marshallable learner", {
+  task = tsk("iris")
+  at = auto_tuner(
+    tuner = tnr("random_search", batch_size = 2),
+    learner = lrn("classif.lily"),
+    resampling = rsmp("cv", folds = 3),
+    measure = msr("classif.ce"),
+    term_evals = 4
+  )
+  expect_marshallable_learner(at, task)
 })

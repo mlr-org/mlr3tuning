@@ -34,6 +34,7 @@
 #' For this reason, the inner resampling should be not instantiated.
 #' If an instantiated resampling is passed, the [AutoTuner] fails when a row id of the inner resampling is not present in the training set of the outer resampling.
 #'
+#'
 #' @template param_learner
 #' @template param_resampling
 #' @template param_measure
@@ -260,6 +261,16 @@ AutoTuner = R6Class("AutoTuner",
       if (length(e)) {
         catf(str_indent("* Errors:", e))
       }
+    },
+    #' @description
+    #' Marshal the learner
+    marshal = function() {
+      learner_marshal(self)
+    },
+    #' @description
+    #' Unmarshal the learner.
+    unmarshal = function() {
+      learner_unmarshal(self)
     }
   ),
 
@@ -278,6 +289,11 @@ AutoTuner = R6Class("AutoTuner",
       } else {
         self$model$learner
       }
+    },
+    #' @field marshalled (`logical(1)`)\cr
+    #' Whether the learner is marshalled.
+    marshalled = function() {
+      learner_marshalled(self)
     },
 
     #' @field tuning_instance ([TuningInstanceSingleCrit])\cr
@@ -358,7 +374,7 @@ AutoTuner = R6Class("AutoTuner",
       # the return model is a list of "learner" and "tuning_instance"
       result_model = list(learner = learner)
       if (private$.store_tuning_instance) result_model$tuning_instance = instance
-      result_model
+      structure(result_model, class = c("auto_tuner_model", "list"))
     },
 
     .predict = function(task) {
@@ -368,3 +384,17 @@ AutoTuner = R6Class("AutoTuner",
     .store_tuning_instance = NULL
   )
 )
+
+#' @export
+marshal_model.auto_tuner_model = function(model, ...) {
+  model$learner$model = marshal_model(model$learner$model)
+  class(model) = c("auto_tuner_model_marshalled", "list_marshalled", "marshalled")
+  model
+}
+
+#' @export
+unmarshal_model.auto_tuner_model_marshalled = function(model, ...) {
+  model$learner$model = unmarshal_model(model$learner$model)
+  class(model) = c("auto_tuner_model", "list")
+  model
+}

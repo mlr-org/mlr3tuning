@@ -124,3 +124,23 @@ test_that("objects are cloned", {
       expect_different_address(learner$param_set, get_private(bmr)$.data$data$learners$learner[[1]]$param_set)
   })
 })
+
+test_that("hotstarting works with marshallable learner", {
+  task = tsk("pima")
+  learner = lrn("classif.lily", x = to_tune(), iter = to_tune(1, 100))
+
+  instance = tune(
+    tuner = tnr("grid_search", batch_size = 5, resolution = 5),
+    task = task,
+    learner = learner,
+    resampling = rsmp("holdout"),
+    measures = msr("classif.ce"),
+    store_models = TRUE,
+    allow_hotstart = TRUE
+  )
+
+  ids = map(extract_benchmark_result_learners(instance$archive$benchmark_result), function(l) l$model$id)
+  expect_equal(length(unique(ids)), 5)
+  expect_equal(unique(instance$archive$data$iter), c(1, 25, 50, 75, 100))
+  expect_null(instance$archive$data$resample_result)
+})
