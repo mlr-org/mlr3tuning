@@ -142,7 +142,15 @@ MAKE_GL = function() {
   GraphLearner$new(g)
 }
 
-clean_on_exit = function(pids) {
-  future::plan("sequential")
-  walk(pids, tools::pskill)
+flush_redis = function() {
+  config = redux::redis_config()
+  r = redux::hiredis(config)
+  r$FLUSHDB()
+}
+
+expect_rush_reset = function(rush, type = "kill") {
+  processes = rush$processes
+  rush$reset(type = type)
+  expect_list(rush$connector$command(c("KEYS", "*")), len = 0)
+  walk(processes, function(p) p$kill())
 }

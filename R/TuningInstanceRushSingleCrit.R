@@ -59,8 +59,7 @@ TuningInstanceRushSingleCrit = R6Class("TuningInstanceRushSingleCrit",
       hotstart_threshold = NULL,
       keep_hotstart_stack = FALSE,
       evaluate_default = FALSE,
-      callbacks = list(),
-      rush = NULL
+      callbacks = list()
       ) {
       private$.evaluate_default = assert_flag(evaluate_default)
       learner = assert_learner(as_learner(learner, clone = TRUE))
@@ -74,6 +73,8 @@ TuningInstanceRushSingleCrit = R6Class("TuningInstanceRushSingleCrit",
       } else {
         search_space = as_search_space(search_space)
       }
+
+      rush = rsh()
 
       # create codomain from measure
       measures = assert_measures(as_measures(measure, task_type = task$task_type), task = task, learner = learner)
@@ -103,39 +104,6 @@ TuningInstanceRushSingleCrit = R6Class("TuningInstanceRushSingleCrit",
         callbacks = callbacks,
         rush = rush,
         archive = archive)
-    },
-
-    #' @description
-    #' Start workers with the `future` package.
-    #'
-    #' @template param_n_workers
-    #' @template param_host
-    #' @template param_heartbeat_period
-    #' @template param_heartbeat_expire
-    #' @template param_lgr_thresholds
-    #' @template param_await_workers
-    #' @template param_detect_lost_tasks
-    #' @template param_freeze_archive
-    start_workers = function(
-      n_workers = NULL,
-      host = "local",
-      heartbeat_period = NULL,
-      heartbeat_expire = NULL,
-      lgr_thresholds = NULL,
-      await_workers = TRUE,
-      detect_lost_tasks = FALSE,
-      freeze_archive = FALSE
-      ) {
-      super$start_workers(
-        n_workers = n_workers,
-        packages = c(self$objective$learner$packages, "mlr3tuning"),
-        host = host,
-        heartbeat_period = heartbeat_period,
-        heartbeat_expire = heartbeat_expire,
-        lgr_thresholds = lgr_thresholds,
-        await_workers = await_workers,
-        detect_lost_tasks = detect_lost_tasks,
-        freeze_archive = freeze_archive)
     }
   ),
 

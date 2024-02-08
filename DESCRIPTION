@@ -58,7 +58,7 @@ Config/testthat/parallel: true
 Encoding: UTF-8
 NeedsCompilation: no
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Collate:
     'ArchiveRushTuning.R'
     'ArchiveTuning.R'
@@ -79,6 +79,7 @@ Collate:
     'TunerIrace.R'
     'TunerNLoptr.R'
     'TunerRandomSearch.R'
+    'TunerRandomSearchV2.R'
     'TuningInstanceSingleCrit.R'
     'TuningInstanceMulticrit.R'
     'TuningInstanceRushMulticrit.R'
