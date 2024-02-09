@@ -104,7 +104,7 @@ ObjectiveRushTuning = R6Class("ObjectiveRushTuning",
       # combining default values and hyperparameter configuration avoids cloning
       private$.xs = insert_named(self$default_values, xs)
       call_back("on_eval_after_xs", self$callbacks, context)
-      self$learner$param_set$set_values(.values = private$.xs)
+      self$learner$param_set$set_values(.values = private$.xs, .insert = FALSE)
 
       if (self$allow_hotstart) {
         lg$debug("Adding hotstart stack to learner.")
