@@ -99,7 +99,7 @@ ObjectiveRushTuning = R6Class("ObjectiveRushTuning",
     .eval = function(xs) {
       context = ContextEval$new(self)
 
-      lg$debug("Evaluating hyperparameter configuration %s.", as_short_string(xs))
+      lg$debug("Evaluating hyperparameter configuration %s", as_short_string(xs))
 
       # combining default values and hyperparameter configuration avoids cloning
       private$.xs = insert_named(self$default_values, xs)
@@ -115,6 +115,9 @@ ObjectiveRushTuning = R6Class("ObjectiveRushTuning",
       call_back("on_eval_after_resample", self$callbacks, context)
 
       private$.aggregated_performance = as.list(private$.resample_result$aggregate(self$measures))
+
+      lg$debug("Aggregated performance %s", as_short_string(private$.aggregated_performance))
+
       runtime_learners = extract_runtime(private$.resample_result)
       private$.aggregated_performance = c(private$.aggregated_performance, list(runtime_learners = runtime_learners))
       if (self$allow_hotstart) self$hotstart_stack$add(private$.resample_result$learners)
