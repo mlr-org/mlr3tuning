@@ -15,8 +15,6 @@
 #' @template param_hotstart_threshold
 #' @template param_callbacks
 #'
-#' @template field_default_values
-#'
 #' @export
 ObjectiveRushTuning = R6Class("ObjectiveRushTuning",
   inherit = Objective,
@@ -27,8 +25,6 @@ ObjectiveRushTuning = R6Class("ObjectiveRushTuning",
 
     #' @field learner ([mlr3::Learner]).
     learner = NULL,
-
-    default_values = NULL,
 
      #' @field resampling ([mlr3::Resampling]).
     resampling = NULL,
@@ -54,6 +50,9 @@ ObjectiveRushTuning = R6Class("ObjectiveRushTuning",
     #' @field callbacks (List of [CallbackTuning]s).
     callbacks = NULL,
 
+    #' @field default_values (named `list`).
+    default_values = NULL,
+
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function(
@@ -71,6 +70,7 @@ ObjectiveRushTuning = R6Class("ObjectiveRushTuning",
       self$task = assert_task(as_task(task, clone = TRUE))
       self$learner = assert_learner(as_learner(learner, clone = TRUE))
       self$learner$param_set$assert_values = FALSE
+      self$default_values = self$learner$param_set$values
       self$measures = assert_measures(as_measures(measures), task = self$task, learner = self$learner)
       self$resampling = resampling
       self$store_models = assert_flag(store_models)

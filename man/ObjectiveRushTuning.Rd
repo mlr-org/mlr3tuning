@@ -13,9 +13,6 @@ This class is usually constructed internally by the \link{TuningInstanceSingleCr
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{default_values}}{(named \code{list()}).
-Default hyperparameter values of the learner.}
-
 \item{\code{task}}{(\link[mlr3:Task]{mlr3::Task}).}
 
 \item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner}).}
@@ -35,6 +32,8 @@ Default hyperparameter values of the learner.}
 \item{\code{keep_hotstart_stack}}{(\code{logical(1)}).}
 
 \item{\code{callbacks}}{(List of \link{CallbackTuning}s).}
+
+\item{\code{default_values}}{(named \code{list}).}
 }
 \if{html}{\out{</div>}}
 }
