@@ -34,6 +34,7 @@ Imports:
     data.table,
     lgr,
     mlr3misc (>= 0.13.0),
+    rush,
     R6
 Suggests:
     adagio,
@@ -47,7 +48,6 @@ Suggests:
     redux,
     rmarkdown,
     rpart,
-    rush,
     testthat (>= 3.0.0),
     xgboost
 Remotes:
