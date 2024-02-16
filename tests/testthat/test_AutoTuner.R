@@ -292,6 +292,9 @@ test_that("AutoTuner get_base_learner method works", {
   learner = as_learner(pipeline_robustify() %>>% lrn("classif.rpart"))
   learner$param_set$values$classif.rpart.cp = to_tune(1e-04, 1e-1, logscale = TRUE)
   learner$id = "graphlearner.classif.rpart"
+  # FIXME: this is needed because graphlearner sets its properties to all available properties,
+  # which will be fixed in the next pipelines release
+  learner$properties = setdiff(learner$properties, "uses_test_task")
 
   at = auto_tuner(
     tuner = tnr("random_search"),
