@@ -118,6 +118,11 @@ ObjectiveRushTuning = R6Class("ObjectiveRushTuning",
 
       lg$debug("Aggregated performance %s", as_short_string(private$.aggregated_performance))
 
+      # add errors and warnings
+      warnings = sum(map_int(get_private(private$.resample_result)$.data$learner_states(), function(s) sum(s$log$class == "warning")))
+      errors = sum(map_int(get_private(private$.resample_result)$.data$learner_states(), function(s) sum(s$log$class == "error")))
+      private$.aggregated_performance = c(private$.aggregated_performance, list(warnings = warnings, errors = errors))
+
       runtime_learners = extract_runtime(private$.resample_result)
       private$.aggregated_performance = c(private$.aggregated_performance, list(runtime_learners = runtime_learners))
       if (self$allow_hotstart) self$hotstart_stack$add(private$.resample_result$learners)

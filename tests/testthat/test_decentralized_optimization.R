@@ -1,4 +1,4 @@
-test_that("random search works with decentralized network", {
+test_that("random search works", {
   rush_plan(n_workers = 2)
 
   learner = lrn("classif.rpart",
@@ -21,6 +21,35 @@ test_that("random search works with decentralized network", {
 
   expect_rush_reset(instance$rush)
 })
+
+test_that("random search works with errors", {
+  rush_plan(n_workers = 2)
+
+  learner = lrn("classif.debug",
+    x = to_tune(0, 1),
+    error_train = 0.5,
+    warning_train = 0.5)
+
+  learner$encapsulate = c(train = "callr", predict = "none")
+  learner$fallback = lrn("classif.featureless")
+
+  instance = TuningInstanceRushSingleCrit$new(
+    task = tsk("pima"),
+    learner = learner,
+    resampling = rsmp("cv", folds = 3),
+    measure = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 20),
+    store_benchmark_result = FALSE
+  )
+
+  optimizer = tnr("random_search_v2")
+  optimizer$optimize(instance)
+
+  expect_data_table(instance$archive$data, min.rows = 3L)
+
+  expect_rush_reset(instance$rush)
+})
+
 
 test_that("random search works with transformation functions", {
   rush_plan(n_workers = 2)
