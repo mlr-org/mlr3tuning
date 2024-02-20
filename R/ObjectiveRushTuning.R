@@ -121,7 +121,8 @@ ObjectiveRushTuning = R6Class("ObjectiveRushTuning",
       # add errors and warnings
       warnings = sum(map_int(get_private(private$.resample_result)$.data$learner_states(), function(s) sum(s$log$class == "warning")))
       errors = sum(map_int(get_private(private$.resample_result)$.data$learner_states(), function(s) sum(s$log$class == "error")))
-      private$.aggregated_performance = c(private$.aggregated_performance, list(warnings = warnings, errors = errors))
+      log = map(get_private(private$.resample_result)$.data$learner_states(), function(s) s$log)
+      private$.aggregated_performance = c(private$.aggregated_performance, list(warnings = warnings, errors = errors, log = list(log)))
 
       runtime_learners = extract_runtime(private$.resample_result)
       private$.aggregated_performance = c(private$.aggregated_performance, list(runtime_learners = runtime_learners))

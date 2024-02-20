@@ -50,7 +50,6 @@ test_that("random search works with errors", {
   expect_rush_reset(instance$rush)
 })
 
-
 test_that("random search works with transformation functions", {
   rush_plan(n_workers = 2)
 
