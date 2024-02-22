@@ -393,18 +393,51 @@ AutoTuner = R6Class("AutoTuner",
 #' @param ... (any)\cr
 #'   Currently unused.
 #' @export
-marshal_model.auto_tuner_model = function(model, ...) {
-  model$learner$model = marshal_model(model$learner$model)
+marshal_model.auto_tuner_model = function(model, clone = TRUE, ...) {
+  if (!clone) {
+    model$learner$model = marshal_model(model$learner$model, clone = clone)
+    x = structure(list(
+      marshaled = model,
+      packages = "mlr3tuning"
+    ), class = c("auto_tuner_model_marshaled", "list_marshaled", "marshaled"))
+    return(x)
+  }
+  # we clone the learner without its model
+  learner = model$learner
+  learner_model = learner$model
+  on.exit({learner$model = learner_model}, add = TRUE)
+  learner$model = NULL
+  learner2 = learner$clone(deep = TRUE)
+  learner$model = learner$model
+  learner2$model = marshal_model(learner_model, clone = clone)
+  ti = learner_model$tuning_instance
+
   structure(list(
-    marshaled = model,
-    packages = "mlr3tuning"
+    marshaled = list(
+      learner = learner2,
+      tuning_instance = if (!is.null(ti)) ti$clone(deep = TRUE)
+    )
   ), class = c("auto_tuner_model_marshaled", "list_marshaled", "marshaled"))
 }
 
 #' @export
-unmarshal_model.auto_tuner_model_marshaled = function(model, ...) {
-  model = model$marshaled
-  model$learner$model = unmarshal_model(model$learner$model)
-  class(model) = c("auto_tuner_model", "list")
-  model
+unmarshal_model.auto_tuner_model_marshaled = function(model, clone = TRUE, ...) {
+  if (!clone) {
+    model = model$marshaled
+    model$learner$model = unmarshal_model(model$learner$model, clone = clone)
+    class(model) = c("auto_tuner_model", "list")
+    return(model)
+  }
+  learner = model$marshaled$learner
+  learner_model = learner$model
+  learner$model = NULL
+  learner2 = learner$clone(deep = TRUE)
+  learner2$model = unmarshal_model(learner_model, clone = clone)
+
+  ti = model$marshaled$tuning_instance
+
+  structure(list(
+    learner = learner2,
+    tuning_instance = if (!is.null(ti)) model$marshaled$clone(deep = TRUE)
+  ), class = c("auto_tuner_model", "list"))
 }

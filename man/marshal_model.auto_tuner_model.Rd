@@ -4,11 +4,14 @@
 \alias{marshal_model.auto_tuner_model}
 \title{Marshal AutoTuner}
 \usage{
-\method{marshal_model}{auto_tuner_model}(model, ...)
+\method{marshal_model}{auto_tuner_model}(model, clone = TRUE, ...)
 }
 \arguments{
 \item{model}{(model of \code{\link{AutoTuner}})\cr
 The model to be marshaled.}
+
+\item{...}{(any)\cr
+Currently unused.}
 }
 \description{
 Modifies the model's \code{learner} in-place.

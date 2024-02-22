@@ -572,5 +572,8 @@ test_that("marshalable learner", {
     measure = msr("classif.ce"),
     term_evals = 4
   )
+
+  at$train(task)
+
   expect_marshalable_learner(at, task)
 })
