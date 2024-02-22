@@ -27,6 +27,7 @@
 #' @template param_store_models
 #' @template param_check_values
 #' @template param_allow_hotstart
+#' @template param_hotstart_threshold
 #' @template param_keep_hotstart_stack
 #' @template param_evaluate_default
 #' @template param_callbacks
@@ -69,7 +70,22 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
-    initialize = function(task, learner, resampling, measures, terminator, search_space = NULL, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, evaluate_default = FALSE, callbacks = list()) {
+    initialize = function(
+      task,
+      learner,
+      resampling,
+      measures,
+      terminator,
+      search_space = NULL,
+      store_benchmark_result = TRUE,
+      store_models = FALSE,
+      check_values = FALSE,
+      allow_hotstart = FALSE,
+      hotstart_threshold = NULL,
+      keep_hotstart_stack = FALSE,
+      evaluate_default = FALSE,
+      callbacks = list()
+      ) {
       private$.evaluate_default = assert_flag(evaluate_default)
       learner = assert_learner(as_learner(learner, clone = TRUE))
 
@@ -84,16 +100,68 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
       }
 
       # create codomain from measure
-      measures = assert_measures(as_measures(measures, clone = TRUE), task = task, learner = learner)
+      measures = assert_measures(as_measures(measures), task = task, learner = learner)
       codomain = measures_to_codomain(measures)
 
       # initialized specialized tuning archive and objective
-      archive = ArchiveTuning$new(search_space, codomain, check_values)
-      objective = ObjectiveTuning$new(task, learner, resampling, measures, store_benchmark_result, store_models, check_values, allow_hotstart, keep_hotstart_stack, archive, callbacks)
+      archive = ArchiveTuning$new(
+        search_space = search_space,
+        codomain = codomain,
+        check_values = check_values)
 
-      super$initialize(objective, search_space, terminator, callbacks = callbacks)
-      # super class of instance initializes default archive, overwrite with tuning archive
-      self$archive = archive
+      objective = ObjectiveTuning$new(
+        task = task,
+        learner = learner,
+        resampling = resampling,
+        measures = measures,
+        store_benchmark_result = store_benchmark_result,
+        store_models = store_models,
+        check_values =  check_values,
+        allow_hotstart = allow_hotstart,
+        hotstart_threshold = hotstart_threshold,
+        keep_hotstart_stack = keep_hotstart_stack,
+        archive = archive,
+        callbacks = callbacks)
+
+      super$initialize(
+        objective = objective,
+        search_space = search_space,
+        terminator = terminator,
+        callbacks = callbacks,
+        archive = archive)
+    },
+
+    #' @description
+    #' Start workers with `future`.
+    #'
+    #' @template param_n_workers
+    #' @template param_host
+    #' @template param_heartbeat_period
+    #' @template param_heartbeat_expire
+    #' @template param_lgr_thresholds
+    #' @template param_await_workers
+    #' @template param_freeze_archive
+    #' @template param_detect_lost_tasks
+    start_workers = function(
+      n_workers = NULL,
+      host = "local",
+      heartbeat_period = NULL,
+      heartbeat_expire = NULL,
+      lgr_thresholds = NULL,
+      await_workers = TRUE,
+      detect_lost_tasks = FALSE,
+      freeze_archive = FALSE
+      ) {
+      super$start_workers(
+        n_workers = n_workers,
+        packages = c(self$objective$learner$packages, "mlr3tuning"),
+        host = host,
+        heartbeat_period = heartbeat_period,
+        heartbeat_expire = heartbeat_expire,
+        lgr_thresholds = lgr_thresholds,
+        await_workers = await_workers,
+        detect_lost_tasks = detect_lost_tasks,
+        freeze_archive = freeze_archive)
     },
 
     #' @description

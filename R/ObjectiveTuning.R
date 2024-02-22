@@ -12,8 +12,11 @@
 #' @template param_check_values
 #' @template param_store_benchmark_result
 #' @template param_allow_hotstart
+#' @template param_hotstart_threshold
 #' @template param_keep_hotstart_stack
 #' @template param_callbacks
+#'
+#' @template field_default_values
 #'
 #' @export
 ObjectiveTuning = R6Class("ObjectiveTuning",
@@ -26,8 +29,6 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     #' @field learner ([mlr3::Learner]).
     learner = NULL,
 
-    #' @field default_values (named list).
-    #'  Default hyperparameter values of the learner.
     default_values = NULL,
 
      #' @field resampling ([mlr3::Resampling]).
@@ -63,17 +64,35 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     #' @param archive ([ArchiveTuning])\cr
     #'   Reference to archive of [TuningInstanceSingleCrit] | [TuningInstanceMultiCrit].
     #'   If `NULL` (default), benchmark result and models cannot be stored.
-    initialize = function(task, learner, resampling, measures, store_benchmark_result = TRUE, store_models = FALSE, check_values = TRUE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, archive = NULL, callbacks = list()) {
+    initialize = function(
+      task,
+      learner,
+      resampling,
+      measures,
+      store_benchmark_result = TRUE,
+      store_models = FALSE,
+      check_values = TRUE,
+      allow_hotstart = FALSE,
+      hotstart_threshold = NULL,
+      keep_hotstart_stack = FALSE,
+      archive = NULL,
+      callbacks = list()) {
+
       self$task = assert_task(as_task(task, clone = TRUE))
       self$learner = assert_learner(as_learner(learner, clone = TRUE))
       self$default_values = self$learner$param_set$values
-      learner$param_set$assert_values = FALSE
+      self$learner$param_set$assert_values = FALSE
       self$measures = assert_measures(as_measures(measures), task = self$task, learner = self$learner)
 
       self$store_models = assert_flag(store_models)
       self$store_benchmark_result = assert_flag(store_benchmark_result) || self$store_models
       self$allow_hotstart = assert_flag(allow_hotstart) && any(c("hotstart_forward", "hotstart_backward") %in% learner$properties)
-      if (self$allow_hotstart) self$hotstart_stack = HotstartStack$new()
+      if (self$allow_hotstart) {
+        if (!is.null(hotstart_threshold)) {
+          hotstart_threshold = set_names(assert_numeric(hotstart_threshold), self$learner$param_set$ids(tags = "hotstart"))
+        }
+        self$hotstart_stack = HotstartStack$new(hotstart_threshold = hotstart_threshold)
+      }
       self$keep_hotstart_stack = assert_flag(keep_hotstart_stack)
       self$archive = assert_r6(archive, "ArchiveTuning", null.ok = TRUE)
       if (is.null(self$archive)) self$allow_hotstart = self$store_benchmark_result = self$store_models = FALSE
@@ -93,7 +112,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
 
   private = list(
     .eval_many = function(xss, resampling) {
-      context = ContextEval$new(self)
+      context = ContextEvalMany$new(self)
       private$.xss = xss
 
       private$.design = if (self$allow_hotstart) {
@@ -127,7 +146,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
 
       # add runtime to evaluations
       time = map_dbl(private$.benchmark_result$resample_results$resample_result, function(rr) {
-        sum(map_dbl(get_private(rr)$.data$learner_states(get_private(rr)$.view), function(state) state$train_time + state$predict_time))
+        extract_runtime(rr)
       })
       set(private$.aggregated_performance, j = "runtime_learners", value = time)
 

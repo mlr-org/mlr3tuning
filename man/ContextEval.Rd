@@ -4,13 +4,13 @@
 \alias{ContextEval}
 \title{Evaluation Context}
 \description{
-The \link{ContextEval} allows \link{CallbackTuning}s to access and modify data while a batch of hyperparameter configurations is evaluated.
-See section on active bindings for a list of modifiable objects.
-See \code{\link[=callback_tuning]{callback_tuning()}} for a list of stages which access \link{ContextEval}.
+The \link{ContextEval} allows \link{CallbackTuning}s to access and modify data while a hyperparameter configuration is evaluated.
+See the section on active bindings for a list of modifiable objects.
+See \code{\link[=callback_tuning]{callback_tuning()}} for a list of stages that access \link{ContextEval}.
 }
 \details{
 This context is re-created each time a new batch of hyperparameter configurations is evaluated.
-Changes to \verb{$objective_tuning}, \verb{$design} \verb{$benchmark_result} are discarded after the function is finished.
+Changes to \verb{$objective_tuning}, \verb{$resample_result} are discarded after the function is finished.
 Modification on the data table in \verb{$aggregated_performance} are written to the archive.
 Any number of columns can be added.
 }
@@ -27,16 +27,13 @@ Any number of columns can be added.
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
-\item{\code{xss}}{(list())\cr
-The hyperparameter configurations of the latest batch.
+\item{\code{xs}}{(list())\cr
+The hyperparameter configuration currently evaluated.
 Contains the values on the learner scale i.e. transformations are applied.
 See \verb{$xdt} in \link[bbotk:ContextOptimization]{bbotk::ContextOptimization} for the untransformed values.}
 
-\item{\code{design}}{(\link[data.table:data.table]{data.table::data.table})\cr
-The benchmark design of the latest batch.}
-
-\item{\code{benchmark_result}}{(\link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult})\cr
-The benchmark result of the latest batch.}
+\item{\code{resample_result}}{(\link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult})\cr
+The resample result of the hyperparameter configuration currently evaluated.}
 
 \item{\code{aggregated_performance}}{(\link[data.table:data.table]{data.table::data.table})\cr
 Aggregated performance scores and training time of the latest batch.

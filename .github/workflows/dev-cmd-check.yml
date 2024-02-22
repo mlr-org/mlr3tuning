@@ -34,6 +34,10 @@ jobs:
         with:
           r-version: ${{ matrix.config.r }}
 
+      - uses: supercharge/redis-github-action@1.7.0
+        with:
+          redis-version: 7
+
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::rcmdcheck

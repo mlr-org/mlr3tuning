@@ -162,7 +162,7 @@ as.data.table.ArchiveTuning = function(x, ..., unnest = "x_domain", exclude_colu
   if (nrow(x$data) == 0) return(data.table())
   # default values for unnest and exclude_columns might be not present in archive
   if ("x_domain" %nin% names(x$data)) unnest = setdiff(unnest, "x_domain")
-  if (!x$benchmark_result$n_resample_results) exclude_columns = exclude_columns[exclude_columns %nin% "uhash"]
+  if (!x$benchmark_result$n_resample_results) exclude_columns = exclude_columns[exclude_columns %nin% c("uhash", "resample_result")]
 
   assert_subset(unnest, names(x$data))
   cols_y_extra = NULL

@@ -42,17 +42,17 @@ The context available is \link[bbotk:ContextOptimization]{bbotk::ContextOptimiza
 \item{on_eval_after_design}{(\verb{function()})\cr
 Stage called after design is created.
 Called in \code{ObjectiveTuning$eval_many()}.
-The context available is \link{ContextEval}.}
+The context available is \link{ContextEvalMany}.}
 
 \item{on_eval_after_benchmark}{(\verb{function()})\cr
 Stage called after hyperparameter configurations are evaluated.
 Called in \code{ObjectiveTuning$eval_many()}.
-The context available is \link{ContextEval}.}
+The context available is \link{ContextEvalMany}.}
 
 \item{on_eval_before_archive}{(\verb{function()})\cr
 Stage called before performance values are written to the archive.
 Called in \code{ObjectiveTuning$eval_many()}.
-The context available is \link{ContextEval}.}
+The context available is \link{ContextEvalMany}.}
 
 \item{on_optimizer_after_eval}{(\verb{function()})\cr
 Stage called after points are evaluated.
@@ -93,7 +93,7 @@ End Tuning
 }\if{html}{\out{</div>}}
 
 See also the section on parameters for more information on the stages.
-A tuning callback works with \link[bbotk:ContextOptimization]{bbotk::ContextOptimization} and \link{ContextEval}.
+A tuning callback works with \link[bbotk:ContextOptimization]{bbotk::ContextOptimization} and \link{ContextEvalMany}.
 }
 \details{
 When implementing a callback, each functions must have two arguments named \code{callback} and \code{context}.
@@ -103,13 +103,13 @@ Avoid writing large data the state.
 This can slow down the tuning process when the evaluation of configurations is parallelized.
 
 Tuning callbacks access two different contexts depending on the stage.
-The stages \code{on_eval_after_design}, \code{on_eval_after_benchmark}, \code{on_eval_before_archive} access \link{ContextEval}.
+The stages \code{on_eval_after_design}, \code{on_eval_after_benchmark}, \code{on_eval_before_archive} access \link{ContextEvalMany}.
 This context can be used to customize the evaluation of a batch of hyperparameter configurations.
 Changes to the state of callback are lost after the evaluation of a batch and changes to the tuning instance or the tuner are not possible.
-Persistent data should be written to the archive via \verb{$aggregated_performance} (see \link{ContextEval}).
+Persistent data should be written to the archive via \verb{$aggregated_performance} (see \link{ContextEvalMany}).
 The other stages access \link{ContextOptimization}.
 This context can be used to modify the tuning instance, archive, tuner and final result.
-There are two different contexts because the evaluation can be parallelized i.e. multiple instances of \link{ContextEval} exists on different workers at the same time.
+There are two different contexts because the evaluation can be parallelized i.e. multiple instances of \link{ContextEvalMany} exists on different workers at the same time.
 }
 \examples{
 # write archive to disk

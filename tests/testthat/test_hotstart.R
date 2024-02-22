@@ -124,3 +124,55 @@ test_that("objects are cloned", {
       expect_different_address(learner$param_set, get_private(bmr)$.data$data$learners$learner[[1]]$param_set)
   })
 })
+
+test_that("hotstart threshold works", {
+  task = tsk("pima")
+  learner = lrn("classif.debug", x = to_tune(), iter = to_tune(1, 100))
+
+  instance = ti(
+    task = task,
+    learner = learner,
+    resampling = rsmp("holdout"),
+    measures = msr("classif.ce"),
+    terminator = trm("none"),
+    store_models = TRUE,
+    allow_hotstart = TRUE,
+    keep_hotstart_stack = TRUE,
+    hotstart_threshold = 50,
+  )
+
+  tuner = tnr("grid_search", batch_size = 5, resolution = 5)
+  tuner$optimize(instance)
+
+  hotstart_values = map_int(instance$objective$hotstart_stack$stack$start_learner, function(learner) learner$param_set$values$iter)
+  expect_true(all(hotstart_values >= 50))
+})
+
+# rush -------------------------------------------------------------------------
+
+test_that("hotstart works with rush", {
+  skip_on_cran()
+  skip_on_ci()
+
+  rush = rsh()
+  instance = TuningInstanceRushSingleCrit$new(
+    task = tsk("pima"),
+    learner = lrn("classif.debug", x = to_tune(), iter = to_tune(1, 100)),
+    resampling = rsmp("cv", folds = 3),
+    measure = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 3),
+    allow_hotstart = TRUE,
+    rush = rush
+  )
+  future::plan("cluster", workers = 1L)
+  instance$start_workers(await_workers = TRUE, lgr_thresholds = c(rush = "debug", bbotk = "debug", mlr3 = "debug"))
+  pids = rush$worker_info$pid
+  on.exit({clean_on_exit(pids)}, add = TRUE)
+
+  tuner = tnr("grid_search", resolution = 5)
+  tuner$optimize(instance)
+
+  messages = rush$read_log()$msg
+  messages = messages[grep("hotstarting", messages)]
+  expect_true(length(messages) > 0)
+})

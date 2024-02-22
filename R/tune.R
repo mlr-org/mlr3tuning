@@ -56,9 +56,11 @@
 #' @template param_store_models
 #' @template param_check_values
 #' @template param_allow_hotstart
+#' @template param_hotstart_threshold
 #' @template param_keep_hotstart_stack
 #' @template param_evaluate_default
 #' @template param_callbacks
+#' @template param_rush
 #' @template param_method
 #'
 #' @export
@@ -89,7 +91,27 @@
 #'
 #' # Inspect all evaluated configurations
 #' as.data.table(instance$archive)
-tune = function(tuner, task, learner, resampling, measures = NULL, term_evals = NULL, term_time = NULL, terminator = NULL, search_space = NULL, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, evaluate_default = FALSE, callbacks = list(), method) {
+tune = function(
+  tuner,
+  task,
+  learner,
+  resampling,
+  measures = NULL,
+  term_evals = NULL,
+  term_time = NULL,
+  terminator = NULL,
+  search_space = NULL,
+  store_benchmark_result = TRUE,
+  store_models = FALSE,
+  check_values = FALSE,
+  allow_hotstart = FALSE,
+  hotstart_threshold = NULL,
+  keep_hotstart_stack = FALSE,
+  evaluate_default = FALSE,
+  callbacks = list(),
+  rush = NULL,
+  method) {
+
   if (!missing(method)) {
     message("The `method` argument is deprecated and will be removed in a future release. Please use `tuner` instead.")
     tuner = method
@@ -98,24 +120,50 @@ tune = function(tuner, task, learner, resampling, measures = NULL, term_evals = 
   assert_tuner(tuner)
   terminator = terminator %??% terminator_selection(term_evals, term_time)
 
-  TuningInstance = if (!is.list(measures)) TuningInstanceSingleCrit else TuningInstanceMultiCrit
-  instance = TuningInstance$new(
-    task = task,
-    learner = learner,
-    resampling = resampling,
-    measures,
-    terminator = terminator,
-    search_space = search_space,
-    store_benchmark_result = store_benchmark_result,
-    store_models = store_models,
-    check_values = check_values,
-    allow_hotstart = allow_hotstart,
-    keep_hotstart_stack = keep_hotstart_stack,
-    evaluate_default = evaluate_default,
-    callbacks = callbacks)
+  if (is.null(rush)) {
+    TuningInstance = if (!is.list(measures)) TuningInstanceSingleCrit else TuningInstanceMultiCrit
+    instance = TuningInstance$new(
+      task = task,
+      learner = learner,
+      resampling = resampling,
+      measures,
+      terminator = terminator,
+      search_space = search_space,
+      store_benchmark_result = store_benchmark_result,
+      store_models = store_models,
+      check_values = check_values,
+      allow_hotstart = allow_hotstart,
+      hotstart_threshold = hotstart_threshold,
+      keep_hotstart_stack = keep_hotstart_stack,
+      evaluate_default = evaluate_default,
+      callbacks = callbacks)
 
-  tuner$optimize(instance)
-  instance
+    tuner$optimize(instance)
+    instance
+  } else {
+    TuningInstance = if (!is.list(measures)) TuningInstanceRushSingleCrit else TuningInstanceRushMultiCrit
+    instance = TuningInstance$new(
+      task = task,
+      learner = learner,
+      resampling = resampling,
+      measures,
+      terminator = terminator,
+      search_space = search_space,
+      store_benchmark_result = store_benchmark_result,
+      store_models = store_models,
+      check_values = check_values,
+      allow_hotstart = allow_hotstart,
+      hotstart_threshold = hotstart_threshold,
+      keep_hotstart_stack = keep_hotstart_stack,
+      evaluate_default = evaluate_default,
+      callbacks = callbacks,
+      rush = rush)
+
+    instance$start_worker(await_workers = TRUE)
+
+    tuner$optimize(instance)
+    instance
+  }
 }
 
 terminator_selection = function(term_evals, term_time) {

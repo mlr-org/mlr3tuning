@@ -30,3 +30,10 @@ evaluate_default = function(inst) {
 
   inst$eval_batch(xdt)
 }
+
+extract_runtime = function(resample_result) {
+  runtimes = map_dbl(get_private(resample_result)$.data$learner_states(get_private(resample_result)$.view), function(state) {
+    state$train_time + state$predict_time
+  })
+  sum(runtimes)
+}

@@ -125,6 +125,7 @@ Param values for the optimal learner call.}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-TuningInstanceSingleCrit-new}{\code{TuningInstanceSingleCrit$new()}}
+\item \href{#method-TuningInstanceSingleCrit-start_workers}{\code{TuningInstanceSingleCrit$start_workers()}}
 \item \href{#method-TuningInstanceSingleCrit-assign_result}{\code{TuningInstanceSingleCrit$assign_result()}}
 \item \href{#method-TuningInstanceSingleCrit-clone}{\code{TuningInstanceSingleCrit$clone()}}
 }
@@ -157,6 +158,7 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   store_models = FALSE,
   check_values = FALSE,
   allow_hotstart = FALSE,
+  hotstart_threshold = NULL,
   keep_hotstart_stack = FALSE,
   evaluate_default = FALSE,
   callbacks = list()
@@ -210,6 +212,10 @@ Allow to hotstart learners with previously fitted models. See also
 \link[mlr3:HotstartStack]{mlr3::HotstartStack}. The learner must support hotstarting. Sets
 \code{store_models = TRUE}.}
 
+\item{\code{hotstart_threshold}}{(\code{numeric(1)})\cr
+Threshold for storing learners in the stack.
+If the value of the hotstart parameter is below this threshold, the learner is not added to the stack.}
+
 \item{\code{keep_hotstart_stack}}{(\code{logical(1)})\cr
 If \code{TRUE}, \link[mlr3:HotstartStack]{mlr3::HotstartStack} is kept in \verb{$objective$hotstart_stack}
 after tuning.}
@@ -220,6 +226,59 @@ values at the start of the optimization.}
 
 \item{\code{callbacks}}{(list of \link{CallbackTuning})\cr
 List of callbacks.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TuningInstanceSingleCrit-start_workers"></a>}}
+\if{latex}{\out{\hypertarget{method-TuningInstanceSingleCrit-start_workers}{}}}
+\subsection{Method \code{start_workers()}}{
+Start workers with \code{future}.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TuningInstanceSingleCrit$start_workers(
+  n_workers = NULL,
+  host = "local",
+  heartbeat_period = NULL,
+  heartbeat_expire = NULL,
+  lgr_thresholds = NULL,
+  await_workers = TRUE,
+  detect_lost_tasks = FALSE,
+  freeze_archive = FALSE
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{n_workers}}{(\code{integer(1)})\cr
+Number of workers to be started.
+If \code{NULL} the maximum number of free workers is used.}
+
+\item{\code{host}}{(\code{character(1)})\cr
+Worker is started on a local or remote host.}
+
+\item{\code{heartbeat_period}}{(\code{integer(1)})\cr
+Period of the heartbeat in seconds.}
+
+\item{\code{heartbeat_expire}}{(\code{integer(1)})\cr
+Time to live of the heartbeat in seconds.}
+
+\item{\code{lgr_thresholds}}{(named \code{character()} or \code{numeric()})\cr
+Thresholds for the \code{lgr} package e.g. c(rush = "debug", bbotk = "info", mlr3 = "info").
+If \code{NULL}, no log messages from the workers are saved.}
+
+\item{\code{await_workers}}{(\code{logical(1)})\cr
+Whether to wait until all workers are available.}
+
+\item{\code{detect_lost_tasks}}{(\code{logical(1)})\cr
+Whether to detect lost tasks.
+Defaults to \code{FALSE}.}
+
+\item{\code{freeze_archive}}{(\code{logical(1)})\cr
+If \code{TRUE}, the archive is copied from redis to a local data.table after tuning.
+This is helpful when the tuning is run on a remote machine and the archive is serialized.
+Only used if \code{rush} is supplied.}
 }
 \if{html}{\out{</div>}}
 }
