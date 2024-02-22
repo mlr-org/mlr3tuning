@@ -290,10 +290,10 @@ AutoTuner = R6Class("AutoTuner",
         self$model$learner
       }
     },
-    #' @field marshalled (`logical(1)`)\cr
-    #' Whether the learner is marshalled.
-    marshalled = function() {
-      learner_marshalled(self)
+    #' @field marshaled (`logical(1)`)\cr
+    #' Whether the learner is marshaled.
+    marshaled = function() {
+      learner_marshaled(self)
     },
 
     #' @field tuning_instance ([TuningInstanceSingleCrit])\cr
@@ -385,15 +385,25 @@ AutoTuner = R6Class("AutoTuner",
   )
 )
 
+#' @title Marshal AutoTuner
+#' @description
+#' Modifies the model's `learner` in-place.
+#' @param model (model of [`AutoTuner`])\cr
+#'   The model to be marshaled.
+#' @param ... (any)\cr
+#'   Currently unused.
 #' @export
 marshal_model.auto_tuner_model = function(model, ...) {
   model$learner$model = marshal_model(model$learner$model)
-  class(model) = c("auto_tuner_model_marshalled", "list_marshalled", "marshalled")
-  model
+  structure(list(
+    marshaled = model,
+    packages = "mlr3tuning"
+  ), class = c("auto_tuner_model_marshaled", "list_marshaled", "marshaled"))
 }
 
 #' @export
-unmarshal_model.auto_tuner_model_marshalled = function(model, ...) {
+unmarshal_model.auto_tuner_model_marshaled = function(model, ...) {
+  model = model$marshaled
   model$learner$model = unmarshal_model(model$learner$model)
   class(model) = c("auto_tuner_model", "list")
   model

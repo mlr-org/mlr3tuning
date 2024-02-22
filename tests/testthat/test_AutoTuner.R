@@ -563,7 +563,7 @@ test_that("AutoTuner errors when second test set is not a subset of task ids", {
   expect_error(resample(task, at, resampling_outer, store_models = TRUE), "Test set 2")
 })
 
-test_that("marshallable learner", {
+test_that("marshalable learner", {
   task = tsk("iris")
   at = auto_tuner(
     tuner = tnr("random_search", batch_size = 2),
@@ -572,5 +572,5 @@ test_that("marshallable learner", {
     measure = msr("classif.ce"),
     term_evals = 4
   )
-  expect_marshallable_learner(at, task)
+  expect_marshalable_learner(at, task)
 })

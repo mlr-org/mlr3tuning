@@ -125,7 +125,7 @@ test_that("objects are cloned", {
   })
 })
 
-test_that("hotstarting works with marshallable learner", {
+test_that("hotstarting works with marshalable learner", {
   task = tsk("pima")
   learner = lrn("classif.lily", x = to_tune(), iter = to_tune(1, 100))
 

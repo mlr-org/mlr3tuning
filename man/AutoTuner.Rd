@@ -139,8 +139,8 @@ Archive of the \link{TuningInstanceSingleCrit}.}
 \item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner})\cr
 Trained learner}
 
-\item{\code{marshalled}}{(\code{logical(1)})\cr
-Whether the learner is marshalled.}
+\item{\code{marshaled}}{(\code{logical(1)})\cr
+Whether the learner is marshaled.}
 
 \item{\code{tuning_instance}}{(\link{TuningInstanceSingleCrit})\cr
 Internally created tuning instance with all intermediate results.}
