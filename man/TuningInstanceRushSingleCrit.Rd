@@ -126,7 +126,8 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   hotstart_threshold = NULL,
   keep_hotstart_stack = FALSE,
   evaluate_default = FALSE,
-  callbacks = list()
+  callbacks = list(),
+  rush = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -191,6 +192,9 @@ values at the start of the optimization.}
 
 \item{\code{callbacks}}{(list of \link{CallbackTuning})\cr
 List of callbacks.}
+
+\item{\code{rush}}{(\code{Rush})\cr
+If a rush instance is supplied, the tuning runs without batches.}
 }
 \if{html}{\out{</div>}}
 }

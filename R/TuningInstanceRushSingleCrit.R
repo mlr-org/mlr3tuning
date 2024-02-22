@@ -59,7 +59,8 @@ TuningInstanceRushSingleCrit = R6Class("TuningInstanceRushSingleCrit",
       hotstart_threshold = NULL,
       keep_hotstart_stack = FALSE,
       evaluate_default = FALSE,
-      callbacks = list()
+      callbacks = list(),
+      rush = NULL
       ) {
       private$.evaluate_default = assert_flag(evaluate_default)
       learner = assert_learner(as_learner(learner, clone = TRUE))
@@ -74,7 +75,7 @@ TuningInstanceRushSingleCrit = R6Class("TuningInstanceRushSingleCrit",
         search_space = as_search_space(search_space)
       }
 
-      rush = rsh()
+      if (is.null(rush)) rush = rsh()
 
       # create codomain from measure
       measures = assert_measures(as_measures(measure, task_type = task$task_type), task = task, learner = learner)
