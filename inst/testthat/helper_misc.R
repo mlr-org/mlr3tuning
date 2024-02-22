@@ -142,6 +142,5 @@ MAKE_GL = function() {
   gl = GraphLearner$new(g)
   # FIXME: this is needed because graphlearner sets its properties to all available properties,
   # which will be fixed in the next pipelines release
-  gl$properties = setdiff(gl$properties, "uses_test_task")
   gl
 }
