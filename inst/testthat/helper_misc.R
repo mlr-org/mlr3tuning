@@ -140,7 +140,5 @@ MAKE_GL = function() {
   g$add_pipeop(op_lrn)
   g$add_edge("subsample", "classif.rpart")
   gl = GraphLearner$new(g)
-  # FIXME: this is needed because graphlearner sets its properties to all available properties,
-  # which will be fixed in the next pipelines release
   gl
 }

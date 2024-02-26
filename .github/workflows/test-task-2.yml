@@ -24,7 +24,6 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: ubuntu-latest,   r: 'devel'}
           - {os: ubuntu-latest,   r: 'release'}
 
     steps:
