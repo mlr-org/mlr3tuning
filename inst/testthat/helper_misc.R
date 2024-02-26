@@ -139,5 +139,6 @@ MAKE_GL = function() {
   g$add_pipeop(op_ds)
   g$add_pipeop(op_lrn)
   g$add_edge("subsample", "classif.rpart")
-  GraphLearner$new(g)
+  gl = GraphLearner$new(g)
+  gl
 }
