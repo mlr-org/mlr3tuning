@@ -127,6 +127,7 @@ Tuner = R6Class("Tuner",
     #' @return [data.table::data.table()]
     optimize = function(inst) {
       assert_multi_class(inst, c("TuningInstanceSingleCrit", "TuningInstanceMultiCrit"))
+      inst$archive$start_time = Sys.time()
       inst$.__enclos_env__$private$.context = ContextOptimization$new(instance = inst, optimizer = self)
       call_back("on_optimization_begin", inst$callbacks, get_private(inst)$.context)
 
