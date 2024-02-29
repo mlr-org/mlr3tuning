@@ -122,20 +122,20 @@ A tuning callback works with bbotk::ContextOptimization and ContextEval."><meta 
 Predefined callbacks are stored in the <a href="https://mlr3misc.mlr-org.com/reference/Dictionary.html" class="external-link">dictionary</a> <a href="https://mlr3misc.mlr-org.com/reference/mlr_callbacks.html" class="external-link">mlr_callbacks</a> and can be retrieved with <code><a href="https://mlr3misc.mlr-org.com/reference/clbk.html" class="external-link">clbk()</a></code>.</p>
 <p>Tuning callbacks can be called from different stages of tuning process.
 The stages are prefixed with <code>on_*</code>.</p>
-<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>Start Tuning</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>     <span class="sc">-</span> on_optimization_begin</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    Start Tuner Batch</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>         <span class="sc">-</span> on_optimizer_before_eval</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>        Start Evaluation</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>             <span class="sc">-</span> on_eval_after_design</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>             <span class="sc">-</span> on_eval_after_benchmark</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>             <span class="sc">-</span> on_eval_before_archive</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        End Evaluation</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>         <span class="sc">-</span> on_optimizer_after_eval</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    End Tuner Batch</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>     <span class="sc">-</span> on_result</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>     <span class="sc">-</span> on_optimization_end</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>End Tuning</span></code></pre><p></p></div>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>Start Tuning</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>     <span class="sc">-</span> on_optimization_begin</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>    Start Tuner Batch</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>         <span class="sc">-</span> on_optimizer_before_eval</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>        Start Evaluation</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>             <span class="sc">-</span> on_eval_after_design</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>             <span class="sc">-</span> on_eval_after_benchmark</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>             <span class="sc">-</span> on_eval_before_archive</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>        End Evaluation</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>         <span class="sc">-</span> on_optimizer_after_eval</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>    End Tuner Batch</span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>     <span class="sc">-</span> on_result</span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>     <span class="sc">-</span> on_optimization_end</span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>End Tuning</span></code></pre><p></p></div>
 <p>See also the section on parameters for more information on the stages.
 A tuning callback works with <a href="https://bbotk.mlr-org.com/reference/ContextOptimization.html" class="external-link">bbotk::ContextOptimization</a> and <a href="ContextEval.html">ContextEval</a>.</p>
     </div>
