@@ -1,14 +1,14 @@
 # create a simple inst object for rpart with cp param and 2CV resampling
 TEST_MAKE_PS1 = function(n_dim = 1L) {
   if (n_dim == 1) {
-    ParamSet$new(params = list(
-      ParamDbl$new("cp", lower = 0.1, upper = 0.3)
-    ))
+    ps(
+      cp = p_dbl(lower = 0.1, upper = 0.3)
+    )
   } else if (n_dim == 2) {
-    ParamSet$new(params = list(
-      ParamDbl$new("cp", lower = 0.1, upper = 0.3),
-      ParamInt$new("minsplit", lower = 1, upper = 9)
-    ))
+    ps(
+      cp = p_dbl(lower = 0.1, upper = 0.3),
+      minsplit = p_int(lower = 1, upper = 9)
+    )
   }
 }
 TEST_MAKE_INST1 = function(values = NULL, folds = 2L,
@@ -41,12 +41,10 @@ TEST_MAKE_INST1_2D = function(values = NULL, folds = 2L,
 
 # create inst object with dependencies
 TEST_MAKE_PS2 = function() {
-  ps = ParamSet$new(
-    params = list(
-      ParamFct$new("xx", levels = c("a", "b"), default = "a"),
-      ParamDbl$new("yy", lower = 0, upper = 1),
-      ParamDbl$new("cp", lower = 0, upper = 1)
-    )
+  ps = ps(
+    xx = p_fct(levels = c("a", "b"), default = "a"),
+    yy = p_dbl(lower = 0, upper = 1),
+    cp = p_dbl(lower = 0, upper = 1)
   )
   ps$add_dep("yy", on = "xx", cond = CondEqual$new("a"))
   return(ps)

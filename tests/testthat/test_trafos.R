@@ -1,12 +1,8 @@
 test_that("simple exp trafo works", {
   ll = lrn("classif.rpart")
-  ps = ParamSet$new(params = list(
-    ParamDbl$new("cp", lower = -8, upper = -2)
-  ))
-  ps$trafo = function(x, param_set) {
-    x$cp = 2^x$cp
-    return(x)
-  }
+  ps = ps(
+    cp = p_dbl(lower = -8, upper = -2, trafo = function(x) 2^x)
+  )
   te = trm("evals", n_evals = 3)
   d = data.table(cp = c(-7, -3))
   tuner = tnr("design_points", design = d)
@@ -21,17 +17,17 @@ test_that("simple exp trafo works", {
 
 test_that("trafo where param names change", {
   ll = lrn("classif.rpart")
-  ps = ParamSet$new(params = list(
-    ParamFct$new("foo", levels = c("a", "b"))
-  ))
-  ps$trafo = function(x, param_set) {
-    if (x$foo == "a")
-      x$cp = 0.11
-    else
-      x$cp = 0.22
-    x$foo = NULL
-    return(x)
-  }
+  ps = ps(
+    foo = p_fct(levels = c("a", "b")),
+    .extra_trafo = function(x, param_set) {
+      if (x$foo == "a")
+        x$cp = 0.11
+      else
+        x$cp = 0.22
+      x$foo = NULL
+      return(x)
+    }
+  )
   te = trm("evals", n_evals = 3)
   tuner = tnr("grid_search", resolution = 2)
   inst = TuningInstanceSingleCrit$new(tsk("iris"), ll, rsmp("holdout"), msr("dummy.cp.classif", fun = function(pv) pv$cp), te, ps)

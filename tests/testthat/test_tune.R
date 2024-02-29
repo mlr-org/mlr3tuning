@@ -161,13 +161,9 @@ test_that("evaluate_default errors with extra trafo", {
 
 test_that("evaluate_default errors with old parameter set api", {
   learner = lrn("classif.rpart")
-  search_space = ParamSet$new(list(
-    ParamDbl$new(id = "cp", lower = -10, upper = 0)
-  ))
-  search_space$trafo = function(x, param_set) {
-    x$cp = 10^(x$cp)
-    x
-  }
+  search_space = ps(
+    cp = p_dbl(lower = -10, upper = 0, trafo = function(x) 10^x)
+  )
 
   expect_error(tune(
     tuner = tnr("random_search"),

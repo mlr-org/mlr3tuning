@@ -18,12 +18,12 @@ test_that("ArchiveTuning access methods work", {
   # learner param values
   walk(instance$archive$data$uhash, function(uhash) {
     expect_list(instance$archive$learner_param_vals(uhash = uhash))
-    expect_named(instance$archive$learner_param_vals(uhash = uhash), c("xval" ,"cp"))
+    expect_named(instance$archive$learner_param_vals(uhash = uhash), c("xval" ,"cp"), ignore.order = TRUE)
   })
 
   walk(seq_row(instance$archive$data), function(i) {
     expect_list(instance$archive$learner_param_vals(i))
-    expect_named(instance$archive$learner_param_vals(i), c("xval" ,"cp"))
+    expect_named(instance$archive$learner_param_vals(i), c("xval" ,"cp"), ignore.order = TRUE)
   })
 
   # learners
@@ -69,12 +69,12 @@ test_that("ArchiveTuning access methods work", {
   # learner param values
   walk(instance$archive$data$uhash, function(uhash) {
     expect_list(instance$archive$learner_param_vals(uhash = uhash))
-    expect_named(instance$archive$learner_param_vals(uhash = uhash), c("xval" ,"cp"))
+    expect_named(instance$archive$learner_param_vals(uhash = uhash), c("xval" ,"cp"), ignore.order = TRUE)
   })
 
   walk(seq_row(instance$archive$data), function(i) {
     expect_list(instance$archive$learner_param_vals(i))
-    expect_named(instance$archive$learner_param_vals(i), c("xval" ,"cp"))
+    expect_named(instance$archive$learner_param_vals(i), c("xval" ,"cp"), ignore.order = TRUE)
   })
 
   # learners

@@ -73,8 +73,7 @@ Used in tables, plot and text output.}
 Set of control parameters.}
 
 \item{\code{param_classes}}{(\code{character()})\cr
-Supported parameter classes for learner hyperparameters that the tuner can optimize.
-Subclasses of \link[paradox:Param]{paradox::Param}.}
+Supported parameter classes for learner hyperparameters that the tuner can optimize, as given in the \link[paradox:ParamSet]{paradox::ParamSet} \verb{$class} field.}
 
 \item{\code{properties}}{(\code{character()})\cr
 Set of properties of the tuner.
@@ -132,8 +131,7 @@ Identifier for the new instance.}
 Set of control parameters.}
 
 \item{\code{param_classes}}{(\code{character()})\cr
-Supported parameter classes for learner hyperparameters that the tuner can optimize.
-Subclasses of \link[paradox:Param]{paradox::Param}.}
+Supported parameter classes for learner hyperparameters that the tuner can optimize, as given in the \link[paradox:ParamSet]{paradox::ParamSet} \verb{$class} field.}
 
 \item{\code{properties}}{(\code{character()})\cr
 Set of properties of the tuner.
