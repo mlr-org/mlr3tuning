@@ -1,6 +1,6 @@
 Package: mlr3tuning
 Title: Hyperparameter Optimization for 'mlr3'
-Version: 0.19.2.9000
+Version: 0.20.0
 Authors@R: c(
     person("Marc", "Becker", , "marcbecker@posteo.de", role = c("cre", "aut"),
            comment = c(ORCID = "0000-0002-8115-0400")),
@@ -52,7 +52,7 @@ Config/testthat/parallel: true
 Encoding: UTF-8
 NeedsCompilation: no
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Collate:
     'ArchiveTuning.R'
     'AutoTuner.R'

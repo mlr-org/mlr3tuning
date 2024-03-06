@@ -148,7 +148,7 @@ target_runner_tuning = function(experiment, exec.target.runner, scenario, target
     configuration
   })
   # fix logicals
-  lgl_params = as.data.table(tuning_instance$search_space)[class == "ParamLgl", id]
+  lgl_params = as.data.table(tuning_instance$search_space)[class == "ParamLgl", "id"][[1]]
   if (length(lgl_params)) xdt[, (lgl_params) := lapply(.SD, as.logical), .SDcols = lgl_params]
 
   # provide experiment instances to objective
