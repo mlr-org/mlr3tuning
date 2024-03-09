@@ -259,3 +259,98 @@ load_callback_rush_measures = function() {
   )
 }
 
+#' @title MLflow Connector Callback
+#'
+#' @include CallbackTuning.R
+#' @name mlr3tuning.mlflow
+#'
+#' @description
+#' This [CallbackTuning] logs the hyperparameter configurations and the performance of the configurations to MLflow.
+#'
+#' @examples
+#' clbk("mlr3tuning.mlflow", tracking_uri = "http://localhost:5000")
+#'
+#' \dontrun{
+#' rush::rush_plan(n_workers = 4)
+#'
+#' learner = lrn("classif.rpart",
+#'   minsplit  = to_tune(2, 128),
+#'   cp        = to_tune(1e-04, 1e-1))
+#'
+#' instance = TuningInstanceRushSingleCrit$new(
+#'   task = tsk("pima"),
+#'   learner = learner,
+#'   resampling = rsmp("cv", folds = 3),
+#'   measure = msr("classif.ce"),
+#'   terminator = trm("evals", n_evals = 20),
+#'   store_benchmark_result = FALSE,
+#'   callbacks = clbk("mlr3tuning.rush_mlflow", tracking_uri = "http://localhost:8080")
+#' )
+#'
+#' tuner = tnr("random_search_v2")
+#' tuner$optimize(instance)
+#' }
+NULL
+
+load_callback_rush_mlflow = function() {
+  callback_rush_tuning("mlr3tuning.rush_mlflow",
+    label = "MLflow Connector",
+    man = "mlr3tuning::mlr3tuning.mlflow",
+
+    on_optimization_begin = function(callback, context) {
+      require_namespaces("mlflow")
+
+      # create mlflow client
+      callback$state$client = mlflow::mlflow_client(callback$state$tracking_uri)
+
+      # setup experiment
+      name = sprintf("%s_%s_%s", context$optimizer$id, context$instance$objective$id, context$instance$rush$network_id)
+      callback$state$experiment_id = mlflow::mlflow_create_experiment(
+        name = name,
+        client = callback$state$client)
+
+      callback$state$measure_ids = context$instance$archive$cols_y
+    },
+
+    on_eval_after_xs = function(callback, context) {
+      require_namespaces("mlflow")
+
+      client = callback$state$client
+      experiment_id = callback$state$experiment_id
+
+      # start run
+      callback$state$run_uuid = mlflow::mlflow_start_run(
+        experiment_id = experiment_id,
+        client =  client)$run_uuid
+
+      iwalk(context$xs, function(value, id) {
+        mlflow::mlflow_log_param(
+          key = id,
+          value = value,
+          run = callback$state$run_uuid,
+          client = client)
+      })
+    },
+
+    on_eval_before_archive = function(callback, context) {
+      client = callback$state$client
+      run_uuid = callback$state$run_uuid
+
+      walk(callback$state$measure_ids, function(id) {
+        mlflow::mlflow_log_metric(
+          key = id,
+          value = context$aggregated_performance[[id]],
+          run = run_uuid,
+          client = client)
+      })
+
+      mlflow::mlflow_end_run(
+        status = "FINISHED",
+        run_id = run_uuid,
+        client = client
+      )
+    }
+  )
+}
+
+

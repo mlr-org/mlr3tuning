@@ -144,3 +144,29 @@ test_that("rush measures callback works", {
 
   rush$reset()
 })
+
+test_that("rush mlflow callback works", {
+  skip_on_cran()
+  skip_on_ci()
+  skip_if(TRUE)
+
+  flush_redis()
+  rush::rush_plan(n_workers = 4)
+
+  learner = lrn("classif.rpart",
+    minsplit  = to_tune(2, 128),
+    cp        = to_tune(1e-04, 1e-1))
+
+  instance = TuningInstanceRushSingleCrit$new(
+    task = tsk("pima"),
+    learner = learner,
+    resampling = rsmp("cv", folds = 3),
+    measure = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 20),
+    store_benchmark_result = FALSE,
+    callbacks = clbk("mlr3tuning.rush_mlflow", tracking_uri = "http://localhost:8080")
+  )
+
+  optimizer = tnr("random_search_v2")
+  optimizer$optimize(instance)
+})
