@@ -63,6 +63,7 @@ Collate:
     'ArchiveRushTuning.R'
     'ArchiveTuning.R'
     'AutoTuner.R'
+    'AutoTunerRush.R'
     'CallbackRushTuning.R'
     'CallbackTuning.R'
     'ContextEval.R'
