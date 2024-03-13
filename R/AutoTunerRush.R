@@ -125,7 +125,7 @@ AutoTunerRush = R6Class("AutoTunerRush",
     #'
     #' @param tuner ([Tuner])\cr
     #'   Optimization algorithm.
-    initialize = function(tuner, learner, resampling, measure = NULL, terminator, search_space = NULL, store_tuning_instance = TRUE, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, evaluate_default = FALSE, callbacks = list()) {
+    initialize = function(tuner, learner, resampling, measure = NULL, terminator, search_space = NULL, store_tuning_instance = TRUE, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, evaluate_default = FALSE, callbacks = list(), rush = NULL) {
       learner = assert_learner(as_learner(learner, clone = TRUE))
 
       if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token")) > 0) {
@@ -149,6 +149,7 @@ AutoTunerRush = R6Class("AutoTunerRush",
       ia$keep_hotstart_stack = assert_flag(keep_hotstart_stack)
       ia$evaluate_default = assert_flag(evaluate_default)
       ia$callbacks = assert_callbacks(as_callbacks(callbacks))
+      ia$rush = assert_class(rush, "Rush", null.ok = TRUE)
       self$instance_args = ia
 
       super$initialize(
