@@ -86,6 +86,7 @@ Collate:
     'TuningInstanceRushMulticrit.R'
     'TuningInstanceRushSingleCrit.R'
     'as_search_space.R'
+    'as_tuner.R'
     'assertions.R'
     'auto_tuner.R'
     'bibentries.R'
