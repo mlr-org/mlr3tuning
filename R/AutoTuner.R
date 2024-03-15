@@ -34,6 +34,7 @@
 #' For this reason, the inner resampling should be not instantiated.
 #' If an instantiated resampling is passed, the [AutoTuner] fails when a row id of the inner resampling is not present in the training set of the outer resampling.
 #'
+#'
 #' @template param_learner
 #' @template param_resampling
 #' @template param_measure
@@ -260,6 +261,16 @@ AutoTuner = R6Class("AutoTuner",
       if (length(e)) {
         catf(str_indent("* Errors:", e))
       }
+    },
+    #' @description
+    #' Marshal the learner
+    marshal = function() {
+      learner_marshal(self)
+    },
+    #' @description
+    #' Unmarshal the learner.
+    unmarshal = function() {
+      learner_unmarshal(self)
     }
   ),
 
@@ -278,6 +289,11 @@ AutoTuner = R6Class("AutoTuner",
       } else {
         self$model$learner
       }
+    },
+    #' @field marshaled (`logical(1)`)\cr
+    #' Whether the learner is marshaled.
+    marshaled = function() {
+      learner_marshaled(self)
     },
 
     #' @field tuning_instance ([TuningInstanceSingleCrit])\cr
@@ -358,7 +374,7 @@ AutoTuner = R6Class("AutoTuner",
       # the return model is a list of "learner" and "tuning_instance"
       result_model = list(learner = learner)
       if (private$.store_tuning_instance) result_model$tuning_instance = instance
-      result_model
+      structure(result_model, class = c("auto_tuner_model", "list"))
     },
 
     .predict = function(task) {
@@ -368,3 +384,59 @@ AutoTuner = R6Class("AutoTuner",
     .store_tuning_instance = NULL
   )
 )
+
+#' @title Marshal AutoTuner
+#' @description
+#' Modifies the model's `learner` in-place.
+#' @param model (model of [`AutoTuner`])\cr
+#'   The model to be marshaled.
+#' @param ... (any)\cr
+#'   Currently unused.
+#' @export
+marshal_model.auto_tuner_model = function(model, clone = TRUE, ...) {
+  if (!clone) {
+    model$learner$model = marshal_model(model$learner$model, clone = FALSE)
+    x = structure(list(
+      marshaled = model,
+      packages = "mlr3tuning"
+    ), class = c("auto_tuner_model_marshaled", "list_marshaled", "marshaled"))
+    return(x)
+  }
+  # we clone the learner without its model
+  learner = model$learner
+  learner_model = learner$model
+  on.exit({learner$model = learner_model}, add = TRUE)
+  learner$model = NULL
+  learner2 = learner$clone(deep = TRUE)
+  learner2$model = marshal_model(learner_model, clone = TRUE)
+  ti = learner_model$tuning_instance
+
+  structure(list(
+    marshaled = list(
+      learner = learner2,
+      tuning_instance = if (!is.null(ti)) ti$clone(deep = TRUE)
+    )
+  ), class = c("auto_tuner_model_marshaled", "list_marshaled", "marshaled"))
+}
+
+#' @export
+unmarshal_model.auto_tuner_model_marshaled = function(model, clone = TRUE, ...) {
+  if (!clone) {
+    model = model$marshaled
+    model$learner$model = unmarshal_model(model$learner$model, clone = clone)
+    class(model) = c("auto_tuner_model", "list")
+    return(model)
+  }
+  learner = model$marshaled$learner
+  learner_model = learner$model
+  learner$model = NULL
+  learner2 = learner$clone(deep = TRUE)
+  learner2$model = unmarshal_model(learner_model, clone = clone)
+
+  ti = model$marshaled$tuning_instance
+
+  structure(list(
+    learner = learner2,
+    tuning_instance = if (!is.null(ti)) model$marshaled$clone(deep = TRUE)
+  ), class = c("auto_tuner_model", "list"))
+}
