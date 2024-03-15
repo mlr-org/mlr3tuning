@@ -45,6 +45,7 @@ mlr3tuning is extended by the following packages.
 There are several sections about hyperparameter optimization in the [mlr3book](https://mlr3book.mlr-org.com).
 
 * Getting started with [hyperparameter optimization](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html).
+* An overview of all tuners can be found on our [website](https://mlr-org.com/tuners.html).
 * [Tune](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-model-tuning) a support vector machine on the Sonar data set.
 * Learn about [tuning spaces](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-defining-search-spaces).
 * Estimate the model performance with [nested resampling](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-nested-resampling).

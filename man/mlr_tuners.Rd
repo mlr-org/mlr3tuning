@@ -39,6 +39,7 @@ tnr("random_search")
 Sugar functions: \code{\link[=tnr]{tnr()}}, \code{\link[=tnrs]{tnrs()}}
 
 Other Tuner: 
+\code{\link{Tuner}},
 \code{\link{mlr_tuners_cmaes}},
 \code{\link{mlr_tuners_design_points}},
 \code{\link{mlr_tuners_gensa}},
