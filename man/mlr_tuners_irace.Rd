@@ -120,6 +120,7 @@ learner$train(task)
 }
 \seealso{
 Other Tuner: 
+\code{\link{Tuner}},
 \code{\link{mlr_tuners}},
 \code{\link{mlr_tuners_cmaes}},
 \code{\link{mlr_tuners_design_points}},

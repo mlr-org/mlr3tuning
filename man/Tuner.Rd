@@ -5,6 +5,7 @@
 \title{Class for Tuning Algorithms}
 \description{
 The \link{Tuner} implements the optimization algorithm.
+You can find an overview of all tuners on our \href{https://mlr-org.com/tuners.html}{website}.
 }
 \details{
 \link{Tuner} is a abstract base class that implements the base functionality each tuner must provide.
@@ -57,6 +58,18 @@ Additional tuners are provided by the following packages.
 }
 }
 
+\seealso{
+Other Tuner: 
+\code{\link{mlr_tuners}},
+\code{\link{mlr_tuners_cmaes}},
+\code{\link{mlr_tuners_design_points}},
+\code{\link{mlr_tuners_gensa}},
+\code{\link{mlr_tuners_grid_search}},
+\code{\link{mlr_tuners_irace}},
+\code{\link{mlr_tuners_nloptr}},
+\code{\link{mlr_tuners_random_search}}
+}
+\concept{Tuner}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{

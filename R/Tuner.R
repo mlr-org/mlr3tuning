@@ -4,6 +4,7 @@
 #'
 #' @description
 #' The [Tuner] implements the optimization algorithm.
+#' You can find an overview of all tuners on our [website](https://mlr-org.com/tuners.html).
 #'
 #' @details
 #' [Tuner] is a abstract base class that implements the base functionality each tuner must provide.
@@ -43,6 +44,7 @@
 #'  * [mlr3hyperband](https://github.com/mlr-org/mlr3hyperband) adds the Hyperband and Successive Halving algorithm.
 #'  * [mlr3mbo](https://github.com/mlr-org/mlr3mbo) adds Bayesian optimization methods.
 #'
+#' @family Tuner
 #' @template param_man
 #'
 #' @export

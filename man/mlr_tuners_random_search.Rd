@@ -115,6 +115,7 @@ learner$train(tsk("penguins"))
 Package \CRANpkg{mlr3hyperband} for hyperband tuning.
 
 Other Tuner: 
+\code{\link{Tuner}},
 \code{\link{mlr_tuners}},
 \code{\link{mlr_tuners_cmaes}},
 \code{\link{mlr_tuners_design_points}},
