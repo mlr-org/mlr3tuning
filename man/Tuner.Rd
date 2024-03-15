@@ -5,7 +5,6 @@
 \title{Class for Tuning Algorithms}
 \description{
 The \link{Tuner} implements the optimization algorithm.
-You can find an overview of all tuners on our \href{https://mlr-org.com/tuners.html}{website}.
 }
 \details{
 \link{Tuner} is a abstract base class that implements the base functionality each tuner must provide.
@@ -40,6 +39,7 @@ See details sections.
 
 There are several sections about hyperparameter optimization in the \href{https://mlr3book.mlr-org.com}{mlr3book}.
 \itemize{
+\item An overview of all tuners can be found on our \href{https://mlr-org.com/tuners.html}{website}.
 \item Learn more about \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-tuner}{tuners}.
 }
 

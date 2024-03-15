@@ -4,7 +4,6 @@
 #'
 #' @description
 #' The [Tuner] implements the optimization algorithm.
-#' You can find an overview of all tuners on our [website](https://mlr-org.com/tuners.html).
 #'
 #' @details
 #' [Tuner] is a abstract base class that implements the base functionality each tuner must provide.
@@ -31,6 +30,8 @@
 #'
 #' @section Resources:
 #' There are several sections about hyperparameter optimization in the [mlr3book](https://mlr3book.mlr-org.com).
+#'
+#' * An overview of all tuners can be found on our [website](https://mlr-org.com/tuners.html).
 #'
 #'  * Learn more about [tuners](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-tuner).
 #'

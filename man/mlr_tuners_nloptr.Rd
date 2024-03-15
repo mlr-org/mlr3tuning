@@ -70,6 +70,7 @@ defaults. To deactivate these conditions, set them to \code{-1}.
 
 There are several sections about hyperparameter optimization in the \href{https://mlr3book.mlr-org.com}{mlr3book}.
 \itemize{
+\item An overview of all tuners can be found on our \href{https://mlr-org.com/tuners.html}{website}.
 \item Learn more about \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-tuner}{tuners}.
 }
 
