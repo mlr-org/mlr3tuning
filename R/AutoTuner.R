@@ -395,7 +395,7 @@ AutoTuner = R6Class("AutoTuner",
 #' @export
 marshal_model.auto_tuner_model = function(model, clone = TRUE, ...) {
   if (!clone) {
-    model$learner$model = marshal_model(model$learner$model, clone = clone)
+    model$learner$model = marshal_model(model$learner$model, clone = FALSE)
     x = structure(list(
       marshaled = model,
       packages = "mlr3tuning"
@@ -408,8 +408,7 @@ marshal_model.auto_tuner_model = function(model, clone = TRUE, ...) {
   on.exit({learner$model = learner_model}, add = TRUE)
   learner$model = NULL
   learner2 = learner$clone(deep = TRUE)
-  learner$model = learner$model
-  learner2$model = marshal_model(learner_model, clone = clone)
+  learner2$model = marshal_model(learner_model, clone = TRUE)
   ti = learner_model$tuning_instance
 
   structure(list(

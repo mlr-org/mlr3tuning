@@ -126,8 +126,8 @@ test_that("objects are cloned", {
 })
 
 test_that("hotstarting works with marshalable learner", {
-  task = tsk("pima")
-  learner = lrn("classif.lily", x = to_tune(), iter = to_tune(1, 100))
+  task = tsk("mtcars")
+  learner = lrn("regr.debug", x = to_tune(), iter = to_tune(1, 100))
 
   instance = tune(
     tuner = tnr("grid_search", batch_size = 5, resolution = 5),

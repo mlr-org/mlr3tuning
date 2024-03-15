@@ -564,10 +564,10 @@ test_that("AutoTuner errors when second test set is not a subset of task ids", {
 })
 
 test_that("marshalable learner", {
-  task = tsk("iris")
+  task = tsk("mtcars")
   at = auto_tuner(
     tuner = tnr("random_search", batch_size = 2),
-    learner = lrn("classif.lily"),
+    learner = lrn("regr.debug"),
     resampling = rsmp("cv", folds = 3),
     measure = msr("classif.ce"),
     term_evals = 4
