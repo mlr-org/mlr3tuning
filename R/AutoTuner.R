@@ -1,6 +1,7 @@
 #' @title Class for Automatic Tuning
 #'
 #' @description
+#'
 #' The [AutoTuner] wraps a [mlr3::Learner] and augments it with an automatic tuning process for a given set of hyperparameters.
 #' The [auto_tuner()] function creates an [AutoTuner] object.
 #'
@@ -240,37 +241,30 @@ AutoTuner = R6Class("AutoTuner",
     #' Printer.
     #' @param ... (ignored).
     print = function() {
+      super$print()
       search_space = if (is.null(self$instance_args$search_space)) {
         self$instance_args$learner$param_set$search_space()
       } else {
         self$instance_args$search_space
       }
-      catf(format(self))
-      catf(str_indent("* Model:", if (is.null(self$model)) "-" else class(self$model)[1L]))
       catf("* Search Space:")
       print(search_space)
-      catf(str_indent("* Packages:", self$packages))
-      catf(str_indent("* Predict Type:", self$predict_type))
-      catf(str_indent("* Feature Types:", self$feature_types))
-      catf(str_indent("* Properties:", self$properties))
-      w = self$warnings
-      e = self$errors
-      if (length(w)) {
-        catf(str_indent("* Warnings:", w))
-      }
-      if (length(e)) {
-        catf(str_indent("* Errors:", e))
-      }
     },
     #' @description
-    #' Marshal the learner
-    marshal = function() {
-      learner_marshal(self)
+    #' Marshal the learner.
+    #' @param ... (any)\cr
+    #'   Additional parameters, currently unused.
+    #' @return marshaled `AutoTuner`
+    marshal = function(...) {
+      learner_marshal(.learner = self, ...)
     },
     #' @description
     #' Unmarshal the learner.
-    unmarshal = function() {
-      learner_unmarshal(self)
+    #' @param ... (any)\cr
+    #'   Additional parameters, currently unused.
+    #' @return unmarshaled `AutoTuner`
+    unmarshal = function(...) {
+      learner_unmarshal(.learner = self, ...)
     }
   ),
 
@@ -385,17 +379,20 @@ AutoTuner = R6Class("AutoTuner",
   )
 )
 
-#' @title Marshal AutoTuner
+#' @title (Un-)Marshal AutoTuner Model
+#' @name marshal_auto_tuner
 #' @description
-#' Modifies the model's `learner` in-place.
 #' @param model (model of [`AutoTuner`])\cr
 #'   The model to be marshaled.
 #' @param ... (any)\cr
 #'   Currently unused.
+#' @param inplace (`logical(1)`)\cr
+#'   Whether to marshal in-place.
+#'   If `FALSE` (default), all R6-objects are cloned.
 #' @export
-marshal_model.auto_tuner_model = function(model, clone = TRUE, ...) {
-  if (!clone) {
-    model$learner$model = marshal_model(model$learner$model, clone = FALSE)
+marshal_model.auto_tuner_model = function(model, inplace = FALSE, ...) {
+  if (inplace) {
+    model$learner$model = marshal_model(model$learner$model, inplace = TRUE)
     x = structure(list(
       marshaled = model,
       packages = "mlr3tuning"
@@ -407,36 +404,37 @@ marshal_model.auto_tuner_model = function(model, clone = TRUE, ...) {
   learner_model = learner$model
   on.exit({learner$model = learner_model}, add = TRUE)
   learner$model = NULL
-  learner2 = learner$clone(deep = TRUE)
-  learner2$model = marshal_model(learner_model, clone = TRUE)
-  ti = learner_model$tuning_instance
+  learner_clone = learner$clone(deep = TRUE)
+  learner_clone$model = marshal_model(learner_model, inplace = FALSE)
 
   structure(list(
     marshaled = list(
-      learner = learner2,
-      tuning_instance = if (!is.null(ti)) ti$clone(deep = TRUE)
+      learner = learner_clone,
+      tuning_instance = if (!is.null(model$tuning_instance)) model$tuning_instance$clone(deep = TRUE)
     )
   ), class = c("auto_tuner_model_marshaled", "list_marshaled", "marshaled"))
 }
 
+
+#' @rdname marshal_auto_tuner
 #' @export
-unmarshal_model.auto_tuner_model_marshaled = function(model, clone = TRUE, ...) {
-  if (!clone) {
-    model = model$marshaled
-    model$learner$model = unmarshal_model(model$learner$model, clone = clone)
-    class(model) = c("auto_tuner_model", "list")
-    return(model)
+unmarshal_model.auto_tuner_model_marshaled = function(model, inplace = FALSE, ...) {
+  if (inplace) {
+    at_model = model$marshaled
+    at_model$learner$model = unmarshal_model(at_model$learner$model, inplace = TRUE)
+    return(at_model)
   }
-  learner = model$marshaled$learner
-  learner_model = learner$model
-  learner$model = NULL
-  learner2 = learner$clone(deep = TRUE)
-  learner2$model = unmarshal_model(learner_model, clone = clone)
 
-  ti = model$marshaled$tuning_instance
+  at_model = model$marshaled
+  at_model$tuning_instance = if (!is.null(at_model$tuning_instance)) at_model$tuning_instance$clone(deep = TRUE)
 
-  structure(list(
-    learner = learner2,
-    tuning_instance = if (!is.null(ti)) model$marshaled$clone(deep = TRUE)
-  ), class = c("auto_tuner_model", "list"))
+  prev_learner = at_model$learner
+  prev_model = prev_learner$model
+  prev_learner$model = NULL
+  on.exit({prev_learner$model = prev_model}, add = TRUE)
+
+  at_model$learner = prev_learner$clone(deep = TRUE)
+  at_model$learner$model = unmarshal_model(prev_model, inplace = FALSE)
+
+  return(structure(at_model, class = c("auto_tuner_model", "list")))
 }

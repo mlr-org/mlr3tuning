@@ -48,7 +48,8 @@ Suggests:
     testthat (>= 3.0.0),
     xgboost
 Remotes:
-    mlr-org/mlr3@bundle
+    mlr-org/mlr3@bundle,
+    mlr-org/mlr3pipelines@bundle
 Config/testthat/edition: 3
 Config/testthat/parallel: true
 Encoding: UTF-8

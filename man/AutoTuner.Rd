@@ -370,11 +370,22 @@ Printer.
 \if{html}{\out{<a id="method-AutoTuner-marshal"></a>}}
 \if{latex}{\out{\hypertarget{method-AutoTuner-marshal}{}}}
 \subsection{Method \code{marshal()}}{
-Marshal the learner
+Marshal the learner.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{AutoTuner$marshal()}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{(any)\cr
+Additional parameters, currently unused.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+marshaled \code{AutoTuner}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AutoTuner-unmarshal"></a>}}
@@ -382,9 +393,20 @@ Marshal the learner
 \subsection{Method \code{unmarshal()}}{
 Unmarshal the learner.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AutoTuner$unmarshal()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AutoTuner$unmarshal(...)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{(any)\cr
+Additional parameters, currently unused.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+unmarshaled \code{AutoTuner}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AutoTuner-clone"></a>}}

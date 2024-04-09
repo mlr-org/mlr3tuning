@@ -1,6 +1,7 @@
 # mlr3tuning (development version)
 
 * fix: `TunerIrace` failed with logical parameters and dependencies.
+* Added marshaling support to `AutoTuner`
 
 # mlr3tuning 0.19.2
 
