@@ -382,6 +382,8 @@ AutoTuner = R6Class("AutoTuner",
 #' @title (Un-)Marshal AutoTuner Model
 #' @name marshal_auto_tuner
 #' @description
+#' (Un-)marshal the model of a [AutoTuner].
+#'
 #' @param model (model of [`AutoTuner`])\cr
 #'   The model to be marshaled.
 #' @param ... (any)\cr

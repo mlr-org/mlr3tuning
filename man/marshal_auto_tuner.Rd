@@ -4,23 +4,23 @@
 \alias{marshal_auto_tuner}
 \alias{marshal_model.auto_tuner_model}
 \alias{unmarshal_model.auto_tuner_model_marshaled}
-\title{(Un-)Marshal AutoTuner}
+\title{(Un-)Marshal AutoTuner Model}
 \usage{
-\method{marshal_model}{auto_tuner_model}(.model, inplace = FALSE, ...)
+\method{marshal_model}{auto_tuner_model}(model, inplace = FALSE, ...)
 
-\method{unmarshal_model}{auto_tuner_model_marshaled}(.model, inplace = FALSE, ...)
+\method{unmarshal_model}{auto_tuner_model_marshaled}(model, inplace = FALSE, ...)
 }
 \arguments{
+\item{model}{(model of \code{\link{AutoTuner}})\cr
+The model to be marshaled.}
+
 \item{inplace}{(\code{logical(1)})\cr
 Whether to marshal in-place.
-If \code{FALSE}, all R6-objects are cloned.}
+If \code{FALSE} (default), all R6-objects are cloned.}
 
 \item{...}{(any)\cr
 Currently unused.}
-
-\item{model}{(model of \code{\link{AutoTuner}})\cr
-The model to be marshaled.}
 }
 \description{
-(Un-)Marshal AutoTuner
+(Un-)marshal the model of a \link{AutoTuner}.
 }

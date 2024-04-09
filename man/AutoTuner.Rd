@@ -372,7 +372,7 @@ Printer.
 \subsection{Method \code{marshal()}}{
 Marshal the learner.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AutoTuner$marshal()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{AutoTuner$marshal(...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
