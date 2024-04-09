@@ -24,3 +24,4 @@ Currently unused.}
 \description{
 (Un-)marshal the model of a \link{AutoTuner}.
 }
+\keyword{internal}
