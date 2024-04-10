@@ -253,16 +253,16 @@ AutoTuner = R6Class("AutoTuner",
     #' @description
     #' Marshal the learner.
     #' @param ... (any)\cr
-    #'   Additional parameters, currently unused.
-    #' @return marshaled `AutoTuner`
+    #'   Additional parameters.
+    #' @return self
     marshal = function(...) {
       learner_marshal(.learner = self, ...)
     },
     #' @description
     #' Unmarshal the learner.
     #' @param ... (any)\cr
-    #'   Additional parameters, currently unused.
-    #' @return unmarshaled `AutoTuner`
+    #'   Additional parameters.
+    #' @return self
     unmarshal = function(...) {
       learner_unmarshal(.learner = self, ...)
     }
@@ -417,7 +417,6 @@ unmarshal_model.auto_tuner_model_marshaled = function(model, inplace = FALSE, ..
   }
 
   at_model = model$marshaled
-  at_model$tuning_instance = if (!is.null(at_model$tuning_instance)) at_model$tuning_instance$clone(deep = TRUE)
 
   prev_learner = at_model$learner
   prev_model = prev_learner$model

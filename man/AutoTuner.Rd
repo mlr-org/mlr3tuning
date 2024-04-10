@@ -384,7 +384,7 @@ Additional parameters, currently unused.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-marshaled \code{AutoTuner}
+self
 }
 }
 \if{html}{\out{<hr>}}
@@ -405,7 +405,7 @@ Additional parameters, currently unused.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-unmarshaled \code{AutoTuner}
+self
 }
 }
 \if{html}{\out{<hr>}}
