@@ -379,18 +379,6 @@ AutoTuner = R6Class("AutoTuner",
   )
 )
 
-#' @title (Un-)Marshal AutoTuner Model
-#' @name marshal_auto_tuner
-#' @description
-#' (Un-)marshal the model of a [AutoTuner].
-#'
-#' @param model (model of [`AutoTuner`])\cr
-#'   The model to be marshaled.
-#' @param ... (any)\cr
-#'   Currently unused.
-#' @param inplace (`logical(1)`)\cr
-#'   Whether to marshal in-place.
-#' @keywords internal
 #' @export
 marshal_model.auto_tuner_model = function(model, inplace = FALSE, ...) {
   if (inplace) {
@@ -410,6 +398,8 @@ marshal_model.auto_tuner_model = function(model, inplace = FALSE, ...) {
   learner_clone$model = marshal_model(learner_model, inplace = FALSE)
 
   marshaled = list(learner = learner_clone)
+  # note that we don't clone the tuning instance even when inplace is FALSE
+  # For our use-case, this is not necessary and would cause unnecessary overhead in the the mlr3 workhorse function
   marshaled$tuning_instance = model$tuning_instance
 
   structure(list(
@@ -418,7 +408,6 @@ marshal_model.auto_tuner_model = function(model, inplace = FALSE, ...) {
 }
 
 
-#' @rdname marshal_auto_tuner
 #' @export
 unmarshal_model.auto_tuner_model_marshaled = function(model, inplace = FALSE, ...) {
   if (inplace) {
