@@ -15,8 +15,7 @@
 The model to be marshaled.}
 
 \item{inplace}{(\code{logical(1)})\cr
-Whether to marshal in-place.
-If \code{FALSE} (default), all R6-objects are cloned.}
+Whether to marshal in-place.}
 
 \item{...}{(any)\cr
 Currently unused.}

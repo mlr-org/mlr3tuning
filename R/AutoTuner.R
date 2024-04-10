@@ -390,7 +390,6 @@ AutoTuner = R6Class("AutoTuner",
 #'   Currently unused.
 #' @param inplace (`logical(1)`)\cr
 #'   Whether to marshal in-place.
-#'   If `FALSE` (default), all R6-objects are cloned.
 #' @keywords internal
 #' @export
 marshal_model.auto_tuner_model = function(model, inplace = FALSE, ...) {
