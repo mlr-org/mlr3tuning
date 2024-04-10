@@ -604,8 +604,4 @@ test_that("marshal", {
   expect_false(model2$learner$marshaled)
   expect_equal(class(model), class(model2))
   expect_class(model1, "marshaled")
-
-  expect_false(identical(model$tuning_instance, model2$tuning_instance))
-  expect_false(identical(model$tuning_instance, model1$marshaled$tuning_instance))
-  expect_false(identical(model2$tuning_instance, model1$marshaled$tuning_instance))
 })

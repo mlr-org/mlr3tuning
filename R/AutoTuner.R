@@ -410,12 +410,12 @@ marshal_model.auto_tuner_model = function(model, inplace = FALSE, ...) {
   learner_clone = learner$clone(deep = TRUE)
   learner_clone$model = marshal_model(learner_model, inplace = FALSE)
 
+  marshaled = list(learner = learner_clone)
+  marshaled$tuning_instance = model$tuning_instance
+
   structure(list(
-    marshaled = list(
-      learner = learner_clone,
-      tuning_instance = if (!is.null(model$tuning_instance)) model$tuning_instance$clone(deep = TRUE)
-    )
-  ), class = c("auto_tuner_model_marshaled", "list_marshaled", "marshaled"))
+    marshaled = marshaled
+    ), class = c("auto_tuner_model_marshaled", "list_marshaled", "marshaled"))
 }
 
 
