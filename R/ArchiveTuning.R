@@ -170,6 +170,7 @@ ArchiveTuning = R6Class("ArchiveTuning",
     #'   Column names have to match ids of the `search_space`.
     #'   However, `xdt` can contain additional columns.
     add_evals = function(xdt, xss_trafoed = NULL, ydt) {
+      raw_inner_tuned_values = NULL
       if (length(private$.inner_tuning)) {
         # store the raw values before they are overwritten with the internally optimized values
         raw_inner_tuned_values = map(seq_len(nrow(xdt)), function(i) {
@@ -198,9 +199,8 @@ ArchiveTuning = R6Class("ArchiveTuning",
             insert_named(xss_trafoed[[i]], itvs_aggr[[i]])
           })
         }
-      } else {
-        raw_inner_tuned_values = NULL
       }
+
       super$add_evals(xdt, xss_trafoed, ydt)
       if (!is.null(raw_inner_tuned_values)) {
         set(self$data, j = "raw_inner_tuned_values", value = raw_inner_tuned_values)
