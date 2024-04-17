@@ -91,7 +91,7 @@ test_that("rush early stopping callback works", {
   library(mlr3pipelines) # nolint
 
   rush = rsh()
-  instance = TuningInstanceRushSingleCrit$new(
+  instance = TuningInstanceAsyncSingleCrit$new(
     task = tsk("pima"),
     learner = lrn("classif.xgboost", eta = to_tune(1e-04, 1e-1, logscale = TRUE), early_stopping_rounds = 2, nrounds = 10, early_stopping_set = "test"),
     resampling = rsmp("cv", folds = 3),
@@ -122,7 +122,7 @@ test_that("rush measures callback works", {
   skip_on_ci()
 
   rush = rsh()
-  instance = TuningInstanceRushSingleCrit$new(
+  instance = TuningInstanceAsyncSingleCrit$new(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1), predict_sets = c("test", "holdout")),
     resampling = rsmp("cv", folds = 3),
@@ -157,7 +157,7 @@ test_that("rush mlflow callback works", {
     minsplit  = to_tune(2, 128),
     cp        = to_tune(1e-04, 1e-1))
 
-  instance = TuningInstanceRushSingleCrit$new(
+  instance = TuningInstanceAsyncSingleCrit$new(
     task = tsk("pima"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),

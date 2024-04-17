@@ -1,9 +1,9 @@
-test_that("ArchiveRushTuning access methods work", {
+test_that("ArchiveAsyncTuning access methods work", {
   skip_on_cran()
   skip_on_ci()
 
   rush = rsh()
-  instance = TuningInstanceRushSingleCrit$new(
+  instance = TuningInstanceAsyncSingleCrit$new(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
     resampling = rsmp("cv", folds = 3),
@@ -54,12 +54,12 @@ test_that("ArchiveRushTuning access methods work", {
 
 })
 
-test_that("ArchiveRushTuning as.data.table function works", {
+test_that("ArchiveAsyncTuning as.data.table function works", {
   skip_on_cran()
   skip_on_ci()
 
   rush = rsh()
-  instance = TuningInstanceRushSingleCrit$new(
+  instance = TuningInstanceAsyncSingleCrit$new(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
     resampling = rsmp("cv", folds = 3),
@@ -111,12 +111,12 @@ test_that("ArchiveRushTuning as.data.table function works", {
   expect_names(names(tab), permutation.of = c("cp", "classif.ce", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "x_domain", "state", "keys"))
 })
 
-test_that("ArchiveRushTuning as.data.table function works without resample result", {
+test_that("ArchiveAsyncTuning as.data.table function works without resample result", {
   skip_on_cran()
   skip_on_ci()
 
   rush = rsh()
-  instance = TuningInstanceRushSingleCrit$new(
+  instance = TuningInstanceAsyncSingleCrit$new(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
     resampling = rsmp("cv", folds = 3),
@@ -138,12 +138,12 @@ test_that("ArchiveRushTuning as.data.table function works without resample resul
   expect_names(names(tab), permutation.of = c("cp", "classif.ce", "x_domain_cp", "runtime_learners", "worker_id", "timestamp_xs", "timestamp_ys", "pid", "state", "keys"))
 })
 
-test_that("ArchiveRushTuning as.data.table function works with empty archive", {
+test_that("ArchiveAsyncTuning as.data.table function works with empty archive", {
   rush = rsh()
   future::plan("cluster", workers = 1L)
 
   rush = rsh()
-  instance = TuningInstanceRushSingleCrit$new(
+  instance = TuningInstanceAsyncSingleCrit$new(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
     resampling = rsmp("cv", folds = 3),
@@ -162,7 +162,7 @@ test_that("ArchiveRushTuning as.data.table function works with empty archive", {
   rush$reset()
 })
 
-test_that("ArchiveRushTuning as.data.table function works with new ids in x_domain", {
+test_that("ArchiveAsyncTuning as.data.table function works with new ids in x_domain", {
   skip_on_cran()
   skip_on_ci()
 
@@ -179,7 +179,7 @@ test_that("ArchiveRushTuning as.data.table function works with new ids in x_doma
   )
 
   rush = rsh()
-  instance = TuningInstanceRushSingleCrit$new(
+  instance = TuningInstanceAsyncSingleCrit$new(
     task = tsk("pima"),
     learner = lrn("classif.rpart"),
     resampling = rsmp("cv", folds = 3),
@@ -203,7 +203,7 @@ test_that("ArchiveRushTuning as.data.table function works with new ids in x_doma
   rush$reset()
 })
 
-test_that("ArchiveRushTuning as.data.table function works with switched new ids in x_domain", {
+test_that("ArchiveAsyncTuning as.data.table function works with switched new ids in x_domain", {
   skip_on_cran()
   skip_on_ci()
 
@@ -222,7 +222,7 @@ test_that("ArchiveRushTuning as.data.table function works with switched new ids 
   )
 
   rush = rsh()
-  instance = TuningInstanceRushSingleCrit$new(
+  instance = TuningInstanceAsyncSingleCrit$new(
     task = tsk("pima"),
     learner = lrn("classif.rpart"),
     resampling = rsmp("cv", folds = 3),

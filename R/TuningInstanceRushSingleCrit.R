@@ -1,16 +1,16 @@
 #' @title Single Criterion Tuning with Rush
 #
 #' @description
-#' The [TuningInstanceRushSingleCrit] specifies a tuning problem for [Tuner]s.
+#' The [TuningInstanceAsyncSingleCrit] specifies a tuning problem for [Tuner]s.
 #' Hyperparameter configurations are evaluated asynchronously with the `rush` package.
-#' The function [ti()] creates a [TuningInstanceRushSingleCrit] and the function [tune()] creates an instance internally.
+#' The function [ti()] creates a [TuningInstanceAsyncSingleCrit] and the function [tune()] creates an instance internally.
 #'
 #' @details
 #' The instance contains an [ObjectiveTuning] object that encodes the black box objective function a [Tuner] has to optimize.
 #' The instance allows the basic operations of querying the objective at design points (`$eval_async()`).
 #' This operation is usually done by the [Tuner].
 #' Hyperparameter configurations are asynchronously sent to workers and evaluated by calling [mlr3::resample()].
-#' The evaluated hyperparameter configurations are stored in the [ArchiveRushTuning] (`$archive`).
+#' The evaluated hyperparameter configurations are stored in the [ArchiveAsyncTuning] (`$archive`).
 #' Before a batch is evaluated, the [bbotk::Terminator] is queried for the remaining budget.
 #' If the available budget is exhausted, an exception is raised, and no further evaluations can be performed from this point on.
 #' The tuner is also supposed to store its final result, consisting of a  selected hyperparameter configuration and associated estimated performance values, by calling the method `instance$.assign_result`.
@@ -39,8 +39,8 @@
 #' @template param_rush
 #'
 #' @export
-TuningInstanceRushSingleCrit = R6Class("TuningInstanceRushSingleCrit",
-  inherit = OptimInstanceRushSingleCrit,
+TuningInstanceAsyncSingleCrit = R6Class("TuningInstanceAsyncSingleCrit",
+  inherit = OptimInstanceAsyncSingleCrit,
   public = list(
 
     #' @description
@@ -81,12 +81,12 @@ TuningInstanceRushSingleCrit = R6Class("TuningInstanceRushSingleCrit",
       measures = assert_measures(as_measures(measure, task_type = task$task_type), task = task, learner = learner)
       codomain = measures_to_codomain(measures)
 
-      archive = ArchiveRushTuning$new(
+      archive = ArchiveAsyncTuning$new(
         search_space = search_space,
         codomain = codomain,
         rush = rush)
 
-      objective = ObjectiveRushTuning$new(
+      objective = ObjectiveAsyncTuning$new(
         task = task,
         learner = learner,
         resampling = resampling,

@@ -277,7 +277,7 @@ load_callback_rush_measures = function() {
 #'   minsplit  = to_tune(2, 128),
 #'   cp        = to_tune(1e-04, 1e-1))
 #'
-#' instance = TuningInstanceRushSingleCrit$new(
+#' instance = TuningInstanceAsyncSingleCrit$new(
 #'   task = tsk("pima"),
 #'   learner = learner,
 #'   resampling = rsmp("cv", folds = 3),

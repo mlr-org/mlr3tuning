@@ -1,10 +1,10 @@
-test_that("initializing TuningInstanceRushSingleCrit works", {
+test_that("initializing TuningInstanceAsyncSingleCrit works", {
   skip_on_cran()
   flush_redis()
 
   rush_plan(n_workers = 2)
 
-  instance = TuningInstanceRushSingleCrit$new(
+  instance = TuningInstanceAsyncSingleCrit$new(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
     resampling = rsmp("cv", folds = 3),
@@ -12,7 +12,7 @@ test_that("initializing TuningInstanceRushSingleCrit works", {
     terminator = trm("evals", n_evals = 3)
   )
 
-  expect_r6(instance$archive, "ArchiveRushTuning")
+  expect_r6(instance$archive, "ArchiveAsyncTuning")
   expect_r6(instance$objective, "Objective")
   expect_r6(instance$search_space, "ParamSet")
   expect_r6(instance$terminator, "Terminator")
@@ -27,7 +27,7 @@ test_that("initializing TuningInstanceRushSingleCrit works", {
 
 # test_that("assigning a result works with OptimInstanceRushSingleCrit", {
 #   rush = rsh()
-#   instance = TuningInstanceRushSingleCrit$new(
+#   instance = TuningInstanceAsyncSingleCrit$new(
 #     task = tsk("pima"),
 #     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1), minsplit = to_tune(1, 100)),
 #     resampling = rsmp("cv", folds = 3),
@@ -60,7 +60,7 @@ test_that("initializing TuningInstanceRushSingleCrit works", {
 #   skip_on_ci()
 
 #   rush = rsh()
-#   instance = TuningInstanceRushSingleCrit$new(
+#   instance = TuningInstanceAsyncSingleCrit$new(
 #     task = tsk("pima"),
 #     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1), minsplit = to_tune(1, 100)),
 #     resampling = rsmp("cv", folds = 3),
@@ -86,7 +86,7 @@ test_that("initializing TuningInstanceRushSingleCrit works", {
 #   skip_on_ci()
 
 #   rush = rsh()
-#   instance = TuningInstanceRushSingleCrit$new(
+#   instance = TuningInstanceAsyncSingleCrit$new(
 #     task = tsk("pima"),
 #     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1), minsplit = to_tune(1, 100)),
 #     resampling = rsmp("cv", folds = 3),
@@ -112,7 +112,7 @@ test_that("initializing TuningInstanceRushSingleCrit works", {
 #   skip_on_ci()
 
 #   rush = rsh()
-#   instance = TuningInstanceRushSingleCrit$new(
+#   instance = TuningInstanceAsyncSingleCrit$new(
 #     task = tsk("pima"),
 #     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1), minsplit = to_tune(1, 100)),
 #     resampling = rsmp("cv", folds = 3),
@@ -142,7 +142,7 @@ test_that("initializing TuningInstanceRushSingleCrit works", {
 #   skip_on_ci()
 
 #   rush = rsh()
-#   instance = TuningInstanceRushSingleCrit$new(
+#   instance = TuningInstanceAsyncSingleCrit$new(
 #     task = tsk("pima"),
 #     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1), minsplit = to_tune(1, 100)),
 #     resampling = rsmp("cv", folds = 3),
@@ -173,7 +173,7 @@ test_that("initializing TuningInstanceRushSingleCrit works", {
 #   skip_on_ci()
 
 #   rush = rsh()
-#   instance = TuningInstanceRushSingleCrit$new(
+#   instance = TuningInstanceAsyncSingleCrit$new(
 #     task = tsk("pima"),
 #     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1), minsplit = to_tune(1, 100)),
 #     resampling = rsmp("cv", folds = 3),
@@ -204,7 +204,7 @@ test_that("initializing TuningInstanceRushSingleCrit works", {
 #   skip_on_ci()
 
 #   rush = rsh()
-#   instance = TuningInstanceRushSingleCrit$new(
+#   instance = TuningInstanceAsyncSingleCrit$new(
 #     task = tsk("pima"),
 #     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1), minsplit = to_tune(1, 100)),
 #     resampling = rsmp("cv", folds = 3),
@@ -239,7 +239,7 @@ test_that("initializing TuningInstanceRushSingleCrit works", {
 #   rush = rsh()
 #   learner = lrn("classif.debug", segfault_train = 1, x = to_tune())
 
-#   instance = TuningInstanceRushSingleCrit$new(
+#   instance = TuningInstanceAsyncSingleCrit$new(
 #     task = tsk("pima"),
 #     learner = learner,
 #     resampling = rsmp("cv", folds = 3),

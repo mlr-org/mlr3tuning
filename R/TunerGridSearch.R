@@ -74,32 +74,6 @@ TunerGridSearch = R6Class("TunerGridSearch",
       for (inds in ch) {
         inst$eval_batch(data[inds])
       }
-    },
-
-    .optimize_async = function(inst) {
-      pv = self$param_set$values
-
-      data = generate_design_grid(
-        param_set = inst$search_space,
-        resolution = pv$resolution,
-        param_resolutions = pv$param_resolutions)$data
-
-      if (inst$objective$allow_hotstart) {
-        # reorder grid by hotstart parameter to increase chance of hotstarting
-        hotstart_id = inst$objective$learner$param_set$ids(tags = "hotstart")
-        order =  if ("hotstart_backward" %in% inst$objective$learner$properties) -1L else 1L
-        setorderv(data, hotstart_id, order = order)
-      } else {
-        data = data[shuffle(seq(nrow(data))), ]
-      }
-
-      inst$eval_async(data)
-
-      repeat({
-        if (inst$is_terminated) stop(bbotk::terminated_error(inst))
-        Sys.sleep(0.01)
-      })
-
     }
   )
 )

@@ -3,50 +3,12 @@
 #' @include mlr_tuners.R
 #'
 #' @description
-#' The [Tuner] implements the optimization algorithm.
-#'
-#' @details
-#' [Tuner] is a abstract base class that implements the base functionality each tuner must provide.
-#' A subclass is implemented in the following way:
-#'  * Inherit from Tuner.
-#'  * Specify the private abstract method `$.optimize()` and use it to call into your optimizer.
-#'  * You need to call `instance$eval_batch()` to evaluate design points.
-#'  * The batch evaluation is requested at the [TuningInstanceSingleCrit]/[TuningInstanceMultiCrit] object `instance`, so each batch is possibly executed in parallel via [mlr3::benchmark()], and all evaluations are stored inside of `instance$archive`.
-#'  * Before the batch evaluation, the [bbotk::Terminator] is checked, and if it is positive, an exception of class `"terminated_error"` is generated.
-#'    In the  later case the current batch of evaluations is still stored in `instance`, but the numeric scores are not sent back to the handling optimizer as it has lost execution control.
-#'  * After such an exception was caught we select the best configuration from `instance$archive` and return it.
-#'  * Note that therefore more points than specified by the [bbotk::Terminator] may be evaluated, as the Terminator is only checked before a batch evaluation, and not in-between evaluation in a batch.
-#'    How many more depends on the setting of the batch size.
-#'  * Overwrite the private super-method `.assign_result()` if you want to decide yourself how to estimate the final configuration in the instance and its estimated performance.
-#'    The default behavior is: We pick the best resample-experiment, regarding the given measure, then assign its configuration and aggregated performance to the instance.
-#'
-#' @section Private Methods:
-#' * `.optimize(instance)` -> `NULL`\cr
-#'   Abstract base method. Implement to specify tuning of your subclass.
-#'   See details sections.
-#' * `.assign_result(instance)` -> `NULL`\cr
-#'   Abstract base method. Implement to specify how the final configuration is selected.
-#'   See details sections.
-#'
-#' @section Resources:
-#' There are several sections about hyperparameter optimization in the [mlr3book](https://mlr3book.mlr-org.com).
-#'
-#'  * Learn more about [tuners](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-tuner).
-#'
-#' The [gallery](https://mlr-org.com/gallery-all-optimization.html) features a collection of case studies and demos about optimization.
-#'
-#'  * Use the [Hyperband](https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/) optimizer with different budget parameters.
-#'
-#' @section Extension Packages:
-#' Additional tuners are provided by the following packages.
-#'
-#'  * [mlr3hyperband](https://github.com/mlr-org/mlr3hyperband) adds the Hyperband and Successive Halving algorithm.
-#'  * [mlr3mbo](https://github.com/mlr-org/mlr3mbo) adds Bayesian optimization methods.
+#' The [TunerAsync] implements the asynchronous optimization algorithm.
 #'
 #' @template param_man
 #'
 #' @export
-Tuner = R6Class("Tuner",
+TunerAsync = R6Class("TunerAsync",
   public = list(
 
     #' @field id (`character(1)`)\cr
@@ -119,29 +81,15 @@ Tuner = R6Class("Tuner",
     },
 
     #' @description
-    #' Performs the tuning on a [TuningInstanceSingleCrit] or [TuningInstanceMultiCrit] until termination.
-    #' The single evaluations will be written into the [ArchiveTuning] that resides in the [TuningInstanceSingleCrit]/[TuningInstanceMultiCrit].
+    #' Performs the tuning on a [TuningInstanceAsyncSingleCrit] or [TuningInstanceAsyncMultiCrit] until termination.
+    #' The single evaluations will be written into the [ArchiveAsyncTuning] that resides in the [TuningInstanceAsyncSingleCrit]/[TuningInstanceAsyncMultiCrit].
     #' The result will be written into the instance object.
     #'
-    #' @param inst ([TuningInstanceSingleCrit] | [TuningInstanceMultiCrit]).
+    #' @param inst ([TuningInstanceAsyncSingleCrit]| [TuningInstanceAsyncMultiCrit]).
     #'
     #' @return [data.table::data.table()]
     optimize = function(inst) {
-      assert_multi_class(inst, c("TuningInstanceSingleCrit", "TuningInstanceMultiCrit", "TuningInstanceAsyncSingleCrit", "TuningInstanceAsyncMultiCrit"))
-      inst$archive$start_time = Sys.time()
-      inst$.__enclos_env__$private$.context = ContextOptimization$new(instance = inst, optimizer = self)
-      call_back("on_optimization_begin", inst$callbacks, get_private(inst)$.context)
-
-      # evaluate learner with default hyperparameter values
-      if (get_private(inst)$.evaluate_default) {
-        xdt = default_configuration(inst)
-        inst$eval_batch(xdt)
-      }
-
-      result = optimize_default(inst, self, private)
-      call_back("on_optimization_end", inst$callbacks, get_private(inst)$.context)
-      if (!inst$objective$keep_hotstart_stack) inst$objective$hotstart_stack = NULL
-      result
+      stop("abstract")
     }
   ),
 
@@ -208,10 +156,13 @@ Tuner = R6Class("Tuner",
   ),
 
   private = list(
-    .optimize = function(inst) stop("abstract"),
+    # runs asynchronously on the workers
+    .optimize = function(inst) {
+      stop("abstract")
+    },
 
     .assign_result = function(inst) {
-      assert_multi_class(inst, c("TuningInstanceSingleCrit", "TuningInstanceMultiCrit", "TuningInstanceAsyncSingleCrit", "TuningInstanceAsyncMultiCrit"))
+      assert_multi_class(inst, c("TuningInstanceAsyncSingleCrit", "TuningInstanceAsyncMultiCrit"))
       assign_result_default(inst)
     },
 

@@ -141,7 +141,7 @@ tune = function(
     tuner$optimize(instance)
     instance
   } else {
-    TuningInstance = if (!is.list(measures)) TuningInstanceRushSingleCrit else TuningInstanceRushMultiCrit
+    TuningInstance = if (!is.list(measures)) TuningInstanceAsyncSingleCrit else TuningInstanceAsyncMultiCrit
     instance = TuningInstance$new(
       task = task,
       learner = learner,

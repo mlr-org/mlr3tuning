@@ -16,7 +16,7 @@
 #' @template param_callbacks
 #'
 #' @export
-ObjectiveRushTuning = R6Class("ObjectiveRushTuning",
+ObjectiveAsyncTuning = R6Class("ObjectiveAsyncTuning",
   inherit = Objective,
   public = list(
 

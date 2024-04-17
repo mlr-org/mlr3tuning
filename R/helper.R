@@ -10,7 +10,7 @@ extract_benchmark_result_learners = function(bmr) {
   }))
 }
 
-evaluate_default = function(inst) {
+default_configuration = function(inst) {
   # values are on the learner scale i.e. possible transformation are already applied
   xss = default_values(inst$objective$learner, inst$search_space, inst$objective$task)
 
@@ -26,10 +26,9 @@ evaluate_default = function(inst) {
   }
 
   # inverse parameter with exp transformation
-  xdt = as.data.table(map_if(xss, has_logscale, log))
-
-  inst$eval_batch(xdt)
+  as.data.table(map_if(xss, has_logscale, log))
 }
+
 
 extract_runtime = function(resample_result) {
   runtimes = map_dbl(get_private(resample_result)$.data$learner_states(get_private(resample_result)$.view), function(state) {

@@ -5,7 +5,7 @@ test_that("random search works", {
     minsplit  = to_tune(2, 128),
     cp        = to_tune(1e-04, 1e-1))
 
-  instance = TuningInstanceRushSingleCrit$new(
+  instance = TuningInstanceAsyncSingleCrit$new(
     task = tsk("pima"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
@@ -33,7 +33,7 @@ test_that("random search works with errors", {
   learner$encapsulate = c(train = "callr", predict = "none")
   learner$fallback = lrn("classif.featureless")
 
-  instance = TuningInstanceRushSingleCrit$new(
+  instance = TuningInstanceAsyncSingleCrit$new(
     task = tsk("pima"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
@@ -57,7 +57,7 @@ test_that("random search works with transformation functions", {
     minsplit  = to_tune(2, 128, logscale = TRUE),
     cp        = to_tune(1e-04, 1e-1, logscale = TRUE))
 
-  instance = TuningInstanceRushSingleCrit$new(
+  instance = TuningInstanceAsyncSingleCrit$new(
     task = tsk("pima"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
@@ -82,7 +82,7 @@ test_that("random search works with dependencies", {
     cp        = to_tune(1e-04, 1e-1),
     keep_model = to_tune())
 
-  instance = TuningInstanceRushSingleCrit$new(
+  instance = TuningInstanceAsyncSingleCrit$new(
     task = tsk("pima"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
@@ -113,7 +113,7 @@ test_that("random search works with dependencies", {
     "branch.selection" = to_tune(c("rpart", "debug"))
   )
 
-  instance = TuningInstanceRushSingleCrit$new(
+  instance = TuningInstanceAsyncSingleCrit$new(
     task = tsk("pima"),
     learner = graph_learner,
     resampling = rsmp("cv", folds = 3),

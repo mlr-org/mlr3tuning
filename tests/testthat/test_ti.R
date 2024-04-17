@@ -35,17 +35,17 @@ test_that("ti interface is equal to TuningInstanceMultiCrit", {
   expect_equal(ti_args, instance_args)
 })
 
-test_that("ti interface is equal to TuningInstanceRushSingleCrit", {
+test_that("ti interface is equal to TuningInstanceAsyncSingleCrit", {
   ti_args = formalArgs(ti)
   ti_args[ti_args == "measures"] = "measure"
-  instance_args = formalArgs(TuningInstanceRushSingleCrit$public_methods$initialize)
+  instance_args = formalArgs(TuningInstanceAsyncSingleCrit$public_methods$initialize)
 
   expect_equal(ti_args, instance_args)
 })
 
-test_that("ti interface is equal to TuningInstanceRushMultiCrit", {
+test_that("ti interface is equal to TuningInstanceAsyncMultiCrit", {
   ti_args = formalArgs(ti)
-  instance_args = formalArgs(TuningInstanceRushMultiCrit$public_methods$initialize)
+  instance_args = formalArgs(TuningInstanceAsyncMultiCrit$public_methods$initialize)
 
   expect_equal(ti_args, instance_args)
 })

@@ -125,7 +125,22 @@ AutoTuner = R6Class("AutoTuner",
     #'
     #' @param tuner ([Tuner])\cr
     #'   Optimization algorithm.
-    initialize = function(tuner, learner, resampling, measure = NULL, terminator, search_space = NULL, store_tuning_instance = TRUE, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, evaluate_default = FALSE, callbacks = list()) {
+    initialize = function(
+      tuner,
+      learner,
+      resampling,
+      measure = NULL,
+      terminator,
+      search_space = NULL,
+      store_tuning_instance = TRUE,
+      store_benchmark_result = TRUE,
+      store_models = FALSE,
+      check_values = FALSE,
+      allow_hotstart = FALSE,
+      keep_hotstart_stack = FALSE,
+      evaluate_default = FALSE,
+      callbacks = list()
+      ) {
       learner = assert_learner(as_learner(learner, clone = TRUE))
 
       if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token")) > 0) {
@@ -133,7 +148,7 @@ AutoTuner = R6Class("AutoTuner",
       }
 
       ia = list()
-      self$tuner = assert_tuner(tuner)$clone()
+      self$tuner = assert_multi_class(tuner, c("Tuner", "TunerAsync"))$clone()
       ia$learner = learner
       ia$resampling = assert_resampling(resampling)$clone()
       if (!is.null(measure)) ia$measure = assert_measure(as_measure(measure), learner = learner)
@@ -343,7 +358,8 @@ AutoTuner = R6Class("AutoTuner",
         })
       }
 
-      instance = do.call(TuningInstanceSingleCrit$new, ia)
+      TuningInstance = if (inherits(self$tuner, "Tuner")) TuningInstanceSingleCrit else TuningInstanceAsyncSingleCrit
+      instance = do.call(TuningInstance$new, ia)
       self$tuner$optimize(instance)
 
       # get learner, set params to optimal, then train we REALLY need to clone

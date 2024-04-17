@@ -3,11 +3,11 @@
 #' @include TuningInstanceSingleCrit.R ArchiveTuning.R
 #'
 #' @description
-#' The [TuningInstanceRushMultiCrit] specifies a tuning problem for [Tuner]s.
+#' The [TuningInstanceAsyncMultiCrit] specifies a tuning problem for [Tuner]s.
 #' Hyperparameter configurations are evaluated asynchronously with the `rush` package.
-#' The function [ti()] creates a [TuningInstanceRushMultiCrit] and the function [tune()] creates an instance internally.
+#' The function [ti()] creates a [TuningInstanceAsyncMultiCrit] and the function [tune()] creates an instance internally.
 #'
-#' @inherit TuningInstanceRushSingleCrit details
+#' @inherit TuningInstanceAsyncSingleCrit details
 #' @inheritSection TuningInstanceMultiCrit Resources
 #' @inheritSection ArchiveTuning Analysis
 #'
@@ -30,8 +30,8 @@
 #' @template param_rush
 #'
 #' @export
-TuningInstanceRushMultiCrit = R6Class("TuningInstanceRushMultiCrit",
-  inherit = OptimInstanceRushMultiCrit,
+TuningInstanceAsyncMultiCrit = R6Class("TuningInstanceAsyncMultiCrit",
+  inherit = OptimInstanceAsyncMultiCrit,
   public = list(
 
     #' @description
@@ -70,13 +70,13 @@ TuningInstanceRushMultiCrit = R6Class("TuningInstanceRushMultiCrit",
       measures = assert_measures(as_measures(measures), task = task, learner = learner)
       codomain = measures_to_codomain(measures)
 
-      archive = ArchiveRushTuning$new(
+      archive = ArchiveAsyncTuning$new(
         search_space = search_space,
         codomain = codomain,
         check_values = check_values,
         rush = rush)
 
-      objective = ObjectiveRushTuning$new(
+      objective = ObjectiveAsyncTuning$new(
         task = task,
         learner = learner,
         resampling = resampling,

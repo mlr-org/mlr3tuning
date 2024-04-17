@@ -155,7 +155,7 @@ test_that("hotstart works with rush", {
   skip_on_ci()
 
   rush = rsh()
-  instance = TuningInstanceRushSingleCrit$new(
+  instance = TuningInstanceAsyncSingleCrit$new(
     task = tsk("pima"),
     learner = lrn("classif.debug", x = to_tune(), iter = to_tune(1, 100)),
     resampling = rsmp("cv", folds = 3),

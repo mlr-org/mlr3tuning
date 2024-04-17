@@ -5,7 +5,7 @@ test_that("Random Search works with OptimInstanceRushSingleCrit", {
       minsplit  = to_tune(2, 128),
       cp        = to_tune(1e-04, 1e-1))
 
-  instance = TuningInstanceRushSingleCrit$new(
+  instance = TuningInstanceAsyncSingleCrit$new(
     task = tsk("pima"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
@@ -28,7 +28,7 @@ test_that("random search with transformation functions work", {
       minsplit  = to_tune(2, 128, logscale = TRUE),
       cp        = to_tune(1e-04, 1e-1, logscale = TRUE))
 
-  instance = TuningInstanceRushSingleCrit$new(
+  instance = TuningInstanceAsyncSingleCrit$new(
     task = tsk("pima"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),

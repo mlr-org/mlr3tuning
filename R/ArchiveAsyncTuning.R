@@ -1,14 +1,14 @@
-#' @title Class for Logging Evaluated Hyperparameter Configurations
+#' @title Rush Data Archive
 #'
 #' @description
-#' The [ArchiveRushTuning] stores all evaluated hyperparameter configurations and performance scores.
+#' The [ArchiveAsyncTuning] stores all evaluated hyperparameter configurations and performance scores.
 #'
 #' @details
-#' The [ArchiveRushTuning] is a container around a [data.table::data.table()].
+#' The [ArchiveAsyncTuning] is a container around a [data.table::data.table()].
 #' Each row corresponds to a single evaluation of a hyperparameter configuration.
 #' See the section on Data Structure for more information.
 #' The archive stores additionally a [mlr3::BenchmarkResult] (`$benchmark_result`) that records the resampling experiments.
-#' Each experiment corresponds to to a single evaluation of a hyperparameter configuration.
+#' Each experiment corresponds to a single evaluation of a hyperparameter configuration.
 #' The table (`$data`) and the benchmark result (`$benchmark_result`) are linked by the `uhash` column.
 #' If the archive is passed to `as.data.table()`, both are joined automatically.
 #'
@@ -25,9 +25,6 @@
 #'     This does not include potential overhead time.
 #' * `timestamp` (`POSIXct`)\cr
 #'     Time stamp when the evaluation was logged into the archive.
-#' * `batch_nr` (`integer(1)`)\cr
-#'     Hyperparameters are evaluated in batches.
-#'     Each batch has a unique batch number.
 #' * `uhash` (`character(1)`)\cr
 #'     Connects each hyperparameter configuration to the resampling experiment stored in the [mlr3::BenchmarkResult].
 #'
@@ -61,8 +58,8 @@
 #' @template param_rush
 #'
 #' @export
-ArchiveRushTuning = R6Class("ArchiveRushTuning",
-  inherit = bbotk::ArchiveRush,
+ArchiveAsyncTuning = R6Class("ArchiveAsyncTuning",
+  inherit = bbotk::ArchiveAsync,
   public = list(
 
     #' @description
@@ -186,7 +183,7 @@ ArchiveRushTuning = R6Class("ArchiveRushTuning",
 )
 
 #' @export
-as.data.table.ArchiveRushTuning = function(x, ..., unnest = "x_domain", exclude_columns = NULL, measures = NULL) {
+as.data.table.ArchiveAsyncTuning = function(x, ..., unnest = "x_domain", exclude_columns = NULL, measures = NULL) {
   if (nrow(x$data) == 0) return(data.table())
   # default values for unnest and exclude_columns might be not present in archive
   if ("x_domain" %nin% names(x$data)) unnest = setdiff(unnest, "x_domain")
