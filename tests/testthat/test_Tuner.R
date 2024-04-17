@@ -11,10 +11,10 @@ test_that("API", {
 
 test_that("proper error if tuner cannot handle deps", {
   skip_if_not_installed("GenSA")
-  ps = ParamSet$new(params = list(
-    ParamDbl$new("cp", lower = 0.001, upper = 0.1),
-    ParamDbl$new("minsplit", lower = 1, upper = 10)
-  ))
+  ps = ps(
+    cp = p_dbl(lower = 0.001, upper = 0.1),
+    minsplit = p_dbl(lower = 1, upper = 10)
+  )
   ps$add_dep("minsplit", on = "cp", cond = CondEqual$new(0.1))
   te = trm("evals", n_evals = 2)
   inst = TuningInstanceSingleCrit$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), te, ps)
@@ -51,7 +51,7 @@ test_that("we get a result when some subordinate params are not fulfilled", {
 })
 
 test_that("print method workds", {
-  param_set = ParamSet$new(list(ParamLgl$new("p1")))
+  param_set = ps(p1 = p_lgl())
   param_set$values$p1 = TRUE
   param_classes = "ParamLgl"
   properties = "single-crit"
@@ -70,7 +70,7 @@ test_that("print method workds", {
 })
 
 test_that("optimize does not work in abstract class", {
-  param_set = ParamSet$new(list(ParamLgl$new("p1")))
+  param_set = ps(p1 = p_lgl())
   param_set$values$p1 = TRUE
   param_classes = "ParamDbl"
   properties = "single-crit"
@@ -94,9 +94,9 @@ test_that("Tuner works with graphlearner", {
   task = tsk("iris")
   ms = MeasureDummyCPClassif$new(fun = function(pv) if (pv$classif.rpart.cp == 0.2) 0 else 1)
   te = trm("evals", n_evals = 4)
-  ps = ParamSet$new(list(
-    ParamDbl$new("classif.rpart.cp", lower = 0.1, upper = 0.3)
-  ))
+  ps = ps(
+    classif.rpart.cp = p_dbl(lower = 0.1, upper = 0.3)
+  )
   inst = TuningInstanceSingleCrit$new(
     task = task,
     learner = gl,
@@ -125,9 +125,9 @@ test_that("Tuner works with instantiated resampling", {
   expect_true(resampling$is_instantiated)
 
   te = trm("evals", n_evals = 4)
-  ps = ParamSet$new(list(
-    ParamDbl$new("cp", lower = 0.1, upper = 0.3)
-  ))
+  ps = ps(
+    cp = p_dbl(lower = 0.1, upper = 0.3)
+  )
   inst = TuningInstanceSingleCrit$new(
     task = task,
     learner = lrn("classif.rpart"),
@@ -145,7 +145,7 @@ test_that("Tuner works with instantiated resampling", {
 })
 
 test_that("Tuner active bindings work", {
-  param_set = ParamSet$new(list(ParamLgl$new("p1")))
+  param_set = ps(p1 = p_lgl())
   param_set$values$p1 = TRUE
   param_classes = "ParamLgl"
   properties = "single-crit"
@@ -163,7 +163,7 @@ test_that("Tuner active bindings work", {
   expect_equal(tuner$properties, properties)
   expect_subset(packages, tuner$packages)
 
-  expect_error({tuner$param_set = ParamSet$new(list(ParamLgl$new("p2")))},
+  expect_error({tuner$param_set = ps(p2 = p_lgl())},
     regexp = "$param_set is read-only",
     fixed = TRUE)
 

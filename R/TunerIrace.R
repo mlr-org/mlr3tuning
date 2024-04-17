@@ -82,16 +82,27 @@ TunerIrace = R6Class("TunerIrace",
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function() {
       optimizer = OptimizerIrace$new()
-      optimizer$param_set$add(ParamInt$new("n_instances", lower = 1, default = 10))
+      extra_ps = ps(n_instances = p_int(lower = 1))
+      extra_ps$values$n_instances = 10
+
       optimizer$param_set$set_values(
-        n_instances = 10,
         targetRunnerParallel = target_runner_tuning
       )
+
+      if ("set_id" %in% names(optimizer$param_set)) {
+        # old paradox
+        optimizer$param_set$set_id = ""
+      }
 
       super$initialize(
         optimizer = optimizer,
         man = "mlr3tuning::mlr_tuners_irace"
       )
+
+      private$.param_set = ParamSetCollection$new(list(
+        optimizer$param_set,
+        extra_ps
+      ))
     },
 
     #' @description
@@ -105,22 +116,21 @@ TunerIrace = R6Class("TunerIrace",
     #' @return [data.table::data.table].
     optimize = function(inst) {
       assert_class(inst, "TuningInstanceSingleCrit")
-      n_instances = private$.optimizer$param_set$values$n_instances
+      pv = self$param_set$values
+      n_instances = pv$n_instances
 
       # Set resampling instances
       ri = replicate(n_instances, {
         r = inst$objective$resampling$clone()
         r$instantiate(inst$objective$task)
       })
-      private$.optimizer$param_set$values$instances = ri
 
-      # temporary remove n_instance from parameter set values
-      private$.optimizer$param_set$values$n_instances = NULL
+      pv$n_instances = NULL
+      pv$instances = ri
+
+      private$.optimizer$param_set$values = pv
 
       private$.optimizer$optimize(inst)
-
-      # restore n_instances in parameter set
-      private$.optimizer$param_set$values$n_instances = n_instances
 
       return(inst$result)
     }
@@ -138,7 +148,7 @@ target_runner_tuning = function(experiment, exec.target.runner, scenario, target
     configuration
   })
   # fix logicals
-  lgl_params = as.data.table(tuning_instance$search_space)[class == "ParamLgl", id]
+  lgl_params = as.data.table(tuning_instance$search_space)[class == "ParamLgl", "id"][[1]]
   if (length(lgl_params)) xdt[, (lgl_params) := lapply(.SD, as.logical), .SDcols = lgl_params]
 
   # provide experiment instances to objective

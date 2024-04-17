@@ -1,5 +1,8 @@
 # mlr3tuning (development version)
 
+# mlr3tuning 0.20.0
+
+* compatibility: Work with new paradox version 1.0.0
 * fix: `TunerIrace` failed with logical parameters and dependencies.
 * Added marshaling support to `AutoTuner`
 

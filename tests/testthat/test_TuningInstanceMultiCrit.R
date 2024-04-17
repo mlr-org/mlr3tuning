@@ -6,10 +6,10 @@ test_that("tuning with multiple objectives", {
   measure_ids = c("classif.fpr", "classif.tpr")
   measures = msrs(measure_ids)
 
-  tune_ps = ParamSet$new(list(
-    ParamDbl$new("cp", lower = 0.001, upper = 0.1),
-    ParamInt$new("minsplit", lower = 1, upper = 10)
-  ))
+  tune_ps = ps(
+    cp = p_dbl(lower = 0.001, upper = 0.1),
+    minsplit = p_int(lower = 1, upper = 10)
+  )
 
   terminator = trm("evals", n_evals = 10)
   tuner = tnr("random_search")
@@ -51,10 +51,10 @@ test_that("store_benchmark_result and store_models flag works", {
 test_that("check_values flag with parameter set dependencies", {
   learner = LearnerRegrDepParams$new()
   learner$param_set$values$xx = "a"
-  search_space = ParamSet$new(list(
-    ParamDbl$new("cp", lower = 0.1, upper = 0.3),
-    ParamDbl$new("yy", lower = 0.1, upper = 0.3)
-  ))
+  search_space = ps(
+    cp = p_dbl(lower = 0.1, upper = 0.3),
+    yy = p_dbl(lower = 0.1, upper = 0.3)
+  )
   terminator = trm("evals", n_evals = 20)
   tuner = tnr("random_search")
 
@@ -68,7 +68,7 @@ test_that("check_values flag with parameter set dependencies", {
     rsmp("holdout"), msr("regr.mse"), terminator, search_space,
     check_values = TRUE)
   expect_error(tuner$optimize(inst),
-    regexp = "The parameter 'yy' can only be set")
+    regexp = "yy.* can only be set")
 })
 
 test_that("search space from TuneToken works", {
@@ -82,9 +82,9 @@ test_that("search space from TuneToken works", {
   expect_r6(instance$search_space, "ParamSet")
   expect_equal(instance$search_space$ids(), "cp")
 
-  ps = ParamSet$new(list(
-    ParamDbl$new("cp", lower = 0.1, upper = 0.3)
-  ))
+  ps = ps(
+    cp = p_dbl(lower = 0.1, upper = 0.3)
+  )
 
   expect_error(TuningInstanceMultiCrit$new(task = tsk("iris"), learner = learner,
     resampling = rsmp("holdout"), measures = msrs(c("classif.acc", "classif.ce")),
@@ -143,7 +143,7 @@ test_that("TuningInstanceMultiCrit and empty search space works", {
   )
 
   expect_data_table(instance$result)
-  expect_equal(instance$result$learner_param_vals[[1]], list(xval = 0, cp = 0.1))
+  expect_equal(sortnames(instance$result$learner_param_vals[[1]]), list(xval = 0, cp = 0.1))
   expect_equal(instance$result$x_domain[[1]], list())
 
   # no constant
@@ -182,5 +182,5 @@ test_that("assign_result works", {
   expect_equal(res$cp, c(0.1, 0.01))
   expect_equal(res$classif.fpr, c(0.8, 0.7))
   expect_equal(res$classif.tpr, c(0.3, 0.2))
-  expect_equal(res$learner_param_vals[[1]], list(xval = 0, cp = 0.1))
+  expect_equal(sortnames(res$learner_param_vals[[1]]), list(xval = 0, cp = 0.1))
 })
