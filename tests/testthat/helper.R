@@ -11,3 +11,9 @@ lapply(list.files(system.file("testthat", package = "mlr3tuning"), pattern = "^h
 
 lgr::get_logger("bbotk")$set_threshold("debug")
 
+sortnames = function(x) {
+  if (!is.null(names(x))) {
+    x <- x[order(names(x), decreasing = TRUE)]
+  }
+  x
+}

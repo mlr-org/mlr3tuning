@@ -64,8 +64,7 @@ Tuner = R6Class("Tuner",
     #'   Set of control parameters.
     #'
     #' @param param_classes (`character()`)\cr
-    #'   Supported parameter classes for learner hyperparameters that the tuner can optimize.
-    #'   Subclasses of [paradox::Param].
+    #'   Supported parameter classes for learner hyperparameters that the tuner can optimize, as given in the [paradox::ParamSet] `$class` field.
     #'
     #' @param properties (`character()`)\cr
     #'   Set of properties of the tuner.
@@ -157,8 +156,7 @@ Tuner = R6Class("Tuner",
     },
 
     #' @field param_classes (`character()`)\cr
-    #' Supported parameter classes for learner hyperparameters that the tuner can optimize.
-    #' Subclasses of [paradox::Param].
+    #' Supported parameter classes for learner hyperparameters that the tuner can optimize, as given in the [paradox::ParamSet] `$class` field.
     param_classes = function(rhs) {
       if (!missing(rhs) && !identical(rhs, private$.param_classes)) {
         stop("$param_classes is read-only.")

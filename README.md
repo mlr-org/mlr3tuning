@@ -169,18 +169,18 @@ The archive contains all evaluated hyperparameter configurations.
 as.data.table(instance$archive)[, .(cost, gamma, classif.ce, batch_nr, resample_result)]
 ```
 
-    ##           cost      gamma classif.ce batch_nr      resample_result
-    ##  1:  -5.756463   5.756463  0.4665977        1 <ResampleResult[21]>
-    ##  2:   5.756463  -5.756463  0.1637681        2 <ResampleResult[21]>
-    ##  3:  11.512925   5.756463  0.4665977        3 <ResampleResult[21]>
-    ##  4:   5.756463  11.512925  0.4665977        4 <ResampleResult[21]>
-    ##  5: -11.512925 -11.512925  0.4665977        5 <ResampleResult[21]>
-    ## ---                                                               
-    ## 21:  -5.756463  -5.756463  0.4665977       21 <ResampleResult[21]>
-    ## 22:  11.512925  11.512925  0.4665977       22 <ResampleResult[21]>
-    ## 23: -11.512925  11.512925  0.4665977       23 <ResampleResult[21]>
-    ## 24:  11.512925  -5.756463  0.1637681       24 <ResampleResult[21]>
-    ## 25:   0.000000  -5.756463  0.2599034       25 <ResampleResult[21]>
+    ##           cost      gamma classif.ce batch_nr  resample_result
+    ##  1:  -5.756463   5.756463  0.4665977        1 <ResampleResult>
+    ##  2:   5.756463  -5.756463  0.1637681        2 <ResampleResult>
+    ##  3:  11.512925   5.756463  0.4665977        3 <ResampleResult>
+    ##  4:   5.756463  11.512925  0.4665977        4 <ResampleResult>
+    ##  5: -11.512925 -11.512925  0.4665977        5 <ResampleResult>
+    ## ---                                                           
+    ## 21:  -5.756463  -5.756463  0.4665977       21 <ResampleResult>
+    ## 22:  11.512925  11.512925  0.4665977       22 <ResampleResult>
+    ## 23: -11.512925  11.512925  0.4665977       23 <ResampleResult>
+    ## 24:  11.512925  -5.756463  0.1637681       24 <ResampleResult>
+    ## 25:   0.000000  -5.756463  0.2599034       25 <ResampleResult>
 
 The [mlr3viz](https://mlr3viz.mlr-org.com/) package visualizes tuning
 results.

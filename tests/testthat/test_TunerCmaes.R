@@ -18,5 +18,5 @@ expect_tuner(tnr("cmaes"))
   )
 
   expect_equal(instance$archive$n_evals, 10)
-  expect_named(instance$result_x_domain, c("cp", "minsplit", "minbucket"))
+  expect_named(instance$result_x_domain, c("cp", "minsplit", "minbucket"), ignore.order = TRUE)
 })
