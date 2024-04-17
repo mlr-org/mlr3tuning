@@ -379,7 +379,7 @@ Marshal the learner.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{...}}{(any)\cr
-Additional parameters, currently unused.}
+Additional parameters.}
 }
 \if{html}{\out{</div>}}
 }
@@ -400,7 +400,7 @@ Unmarshal the learner.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{...}}{(any)\cr
-Additional parameters, currently unused.}
+Additional parameters.}
 }
 \if{html}{\out{</div>}}
 }
