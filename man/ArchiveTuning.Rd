@@ -91,13 +91,13 @@ Benchmark result.}
 \item \href{#method-ArchiveTuning-predictions}{\code{ArchiveTuning$predictions()}}
 \item \href{#method-ArchiveTuning-resample_result}{\code{ArchiveTuning$resample_result()}}
 \item \href{#method-ArchiveTuning-print}{\code{ArchiveTuning$print()}}
+\item \href{#method-ArchiveTuning-add_evals}{\code{ArchiveTuning$add_evals()}}
 \item \href{#method-ArchiveTuning-clone}{\code{ArchiveTuning$clone()}}
 }
 }
 \if{html}{\out{
 <details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="add_evals"><a href='../../bbotk/html/Archive.html#method-Archive-add_evals'><code>bbotk::Archive$add_evals()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="best"><a href='../../bbotk/html/Archive.html#method-Archive-best'><code>bbotk::Archive$best()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="clear"><a href='../../bbotk/html/Archive.html#method-Archive-clear'><code>bbotk::Archive$clear()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="format"><a href='../../bbotk/html/Archive.html#method-Archive-format'><code>bbotk::Archive$format()</code></a></span></li>
@@ -127,7 +127,7 @@ Specifies codomain of objective function i.e. a set of performance measures.
 Internally created from provided \link[mlr3:Measure]{mlr3::Measure}s.}
 
 \item{\code{check_values}}{(\code{logical(1)})\cr
-If \code{TRUE} (default), hyperparameter configurations are check for validity.}
+If \code{TRUE} (default), hyperparameter configurations are checked for validity.}
 }
 \if{html}{\out{</div>}}
 }
@@ -256,6 +256,33 @@ Printer.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{...}}{(ignored).}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-ArchiveTuning-add_evals"></a>}}
+\if{latex}{\out{\hypertarget{method-ArchiveTuning-add_evals}{}}}
+\subsection{Method \code{add_evals()}}{
+Adds function evaluations to the archive table.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ArchiveTuning$add_evals(xdt, xss_trafoed = NULL, ydt)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{xdt}}{(\code{\link[data.table:data.table]{data.table::data.table()}})\cr
+Set of untransformed points / points from the \emph{search space}.
+One point per row, e.g. \code{data.table(x1 = c(1, 3), x2 = c(2, 4))}.
+Column names have to match ids of the \code{search_space}.
+However, \code{xdt} can contain additional columns.}
+
+\item{\code{xss_trafoed}}{(\code{list()})\cr
+Transformed point(s) in the \emph{domain space}.}
+
+\item{\code{ydt}}{(\code{\link[data.table:data.table]{data.table::data.table()}})\cr
+Optimal outcome.}
 }
 \if{html}{\out{</div>}}
 }

@@ -122,6 +122,16 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
         search_space = as_search_space(search_space)
       }
 
+      inner_tune = map_lgl(search_space$params$.tags, function(x) "inner_tune" %in% x)
+      if (any(inner_tune) && isFALSE(store_benchmark_result)) {
+        # we need to access the inner_tuned_vals from the bmr
+        stopf("To allow for inner tuning it is required to store the benchmark results.")
+      }
+      trafo_with_inner_tune = any(map_lgl(search_space$params$.trafo, function(x) !is.null(x)) & inner_tune)
+      if (trafo_with_inner_tune) {
+        stopf("Inner Tuning and Parameter Transformations are currently not supported.")
+      }
+
       # create codomain from measure
       measures = assert_measures(as_measures(measure, task_type = task$task_type), task = task, learner = learner)
       codomain = measures_to_codomain(measures)

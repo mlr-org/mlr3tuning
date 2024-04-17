@@ -157,7 +157,7 @@ AutoTuner = R6Class("AutoTuner",
         packages = c("mlr3tuning", learner$packages),
         feature_types = learner$feature_types,
         predict_types = learner$predict_types,
-        properties = learner$properties
+        properties = setdiff(learner$properties, "inner_tuning")
       )
 
       self$predict_type = learner$predict_type
@@ -353,7 +353,11 @@ AutoTuner = R6Class("AutoTuner",
       # disable timeout to allow train on full data set without time limit
       # timeout during tuning is not affected
       learner$timeout = c(train = Inf, predict = Inf)
+      if (length(get_private(instance$archive)$.inner_tuning)) {
+        set_inner_tuning(learner, disable = TRUE)
+      }
       learner$train(task)
+
 
       # the return model is a list of "learner" and "tuning_instance"
       result_model = list(learner = learner)

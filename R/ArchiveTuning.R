@@ -72,9 +72,11 @@ ArchiveTuning = R6Class("ArchiveTuning",
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #'
     #' @param check_values (`logical(1)`)\cr
-    #'   If `TRUE` (default), hyperparameter configurations are check for validity.
+    #'   If `TRUE` (default), hyperparameter configurations are checked for validity.
     initialize = function(search_space, codomain, check_values = TRUE) {
       super$initialize(search_space, codomain, check_values)
+
+      private$.inner_tuning = names(search_space$tags[map_lgl(search_space$tags, function(tags) "inner_tuning" %in% tags)])
 
       # initialize empty benchmark result
       self$benchmark_result = BenchmarkResult$new()
@@ -153,7 +155,61 @@ ArchiveTuning = R6Class("ArchiveTuning",
     print = function() {
       catf("%s with %i evaluations", format(self), self$n_evals)
       print(as.data.table(self, unnest = NULL, exclude_columns = c("x_domain", "uhash", "timestamp", "runtime_learners", "resample_result")), digits = 2)
+    },
+
+    #' @description
+    #' Adds function evaluations to the archive table.
+    #'
+    #' @param xss_trafoed (`list()`)\cr
+    #'   Transformed point(s) in the *domain space*.
+    #' @param ydt ([data.table::data.table()])\cr
+    #'   Optimal outcome.
+    #' @param xdt ([data.table::data.table()])\cr
+    #'   Set of untransformed points / points from the *search space*.
+    #'   One point per row, e.g. `data.table(x1 = c(1, 3), x2 = c(2, 4))`.
+    #'   Column names have to match ids of the `search_space`.
+    #'   However, `xdt` can contain additional columns.
+    add_evals = function(xdt, xss_trafoed = NULL, ydt) {
+      if (length(private$.inner_tuning)) {
+        # store the raw values before they are overwritten with the internally optimized values
+        raw_inner_tuned_values = map(seq_len(nrow(xdt)), function(i) {
+          # only use those that are tagged with inner tuning
+          as.list(xdt[i, private$.inner_tuning, with = FALSE])
+        })
+        n_rrs = self$benchmark_result$n_resample_results
+        aggrs = get_private(self$search_space)$.aggrs
+        # access the inner tuned values from the learner states (also works when models are not stored)
+        # then call the aggregator to aggregate the values over the folds of the resamplings
+        itvs_aggr = map(seq(n_rrs - length(xdt) + 1, n_rrs), function(i) {
+          itvs_rr = map(self$resample_result(i)$learners, "inner_tuned_values")
+          set_names(
+            map(
+              private$.inner_tuning,
+              function(param_id) aggrs[param_id, "aggr", on = "id"][[1L]][[1L]](map(itvs_rr, param_id))
+            ), nm = private$.inner_tuning
+          )
+        })
+        itvs_aggr_dt = rbindlist(itvs_aggr)
+
+        xdt[, names(itvs_aggr_dt)] = itvs_aggr_dt
+        # trafos with inner tuning is not allowed, therefore we can just insert the parameters here as-is
+        if (!is.null(xss_trafoed)) {
+          xss_trafoed = map(seq_along(xss_trafoed), function(i) {
+            insert_named(xss_trafoed[[i]], itvs_aggr[[i]])
+          })
+        }
+      } else {
+        raw_inner_tuned_values = NULL
+      }
+      super$add_evals(xdt, xss_trafoed, ydt)
+      if (!is.null(raw_inner_tuned_values)) {
+        set(self$data, j = "raw_inner_tuned_values", value = raw_inner_tuned_values)
+      }
+      invisible(self)
     }
+  ),
+  private = list(
+    .inner_tuning = NULL
   )
 )
 
