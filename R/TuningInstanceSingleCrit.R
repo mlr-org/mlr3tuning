@@ -103,8 +103,8 @@
 #'
 #' # Inspect all evaluated configurations
 #' as.data.table(instance$archive)
-TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
-  inherit = OptimInstanceSingleCrit,
+TuningInstanceBatchSingleCrit = R6Class("TuningInstanceBatchSingleCrit",
+  inherit = OptimInstanceBatchSingleCrit,
   public = list(
 
     #' @description

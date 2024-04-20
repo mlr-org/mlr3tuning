@@ -26,7 +26,7 @@ ContextEval = R6Class("ContextEval",
     #'   Identifier for the new callback.
     #' @param objective_tuning [ObjectiveTuning].
     initialize = function(objective_tuning) {
-      self$objective_tuning = assert_r6(objective_tuning, "ObjectiveAsyncTuning")
+      self$objective_tuning = assert_r6(objective_tuning, "ObjectiveTuningAsync")
     }
   ),
 

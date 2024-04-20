@@ -1,170 +1,171 @@
 test_that("ArchiveAsyncTuning access methods work", {
   skip_on_cran()
-  skip_on_ci()
+  skip_if_not_installed("rush")
+  flush_redis()
 
-  rush = rsh()
-  instance = TuningInstanceAsyncSingleCrit$new(
+  learner = lrn("classif.rpart",
+    minsplit  = to_tune(2, 128),
+    cp        = to_tune(1e-04, 1e-1))
+  rush_plan(n_workers = 2)
+  instance = ti_async(
     task = tsk("pima"),
-    learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
+    learner = learner,
     resampling = rsmp("cv", folds = 3),
     measure = msr("classif.ce"),
-    terminator = trm("evals", n_evals = 4),
-    rush = rush
+    terminator = trm("evals", n_evals = 20),
+    store_benchmark_result = TRUE
   )
-  future::plan("cluster", workers = 1L)
-  instance$start_workers(await_workers = TRUE)
-  pids = rush$worker_info$pid
-  on.exit({clean_on_exit(pids)}, add = TRUE)
-
-  tuner = tnr("random_search")
+  tuner = tnr("async_random_search")
   tuner$optimize(instance)
 
   # benchmark result
   expect_benchmark_result(instance$archive$benchmark_result)
-  expect_equal(instance$archive$benchmark_result$n_resample_results, 4L)
+  expect_gte(instance$archive$benchmark_result$n_resample_results, 20L)
   expect_null(instance$archive$resample_result(1)$learners[[1]]$model)
 
   # learner
-  walk(seq(rush$n_finished_tasks), function(i) {
+  walk(seq(instance$rush$n_finished_tasks), function(i) {
     expect_learner(instance$archive$learner(i = i))
   })
 
   # learner param values
-  walk(seq(rush$n_finished_tasks), function(i) {
+  walk(seq(instance$rush$n_finished_tasks), function(i) {
     expect_list(instance$archive$learner_param_vals(i))
-    expect_named(instance$archive$learner_param_vals(i), c("xval" ,"cp"))
+    expect_named(instance$archive$learner_param_vals(i), c("xval", "minsplit", "cp"))
   })
 
   # learners
-  walk(seq(rush$n_finished_tasks), function(i) {
+  walk(seq(instance$rush$n_finished_tasks), function(i) {
     expect_list(instance$archive$learners(i))
     expect_learner(instance$archive$learners(i)[[1]])
   })
 
   # predictions
-  walk(seq(rush$n_finished_tasks), function(i) {
+  walk(seq(instance$rush$n_finished_tasks), function(i) {
     expect_list(instance$archive$predictions(i))
     expect_prediction(instance$archive$predictions(i)[[1]])
   })
 
   # resample result
-  walk(seq(rush$n_finished_tasks), function(i) {
+  walk(seq(instance$rush$n_finished_tasks), function(i) {
     expect_resample_result(instance$archive$resample_result(i))
   })
 
+  expect_rush_reset(instance$rush)
 })
 
 test_that("ArchiveAsyncTuning as.data.table function works", {
   skip_on_cran()
-  skip_on_ci()
+  skip_if_not_installed("rush")
+  flush_redis()
 
-  rush = rsh()
-  instance = TuningInstanceAsyncSingleCrit$new(
+  learner = lrn("classif.rpart",
+    minsplit  = to_tune(2, 128),
+    cp        = to_tune(1e-04, 1e-1))
+  rush_plan(n_workers = 2)
+  instance = ti_async(
     task = tsk("pima"),
-    learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
+    learner = learner,
     resampling = rsmp("cv", folds = 3),
     measure = msr("classif.ce"),
-    terminator = trm("evals", n_evals = 4),
-    rush = rush
+    terminator = trm("evals", n_evals = 20),
+    store_benchmark_result = TRUE
   )
-  future::plan("cluster", workers = 1L)
-  instance$start_workers(await_workers = TRUE)
-  pids = rush$worker_info$pid
-  on.exit({clean_on_exit(pids)}, add = TRUE)
-
-  tuner = tnr("random_search")
+  tuner = tnr("async_random_search")
   tuner$optimize(instance)
 
   # default
   tab = as.data.table(instance$archive)
-  expect_data_table(tab, nrows = 4, ncols = 11)
-  expect_names(names(tab), permutation.of = c("cp", "classif.ce", "x_domain_cp", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "state", "keys"))
+  expect_data_table(tab, min.rows = 20, ncols = 15)
+  expect_names(names(tab), permutation.of = c("cp", "minsplit", "classif.ce", "x_domain_cp", "x_domain_minsplit", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors", "log"))
 
   # extra measure
   tab = as.data.table(instance$archive, measures = msr("classif.acc"))
-  expect_data_table(tab, nrows = 4, ncols = 12)
-  expect_names(names(tab), permutation.of = c("cp", "classif.ce", "x_domain_cp", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "state", "keys", "classif.acc"))
+  expect_data_table(tab, min.rows = 20, ncols = 16)
+  expect_names(names(tab), permutation.of = c("cp", "minsplit", "classif.ce", "x_domain_cp", "x_domain_minsplit", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors", "log", "classif.acc"))
 
   # extra measures
   tab = as.data.table(instance$archive, measures = msrs(c("classif.acc", "classif.mcc")))
-  expect_data_table(tab, nrows = 4, ncols = 13)
-  expect_names(names(tab), permutation.of = c("cp", "classif.ce", "x_domain_cp", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "state", "keys", "classif.acc", "classif.mcc"))
+  expect_data_table(tab, min.rows = 20, ncols = 17)
+  expect_names(names(tab), permutation.of = c("cp", "minsplit", "classif.ce", "x_domain_cp", "x_domain_minsplit", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors", "log", "classif.acc", "classif.mcc"))
 
   # exclude column
   tab = as.data.table(instance$archive, exclude_columns = "timestamp_xs")
-  expect_data_table(tab, nrows = 4, ncols = 10)
-  expect_names(names(tab), permutation.of = c("cp", "classif.ce", "x_domain_cp", "runtime_learners", "worker_id", "resample_result", "timestamp_ys", "pid", "state", "keys"))
+  expect_data_table(tab, min.rows = 20, ncols = 14)
+  expect_names(names(tab), permutation.of = c("cp", "minsplit", "classif.ce", "x_domain_cp", "x_domain_minsplit", "runtime_learners", "worker_id", "resample_result", "timestamp_ys", "pid", "keys", "warnings", "errors", "log"))
 
   # exclude columns
   tab = as.data.table(instance$archive, exclude_columns = c("timestamp_xs", "resample_result"))
-  expect_data_table(tab, nrows = 4, ncols = 9)
-  expect_names(names(tab), permutation.of = c("cp", "classif.ce", "x_domain_cp", "runtime_learners", "worker_id", "timestamp_ys", "pid", "state", "keys"))
+  expect_data_table(tab, min.rows = 20, ncols = 13)
+  expect_names(names(tab), permutation.of = c("cp", "minsplit", "classif.ce", "x_domain_cp", "x_domain_minsplit", "runtime_learners", "worker_id", "timestamp_ys", "pid", "keys", "warnings", "errors", "log"))
 
   # no exclude
   tab = as.data.table(instance$archive, exclude_columns = NULL)
-  expect_data_table(tab, nrows = 4, ncols = 11)
-  expect_names(names(tab), permutation.of = c("cp", "classif.ce", "x_domain_cp", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "state", "keys"))
+  expect_data_table(tab, min.rows = 20, ncols = 15)
+  expect_names(names(tab), permutation.of = c("cp", "minsplit", "classif.ce", "x_domain_cp", "x_domain_minsplit", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors", "log"))
 
   # no unnest
   tab = as.data.table(instance$archive, unnest = NULL)
-  expect_data_table(tab, nrows = 4, ncols = 11)
-  expect_names(names(tab), permutation.of = c("cp", "classif.ce", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "x_domain", "state", "keys"))
+  expect_data_table(tab, min.rows = 20, ncols = 14)
+  expect_names(names(tab), permutation.of = c("cp", "minsplit", "classif.ce", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "x_domain", "keys", "warnings", "errors", "log"))
+
+  expect_rush_reset(instance$rush)
 })
 
 test_that("ArchiveAsyncTuning as.data.table function works without resample result", {
   skip_on_cran()
-  skip_on_ci()
+  skip_if_not_installed("rush")
+  flush_redis()
 
-  rush = rsh()
-  instance = TuningInstanceAsyncSingleCrit$new(
+  learner = lrn("classif.rpart",
+    minsplit  = to_tune(2, 128),
+    cp        = to_tune(1e-04, 1e-1))
+  rush_plan(n_workers = 2)
+  instance = ti_async(
     task = tsk("pima"),
-    learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
+    learner = learner,
     resampling = rsmp("cv", folds = 3),
     measure = msr("classif.ce"),
-    terminator = trm("evals", n_evals = 4),
-    store_benchmark_result = FALSE,
-    rush = rush
+    terminator = trm("evals", n_evals = 20),
+    store_benchmark_result = FALSE
   )
-  future::plan("cluster", workers = 1L)
-  instance$start_workers(await_workers = TRUE)
-  pids = rush$worker_info$pid
-  on.exit({clean_on_exit(pids)}, add = TRUE)
-
-  tuner = tnr("random_search")
+  tuner = tnr("async_random_search")
   tuner$optimize(instance)
 
   tab = as.data.table(instance$archive)
-  expect_data_table(tab, nrows = 4, ncols = 10)
-  expect_names(names(tab), permutation.of = c("cp", "classif.ce", "x_domain_cp", "runtime_learners", "worker_id", "timestamp_xs", "timestamp_ys", "pid", "state", "keys"))
+  expect_data_table(tab, min.rows = 20, ncols = 15)
+  expect_names(names(tab), permutation.of = c("cp", "minsplit", "classif.ce", "x_domain_cp", "x_domain_minsplit", "runtime_learners", "worker_id", "timestamp_xs", "timestamp_ys", "pid", "state", "keys", "warnings", "errors", "log"))
+
+  expect_rush_reset(instance$rush)
 })
 
 test_that("ArchiveAsyncTuning as.data.table function works with empty archive", {
-  rush = rsh()
-  future::plan("cluster", workers = 1L)
+  skip_on_cran()
+  skip_if_not_installed("rush")
+  flush_redis()
 
-  rush = rsh()
-  instance = TuningInstanceAsyncSingleCrit$new(
+  learner = lrn("classif.rpart",
+    minsplit  = to_tune(2, 128),
+    cp        = to_tune(1e-04, 1e-1))
+  rush_plan(n_workers = 2)
+  instance = ti_async(
     task = tsk("pima"),
-    learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
+    learner = learner,
     resampling = rsmp("cv", folds = 3),
     measure = msr("classif.ce"),
-    terminator = trm("evals", n_evals = 4),
-    store_benchmark_result = FALSE,
-    rush = rush
+    terminator = trm("evals", n_evals = 20),
+    store_benchmark_result = FALSE
   )
-  future::plan("cluster", workers = 1L)
-  instance$start_workers(await_workers = TRUE)
-  pids = rush$worker_info$pid
-  on.exit({clean_on_exit(pids)}, add = TRUE)
 
   expect_data_table(as.data.table(instance$archive), nrows = 0, ncols = 0)
 
-  rush$reset()
+  expect_rush_reset(instance$rush)
 })
 
 test_that("ArchiveAsyncTuning as.data.table function works with new ids in x_domain", {
   skip_on_cran()
-  skip_on_ci()
+  skip_if_not_installed("rush")
+  flush_redis()
 
   search_space = ps(
     x1 = p_int(1, 12),
@@ -178,34 +179,30 @@ test_that("ArchiveAsyncTuning as.data.table function works with new ids in x_dom
     }
   )
 
-  rush = rsh()
-  instance = TuningInstanceAsyncSingleCrit$new(
+  rush_plan(n_workers = 2)
+  instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.rpart"),
     resampling = rsmp("cv", folds = 3),
     measure = msr("classif.ce"),
-    terminator = trm("evals", n_evals = 4),
-    search_space,
-    rush = rush
+    terminator = trm("evals", n_evals = 20),
+    store_benchmark_result = TRUE,
+    search_space = search_space
   )
-  future::plan("cluster", workers = 1L)
-  instance$start_workers(await_workers = TRUE)
-  pids = rush$worker_info$pid
-  on.exit({clean_on_exit(pids)}, add = TRUE)
-
-  tuner = tnr("random_search")
+  tuner = tnr("async_random_search")
   tuner$optimize(instance)
 
   tab = as.data.table(instance$archive)
-  expect_data_table(tab, nrows = 4, ncols = 13)
-  expect_names(names(tab), permutation.of = c("x1", "x2", "classif.ce", "x_domain_minsplit", "x_domain_cp", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "state", "keys"))
+  expect_data_table(tab, min.rows = 20, ncols = 15)
+  expect_names(names(tab), permutation.of = c("x1", "x2", "classif.ce", "x_domain_minsplit", "x_domain_cp", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors", "log"))
 
-  rush$reset()
+  expect_rush_reset(instance$rush)
 })
 
 test_that("ArchiveAsyncTuning as.data.table function works with switched new ids in x_domain", {
   skip_on_cran()
-  skip_on_ci()
+  skip_if_not_installed("rush")
+  flush_redis()
 
   # new ids in x_domain switch
   search_space = ps(
@@ -221,27 +218,22 @@ test_that("ArchiveAsyncTuning as.data.table function works with switched new ids
     }
   )
 
-  rush = rsh()
-  instance = TuningInstanceAsyncSingleCrit$new(
+  rush_plan(n_workers = 2)
+  instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.rpart"),
     resampling = rsmp("cv", folds = 3),
     measure = msr("classif.ce"),
-    terminator = trm("evals", n_evals = 100),
-    search_space,
-    rush = rush
+    terminator = trm("evals", n_evals = 20),
+    store_benchmark_result = TRUE,
+    search_space = search_space
   )
-  future::plan("cluster", workers = 1L)
-  instance$start_workers(await_workers = TRUE)
-  pids = rush$worker_info$pid
-  on.exit({clean_on_exit(pids)}, add = TRUE)
-
-  tuner = tnr("random_search")
+  tuner = tnr("async_random_search")
   tuner$optimize(instance)
 
   tab = as.data.table(instance$archive)
-  expect_data_table(tab, nrows = 100, ncols = 13)
-  expect_names(names(tab), permutation.of = c("x1", "x2", "classif.ce", "x_domain_minsplit", "x_domain_cp", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "state", "keys"))
+  expect_data_table(tab, min.rows = 20, ncols = 15)
+  expect_names(names(tab), permutation.of = c("x1", "x2", "classif.ce", "x_domain_minsplit", "x_domain_cp", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors", "log"))
 
-  rush$reset()
+  expect_rush_reset(instance$rush)
 })

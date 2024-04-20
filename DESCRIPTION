@@ -61,7 +61,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
 Collate:
     'ArchiveAsyncTuning.R'
-    'ArchiveTuning.R'
+    'ArchiveBatchTuning.R'
     'AutoTuner.R'
     'CallbackRushTuning.R'
     'CallbackTuning.R'
@@ -69,6 +69,7 @@ Collate:
     'ContextEvalMany.R'
     'ObjectiveAsyncTuning.R'
     'ObjectiveTuning.R'
+    'ObjectiveTuningBatch.R'
     'mlr_tuners.R'
     'Tuner.R'
     'TunerAsync.R'
@@ -85,9 +86,9 @@ Collate:
     'TunerNLoptr.R'
     'TunerRandomSearch.R'
     'TuningInstanceSingleCrit.R'
+    'TuningInstanceAsyncMulticrit.R'
+    'TuningInstanceAsyncSingleCrit.R'
     'TuningInstanceMulticrit.R'
-    'TuningInstanceRushMulticrit.R'
-    'TuningInstanceRushSingleCrit.R'
     'as_search_space.R'
     'as_tuner.R'
     'assertions.R'

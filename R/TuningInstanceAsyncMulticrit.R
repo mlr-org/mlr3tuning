@@ -76,7 +76,7 @@ TuningInstanceAsyncMultiCrit = R6Class("TuningInstanceAsyncMultiCrit",
         check_values = check_values,
         rush = rush)
 
-      objective = ObjectiveAsyncTuning$new(
+      objective = ObjectiveTuningAsync$new(
         task = task,
         learner = learner,
         resampling = resampling,

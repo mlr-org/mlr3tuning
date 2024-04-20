@@ -1,5 +1,5 @@
 test_that("rush objective works", {
-  objective = ObjectiveAsyncTuning$new(
+  objective = ObjectiveTuningAsync$new(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
     resampling = rsmp("cv", folds = 3),
@@ -18,7 +18,7 @@ test_that("rush objective works", {
 })
 
 test_that("store benchmark result works", {
-  objective = ObjectiveAsyncTuning$new(
+  objective = ObjectiveTuningAsync$new(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
     resampling = rsmp("cv", folds = 3),
@@ -39,7 +39,7 @@ test_that("store benchmark result works", {
 })
 
 test_that("store models works", {
-  objective = ObjectiveAsyncTuning$new(
+  objective = ObjectiveTuningAsync$new(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
     resampling = rsmp("cv", folds = 3),
@@ -60,7 +60,7 @@ test_that("store models works", {
 })
 
 test_that("rush objective with multiple measures works", {
-  objective = ObjectiveAsyncTuning$new(
+  objective = ObjectiveTuningAsync$new(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
     resampling = rsmp("cv", folds = 3),

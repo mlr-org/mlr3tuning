@@ -52,53 +52,8 @@ Use \code{lgr::get_logger("bbotk")} to access and control the logger.
 
 \section{Optimizer}{
 
-This \link{Tuner} is based on \link[bbotk:mlr_optimizers_gensa]{bbotk::OptimizerGenSA} which can be applied on any black box optimization problem.
+This \link{Tuner} is based on \link[bbotk:OptimizerGenSA]{bbotk::OptimizerGenSA} which can be applied on any black box optimization problem.
 See also the documentation of \href{https://bbotk.mlr-org.com/}{bbotk}.
-}
-
-\section{Parameters}{
-
-
-\describe{
-\item{\code{smooth}}{\code{logical(1)}}
-\item{\code{temperature}}{\code{numeric(1)}}
-\item{\code{acceptance.param}}{\code{numeric(1)}}
-\item{\code{verbose}}{\code{logical(1)}}
-\item{\code{trace.mat}}{\code{logical(1)}}
-}
-
-For the meaning of the control parameters, see \code{\link[GenSA:GenSA]{GenSA::GenSA()}}. Note that we
-have removed all control parameters which refer to the termination of the
-algorithm and where our terminators allow to obtain the same behavior.
-
-In contrast to the \code{\link[GenSA:GenSA]{GenSA::GenSA()}} defaults, we set \code{trace.mat = FALSE}.
-Note that \code{\link[GenSA:GenSA]{GenSA::GenSA()}} uses \code{smooth = TRUE} as a default.
-In the case of using this optimizer for Hyperparameter Optimization you may
-want to set \code{smooth = FALSE}.
-
-}
-
-\section{Resources}{
-
-There are several sections about hyperparameter optimization in the \href{https://mlr3book.mlr-org.com}{mlr3book}.
-\itemize{
-\item Learn more about \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-tuner}{tuners}.
-}
-
-The \href{https://mlr-org.com/gallery-all-optimization.html}{gallery} features a collection of case studies and demos about optimization.
-\itemize{
-\item Use the \href{https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/}{Hyperband} optimizer with different budget parameters.
-}
-}
-
-\section{Progress Bars}{
-
-
-\verb{$optimize()} supports progress bars via the package \href{https://CRAN.R-project.org/package=progressr}{\pkg{progressr}}
-combined with a \link[bbotk]{Terminator}. Simply wrap the function in
-\code{progressr::with_progress()} to enable them. We recommend to use package
-\href{https://CRAN.R-project.org/package=progress}{\pkg{progress}} as backend; enable with \code{progressr::handlers("progress")}.
-
 }
 
 \examples{

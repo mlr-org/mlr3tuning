@@ -35,58 +35,8 @@ Use \code{lgr::get_logger("bbotk")} to access and control the logger.
 
 \section{Optimizer}{
 
-This \link{Tuner} is based on \link[bbotk:mlr_optimizers_nloptr]{bbotk::OptimizerNLoptr} which can be applied on any black box optimization problem.
+This \link{Tuner} is based on \link[bbotk:OptimizerNLoptr]{bbotk::OptimizerNLoptr} which can be applied on any black box optimization problem.
 See also the documentation of \href{https://bbotk.mlr-org.com/}{bbotk}.
-}
-
-\section{Parameters}{
-
-
-\describe{
-\item{\code{algorithm}}{\code{character(1)}}
-\item{\code{eval_g_ineq}}{\verb{function()}}
-\item{\code{xtol_rel}}{\code{numeric(1)}}
-\item{\code{xtol_abs}}{\code{numeric(1)}}
-\item{\code{ftol_rel}}{\code{numeric(1)}}
-\item{\code{ftol_abs}}{\code{numeric(1)}}
-\item{\code{start_values}}{\code{character(1)}\cr
-Create \code{random} start values or based on \code{center} of search space? In the
-latter case, it is the center of the parameters before a trafo is applied.}
-}
-
-For the meaning of the control parameters, see \code{\link[nloptr:nloptr]{nloptr::nloptr()}} and
-\code{\link[nloptr:nloptr.print.options]{nloptr::nloptr.print.options()}}.
-
-The termination conditions \code{stopval}, \code{maxtime} and \code{maxeval} of
-\code{\link[nloptr:nloptr]{nloptr::nloptr()}} are deactivated and replaced by the \link[bbotk]{Terminator}
-subclasses. The x and function value tolerance termination conditions
-(\code{xtol_rel = 10^-4}, \code{xtol_abs = rep(0.0, length(x0))}, \code{ftol_rel = 0.0} and
-\code{ftol_abs = 0.0}) are still available and implemented with their package
-defaults. To deactivate these conditions, set them to \code{-1}.
-
-}
-
-\section{Resources}{
-
-There are several sections about hyperparameter optimization in the \href{https://mlr3book.mlr-org.com}{mlr3book}.
-\itemize{
-\item Learn more about \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-tuner}{tuners}.
-}
-
-The \href{https://mlr-org.com/gallery-all-optimization.html}{gallery} features a collection of case studies and demos about optimization.
-\itemize{
-\item Use the \href{https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/}{Hyperband} optimizer with different budget parameters.
-}
-}
-
-\section{Progress Bars}{
-
-
-\verb{$optimize()} supports progress bars via the package \href{https://CRAN.R-project.org/package=progressr}{\pkg{progressr}}
-combined with a \link[bbotk]{Terminator}. Simply wrap the function in
-\code{progressr::with_progress()} to enable them. We recommend to use package
-\href{https://CRAN.R-project.org/package=progress}{\pkg{progress}} as backend; enable with \code{progressr::handlers("progress")}.
-
 }
 
 \examples{

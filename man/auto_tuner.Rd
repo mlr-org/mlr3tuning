@@ -115,41 +115,6 @@ The respective model is available via field \code{at$learner$model}.
 During \verb{$predict()} the \code{AutoTuner} just calls the predict method of the wrapped (inner) learner.
 A set timeout is disabled while fitting the final model.
 }
-\section{Default Measures}{
-
-If no measure is passed, the default measure is used.
-The default measure depends on the task type.\tabular{lll}{
-   Task \tab Default Measure \tab Package \cr
-   \code{"classif"} \tab \code{"classif.ce"} \tab \CRANpkg{mlr3} \cr
-   \code{"regr"} \tab \code{"regr.mse"} \tab \CRANpkg{mlr3} \cr
-   \code{"surv"} \tab \code{"surv.cindex"} \tab \CRANpkg{mlr3proba} \cr
-   \code{"dens"} \tab \code{"dens.logloss"} \tab \CRANpkg{mlr3proba} \cr
-   \code{"classif_st"} \tab \code{"classif.ce"} \tab \CRANpkg{mlr3spatial} \cr
-   \code{"regr_st"} \tab \code{"regr.mse"} \tab \CRANpkg{mlr3spatial} \cr
-   \code{"clust"} \tab \code{"clust.dunn"} \tab \CRANpkg{mlr3cluster} \cr
-}
-}
-
-\section{Resources}{
-
-There are several sections about hyperparameter optimization in the \href{https://mlr3book.mlr-org.com}{mlr3book}.
-\itemize{
-\item \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-autotuner}{Automate} the tuning.
-\item Estimate the model performance with \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-nested-resampling}{nested resampling}.
-}
-
-The \href{https://mlr-org.com/gallery-all-optimization.html}{gallery} features a collection of case studies and demos about optimization.
-}
-
-\section{Nested Resampling}{
-
-Nested resampling is performed by passing an \link{AutoTuner} to \code{\link[mlr3:resample]{mlr3::resample()}} or \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
-To access the inner resampling results, set \code{store_tuning_instance = TRUE} and execute \code{\link[mlr3:resample]{mlr3::resample()}} or \code{\link[mlr3:benchmark]{mlr3::benchmark()}} with \code{store_models = TRUE} (see examples).
-The \link[mlr3:Resampling]{mlr3::Resampling} passed to the \link{AutoTuner} is meant to be the inner resampling, operating on the training set of an arbitrary outer resampling.
-For this reason, the inner resampling should be not instantiated.
-If an instantiated resampling is passed, the \link{AutoTuner} fails when a row id of the inner resampling is not present in the training set of the outer resampling.
-}
-
 \examples{
 at = auto_tuner(
   tuner = tnr("random_search"),

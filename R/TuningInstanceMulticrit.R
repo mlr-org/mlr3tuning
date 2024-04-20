@@ -64,8 +64,8 @@
 #'
 #' # Inspect all evaluated configurations
 #' as.data.table(instance$archive)
-TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
-  inherit = OptimInstanceMultiCrit,
+TuningInstanceBatchMultiCrit = R6Class("TuningInstanceBatchMultiCrit",
+  inherit = OptimInstanceBatchMultiCrit,
   public = list(
 
     #' @description

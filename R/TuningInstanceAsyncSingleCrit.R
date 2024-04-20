@@ -86,7 +86,7 @@ TuningInstanceAsyncSingleCrit = R6Class("TuningInstanceAsyncSingleCrit",
         codomain = codomain,
         rush = rush)
 
-      objective = ObjectiveAsyncTuning$new(
+      objective = ObjectiveTuningAsync$new(
         task = task,
         learner = learner,
         resampling = resampling,

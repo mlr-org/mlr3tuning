@@ -16,39 +16,10 @@
 #' @template param_callbacks
 #'
 #' @export
-ObjectiveAsyncTuning = R6Class("ObjectiveAsyncTuning",
-  inherit = Objective,
+ObjectiveTuningAsync = R6Class("ObjectiveTuningAsync",
+  inherit = ObjectiveTuning,
+
   public = list(
-
-    #' @field task ([mlr3::Task]).
-    task = NULL,
-
-    #' @field learner ([mlr3::Learner]).
-    learner = NULL,
-
-     #' @field resampling ([mlr3::Resampling]).
-    resampling = NULL,
-
-    #' @field measures (list of [mlr3::Measure]).
-    measures = NULL,
-
-    #' @field store_models (`logical(1)`).
-    store_models = NULL,
-
-    #' @field store_benchmark_result (`logical(1)`).
-    store_benchmark_result = NULL,
-
-    #' @field hotstart_stack ([mlr3::HotstartStack]).
-    hotstart_stack = NULL,
-
-    #' @field allow_hotstart (`logical(1)`).
-    allow_hotstart = NULL,
-
-    #' @field keep_hotstart_stack (`logical(1)`).
-    keep_hotstart_stack = NULL,
-
-    #' @field callbacks (List of [CallbackTuning]s).
-    callbacks = NULL,
 
     #' @field default_values (named `list`).
     default_values = NULL,
@@ -65,38 +36,28 @@ ObjectiveAsyncTuning = R6Class("ObjectiveAsyncTuning",
       check_values = TRUE,
       allow_hotstart = FALSE,
       hotstart_threshold = NULL,
-      callbacks = list()) {
-
-      self$task = assert_task(as_task(task, clone = TRUE))
-      self$learner = assert_learner(as_learner(learner, clone = TRUE))
-      self$learner$param_set$assert_values = FALSE
+      callbacks = NULL
+      ) {
+      callbacks = walk(as_callbacks(callbacks), function(callback) assert_r6(callback, " CallbackTuningAsync"))
       self$default_values = self$learner$param_set$values
-      self$measures = assert_measures(as_measures(measures), task = self$task, learner = self$learner)
-      self$resampling = resampling
-      self$store_models = assert_flag(store_models)
-      self$store_benchmark_result = assert_flag(store_benchmark_result)
-      self$allow_hotstart = assert_flag(allow_hotstart) && any(c("hotstart_forward", "hotstart_backward") %in% learner$properties)
-      if (self$allow_hotstart) {
-        if (!is.null(hotstart_threshold)) {
-          hotstart_threshold = set_names(assert_numeric(hotstart_threshold), self$learner$param_set$ids(tags = "hotstart"))
-        }
-        self$hotstart_stack = HotstartStack$new(hotstart_threshold = hotstart_threshold)
-      }
-      self$keep_hotstart_stack = FALSE
-      self$callbacks = assert_callbacks(as_callbacks(callbacks))
 
       super$initialize(
-        id = sprintf("%s_on_%s", self$learner$id, self$task$id),
-        properties = "noisy",
-        domain = self$learner$param_set,
-        codomain = measures_to_codomain(self$measures),
-        constants = ps(),
-        check_values = check_values)
+        task = task,
+        learner = learner,
+        resampling = resampling,
+        measures = measures,
+        store_benchmark_result = store_benchmark_result,
+        store_models = store_models,
+        check_values = check_values,
+        allow_hotstart = allow_hotstart,
+        hotstart_threshold = hotstart_threshold,
+        callbacks = callbacks
+      )
     }
   ),
 
   private = list(
-    .eval = function(xs) {
+    .eval = function(xs, resampling) {
       context = ContextEval$new(self)
 
       lg$debug("Evaluating hyperparameter configuration %s", as_short_string(xs))

@@ -60,8 +60,8 @@
 #' @template param_codomain
 #'
 #' @export
-ArchiveTuning = R6Class("ArchiveTuning",
-  inherit = Archive,
+ArchiveBatchTuning = R6Class("ArchiveBatchTuning",
+  inherit = bbotk::ArchiveBatch,
   public = list(
 
     #' @field benchmark_result ([mlr3::BenchmarkResult])\cr

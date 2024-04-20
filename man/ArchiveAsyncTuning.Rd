@@ -67,8 +67,8 @@ Score hyperparameter configurations on additional measures.
 }
 }
 
-\section{Super class}{
-\code{\link[bbotk:ArchiveAsync]{bbotk::ArchiveAsync}} -> \code{ArchiveAsyncTuning}
+\section{Super classes}{
+\code{\link[bbotk:Archive]{bbotk::Archive}} -> \code{\link[bbotk:ArchiveAsync]{bbotk::ArchiveAsync}} -> \code{ArchiveAsyncTuning}
 }
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}

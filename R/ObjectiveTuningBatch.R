@@ -1,0 +1,138 @@
+#' @title Class for Tuning Objective
+#'
+#' @description
+#' Stores the objective function that estimates the performance of hyperparameter configurations.
+#' This class is usually constructed internally by the [TuningInstanceSingleCrit] or [TuningInstanceMultiCrit].
+#'
+#' @template param_task
+#' @template param_learner
+#' @template param_resampling
+#' @template param_measures
+#' @template param_store_models
+#' @template param_check_values
+#' @template param_store_benchmark_result
+#' @template param_allow_hotstart
+#' @template param_hotstart_threshold
+#' @template param_keep_hotstart_stack
+#' @template param_callbacks
+#'
+#' @template field_default_values
+#'
+#' @export
+ObjectiveTuningBatch = R6Class("ObjectiveTuningBatch",
+  inherit = ObjectiveTuning,
+  public = list(
+
+    #' @field keep_hotstart_stack (`logical(1)`).
+    keep_hotstart_stack = NULL,
+
+    #' @field archive ([ArchiveTuning]).
+    archive = NULL,
+
+    #' @description
+    #' Creates a new instance of this [R6][R6::R6Class] class.
+    #'
+    #' @param archive ([ArchiveTuning])\cr
+    #'   Reference to archive of [TuningInstanceSingleCrit] | [TuningInstanceMultiCrit].
+    #'   If `NULL` (default), benchmark result and models cannot be stored.
+    initialize = function(
+      task,
+      learner,
+      resampling,
+      measures,
+      store_benchmark_result = TRUE,
+      store_models = FALSE,
+      check_values = TRUE,
+      allow_hotstart = FALSE,
+      hotstart_threshold = NULL,
+      keep_hotstart_stack = FALSE,
+      archive = NULL,
+      callbacks = NULL
+      ) {
+      self$keep_hotstart_stack = assert_flag(keep_hotstart_stack)
+      self$archive = assert_r6(archive, "ArchiveBatchTuning", null.ok = TRUE)
+      if (is.null(self$archive)) allow_hotstart = store_benchmark_result = store_models = FALSE
+      callbacks = walk(as_callbacks(callbacks), function(callback) assert_r6(callback, " CallbackTuningAsync"))
+
+      super$initialize(
+        task = task,
+        learner = learner,
+        resampling = resampling,
+        measures = measures,
+        store_benchmark_result = store_benchmark_result,
+        store_models = store_models,
+        check_values = check_values,
+        allow_hotstart = allow_hotstart,
+        hotstart_threshold = hotstart_threshold,
+        callbacks = callbacks
+      )
+    }
+  ),
+
+  private = list(
+    .eval_many = function(xss, resampling) {
+      context = ContextEvalMany$new(self)
+      private$.xss = xss
+
+      private$.design = if (self$allow_hotstart) {
+        # create learners from set of hyperparameter configurations and hotstart models
+        learners = map(private$.xss, function(x) {
+          learner = self$learner$clone(deep = TRUE)
+          learner$param_set$values = insert_named(learner$param_set$values, x)
+          learner$hotstart_stack = self$hotstart_stack
+          learner
+        })
+        data.table(task = list(self$task), learner = learners, resampling = resampling)
+      } else if (length(resampling) > 1) {
+        param_values = map(xss, function(xs) list(xs))
+        data.table(task = list(self$task), learner = list(self$learner), resampling = resampling, param_values = param_values)
+      } else {
+        benchmark_grid(self$task, self$learner, resampling, param_values = list(xss))
+      }
+
+      call_back("on_eval_after_design", self$callbacks, context)
+
+      # learner is already cloned, task and resampling are not changed
+      private$.benchmark_result = benchmark(
+        design = private$.design,
+        store_models = self$store_models || self$allow_hotstart,
+        allow_hotstart = self$allow_hotstart,
+        clone = character(0))
+      call_back("on_eval_after_benchmark", self$callbacks, context)
+
+      # aggregate performance scores
+      private$.aggregated_performance = private$.benchmark_result$aggregate(self$measures, conditions = TRUE)[, c(self$codomain$target_ids, "warnings", "errors"), with = FALSE]
+
+      # add runtime to evaluations
+      time = map_dbl(private$.benchmark_result$resample_results$resample_result, function(rr) {
+        extract_runtime(rr)
+      })
+      set(private$.aggregated_performance, j = "runtime_learners", value = time)
+
+      # add to hotstart stack
+      if (self$allow_hotstart) {
+        self$hotstart_stack$add(extract_benchmark_result_learners(private$.benchmark_result))
+        if (!self$store_models) private$.benchmark_result$discard(models = TRUE)
+      }
+
+      call_back("on_eval_before_archive", self$callbacks, context)
+
+      # store benchmark result in archive
+      if (self$store_benchmark_result) {
+        self$archive$benchmark_result$combine(private$.benchmark_result)
+        set(private$.aggregated_performance, j = "uhash", value = private$.benchmark_result$uhashes)
+      }
+
+      # learner is not cloned anymore
+      # restore default values
+      self$learner$param_set$set_values(.values = self$default_values, .insert = FALSE)
+
+      private$.aggregated_performance
+    },
+
+    .xss = NULL,
+    .design = NULL,
+    .benchmark_result = NULL,
+    .aggregated_performance = NULL
+  )
+)

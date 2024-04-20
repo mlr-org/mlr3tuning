@@ -139,36 +139,6 @@ The \href{https://mlr-org.com/gallery-all-optimization.html}{gallery} features a
 }
 }
 
-\section{Default Measures}{
-
-If no measure is passed, the default measure is used.
-The default measure depends on the task type.\tabular{lll}{
-   Task \tab Default Measure \tab Package \cr
-   \code{"classif"} \tab \code{"classif.ce"} \tab \CRANpkg{mlr3} \cr
-   \code{"regr"} \tab \code{"regr.mse"} \tab \CRANpkg{mlr3} \cr
-   \code{"surv"} \tab \code{"surv.cindex"} \tab \CRANpkg{mlr3proba} \cr
-   \code{"dens"} \tab \code{"dens.logloss"} \tab \CRANpkg{mlr3proba} \cr
-   \code{"classif_st"} \tab \code{"classif.ce"} \tab \CRANpkg{mlr3spatial} \cr
-   \code{"regr_st"} \tab \code{"regr.mse"} \tab \CRANpkg{mlr3spatial} \cr
-   \code{"clust"} \tab \code{"clust.dunn"} \tab \CRANpkg{mlr3cluster} \cr
-}
-}
-
-\section{Analysis}{
-
-For analyzing the tuning results, it is recommended to pass the \link{ArchiveTuning} to \code{as.data.table()}.
-The returned data table is joined with the benchmark result which adds the \link[mlr3:ResampleResult]{mlr3::ResampleResult} for each hyperparameter evaluation.
-
-The archive provides various getters (e.g. \verb{$learners()}) to ease the access.
-All getters extract by position (\code{i}) or unique hash (\code{uhash}).
-For a complete list of all getters see the methods section.
-
-The benchmark result (\verb{$benchmark_result}) allows to score the hyperparameter configurations again on a different measure.
-Alternatively, measures can be supplied to \code{as.data.table()}.
-
-The \CRANpkg{mlr3viz} package provides visualizations for tuning results.
-}
-
 \examples{
 # Hyperparameter optimization on the Palmer Penguins data set
 task = tsk("pima")
