@@ -1,9 +1,9 @@
 #' @title Evaluation Context
 #'
 #' @description
-#' The [ContextEval] allows [CallbackTuning]s to access and modify data while a hyperparameter configuration is evaluated.
+#' The [ContextAsyncTuning] allows [CallbackTuning]s to access and modify data while a hyperparameter configuration is evaluated.
 #' See the section on active bindings for a list of modifiable objects.
-#' See [callback_tuning()] for a list of stages that access [ContextEval].
+#' See [callback_tuning()] for a list of stages that access [ContextAsyncTuning].
 #'
 #' @details
 #' This context is re-created each time a new batch of hyperparameter configurations is evaluated.
@@ -12,21 +12,17 @@
 #' Any number of columns can be added.
 #'
 #' @export
-ContextEval = R6Class("ContextEval",
-  inherit = mlr3misc::Context,
+ContextAsyncTuning = R6Class("ContextAsyncTuning",
+  inherit = ContextAsync,
   public = list(
-
-    #' @field objective_tuning [ObjectiveTuning].
-    objective_tuning = NULL,
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #'
-    #' @param id (`character(1)`)\cr
-    #'   Identifier for the new callback.
-    #' @param objective_tuning [ObjectiveTuning].
-    initialize = function(objective_tuning) {
-      self$objective_tuning = assert_r6(objective_tuning, "ObjectiveTuningAsync")
+    #' @param instance ([TuningInstanceAsyncSingleCrit] | [TuningInstanceAsyncMultiCrit]).
+    #' @param tuner ([TunerAsync]).
+    initialize = function(instance, tuner) {
+      super$initialize(instance, tuner)
     }
   ),
 
@@ -34,7 +30,6 @@ ContextEval = R6Class("ContextEval",
     #' @field xs (list())\cr
     #'   The hyperparameter configuration currently evaluated.
     #'   Contains the values on the learner scale i.e. transformations are applied.
-    #'   See `$xdt` in [bbotk::ContextOptimization] for the untransformed values.
     xs = function(rhs) {
       if (missing(rhs)) {
         return(get_private(self$objective_tuning)$.xs)
@@ -47,9 +42,9 @@ ContextEval = R6Class("ContextEval",
     #'   The resample result of the hyperparameter configuration currently evaluated.
     resample_result = function(rhs) {
       if (missing(rhs)) {
-        return(get_private(self$objective_tuning)$.resample_result)
+        return(get_private(self$instance$objective)$.resample_result)
       } else {
-        self$objective_tuning$.__enclos_env__$private$.resample_result = rhs
+        self$instance$objective$.__enclos_env__$private$.resample_result = rhs
       }
     },
 
@@ -59,9 +54,9 @@ ContextEval = R6Class("ContextEval",
     #'   A callback can add additional columns which are also written to the archive.
     aggregated_performance = function(rhs) {
       if (missing(rhs)) {
-        return(get_private(self$objective_tuning)$.aggregated_performance)
+        return(get_private(self$instance$objective)$.aggregated_performance)
       } else {
-        self$objective_tuning$.__enclos_env__$private$.aggregated_performance = rhs
+        self$instance$objective$.__enclos_env__$private$.aggregated_performance = rhs
       }
     }
   )

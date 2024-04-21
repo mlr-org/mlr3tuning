@@ -5,7 +5,7 @@
 \title{Class for Tuning Objective}
 \description{
 Stores the objective function that estimates the performance of hyperparameter configurations.
-This class is usually constructed internally by the \link{TuningInstanceSingleCrit} or \link{TuningInstanceMultiCrit}.
+This class is usually constructed internally by the \link{TuningInstanceBatchSingleCrit} or \link{TuningInstanceBatchMultiCrit}.
 }
 \section{Super classes}{
 \code{\link[bbotk:Objective]{bbotk::Objective}} -> \code{\link[mlr3tuning:ObjectiveTuning]{mlr3tuning::ObjectiveTuning}} -> \code{ObjectiveTuningBatch}
@@ -13,20 +13,9 @@ This class is usually constructed internally by the \link{TuningInstanceSingleCr
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{default_values}}{(named \code{list()}).
-Default hyperparameter values of the learner.}
-
 \item{\code{keep_hotstart_stack}}{(\code{logical(1)}).}
 
 \item{\code{archive}}{(\link{ArchiveTuning}).}
-}
-\if{html}{\out{</div>}}
-}
-\section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{default_values}}{(named \code{list()}).
-Default hyperparameter values of the learner.}
 }
 \if{html}{\out{</div>}}
 }
@@ -118,7 +107,7 @@ If \code{TRUE}, \link[mlr3:HotstartStack]{mlr3::HotstartStack} is kept in \verb{
 after tuning.}
 
 \item{\code{archive}}{(\link{ArchiveTuning})\cr
-Reference to archive of \link{TuningInstanceSingleCrit} | \link{TuningInstanceMultiCrit}.
+Reference to archive of \link{TuningInstanceBatchSingleCrit} | \link{TuningInstanceBatchMultiCrit}.
 If \code{NULL} (default), benchmark result and models cannot be stored.}
 
 \item{\code{callbacks}}{(list of \link{CallbackTuning})\cr

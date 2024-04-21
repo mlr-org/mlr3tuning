@@ -49,7 +49,7 @@ Hyperparameter values used by the learner.
 Includes fixed and proposed hyperparameter values.
 \item \code{x_domain} (\code{list()})\cr
 List of transformed hyperparameter values.
-\item \code{tuning_instance} (\link{TuningInstanceSingleCrit} | \link{TuningInstanceMultiCrit})\cr
+\item \code{tuning_instance} (\link{TuningInstanceBatchSingleCrit} | \link{TuningInstanceBatchMultiCrit})\cr
 Optionally, tuning instances.
 \item \code{task_id} (\code{character(1)}).
 \item \code{learner_id} (\code{character(1)}).

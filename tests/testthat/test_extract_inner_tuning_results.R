@@ -133,7 +133,7 @@ test_that("extract_inner_tuning_results returns tuning_instance", {
   tab = extract_inner_tuning_results(rr, tuning_instance = TRUE)
   expect_data_table(tab, nrows = 2)
   expect_named(tab, c("iteration", "cp", "classif.ce", "learner_param_vals", "x_domain", "tuning_instance", "task_id", "learner_id", "resampling_id"))
-  expect_class(tab$tuning_instance[[1]], "TuningInstanceSingleCrit")
+  expect_class(tab$tuning_instance[[1]], "TuningInstanceBatchSingleCrit")
 
   at = auto_tuner(
     tuner =  tnr("random_search"),

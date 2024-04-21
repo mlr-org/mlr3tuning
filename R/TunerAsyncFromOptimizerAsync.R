@@ -33,13 +33,13 @@ TunerAsyncFromOptimizerAsync = R6Class("TunerAsyncFromOptimizerAsync",
       },
 
       #' @description
-      #' Performs the tuning on a [TuningInstanceSingleCrit] /
-      #' [TuningInstanceMultiCrit] until termination. The single evaluations and
+      #' Performs the tuning on a [TuningInstanceBatchSingleCrit] /
+      #' [TuningInstanceBatchMultiCrit] until termination. The single evaluations and
       #' the final results will be written into the [ArchiveTuning] that
-      #' resides in the [TuningInstanceSingleCrit]/[TuningInstanceMultiCrit].
+      #' resides in the [TuningInstanceBatchSingleCrit]/[TuningInstanceBatchMultiCrit].
       #' The final result is returned.
       #'
-      #' @param inst ([TuningInstanceSingleCrit] | [TuningInstanceMultiCrit]).
+      #' @param inst ([TuningInstanceBatchSingleCrit] | [TuningInstanceBatchMultiCrit]).
       #'
       #' @return [data.table::data.table].
       optimize = function(inst) {
@@ -51,9 +51,7 @@ TunerAsyncFromOptimizerAsync = R6Class("TunerAsyncFromOptimizerAsync",
           inst$archive$push_tasks(transpose_list(xdt))
         }
 
-        res = private$.optimizer$optimize(inst)
-        if (!inst$objective$keep_hotstart_stack) inst$objective$hotstart_stack = NULL
-        res
+        private$.optimizer$optimize(inst)
       }
     ),
 

@@ -1,9 +1,9 @@
 #' @title Evaluation Context
 #'
 #' @description
-#' The [ContextEvalMany] allows [CallbackTuning]s to access and modify data while a batch of hyperparameter configurations is evaluated.
+#' The [ContextAsyncTuningMany] allows [CallbackTuning]s to access and modify data while a batch of hyperparameter configurations is evaluated.
 #' See section on active bindings for a list of modifiable objects.
-#' See [callback_tuning()] for a list of stages which access [ContextEval].
+#' See [callback_tuning()] for a list of stages which access [ContextAsyncTuning].
 #'
 #' @details
 #' This context is re-created each time a new batch of hyperparameter configurations is evaluated.
@@ -12,7 +12,7 @@
 #' Any number of columns can be added.
 #'
 #' @export
-ContextEvalMany = R6Class("ContextEvalMany",
+ContextAsyncTuningMany = R6Class("ContextAsyncTuningMany",
   inherit = mlr3misc::Context,
   public = list(
 

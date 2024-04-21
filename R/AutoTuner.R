@@ -17,7 +17,7 @@
 #' During `$predict()` the `AutoTuner` just calls the predict method of the wrapped (inner) learner.
 #' A set timeout is disabled while fitting the final model.
 #'
-#' @inheritSection TuningInstanceSingleCrit Default Measures
+#' @inheritSection TuningInstanceBatchSingleCrit Default Measures
 #'
 #' @section Resources:
 #' There are several sections about hyperparameter optimization in the [mlr3book](https://mlr3book.mlr-org.com).
@@ -47,6 +47,7 @@
 #' @template param_keep_hotstart_stack
 #' @template param_evaluate_default
 #' @template param_callbacks
+#' @template param_rush
 #'
 #' @export
 #' @examples
@@ -113,7 +114,7 @@ AutoTuner = R6Class("AutoTuner",
   public = list(
 
     #' @field instance_args (`list()`)\cr
-    #' All arguments from construction to create the [TuningInstanceSingleCrit].
+    #' All arguments from construction to create the [TuningInstanceBatchSingleCrit].
     instance_args = NULL,
 
     #' @field tuner ([Tuner])\cr
@@ -139,7 +140,8 @@ AutoTuner = R6Class("AutoTuner",
       allow_hotstart = FALSE,
       keep_hotstart_stack = FALSE,
       evaluate_default = FALSE,
-      callbacks = list()
+      callbacks = list(),
+      rush = NULL
       ) {
       learner = assert_learner(as_learner(learner, clone = TRUE))
 
@@ -281,7 +283,7 @@ AutoTuner = R6Class("AutoTuner",
   active = list(
 
     #' @field archive [ArchiveTuning]\cr
-    #' Archive of the [TuningInstanceSingleCrit].
+    #' Archive of the [TuningInstanceBatchSingleCrit].
     archive = function() self$tuning_instance$archive,
 
     #' @field learner ([mlr3::Learner])\cr
@@ -295,12 +297,12 @@ AutoTuner = R6Class("AutoTuner",
       }
     },
 
-    #' @field tuning_instance ([TuningInstanceSingleCrit])\cr
+    #' @field tuning_instance ([TuningInstanceBatchSingleCrit])\cr
     #' Internally created tuning instance with all intermediate results.
     tuning_instance = function() self$model$tuning_instance,
 
     #' @field tuning_result ([data.table::data.table])\cr
-    #' Short-cut to `result` from [TuningInstanceSingleCrit].
+    #' Short-cut to `result` from [TuningInstanceBatchSingleCrit].
     tuning_result = function() self$tuning_instance$result,
 
     #' @field predict_type (`character(1)`)\cr
@@ -358,7 +360,7 @@ AutoTuner = R6Class("AutoTuner",
         })
       }
 
-      TuningInstance = if (inherits(self$tuner, "Tuner")) TuningInstanceSingleCrit else TuningInstanceAsyncSingleCrit
+      TuningInstance = if (inherits(self$tuner, "Tuner")) TuningInstanceBatchSingleCrit else TuningInstanceAsyncSingleCrit
       instance = do.call(TuningInstance$new, ia)
       self$tuner$optimize(instance)
 

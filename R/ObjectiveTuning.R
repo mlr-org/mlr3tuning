@@ -2,7 +2,7 @@
 #'
 #' @description
 #' Stores the objective function that estimates the performance of hyperparameter configurations.
-#' This class is usually constructed internally by the [TuningInstanceSingleCrit] or [TuningInstanceMultiCrit].
+#' This class is usually constructed internally by the [TuningInstanceBatchSingleCrit] or [TuningInstanceBatchMultiCrit].
 #'
 #' @template param_task
 #' @template param_learner
@@ -16,8 +16,6 @@
 #' @template param_keep_hotstart_stack
 #' @template param_callbacks
 #'
-#' @template field_default_values
-#'
 #' @export
 ObjectiveTuning = R6Class("ObjectiveTuning",
   inherit = Objective,
@@ -28,8 +26,6 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
 
     #' @field learner ([mlr3::Learner]).
     learner = NULL,
-
-    default_values = NULL,
 
      #' @field resampling ([mlr3::Resampling]).
     resampling = NULL,
@@ -51,6 +47,9 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
 
     #' @field callbacks (List of [CallbackTuning]s).
     callbacks = NULL,
+
+    #' @field default_values (named `list`).
+    default_values = NULL,
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
@@ -80,6 +79,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
         self$hotstart_stack = HotstartStack$new(hotstart_threshold = hotstart_threshold)
       }
       self$callbacks = assert_callbacks(as_callbacks(callbacks))
+      self$default_values = self$learner$param_set$values
 
       super$initialize(
         id = sprintf("%s_on_%s", self$learner$id, self$task$id),

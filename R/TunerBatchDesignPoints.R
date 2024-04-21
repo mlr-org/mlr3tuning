@@ -11,12 +11,12 @@
 #' @templateVar id design_points
 #' @template section_dictionary_tuners
 #'
-#' @inheritSection bbotk::OptimizerDesignPoints Parameters
+#' @inheritSection bbotk::OptimizerBatchDesignPoints Parameters
 #' @inheritSection Tuner Resources
-#' @inheritSection bbotk::OptimizerDesignPoints Progress Bars
+#' @inheritSection bbotk::OptimizerBatchDesignPoints Progress Bars
 #' @template section_parallelization
 #' @template section_logging
-#' @templateVar optimizer bbotk::OptimizerDesignPoints
+#' @templateVar optimizer bbotk::OptimizerBatchDesignPoints
 #' @template section_optimizer
 #'
 #' @family Tuner
@@ -58,19 +58,19 @@
 #' # fit final model on complete data set
 #' learner$param_set$values = instance$result_learner_param_vals
 #' learner$train(tsk("penguins"))
-TunerDesignPoints = R6Class("TunerDesignPoints",
-  inherit = TunerFromOptimizer,
+TunerBatchDesignPoints = R6Class("TunerBatchDesignPoints",
+  inherit = TunerBatchFromOptimizerBatch,
   public = list(
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function() {
       super$initialize(
-        optimizer = OptimizerDesignPoints$new(),
+        optimizer = OptimizerBatchDesignPoints$new(),
         man = "mlr3tuning::mlr_tuners_design_points"
       )
     }
   )
 )
 
-mlr_tuners$add("design_points", TunerDesignPoints)
+mlr_tuners$add("design_points", TunerBatchDesignPoints)

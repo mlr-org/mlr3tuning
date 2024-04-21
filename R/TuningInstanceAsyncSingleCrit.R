@@ -15,10 +15,10 @@
 #' If the available budget is exhausted, an exception is raised, and no further evaluations can be performed from this point on.
 #' The tuner is also supposed to store its final result, consisting of a  selected hyperparameter configuration and associated estimated performance values, by calling the method `instance$.assign_result`.
 #'
-#' @inheritSection TuningInstanceSingleCrit Default Measures
-#' @inheritSection ArchiveTuning Analysis
-#' @inheritSection TuningInstanceSingleCrit Resources
-#' @inheritSection TuningInstanceSingleCrit Extension Packages
+#' @inheritSection TuningInstanceBatchSingleCrit Default Measures
+#' @inheritSection ArchiveAsyncTuning Analysis
+#' @inheritSection TuningInstanceBatchSingleCrit Resources
+#' @inheritSection TuningInstanceBatchSingleCrit Extension Packages
 #'
 #' @template param_task
 #' @template param_learner
@@ -55,9 +55,6 @@ TuningInstanceAsyncSingleCrit = R6Class("TuningInstanceAsyncSingleCrit",
       store_benchmark_result = TRUE,
       store_models = FALSE,
       check_values = FALSE,
-      allow_hotstart = FALSE,
-      hotstart_threshold = NULL,
-      keep_hotstart_stack = FALSE,
       evaluate_default = FALSE,
       callbacks = list(),
       rush = NULL
@@ -94,8 +91,6 @@ TuningInstanceAsyncSingleCrit = R6Class("TuningInstanceAsyncSingleCrit",
         store_benchmark_result = store_benchmark_result,
         store_models = store_models,
         check_values = check_values,
-        allow_hotstart = allow_hotstart,
-        hotstart_threshold = hotstart_threshold,
         callbacks = callbacks)
 
       super$initialize(

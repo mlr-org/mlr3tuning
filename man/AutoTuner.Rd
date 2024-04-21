@@ -41,6 +41,21 @@ For this reason, the inner resampling should be not instantiated.
 If an instantiated resampling is passed, the \link{AutoTuner} fails when a row id of the inner resampling is not present in the training set of the outer resampling.
 }
 
+\section{Default Measures}{
+
+If no measure is passed, the default measure is used.
+The default measure depends on the task type.\tabular{lll}{
+   Task \tab Default Measure \tab Package \cr
+   \code{"classif"} \tab \code{"classif.ce"} \tab \CRANpkg{mlr3} \cr
+   \code{"regr"} \tab \code{"regr.mse"} \tab \CRANpkg{mlr3} \cr
+   \code{"surv"} \tab \code{"surv.cindex"} \tab \CRANpkg{mlr3proba} \cr
+   \code{"dens"} \tab \code{"dens.logloss"} \tab \CRANpkg{mlr3proba} \cr
+   \code{"classif_st"} \tab \code{"classif.ce"} \tab \CRANpkg{mlr3spatial} \cr
+   \code{"regr_st"} \tab \code{"regr.mse"} \tab \CRANpkg{mlr3spatial} \cr
+   \code{"clust"} \tab \code{"clust.dunn"} \tab \CRANpkg{mlr3cluster} \cr
+}
+}
+
 \examples{
 # Automatic Tuning
 
@@ -108,7 +123,7 @@ rr$aggregate()
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
 \item{\code{instance_args}}{(\code{list()})\cr
-All arguments from construction to create the \link{TuningInstanceSingleCrit}.}
+All arguments from construction to create the \link{TuningInstanceBatchSingleCrit}.}
 
 \item{\code{tuner}}{(\link{Tuner})\cr
 Optimization algorithm.}
@@ -119,16 +134,16 @@ Optimization algorithm.}
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
 \item{\code{archive}}{\link{ArchiveTuning}\cr
-Archive of the \link{TuningInstanceSingleCrit}.}
+Archive of the \link{TuningInstanceBatchSingleCrit}.}
 
 \item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner})\cr
 Trained learner}
 
-\item{\code{tuning_instance}}{(\link{TuningInstanceSingleCrit})\cr
+\item{\code{tuning_instance}}{(\link{TuningInstanceBatchSingleCrit})\cr
 Internally created tuning instance with all intermediate results.}
 
 \item{\code{tuning_result}}{(\link[data.table:data.table]{data.table::data.table})\cr
-Short-cut to \code{result} from \link{TuningInstanceSingleCrit}.}
+Short-cut to \code{result} from \link{TuningInstanceBatchSingleCrit}.}
 
 \item{\code{predict_type}}{(\code{character(1)})\cr
 Stores the currently active predict type, e.g. \code{"response"}.
@@ -187,7 +202,8 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   allow_hotstart = FALSE,
   keep_hotstart_stack = FALSE,
   evaluate_default = FALSE,
-  callbacks = list()
+  callbacks = list(),
+  rush = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -219,7 +235,7 @@ constructed from the \link{TuneToken} of the learner's parameter set
 (learner$param_set).}
 
 \item{\code{store_tuning_instance}}{(\code{logical(1)})\cr
-If \code{TRUE} (default), stores the internally created \link{TuningInstanceSingleCrit} with all intermediate results in slot \verb{$tuning_instance}.}
+If \code{TRUE} (default), stores the internally created \link{TuningInstanceBatchSingleCrit} with all intermediate results in slot \verb{$tuning_instance}.}
 
 \item{\code{store_benchmark_result}}{(\code{logical(1)})\cr
 If \code{TRUE} (default), store resample result of evaluated hyperparameter
@@ -251,6 +267,9 @@ values at the start of the optimization.}
 
 \item{\code{callbacks}}{(list of \link{CallbackTuning})\cr
 List of callbacks.}
+
+\item{\code{rush}}{(\code{Rush})\cr
+If a rush instance is supplied, the tuning runs without batches.}
 }
 \if{html}{\out{</div>}}
 }

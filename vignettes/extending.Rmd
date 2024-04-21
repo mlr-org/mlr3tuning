@@ -32,7 +32,7 @@ The fifth step is only required if the new tuner is added via `bbotk`.
 1. Use one of the existing optimizers / tuners as a [template](#tuner-template).
 1. Overwrite the [`.optimize`](#tuner-optimize) private method of the optimizer / tuner.
 1. Optionally, overwrite the default [`.assign_result`](#tuner-add-result) private method.
-1. Use the [`mlr3tuning::TunerFromOptimizer`](#tuner-from-optimizer) class to transform the `Optimizer` to a `Tuner`.
+1. Use the [`mlr3tuning::TunerBatchFromOptimizerBatch`](#tuner-from-optimizer) class to transform the `Optimizer` to a `Tuner`.
 1. Add [unit tests](#tuner-test) for the tuner and optionally for the optimizer.
 1. Open a new pull request for the [`Tuner`](https://github.com/mlr-org/mlr3tuning/pulls) and optionally a second one for the [`Optimizer](https://github.com/mlr-org/bbotk/pulls).
 
@@ -78,7 +78,7 @@ See [`mlr3tuning::TunerIrace`](https://github.com/mlr-org/mlr3tuning/blob/master
 ## Transform optimizer to tuner
 
 This step is only needed if you implement via `bbotk`.
-The `mlr3tuning::TunerFromOptimizer` class transforms a `Optimizer` to a `Tuner`.
+The `mlr3tuning::TunerBatchFromOptimizerBatch` class transforms a `Optimizer` to a `Tuner`.
 Just add the `Optimizer` to the `optimizer` field.
 See [`mlr3tuning::TunerRandomSearch`](https://github.com/mlr-org/mlr3tuning/blob/master/R/TunerRandomSearch.R) for an example.
 

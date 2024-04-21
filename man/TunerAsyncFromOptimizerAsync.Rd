@@ -7,8 +7,8 @@
 Internally used to transform \link[bbotk:Optimizer]{bbotk::Optimizer} to \link{Tuner}.
 }
 \keyword{internal}
-\section{Super class}{
-\code{\link[mlr3tuning:TunerAsync]{mlr3tuning::TunerAsync}} -> \code{TunerAsyncFromOptimizerAsync}
+\section{Super classes}{
+\code{\link[mlr3tuning:Tuner]{mlr3tuning::Tuner}} -> \code{\link[mlr3tuning:TunerAsync]{mlr3tuning::TunerAsync}} -> \code{TunerAsyncFromOptimizerAsync}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -21,9 +21,9 @@ Internally used to transform \link[bbotk:Optimizer]{bbotk::Optimizer} to \link{T
 \if{html}{\out{
 <details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="TunerAsync" data-id="format"><a href='../../mlr3tuning/html/TunerAsync.html#method-TunerAsync-format'><code>mlr3tuning::TunerAsync$format()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="TunerAsync" data-id="help"><a href='../../mlr3tuning/html/TunerAsync.html#method-TunerAsync-help'><code>mlr3tuning::TunerAsync$help()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="TunerAsync" data-id="print"><a href='../../mlr3tuning/html/TunerAsync.html#method-TunerAsync-print'><code>mlr3tuning::TunerAsync$print()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="format"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-format'><code>mlr3tuning::Tuner$format()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="help"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-help'><code>mlr3tuning::Tuner$help()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="print"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-print'><code>mlr3tuning::Tuner$print()</code></a></span></li>
 </ul>
 </details>
 }}
@@ -53,10 +53,10 @@ The referenced help package can be opened via method \verb{$help()}.}
 \if{html}{\out{<a id="method-TunerAsyncFromOptimizerAsync-optimize"></a>}}
 \if{latex}{\out{\hypertarget{method-TunerAsyncFromOptimizerAsync-optimize}{}}}
 \subsection{Method \code{optimize()}}{
-Performs the tuning on a \link{TuningInstanceSingleCrit} /
-\link{TuningInstanceMultiCrit} until termination. The single evaluations and
+Performs the tuning on a \link{TuningInstanceBatchSingleCrit} /
+\link{TuningInstanceBatchMultiCrit} until termination. The single evaluations and
 the final results will be written into the \link{ArchiveTuning} that
-resides in the \link{TuningInstanceSingleCrit}/\link{TuningInstanceMultiCrit}.
+resides in the \link{TuningInstanceBatchSingleCrit}/\link{TuningInstanceBatchMultiCrit}.
 The final result is returned.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TunerAsyncFromOptimizerAsync$optimize(inst)}\if{html}{\out{</div>}}
@@ -65,7 +65,7 @@ The final result is returned.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{inst}}{(\link{TuningInstanceSingleCrit} | \link{TuningInstanceMultiCrit}).}
+\item{\code{inst}}{(\link{TuningInstanceBatchSingleCrit} | \link{TuningInstanceBatchMultiCrit}).}
 }
 \if{html}{\out{</div>}}
 }

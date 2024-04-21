@@ -80,6 +80,47 @@ test_that("backup callback works with standalone tuner", {
   expect_benchmark_result(readRDS(file))
 })
 
+# async ------------------------------------------------------------------------
+
+test_that("async hotstart callback works", {
+  options(bbotk_local = TRUE)
+  skip_on_cran()
+  skip_if_not_installed("rush")
+  flush_redis()
+
+  lgr::get_logger("mlr3")$set_threshold("debug")
+  lgr::get_logger("bbotk")$set_threshold("debug")
+
+  rush_plan(n_workers = 2)
+  instance = ti_async(
+    task = tsk("pima"),
+    learner = lrn("classif.debug", x = to_tune(), iter = to_tune(1, 100)),
+    resampling = rsmp("cv", folds = 3),
+    measure = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 20),
+    store_benchmark_result = FALSE,
+    callbacks = clbk("mlr3tuning.async_hotstart")
+  )
+
+  design = data.table(
+    x = 1,
+    iter = c(1, 2, 3)
+  )
+
+  tuner = tnr("async_design_points", design = design)
+  tuner$optimize(instance)
+
+
+  ids = map(extract_benchmark_result_learners(instance$archive$benchmark_result), function(l) l$model$id)
+  expect_equal(length(unique(ids)), 5)
+  expect_equal(unique(instance$archive$data$iter), c(1, 26, 51, 76, 101))
+  expect_null(instance$archive$data$resample_result)
+
+  tuner = tnr("async_random_search")
+  expect_data_table(tuner$optimize(instance), nrows = 1)
+})
+
+
 # rush -------------------------------------------------------------------------
 
 test_that("rush early stopping callback works", {

@@ -12,12 +12,12 @@
 #' @templateVar id random_search
 #' @template section_dictionary_tuners
 #'
-#' @inheritSection bbotk::OptimizerRandomSearch Parameters
+#' @inheritSection bbotk::OptimizerBatchRandomSearch Parameters
 #' @inheritSection Tuner Resources
-#' @inheritSection bbotk::OptimizerRandomSearch Progress Bars
+#' @inheritSection bbotk::OptimizerBatchRandomSearch Progress Bars
 #' @template section_parallelization
 #' @template section_logging
-#' @templateVar optimizer bbotk::OptimizerRandomSearch
+#' @templateVar optimizer bbotk::OptimizerBatchRandomSearch
 #' @template section_optimizer
 #'
 #' @source
@@ -27,19 +27,19 @@
 #' @seealso Package \CRANpkg{mlr3hyperband} for hyperband tuning.
 #' @export
 #' @template example
-TunerRandomSearch = R6Class("TunerRandomSearch",
-  inherit = TunerFromOptimizer,
+TunerBatchRandomSearch = R6Class("TunerBatchRandomSearch",
+  inherit = TunerBatchFromOptimizerBatch,
   public = list(
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function() {
       super$initialize(
-        optimizer = OptimizerRandomSearch$new(),
+        optimizer = OptimizerBatchRandomSearch$new(),
         man = "mlr3tuning::mlr_tuners_random_search"
       )
     }
   )
 )
 
-mlr_tuners$add("random_search", TunerRandomSearch)
+mlr_tuners$add("random_search", TunerBatchRandomSearch)

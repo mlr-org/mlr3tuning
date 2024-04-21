@@ -12,12 +12,12 @@
 #' @templateVar id gensa
 #' @template section_dictionary_tuners
 #'
-#' @inheritSection bbotk::OptimizerGenSA Parameters
+#' @inheritSection bbotk::OptimizerBatchGenSA Parameters
 #' @inheritSection Tuner Resources
-#' @inheritSection bbotk::OptimizerGenSA Progress Bars
+#' @inheritSection bbotk::OptimizerBatchGenSA Progress Bars
 #' @template section_parallelization
 #' @template section_logging
-#' @templateVar optimizer bbotk::OptimizerGenSA
+#' @templateVar optimizer bbotk::OptimizerBatchGenSA
 #' @template section_optimizer
 #'
 #' @source
@@ -26,14 +26,14 @@
 #' @family Tuner
 #' @export
 #' @template example
-TunerGenSA = R6Class("TunerGenSA",
-  inherit = TunerFromOptimizer,
+TunerBatchGenSA = R6Class("TunerBatchGenSA",
+  inherit = TunerBatchFromOptimizerBatch,
   public = list(
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function() {
-      optimizer = OptimizerGenSA$new()
+      optimizer = OptimizerBatchGenSA$new()
       optimizer$param_set$values$smooth = FALSE
       super$initialize(
         optimizer = optimizer,
@@ -43,4 +43,4 @@ TunerGenSA = R6Class("TunerGenSA",
   )
 )
 
-mlr_tuners$add("gensa", TunerGenSA)
+mlr_tuners$add("gensa", TunerBatchGenSA)

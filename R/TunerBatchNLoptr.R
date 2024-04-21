@@ -15,11 +15,11 @@
 #' @templateVar id nloptr
 #' @template section_dictionary_tuners
 #'
-#' @inheritSection bbotk::OptimizerNLoptr Parameters
+#' @inheritSection bbotk::OptimizerBatchNLoptr Parameters
 #' @inheritSection Tuner Resources
-#' @inheritSection bbotk::OptimizerNLoptr Progress Bars
+#' @inheritSection bbotk::OptimizerBatchNLoptr Progress Bars
 #' @template section_logging
-#' @templateVar optimizer bbotk::OptimizerNLoptr
+#' @templateVar optimizer bbotk::OptimizerBatchNLoptr
 #' @template section_optimizer
 #'
 #' @family Tuner
@@ -55,19 +55,19 @@
 #' learner$param_set$values = instance$result_learner_param_vals
 #' learner$train(tsk("penguins"))
 #' }
-TunerNLoptr = R6Class("TunerNLoptr",
-  inherit = TunerFromOptimizer,
+TunerBatchNLoptr = R6Class("TunerBatchNLoptr",
+  inherit = TunerBatchFromOptimizerBatch,
   public = list(
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function() {
       super$initialize(
-        optimizer = OptimizerNLoptr$new(),
+        optimizer = OptimizerBatchNLoptr$new(),
         man = "mlr3tuning::mlr_tuners_nloptr"
       )
     }
   )
 )
 
-mlr_tuners$add("nloptr", TunerNLoptr)
+mlr_tuners$add("nloptr", TunerBatchNLoptr)

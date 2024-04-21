@@ -26,11 +26,11 @@ test_that("TunerIrace works with dependencies", {
     cp = p_dbl(lower = 0.001, upper = 0.1),
     minsplit = p_int(lower = 1, upper = 10, depends = cp == 0.005)
   )
-  instance = TuningInstanceSingleCrit$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"),
+  instance = TuningInstanceBatchSingleCrit$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"),
     trm("evals", n_evals = 96), search_space)
   tuner = tnr("irace")
   tuner$optimize(instance)
-  
+
   archive = instance$archive$data
   expect_true(all(is.na(archive[cp != 0.005, minsplit])))
   expect_double(archive$cp)
@@ -38,7 +38,7 @@ test_that("TunerIrace works with dependencies", {
 
 test_that("TunerIrace works with logical parameters", {
   search_space = ps(keep_model = p_lgl())
-  instance = TuningInstanceSingleCrit$new(tsk("mtcars"), lrn("regr.rpart"), rsmp("holdout"), msr("regr.mse"),
+  instance = TuningInstanceBatchSingleCrit$new(tsk("mtcars"), lrn("regr.rpart"), rsmp("holdout"), msr("regr.mse"),
     trm("evals", n_evals = 42), search_space)
   tuner = tnr("irace")
   tuner$optimize(instance)
@@ -47,7 +47,7 @@ test_that("TunerIrace works with logical parameters", {
 
 test_that("TunerIrace uses digits", {
   search_space = ps(cp = p_dbl(lower = pi * 1e-20, upper = 5.242e12 / 1e13))
-  instance = TuningInstanceSingleCrit$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), 
+  instance = TuningInstanceBatchSingleCrit$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"),
   trm("evals", n_evals = 30), search_space)
   tuner = tnr("irace", nbIterations = 1L, minNbSurvival = 1)
   expect_data_table(tuner$optimize(instance))
@@ -56,7 +56,7 @@ test_that("TunerIrace uses digits", {
 test_that("TunerIrace works with unnamed discrete values", {
   # we had a bug here, see (mlr) issue #627
   search_space = ps(minsplit = p_int(lower = 2L, upper = 7L))
-  inst = TuningInstanceSingleCrit$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"),
+  inst = TuningInstanceBatchSingleCrit$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"),
     trm("evals", n_evals = 50), search_space)
   tuner = tnr("irace")
   expect_data_table(tuner$optimize(inst))

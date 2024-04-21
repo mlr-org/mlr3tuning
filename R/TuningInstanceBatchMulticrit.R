@@ -1,12 +1,12 @@
 #' @title Class for Multi Criteria Tuning
 #'
-#' @include TuningInstanceSingleCrit.R ArchiveTuning.R
+#' @include TuningInstanceBatchSingleCrit.R ArchiveBatchTuning.R
 #'
 #' @description
-#' The [TuningInstanceMultiCrit] specifies a tuning problem for [Tuners][Tuner].
-#' The function [ti()] creates a [TuningInstanceMultiCrit] and the function [tune()] creates an instance internally.
+#' The [TuningInstanceBatchMultiCrit] specifies a tuning problem for [Tuners][Tuner].
+#' The function [ti()] creates a [TuningInstanceBatchMultiCrit] and the function [tune()] creates an instance internally.
 #'
-#' @inherit TuningInstanceSingleCrit details
+#' @inherit TuningInstanceBatchSingleCrit details
 #'
 #' @section Resources:
 #' There are several sections about hyperparameter optimization in the [mlr3book](https://mlr3book.mlr-org.com).
@@ -15,7 +15,7 @@
 #'
 #' The [gallery](https://mlr-org.com/gallery-all-optimization.html) features a collection of case studies and demos about optimization.
 #'
-#' @inheritSection ArchiveTuning Analysis
+#' @inheritSection ArchiveBatchTuning Analysis
 #'
 #' @template param_task
 #' @template param_learner
@@ -104,12 +104,12 @@ TuningInstanceBatchMultiCrit = R6Class("TuningInstanceBatchMultiCrit",
       codomain = measures_to_codomain(measures)
 
       # initialized specialized tuning archive and objective
-      archive = ArchiveTuning$new(
+      archive = ArchiveBatchTuning$new(
         search_space = search_space,
         codomain = codomain,
         check_values = check_values)
 
-      objective = ObjectiveTuning$new(
+      objective = ObjectiveTuningBatch$new(
         task = task,
         learner = learner,
         resampling = resampling,

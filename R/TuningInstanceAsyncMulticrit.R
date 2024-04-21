@@ -1,6 +1,6 @@
 #' @title Multi-Criteria Tuning with Rush
 #'
-#' @include TuningInstanceSingleCrit.R ArchiveTuning.R
+#' @include TuningInstanceBatchSingleCrit.R ArchiveAsyncTuning.R
 #'
 #' @description
 #' The [TuningInstanceAsyncMultiCrit] specifies a tuning problem for [Tuner]s.
@@ -8,8 +8,8 @@
 #' The function [ti()] creates a [TuningInstanceAsyncMultiCrit] and the function [tune()] creates an instance internally.
 #'
 #' @inherit TuningInstanceAsyncSingleCrit details
-#' @inheritSection TuningInstanceMultiCrit Resources
-#' @inheritSection ArchiveTuning Analysis
+#' @inheritSection TuningInstanceBatchMultiCrit Resources
+#' @inheritSection ArchiveAsyncTuning Analysis
 #'
 #' @template param_task
 #' @template param_learner
@@ -66,6 +66,8 @@ TuningInstanceAsyncMultiCrit = R6Class("TuningInstanceAsyncMultiCrit",
         search_space = as_search_space(search_space)
       }
 
+      if (is.null(rush)) rush = rsh()
+
       # create codomain from measure
       measures = assert_measures(as_measures(measures), task = task, learner = learner)
       codomain = measures_to_codomain(measures)
@@ -73,7 +75,6 @@ TuningInstanceAsyncMultiCrit = R6Class("TuningInstanceAsyncMultiCrit",
       archive = ArchiveAsyncTuning$new(
         search_space = search_space,
         codomain = codomain,
-        check_values = check_values,
         rush = rush)
 
       objective = ObjectiveTuningAsync$new(
@@ -93,8 +94,8 @@ TuningInstanceAsyncMultiCrit = R6Class("TuningInstanceAsyncMultiCrit",
         search_space = search_space,
         terminator = terminator,
         callbacks = callbacks,
-        rush = rush,
-        archive = archive)
+        archive = archive,
+        rush = rush)
     },
 
     #' @description

@@ -2,58 +2,46 @@
 % Please edit documentation in R/TunerAsync.R
 \name{TunerAsync}
 \alias{TunerAsync}
-\title{Class for Tuning Algorithms}
+\title{Class for Asynchronous Tuning Algorithms}
 \description{
 The \link{TunerAsync} implements the asynchronous optimization algorithm.
 }
-\section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{id}}{(\code{character(1)})\cr
-Identifier of the object.
-Used in tables, plot and text output.}
+\details{
+\link{TunerAsync} is an abstract base class that implements the base functionality each asynchronous tuner must provide.
 }
-\if{html}{\out{</div>}}
+\section{Resources}{
+
+There are several sections about hyperparameter optimization in the \href{https://mlr3book.mlr-org.com}{mlr3book}.
+\itemize{
+\item Learn more about \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-tuner}{tuners}.
 }
-\section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{param_set}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
-Set of control parameters.}
 
-\item{\code{param_classes}}{(\code{character()})\cr
-Supported parameter classes for learner hyperparameters that the tuner can optimize.
-Subclasses of \link[paradox:Param]{paradox::Param}.}
-
-\item{\code{properties}}{(\code{character()})\cr
-Set of properties of the tuner.
-Must be a subset of \code{\link[mlr3:mlr_reflections]{mlr_reflections$tuner_properties}}.}
-
-\item{\code{packages}}{(\code{character()})\cr
-Set of required packages.
-Note that these packages will be loaded via \code{\link[=requireNamespace]{requireNamespace()}}, and are not attached.}
-
-\item{\code{label}}{(\code{character(1)})\cr
-Label for this object.
-Can be used in tables, plot and text output instead of the ID.}
-
-\item{\code{man}}{(\code{character(1)})\cr
-String in the format \verb{[pkg]::[topic]} pointing to a manual page for this object.
-The referenced help package can be opened via method \verb{$help()}.}
+The \href{https://mlr-org.com/gallery-all-optimization.html}{gallery} features a collection of case studies and demos about optimization.
+\itemize{
+\item Use the \href{https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/}{Hyperband} optimizer with different budget parameters.
 }
-\if{html}{\out{</div>}}
+}
+
+\section{Super class}{
+\code{\link[mlr3tuning:Tuner]{mlr3tuning::Tuner}} -> \code{TunerAsync}
 }
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-TunerAsync-new}{\code{TunerAsync$new()}}
-\item \href{#method-TunerAsync-format}{\code{TunerAsync$format()}}
-\item \href{#method-TunerAsync-print}{\code{TunerAsync$print()}}
-\item \href{#method-TunerAsync-help}{\code{TunerAsync$help()}}
 \item \href{#method-TunerAsync-optimize}{\code{TunerAsync$optimize()}}
 \item \href{#method-TunerAsync-clone}{\code{TunerAsync$clone()}}
 }
 }
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="format"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-format'><code>mlr3tuning::Tuner$format()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="help"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-help'><code>mlr3tuning::Tuner$help()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="print"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-print'><code>mlr3tuning::Tuner$print()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TunerAsync-new"></a>}}
 \if{latex}{\out{\hypertarget{method-TunerAsync-new}{}}}
@@ -61,7 +49,7 @@ The referenced help package can be opened via method \verb{$help()}.}
 Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TunerAsync$new(
-  id = "tuner",
+  id = "async_tuner",
   param_set,
   param_classes,
   properties,
@@ -81,8 +69,7 @@ Identifier for the new instance.}
 Set of control parameters.}
 
 \item{\code{param_classes}}{(\code{character()})\cr
-Supported parameter classes for learner hyperparameters that the tuner can optimize.
-Subclasses of \link[paradox:Param]{paradox::Param}.}
+Supported parameter classes for learner hyperparameters that the tuner can optimize, as given in the \link[paradox:ParamSet]{paradox::ParamSet} \verb{$class} field.}
 
 \item{\code{properties}}{(\code{character()})\cr
 Set of properties of the tuner.
@@ -104,49 +91,6 @@ The referenced help package can be opened via method \verb{$help()}.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TunerAsync-format"></a>}}
-\if{latex}{\out{\hypertarget{method-TunerAsync-format}{}}}
-\subsection{Method \code{format()}}{
-Helper for print outputs.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TunerAsync$format(...)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{(ignored).}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-(\code{character()}).
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TunerAsync-print"></a>}}
-\if{latex}{\out{\hypertarget{method-TunerAsync-print}{}}}
-\subsection{Method \code{print()}}{
-Print method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TunerAsync$print()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-(\code{character()}).
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TunerAsync-help"></a>}}
-\if{latex}{\out{\hypertarget{method-TunerAsync-help}{}}}
-\subsection{Method \code{help()}}{
-Opens the corresponding help page referenced by field \verb{$man}.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TunerAsync$help()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TunerAsync-optimize"></a>}}
 \if{latex}{\out{\hypertarget{method-TunerAsync-optimize}{}}}
 \subsection{Method \code{optimize()}}{
@@ -160,7 +104,7 @@ The result will be written into the instance object.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{inst}}{(\link{TuningInstanceAsyncSingleCrit}| \link{TuningInstanceAsyncMultiCrit}).}
+\item{\code{inst}}{(\link{TuningInstanceAsyncSingleCrit} | \link{TuningInstanceAsyncMultiCrit}).}
 }
 \if{html}{\out{</div>}}
 }

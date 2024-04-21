@@ -1,4 +1,4 @@
-test_that("TunerDesignPoints", {
+test_that("TunerBatchDesignPoints", {
   d = data.table(cp = c(0.1, 0.3))
   test_tuner("design_points", design = d, term_evals = 2L, real_evals = 2, n_dim = 1L)
 

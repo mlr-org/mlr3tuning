@@ -54,7 +54,7 @@ Remotes:
     mlr-org/bbotk@rush,
     mlr-org/rush
 Config/testthat/edition: 3
-Config/testthat/parallel: true
+Config/testthat/parallel: false
 Encoding: UTF-8
 NeedsCompilation: no
 Roxygen: list(markdown = TRUE)
@@ -63,12 +63,12 @@ Collate:
     'ArchiveAsyncTuning.R'
     'ArchiveBatchTuning.R'
     'AutoTuner.R'
-    'CallbackRushTuning.R'
+    'CallbackTuningAsync.R'
     'CallbackTuning.R'
-    'ContextEval.R'
-    'ContextEvalMany.R'
-    'ObjectiveAsyncTuning.R'
+    'ContextAsyncTuning.R'
+    'ContextAsyncTuningMany.R'
     'ObjectiveTuning.R'
+    'ObjectiveTuningAsync.R'
     'ObjectiveTuningBatch.R'
     'mlr_tuners.R'
     'Tuner.R'
@@ -77,18 +77,19 @@ Collate:
     'TunerAsyncFromOptimizerAsync.R'
     'TunerAsyncGridSearch.R'
     'TunerAsyncRandomSearch.R'
-    'TunerCmaes.R'
-    'TunerDesignPoints.R'
+    'TunerBatch.R'
+    'TunerBatchCmaes.R'
+    'TunerBatchDesignPoints.R'
+    'TunerBatchGenSA.R'
+    'TunerBatchGridSearch.R'
+    'TunerBatchIrace.R'
+    'TunerBatchNLoptr.R'
+    'TunerBatchRandomSearch.R'
     'TunerFromOptimizer.R'
-    'TunerGenSA.R'
-    'TunerGridSearch.R'
-    'TunerIrace.R'
-    'TunerNLoptr.R'
-    'TunerRandomSearch.R'
-    'TuningInstanceSingleCrit.R'
+    'TuningInstanceBatchSingleCrit.R'
     'TuningInstanceAsyncMulticrit.R'
     'TuningInstanceAsyncSingleCrit.R'
-    'TuningInstanceMulticrit.R'
+    'TuningInstanceBatchMulticrit.R'
     'as_search_space.R'
     'as_tuner.R'
     'assertions.R'

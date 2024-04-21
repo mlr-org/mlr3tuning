@@ -20,7 +20,7 @@ TEST_MAKE_INST1 = function(values = NULL, folds = 2L,
   }
   rs = rsmp("cv", folds = folds)
   term = trm("evals", n_evals = term_evals)
-  inst = TuningInstanceSingleCrit$new(tsk("iris"), lrn, rs, measure, term, ps, ...)
+  inst = TuningInstanceBatchSingleCrit$new(tsk("iris"), lrn, rs, measure, term, ps, ...)
   return(inst)
 }
 
@@ -34,7 +34,7 @@ TEST_MAKE_INST1_2D = function(values = NULL, folds = 2L,
   }
   rs = rsmp("cv", folds = folds)
   term = trm("evals", n_evals = term_evals)
-  inst = TuningInstanceMultiCrit$new(tsk("iris"), lrn, rs, measures, term, ps,
+  inst = TuningInstanceBatchMultiCrit$new(tsk("iris"), lrn, rs, measures, term, ps,
     ...)
   return(inst)
 }
@@ -54,7 +54,7 @@ TEST_MAKE_INST2 = function(measure = msr("dummy.cp.regr"), term_evals = 5L) {
   ll = LearnerRegrDepParams$new()
   rs = rsmp("holdout")
   term = trm("evals", n_evals = term_evals)
-  inst = TuningInstanceSingleCrit$new(tsk("boston_housing"), ll, rs, measure, term, ps)
+  inst = TuningInstanceBatchSingleCrit$new(tsk("boston_housing"), ll, rs, measure, term, ps)
   return(inst)
 }
 

@@ -1,138 +1,3 @@
-#' @title Early Stopping Callback
-#'
-#' @include CallbackTuning.R
-#' @name mlr3tuning.early_stopping
-#'
-#' @description
-#' This [CallbackTuning] integrates early stopping into the hyperparameter tuning of an XGBoost learner.
-#' Early stopping estimates the optimal number of trees (`nrounds`) for a given hyperparameter configuration.
-#' Since early stopping is performed in each resampling iteration, there are several optimal `nrounds` values.
-#' The callback writes the maximum value to the archive in the `max_nrounds` column.
-#' In the best hyperparameter configuration (`instance$result_learner_param_vals`), the value of `nrounds` is replaced by `max_nrounds` and early stopping is deactivated.
-#'
-#' @details
-#' Currently, the callback does not work with `GraphLearner`s from the package \CRANpkg{mlr3pipelines}.
-#' The callback is compatible with the [AutoTuner].
-#' The final model is fitted with the best hyperparameter configuration and `max_nrounds` i.e. early stopping is not performed.
-#'
-#' @section Resources:
-#' * [gallery post](https://mlr-org.com/gallery/optimization/2022-11-04-early-stopping-with-xgboost/) on early stopping with XGBoost.
-#'
-#' @examples
-#' clbk("mlr3tuning.early_stopping")
-#' \donttest{
-#' if (requireNamespace("mlr3learners") && requireNamespace("xgboost") ) {
-#'   library(mlr3learners)
-#'
-#'   # activate early stopping on the test set and set search space
-#'   learner = lrn("classif.xgboost",
-#'     eta = to_tune(1e-02, 1e-1, logscale = TRUE),
-#'     early_stopping_rounds = 5,
-#'     nrounds = 100,
-#'     early_stopping_set = "test")
-#'
-#'   # tune xgboost on the pima data set
-#'   instance = tune(
-#'     tuner = tnr("random_search"),
-#'     task = tsk("pima"),
-#'     learner = learner,
-#'     resampling = rsmp("cv", folds = 3),
-#'     measures = msr("classif.ce"),
-#'     term_evals = 10,
-#'     callbacks = clbk("mlr3tuning.early_stopping")
-#'   )
-#' }
-#' }
-NULL
-
-load_callback_early_stopping = function() {
-  callback_tuning("mlr3tuning.early_stopping",
-    label = "Early Stopping Callback",
-    man = "mlr3tuning::mlr3tuning.early_stopping",
-
-    on_optimization_begin = function(callback, context) {
-      learner = context$instance$objective$learner
-
-      if (all(c("LearnerClassifXgboost", "LearnerRegrXgboost", "LearnerSurvXgboost") %nin% class(learner))) {
-        stopf("%s is incompatible with %s", format(learner), format(callback))
-      }
-
-      if (is.null(learner$param_set$values$early_stopping_rounds)) {
-        stop("Early stopping is not activated. Set `early_stopping_rounds` parameter.")
-      }
-
-      # store models temporary
-      callback$state$store_models = context$instance$objective$store_models
-      context$instance$objective$store_models = TRUE
-    },
-
-    on_eval_after_benchmark = function(callback, context) {
-      callback$state$max_nrounds = map_dbl(context$benchmark_result$resample_results$resample_result, function(rr) {
-          max(map_dbl(get_private(rr)$.data$learner_states(get_private(rr)$.view), function(state) {
-            state$model$best_iteration # GraphLearner state$model$xgboost$model$niter
-          }))
-      })
-    },
-
-    on_eval_before_archive = function(callback, context) {
-      set(context$aggregated_performance, j = "max_nrounds", value = callback$state$max_nrounds)
-      if (!callback$state$store_models) context$benchmark_result$discard(models = TRUE)
-    },
-
-    on_result = function(callback, context) {
-      context$result$learner_param_vals[[1]]$early_stopping_rounds = NULL
-      context$result$learner_param_vals[[1]]$nrounds = context$instance$archive$best()$max_nrounds
-      context$result$learner_param_vals[[1]]$early_stopping_set = "none"
-      context$instance$objective$store_models = callback$state$store_models
-    }
-  )
-}
-
-load_callback_rush_early_stopping = function() {
-  callback_rush_tuning("mlr3tuning.rush_early_stopping",
-    label = "Rush Early Stopping Callback",
-    man = "mlr3tuning::mlr3tuning.early_stopping",
-    on_optimization_begin = function(callback, context) {
-      learner = context$instance$objective$learner
-
-      if (all(c("LearnerClassifXgboost", "LearnerRegrXgboost", "LearnerSurvXgboost") %nin% class(learner))) {
-        stopf("%s is incompatible with %s", format(learner), format(callback))
-      }
-
-      if (is.null(learner$param_set$values$early_stopping_rounds)) {
-        stop("Early stopping is not activated. Set `early_stopping_rounds` parameter.")
-      }
-    },
-
-    on_eval_after_xs = function(callback, context) {
-      # save user setting
-      if (is.null(callback$state$store_models)) {
-        callback$state$store_models = context$objective_tuning$store_models
-        context$objective_tuning$store_models = TRUE
-      }
-    },
-
-    on_eval_after_resample = function(callback, context) {
-      states = get_private(context$resample_result)$.data$learner_states(get_private(context$resample_result)$.view)
-      callback$state$max_nrounds = max(map_dbl(states, function(state) {
-        state$model$best_iteration # GraphLearner state$model$xgboost$model$niter
-      }))
-    },
-
-    on_eval_before_archive = function(callback, context) {
-      context$aggregated_performance = c(context$aggregated_performance, list(max_nrounds = callback$state$max_nrounds))
-      if (!callback$state$store_models) context$resample_result$discard(models = TRUE)
-    },
-
-    on_result = function(callback, context) {
-      context$result$learner_param_vals[[1]]$early_stopping_rounds = NULL
-      context$result$learner_param_vals[[1]]$nrounds = context$instance$archive$best()$max_nrounds
-      context$result$learner_param_vals[[1]]$early_stopping_set = "none"
-      context$instance$objective$store_models = callback$state$store_models
-    }
-  )
-}
-
 #' @title Backup Benchmark Result Callback
 #'
 #' @include CallbackTuning.R
@@ -237,8 +102,8 @@ load_callback_measures = function() {
   )
 }
 
-load_callback_rush_measures = function() {
-  callback_rush_tuning("mlr3tuning.rush_measures",
+load_callback_async_measures = function() {
+  callback_async_tuning("mlr3tuning.async_measures",
     label = "Additional Rush Measures Callback",
     man = "mlr3tuning::mlr3tuning.measures",
 
@@ -292,8 +157,8 @@ load_callback_rush_measures = function() {
 #' }
 NULL
 
-load_callback_rush_mlflow = function() {
-  callback_rush_tuning("mlr3tuning.rush_mlflow",
+load_callback_async_mlflow = function() {
+  callback_async_tuning("mlr3tuning.async_mlflow",
     label = "MLflow Connector",
     man = "mlr3tuning::mlr3tuning.mlflow",
 
@@ -352,5 +217,43 @@ load_callback_rush_mlflow = function() {
     }
   )
 }
+
+#' @title Hotstart Callback
+#'
+#' @include CallbackTuning.R
+#' @name mlr3tuning.async_hotstart
+#'
+#' @description
+#' This [CallbackTuning] enables hotstarting for the hyperparameter tuning of an XGBoost learner.
+#'
+NULL
+
+load_callback_async_hotstart = function() {
+  callback_async_tuning("mlr3tuning.async_hotstart",
+    label = "Hotstart Callback",
+    man = "mlr3tuning::mlr3tuning.hotstart",
+
+    on_optimization_begin = function(callback, context) {
+      lg$debug("Starting hotstart callback")
+      if (all(c("hotstart_forward", "hotstart_backward") %nin% context$instance$objective$learner$properties)) {
+        stopf("Hotstart is not supported by %s", format(context$instance$objective$learner))
+      }
+
+      lg$debug("Creating hotstart stack")
+      browser()
+      context$instance$objective$learner$hotstart_stack = HotstartStack$new()
+    },
+
+    on_eval_after_resample = function(callback, context) {
+      lg$debug("Adding learner to hotstart stack")
+      browser()
+      context$objective_tuning$learner$hotstart_stack$add(context$resample_result$learners)
+    }
+  )
+}
+
+
+
+
 
 

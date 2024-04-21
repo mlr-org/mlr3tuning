@@ -33,13 +33,13 @@
 #'    Identifies configurations across races and steps.
 #'
 #' @section Result:
-#' The tuning result (`instance$result`) is the best performing elite of the final race.
-#' The reported performance is the average performance estimated  on all used instances.
+#' The tuning result (`instance$result`) is the best-performing elite of the final race.
+#' The reported performance is the average performance estimated on all used instances.
 #'
 #' @inheritSection Tuner Resources
 #' @template section_progress_bars
 #' @template section_logging
-#' @templateVar optimizer bbotk::OptimizerIrace
+#' @templateVar optimizer bbotk::OptimizerBatchIrace
 #' @template section_optimizer
 #'
 #' @source
@@ -74,8 +74,8 @@
 #' learner$param_set$values = instance$result_learner_param_vals
 #' learner$train(task)
 #' }
-TunerIrace = R6Class("TunerIrace",
-  inherit = TunerFromOptimizer,
+TunerBatchIrace = R6Class("TunerBatchIrace",
+  inherit = TunerBatchFromOptimizerBatch,
   public = list(
 
     #' @description
@@ -106,16 +106,16 @@ TunerIrace = R6Class("TunerIrace",
     },
 
     #' @description
-    #' Performs the tuning on a [TuningInstanceSingleCrit] until termination.
+    #' Performs the tuning on a [TuningInstanceBatchSingleCrit] until termination.
     #' The single evaluations and the final results will be written into the
-    #' [ArchiveTuning] that resides in the [TuningInstanceSingleCrit]. The final
+    #' [ArchiveTuning] that resides in the [TuningInstanceBatchSingleCrit]. The final
     #' result is returned.
     #'
-    #' @param inst ([TuningInstanceSingleCrit]).
+    #' @param inst ([TuningInstanceBatchSingleCrit]).
     #'
     #' @return [data.table::data.table].
     optimize = function(inst) {
-      assert_class(inst, "TuningInstanceSingleCrit")
+      assert_class(inst, "TuningInstanceBatchSingleCrit")
       pv = self$param_set$values
       n_instances = pv$n_instances
 
@@ -163,4 +163,4 @@ target_runner_tuning = function(experiment, exec.target.runner, scenario, target
   })
 }
 
-mlr_tuners$add("irace", TunerIrace)
+mlr_tuners$add("irace", TunerBatchIrace)

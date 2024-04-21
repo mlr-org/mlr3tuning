@@ -1,4 +1,4 @@
-test_that("TunerCmaes", {
+test_that("TunerBatchCmaes", {
 
 expect_tuner(tnr("cmaes"))
 

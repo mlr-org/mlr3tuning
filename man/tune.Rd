@@ -21,9 +21,8 @@ tune(
   hotstart_threshold = NULL,
   keep_hotstart_stack = FALSE,
   evaluate_default = FALSE,
-  callbacks = list(),
-  rush = NULL,
-  method
+  callbacks = NULL,
+  rush = NULL
 )
 }
 \arguments{
@@ -44,7 +43,7 @@ Specialized \link{Tuner} change the resampling e.g. to evaluate a hyperparameter
 This field, however, always returns the resampling passed in construction.}
 
 \item{measures}{(\link[mlr3:Measure]{mlr3::Measure} or list of \link[mlr3:Measure]{mlr3::Measure})\cr
-A single measure creates a \link{TuningInstanceSingleCrit} and multiple measures a \link{TuningInstanceMultiCrit}.
+A single measure creates a \link{TuningInstanceBatchSingleCrit} and multiple measures a \link{TuningInstanceBatchMultiCrit}.
 If \code{NULL}, default measure is used.}
 
 \item{term_evals}{(\code{integer(1)})\cr
@@ -100,22 +99,19 @@ List of callbacks.}
 
 \item{rush}{(\code{Rush})\cr
 If a rush instance is supplied, the tuning runs without batches.}
-
-\item{method}{(\code{character(1)})\cr
-Deprecated. Use \code{tuner} instead.}
 }
 \value{
-\link{TuningInstanceSingleCrit} | \link{TuningInstanceMultiCrit}
+\link{TuningInstanceBatchSingleCrit} | \link{TuningInstanceBatchMultiCrit}
 }
 \description{
 Function to tune a \link[mlr3:Learner]{mlr3::Learner}.
-The function internally creates a \link{TuningInstanceSingleCrit} or \link{TuningInstanceMultiCrit} which describe the tuning problem.
+The function internally creates a \link{TuningInstanceBatchSingleCrit} or \link{TuningInstanceBatchMultiCrit} which describes the tuning problem.
 It executes the tuning with the \link{Tuner} (\code{tuner}) and returns the result with the tuning instance (\verb{$result}).
 The \link{ArchiveTuning} (\verb{$archive}) stores all evaluated hyperparameter configurations and performance scores.
 }
 \details{
-The \link[mlr3:Task]{mlr3::Task}, \link[mlr3:Learner]{mlr3::Learner}, \link[mlr3:Resampling]{mlr3::Resampling}, \link[mlr3:Measure]{mlr3::Measure} and \link{Terminator} are used to construct a \link{TuningInstanceSingleCrit}.
-If multiple performance \link[=Measure]{Measures} are supplied, a \link{TuningInstanceMultiCrit} is created.
+The \link[mlr3:Task]{mlr3::Task}, \link[mlr3:Learner]{mlr3::Learner}, \link[mlr3:Resampling]{mlr3::Resampling}, \link[mlr3:Measure]{mlr3::Measure} and \link{Terminator} are used to construct a \link{TuningInstanceBatchSingleCrit}.
+If multiple performance \link[=Measure]{Measures} are supplied, a \link{TuningInstanceBatchMultiCrit} is created.
 The parameter \code{term_evals} and \code{term_time} are shortcuts to create a \link{Terminator}.
 If both parameters are passed, a \link{TerminatorCombo} is constructed.
 For other \link[=Terminator]{Terminators}, pass one with \code{terminator}.
@@ -137,6 +133,36 @@ The \href{https://mlr-org.com/gallery-all-optimization.html}{gallery} features a
 \item Make us of proven \href{https://mlr-org.com/gallery/optimization/2021-07-06-introduction-to-mlr3tuningspaces/}{search space}.
 \item Learn about \href{https://mlr-org.com/gallery/optimization/2023-01-16-hotstart/}{hotstarting} models.
 }
+}
+
+\section{Default Measures}{
+
+If no measure is passed, the default measure is used.
+The default measure depends on the task type.\tabular{lll}{
+   Task \tab Default Measure \tab Package \cr
+   \code{"classif"} \tab \code{"classif.ce"} \tab \CRANpkg{mlr3} \cr
+   \code{"regr"} \tab \code{"regr.mse"} \tab \CRANpkg{mlr3} \cr
+   \code{"surv"} \tab \code{"surv.cindex"} \tab \CRANpkg{mlr3proba} \cr
+   \code{"dens"} \tab \code{"dens.logloss"} \tab \CRANpkg{mlr3proba} \cr
+   \code{"classif_st"} \tab \code{"classif.ce"} \tab \CRANpkg{mlr3spatial} \cr
+   \code{"regr_st"} \tab \code{"regr.mse"} \tab \CRANpkg{mlr3spatial} \cr
+   \code{"clust"} \tab \code{"clust.dunn"} \tab \CRANpkg{mlr3cluster} \cr
+}
+}
+
+\section{Analysis}{
+
+For analyzing the tuning results, it is recommended to pass the \link{ArchiveTuning} to \code{as.data.table()}.
+The returned data table is joined with the benchmark result which adds the \link[mlr3:ResampleResult]{mlr3::ResampleResult} for each hyperparameter evaluation.
+
+The archive provides various getters (e.g. \verb{$learners()}) to ease the access.
+All getters extract by position (\code{i}) or unique hash (\code{uhash}).
+For a complete list of all getters see the methods section.
+
+The benchmark result (\verb{$benchmark_result}) allows to score the hyperparameter configurations again on a different measure.
+Alternatively, measures can be supplied to \code{as.data.table()}.
+
+The \CRANpkg{mlr3viz} package provides visualizations for tuning results.
 }
 
 \examples{

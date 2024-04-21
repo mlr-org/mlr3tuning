@@ -1,4 +1,4 @@
-#' @title TunerFromOptimizer
+#' @title TunerBatchFromOptimizerBatch
 #'
 #' @description
 #' Internally used to transform [bbotk::Optimizer] to [Tuner].
@@ -7,8 +7,8 @@
 #'
 #' @keywords internal
 #' @export
-TunerFromOptimizer = R6Class("TunerFromOptimizer",
-    inherit = Tuner,
+TunerBatchFromOptimizerBatch = R6Class("TunerBatchFromOptimizerBatch",
+    inherit = TunerBatch,
     public = list(
 
       #' @description
@@ -33,24 +33,32 @@ TunerFromOptimizer = R6Class("TunerFromOptimizer",
       },
 
       #' @description
-      #' Performs the tuning on a [TuningInstanceSingleCrit] /
-      #' [TuningInstanceMultiCrit] until termination. The single evaluations and
+      #' Performs the tuning on a [TuningInstanceBatchSingleCrit] /
+      #' [TuningInstanceBatchMultiCrit] until termination. The single evaluations and
       #' the final results will be written into the [ArchiveTuning] that
-      #' resides in the [TuningInstanceSingleCrit]/[TuningInstanceMultiCrit].
+      #' resides in the [TuningInstanceBatchSingleCrit]/[TuningInstanceBatchMultiCrit].
       #' The final result is returned.
       #'
-      #' @param inst ([TuningInstanceSingleCrit] | [TuningInstanceMultiCrit]).
+      #' @param inst ([TuningInstanceBatchSingleCrit] | [TuningInstanceBatchMultiCrit]).
       #'
       #' @return [data.table::data.table].
       optimize = function(inst) {
-        assert_multi_class(inst, c("TuningInstanceSingleCrit", "TuningInstanceMultiCrit", "TuningInstanceAsyncSingleCrit", "TuningInstanceAsyncMultiCrit"))
+        assert_multi_class(inst, c("TuningInstanceBatchSingleCrit", "TuningInstanceBatchMultiCrit"))
+
+        # start optimization
+        start_optimize_batch_bbotk(inst, self)
 
         # evaluate learner with default hyperparameter values
         if (get_private(inst)$.evaluate_default) evaluate_default(inst)
 
-        res = private$.optimizer$optimize(inst)
+        # run optimization
+        run_optimize_batch_bbotk(inst, private$.optimizer)
+
+        # remove hotstart stack if not needed
         if (!inst$objective$keep_hotstart_stack) inst$objective$hotstart_stack = NULL
-        res
+
+        # finish optimization
+        finish_optimize_batch_bbotk(inst)
       }
     ),
 

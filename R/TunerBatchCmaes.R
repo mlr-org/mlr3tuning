@@ -22,7 +22,7 @@
 #' @inheritSection Tuner Resources
 #' @template section_progress_bars
 #' @template section_logging
-#' @templateVar optimizer bbotk::OptimizerCmaes
+#' @templateVar optimizer bbotk::OptimizerBatchCmaes
 #' @template section_optimizer
 #'
 #' @source
@@ -58,19 +58,19 @@
 #' # fit final model on complete data set
 #' learner$param_set$values = instance$result_learner_param_vals
 #' learner$train(tsk("penguins"))
-TunerCmaes = R6Class("TunerCmaes",
-  inherit = TunerFromOptimizer,
+TunerBatchCmaes = R6Class("TunerBatchCmaes",
+  inherit = TunerBatchFromOptimizerBatch,
   public = list(
 
    #' @description
    #' Creates a new instance of this [R6][R6::R6Class] class.
    initialize = function() {
      super$initialize(
-       optimizer = OptimizerCmaes$new(),
+       optimizer = OptimizerBatchCmaes$new(),
        man = "mlr3tuning::mlr_tuners_cmaes"
      )
    }
   )
 )
 
-mlr_tuners$add("cmaes", TunerCmaes)
+mlr_tuners$add("cmaes", TunerBatchCmaes)

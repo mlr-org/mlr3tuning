@@ -94,7 +94,7 @@ test_that("runtime of learners is added", {
 })
 
 test_that("tuner can modify resampling", {
-  instance = TuningInstanceSingleCrit$new(
+  instance = TuningInstanceBatchSingleCrit$new(
     task = tsk("iris"),
     learner = lrn("classif.rpart", cp = to_tune(0.001, 0.1)),
     resampling = rsmp("cv", folds =3),

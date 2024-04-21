@@ -62,7 +62,7 @@ CallbackTuning = R6Class("CallbackTuning",
 #' ```
 #'
 #' See also the section on parameters for more information on the stages.
-#' A tuning callback works with [bbotk::ContextOptimization] and [ContextEvalMany].
+#' A tuning callback works with [bbotk::ContextOptimization] and [ContextAsyncTuningMany].
 #'
 #' @details
 #' When implementing a callback, each functions must have two arguments named `callback` and `context`.
@@ -72,13 +72,13 @@ CallbackTuning = R6Class("CallbackTuning",
 #' This can slow down the tuning process when the evaluation of configurations is parallelized.
 #'
 #' Tuning callbacks access two different contexts depending on the stage.
-#' The stages `on_eval_after_design`, `on_eval_after_benchmark`, `on_eval_before_archive` access [ContextEvalMany].
+#' The stages `on_eval_after_design`, `on_eval_after_benchmark`, `on_eval_before_archive` access [ContextAsyncTuningMany].
 #' This context can be used to customize the evaluation of a batch of hyperparameter configurations.
 #' Changes to the state of callback are lost after the evaluation of a batch and changes to the tuning instance or the tuner are not possible.
-#' Persistent data should be written to the archive via `$aggregated_performance` (see [ContextEvalMany]).
+#' Persistent data should be written to the archive via `$aggregated_performance` (see [ContextAsyncTuningMany]).
 #' The other stages access [ContextOptimization].
 #' This context can be used to modify the tuning instance, archive, tuner and final result.
-#' There are two different contexts because the evaluation can be parallelized i.e. multiple instances of [ContextEvalMany] exists on different workers at the same time.
+#' There are two different contexts because the evaluation can be parallelized i.e. multiple instances of [ContextAsyncTuningMany] exists on different workers at the same time.
 #'
 #' @param id (`character(1)`)\cr
 #'   Identifier for the new instance.
@@ -98,15 +98,15 @@ CallbackTuning = R6Class("CallbackTuning",
 #' @param on_eval_after_design (`function()`)\cr
 #'   Stage called after design is created.
 #'   Called in `ObjectiveTuning$eval_many()`.
-#'   The context available is [ContextEvalMany].
+#'   The context available is [ContextAsyncTuningMany].
 #' @param on_eval_after_benchmark (`function()`)\cr
 #'   Stage called after hyperparameter configurations are evaluated.
 #'   Called in `ObjectiveTuning$eval_many()`.
-#'   The context available is [ContextEvalMany].
+#'   The context available is [ContextAsyncTuningMany].
 #' @param on_eval_before_archive (`function()`)\cr
 #'   Stage called before performance values are written to the archive.
 #'   Called in `ObjectiveTuning$eval_many()`.
-#'   The context available is [ContextEvalMany].
+#'   The context available is [ContextAsyncTuningMany].
 #' @param on_optimizer_after_eval (`function()`)\cr
 #'   Stage called after points are evaluated.
 #'   Called in `OptimInstance$eval_batch()`.

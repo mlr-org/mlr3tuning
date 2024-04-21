@@ -2,7 +2,7 @@
 #'
 #' @description
 #' Stores the objective function that estimates the performance of hyperparameter configurations.
-#' This class is usually constructed internally by the [TuningInstanceSingleCrit] or [TuningInstanceMultiCrit].
+#' This class is usually constructed internally by the [TuningInstanceBatchSingleCrit] or [TuningInstanceBatchMultiCrit].
 #'
 #' @template param_task
 #' @template param_learner
@@ -15,8 +15,6 @@
 #' @template param_hotstart_threshold
 #' @template param_keep_hotstart_stack
 #' @template param_callbacks
-#'
-#' @template field_default_values
 #'
 #' @export
 ObjectiveTuningBatch = R6Class("ObjectiveTuningBatch",
@@ -33,7 +31,7 @@ ObjectiveTuningBatch = R6Class("ObjectiveTuningBatch",
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #'
     #' @param archive ([ArchiveTuning])\cr
-    #'   Reference to archive of [TuningInstanceSingleCrit] | [TuningInstanceMultiCrit].
+    #'   Reference to archive of [TuningInstanceBatchSingleCrit] | [TuningInstanceBatchMultiCrit].
     #'   If `NULL` (default), benchmark result and models cannot be stored.
     initialize = function(
       task,
@@ -71,7 +69,7 @@ ObjectiveTuningBatch = R6Class("ObjectiveTuningBatch",
 
   private = list(
     .eval_many = function(xss, resampling) {
-      context = ContextEvalMany$new(self)
+      context = ContextAsyncTuningMany$new(self)
       private$.xss = xss
 
       private$.design = if (self$allow_hotstart) {

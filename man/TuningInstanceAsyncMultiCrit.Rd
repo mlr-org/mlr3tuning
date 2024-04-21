@@ -18,6 +18,31 @@ Before a batch is evaluated, the \link[bbotk:Terminator]{bbotk::Terminator} is q
 If the available budget is exhausted, an exception is raised, and no further evaluations can be performed from this point on.
 The tuner is also supposed to store its final result, consisting of a  selected hyperparameter configuration and associated estimated performance values, by calling the method \code{instance$.assign_result}.
 }
+\section{Resources}{
+
+There are several sections about hyperparameter optimization in the \href{https://mlr3book.mlr-org.com}{mlr3book}.
+\itemize{
+\item Learn about \href{https://mlr3book.mlr-org.com/chapters/chapter5/advanced_tuning_methods_and_black_box_optimization.html#sec-multi-metrics-tuning}{multi-objective optimization}.
+}
+
+The \href{https://mlr-org.com/gallery-all-optimization.html}{gallery} features a collection of case studies and demos about optimization.
+}
+
+\section{Analysis}{
+
+For analyzing the tuning results, it is recommended to pass the \link{ArchiveTuning} to \code{as.data.table()}.
+The returned data table is joined with the benchmark result which adds the \link[mlr3:ResampleResult]{mlr3::ResampleResult} for each hyperparameter evaluation.
+
+The archive provides various getters (e.g. \verb{$learners()}) to ease the access.
+All getters extract by position (\code{i}) or unique hash (\code{uhash}).
+For a complete list of all getters see the methods section.
+
+The benchmark result (\verb{$benchmark_result}) allows to score the hyperparameter configurations again on a different measure.
+Alternatively, measures can be supplied to \code{as.data.table()}.
+
+The \CRANpkg{mlr3viz} package provides visualizations for tuning results.
+}
+
 \section{Super classes}{
 \code{\link[bbotk:OptimInstance]{bbotk::OptimInstance}} -> \code{\link[bbotk:OptimInstanceAsync]{bbotk::OptimInstanceAsync}} -> \code{\link[bbotk:OptimInstanceAsyncMultiCrit]{bbotk::OptimInstanceAsyncMultiCrit}} -> \code{TuningInstanceAsyncMultiCrit}
 }

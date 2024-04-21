@@ -1,7 +1,7 @@
 #' @title Function for Automatic Tuning
 #'
 #' @inherit AutoTuner description
-#' @inheritSection TuningInstanceSingleCrit Default Measures
+#' @inheritSection TuningInstanceBatchSingleCrit Default Measures
 #' @inheritSection AutoTuner Resources
 #' @inherit AutoTuner details
 #' @inheritSection AutoTuner Nested Resampling
@@ -36,11 +36,25 @@
 #'   term_evals = 4)
 #'
 #' at$train(tsk("pima"))
-auto_tuner = function(tuner, learner, resampling, measure = NULL, term_evals = NULL, term_time = NULL, terminator = NULL, search_space = NULL, store_tuning_instance = TRUE, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, evaluate_default = FALSE, callbacks = list(), method) {
-  if (!missing(method)) {
-    message("The `method` argument is deprecated and will be removed in a future release. Please use `tuner` instead.")
-    tuner = method
-  }
+auto_tuner = function(
+  tuner,
+  learner,
+  resampling,
+  measure = NULL,
+  term_evals = NULL,
+  term_time = NULL,
+  terminator = NULL,
+  search_space = NULL,
+  store_tuning_instance = TRUE,
+  store_benchmark_result = TRUE,
+  store_models = FALSE,
+  check_values = FALSE,
+  allow_hotstart = FALSE,
+  keep_hotstart_stack = FALSE,
+  evaluate_default = FALSE,
+  callbacks = list()
+  ) {
+
 
 
   terminator = terminator %??% terminator_selection(term_evals, term_time)

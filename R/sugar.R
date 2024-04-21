@@ -33,10 +33,10 @@ tnrs = function(.keys, ...) {
 #' @title Syntactic Sugar for Tuning Instance Construction
 #'
 #' @description
-#' Function to construct a [TuningInstanceSingleCrit] or [TuningInstanceMultiCrit].
+#' Function to construct a [TuningInstanceBatchSingleCrit] or [TuningInstanceBatchMultiCrit].
 #'
 #' @param measures ([mlr3::Measure] or list of [mlr3::Measure])\cr
-#'   A single measure creates a [TuningInstanceSingleCrit] and multiple measures a [TuningInstanceMultiCrit].
+#'   A single measure creates a [TuningInstanceBatchSingleCrit] and multiple measures a [TuningInstanceBatchMultiCrit].
 #'   If `NULL`, default measure is used.
 #'
 #' @template param_task
@@ -53,11 +53,11 @@ tnrs = function(.keys, ...) {
 #' @template param_evaluate_default
 #' @template param_callbacks
 #'
-#' @inheritSection TuningInstanceSingleCrit Resources
-#' @inheritSection TuningInstanceSingleCrit Default Measures
+#' @inheritSection TuningInstanceBatchSingleCrit Resources
+#' @inheritSection TuningInstanceBatchSingleCrit Default Measures
 #'
 #' @export
-#' @inherit TuningInstanceSingleCrit examples
+#' @inherit TuningInstanceBatchSingleCrit examples
 ti = function(
   task,
   learner,
@@ -75,7 +75,7 @@ ti = function(
   callbacks = list()
   ) {
   measures = assert_measures(as_measures(measures))
-  TuningInstance = if (length(measures) > 1) TuningInstanceAsyncMultiCrit else TuningInstanceAsyncSingleCrit
+  TuningInstance = if (length(measures) > 1) TuningInstanceBatchMultiCrit else TuningInstanceBatchSingleCrit
 
   TuningInstance$new(
     task = task,
@@ -118,11 +118,11 @@ ti = function(
 #' @template param_callbacks
 #' @template param_rush
 #'
-#' @inheritSection TuningInstanceSingleCrit Resources
-#' @inheritSection TuningInstanceSingleCrit Default Measures
+#' @inheritSection TuningInstanceBatchSingleCrit Resources
+#' @inheritSection TuningInstanceBatchSingleCrit Default Measures
 #'
 #' @export
-#' @inherit TuningInstanceSingleCrit examples
+#' @inherit TuningInstanceBatchSingleCrit examples
 ti_async = function(
   task,
   learner,
@@ -133,9 +133,6 @@ ti_async = function(
   store_benchmark_result = TRUE,
   store_models = FALSE,
   check_values = FALSE,
-  allow_hotstart = FALSE,
-  hotstart_threshold = NULL,
-  keep_hotstart_stack = FALSE,
   evaluate_default = FALSE,
   callbacks = list(),
   rush = NULL
@@ -153,9 +150,6 @@ ti_async = function(
     store_benchmark_result = store_benchmark_result,
     store_models = store_models,
     check_values = check_values,
-    allow_hotstart = allow_hotstart,
-    hotstart_threshold = hotstart_threshold,
-    keep_hotstart_stack = keep_hotstart_stack,
     evaluate_default = evaluate_default,
     callbacks = callbacks,
     rush = rush)

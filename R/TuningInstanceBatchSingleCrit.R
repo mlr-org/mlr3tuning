@@ -1,8 +1,8 @@
 #' @title Class for Single Criterion Tuning
 #
 #' @description
-#' The [TuningInstanceSingleCrit] specifies a tuning problem for [Tuners][Tuner].
-#' The function [ti()] creates a [TuningInstanceSingleCrit] and the function [tune()] creates an instance internally.
+#' The [TuningInstanceBatchSingleCrit] specifies a tuning problem for [Tuners][Tuner].
+#' The function [ti()] creates a [TuningInstanceBatchSingleCrit] and the function [tune()] creates an instance internally.
 #'
 #' @details
 #' The instance contains an [ObjectiveTuning] object that encodes the black box objective function a [Tuner] has to optimize.
@@ -28,7 +28,7 @@
 #' | `"regr_st"`    | `"regr.mse"`        | \CRANpkg{mlr3spatial} |
 #' | `"clust"`      | `"clust.dunn"`      | \CRANpkg{mlr3cluster} |
 #'
-#' @inheritSection ArchiveTuning Analysis
+#' @inheritSection ArchiveBatchTuning Analysis
 #'
 #' @section Resources:
 #' There are several sections about hyperparameter optimization in the [mlr3book](https://mlr3book.mlr-org.com).
@@ -142,12 +142,12 @@ TuningInstanceBatchSingleCrit = R6Class("TuningInstanceBatchSingleCrit",
       measures = assert_measures(as_measures(measure, task_type = task$task_type), task = task, learner = learner)
       codomain = measures_to_codomain(measures)
 
-      archive = ArchiveTuning$new(
+      archive = ArchiveBatchTuning$new(
         search_space = search_space,
         codomain = codomain,
         check_values = check_values)
 
-      objective = ObjectiveTuning$new(
+      objective = ObjectiveTuningBatch$new(
         task = task,
         learner = learner,
         resampling = resampling,

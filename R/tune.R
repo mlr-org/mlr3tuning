@@ -1,16 +1,16 @@
 #' @title Function for Tuning a Learner
 #'
-#' @include TuningInstanceSingleCrit.R ArchiveTuning.R
+#' @include TuningInstanceBatchSingleCrit.R ArchiveBatchTuning.R
 #'
 #' @description
 #' Function to tune a [mlr3::Learner].
-#' The function internally creates a [TuningInstanceSingleCrit] or [TuningInstanceMultiCrit] which describe the tuning problem.
+#' The function internally creates a [TuningInstanceBatchSingleCrit] or [TuningInstanceBatchMultiCrit] which describes the tuning problem.
 #' It executes the tuning with the [Tuner] (`tuner`) and returns the result with the tuning instance (`$result`).
 #' The [ArchiveTuning] (`$archive`) stores all evaluated hyperparameter configurations and performance scores.
 #'
 #' @details
-#' The [mlr3::Task], [mlr3::Learner], [mlr3::Resampling], [mlr3::Measure] and [Terminator] are used to construct a [TuningInstanceSingleCrit].
-#' If multiple performance [Measures][Measure] are supplied, a [TuningInstanceMultiCrit] is created.
+#' The [mlr3::Task], [mlr3::Learner], [mlr3::Resampling], [mlr3::Measure] and [Terminator] are used to construct a [TuningInstanceBatchSingleCrit].
+#' If multiple performance [Measures][Measure] are supplied, a [TuningInstanceBatchMultiCrit] is created.
 #' The parameter `term_evals` and `term_time` are shortcuts to create a [Terminator].
 #' If both parameters are passed, a [TerminatorCombo] is constructed.
 #' For other [Terminators][Terminator], pass one with `terminator`.
@@ -30,19 +30,19 @@
 #'  * Make us of proven [search space](https://mlr-org.com/gallery/optimization/2021-07-06-introduction-to-mlr3tuningspaces/).
 #'  * Learn about [hotstarting](https://mlr-org.com/gallery/optimization/2023-01-16-hotstart/) models.
 #'
-#' @inheritSection TuningInstanceSingleCrit Default Measures
+#' @inheritSection TuningInstanceBatchSingleCrit Default Measures
 #'
-#' @inheritSection ArchiveTuning Analysis
+#' @inheritSection ArchiveBatchTuning Analysis
 #'
 #' @param measures ([mlr3::Measure] or list of [mlr3::Measure])\cr
-#'   A single measure creates a [TuningInstanceSingleCrit] and multiple measures a [TuningInstanceMultiCrit].
+#'   A single measure creates a [TuningInstanceBatchSingleCrit] and multiple measures a [TuningInstanceBatchMultiCrit].
 #'   If `NULL`, default measure is used.
 #' @param term_evals (`integer(1)`)\cr
 #'  Number of allowed evaluations.
 #' @param term_time (`integer(1)`)\cr
 #'  Maximum allowed time in seconds.
 #'
-#' @return [TuningInstanceSingleCrit] | [TuningInstanceMultiCrit]
+#' @return [TuningInstanceBatchSingleCrit] | [TuningInstanceBatchMultiCrit]
 #'
 #' @template param_tuner
 #' @template param_task
@@ -61,7 +61,6 @@
 #' @template param_evaluate_default
 #' @template param_callbacks
 #' @template param_rush
-#' @template param_method
 #'
 #' @export
 #' @examples
@@ -108,21 +107,33 @@ tune = function(
   hotstart_threshold = NULL,
   keep_hotstart_stack = FALSE,
   evaluate_default = FALSE,
-  callbacks = list(),
-  rush = NULL,
-  method) {
-
-  if (!missing(method)) {
-    message("The `method` argument is deprecated and will be removed in a future release. Please use `tuner` instead.")
-    tuner = method
-  }
-
+  callbacks = NULL,
+  rush = NULL
+  ) {
   assert_tuner(tuner)
   terminator = terminator %??% terminator_selection(term_evals, term_time)
+  measures = assert_measures(as_measures(measures))
 
-  if (is.null(rush)) {
-    TuningInstance = if (!is.list(measures)) TuningInstanceSingleCrit else TuningInstanceMultiCrit
-    instance = TuningInstance$new(
+  instance =  if (inherits(tuner, "TunerAsync")) {
+    TuningInstance = if (length(measures) > 1) TuningInstanceAsyncMultiCrit else TuningInstanceAsyncSingleCrit
+    TuningInstance$new(
+      task = task,
+      learner = learner,
+      resampling = resampling,
+      measures,
+      terminator = terminator,
+      search_space = search_space,
+      store_benchmark_result = store_benchmark_result,
+      store_models = store_models,
+      check_values = check_values,
+      allow_hotstart = allow_hotstart,
+      hotstart_threshold = hotstart_threshold,
+      evaluate_default = evaluate_default,
+      callbacks = callbacks,
+      rush = rush)
+  } else {
+    TuningInstance = if (length(measures) > 1) TuningInstanceBatchMultiCrit else TuningInstanceBatchSingleCrit
+    TuningInstance$new(
       task = task,
       learner = learner,
       resampling = resampling,
@@ -137,33 +148,10 @@ tune = function(
       keep_hotstart_stack = keep_hotstart_stack,
       evaluate_default = evaluate_default,
       callbacks = callbacks)
-
-    tuner$optimize(instance)
-    instance
-  } else {
-    TuningInstance = if (!is.list(measures)) TuningInstanceAsyncSingleCrit else TuningInstanceAsyncMultiCrit
-    instance = TuningInstance$new(
-      task = task,
-      learner = learner,
-      resampling = resampling,
-      measures,
-      terminator = terminator,
-      search_space = search_space,
-      store_benchmark_result = store_benchmark_result,
-      store_models = store_models,
-      check_values = check_values,
-      allow_hotstart = allow_hotstart,
-      hotstart_threshold = hotstart_threshold,
-      keep_hotstart_stack = keep_hotstart_stack,
-      evaluate_default = evaluate_default,
-      callbacks = callbacks,
-      rush = rush)
-
-    instance$start_worker(await_workers = TRUE)
-
-    tuner$optimize(instance)
-    instance
   }
+
+  tuner$optimize(instance)
+  instance
 }
 
 terminator_selection = function(term_evals, term_time) {

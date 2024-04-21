@@ -27,14 +27,14 @@
 #' @template section_progress_bars
 #' @template section_parallelization
 #' @template section_logging
-#' @templateVar optimizer bbotk::OptimizerGridSearch
+#' @templateVar optimizer bbotk::OptimizerBatchGridSearch
 #' @template section_optimizer
 #'
 #' @family Tuner
 #' @export
 #' @template example
-TunerGridSearch = R6Class("TunerGridSearch",
-  inherit = Tuner,
+TunerBatchGridSearch = R6Class("TunerBatchGridSearch",
+  inherit = TunerBatch,
   public = list(
 
     #' @description
@@ -78,4 +78,4 @@ TunerGridSearch = R6Class("TunerGridSearch",
   )
 )
 
-mlr_tuners$add("grid_search", TunerGridSearch)
+mlr_tuners$add("grid_search", TunerBatchGridSearch)
