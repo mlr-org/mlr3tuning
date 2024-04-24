@@ -265,6 +265,11 @@ AutoTuner = R6Class("AutoTuner",
     #' @return self
     unmarshal = function(...) {
       learner_unmarshal(.learner = self, ...)
+    },
+    #' @description
+    #' Whether the learner is marshaled.
+    marshaled = function() {
+      learner_marshaled(self)
     }
   ),
 
@@ -284,12 +289,6 @@ AutoTuner = R6Class("AutoTuner",
         self$model$learner
       }
     },
-    #' @field marshaled (`logical(1)`)\cr
-    #' Whether the learner is marshaled.
-    marshaled = function() {
-      learner_marshaled(self)
-    },
-
     #' @field tuning_instance ([TuningInstanceSingleCrit])\cr
     #' Internally created tuning instance with all intermediate results.
     tuning_instance = function() self$model$tuning_instance,
