@@ -429,3 +429,7 @@ set_validate.AutoTuner = function(learner, validate, at_validate, ...) {
 
   learner$validate = at_validate
 }
+
+set_inner_tuning.AutoTuner = function(.learner, .disable = FALSE, ...) {
+
+}
