@@ -125,7 +125,11 @@ AutoTuner = R6Class("AutoTuner",
     #'
     #' @param tuner ([Tuner])\cr
     #'   Optimization algorithm.
-    initialize = function(tuner, learner, resampling, measure = NULL, terminator, search_space = NULL, store_tuning_instance = TRUE, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, evaluate_default = FALSE, callbacks = list()) {
+    #' @param inner_tuning_args (`list()`)\cr
+    #'   Arguments to pass to the [`mlr3::set_inner_tuning()`] function before fitting the final model.
+    #'   Per default the function is called only with `.disable = TRUE`, but this can be overwritten.
+    initialize = function(tuner, learner, resampling, measure = NULL, terminator, search_space = NULL, store_tuning_instance = TRUE, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, evaluate_default = FALSE, callbacks = list(), inner_tuning_args = NULL, validate = NA) {
+
       learner = assert_learner(as_learner(learner, clone = TRUE))
 
       if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token")) > 0) {
@@ -138,6 +142,14 @@ AutoTuner = R6Class("AutoTuner",
       ia$resampling = assert_resampling(resampling)$clone()
       if (!is.null(measure)) ia$measure = assert_measure(as_measure(measure), learner = learner)
       if (!is.null(search_space)) ia$search_space = assert_param_set(as_search_space(search_space))$clone()
+
+      private$.inner_tuning = some(search_space$tags, function(tags) "inner_tuning" %in% tags)
+
+      if (!private$.inner_tuning && !is.null(inner_tuning_args)) {
+        stopf("Inner tuning arguments provided, but search space does not contain 'inner_tuning' tag.")
+      }
+      private$.inner_tuning_args = assert_list(inner_tuning_args, null.ok = TRUE)
+
       ia$terminator = assert_terminator(terminator)$clone()
 
       ia$store_models = assert_flag(store_models)
@@ -150,6 +162,10 @@ AutoTuner = R6Class("AutoTuner",
       ia$evaluate_default = assert_flag(evaluate_default)
       ia$callbacks = assert_callbacks(as_callbacks(callbacks))
       self$instance_args = ia
+
+      if (!identical(validate, NA)) {
+        self$validate = validate
+      }
 
       super$initialize(
         id = paste0(learner$id, ".tuned"),
@@ -264,6 +280,12 @@ AutoTuner = R6Class("AutoTuner",
   ),
 
   active = list(
+    validate = function(rhs) {
+      if (!missing(rhs)) {
+        private$.validate = assert_validate(rhs)
+      }
+      private$.validate
+    },
 
     #' @field archive [ArchiveTuning]\cr
     #' Archive of the [TuningInstanceSingleCrit].
@@ -323,9 +345,21 @@ AutoTuner = R6Class("AutoTuner",
   ),
 
   private = list(
+    .validate = NULL,
+    .inner_tuning = NULL,
+    .inner_tuning_args = NULL,
     .train = function(task) {
       # construct instance from args; then tune
       ia = self$instance_args
+      # if the at itself specifies validate, the inner_valid_task is already set
+      # if the wrapped leaerner specifies validate itself, we need to remove the already set validation data for
+      # the tuning
+
+      if (!get0("validate", ia$learner) && is.numeric(ia$learner$validate)) {
+        prev_ivt = task$inner_valid_task
+        on.exit({task$inner_valid_task = prev_ivt})
+        task$inner_valid_task = NULL
+      }
       ia$task = task
 
       # check if task contains all row ids required for instantiated resampling
@@ -346,6 +380,9 @@ AutoTuner = R6Class("AutoTuner",
       instance = do.call(TuningInstanceSingleCrit$new, ia)
       self$tuner$optimize(instance)
 
+      # reset the inner validation task to what was set before entering at's .train()
+      on.exit()
+
       # get learner, set params to optimal, then train we REALLY need to clone
       # here we write to the object and this would change instance_args
       learner = ia$learner$clone(deep = TRUE)
@@ -353,11 +390,12 @@ AutoTuner = R6Class("AutoTuner",
       # disable timeout to allow train on full data set without time limit
       # timeout during tuning is not affected
       learner$timeout = c(train = Inf, predict = Inf)
-      if (length(get_private(instance$archive)$.inner_tuning)) {
-        set_inner_tuning(learner, disable = TRUE)
-      }
-      learner$train(task)
 
+      if (private$.inner_tuning) {
+        invoke(set_inner_tuning, .learner = learner, .args = insert_named(list(.disable = TRUE), private$.inner_tuning_args))
+      }
+
+      learner$train(task)
 
       # the return model is a list of "learner" and "tuning_instance"
       result_model = list(learner = learner)
@@ -372,3 +410,22 @@ AutoTuner = R6Class("AutoTuner",
     .store_tuning_instance = NULL
   )
 )
+
+
+#' @title Configure Validation for AutoTuner
+#' @description
+#' The `val
+#'
+#'
+#' @param learner ([`AutoTuner`])\cr
+#'   The autotuner for which to enable validation.
+#' @param validate (`numeric(1)`, `"inner_valid"` or `NULL`)\cr
+#'   How to configure the validation of the **wrapped learner**.
+#' @param at_validate (`numeric(1)`, `"inner_valid"` or `NULL`)\cr
+#'
+#' @export
+set_validate.AutoTuner = function(learner, validate, at_validate, ...) {
+  set_validate(learner$instances_args$learner, validate = validate, ...)
+
+  learner$validate = at_validate
+}
