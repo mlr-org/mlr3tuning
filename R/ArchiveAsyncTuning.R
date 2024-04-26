@@ -1,4 +1,4 @@
-#' @title Rush Data Archive
+#' @title Rush Data Storage
 #'
 #' @description
 #' The [ArchiveAsyncTuning] stores all evaluated hyperparameter configurations and performance scores.
@@ -29,7 +29,7 @@
 #'     Connects each hyperparameter configuration to the resampling experiment stored in the [mlr3::BenchmarkResult].
 #'
 #' @section Analysis:
-#' For analyzing the tuning results, it is recommended to pass the [ArchiveTuning] to `as.data.table()`.
+#' For analyzing the tuning results, it is recommended to pass the [ArchiveTuningAsync] to `as.data.table()`.
 #' The returned data table is joined with the benchmark result which adds the [mlr3::ResampleResult] for each hyperparameter evaluation.
 #'
 #' The archive provides various getters (e.g. `$learners()`) to ease the access.
@@ -44,8 +44,8 @@
 #' @section S3 Methods:
 #' * `as.data.table.ArchiveTuning(x, unnest = "x_domain", exclude_columns = "uhash", measures = NULL)`\cr
 #' Returns a tabular view of all evaluated hyperparameter configurations.\cr
-#' [ArchiveTuning] -> [data.table::data.table()]\cr
-#'     * `x` ([ArchiveTuning])
+#' [ArchiveTuningAsync] -> [data.table::data.table()]\cr
+#'     * `x` ([ArchiveTuningAsync])
 #'     * `unnest` (`character()`)\cr
 #'       Transforms list columns to separate columns. Set to `NULL` if no column should be unnested.
 #'     * `exclude_columns` (`character()`)\cr

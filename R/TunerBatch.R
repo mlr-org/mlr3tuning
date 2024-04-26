@@ -67,7 +67,7 @@ TunerBatch = R6Class("TunerBatch",
 
     #' @description
     #' Performs the tuning on a [TuningInstanceBatchSingleCrit] or [TuningInstanceBatchMultiCrit] until termination.
-    #' The single evaluations will be written into the [ArchiveTuning] that resides in the [TuningInstanceBatchSingleCrit]/[TuningInstanceBatchMultiCrit].
+    #' The single evaluations will be written into the [ArchiveTuningBatch] that resides in the [TuningInstanceBatchSingleCrit]/[TuningInstanceBatchMultiCrit].
     #' The result will be written into the instance object.
     #'
     #' @param inst ([TuningInstanceBatchSingleCrit] | [TuningInstanceBatchMultiCrit]).

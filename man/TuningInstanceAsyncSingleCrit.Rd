@@ -34,7 +34,7 @@ The default measure depends on the task type.\tabular{lll}{
 
 \section{Analysis}{
 
-For analyzing the tuning results, it is recommended to pass the \link{ArchiveTuning} to \code{as.data.table()}.
+For analyzing the tuning results, it is recommended to pass the \link{ArchiveTuningAsync} to \code{as.data.table()}.
 The returned data table is joined with the benchmark result which adds the \link[mlr3:ResampleResult]{mlr3::ResampleResult} for each hyperparameter evaluation.
 
 The archive provides various getters (e.g. \verb{$learners()}) to ease the access.

@@ -119,7 +119,7 @@ Other Tuner:
 }
 \concept{Tuner}
 \section{Super classes}{
-\code{\link[mlr3tuning:Tuner]{mlr3tuning::Tuner}} -> \code{\link[mlr3tuning:TunerBatch]{mlr3tuning::TunerBatch}} -> \code{TunerBatchGridSearch}
+\code{\link[mlr3tuning:Tuner]{mlr3tuning::Tuner}} -> \code{\link[mlr3tuning:TunerBatch]{mlr3tuning::TunerBatch}} -> \code{\link[mlr3tuning:TunerBatchFromOptimizerBatch]{mlr3tuning::TunerBatchFromOptimizerBatch}} -> \code{TunerBatchGridSearch}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -134,7 +134,7 @@ Other Tuner:
 <li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="format"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-format'><code>mlr3tuning::Tuner$format()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="help"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-help'><code>mlr3tuning::Tuner$help()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="print"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-print'><code>mlr3tuning::Tuner$print()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="TunerBatch" data-id="optimize"><a href='../../mlr3tuning/html/TunerBatch.html#method-TunerBatch-optimize'><code>mlr3tuning::TunerBatch$optimize()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="TunerBatchFromOptimizerBatch" data-id="optimize"><a href='../../mlr3tuning/html/TunerBatchFromOptimizerBatch.html#method-TunerBatchFromOptimizerBatch-optimize'><code>mlr3tuning::TunerBatchFromOptimizerBatch$optimize()</code></a></span></li>
 </ul>
 </details>
 }}

@@ -86,7 +86,7 @@ If a rush instance is supplied, the tuning runs without batches.}
 Function to tune a \link[mlr3:Learner]{mlr3::Learner}.
 The function internally creates a \link{TuningInstanceBatchSingleCrit} or \link{TuningInstanceBatchMultiCrit} which describes the tuning problem.
 It executes the tuning with the \link{Tuner} (\code{tuner}) and returns the result with the tuning instance (\verb{$result}).
-The \link{ArchiveTuning} (\verb{$archive}) stores all evaluated hyperparameter configurations and performance scores.
+The \link{ArchiveTuningBatch} and \link{ArchiveTuningAsync} (\verb{$archive}) stores all evaluated hyperparameter configurations and performance scores.
 }
 \details{
 The \link[mlr3:Task]{mlr3::Task}, \link[mlr3:Learner]{mlr3::Learner}, \link[mlr3:Resampling]{mlr3::Resampling}, \link[mlr3:Measure]{mlr3::Measure} and \link{Terminator} are used to construct a \link{TuningInstanceBatchSingleCrit}.
@@ -131,7 +131,7 @@ The default measure depends on the task type.\tabular{lll}{
 
 \section{Analysis}{
 
-For analyzing the tuning results, it is recommended to pass the \link{ArchiveTuning} to \code{as.data.table()}.
+For analyzing the tuning results, it is recommended to pass the \link{ArchiveTuningBatch} to \code{as.data.table()}.
 The returned data table is joined with the benchmark result which adds the \link[mlr3:ResampleResult]{mlr3::ResampleResult} for each hyperparameter evaluation.
 
 The archive provides various getters (e.g. \verb{$learners()}) to ease the access.

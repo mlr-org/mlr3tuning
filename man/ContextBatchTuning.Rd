@@ -35,7 +35,6 @@ A callback can add additional columns which are also written to the archive.}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-ContextBatchTuning-new}{\code{ContextBatchTuning$new()}}
 \item \href{#method-ContextBatchTuning-clone}{\code{ContextBatchTuning$clone()}}
 }
 }
@@ -44,30 +43,10 @@ A callback can add additional columns which are also written to the archive.}
 <ul>
 <li><span class="pkg-link" data-pkg="mlr3misc" data-topic="Context" data-id="format"><a href='../../mlr3misc/html/Context.html#method-Context-format'><code>mlr3misc::Context$format()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="mlr3misc" data-topic="Context" data-id="print"><a href='../../mlr3misc/html/Context.html#method-Context-print'><code>mlr3misc::Context$print()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="bbotk" data-topic="ContextBatch" data-id="initialize"><a href='../../bbotk/html/ContextBatch.html#method-ContextBatch-initialize'><code>bbotk::ContextBatch$initialize()</code></a></span></li>
 </ul>
 </details>
 }}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ContextBatchTuning-new"></a>}}
-\if{latex}{\out{\hypertarget{method-ContextBatchTuning-new}{}}}
-\subsection{Method \code{new()}}{
-Creates a new instance of this \link[R6:R6Class]{R6} class.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContextBatchTuning$new(inst, tuner)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{inst}}{(\link{TuningInstanceBatchSingleCrit} | \link{TuningInstanceBatchMultiCrit} )\cr
-The tuning instance.}
-
-\item{\code{tuner}}{(\link{Tuner})\cr
-Optimization algorithm.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ContextBatchTuning-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-ContextBatchTuning-clone}{}}}

@@ -273,7 +273,7 @@ AutoTuner = R6Class("AutoTuner",
 
   active = list(
 
-    #' @field archive [ArchiveTuning]\cr
+    #' @field archive [Archive]\cr
     #' Archive of the [TuningInstanceBatchSingleCrit].
     archive = function() self$tuning_instance$archive,
 

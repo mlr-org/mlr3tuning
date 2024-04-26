@@ -35,7 +35,7 @@ TunerAsyncFromOptimizerAsync = R6Class("TunerAsyncFromOptimizerAsync",
       #' @description
       #' Performs the tuning on a [TuningInstanceBatchSingleCrit] /
       #' [TuningInstanceBatchMultiCrit] until termination. The single evaluations and
-      #' the final results will be written into the [ArchiveTuning] that
+      #' the final results will be written into the [ArchiveTuningAsync] that
       #' resides in the [TuningInstanceBatchSingleCrit]/[TuningInstanceBatchMultiCrit].
       #' The final result is returned.
       #'

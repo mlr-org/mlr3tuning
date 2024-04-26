@@ -4,5 +4,5 @@
 \alias{mlr3tuning.async_default_configuration}
 \title{Default Configuration Callback}
 \description{
-This \link{CallbackAsyncTuning} evaluates the default hyperparameter values of a learner.
+These \link{CallbackAsyncTuning} and \link{CallbackBatchTuning} evaluate the default hyperparameter values of a learner.
 }

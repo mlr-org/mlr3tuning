@@ -133,7 +133,7 @@ Optimization algorithm.}
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
-\item{\code{archive}}{\link{ArchiveTuning}\cr
+\item{\code{archive}}{\link{Archive}\cr
 Archive of the \link{TuningInstanceBatchSingleCrit}.}
 
 \item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner})\cr

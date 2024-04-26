@@ -1,10 +1,10 @@
 #' @title Class for Logging Evaluated Hyperparameter Configurations
 #'
 #' @description
-#' The [ArchiveTuning] stores all evaluated hyperparameter configurations and performance scores.
+#' The [ArchiveTuningBatch] stores all evaluated hyperparameter configurations and performance scores.
 #'
 #' @details
-#' The [ArchiveTuning] is a container around a [data.table::data.table()].
+#' The [ArchiveTuningBatch] is a container around a [data.table::data.table()].
 #' Each row corresponds to a single evaluation of a hyperparameter configuration.
 #' See the section on Data Structure for more information.
 #' The archive stores additionally a [mlr3::BenchmarkResult] (`$benchmark_result`) that records the resampling experiments.
@@ -32,7 +32,7 @@
 #'     Connects each hyperparameter configuration to the resampling experiment stored in the [mlr3::BenchmarkResult].
 #'
 #' @section Analysis:
-#' For analyzing the tuning results, it is recommended to pass the [ArchiveTuning] to `as.data.table()`.
+#' For analyzing the tuning results, it is recommended to pass the [ArchiveTuningBatch] to `as.data.table()`.
 #' The returned data table is joined with the benchmark result which adds the [mlr3::ResampleResult] for each hyperparameter evaluation.
 #'
 #' The archive provides various getters (e.g. `$learners()`) to ease the access.
@@ -47,8 +47,8 @@
 #' @section S3 Methods:
 #' * `as.data.table.ArchiveTuning(x, unnest = "x_domain", exclude_columns = "uhash", measures = NULL)`\cr
 #' Returns a tabular view of all evaluated hyperparameter configurations.\cr
-#' [ArchiveTuning] -> [data.table::data.table()]\cr
-#'     * `x` ([ArchiveTuning])
+#' [ArchiveTuningBatch] -> [data.table::data.table()]\cr
+#'     * `x` ([ArchiveTuningBatch])
 #'     * `unnest` (`character()`)\cr
 #'       Transforms list columns to separate columns. Set to `NULL` if no column should be unnested.
 #'     * `exclude_columns` (`character()`)\cr

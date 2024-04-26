@@ -34,7 +34,6 @@ A callback can add additional columns which are also written to the archive.}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-ContextAsyncTuning-new}{\code{ContextAsyncTuning$new()}}
 \item \href{#method-ContextAsyncTuning-clone}{\code{ContextAsyncTuning$clone()}}
 }
 }
@@ -43,30 +42,10 @@ A callback can add additional columns which are also written to the archive.}
 <ul>
 <li><span class="pkg-link" data-pkg="mlr3misc" data-topic="Context" data-id="format"><a href='../../mlr3misc/html/Context.html#method-Context-format'><code>mlr3misc::Context$format()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="mlr3misc" data-topic="Context" data-id="print"><a href='../../mlr3misc/html/Context.html#method-Context-print'><code>mlr3misc::Context$print()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="bbotk" data-topic="ContextAsync" data-id="initialize"><a href='../../bbotk/html/ContextAsync.html#method-ContextAsync-initialize'><code>bbotk::ContextAsync$initialize()</code></a></span></li>
 </ul>
 </details>
 }}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ContextAsyncTuning-new"></a>}}
-\if{latex}{\out{\hypertarget{method-ContextAsyncTuning-new}{}}}
-\subsection{Method \code{new()}}{
-Creates a new instance of this \link[R6:R6Class]{R6} class.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContextAsyncTuning$new(inst, tuner)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{inst}}{(\link{TuningInstanceAsyncSingleCrit} | \link{TuningInstanceAsyncMultiCrit} )\cr
-The tuning instance.}
-
-\item{\code{tuner}}{(\link{Tuner})\cr
-Optimization algorithm.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ContextAsyncTuning-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-ContextAsyncTuning-clone}{}}}

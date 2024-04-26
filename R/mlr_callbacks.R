@@ -45,7 +45,7 @@ load_callback_backup = function() {
 #'
 #' @description
 #' This [Callback] scores the hyperparameter configurations on additional measures while tuning.
-#' Usually, the configurations can be scored on additional measures after tuning (see [ArchiveTuning]).
+#' Usually, the configurations can be scored on additional measures after tuning (see [ArchiveTuningBatch]).
 #' However, if the memory is not sufficient to store the [mlr3::BenchmarkResult], it is necessary to score the additional measures while tuning.
 #' The measures are not taken into account by the tuner.
 #'
@@ -133,8 +133,9 @@ load_callback_async_measures = function() {
 #' @description
 #' This [Callback] logs the hyperparameter configurations and the performance of the configurations to MLflow.
 #'
+#' @examplesIf requireNamespace("mlflow")
 #' @examples
-#' clbk("mlr3tuning.mlflow", tracking_uri = "http://localhost:5000")
+#' clbk("mlr3tuning.async_mlflow", tracking_uri = "http://localhost:5000")
 #'
 #' \dontrun{
 #' rush::rush_plan(n_workers = 4)
@@ -340,6 +341,9 @@ load_callback_default_configuration = function() {
 }
 
 #' @title Save Logs Callback
+#'
+#' @include CallbackAsyncTuning.R
+#' @name mlr3tuning.async_save_logs
 #'
 #' @description
 #' This [CallbackAsyncTuning] saves the logs of the learners to the archive.

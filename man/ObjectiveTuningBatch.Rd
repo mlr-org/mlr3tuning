@@ -13,7 +13,7 @@ This class is usually constructed internally by the \link{TuningInstanceBatchSin
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{archive}}{(\link{ArchiveTuning}).}
+\item{\code{archive}}{(\link{ArchiveTuningBatch}).}
 }
 \if{html}{\out{</div>}}
 }
@@ -88,7 +88,7 @@ If \code{TRUE}, hyperparameter values are checked before evaluation and
 performance scores after. If \code{FALSE} (default), values are unchecked but
 computational overhead is reduced.}
 
-\item{\code{archive}}{(\link{ArchiveTuning})\cr
+\item{\code{archive}}{(\link{ArchiveTuningBatch})\cr
 Reference to archive of \link{TuningInstanceBatchSingleCrit} | \link{TuningInstanceBatchMultiCrit}.
 If \code{NULL} (default), benchmark result and models cannot be stored.}
 

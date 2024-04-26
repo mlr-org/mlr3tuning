@@ -2,10 +2,11 @@
 % Please edit documentation in R/mlr_callbacks.R
 \name{mlr3tuning.measures}
 \alias{mlr3tuning.measures}
+\alias{mlr3tuning.async_measures}
 \title{Measure Callback}
 \description{
 This \link{Callback} scores the hyperparameter configurations on additional measures while tuning.
-Usually, the configurations can be scored on additional measures after tuning (see \link{ArchiveTuning}).
+Usually, the configurations can be scored on additional measures after tuning (see \link{ArchiveTuningBatch}).
 However, if the memory is not sufficient to store the \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}, it is necessary to score the additional measures while tuning.
 The measures are not taken into account by the tuner.
 }

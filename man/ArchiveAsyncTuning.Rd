@@ -2,7 +2,7 @@
 % Please edit documentation in R/ArchiveAsyncTuning.R
 \name{ArchiveAsyncTuning}
 \alias{ArchiveAsyncTuning}
-\title{Rush Data Archive}
+\title{Rush Data Storage}
 \description{
 The \link{ArchiveAsyncTuning} stores all evaluated hyperparameter configurations and performance scores.
 }
@@ -36,7 +36,7 @@ Connects each hyperparameter configuration to the resampling experiment stored i
 
 \section{Analysis}{
 
-For analyzing the tuning results, it is recommended to pass the \link{ArchiveTuning} to \code{as.data.table()}.
+For analyzing the tuning results, it is recommended to pass the \link{ArchiveTuningAsync} to \code{as.data.table()}.
 The returned data table is joined with the benchmark result which adds the \link[mlr3:ResampleResult]{mlr3::ResampleResult} for each hyperparameter evaluation.
 
 The archive provides various getters (e.g. \verb{$learners()}) to ease the access.
@@ -54,9 +54,9 @@ The \CRANpkg{mlr3viz} package provides visualizations for tuning results.
 \itemize{
 \item \code{as.data.table.ArchiveTuning(x, unnest = "x_domain", exclude_columns = "uhash", measures = NULL)}\cr
 Returns a tabular view of all evaluated hyperparameter configurations.\cr
-\link{ArchiveTuning} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
+\link{ArchiveTuningAsync} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
 \itemize{
-\item \code{x} (\link{ArchiveTuning})
+\item \code{x} (\link{ArchiveTuningAsync})
 \item \code{unnest} (\code{character()})\cr
 Transforms list columns to separate columns. Set to \code{NULL} if no column should be unnested.
 \item \code{exclude_columns} (\code{character()})\cr
