@@ -104,10 +104,9 @@ tune = function(
   ) {
   assert_tuner(tuner)
   terminator = terminator %??% terminator_selection(term_evals, term_time)
-  measures = assert_measures(as_measures(measures))
 
   instance =  if (inherits(tuner, "TunerAsync")) {
-    TuningInstance = if (length(measures) > 1) TuningInstanceAsyncMultiCrit else TuningInstanceAsyncSingleCrit
+    TuningInstance = if (is.null(measures) || inherits(measures, "Measure")) TuningInstanceAsyncSingleCrit else TuningInstanceAsyncMultiCrit
     TuningInstance$new(
       task = task,
       learner = learner,
@@ -121,7 +120,7 @@ tune = function(
       callbacks = callbacks,
       rush = rush)
   } else {
-    TuningInstance = if (length(measures) > 1) TuningInstanceBatchMultiCrit else TuningInstanceBatchSingleCrit
+    TuningInstance = if (is.null(measures) || inherits(measures, "Measure")) TuningInstanceBatchSingleCrit else TuningInstanceBatchMultiCrit
     TuningInstance$new(
       task = task,
       learner = learner,

@@ -1,6 +1,6 @@
 test_that("API", {
   for (n_evals in c(1, 5)) {
-    rs = TunerRandomSearch$new()
+    rs = TunerBatchRandomSearch$new()
     inst = TEST_MAKE_INST1(measure = msr("classif.ce"), term_evals = n_evals)
     expect_data_table(rs$optimize(inst), nrows = 1)
     a = inst$archive$data
@@ -18,13 +18,13 @@ test_that("proper error if tuner cannot handle deps", {
   ps$add_dep("minsplit", on = "cp", cond = CondEqual$new(0.1))
   te = trm("evals", n_evals = 2)
   inst = TuningInstanceBatchSingleCrit$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), te, ps)
-  tt = TunerGenSA$new()
+  tt = TunerBatchGenSA$new()
   expect_error(tt$optimize(inst), "dependencies")
 })
 
 test_that("we get a result when some subordinate params are not fulfilled", {
   TunerManual = R6Class("TunerManual",
-    inherit = Tuner,
+    inherit = TunerBatch,
     public = list(
       initialize = function() {
         super$initialize(
@@ -67,23 +67,6 @@ test_that("print method workds", {
   expect_output(print(tuner), "ParamLgl")
   expect_output(print(tuner), "single-crit")
   expect_output(print(tuner), "GenSA")
-})
-
-test_that("optimize does not work in abstract class", {
-  param_set = ps(p1 = p_lgl())
-  param_set$values$p1 = TRUE
-  param_classes = "ParamDbl"
-  properties = "single-crit"
-  packages = character(0)
-
-  tuner = Tuner$new(
-    id = "tuner",
-    param_set = param_set,
-    param_classes = param_classes,
-    properties = "single-crit",
-    packages = packages)
-  inst = TEST_MAKE_INST1()
-  expect_error(tuner$optimize(inst), "abstract")
 })
 
 test_that("Tuner works with graphlearner", {
@@ -136,7 +119,7 @@ test_that("Tuner works with instantiated resampling", {
     search_space = ps,
     terminator = te)
 
-  rs = TunerRandomSearch$new()
+  rs = TunerBatchRandomSearch$new()
   rs$optimize(inst)
 
   expect_r6(inst$objective$resampling, "ResamplingCustom")
@@ -151,7 +134,7 @@ test_that("Tuner active bindings work", {
   properties = "single-crit"
   packages = "GenSA"
 
-  tuner = Tuner$new(
+  tuner = TunerBatch$new(
     id = "tuner",
     param_set = param_set,
     param_classes = param_classes,

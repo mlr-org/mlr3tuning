@@ -169,13 +169,13 @@ test_that("check_values flag with parameter set dependencies", {
   tuner = tnr("random_search")
 
   inst = TuningInstanceBatchSingleCrit$new(tsk("boston_housing"), learner,
-    rsmp("holdout"), msr("regr.mse"), terminator, search_space)
+    rsmp("holdout"), msr("regr.mse"), terminator, search_space, check_values = FALSE)
   tuner$optimize(inst)
   expect_named(inst$result_learner_param_vals, c("xx", "cp", "yy"))
 
   inst = TuningInstanceBatchSingleCrit$new(tsk("boston_housing"), learner,
     rsmp("holdout"), msr("regr.mse"), terminator, search_space,
-    check_values = FALSE)
+    check_values = TRUE)
   expect_error(tuner$optimize(inst),
     regexp = "yy.* can only be set")
 })

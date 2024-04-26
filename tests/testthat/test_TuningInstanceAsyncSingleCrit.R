@@ -9,7 +9,7 @@ test_that("initializing TuningInstanceAsyncSingleCrit works", {
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
     resampling = rsmp("cv", folds = 3),
-    measure = msr("classif.ce"),
+    measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 3)
   )
 
@@ -20,7 +20,7 @@ test_that("initializing TuningInstanceAsyncSingleCrit works", {
   expect_r6(instance$rush, "Rush")
   expect_null(instance$result)
 
-  expect_rush_reset(instance$rush)
+  expect_rush_reset(instance$rush, type = "terminate")
 })
 
 test_that("rush controller can be passed to TuningInstanceAsyncSingleCrit", {
@@ -34,7 +34,7 @@ test_that("rush controller can be passed to TuningInstanceAsyncSingleCrit", {
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
     resampling = rsmp("cv", folds = 3),
-    measure = msr("classif.ce"),
+    measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 3),
     rush = rush
   )
@@ -54,7 +54,7 @@ test_that("TuningInstanceAsyncSingleCrit can be passed to a tuner", {
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
     resampling = rsmp("cv", folds = 3),
-    measure = msr("classif.ce"),
+    measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 3)
   )
 
@@ -62,7 +62,7 @@ test_that("TuningInstanceAsyncSingleCrit can be passed to a tuner", {
   tuner$optimize(instance)
 
   expect_data_table(instance$archive$data, min.rows = 3L)
-  expect_rush_reset(instance$rush)
+  expect_rush_reset(instance$rush, type = "terminate")
 })
 
 test_that("assigning a result to TuningInstanceAsyncSingleCrit works", {
@@ -76,7 +76,7 @@ test_that("assigning a result to TuningInstanceAsyncSingleCrit works", {
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
     resampling = rsmp("cv", folds = 3),
-    measure = msr("classif.ce"),
+    measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 3)
   )
 
@@ -85,7 +85,7 @@ test_that("assigning a result to TuningInstanceAsyncSingleCrit works", {
 
   result = instance$result
   expect_data_table(result, nrows = 1)
-  expect_names(names(result), identical.to = c("cp", "x_domain", "classif.ce"))
+  expect_names(names(result), identical.to = c("cp", "learner_param_vals", "x_domain", "classif.ce"))
 })
 
 test_that("saving the benchmark result with TuningInstanceRushSingleCrit works", {
@@ -99,7 +99,7 @@ test_that("saving the benchmark result with TuningInstanceRushSingleCrit works",
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
     resampling = rsmp("cv", folds = 3),
-    measure = msr("classif.ce"),
+    measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 3),
     store_benchmark_result = TRUE
   )
@@ -123,7 +123,7 @@ test_that("saving the models with TuningInstanceRushSingleCrit works", {
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
     resampling = rsmp("cv", folds = 3),
-    measure = msr("classif.ce"),
+    measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 3),
     store_benchmark_result = TRUE,
     store_models = TRUE
@@ -148,7 +148,7 @@ test_that("saving the models with TuningInstanceRushSingleCrit works", {
 #     task = tsk("pima"),
 #     learner = lrn("classif.debug", segfault_train = 1, x = to_tune()),
 #     resampling = rsmp("cv", folds = 3),
-#     measure = msr("classif.ce"),
+#     measures = msr("classif.ce"),
 #     terminator = trm("evals", n_evals = 10)
 #   )
 

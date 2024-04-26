@@ -92,7 +92,7 @@ TuningInstanceBatchMultiCrit = R6Class("TuningInstanceBatchMultiCrit",
       }
 
       # create codomain from measure
-      measures = assert_measures(as_measures(measures), task = task, learner = learner)
+      measures = assert_measures(as_measures(measures, task_type = task$task_type), task = task, learner = learner)
       codomain = measures_to_codomain(measures)
 
       # initialized specialized tuning archive and objective

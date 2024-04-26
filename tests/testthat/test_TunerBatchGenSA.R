@@ -1,6 +1,6 @@
 skip_if_not_installed("GenSA")
 
-test_that("TunerGenSA", {
+test_that("TunerBatchGenSA", {
   test_tuner("gensa")
 
   ps = ps(
@@ -8,24 +8,24 @@ test_that("TunerGenSA", {
   )
   te = trm("evals", n_evals = 2)
   inst = TuningInstanceBatchSingleCrit$new(tsk("iris"), lrn("classif.debug"), rsmp("holdout"), msr("classif.ce"), te, ps)
-  tt = TunerGenSA$new()
+  tt = TunerBatchGenSA$new()
   expect_error(tt$optimize(inst), "support")
 })
 
-test_that("TunerGenSA with int params and trafo", {
+test_that("TunerBatchGenSA with int params and trafo", {
   ps = ps(
     cp = p_dbl(lower = 0.001, upper = 0.1),
     minsplit = p_dbl(lower = 1, upper = 10, trafo = function(x) as.integer(round(x)))
   )
   te = trm("evals", n_evals = 2)
   inst = TuningInstanceBatchSingleCrit$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), te, ps)
-  tt = TunerGenSA$new()
+  tt = TunerBatchGenSA$new()
   tt$optimize(inst)
   d = inst$archive$data
   expect_integer(d$x_domain[[1]]$minsplit)
 })
 
-test_that("TunerGenSA - Optimize wrapper with maximize measure", {
+test_that("TunerBatchGenSA - Optimize wrapper with maximize measure", {
   inst = TEST_MAKE_INST1(measure = msr("dummy.cp.maximize.classif", function(pv)  pv$cp), n_dim = 1)
   tt = tnr("gensa", smooth = TRUE)
   tt$optimize(inst)

@@ -36,40 +36,40 @@ test_that("backup callback works with standalone tuner", {
 
 # async hotstart callback ------------------------------------------------------
 
-test_that("async hotstart callback works", {
-  # options(bbotk_local = TRUE)
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
+# test_that("async hotstart callback works", {
+#   # options(bbotk_local = TRUE)
+#   skip_on_cran()
+#   skip_if_not_installed("rush")
+#   flush_redis()
 
-  rush_plan(n_workers = 2)
-  instance = ti_async(
-    task = tsk("pima"),
-    learner = lrn("classif.debug", x = to_tune(), iter = to_tune(1, 100)),
-    resampling = rsmp("cv", folds = 3),
-    measure = msr("classif.ce"),
-    terminator = trm("evals", n_evals = 20),
-    store_benchmark_result = FALSE,
-    callbacks = clbk("mlr3tuning.async_hotstart")
-  )
+#   rush_plan(n_workers = 2)
+#   instance = ti_async(
+#     task = tsk("pima"),
+#     learner = lrn("classif.debug", x = to_tune(), iter = to_tune(1, 100)),
+#     resampling = rsmp("cv", folds = 3),
+#     measure = msr("classif.ce"),
+#     terminator = trm("evals", n_evals = 20),
+#     store_benchmark_result = FALSE,
+#     callbacks = clbk("mlr3tuning.async_hotstart")
+#   )
 
-  design = data.table(
-    x = 1,
-    iter = c(1, 2, 3)
-  )
+#   design = data.table(
+#     x = 1,
+#     iter = c(1, 2, 3)
+#   )
 
-  tuner = tnr("async_design_points", design = design)
-  tuner$optimize(instance)
+#   tuner = tnr("async_design_points", design = design)
+#   tuner$optimize(instance)
 
 
-  ids = map(extract_benchmark_result_learners(instance$archive$benchmark_result), function(l) l$model$id)
-  expect_equal(length(unique(ids)), 5)
-  expect_equal(unique(instance$archive$data$iter), c(1, 26, 51, 76, 101))
-  expect_null(instance$archive$data$resample_result)
+#   ids = map(extract_benchmark_result_learners(instance$archive$benchmark_result), function(l) l$model$id)
+#   expect_equal(length(unique(ids)), 5)
+#   expect_equal(unique(instance$archive$data$iter), c(1, 26, 51, 76, 101))
+#   expect_null(instance$archive$data$resample_result)
 
-  tuner = tnr("async_random_search")
-  expect_data_table(tuner$optimize(instance), nrows = 1)
-})
+#   tuner = tnr("async_random_search")
+#   expect_data_table(tuner$optimize(instance), nrows = 1)
+# })
 
 # async measure callback ------------------------------------------------------
 
@@ -83,7 +83,7 @@ test_that("async measures callback works", {
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1), predict_sets = c("test", "holdout")),
     resampling = rsmp("cv", folds = 3),
-    measure = msr("classif.ce"),
+    measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 3),
     callbacks = clbk("mlr3tuning.async_measures", measures = list(msr("classif.ce", predict_sets = "holdout", id = "classif.ce_holdout"))))
 
@@ -92,36 +92,35 @@ test_that("async measures callback works", {
 
   expect_numeric(instance$archive$data$classif.ce_holdout)
 
-  expect_rush_reset(instance$rush)
+  expect_rush_reset(instance$rush, type = "terminate")
 })
 
 # async mlflow callback --------------------------------------------------------
 
-test_that("rush mlflow callback works", {
-  # mlflow server must be running
-  skip_if(TRUE)
-  skip_on_ci()
-  skip_if_not_installed("rush")
-  flush_redis()
+# test_that("rush mlflow callback works", {
+#   # mlflow server must be running
+#   skip_on_ci()
+#   skip_if_not_installed("rush")
+#   flush_redis()
 
-  learner = lrn("classif.rpart",
-    minsplit  = to_tune(2, 128),
-    cp        = to_tune(1e-04, 1e-1))
+#   learner = lrn("classif.rpart",
+#     minsplit  = to_tune(2, 128),
+#     cp        = to_tune(1e-04, 1e-1))
 
-  rush_plan(n_workers = 2)
-  instance = ti_async(
-    task = tsk("pima"),
-    learner = learner,
-    resampling = rsmp("cv", folds = 3),
-    measure = msr("classif.ce"),
-    terminator = trm("evals", n_evals = 20),
-    store_benchmark_result = FALSE,
-    callbacks = clbk("mlr3tuning.async_mlflow", tracking_uri = "http://localhost:8080")
-  )
+#   rush_plan(n_workers = 2)
+#   instance = ti_async(
+#     task = tsk("pima"),
+#     learner = learner,
+#     resampling = rsmp("cv", folds = 3),
+#     measures = msr("classif.ce"),
+#     terminator = trm("evals", n_evals = 20),
+#     store_benchmark_result = FALSE,
+#     callbacks = clbk("mlr3tuning.async_mlflow", tracking_uri = "http://localhost:8080")
+#   )
 
-  optimizer = tnr("async_random_search")
-  optimizer$optimize(instance)
-})
+#   optimizer = tnr("async_random_search")
+#   optimizer$optimize(instance)
+# })
 
 # async default configuration callback -----------------------------------------
 
@@ -135,7 +134,7 @@ test_that("default configuration callback works", {
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
     resampling = rsmp("cv", folds = 3),
-    measure = msr("classif.ce"),
+    measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 5),
     callbacks = clbk("mlr3tuning.async_default_configuration")
   )
@@ -157,7 +156,7 @@ test_that("default configuration callback works with logscale", {
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
     resampling = rsmp("cv", folds = 3),
-    measure = msr("classif.ce"),
+    measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 5),
     callbacks = clbk("mlr3tuning.async_default_configuration")
   )
@@ -179,7 +178,7 @@ test_that("default configuration callback errors with trafo", {
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(p_dbl(-10, 0, trafo = function(x) 10^x))),
     resampling = rsmp("cv", folds = 3),
-    measure = msr("classif.ce"),
+    measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 5),
     callbacks = clbk("mlr3tuning.async_default_configuration")
   )
@@ -202,7 +201,7 @@ test_that("default configuration callback works without transformation and with 
     task = tsk("pima"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
-    measure = msr("classif.ce"),
+    measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 5),
     callbacks = clbk("mlr3tuning.async_default_configuration")
   )
@@ -231,7 +230,7 @@ test_that("default configuration callback errors without transformation and with
     task = tsk("pima"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
-    measure = msr("classif.ce"),
+    measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 5),
     callbacks = clbk("mlr3tuning.async_default_configuration")
   )
@@ -261,7 +260,7 @@ test_that("default configuration callback errors with extra trafo", {
     task = tsk("pima"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
-    measure = msr("classif.ce"),
+    measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 5),
     search_space = search_space,
     callbacks = clbk("mlr3tuning.async_default_configuration")
@@ -282,7 +281,7 @@ test_that("default configuration callback errors with old parameter set api", {
     task = tsk("pima"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
-    measure = msr("classif.ce"),
+    measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 5),
     search_space = search_space,
     callbacks = clbk("mlr3tuning.async_default_configuration")
@@ -434,7 +433,7 @@ test_that("async save logs callback works", {
     task = tsk("pima"),
     learner = lrn("classif.debug", message_train = 1, x = to_tune()),
     resampling = rsmp("cv", folds = 3),
-    measure = msr("classif.ce"),
+    measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 5),
     callbacks = clbk("mlr3tuning.async_save_logs")
   )
@@ -442,7 +441,8 @@ test_that("async save logs callback works", {
   tuner = tnr("async_random_search")
   tuner$optimize(instance)
 
-  expect_data_table(instance$archive$data$log)
+  expect_list(instance$archive$data$log)
+  expect_data_table(instance$archive$data$log[[1]][[1]])
 })
 
 

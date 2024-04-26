@@ -454,6 +454,7 @@ test_that("AutoTuner works with instantiated resampling", {
     term_evals = 4)
 
   at$train(task)
+  expect_data_table(at$tuning_instance$result, nrows = 1)
 })
 
 test_that("AutoTuner errors when train set is not a subset of task ids", {
@@ -567,9 +568,11 @@ test_that("AutoTuner errors when second test set is not a subset of task ids", {
 # Async ------------------------------------------------------------------------
 
 test_that("AutoTuner works with async tuner", {
+  skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
 
+  rush_plan(n_workers = 2)
   at = auto_tuner(
     tuner = tnr("async_random_search"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
@@ -579,4 +582,8 @@ test_that("AutoTuner works with async tuner", {
   )
 
   at$train(tsk("pima"))
+
+  expect_data_table(at$tuning_instance$result, nrows = 1)
+  expect_data_table(at$tuning_instance$archive$data, min.rows = 4)
+  expect_rush_reset(at$tuning_instance$rush, type = "terminate")
 })

@@ -13,7 +13,7 @@ test_that("TunerAsyncRandomSearch works", {
     task = tsk("pima"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
-    measure = msr("classif.ce"),
+    measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 20),
     store_benchmark_result = FALSE
   )
@@ -22,5 +22,5 @@ test_that("TunerAsyncRandomSearch works", {
   expect_data_table(tuner$optimize(instance), nrows = 1)
 
   expect_data_table(instance$archive$data, min.rows = 20)
-  expect_rush_reset(instance$rush)
+  expect_rush_reset(instance$rush, type = "terminate")
 })

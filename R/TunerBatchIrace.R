@@ -81,7 +81,7 @@ TunerBatchIrace = R6Class("TunerBatchIrace",
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function() {
-      optimizer = OptimizerIrace$new()
+      optimizer = OptimizerBatchIrace$new()
       extra_ps = ps(n_instances = p_int(lower = 1))
       extra_ps$values$n_instances = 10
 

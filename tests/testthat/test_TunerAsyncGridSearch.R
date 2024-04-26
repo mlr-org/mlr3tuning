@@ -1,5 +1,4 @@
 test_that("TunerAsyncGridSearch works", {
-  # options(bbotk_local = TRUE)
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
@@ -13,7 +12,7 @@ test_that("TunerAsyncGridSearch works", {
     task = tsk("pima"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
-    measure = msr("classif.ce"),
+    measures = msr("classif.ce"),
     terminator = trm("none"),
     store_benchmark_result = FALSE
   )
@@ -22,5 +21,5 @@ test_that("TunerAsyncGridSearch works", {
   expect_data_table(tuner$optimize(instance), nrows = 1)
 
   expect_data_table(instance$archive$data, nrows = 100)
-  expect_rush_reset(instance$rush)
+  expect_rush_reset(instance$rush, type = "terminate")
 })

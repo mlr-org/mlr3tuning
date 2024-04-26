@@ -36,13 +36,11 @@ ObjectiveTuningAsync = R6Class("ObjectiveTuningAsync",
       private$.aggregated_performance = as.list(private$.resample_result$aggregate(self$measures))
       lg$debug("Aggregated performance %s", as_short_string(private$.aggregated_performance))
 
-      # add errors and warnings
+      # add runtime, errors and warnings
       warnings = sum(map_int(get_private(private$.resample_result)$.data$learner_states(), function(s) sum(s$log$class == "warning")))
       errors = sum(map_int(get_private(private$.resample_result)$.data$learner_states(), function(s) sum(s$log$class == "error")))
-
-      # add runtime
       runtime_learners = extract_runtime(private$.resample_result)
-      private$.aggregated_performance = c(private$.aggregated_performance, list(runtime_learners = runtime_learners))
+      private$.aggregated_performance = c(private$.aggregated_performance, list(runtime_learners = runtime_learners, warnings = warnings, errors = errors))
 
       # add benchmark result and models
       if (!self$store_models) {

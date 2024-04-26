@@ -11,10 +11,11 @@ test_that("objective async works", {
   xs = list("cp" = 0.01)
   y = objective$eval(xs)
 
-  expect_list(y, len = 2)
-  expect_names(names(y), permutation.of = c("classif.ce", "runtime_learners", "warnings", "errors", "logs"))
+  expect_names(names(y), permutation.of = c("classif.ce", "runtime_learners", "warnings", "errors"))
   expect_number(y$classif.ce)
   expect_number(y$runtime_learners)
+  expect_number(y$warnings)
+  expect_number(y$errors)
 })
 
 test_that("store benchmark result works", {
@@ -30,12 +31,13 @@ test_that("store benchmark result works", {
   xs = list("cp" = 0.01)
   y = objective$eval(xs)
 
-  expect_list(y, len = 3)
-  expect_names(names(y), permutation.of = c("classif.ce", "runtime_learners", "resample_result"))
+  expect_names(names(y), permutation.of = c("classif.ce", "runtime_learners", "resample_result", "warnings", "errors"))
   expect_number(y$classif.ce)
   expect_number(y$runtime_learners)
   expect_resample_result(y$resample_result[[1]])
   expect_null(y$resample_result[[1]]$learners[[1]]$model)
+  expect_number(y$warnings)
+  expect_number(y$errors)
 })
 
 test_that("store models works", {
@@ -51,12 +53,13 @@ test_that("store models works", {
   xs = list("cp" = 0.01)
   y = objective$eval(xs)
 
-  expect_list(y, len = 3)
-  expect_names(names(y), permutation.of = c("classif.ce", "runtime_learners", "resample_result"))
+  expect_names(names(y), permutation.of = c("classif.ce", "runtime_learners", "resample_result", "warnings", "errors"))
   expect_number(y$classif.ce)
   expect_number(y$runtime_learners)
   expect_resample_result(y$resample_result[[1]])
   expect_class(y$resample_result[[1]]$learners[[1]]$model, "rpart")
+  expect_number(y$warnings)
+  expect_number(y$errors)
 })
 
 test_that("rush objective with multiple measures works", {
@@ -72,9 +75,10 @@ test_that("rush objective with multiple measures works", {
   xs = list("cp" = 0.01)
   y = objective$eval(xs)
 
-  expect_list(y, len = 3)
-  expect_names(names(y), permutation.of = c("classif.ce", "classif.acc", "runtime_learners"))
+  expect_names(names(y), permutation.of = c("classif.ce", "classif.acc", "runtime_learners", "warnings", "errors"))
   expect_number(y$classif.ce)
   expect_number(y$classif.acc)
   expect_number(y$runtime_learners)
+  expect_number(y$warnings)
+  expect_number(y$errors)
 })

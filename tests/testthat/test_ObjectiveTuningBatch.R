@@ -1,11 +1,11 @@
-test_that("ObjectiveTuning", {
+test_that("ObjectiveTuningBatch", {
   task = tsk("iris")
   learner = lrn("classif.rpart")
   resampling = rsmp("holdout")
   measures = msr("classif.ce")
 
-  archive = ArchiveTuning$new(search_space = learner$param_set, codomain = measures_to_codomain(measures))
-  obj = ObjectiveTuning$new(task, learner, resampling, measures, archive = archive)
+  archive = ArchiveBatchTuning$new(search_space = learner$param_set, codomain = measures_to_codomain(measures))
+  obj = ObjectiveTuningBatch$new(task, learner, resampling, measures, archive = archive)
 
   expect_true("noisy" %in% obj$properties)
   expect_equal(obj$id, "classif.rpart_on_iris")
@@ -24,28 +24,28 @@ test_that("ObjectiveTuning", {
   expect_equal(obj$archive$benchmark_result$resample_result(4)$learners[[1]]$param_set$values$minsplit, 4)
 })
 
-test_that("ObjectiveTuning - Multiple measures", {
+test_that("ObjectiveTuningBatch - Multiple measures", {
   task = tsk("iris")
   learner = lrn("classif.rpart")
   resampling = rsmp("holdout")
   measures = msrs(c("classif.ce", "classif.acc"))
 
-  archive = ArchiveTuning$new(search_space = learner$param_set, codomain = measures_to_codomain(measures))
-  obj = ObjectiveTuning$new(task, learner, resampling, measures, archive = archive)
+  archive = ArchiveBatchTuning$new(search_space = learner$param_set, codomain = measures_to_codomain(measures))
+  obj = ObjectiveTuningBatch$new(task, learner, resampling, measures, archive = archive)
 
   xss = list(list("cp" = 0.01), list("cp" = 0.02))
   z = obj$eval_many(xss)
   expect_data_table(z, nrows = 2, ncols = 6)
 })
 
-test_that("ObjectiveTuning - Store models", {
+test_that("ObjectiveTuningBatch - Store models", {
   task = tsk("iris")
   learner = lrn("classif.rpart")
   resampling = rsmp("holdout")
   measures = msr("classif.ce")
 
-  archive = ArchiveTuning$new(search_space = learner$param_set, codomain = measures_to_codomain(measures))
-  obj = ObjectiveTuning$new(task, learner, resampling, measures, store_models = TRUE, archive = archive)
+  archive = ArchiveBatchTuning$new(search_space = learner$param_set, codomain = measures_to_codomain(measures))
+  obj = ObjectiveTuningBatch$new(task, learner, resampling, measures, store_models = TRUE, archive = archive)
 
   xss = list(list("cp" = 0.01), list("cp" = 0.02))
 
@@ -61,8 +61,8 @@ test_that("runtime of learners is added", {
   resampling = rsmp("cv", folds =3)
   measures = msr("classif.ce")
 
-  archive = ArchiveTuning$new(search_space = learner$param_set, codomain = measures_to_codomain(measures))
-  obj = ObjectiveTuning$new(task, learner, resampling, measures, archive = archive)
+  archive = ArchiveBatchTuning$new(search_space = learner$param_set, codomain = measures_to_codomain(measures))
+  obj = ObjectiveTuningBatch$new(task, learner, resampling, measures, archive = archive)
 
   xss = list(list("cp" = 0.01), list("cp" = 0.02))
 
@@ -78,8 +78,8 @@ test_that("runtime of learners is added", {
   # repeated cv
   resampling = rsmp("repeated_cv", repeats = 3, folds =3)
 
-  archive = ArchiveTuning$new(search_space = learner$param_set, codomain = measures_to_codomain(measures))
-  obj = ObjectiveTuning$new(task, learner, resampling, measures, archive = archive)
+  archive = ArchiveBatchTuning$new(search_space = learner$param_set, codomain = measures_to_codomain(measures))
+  obj = ObjectiveTuningBatch$new(task, learner, resampling, measures, archive = archive)
 
   xss = list(list("cp" = 0.01), list("cp" = 0.02))
 
@@ -142,8 +142,8 @@ test_that("objects are cloned", {
   resampling = rsmp("holdout")
   measures = msr("classif.ce")
 
-  archive = ArchiveTuning$new(search_space = learner$param_set, codomain = measures_to_codomain(measures))
-  obj = ObjectiveTuning$new(task, learner, resampling, measures, archive = archive)
+  archive = ArchiveBatchTuning$new(search_space = learner$param_set, codomain = measures_to_codomain(measures))
+  obj = ObjectiveTuningBatch$new(task, learner, resampling, measures, archive = archive)
 
   xss = list(list("cp" = 0.01, minsplit = 3), list("cp" = 0.02, minsplit = 4))
   z = obj$eval_many(xss)

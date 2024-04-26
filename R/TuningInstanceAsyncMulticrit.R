@@ -60,7 +60,7 @@ TuningInstanceAsyncMultiCrit = R6Class("TuningInstanceAsyncMultiCrit",
       if (is.null(rush)) rush = rsh()
 
       # create codomain from measure
-      measures = assert_measures(as_measures(measures), task = task, learner = learner)
+      measures = assert_measures(as_measures(measures, task_type = task$task_type), task = task, learner = learner)
       codomain = measures_to_codomain(measures)
 
       archive = ArchiveAsyncTuning$new(
@@ -76,8 +76,6 @@ TuningInstanceAsyncMultiCrit = R6Class("TuningInstanceAsyncMultiCrit",
         store_benchmark_result = store_benchmark_result,
         store_models = store_models,
         check_values = check_values,
-        allow_hotstart = allow_hotstart,
-        hotstart_threshold = hotstart_threshold,
         callbacks = callbacks)
 
       super$initialize(

@@ -66,8 +66,7 @@ ti = function(
   check_values = FALSE,
   callbacks = NULL
   ) {
-  measures = assert_measures(as_measures(measures))
-  TuningInstance = if (length(measures) > 1) TuningInstanceBatchMultiCrit else TuningInstanceBatchSingleCrit
+  TuningInstance = if (is.null(measures) || inherits(measures, "Measure")) TuningInstanceBatchSingleCrit else TuningInstanceBatchMultiCrit
 
   TuningInstance$new(
     task = task,
@@ -120,8 +119,7 @@ ti_async = function(
   callbacks = NULL,
   rush = NULL
   ) {
-  measures = assert_measures(as_measures(measures))
-  TuningInstance = if (length(measures) > 1) TuningInstanceAsyncMultiCrit else TuningInstanceAsyncSingleCrit
+  TuningInstance = if (is.null(measures) || inherits(measures, "Measure")) TuningInstanceAsyncSingleCrit else TuningInstanceAsyncMultiCrit
 
   TuningInstance$new(
     task = task,

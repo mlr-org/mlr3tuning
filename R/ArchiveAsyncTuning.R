@@ -147,7 +147,17 @@ ArchiveAsyncTuning = R6Class("ArchiveAsyncTuning",
     #' @param ... (ignored).
     print = function() {
       catf("%s with %i evaluations", format(self), self$n_evals)
-      print(as.data.table(self, unnest = NULL, exclude_columns = c("x_domain", "uhash", "timestamp", "runtime_learners", "resample_result")), digits = 2)
+      print(as.data.table(self, unnest = NULL, exclude_columns = c(
+        "x_domain",
+        "timestamp_xs",
+        "timestamp_ys",
+        "runtime_learners",
+        "resample_result",
+        "log",
+        "worker_id",
+        "keys",
+        "pid",
+        "state")), digits = 2)
     },
 
     #' @description
