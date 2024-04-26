@@ -33,32 +33,16 @@ TunerBatchFromOptimizerBatch = R6Class("TunerBatchFromOptimizerBatch",
       },
 
       #' @description
-      #' Performs the tuning on a [TuningInstanceBatchSingleCrit] /
-      #' [TuningInstanceBatchMultiCrit] until termination. The single evaluations and
-      #' the final results will be written into the [ArchiveTuning] that
-      #' resides in the [TuningInstanceBatchSingleCrit]/[TuningInstanceBatchMultiCrit].
+      #' Performs the tuning on a [TuningInstanceBatchSingleCrit] / [TuningInstanceBatchMultiCrit] until termination.
+      #' The single evaluations and the final results will be written into the [ArchiveTuning] that resides in the [TuningInstanceBatchSingleCrit]/[TuningInstanceBatchMultiCrit].
       #' The final result is returned.
       #'
       #' @param inst ([TuningInstanceBatchSingleCrit] | [TuningInstanceBatchMultiCrit]).
       #'
       #' @return [data.table::data.table].
       optimize = function(inst) {
-        assert_multi_class(inst, c("TuningInstanceBatchSingleCrit", "TuningInstanceBatchMultiCrit"))
-
-        # start optimization
-        start_optimize_batch_bbotk(inst, self)
-
-        # evaluate learner with default hyperparameter values
-        if (get_private(inst)$.evaluate_default) evaluate_default(inst)
-
-        # run optimization
-        run_optimize_batch_bbotk(inst, private$.optimizer)
-
-        # remove hotstart stack if not needed
-        if (!inst$objective$keep_hotstart_stack) inst$objective$hotstart_stack = NULL
-
-        # finish optimization
-        finish_optimize_batch_bbotk(inst)
+        assert_tuning_instance_batch(inst)
+        private$.optimizer$optimize(inst)
       }
     ),
 

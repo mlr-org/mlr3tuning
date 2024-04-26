@@ -1,19 +1,18 @@
 #' @title Single Criterion Tuning with Rush
 #
 #' @description
-#' The [TuningInstanceAsyncSingleCrit] specifies a tuning problem for [Tuner]s.
-#' Hyperparameter configurations are evaluated asynchronously with the `rush` package.
-#' The function [ti()] creates a [TuningInstanceAsyncSingleCrit] and the function [tune()] creates an instance internally.
+#' The `TuningInstanceAsyncSingleCrit` specifies a tuning problem for a [TunerAsync].
+#' The function [ti_async()] creates a [TuningInstanceAsyncSingleCrit] and the function [tune()] creates an instance internally.
 #'
 #' @details
-#' The instance contains an [ObjectiveTuning] object that encodes the black box objective function a [Tuner] has to optimize.
+#' The instance contains an [ObjectiveTuningAsync] object that encodes the black box objective function a [Tuner] has to optimize.
 #' The instance allows the basic operations of querying the objective at design points (`$eval_async()`).
 #' This operation is usually done by the [Tuner].
 #' Hyperparameter configurations are asynchronously sent to workers and evaluated by calling [mlr3::resample()].
 #' The evaluated hyperparameter configurations are stored in the [ArchiveAsyncTuning] (`$archive`).
 #' Before a batch is evaluated, the [bbotk::Terminator] is queried for the remaining budget.
 #' If the available budget is exhausted, an exception is raised, and no further evaluations can be performed from this point on.
-#' The tuner is also supposed to store its final result, consisting of a  selected hyperparameter configuration and associated estimated performance values, by calling the method `instance$.assign_result`.
+#' The tuner is also supposed to store its final result, consisting of a selected hyperparameter configuration and associated estimated performance values, by calling the method `instance$.assign_result`.
 #'
 #' @inheritSection TuningInstanceBatchSingleCrit Default Measures
 #' @inheritSection ArchiveAsyncTuning Analysis
@@ -29,14 +28,11 @@
 #' @template param_store_benchmark_result
 #' @template param_store_models
 #' @template param_check_values
-#' @template param_allow_hotstart
-#' @template param_hotstart_threshold
-#' @template param_keep_hotstart_stack
-#' @template param_evaluate_default
 #' @template param_callbacks
+#' @template param_rush
+#'
 #' @template param_xdt
 #' @template param_learner_param_vals
-#' @template param_rush
 #'
 #' @export
 TuningInstanceAsyncSingleCrit = R6Class("TuningInstanceAsyncSingleCrit",
@@ -55,11 +51,9 @@ TuningInstanceAsyncSingleCrit = R6Class("TuningInstanceAsyncSingleCrit",
       store_benchmark_result = TRUE,
       store_models = FALSE,
       check_values = FALSE,
-      evaluate_default = FALSE,
-      callbacks = list(),
+      callbacks = NULL,
       rush = NULL
       ) {
-      private$.evaluate_default = assert_flag(evaluate_default)
       learner = assert_learner(as_learner(learner, clone = TRUE))
 
       if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token"))) {
@@ -100,21 +94,15 @@ TuningInstanceAsyncSingleCrit = R6Class("TuningInstanceAsyncSingleCrit",
         callbacks = callbacks,
         rush = rush,
         archive = archive)
-    }
-  ),
+    },
 
-  active = list(
-    #' @field result_learner_param_vals (`list()`)\cr
-    #' Param values for the optimal learner call.
-    result_learner_param_vals = function() {
-      private$.result$learner_param_vals[[1]]
-    }
-  ),
-
-  private = list(
-    .evaluate_default = NULL,
-
-    .assign_result = function(xdt, y, learner_param_vals = NULL) {
+    #' @description
+    #' The [TunerAsync] object writes the best found point and estimated performance value here.
+    #' For internal use.
+    #'
+    #' @param y (`numeric(1)`)\cr
+    #' Optimal outcome.
+    assign_result = function(xdt, y, learner_param_vals = NULL) {
       # set the column with the learner param_vals that were not optimized over but set implicitly
       assert_list(learner_param_vals, null.ok = TRUE, names = "named")
 
@@ -128,7 +116,24 @@ TuningInstanceAsyncSingleCrit = R6Class("TuningInstanceAsyncSingleCrit",
       if (length(learner_param_vals) < 2 | !nrow(xdt)) learner_param_vals = list(learner_param_vals)
 
       set(xdt, j = "learner_param_vals", value = list(learner_param_vals))
-      super$.assign_result(xdt, y)
+      super$assign_result(xdt, y)
+    }
+  ),
+
+  active = list(
+    #' @field result_learner_param_vals (`list()`)\cr
+    #' Param values for the optimal learner call.
+    result_learner_param_vals = function() {
+      private$.result$learner_param_vals[[1]]
+    }
+  ),
+
+  private = list(
+
+    # initialize context for optimization
+    .initialize_context = function(optimizer) {
+      context = ContextAsyncTuning$new(self, optimizer)
+      self$objective$context = context
     }
   )
 )

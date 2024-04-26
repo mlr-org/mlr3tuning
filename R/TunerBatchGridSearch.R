@@ -34,46 +34,16 @@
 #' @export
 #' @template example
 TunerBatchGridSearch = R6Class("TunerBatchGridSearch",
-  inherit = TunerBatch,
+  inherit = TunerBatchFromOptimizerBatch,
   public = list(
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function() {
-      param_set = ps(
-        batch_size = p_int(lower = 1L, tags = "required"),
-        resolution = p_int(lower = 1L),
-        param_resolutions = p_uty()
-      )
-      param_set$values = list(resolution = 10L, batch_size = 1L)
       super$initialize(
-        id = "grid_search",
-        param_set = param_set,
-        param_classes = c("ParamLgl", "ParamInt", "ParamDbl", "ParamFct"),
-        properties = c("dependencies", "single-crit", "multi-crit"),
-        label = "Grid Search",
+        optimizer = OptimizerBatchGridSearch$new(),
         man = "mlr3tuning::mlr_tuners_grid_search"
       )
-    }
-  ),
-
-  private = list(
-    .optimize = function(inst) {
-      pv = self$param_set$values
-      allow_hotstart = inst$objective$allow_hotstart
-      data = generate_design_grid(inst$search_space, resolution = pv$resolution,
-        param_resolutions = pv$param_resolutions)$data
-
-      if (allow_hotstart) {
-        hotstart_id = inst$objective$learner$param_set$ids(tags = "hotstart")
-        order =  if ("hotstart_backward" %in% inst$objective$learner$properties) -1L else 1L
-        setorderv(data, hotstart_id, order = order)
-      }
-
-      ch = chunk_vector(seq_row(data), chunk_size = pv$batch_size, shuffle = !allow_hotstart)
-      for (inds in ch) {
-        inst$eval_batch(data[inds])
-      }
     }
   )
 )

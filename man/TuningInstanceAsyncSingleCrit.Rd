@@ -4,19 +4,18 @@
 \alias{TuningInstanceAsyncSingleCrit}
 \title{Single Criterion Tuning with Rush}
 \description{
-The \link{TuningInstanceAsyncSingleCrit} specifies a tuning problem for \link{Tuner}s.
-Hyperparameter configurations are evaluated asynchronously with the \code{rush} package.
-The function \code{\link[=ti]{ti()}} creates a \link{TuningInstanceAsyncSingleCrit} and the function \code{\link[=tune]{tune()}} creates an instance internally.
+The \code{TuningInstanceAsyncSingleCrit} specifies a tuning problem for a \link{TunerAsync}.
+The function \code{\link[=ti_async]{ti_async()}} creates a \link{TuningInstanceAsyncSingleCrit} and the function \code{\link[=tune]{tune()}} creates an instance internally.
 }
 \details{
-The instance contains an \link{ObjectiveTuning} object that encodes the black box objective function a \link{Tuner} has to optimize.
+The instance contains an \link{ObjectiveTuningAsync} object that encodes the black box objective function a \link{Tuner} has to optimize.
 The instance allows the basic operations of querying the objective at design points (\verb{$eval_async()}).
 This operation is usually done by the \link{Tuner}.
 Hyperparameter configurations are asynchronously sent to workers and evaluated by calling \code{\link[mlr3:resample]{mlr3::resample()}}.
 The evaluated hyperparameter configurations are stored in the \link{ArchiveAsyncTuning} (\verb{$archive}).
 Before a batch is evaluated, the \link[bbotk:Terminator]{bbotk::Terminator} is queried for the remaining budget.
 If the available budget is exhausted, an exception is raised, and no further evaluations can be performed from this point on.
-The tuner is also supposed to store its final result, consisting of a  selected hyperparameter configuration and associated estimated performance values, by calling the method \code{instance$.assign_result}.
+The tuner is also supposed to store its final result, consisting of a selected hyperparameter configuration and associated estimated performance values, by calling the method \code{instance$.assign_result}.
 }
 \section{Default Measures}{
 
@@ -93,6 +92,7 @@ Param values for the optimal learner call.}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-TuningInstanceAsyncSingleCrit-new}{\code{TuningInstanceAsyncSingleCrit$new()}}
+\item \href{#method-TuningInstanceAsyncSingleCrit-assign_result}{\code{TuningInstanceAsyncSingleCrit$assign_result()}}
 \item \href{#method-TuningInstanceAsyncSingleCrit-clone}{\code{TuningInstanceAsyncSingleCrit$clone()}}
 }
 }
@@ -102,7 +102,6 @@ Param values for the optimal learner call.}
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="format"><a href='../../bbotk/html/OptimInstance.html#method-OptimInstance-format'><code>bbotk::OptimInstance$format()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstanceAsync" data-id="clear"><a href='../../bbotk/html/OptimInstanceAsync.html#method-OptimInstanceAsync-clear'><code>bbotk::OptimInstanceAsync$clear()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstanceAsync" data-id="print"><a href='../../bbotk/html/OptimInstanceAsync.html#method-OptimInstanceAsync-print'><code>bbotk::OptimInstanceAsync$print()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstanceAsyncSingleCrit" data-id="assign_result"><a href='../../bbotk/html/OptimInstanceAsyncSingleCrit.html#method-OptimInstanceAsyncSingleCrit-assign_result'><code>bbotk::OptimInstanceAsyncSingleCrit$assign_result()</code></a></span></li>
 </ul>
 </details>
 }}
@@ -122,11 +121,7 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   store_benchmark_result = TRUE,
   store_models = FALSE,
   check_values = FALSE,
-  allow_hotstart = FALSE,
-  hotstart_threshold = NULL,
-  keep_hotstart_stack = FALSE,
-  evaluate_default = FALSE,
-  callbacks = list(),
+  callbacks = NULL,
   rush = NULL
 )}\if{html}{\out{</div>}}
 }
@@ -173,28 +168,38 @@ If \code{TRUE}, hyperparameter values are checked before evaluation and
 performance scores after. If \code{FALSE} (default), values are unchecked but
 computational overhead is reduced.}
 
-\item{\code{allow_hotstart}}{(\code{logical(1)})\cr
-Allow to hotstart learners with previously fitted models. See also
-\link[mlr3:HotstartStack]{mlr3::HotstartStack}. The learner must support hotstarting. Sets
-\code{store_models = TRUE}.}
-
-\item{\code{hotstart_threshold}}{(\code{numeric(1)})\cr
-Threshold for storing learners in the stack.
-If the value of the hotstart parameter is below this threshold, the learner is not added to the stack.}
-
-\item{\code{keep_hotstart_stack}}{(\code{logical(1)})\cr
-If \code{TRUE}, \link[mlr3:HotstartStack]{mlr3::HotstartStack} is kept in \verb{$objective$hotstart_stack}
-after tuning.}
-
-\item{\code{evaluate_default}}{(\code{logical(1)})\cr
-If \code{TRUE}, learner is evaluated with hyperparameters set to their default
-values at the start of the optimization.}
-
-\item{\code{callbacks}}{(list of \link{CallbackTuning})\cr
+\item{\code{callbacks}}{(list of \link{Callback})\cr
 List of callbacks.}
 
 \item{\code{rush}}{(\code{Rush})\cr
 If a rush instance is supplied, the tuning runs without batches.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TuningInstanceAsyncSingleCrit-assign_result"></a>}}
+\if{latex}{\out{\hypertarget{method-TuningInstanceAsyncSingleCrit-assign_result}{}}}
+\subsection{Method \code{assign_result()}}{
+The \link{TunerAsync} object writes the best found point and estimated performance value here.
+For internal use.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TuningInstanceAsyncSingleCrit$assign_result(xdt, y, learner_param_vals = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{xdt}}{(\code{data.table::data.table()})\cr
+Hyperparameter values as \code{data.table::data.table()}. Each row is one
+configuration. Contains values in the search space. Can contain additional
+columns for extra information.}
+
+\item{\code{y}}{(\code{numeric(1)})\cr
+Optimal outcome.}
+
+\item{\code{learner_param_vals}}{(List of named \verb{list()s})\cr
+Fixed parameter values of the learner that are neither part of the}
 }
 \if{html}{\out{</div>}}
 }

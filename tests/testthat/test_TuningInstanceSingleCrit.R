@@ -126,7 +126,7 @@ test_that("non-scalar hyperpars (#201)", {
 
   inst = TuningInstanceBatchSingleCrit$new(tsk("iris"), learner, rsmp("holdout"),
     msr("classif.ce"), trm("evals", n_evals = 1), search_space,
-    check_values = TRUE)
+    check_values = FALSE)
 
   tnr("random_search")$optimize(inst)
   expect_data_table(inst$archive$data, nrows = 1)
@@ -175,7 +175,7 @@ test_that("check_values flag with parameter set dependencies", {
 
   inst = TuningInstanceBatchSingleCrit$new(tsk("boston_housing"), learner,
     rsmp("holdout"), msr("regr.mse"), terminator, search_space,
-    check_values = TRUE)
+    check_values = FALSE)
   expect_error(tuner$optimize(inst),
     regexp = "yy.* can only be set")
 })

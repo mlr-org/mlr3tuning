@@ -87,7 +87,7 @@ test_that("AT training does not change learner in instance args", {
   # https://github.com/mlr-org/mlr3/issues/428
   task = tsk("iris")
   ps = TEST_MAKE_PS1()
-  at = AutoTuner$new(TunerRandomSearch$new(), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), trm("evals", n_evals = 3), ps)
+  at = AutoTuner$new(TunerBatchRandomSearch$new(), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), trm("evals", n_evals = 3), ps)
   expect_equal(at$instance_args$learner$param_set$values, list(xval = 0))
   at$train(task)
   expect_equal(at$instance_args$learner$param_set$values, list(xval = 0))

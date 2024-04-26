@@ -2,12 +2,12 @@
 % Please edit documentation in R/Tuner.R
 \name{Tuner}
 \alias{Tuner}
-\title{Class for Tuning Algorithms}
+\title{Tuner}
 \description{
-The \link{Tuner} implements the optimization algorithm.
+The \code{Tuner} implements the optimization algorithm.
 }
 \details{
-\link{Tuner} is an abstract base class that implements the base functionality each tuner must provide.
+\code{Tuner} is an abstract base class that implements the base functionality each tuner must provide.
 }
 \section{Resources}{
 
@@ -74,7 +74,6 @@ The referenced help package can be opened via method \verb{$help()}.}
 \item \href{#method-Tuner-format}{\code{Tuner$format()}}
 \item \href{#method-Tuner-print}{\code{Tuner$print()}}
 \item \href{#method-Tuner-help}{\code{Tuner$help()}}
-\item \href{#method-Tuner-optimize}{\code{Tuner$optimize()}}
 \item \href{#method-Tuner-clone}{\code{Tuner$clone()}}
 }
 }
@@ -166,16 +165,6 @@ Print method.
 Opens the corresponding help page referenced by field \verb{$man}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Tuner$help()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Tuner-optimize"></a>}}
-\if{latex}{\out{\hypertarget{method-Tuner-optimize}{}}}
-\subsection{Method \code{optimize()}}{
-Performs the tuning on a tuning instance until termination.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Tuner$optimize()}\if{html}{\out{</div>}}
 }
 
 }

@@ -25,13 +25,9 @@ This class is usually constructed internally by the \link{TuningInstanceBatchSin
 
 \item{\code{store_benchmark_result}}{(\code{logical(1)}).}
 
-\item{\code{hotstart_stack}}{(\link[mlr3:HotstartStack]{mlr3::HotstartStack}).}
+\item{\code{callbacks}}{(List of \link{Callback}).}
 
-\item{\code{allow_hotstart}}{(\code{logical(1)}).}
-
-\item{\code{callbacks}}{(List of \link{CallbackTuning}s).}
-
-\item{\code{default_values}}{(named \code{list}).}
+\item{\code{default_values}}{(named \code{list()}).}
 }
 \if{html}{\out{</div>}}
 }
@@ -66,9 +62,7 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   measures,
   store_benchmark_result = TRUE,
   store_models = FALSE,
-  check_values = TRUE,
-  allow_hotstart = FALSE,
-  hotstart_threshold = NULL,
+  check_values = FALSE,
   callbacks = NULL
 )}\if{html}{\out{</div>}}
 }
@@ -107,16 +101,7 @@ If \code{TRUE}, hyperparameter values are checked before evaluation and
 performance scores after. If \code{FALSE} (default), values are unchecked but
 computational overhead is reduced.}
 
-\item{\code{allow_hotstart}}{(\code{logical(1)})\cr
-Allow to hotstart learners with previously fitted models. See also
-\link[mlr3:HotstartStack]{mlr3::HotstartStack}. The learner must support hotstarting. Sets
-\code{store_models = TRUE}.}
-
-\item{\code{hotstart_threshold}}{(\code{numeric(1)})\cr
-Threshold for storing learners in the stack.
-If the value of the hotstart parameter is below this threshold, the learner is not added to the stack.}
-
-\item{\code{callbacks}}{(list of \link{CallbackTuning})\cr
+\item{\code{callbacks}}{(list of \link{Callback})\cr
 List of callbacks.}
 }
 \if{html}{\out{</div>}}

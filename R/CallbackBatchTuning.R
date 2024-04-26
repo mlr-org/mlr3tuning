@@ -1,21 +1,22 @@
-#' @title Create Tuning Callback
+#' @title Create Batch Tuning Callback
 #'
 #' @description
-#' Specialized [bbotk::CallbackOptimization] for tuning.
+#' Specialized [bbotk::CallbackBatch] for batch tuning.
 #' Callbacks allow to customize the behavior of processes in mlr3tuning.
-#' The [callback_tuning()] function creates a [CallbackTuning].
+#' The [callback_batch_tuning()] function creates a [CallbackBatchTuning].
 #' Predefined callbacks are stored in the [dictionary][mlr3misc::Dictionary] [mlr_callbacks] and can be retrieved with [clbk()].
-#' For more information on tuning callbacks see [callback_tuning()].
+#' For more information on tuning callbacks see [callback_batch_tuning()].
 #'
+#' @export
 #' @examples
 #' # write archive to disk
-#' callback_tuning("mlr3tuning.backup",
+#' callback_batch_tuning("mlr3tuning.backup",
 #'   on_optimization_end = function(callback, context) {
 #'     saveRDS(context$instance$archive, "archive.rds")
 #'   }
 #' )
-CallbackTuning = R6Class("CallbackTuning",
-  inherit = bbotk::CallbackOptimization,
+CallbackBatchTuning= R6Class("CallbackBatchTuning",
+  inherit = CallbackBatch,
   public = list(
 
     #' @field on_eval_after_design (`function()`)\cr
@@ -35,13 +36,13 @@ CallbackTuning = R6Class("CallbackTuning",
   )
 )
 
-#' @title Create Tuning Callback
+#' @title Create Batch Tuning Callback
 #'
 #' @description
-#' Function to create a [CallbackTuning].
+#' Function to create a [CallbackBatchTuning].
 #' Predefined callbacks are stored in the [dictionary][mlr3misc::Dictionary] [mlr_callbacks] and can be retrieved with [clbk()].
 #'
-#' Tuning callbacks can be called from different stages of tuning process.
+#' Tuning callbacks can be called from different stages of the tuning process.
 #' The stages are prefixed with `on_*`.
 #'
 #' ```
@@ -62,23 +63,12 @@ CallbackTuning = R6Class("CallbackTuning",
 #' ```
 #'
 #' See also the section on parameters for more information on the stages.
-#' A tuning callback works with [bbotk::ContextOptimization] and [ContextAsyncTuningMany].
+#' A tuning callback works with [ContextBatchTuning].
 #'
 #' @details
-#' When implementing a callback, each functions must have two arguments named `callback` and `context`.
-#'
+#' When implementing a callback, each function must have two arguments named `callback` and `context`.
 #' A callback can write data to the state (`$state`), e.g. settings that affect the callback itself.
-#' Avoid writing large data the state.
-#' This can slow down the tuning process when the evaluation of configurations is parallelized.
-#'
-#' Tuning callbacks access two different contexts depending on the stage.
-#' The stages `on_eval_after_design`, `on_eval_after_benchmark`, `on_eval_before_archive` access [ContextAsyncTuningMany].
-#' This context can be used to customize the evaluation of a batch of hyperparameter configurations.
-#' Changes to the state of callback are lost after the evaluation of a batch and changes to the tuning instance or the tuner are not possible.
-#' Persistent data should be written to the archive via `$aggregated_performance` (see [ContextAsyncTuningMany]).
-#' The other stages access [ContextOptimization].
-#' This context can be used to modify the tuning instance, archive, tuner and final result.
-#' There are two different contexts because the evaluation can be parallelized i.e. multiple instances of [ContextAsyncTuningMany] exists on different workers at the same time.
+#' Tuning callbacks access [ContextBatchTuning].
 #'
 #' @param id (`character(1)`)\cr
 #'   Identifier for the new instance.
@@ -90,42 +80,66 @@ CallbackTuning = R6Class("CallbackTuning",
 #' @param on_optimization_begin (`function()`)\cr
 #'   Stage called at the beginning of the optimization.
 #'   Called in `Optimizer$optimize()`.
-#'   The context available is [bbotk::ContextOptimization].
 #' @param on_optimizer_before_eval (`function()`)\cr
 #'   Stage called after the optimizer proposes points.
 #'   Called in `OptimInstance$eval_batch()`.
-#'   The context available is [bbotk::ContextOptimization].
 #' @param on_eval_after_design (`function()`)\cr
-#'   Stage called after design is created.
+#'   Stage called after the design is created.
 #'   Called in `ObjectiveTuning$eval_many()`.
-#'   The context available is [ContextAsyncTuningMany].
+#'   The context available is [ContextBatchTuning].
 #' @param on_eval_after_benchmark (`function()`)\cr
 #'   Stage called after hyperparameter configurations are evaluated.
 #'   Called in `ObjectiveTuning$eval_many()`.
-#'   The context available is [ContextAsyncTuningMany].
+#'   The context available is [ContextBatchTuning].
 #' @param on_eval_before_archive (`function()`)\cr
 #'   Stage called before performance values are written to the archive.
 #'   Called in `ObjectiveTuning$eval_many()`.
-#'   The context available is [ContextAsyncTuningMany].
+#'   The context available is [ContextBatchTuning].
 #' @param on_optimizer_after_eval (`function()`)\cr
 #'   Stage called after points are evaluated.
 #'   Called in `OptimInstance$eval_batch()`.
-#'   The context available is [bbotk::ContextOptimization].
 #' @param on_result (`function()`)\cr
-#'   Stage called after result are written.
+#'   Stage called after the result is written.
 #'   Called in `OptimInstance$assign_result()`.
-#'   The context available is [bbotk::ContextOptimization].
 #' @param on_optimization_end (`function()`)\cr
 #'   Stage called at the end of the optimization.
 #'   Called in `Optimizer$optimize()`.
-#'   The context available is [bbotk::ContextOptimization].
 #'
 #' @export
-#' @inherit CallbackTuning examples
-callback_tuning = function(id, label = NA_character_, man = NA_character_, on_optimization_begin = NULL, on_optimizer_before_eval = NULL, on_eval_after_design = NULL, on_eval_after_benchmark = NULL, on_eval_before_archive = NULL, on_optimizer_after_eval = NULL, on_result = NULL,  on_optimization_end = NULL) {
-  stages = discard(set_names(list(on_optimization_begin, on_optimizer_before_eval, on_eval_after_design, on_eval_after_benchmark, on_eval_before_archive, on_optimizer_after_eval, on_result, on_optimization_end), c("on_optimization_begin", "on_optimizer_before_eval", "on_eval_after_design", "on_eval_after_benchmark", "on_eval_before_archive", "on_optimizer_after_eval", "on_result",  "on_optimization_end")), is.null)
+#' @inherit CallbackBatchTuning examples
+callback_batch_tuning = function(
+  id,
+  label = NA_character_,
+  man = NA_character_,
+  on_optimization_begin = NULL,
+  on_optimizer_before_eval = NULL,
+  on_eval_after_design = NULL,
+  on_eval_after_benchmark = NULL,
+  on_eval_before_archive = NULL,
+  on_optimizer_after_eval = NULL,
+  on_result = NULL,
+  on_optimization_end = NULL
+  ) {
+  stages = discard(set_names(list(
+    on_optimization_begin,
+    on_optimizer_before_eval,
+    on_eval_after_design,
+    on_eval_after_benchmark,
+    on_eval_before_archive,
+    on_optimizer_after_eval,
+    on_result,
+    on_optimization_end),
+    c(
+      "on_optimization_begin",
+      "on_optimizer_before_eval",
+      "on_eval_after_design",
+      "on_eval_after_benchmark",
+      "on_eval_before_archive",
+      "on_optimizer_after_eval",
+      "on_result",
+      "on_optimization_end")), is.null)
   walk(stages, function(stage) assert_function(stage, args = c("callback", "context")))
-  callback = CallbackTuning$new(id, label, man)
+  callback = CallbackBatchTuning$new(id, label, man)
   iwalk(stages, function(stage, name) callback[[name]] = stage)
   callback
 }

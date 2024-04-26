@@ -95,10 +95,10 @@ Benchmark result.}
 \if{html}{\out{
 <details><summary>Inherited methods</summary>
 <ul>
+<li><span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="format"><a href='../../bbotk/html/Archive.html#method-Archive-format'><code>bbotk::Archive$format()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsync" data-id="best"><a href='../../bbotk/html/ArchiveAsync.html#method-ArchiveAsync-best'><code>bbotk::ArchiveAsync$best()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsync" data-id="clear"><a href='../../bbotk/html/ArchiveAsync.html#method-ArchiveAsync-clear'><code>bbotk::ArchiveAsync$clear()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsync" data-id="fetch_data_with_state"><a href='../../bbotk/html/ArchiveAsync.html#method-ArchiveAsync-fetch_data_with_state'><code>bbotk::ArchiveAsync$fetch_data_with_state()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsync" data-id="format"><a href='../../bbotk/html/ArchiveAsync.html#method-ArchiveAsync-format'><code>bbotk::ArchiveAsync$format()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsync" data-id="data_with_state"><a href='../../bbotk/html/ArchiveAsync.html#method-ArchiveAsync-data_with_state'><code>bbotk::ArchiveAsync$data_with_state()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsync" data-id="nds_selection"><a href='../../bbotk/html/ArchiveAsync.html#method-ArchiveAsync-nds_selection'><code>bbotk::ArchiveAsync$nds_selection()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsync" data-id="pop_point"><a href='../../bbotk/html/ArchiveAsync.html#method-ArchiveAsync-pop_point'><code>bbotk::ArchiveAsync$pop_point()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsync" data-id="push_failed_point"><a href='../../bbotk/html/ArchiveAsync.html#method-ArchiveAsync-push_failed_point'><code>bbotk::ArchiveAsync$push_failed_point()</code></a></span></li>

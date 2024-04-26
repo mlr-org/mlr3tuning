@@ -1,10 +1,10 @@
 #' @title Backup Benchmark Result Callback
 #'
-#' @include CallbackTuning.R
+#' @include CallbackAsyncTuning.R CallbackBatchTuning.R
 #' @name mlr3tuning.backup
 #'
 #' @description
-#' This [CallbackTuning] writes the [mlr3::BenchmarkResult] after each batch to disk.
+#' This [Callback] writes the [mlr3::BenchmarkResult] after each batch to disk.
 #'
 #' @examples
 #' clbk("mlr3tuning.backup", path = "backup.rds")
@@ -22,7 +22,7 @@
 NULL
 
 load_callback_backup = function() {
-  callback_tuning("mlr3tuning.backup",
+  callback_batch_tuning("mlr3tuning.backup",
     label = "Backup Benchmark Result Callback",
     man = "mlr3tuning::mlr3tuning.backup",
     on_optimization_begin = function(callback, context) {
@@ -39,11 +39,12 @@ load_callback_backup = function() {
 
 #' @title Measure Callback
 #'
-#' @include CallbackTuning.R
+#' @include CallbackAsyncTuning.R CallbackBatchTuning.R
 #' @name mlr3tuning.measures
+#' @aliases mlr3tuning.async_measures
 #'
 #' @description
-#' This [CallbackTuning] scores the hyperparameter configurations on additional measures while tuning.
+#' This [Callback] scores the hyperparameter configurations on additional measures while tuning.
 #' Usually, the configurations can be scored on additional measures after tuning (see [ArchiveTuning]).
 #' However, if the memory is not sufficient to store the [mlr3::BenchmarkResult], it is necessary to score the additional measures while tuning.
 #' The measures are not taken into account by the tuner.
@@ -84,7 +85,7 @@ load_callback_backup = function() {
 NULL
 
 load_callback_measures = function() {
-  callback_tuning("mlr3tuning.measures",
+  callback_batch_tuning("mlr3tuning.measures",
     label = "Additional Measures Callback",
     man = "mlr3tuning::mlr3tuning.measures",
     on_optimization_begin = function(callback, context) {
@@ -126,11 +127,11 @@ load_callback_async_measures = function() {
 
 #' @title MLflow Connector Callback
 #'
-#' @include CallbackTuning.R
-#' @name mlr3tuning.mlflow
+#' @include CallbackAsyncTuning.R CallbackBatchTuning.R
+#' @name mlr3tuning.asnyc_mlflow
 #'
 #' @description
-#' This [CallbackTuning] logs the hyperparameter configurations and the performance of the configurations to MLflow.
+#' This [Callback] logs the hyperparameter configurations and the performance of the configurations to MLflow.
 #'
 #' @examples
 #' clbk("mlr3tuning.mlflow", tracking_uri = "http://localhost:5000")
@@ -160,7 +161,7 @@ NULL
 load_callback_async_mlflow = function() {
   callback_async_tuning("mlr3tuning.async_mlflow",
     label = "MLflow Connector",
-    man = "mlr3tuning::mlr3tuning.mlflow",
+    man = "mlr3tuning::mlr3tuning.async_mlflow",
 
     on_optimization_begin = function(callback, context) {
       require_namespaces("mlflow")
@@ -220,12 +221,11 @@ load_callback_async_mlflow = function() {
 
 #' @title Hotstart Callback
 #'
-#' @include CallbackTuning.R
+#' @include CallbackAsyncTuning.R CallbackBatchTuning.R
 #' @name mlr3tuning.async_hotstart
 #'
 #' @description
-#' This [CallbackTuning] enables hotstarting for the hyperparameter tuning of an XGBoost learner.
-#'
+#' This [CallbackAsyncTuning] enables hotstarting for the hyperparameter tuning of a learner.
 NULL
 
 load_callback_async_hotstart = function() {
@@ -240,20 +240,123 @@ load_callback_async_hotstart = function() {
       }
 
       lg$debug("Creating hotstart stack")
-      browser()
       context$instance$objective$learner$hotstart_stack = HotstartStack$new()
     },
 
     on_eval_after_resample = function(callback, context) {
       lg$debug("Adding learner to hotstart stack")
-      browser()
       context$objective_tuning$learner$hotstart_stack$add(context$resample_result$learners)
     }
   )
 }
 
+#' @title Default Configuration Callback
+#'
+#' @include CallbackAsyncTuning.R CallbackBatchTuning.R
+#' @name mlr3tuning.async_default_configuration
+#'
+#' @description
+#' These [CallbackAsyncTuning] and [CallbackBatchTuning] evaluate the default hyperparameter values of a learner.
+NULL
 
+load_callback_async_default_configuration = function() {
+  callback_async_tuning("mlr3tuning.async_default_configuration",
+    label = "Default Configuration",
+    man = "mlr3tuning::mlr3tuning.default_configuration",
 
+    on_optimization_begin = function(callback, context) {
+      instance = context$instance
+      # values are on the learner scale i.e. possible transformation are already applied
+      xs = default_values(instance$objective$learner, instance$search_space, instance$objective$task)
 
+      # parameters with exp transformation and log inverse transformation
+      # parameters with unknown inverse transformation
+      # parameter set with trafo
+      if ("set_id" %in% names(ps())) {
+        # old paradox
+        has_logscale = map_lgl(instance$search_space$params, function(param) get_private(param)$.has_logscale)
 
+        has_trafo = map_lgl(instance$search_space$params, function(param) get_private(param)$.has_trafo)
 
+        has_extra_trafo = get_private(instance$search_space)$.has_extra_trafo
+      } else {
+        has_logscale = map_lgl(instance$search_space$params$.trafo, function(x) identical(x, exp))
+
+        has_trafo = map_lgl(instance$search_space$params$.trafo, function(x) !is.null(x) && !identical(x, exp))
+
+        has_extra_trafo = !is.null(instance$search_space$extra_trafo)
+      }
+
+      if (any(has_trafo) || has_extra_trafo) {
+        stop("Cannot evaluate default hyperparameter values. Search space contains transformation functions with unknown inverse function.")
+      }
+
+      # inverse parameter with exp transformation
+      xs = map_if(xs, has_logscale, log)
+
+      context$instance$archive$push_points(list(xs))
+    }
+  )
+}
+
+load_callback_default_configuration = function() {
+  callback_batch_tuning("mlr3tuning.default_configuration",
+    label = "Default Configuration",
+    man = "mlr3tuning::mlr3tuning.default_configuration",
+
+    on_optimization_begin = function(callback, context) {
+      instance = context$instance
+      # values are on the learner scale i.e. possible transformation are already applied
+      xs = default_values(instance$objective$learner, instance$search_space, instance$objective$task)
+
+      # parameters with exp transformation and log inverse transformation
+      # parameters with unknown inverse transformation
+      # parameter set with trafo
+      if ("set_id" %in% names(ps())) {
+        # old paradox
+        has_logscale = map_lgl(instance$search_space$params, function(param) get_private(param)$.has_logscale)
+
+        has_trafo = map_lgl(instance$search_space$params, function(param) get_private(param)$.has_trafo)
+
+        has_extra_trafo = get_private(instance$search_space)$.has_extra_trafo
+      } else {
+        has_logscale = map_lgl(instance$search_space$params$.trafo, function(x) identical(x, exp))
+
+        has_trafo = map_lgl(instance$search_space$params$.trafo, function(x) !is.null(x) && !identical(x, exp))
+
+        has_extra_trafo = !is.null(instance$search_space$extra_trafo)
+      }
+
+      if (any(has_trafo) || has_extra_trafo) {
+        stop("Cannot evaluate default hyperparameter values. Search space contains transformation functions with unknown inverse function.")
+      }
+
+      # inverse parameter with exp transformation
+      xdt = as.data.table(map_if(xs, has_logscale, log))
+
+      context$instance$eval_batch(xdt)
+    }
+  )
+}
+
+#' @title Save Logs Callback
+#'
+#' @description
+#' This [CallbackAsyncTuning] saves the logs of the learners to the archive.
+NULL
+
+load_callback_async_save_logs = function() {
+  callback_async_tuning("mlr3tuning.async_save_logs",
+    label = "Save Logs Callback",
+    man = "mlr3tuning::mlr3tuning.async_save_logs",
+
+    on_eval_after_resample = function(callback, context) {
+      states = get_private(context$resample_result)$.data$learner_states()
+      callback$state$log = map(states, function(state) state$log)
+    },
+
+    on_eval_before_archive = function(callback, context) {
+      context$aggregated_performance = c(context$aggregated_performance, list(log = list(callback$state$log)))
+    }
+  )
+}

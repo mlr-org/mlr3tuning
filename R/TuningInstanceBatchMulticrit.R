@@ -3,7 +3,7 @@
 #' @include TuningInstanceBatchSingleCrit.R ArchiveBatchTuning.R
 #'
 #' @description
-#' The [TuningInstanceBatchMultiCrit] specifies a tuning problem for [Tuners][Tuner].
+#' The [TuningInstanceBatchMultiCrit] specifies a tuning problem for a [Tuner].
 #' The function [ti()] creates a [TuningInstanceBatchMultiCrit] and the function [tune()] creates an instance internally.
 #'
 #' @inherit TuningInstanceBatchSingleCrit details
@@ -26,11 +26,8 @@
 #' @template param_store_benchmark_result
 #' @template param_store_models
 #' @template param_check_values
-#' @template param_allow_hotstart
-#' @template param_hotstart_threshold
-#' @template param_keep_hotstart_stack
-#' @template param_evaluate_default
 #' @template param_callbacks
+#'
 #' @template param_xdt
 #' @template param_learner_param_vals
 #'
@@ -80,13 +77,8 @@ TuningInstanceBatchMultiCrit = R6Class("TuningInstanceBatchMultiCrit",
       store_benchmark_result = TRUE,
       store_models = FALSE,
       check_values = FALSE,
-      allow_hotstart = FALSE,
-      hotstart_threshold = NULL,
-      keep_hotstart_stack = FALSE,
-      evaluate_default = FALSE,
-      callbacks = list()
+      callbacks = NULL
       ) {
-      private$.evaluate_default = assert_flag(evaluate_default)
       learner = assert_learner(as_learner(learner, clone = TRUE))
 
       if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token"))) {
@@ -117,9 +109,6 @@ TuningInstanceBatchMultiCrit = R6Class("TuningInstanceBatchMultiCrit",
         store_benchmark_result = store_benchmark_result,
         store_models = store_models,
         check_values =  check_values,
-        allow_hotstart = allow_hotstart,
-        hotstart_threshold = hotstart_threshold,
-        keep_hotstart_stack = keep_hotstart_stack,
         archive = archive,
         callbacks = callbacks)
 
@@ -129,39 +118,6 @@ TuningInstanceBatchMultiCrit = R6Class("TuningInstanceBatchMultiCrit",
         terminator = terminator,
         callbacks = callbacks,
         archive = archive)
-    },
-
-    #' @description
-    #' Start workers with `future`.
-    #'
-    #' @template param_n_workers
-    #' @template param_host
-    #' @template param_heartbeat_period
-    #' @template param_heartbeat_expire
-    #' @template param_lgr_thresholds
-    #' @template param_await_workers
-    #' @template param_freeze_archive
-    #' @template param_detect_lost_tasks
-    start_workers = function(
-      n_workers = NULL,
-      host = "local",
-      heartbeat_period = NULL,
-      heartbeat_expire = NULL,
-      lgr_thresholds = NULL,
-      await_workers = TRUE,
-      detect_lost_tasks = FALSE,
-      freeze_archive = FALSE
-      ) {
-      super$start_workers(
-        n_workers = n_workers,
-        packages = c(self$objective$learner$packages, "mlr3tuning"),
-        host = host,
-        heartbeat_period = heartbeat_period,
-        heartbeat_expire = heartbeat_expire,
-        lgr_thresholds = lgr_thresholds,
-        await_workers = await_workers,
-        detect_lost_tasks = detect_lost_tasks,
-        freeze_archive = freeze_archive)
     },
 
     #' @description
@@ -196,6 +152,10 @@ TuningInstanceBatchMultiCrit = R6Class("TuningInstanceBatchMultiCrit",
   ),
 
   private = list(
-    .evaluate_default = NULL
+    # initialize context for optimization
+    .initialize_context = function(optimizer) {
+      context = ContextBatchTuning$new(self, optimizer)
+      self$objective$context = context
+    }
   )
 )

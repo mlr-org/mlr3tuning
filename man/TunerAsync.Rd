@@ -28,7 +28,6 @@ The \href{https://mlr-org.com/gallery-all-optimization.html}{gallery} features a
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-TunerAsync-new}{\code{TunerAsync$new()}}
 \item \href{#method-TunerAsync-optimize}{\code{TunerAsync$optimize()}}
 \item \href{#method-TunerAsync-clone}{\code{TunerAsync$clone()}}
 }
@@ -38,58 +37,11 @@ The \href{https://mlr-org.com/gallery-all-optimization.html}{gallery} features a
 <ul>
 <li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="format"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-format'><code>mlr3tuning::Tuner$format()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="help"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-help'><code>mlr3tuning::Tuner$help()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="initialize"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-initialize'><code>mlr3tuning::Tuner$initialize()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="print"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-print'><code>mlr3tuning::Tuner$print()</code></a></span></li>
 </ul>
 </details>
 }}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TunerAsync-new"></a>}}
-\if{latex}{\out{\hypertarget{method-TunerAsync-new}{}}}
-\subsection{Method \code{new()}}{
-Creates a new instance of this \link[R6:R6Class]{R6} class.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TunerAsync$new(
-  id = "async_tuner",
-  param_set,
-  param_classes,
-  properties,
-  packages = character(),
-  label = NA_character_,
-  man = NA_character_
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{id}}{(\code{character(1)})\cr
-Identifier for the new instance.}
-
-\item{\code{param_set}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
-Set of control parameters.}
-
-\item{\code{param_classes}}{(\code{character()})\cr
-Supported parameter classes for learner hyperparameters that the tuner can optimize, as given in the \link[paradox:ParamSet]{paradox::ParamSet} \verb{$class} field.}
-
-\item{\code{properties}}{(\code{character()})\cr
-Set of properties of the tuner.
-Must be a subset of \code{\link[mlr3:mlr_reflections]{mlr_reflections$tuner_properties}}.}
-
-\item{\code{packages}}{(\code{character()})\cr
-Set of required packages.
-Note that these packages will be loaded via \code{\link[=requireNamespace]{requireNamespace()}}, and are not attached.}
-
-\item{\code{label}}{(\code{character(1)})\cr
-Label for this object.
-Can be used in tables, plot and text output instead of the ID.}
-
-\item{\code{man}}{(\code{character(1)})\cr
-String in the format \verb{[pkg]::[topic]} pointing to a manual page for this object.
-The referenced help package can be opened via method \verb{$help()}.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TunerAsync-optimize"></a>}}
 \if{latex}{\out{\hypertarget{method-TunerAsync-optimize}{}}}

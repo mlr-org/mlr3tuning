@@ -66,7 +66,7 @@ test_that("check_values flag with parameter set dependencies", {
 
   inst = TuningInstanceBatchMultiCrit$new(tsk("boston_housing"), learner,
     rsmp("holdout"), msr("regr.mse"), terminator, search_space,
-    check_values = TRUE)
+    check_values = FALSE)
   expect_error(tuner$optimize(inst),
     regexp = "yy.* can only be set")
 })

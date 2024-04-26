@@ -43,9 +43,6 @@
 #' @template param_store_benchmark_result
 #' @template param_store_models
 #' @template param_check_values
-#' @template param_allow_hotstart
-#' @template param_keep_hotstart_stack
-#' @template param_evaluate_default
 #' @template param_callbacks
 #' @template param_rush
 #'
@@ -137,10 +134,7 @@ AutoTuner = R6Class("AutoTuner",
       store_benchmark_result = TRUE,
       store_models = FALSE,
       check_values = FALSE,
-      allow_hotstart = FALSE,
-      keep_hotstart_stack = FALSE,
-      evaluate_default = FALSE,
-      callbacks = list(),
+      callbacks = NULL,
       rush = NULL
       ) {
       learner = assert_learner(as_learner(learner, clone = TRUE))
@@ -150,7 +144,7 @@ AutoTuner = R6Class("AutoTuner",
       }
 
       ia = list()
-      self$tuner = assert_multi_class(tuner, c("Tuner", "TunerAsync"))$clone()
+      self$tuner = assert_tuner(tuner)
       ia$learner = learner
       ia$resampling = assert_resampling(resampling)$clone()
       if (!is.null(measure)) ia$measure = assert_measure(as_measure(measure), learner = learner)
@@ -162,9 +156,6 @@ AutoTuner = R6Class("AutoTuner",
       private$.store_tuning_instance = assert_flag(store_tuning_instance) || ia$store_benchmark_result
 
       ia$check_values = assert_flag(check_values)
-      ia$allow_hotstart = assert_flag(allow_hotstart)
-      ia$keep_hotstart_stack = assert_flag(keep_hotstart_stack)
-      ia$evaluate_default = assert_flag(evaluate_default)
       ia$callbacks = assert_callbacks(as_callbacks(callbacks))
       self$instance_args = ia
 
@@ -360,7 +351,7 @@ AutoTuner = R6Class("AutoTuner",
         })
       }
 
-      TuningInstance = if (inherits(self$tuner, "Tuner")) TuningInstanceBatchSingleCrit else TuningInstanceAsyncSingleCrit
+      TuningInstance = if (inherits(self$tuner, "TunerBatch")) TuningInstanceBatchSingleCrit else TuningInstanceAsyncSingleCrit
       instance = do.call(TuningInstance$new, ia)
       self$tuner$optimize(instance)
 

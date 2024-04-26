@@ -1,5 +1,7 @@
 # mlr3tuning (development version)
 
+* refactor: remove hotstarting from batch optimization due to low performance.
+
 # mlr3tuning 0.20.0
 
 * compatibility: Work with new paradox version 1.0.0
@@ -52,7 +54,7 @@
 
 * feat: Add new callback that enables early stopping while tuning to `mlr_callbacks`.
 * feat: Add new callback that backups the benchmark result to disk after each batch.
-* feat: Create custom callbacks with the `callback_tuning()` function.
+* feat: Create custom callbacks with the `callback_batch_tuning()` function.
 
 # mlr3tuning 0.15.0
 

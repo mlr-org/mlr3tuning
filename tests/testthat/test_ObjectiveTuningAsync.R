@@ -1,4 +1,4 @@
-test_that("rush objective works", {
+test_that("objective async works", {
   objective = ObjectiveTuningAsync$new(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
@@ -12,7 +12,7 @@ test_that("rush objective works", {
   y = objective$eval(xs)
 
   expect_list(y, len = 2)
-  expect_names(names(y), permutation.of = c("classif.ce", "runtime_learners"))
+  expect_names(names(y), permutation.of = c("classif.ce", "runtime_learners", "warnings", "errors", "logs"))
   expect_number(y$classif.ce)
   expect_number(y$runtime_learners)
 })

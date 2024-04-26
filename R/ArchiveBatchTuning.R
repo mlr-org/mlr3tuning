@@ -73,7 +73,7 @@ ArchiveBatchTuning = R6Class("ArchiveBatchTuning",
     #'
     #' @param check_values (`logical(1)`)\cr
     #'   If `TRUE` (default), hyperparameter configurations are check for validity.
-    initialize = function(search_space, codomain, check_values = TRUE) {
+    initialize = function(search_space, codomain, check_values = FALSE) {
       super$initialize(search_space, codomain, check_values)
 
       # initialize empty benchmark result

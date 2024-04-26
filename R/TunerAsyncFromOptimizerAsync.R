@@ -17,7 +17,7 @@ TunerAsyncFromOptimizerAsync = R6Class("TunerAsyncFromOptimizerAsync",
       #' @param optimizer [bbotk::Optimizer]\cr
       #' Optimizer that is called.
       initialize = function(optimizer, man = NA_character_) {
-        private$.optimizer = assert_r6(optimizer, "OptimizerAsync")
+        private$.optimizer = assert_optimizer_async(optimizer)
         packages = union("mlr3tuning", optimizer$packages)
         assert_string(man, na.ok = TRUE)
 
@@ -43,14 +43,7 @@ TunerAsyncFromOptimizerAsync = R6Class("TunerAsyncFromOptimizerAsync",
       #'
       #' @return [data.table::data.table].
       optimize = function(inst) {
-        assert_multi_class(inst, c("TuningInstanceAsyncSingleCrit", "TuningInstanceAsyncMultiCrit"))
-
-        # evaluate learner with default hyperparameter values
-        if (get_private(inst)$.evaluate_default) {
-          xdt = default_configuration(inst)
-          inst$archive$push_tasks(transpose_list(xdt))
-        }
-
+        assert_tuning_instance_async(inst)
         private$.optimizer$optimize(inst)
       }
     ),

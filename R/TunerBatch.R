@@ -74,21 +74,8 @@ TunerBatch = R6Class("TunerBatch",
     #'
     #' @return [data.table::data.table()]
     optimize = function(inst) {
-      assert_multi_class(inst, c("TuningInstanceBatchSingleCrit", "TuningInstanceBatchMultiCrit"))
-      inst$archive$start_time = Sys.time()
-      inst$.__enclos_env__$private$.context = ContextOptimization$new(instance = inst, optimizer = self)
-      call_back("on_optimization_begin", inst$callbacks, get_private(inst)$.context)
-
-      # evaluate learner with default hyperparameter values
-      if (get_private(inst)$.evaluate_default) {
-        xdt = default_configuration(inst)
-        inst$eval_batch(xdt)
-      }
-
-      result = optimize_batch_default(inst, self, private)
-      call_back("on_optimization_end", inst$callbacks, get_private(inst)$.context)
-      if (!inst$objective$keep_hotstart_stack) inst$objective$hotstart_stack = NULL
-      result
+      assert_tuning_instance_batch(inst)
+      optimize_batch_default(inst, self)
     }
   )
 )

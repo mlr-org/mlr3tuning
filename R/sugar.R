@@ -47,10 +47,6 @@ tnrs = function(.keys, ...) {
 #' @template param_store_benchmark_result
 #' @template param_store_models
 #' @template param_check_values
-#' @template param_allow_hotstart
-#' @template param_hotstart_threshold
-#' @template param_keep_hotstart_stack
-#' @template param_evaluate_default
 #' @template param_callbacks
 #'
 #' @inheritSection TuningInstanceBatchSingleCrit Resources
@@ -68,11 +64,7 @@ ti = function(
   store_benchmark_result = TRUE,
   store_models = FALSE,
   check_values = FALSE,
-  allow_hotstart = FALSE,
-  hotstart_threshold = NULL,
-  keep_hotstart_stack = FALSE,
-  evaluate_default = FALSE,
-  callbacks = list()
+  callbacks = NULL
   ) {
   measures = assert_measures(as_measures(measures))
   TuningInstance = if (length(measures) > 1) TuningInstanceBatchMultiCrit else TuningInstanceBatchSingleCrit
@@ -87,10 +79,6 @@ ti = function(
     store_benchmark_result = store_benchmark_result,
     store_models = store_models,
     check_values = check_values,
-    allow_hotstart = allow_hotstart,
-    hotstart_threshold = hotstart_threshold,
-    keep_hotstart_stack = keep_hotstart_stack,
-    evaluate_default = evaluate_default,
     callbacks = callbacks)
 }
 
@@ -111,10 +99,6 @@ ti = function(
 #' @template param_store_benchmark_result
 #' @template param_store_models
 #' @template param_check_values
-#' @template param_allow_hotstart
-#' @template param_hotstart_threshold
-#' @template param_keep_hotstart_stack
-#' @template param_evaluate_default
 #' @template param_callbacks
 #' @template param_rush
 #'
@@ -133,8 +117,7 @@ ti_async = function(
   store_benchmark_result = TRUE,
   store_models = FALSE,
   check_values = FALSE,
-  evaluate_default = FALSE,
-  callbacks = list(),
+  callbacks = NULL,
   rush = NULL
   ) {
   measures = assert_measures(as_measures(measures))
@@ -150,7 +133,6 @@ ti_async = function(
     store_benchmark_result = store_benchmark_result,
     store_models = store_models,
     check_values = check_values,
-    evaluate_default = evaluate_default,
     callbacks = callbacks,
     rush = rush)
 }

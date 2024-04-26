@@ -20,11 +20,7 @@
 #' @template param_store_benchmark_result
 #' @template param_store_models
 #' @template param_check_values
-#' @template param_allow_hotstart
-#' @template param_keep_hotstart_stack
-#' @template param_evaluate_default
 #' @template param_callbacks
-#' @template param_method
 #'
 #' @export
 #' @examples
@@ -49,14 +45,8 @@ auto_tuner = function(
   store_benchmark_result = TRUE,
   store_models = FALSE,
   check_values = FALSE,
-  allow_hotstart = FALSE,
-  keep_hotstart_stack = FALSE,
-  evaluate_default = FALSE,
-  callbacks = list()
+  callbacks = NULL
   ) {
-
-
-
   terminator = terminator %??% terminator_selection(term_evals, term_time)
 
   AutoTuner$new(
@@ -70,8 +60,5 @@ auto_tuner = function(
     store_benchmark_result = store_benchmark_result,
     store_models = store_models,
     check_values = check_values,
-    allow_hotstart = allow_hotstart,
-    keep_hotstart_stack = keep_hotstart_stack,
-    evaluate_default = evaluate_default,
     callbacks = callbacks)
 }

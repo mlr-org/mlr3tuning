@@ -17,10 +17,6 @@ tune(
   store_benchmark_result = TRUE,
   store_models = FALSE,
   check_values = FALSE,
-  allow_hotstart = FALSE,
-  hotstart_threshold = NULL,
-  keep_hotstart_stack = FALSE,
-  evaluate_default = FALSE,
   callbacks = NULL,
   rush = NULL
 )
@@ -77,24 +73,7 @@ If \code{TRUE}, hyperparameter values are checked before evaluation and
 performance scores after. If \code{FALSE} (default), values are unchecked but
 computational overhead is reduced.}
 
-\item{allow_hotstart}{(\code{logical(1)})\cr
-Allow to hotstart learners with previously fitted models. See also
-\link[mlr3:HotstartStack]{mlr3::HotstartStack}. The learner must support hotstarting. Sets
-\code{store_models = TRUE}.}
-
-\item{hotstart_threshold}{(\code{numeric(1)})\cr
-Threshold for storing learners in the stack.
-If the value of the hotstart parameter is below this threshold, the learner is not added to the stack.}
-
-\item{keep_hotstart_stack}{(\code{logical(1)})\cr
-If \code{TRUE}, \link[mlr3:HotstartStack]{mlr3::HotstartStack} is kept in \verb{$objective$hotstart_stack}
-after tuning.}
-
-\item{evaluate_default}{(\code{logical(1)})\cr
-If \code{TRUE}, learner is evaluated with hyperparameters set to their default
-values at the start of the optimization.}
-
-\item{callbacks}{(list of \link{CallbackTuning})\cr
+\item{callbacks}{(list of \link{Callback})\cr
 List of callbacks.}
 
 \item{rush}{(\code{Rush})\cr

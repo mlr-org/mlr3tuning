@@ -4,18 +4,18 @@
 \alias{TuningInstanceBatchMultiCrit}
 \title{Class for Multi Criteria Tuning}
 \description{
-The \link{TuningInstanceBatchMultiCrit} specifies a tuning problem for \link[=Tuner]{Tuners}.
+The \link{TuningInstanceBatchMultiCrit} specifies a tuning problem for a \link{Tuner}.
 The function \code{\link[=ti]{ti()}} creates a \link{TuningInstanceBatchMultiCrit} and the function \code{\link[=tune]{tune()}} creates an instance internally.
 }
 \details{
-The instance contains an \link{ObjectiveTuning} object that encodes the black box objective function a \link{Tuner} has to optimize.
+The instance contains an \link{ObjectiveTuningBatch} object that encodes the black box objective function a \link{Tuner} has to optimize.
 The instance allows the basic operations of querying the objective at design points (\verb{$eval_batch()}).
 This operation is usually done by the \link{Tuner}.
 Evaluations of hyperparameter configurations are performed in batches by calling \code{\link[mlr3:benchmark]{mlr3::benchmark()}} internally.
-The evaluated hyperparameter configurations are stored in the \link[=ArchiveTuning]{Archive} (\verb{$archive}).
+The evaluated hyperparameter configurations are stored in the \link{ArchiveBatchTuning} (\verb{$archive}).
 Before a batch is evaluated, the \link[bbotk:Terminator]{bbotk::Terminator} is queried for the remaining budget.
 If the available budget is exhausted, an exception is raised, and no further evaluations can be performed from this point on.
-The tuner is also supposed to store its final result, consisting of a  selected hyperparameter configuration and associated estimated performance values, by calling the method \code{instance$assign_result}.
+The tuner is also supposed to store its final result, consisting of a selected hyperparameter configuration and associated estimated performance values, by calling the method \code{instance$assign_result}.
 }
 \section{Resources}{
 
@@ -87,7 +87,6 @@ List of param values for the optimal learner call.}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-TuningInstanceBatchMultiCrit-new}{\code{TuningInstanceBatchMultiCrit$new()}}
-\item \href{#method-TuningInstanceBatchMultiCrit-start_workers}{\code{TuningInstanceBatchMultiCrit$start_workers()}}
 \item \href{#method-TuningInstanceBatchMultiCrit-assign_result}{\code{TuningInstanceBatchMultiCrit$assign_result()}}
 \item \href{#method-TuningInstanceBatchMultiCrit-clone}{\code{TuningInstanceBatchMultiCrit$clone()}}
 }
@@ -95,11 +94,11 @@ List of param values for the optimal learner call.}
 \if{html}{\out{
 <details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstanceBatch" data-id="clear"><a href='../../bbotk/html/OptimInstanceBatch.html#method-OptimInstanceBatch-clear'><code>bbotk::OptimInstanceBatch$clear()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="clear"><a href='../../bbotk/html/OptimInstance.html#method-OptimInstance-clear'><code>bbotk::OptimInstance$clear()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="format"><a href='../../bbotk/html/OptimInstance.html#method-OptimInstance-format'><code>bbotk::OptimInstance$format()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="print"><a href='../../bbotk/html/OptimInstance.html#method-OptimInstance-print'><code>bbotk::OptimInstance$print()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstanceBatch" data-id="eval_batch"><a href='../../bbotk/html/OptimInstanceBatch.html#method-OptimInstanceBatch-eval_batch'><code>bbotk::OptimInstanceBatch$eval_batch()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstanceBatch" data-id="format"><a href='../../bbotk/html/OptimInstanceBatch.html#method-OptimInstanceBatch-format'><code>bbotk::OptimInstanceBatch$format()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstanceBatch" data-id="objective_function"><a href='../../bbotk/html/OptimInstanceBatch.html#method-OptimInstanceBatch-objective_function'><code>bbotk::OptimInstanceBatch$objective_function()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstanceBatch" data-id="print"><a href='../../bbotk/html/OptimInstanceBatch.html#method-OptimInstanceBatch-print'><code>bbotk::OptimInstanceBatch$print()</code></a></span></li>
 </ul>
 </details>
 }}
@@ -119,11 +118,7 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   store_benchmark_result = TRUE,
   store_models = FALSE,
   check_values = FALSE,
-  allow_hotstart = FALSE,
-  hotstart_threshold = NULL,
-  keep_hotstart_stack = FALSE,
-  evaluate_default = FALSE,
-  callbacks = list()
+  callbacks = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -169,78 +164,8 @@ If \code{TRUE}, hyperparameter values are checked before evaluation and
 performance scores after. If \code{FALSE} (default), values are unchecked but
 computational overhead is reduced.}
 
-\item{\code{allow_hotstart}}{(\code{logical(1)})\cr
-Allow to hotstart learners with previously fitted models. See also
-\link[mlr3:HotstartStack]{mlr3::HotstartStack}. The learner must support hotstarting. Sets
-\code{store_models = TRUE}.}
-
-\item{\code{hotstart_threshold}}{(\code{numeric(1)})\cr
-Threshold for storing learners in the stack.
-If the value of the hotstart parameter is below this threshold, the learner is not added to the stack.}
-
-\item{\code{keep_hotstart_stack}}{(\code{logical(1)})\cr
-If \code{TRUE}, \link[mlr3:HotstartStack]{mlr3::HotstartStack} is kept in \verb{$objective$hotstart_stack}
-after tuning.}
-
-\item{\code{evaluate_default}}{(\code{logical(1)})\cr
-If \code{TRUE}, learner is evaluated with hyperparameters set to their default
-values at the start of the optimization.}
-
-\item{\code{callbacks}}{(list of \link{CallbackTuning})\cr
+\item{\code{callbacks}}{(list of \link{Callback})\cr
 List of callbacks.}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TuningInstanceBatchMultiCrit-start_workers"></a>}}
-\if{latex}{\out{\hypertarget{method-TuningInstanceBatchMultiCrit-start_workers}{}}}
-\subsection{Method \code{start_workers()}}{
-Start workers with \code{future}.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TuningInstanceBatchMultiCrit$start_workers(
-  n_workers = NULL,
-  host = "local",
-  heartbeat_period = NULL,
-  heartbeat_expire = NULL,
-  lgr_thresholds = NULL,
-  await_workers = TRUE,
-  detect_lost_tasks = FALSE,
-  freeze_archive = FALSE
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{n_workers}}{(\code{integer(1)})\cr
-Number of workers to be started.
-If \code{NULL} the maximum number of free workers is used.}
-
-\item{\code{host}}{(\code{character(1)})\cr
-Worker is started on a local or remote host.}
-
-\item{\code{heartbeat_period}}{(\code{integer(1)})\cr
-Period of the heartbeat in seconds.}
-
-\item{\code{heartbeat_expire}}{(\code{integer(1)})\cr
-Time to live of the heartbeat in seconds.}
-
-\item{\code{lgr_thresholds}}{(named \code{character()} or \code{numeric()})\cr
-Thresholds for the \code{lgr} package e.g. c(rush = "debug", bbotk = "info", mlr3 = "info").
-If \code{NULL}, no log messages from the workers are saved.}
-
-\item{\code{await_workers}}{(\code{logical(1)})\cr
-Whether to wait until all workers are available.}
-
-\item{\code{detect_lost_tasks}}{(\code{logical(1)})\cr
-Whether to detect lost tasks.
-Defaults to \code{FALSE}.}
-
-\item{\code{freeze_archive}}{(\code{logical(1)})\cr
-If \code{TRUE}, the archive is copied from redis to a local data.table after tuning.
-This is helpful when the tuning is run on a remote machine and the archive is serialized.
-Only used if \code{rush} is supplied.}
 }
 \if{html}{\out{</div>}}
 }

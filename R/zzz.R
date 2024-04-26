@@ -15,10 +15,13 @@
 
   # callbacks
   x = utils::getFromNamespace("mlr_callbacks", ns = "mlr3misc")
+  x$add("mlr3tuning.async_default_configuration", load_callback_async_default_configuration)
   x$add("mlr3tuning.async_hotstart", load_callback_async_hotstart)
   x$add("mlr3tuning.async_measures", load_callback_async_measures)
   x$add("mlr3tuning.async_mlflow", load_callback_async_mlflow)
+  x$add("mlr3tuning.async_save_logs", load_callback_async_save_logs)
   x$add("mlr3tuning.backup", load_callback_backup)
+  x$add("mlr3tuning.default_configuration", load_callback_default_configuration)
   x$add("mlr3tuning.measures", load_callback_measures)
 
   assign("lg", lgr::get_logger("bbotk"), envir = parent.env(environment()))

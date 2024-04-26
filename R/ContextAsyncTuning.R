@@ -1,40 +1,29 @@
-#' @title Evaluation Context
+#' @title Asynchronous Tuning Context
 #'
 #' @description
-#' The [ContextAsyncTuning] allows [CallbackTuning]s to access and modify data while a hyperparameter configuration is evaluated.
+#' A [CallbackAsyncTuning] accesses and modifies data during the optimization via the `ContextAsyncTuning`.
 #' See the section on active bindings for a list of modifiable objects.
-#' See [callback_tuning()] for a list of stages that access [ContextAsyncTuning].
+#' See [callback_async_tuning()] for a list of stages that access `ContextAsyncTuning`.
 #'
 #' @details
-#' This context is re-created each time a new batch of hyperparameter configurations is evaluated.
-#' Changes to `$objective_tuning`, `$resample_result` are discarded after the function is finished.
-#' Modification on the data table in `$aggregated_performance` are written to the archive.
-#' Any number of columns can be added.
+#' Changes to `$instance` and `$optimizer` in the stages executed on the workers are not reflected in the main process.
+#'
+#' @template param_inst_async
+#' @template param_tuner
 #'
 #' @export
 ContextAsyncTuning = R6Class("ContextAsyncTuning",
   inherit = ContextAsync,
-  public = list(
-
-    #' @description
-    #' Creates a new instance of this [R6][R6::R6Class] class.
-    #'
-    #' @param instance ([TuningInstanceAsyncSingleCrit] | [TuningInstanceAsyncMultiCrit]).
-    #' @param tuner ([TunerAsync]).
-    initialize = function(instance, tuner) {
-      super$initialize(instance, tuner)
-    }
-  ),
-
   active = list(
+
     #' @field xs (list())\cr
     #'   The hyperparameter configuration currently evaluated.
     #'   Contains the values on the learner scale i.e. transformations are applied.
     xs = function(rhs) {
       if (missing(rhs)) {
-        return(get_private(self$objective_tuning)$.xs)
+        return(get_private(self$instance$objective)$.xs)
       } else {
-        self$objective_tuning$.__enclos_env__$private$.xs = rhs
+        self$instance$objective$.__enclos_env__$private$.xs = rhs
       }
     },
 

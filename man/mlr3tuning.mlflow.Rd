@@ -4,7 +4,7 @@
 \alias{mlr3tuning.mlflow}
 \title{MLflow Connector Callback}
 \description{
-This \link{CallbackTuning} logs the hyperparameter configurations and the performance of the configurations to MLflow.
+This \link{Callback} logs the hyperparameter configurations and the performance of the configurations to MLflow.
 }
 \examples{
 clbk("mlr3tuning.mlflow", tracking_uri = "http://localhost:5000")

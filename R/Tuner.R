@@ -1,12 +1,12 @@
-#' @title Class for Tuning Algorithms
+#' @title Tuner
 #'
 #' @include mlr_tuners.R
 #'
 #' @description
-#' The [Tuner] implements the optimization algorithm.
+#' The `Tuner` implements the optimization algorithm.
 #'
 #' @details
-#' [Tuner] is an abstract base class that implements the base functionality each tuner must provide.
+#' `Tuner` is an abstract base class that implements the base functionality each tuner must provide.
 #'
 #' @section Resources:
 #' There are several sections about hyperparameter optimization in the [mlr3book](https://mlr3book.mlr-org.com).
@@ -87,12 +87,6 @@ Tuner = R6Class("Tuner",
     #' Opens the corresponding help page referenced by field `$man`.
     help = function() {
       open_help(self$man)
-    },
-
-    #' @description
-    #' Performs the tuning on a tuning instance until termination.
-    optimize = function() {
-     stop("abstract")
     }
   ),
 
@@ -161,11 +155,7 @@ Tuner = R6Class("Tuner",
     .optimize = function(inst) stop("abstract"),
 
     .assign_result = function(inst) {
-      assert_multi_class(inst,
-        c("TuningInstanceBatchSingleCrit",
-        "TuningInstanceBatchMultiCrit",
-        "TuningInstanceAsyncSingleCrit",
-        "TuningInstanceAsyncMultiCrit"))
+      assert_tuning_instance(inst)
       assign_result_default(inst)
     },
 
