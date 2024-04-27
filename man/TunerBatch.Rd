@@ -121,7 +121,7 @@ The referenced help package can be opened via method \verb{$help()}.}
 \if{latex}{\out{\hypertarget{method-TunerBatch-optimize}{}}}
 \subsection{Method \code{optimize()}}{
 Performs the tuning on a \link{TuningInstanceBatchSingleCrit} or \link{TuningInstanceBatchMultiCrit} until termination.
-The single evaluations will be written into the \link{ArchiveTuningBatch} that resides in the \link{TuningInstanceBatchSingleCrit}/\link{TuningInstanceBatchMultiCrit}.
+The single evaluations will be written into the \link{ArchiveBatchTuning} that resides in the \link{TuningInstanceBatchSingleCrit}/\link{TuningInstanceBatchMultiCrit}.
 The result will be written into the instance object.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TunerBatch$optimize(inst)}\if{html}{\out{</div>}}

@@ -14,6 +14,8 @@ as_tuner = function(x, ...) { # nolint
 }
 
 #' @export
+#' @param clone (`logical(1)`)\cr
+#'  Whether to clone the object.
 #' @rdname as_tuner
 as_tuner.Tuner = function(x, clone = FALSE, ...) { # nolint
   if (isTRUE(clone)) x$clone() else x

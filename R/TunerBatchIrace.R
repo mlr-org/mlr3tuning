@@ -22,7 +22,7 @@
 #' with `TunerIrace`.
 #'
 #' @section Archive:
-#' The [ArchiveTuningBatch] holds the following additional columns:
+#' The [ArchiveBatchTuning] holds the following additional columns:
 #'  * `"race"` (`integer(1)`)\cr
 #'    Race iteration.
 #'  * `"step"` (`integer(1)`)\cr
@@ -108,7 +108,7 @@ TunerBatchIrace = R6Class("TunerBatchIrace",
     #' @description
     #' Performs the tuning on a [TuningInstanceBatchSingleCrit] until termination.
     #' The single evaluations and the final results will be written into the
-    #' [ArchiveTuningBatch] that resides in the [TuningInstanceBatchSingleCrit]. The final
+    #' [ArchiveBatchTuning] that resides in the [TuningInstanceBatchSingleCrit]. The final
     #' result is returned.
     #'
     #' @param inst ([TuningInstanceBatchSingleCrit]).

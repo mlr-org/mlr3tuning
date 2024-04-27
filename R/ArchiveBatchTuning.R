@@ -1,10 +1,10 @@
 #' @title Class for Logging Evaluated Hyperparameter Configurations
 #'
 #' @description
-#' The [ArchiveTuningBatch] stores all evaluated hyperparameter configurations and performance scores.
+#' The `ArchiveBatchTuning` stores all evaluated hyperparameter configurations and performance scores in a [data.table::data.table()].
 #'
 #' @details
-#' The [ArchiveTuningBatch] is a container around a [data.table::data.table()].
+#' The [ArchiveBatchTuning] is a container around a [data.table::data.table()].
 #' Each row corresponds to a single evaluation of a hyperparameter configuration.
 #' See the section on Data Structure for more information.
 #' The archive stores additionally a [mlr3::BenchmarkResult] (`$benchmark_result`) that records the resampling experiments.
@@ -32,7 +32,7 @@
 #'     Connects each hyperparameter configuration to the resampling experiment stored in the [mlr3::BenchmarkResult].
 #'
 #' @section Analysis:
-#' For analyzing the tuning results, it is recommended to pass the [ArchiveTuningBatch] to `as.data.table()`.
+#' For analyzing the tuning results, it is recommended to pass the [ArchiveBatchTuning] to `as.data.table()`.
 #' The returned data table is joined with the benchmark result which adds the [mlr3::ResampleResult] for each hyperparameter evaluation.
 #'
 #' The archive provides various getters (e.g. `$learners()`) to ease the access.
@@ -47,8 +47,8 @@
 #' @section S3 Methods:
 #' * `as.data.table.ArchiveTuning(x, unnest = "x_domain", exclude_columns = "uhash", measures = NULL)`\cr
 #' Returns a tabular view of all evaluated hyperparameter configurations.\cr
-#' [ArchiveTuningBatch] -> [data.table::data.table()]\cr
-#'     * `x` ([ArchiveTuningBatch])
+#' [ArchiveBatchTuning] -> [data.table::data.table()]\cr
+#'     * `x` ([ArchiveBatchTuning])
 #'     * `unnest` (`character()`)\cr
 #'       Transforms list columns to separate columns. Set to `NULL` if no column should be unnested.
 #'     * `exclude_columns` (`character()`)\cr
@@ -159,17 +159,14 @@ ArchiveBatchTuning = R6Class("ArchiveBatchTuning",
 
 #' @export
 as.data.table.ArchiveBatchTuning = function(x, ..., unnest = "x_domain", exclude_columns = "uhash", measures = NULL) {
-  if (nrow(x$data) == 0) return(data.table())
-  # default values for unnest and exclude_columns might be not present in archive
-  if ("x_domain" %nin% names(x$data)) unnest = setdiff(unnest, "x_domain")
-  if (!x$benchmark_result$n_resample_results) exclude_columns = exclude_columns[exclude_columns %nin% c("uhash", "resample_result")]
+  if (!nrow(x$data)) return(data.table())
+  data = copy(x$data)
 
-  assert_subset(unnest, names(x$data))
+  # unnest columns
+  cols = intersect(unnest, names(data))
+  tab = unnest(data, cols, prefix = "{col}_")
+
   cols_y_extra = NULL
-
-  # unnest data
-  tab = unnest(copy(x$data), unnest, prefix = "{col}_")
-
   if (x$benchmark_result$n_resample_results) {
     # add extra measures
     if (!is.null(measures)) {
@@ -178,17 +175,16 @@ as.data.table.ArchiveBatchTuning = function(x, ..., unnest = "x_domain", exclude
       tab = cbind(tab, x$benchmark_result$aggregate(measures)[, cols_y_extra, with = FALSE])
     }
     # add resample results
-    tab = merge(tab, x$benchmark_result$resample_results[, c("uhash", "resample_result"), with = FALSE], by = "uhash",
-      sort = FALSE)
+    tab = merge(tab, x$benchmark_result$resample_results[, c("uhash", "resample_result"), with = FALSE], by = "uhash", sort = FALSE)
   }
-  cols_x_domain =  if ("x_domain" %in% unnest) {
+
+  cols_x_domain =  if ("x_domain" %in% cols) {
     # get all ids of x_domain
     # trafo could add unknown ids
     x_domain_ids = paste0("x_domain_", unique(unlist(map(x$data$x_domain, names))))
     setdiff(x_domain_ids, exclude_columns)
-  } else NULL
+  }
 
   setcolorder(tab, c(x$cols_x, x$cols_y, cols_y_extra, cols_x_domain, "runtime_learners", "timestamp", "batch_nr"))
-  assert_subset(exclude_columns, names(tab))
   tab[, setdiff(names(tab), exclude_columns), with = FALSE]
 }

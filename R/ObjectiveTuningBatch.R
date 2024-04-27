@@ -18,13 +18,13 @@ ObjectiveTuningBatch = R6Class("ObjectiveTuningBatch",
   inherit = ObjectiveTuning,
   public = list(
 
-    #' @field archive ([ArchiveTuningBatch]).
+    #' @field archive ([ArchiveBatchTuning]).
     archive = NULL,
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #'
-    #' @param archive ([ArchiveTuningBatch])\cr
+    #' @param archive ([ArchiveBatchTuning])\cr
     #'   Reference to archive of [TuningInstanceBatchSingleCrit] | [TuningInstanceBatchMultiCrit].
     #'   If `NULL` (default), benchmark result and models cannot be stored.
     initialize = function(

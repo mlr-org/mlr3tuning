@@ -33,7 +33,7 @@ Specialized \link{Tuner} change the resampling e.g. to evaluate a hyperparameter
 This field, however, always returns the resampling passed in construction.}
 
 \item{measures}{(\link[mlr3:Measure]{mlr3::Measure} or list of \link[mlr3:Measure]{mlr3::Measure})\cr
-A single measure creates a \link{TuningInstanceSingleAsyncCrit} and multiple measures a \link{TuningInstanceAsyncMultiCrit}.
+A single measure creates a \link{TuningInstanceAsyncSingleCrit} and multiple measures a \link{TuningInstanceAsyncMultiCrit}.
 If \code{NULL}, default measure is used.}
 
 \item{terminator}{(\link{Terminator})\cr

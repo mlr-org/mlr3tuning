@@ -4,16 +4,10 @@
 \alias{ArchiveAsyncTuning}
 \title{Rush Data Storage}
 \description{
-The \link{ArchiveAsyncTuning} stores all evaluated hyperparameter configurations and performance scores.
+The `ArchiveAsyncTuning`` stores all evaluated hyperparameter configurations and performance scores in a \link[rush:Rush]{rush::Rush} database.
 }
 \details{
-The \link{ArchiveAsyncTuning} is a container around a \code{\link[data.table:data.table]{data.table::data.table()}}.
-Each row corresponds to a single evaluation of a hyperparameter configuration.
-See the section on Data Structure for more information.
-The archive stores additionally a \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} (\verb{$benchmark_result}) that records the resampling experiments.
-Each experiment corresponds to a single evaluation of a hyperparameter configuration.
-The table (\verb{$data}) and the benchmark result (\verb{$benchmark_result}) are linked by the \code{uhash} column.
-If the archive is passed to \code{as.data.table()}, both are joined automatically.
+The \link{ArchiveAsyncTuning} is a connector to a \link[rush:Rush]{rush::Rush} database.
 }
 \section{Data Structure}{
 
@@ -29,24 +23,16 @@ Sum of training and predict times logged in learners per \link[mlr3:ResampleResu
 This does not include potential overhead time.
 \item \code{timestamp} (\code{POSIXct})\cr
 Time stamp when the evaluation was logged into the archive.
-\item \code{uhash} (\code{character(1)})\cr
-Connects each hyperparameter configuration to the resampling experiment stored in the \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}.
+\item \code{batch_nr} (\code{integer(1)})\cr
+Hyperparameters are evaluated in batches.
+Each batch has a unique batch number.
 }
 }
 
 \section{Analysis}{
 
-For analyzing the tuning results, it is recommended to pass the \link{ArchiveTuningAsync} to \code{as.data.table()}.
-The returned data table is joined with the benchmark result which adds the \link[mlr3:ResampleResult]{mlr3::ResampleResult} for each hyperparameter evaluation.
-
-The archive provides various getters (e.g. \verb{$learners()}) to ease the access.
-All getters extract by position (\code{i}) or unique hash (\code{uhash}).
-For a complete list of all getters see the methods section.
-
-The benchmark result (\verb{$benchmark_result}) allows to score the hyperparameter configurations again on a different measure.
-Alternatively, measures can be supplied to \code{as.data.table()}.
-
-The \CRANpkg{mlr3viz} package provides visualizations for tuning results.
+For analyzing the tuning results, it is recommended to pass the \link{ArchiveAsynTuning} to \code{as.data.table()}.
+The returned data table contains the \link[mlr3:ResampleResult]{mlr3::ResampleResult} for each hyperparameter evaluation.
 }
 
 \section{S3 Methods}{
@@ -54,9 +40,9 @@ The \CRANpkg{mlr3viz} package provides visualizations for tuning results.
 \itemize{
 \item \code{as.data.table.ArchiveTuning(x, unnest = "x_domain", exclude_columns = "uhash", measures = NULL)}\cr
 Returns a tabular view of all evaluated hyperparameter configurations.\cr
-\link{ArchiveTuningAsync} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
+\link{ArchiveAsynTuning} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
 \itemize{
-\item \code{x} (\link{ArchiveTuningAsync})
+\item \code{x} (\link{ArchiveAsynTuning})
 \item \code{unnest} (\code{character()})\cr
 Transforms list columns to separate columns. Set to \code{NULL} if no column should be unnested.
 \item \code{exclude_columns} (\code{character()})\cr
@@ -88,7 +74,6 @@ Benchmark result.}
 \item \href{#method-ArchiveAsyncTuning-predictions}{\code{ArchiveAsyncTuning$predictions()}}
 \item \href{#method-ArchiveAsyncTuning-resample_result}{\code{ArchiveAsyncTuning$resample_result()}}
 \item \href{#method-ArchiveAsyncTuning-print}{\code{ArchiveAsyncTuning$print()}}
-\item \href{#method-ArchiveAsyncTuning-freeze}{\code{ArchiveAsyncTuning$freeze()}}
 \item \href{#method-ArchiveAsyncTuning-clone}{\code{ArchiveAsyncTuning$clone()}}
 }
 }
@@ -265,16 +250,6 @@ Printer.
 }
 \if{html}{\out{</div>}}
 }
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ArchiveAsyncTuning-freeze"></a>}}
-\if{latex}{\out{\hypertarget{method-ArchiveAsyncTuning-freeze}{}}}
-\subsection{Method \code{freeze()}}{
-Copy the data from rush to a local \code{\link[data.table:data.table]{data.table::data.table()}}.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ArchiveAsyncTuning$freeze()}\if{html}{\out{</div>}}
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ArchiveAsyncTuning-clone"></a>}}

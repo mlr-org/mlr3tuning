@@ -34,7 +34,7 @@ TunerBatchFromOptimizerBatch = R6Class("TunerBatchFromOptimizerBatch",
 
       #' @description
       #' Performs the tuning on a [TuningInstanceBatchSingleCrit] / [TuningInstanceBatchMultiCrit] until termination.
-      #' The single evaluations and the final results will be written into the [ArchiveTuningBatch] that resides in the [TuningInstanceBatchSingleCrit]/[TuningInstanceBatchMultiCrit].
+      #' The single evaluations and the final results will be written into the [ArchiveBatchTuning] that resides in the [TuningInstanceBatchSingleCrit]/[TuningInstanceBatchMultiCrit].
       #' The final result is returned.
       #'
       #' @param inst ([TuningInstanceBatchSingleCrit] | [TuningInstanceBatchMultiCrit]).

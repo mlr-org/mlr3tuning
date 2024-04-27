@@ -87,7 +87,7 @@ ti = function(
 #' Function to construct a [TuningInstanceAsyncSingleCrit] or [TuningInstanceAsyncMultiCrit].
 #'
 #' @param measures ([mlr3::Measure] or list of [mlr3::Measure])\cr
-#'   A single measure creates a [TuningInstanceSingleAsyncCrit] and multiple measures a [TuningInstanceAsyncMultiCrit].
+#'   A single measure creates a [TuningInstanceAsyncSingleCrit] and multiple measures a [TuningInstanceAsyncMultiCrit].
 #'   If `NULL`, default measure is used.
 #'
 #' @template param_task

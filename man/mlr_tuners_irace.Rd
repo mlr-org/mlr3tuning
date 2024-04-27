@@ -37,7 +37,7 @@ with \code{TunerIrace}.
 
 \section{Archive}{
 
-The \link{ArchiveTuningBatch} holds the following additional columns:
+The \link{ArchiveBatchTuning} holds the following additional columns:
 \itemize{
 \item \code{"race"} (\code{integer(1)})\cr
 Race iteration.
@@ -165,7 +165,7 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Method \code{optimize()}}{
 Performs the tuning on a \link{TuningInstanceBatchSingleCrit} until termination.
 The single evaluations and the final results will be written into the
-\link{ArchiveTuningBatch} that resides in the \link{TuningInstanceBatchSingleCrit}. The final
+\link{ArchiveBatchTuning} that resides in the \link{TuningInstanceBatchSingleCrit}. The final
 result is returned.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TunerBatchIrace$optimize(inst)}\if{html}{\out{</div>}}

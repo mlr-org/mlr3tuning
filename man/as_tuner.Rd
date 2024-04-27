@@ -24,6 +24,9 @@ Object to convert.}
 
 \item{...}{(any)\cr
 Additional arguments.}
+
+\item{clone}{(\code{logical(1)})\cr
+Whether to clone the object.}
 }
 \description{
 Convert object to a \link{Tuner} or a list of \link{Tuner}.

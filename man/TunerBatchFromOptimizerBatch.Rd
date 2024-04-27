@@ -54,7 +54,7 @@ The referenced help package can be opened via method \verb{$help()}.}
 \if{latex}{\out{\hypertarget{method-TunerBatchFromOptimizerBatch-optimize}{}}}
 \subsection{Method \code{optimize()}}{
 Performs the tuning on a \link{TuningInstanceBatchSingleCrit} / \link{TuningInstanceBatchMultiCrit} until termination.
-The single evaluations and the final results will be written into the \link{ArchiveTuningBatch} that resides in the \link{TuningInstanceBatchSingleCrit}/\link{TuningInstanceBatchMultiCrit}.
+The single evaluations and the final results will be written into the \link{ArchiveBatchTuning} that resides in the \link{TuningInstanceBatchSingleCrit}/\link{TuningInstanceBatchMultiCrit}.
 The final result is returned.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TunerBatchFromOptimizerBatch$optimize(inst)}\if{html}{\out{</div>}}

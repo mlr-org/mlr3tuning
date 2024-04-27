@@ -45,7 +45,7 @@ load_callback_backup = function() {
 #'
 #' @description
 #' This [Callback] scores the hyperparameter configurations on additional measures while tuning.
-#' Usually, the configurations can be scored on additional measures after tuning (see [ArchiveTuningBatch]).
+#' Usually, the configurations can be scored on additional measures after tuning (see [ArchiveBatchTuning]).
 #' However, if the memory is not sufficient to store the [mlr3::BenchmarkResult], it is necessary to score the additional measures while tuning.
 #' The measures are not taken into account by the tuner.
 #'
