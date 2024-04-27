@@ -31,7 +31,7 @@ Each batch has a unique batch number.
 
 \section{Analysis}{
 
-For analyzing the tuning results, it is recommended to pass the \link{ArchiveAsynTuning} to \code{as.data.table()}.
+For analyzing the tuning results, it is recommended to pass the \link{ArchiveAsyncTuning} to \code{as.data.table()}.
 The returned data table contains the \link[mlr3:ResampleResult]{mlr3::ResampleResult} for each hyperparameter evaluation.
 }
 
@@ -40,9 +40,9 @@ The returned data table contains the \link[mlr3:ResampleResult]{mlr3::ResampleRe
 \itemize{
 \item \code{as.data.table.ArchiveTuning(x, unnest = "x_domain", exclude_columns = "uhash", measures = NULL)}\cr
 Returns a tabular view of all evaluated hyperparameter configurations.\cr
-\link{ArchiveAsynTuning} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
+\link{ArchiveAsyncTuning} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
 \itemize{
-\item \code{x} (\link{ArchiveAsynTuning})
+\item \code{x} (\link{ArchiveAsyncTuning})
 \item \code{unnest} (\code{character()})\cr
 Transforms list columns to separate columns. Set to \code{NULL} if no column should be unnested.
 \item \code{exclude_columns} (\code{character()})\cr

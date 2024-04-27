@@ -1,5 +1,5 @@
 test_that("initializing TuningInstanceAsyncSingleCrit works", {
-skip_on_cran(); skip_if(TRUE)
+#skip_on_cran(); skip_if(TRUE)
   skip_if_not_installed("rush")
   flush_redis()
 

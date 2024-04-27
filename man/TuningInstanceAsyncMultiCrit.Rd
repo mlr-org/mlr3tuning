@@ -29,7 +29,7 @@ The \href{https://mlr-org.com/gallery-all-optimization.html}{gallery} features a
 
 \section{Analysis}{
 
-For analyzing the tuning results, it is recommended to pass the \link{ArchiveAsynTuning} to \code{as.data.table()}.
+For analyzing the tuning results, it is recommended to pass the \link{ArchiveAsyncTuning} to \code{as.data.table()}.
 The returned data table contains the \link[mlr3:ResampleResult]{mlr3::ResampleResult} for each hyperparameter evaluation.
 }
 
@@ -137,7 +137,7 @@ If a rush instance is supplied, the tuning runs without batches.}
 \if{html}{\out{<a id="method-TuningInstanceAsyncMultiCrit-assign_result"></a>}}
 \if{latex}{\out{\hypertarget{method-TuningInstanceAsyncMultiCrit-assign_result}{}}}
 \subsection{Method \code{assign_result()}}{
-The \link{TunerrAsync} writes the best found points and estimated performance values here (probably the Pareto set / front).
+The \link{TunerAsync} writes the best found points and estimated performance values here (probably the Pareto set / front).
 For internal use.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TuningInstanceAsyncMultiCrit$assign_result(xdt, ydt, learner_param_vals = NULL)}\if{html}{\out{</div>}}

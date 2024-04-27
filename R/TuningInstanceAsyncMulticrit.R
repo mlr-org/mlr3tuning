@@ -88,7 +88,7 @@ TuningInstanceAsyncMultiCrit = R6Class("TuningInstanceAsyncMultiCrit",
     },
 
     #' @description
-    #' The [TunerrAsync] writes the best found points and estimated performance values here (probably the Pareto set / front).
+    #' The [TunerAsync] writes the best found points and estimated performance values here (probably the Pareto set / front).
     #' For internal use.
     #'
     #' @param ydt (`numeric(1)`)\cr

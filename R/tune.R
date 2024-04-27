@@ -6,7 +6,7 @@
 #' Function to tune a [mlr3::Learner].
 #' The function internally creates a [TuningInstanceBatchSingleCrit] or [TuningInstanceBatchMultiCrit] which describes the tuning problem.
 #' It executes the tuning with the [Tuner] (`tuner`) and returns the result with the tuning instance (`$result`).
-#' The [ArchiveBatchTuning] and [ArchiveAsynTuning] (`$archive`) stores all evaluated hyperparameter configurations and performance scores.
+#' The [ArchiveBatchTuning] and [ArchiveAsyncTuning] (`$archive`) stores all evaluated hyperparameter configurations and performance scores.
 #'
 #' @details
 #' The [mlr3::Task], [mlr3::Learner], [mlr3::Resampling], [mlr3::Measure] and [Terminator] are used to construct a [TuningInstanceBatchSingleCrit].

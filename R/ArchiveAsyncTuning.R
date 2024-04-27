@@ -24,14 +24,14 @@
 #'     Each batch has a unique batch number.
 #'
 #' @section Analysis:
-#' For analyzing the tuning results, it is recommended to pass the [ArchiveAsynTuning] to `as.data.table()`.
+#' For analyzing the tuning results, it is recommended to pass the [ArchiveAsyncTuning] to `as.data.table()`.
 #' The returned data table contains the [mlr3::ResampleResult] for each hyperparameter evaluation.
 #'
 #' @section S3 Methods:
 #' * `as.data.table.ArchiveTuning(x, unnest = "x_domain", exclude_columns = "uhash", measures = NULL)`\cr
 #' Returns a tabular view of all evaluated hyperparameter configurations.\cr
-#' [ArchiveAsynTuning] -> [data.table::data.table()]\cr
-#'     * `x` ([ArchiveAsynTuning])
+#' [ArchiveAsyncTuning] -> [data.table::data.table()]\cr
+#'     * `x` ([ArchiveAsyncTuning])
 #'     * `unnest` (`character()`)\cr
 #'       Transforms list columns to separate columns. Set to `NULL` if no column should be unnested.
 #'     * `exclude_columns` (`character()`)\cr

@@ -29,7 +29,7 @@ Depends:
     paradox (>= 0.10.0),
     R (>= 3.1.0)
 Imports:
-    bbotk (>= 0.7.3),
+    bbotk (>= 0.8.0.9000),
     checkmate (>= 2.0.0),
     data.table,
     lgr,
@@ -52,7 +52,7 @@ Suggests:
     testthat (>= 3.0.0),
     xgboost
 Remotes:
-    mlr-org/bbotk@rush,
+    mlr-org/bbotk
     mlr-org/rush
 Config/testthat/edition: 3
 Config/testthat/parallel: false
