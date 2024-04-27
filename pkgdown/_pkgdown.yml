@@ -42,20 +42,14 @@ navbar:
 reference:
   - title: Tuning Instances
     contents:
-      - TuningInstanceSingleCrit
-      - TuningInstanceMultiCrit
-      - TuningInstanceRushSingleCrit
-      - TuningInstanceRushMultiCrit
-      - ti
-      - ObjectiveTuning
-      - ObjectiveRushTuning
-      - ArchiveTuning
-      - ArchiveRushTuning
+      - starts_with("TuningInstance")
+      - starts_with("ti")
+      - starts_with("ObjectiveTuning")
+      - starts_with("Archive")
       - tune
   - title: Tuners
     contents:
-      - Tuner
-      - TunerFromOptimizer
+      - starts_with("Tuner")
       - starts_with("mlr_tuners")
       - tnr
       - AutoTuner
@@ -72,18 +66,13 @@ reference:
       - extract_inner_tuning_results
   - title: Callbacks
     contents:
-      - CallbackTuning
-      - CallbackRushTuning
-      - ContextEval
-      - ContextEvalMany
-      - callback_tuning
-      - callback_rush_tuning
-      - mlr3tuning.backup
-      - mlr3tuning.early_stopping
-      - mlr3tuning.measures
+      - starts_with("Callback")
+      - starts_with("Context")
+      - starts_with("callback")
+      - starts_with("mlr3tuning.")
   - title: Converters
     contents:
-      - as_search_space
+      - starts_with("as_")
   - title: Package
     contents:
       - mlr3tuning-package
