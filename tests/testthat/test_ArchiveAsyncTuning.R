@@ -1,5 +1,5 @@
 test_that("ArchiveAsyncTuning access methods work", {
-skip_on_cran(); skip_if(TRUE)
+  skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
 
@@ -52,7 +52,7 @@ skip_on_cran(); skip_if(TRUE)
 })
 
 test_that("ArchiveAsyncTuning as.data.table function works", {
-skip_on_cran(); skip_if(TRUE)
+  skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
 
@@ -107,7 +107,7 @@ skip_on_cran(); skip_if(TRUE)
 })
 
 test_that("ArchiveAsyncTuning as.data.table function works without resample result", {
-skip_on_cran(); skip_if(TRUE)
+  skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
 
@@ -131,7 +131,7 @@ skip_on_cran(); skip_if(TRUE)
 })
 
 test_that("ArchiveAsyncTuning as.data.table function works with empty archive", {
-skip_on_cran(); skip_if(TRUE)
+  skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
 
@@ -151,7 +151,7 @@ skip_on_cran(); skip_if(TRUE)
 })
 
 test_that("ArchiveAsyncTuning as.data.table function works with new ids in x_domain", {
-skip_on_cran(); skip_if(TRUE)
+  skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
 
@@ -188,7 +188,7 @@ skip_on_cran(); skip_if(TRUE)
 })
 
 test_that("ArchiveAsyncTuning as.data.table function works with switched new ids in x_domain", {
-skip_on_cran(); skip_if(TRUE)
+  skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
 

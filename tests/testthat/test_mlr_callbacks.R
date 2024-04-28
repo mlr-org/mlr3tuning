@@ -38,7 +38,7 @@ test_that("backup callback works with standalone tuner", {
 
 # test_that("async hotstart callback works", {
 #   # options(bbotk_local = TRUE)
-# skip_on_cran(); skip_if(TRUE)
+#   skip_on_cran()
 #   skip_if_not_installed("rush")
 #   flush_redis()
 
@@ -74,7 +74,7 @@ test_that("backup callback works with standalone tuner", {
 # async measure callback ------------------------------------------------------
 
 test_that("async measures callback works", {
-skip_on_cran(); skip_if(TRUE)
+  skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
 
@@ -125,7 +125,7 @@ skip_on_cran(); skip_if(TRUE)
 # async default configuration callback -----------------------------------------
 
 test_that("default configuration callback works", {
-skip_on_cran(); skip_if(TRUE)
+  skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
 
@@ -147,7 +147,7 @@ skip_on_cran(); skip_if(TRUE)
 })
 
 test_that("default configuration callback works with logscale", {
-skip_on_cran(); skip_if(TRUE)
+  skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
 
@@ -169,7 +169,7 @@ skip_on_cran(); skip_if(TRUE)
 })
 
 test_that("default configuration callback errors with trafo", {
-skip_on_cran(); skip_if(TRUE)
+  skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
 
@@ -188,7 +188,7 @@ skip_on_cran(); skip_if(TRUE)
 })
 
 test_that("default configuration callback works without transformation and with logscale", {
-skip_on_cran(); skip_if(TRUE)
+  skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
 
@@ -216,7 +216,7 @@ skip_on_cran(); skip_if(TRUE)
 })
 
 test_that("default configuration callback errors without transformation and with logscale and trafo", {
-skip_on_cran(); skip_if(TRUE)
+  skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
 
@@ -240,7 +240,7 @@ skip_on_cran(); skip_if(TRUE)
 })
 
 test_that("default configuration callback errors with extra trafo", {
-skip_on_cran(); skip_if(TRUE)
+  skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
 
@@ -424,7 +424,7 @@ test_that("batch default configuration callback  errors with old parameter set a
 # async save logs callback -----------------------------------------------------
 
 test_that("async save logs callback works", {
-skip_on_cran(); skip_if(TRUE)
+  skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
   options(bbotk_local = TRUE)
