@@ -6,7 +6,7 @@
 * BREAKING CHANGE: The `CallbackTuning` class is `CallbackBatchTuning` now.
 * BREAKING CHANGE: The `ContextEval` class is `ContextBatchTuning` now.
 * refactor: Remove hotstarting from batch optimization due to low performance.
-* The option `evaluate_default` is a callback now.
+* refactor: The option `evaluate_default` is a callback now.
 
 # mlr3tuning 0.20.0
 
