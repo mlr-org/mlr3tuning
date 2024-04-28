@@ -220,37 +220,6 @@ load_callback_async_mlflow = function() {
   )
 }
 
-#' @title Hotstart Callback
-#'
-#' @include CallbackAsyncTuning.R CallbackBatchTuning.R
-#' @name mlr3tuning.async_hotstart
-#'
-#' @description
-#' This [CallbackAsyncTuning] enables hotstarting for the hyperparameter tuning of a learner.
-NULL
-
-load_callback_async_hotstart = function() {
-  callback_async_tuning("mlr3tuning.async_hotstart",
-    label = "Hotstart Callback",
-    man = "mlr3tuning::mlr3tuning.hotstart",
-
-    on_optimization_begin = function(callback, context) {
-      lg$debug("Starting hotstart callback")
-      if (all(c("hotstart_forward", "hotstart_backward") %nin% context$instance$objective$learner$properties)) {
-        stopf("Hotstart is not supported by %s", format(context$instance$objective$learner))
-      }
-
-      lg$debug("Creating hotstart stack")
-      context$instance$objective$learner$hotstart_stack = HotstartStack$new()
-    },
-
-    on_eval_after_resample = function(callback, context) {
-      lg$debug("Adding learner to hotstart stack")
-      context$objective_tuning$learner$hotstart_stack$add(context$resample_result$learners)
-    }
-  )
-}
-
 #' @title Default Configuration Callback
 #'
 #' @include CallbackAsyncTuning.R CallbackBatchTuning.R
