@@ -3,7 +3,7 @@ test_that("tune function works with one measure", {
   instance = tune(tuner = tnr("random_search", batch_size = 1), task = tsk("pima"), learner = learner, resampling = rsmp ("holdout"),
     measures = msr("classif.ce"), term_evals = 2)
 
-  expect_class(instance, "TuningInstanceSingleCrit")
+  expect_class(instance, "TuningInstanceBatchSingleCrit")
   expect_data_table(instance$archive$data, nrows = 2)
   expect_class(instance$terminator, "TerminatorEvals")
 })
@@ -13,7 +13,7 @@ test_that("tune function works with multiple measures", {
   instance = tune(tuner = tnr("random_search", batch_size = 1), task = tsk("pima"), learner = learner, resampling = rsmp ("holdout"),
     measures = msrs(c("classif.ce", "classif.acc")), term_evals = 2)
 
-  expect_class(instance, "TuningInstanceMultiCrit")
+  expect_class(instance, "TuningInstanceBatchMultiCrit")
   expect_data_table(instance$archive$data, nrows = 2)
   expect_class(instance$terminator, "TerminatorEvals")
 })
@@ -26,154 +26,44 @@ test_that("tune function works without measure", {
   expect_measure(instance$objective$measures[[1]])
 })
 
-test_that("tune interface is equal to TuningInstanceSingleCrit", {
+test_that("tune interface is equal to TuningInstanceBatchSingleCrit", {
   tune_args = formalArgs(tune)
-  tune_args = tune_args[tune_args != "tuner" & tune_args != "method" & tune_args != "..."]
+  tune_args = tune_args[tune_args %nin% c("tuner", "method", "...", "rush")]
   tune_args[tune_args == "measures"] = "measure"
 
-  instance_args = formalArgs(TuningInstanceSingleCrit$public_methods$initialize)
+  instance_args = formalArgs(TuningInstanceBatchSingleCrit$public_methods$initialize)
   instance_args = c(instance_args, "term_evals", "term_time")
 
   expect_set_equal(tune_args, instance_args)
 })
 
-test_that("tune interface is equal to TuningInstanceMultiCrit", {
+test_that("tune interface is equal to TuningInstanceBatchMultiCrit", {
   tune_args = formalArgs(tune)
-  tune_args = tune_args[tune_args != "tuner" & tune_args != "method" & tune_args != "..."]
+  tune_args = tune_args[tune_args %nin% c("tuner", "method", "...", "rush")]
 
-  instance_args = formalArgs(TuningInstanceMultiCrit$public_methods$initialize)
+  instance_args = formalArgs(TuningInstanceBatchMultiCrit$public_methods$initialize)
   instance_args = c(instance_args, "term_evals", "term_time")
 
   expect_set_equal(tune_args, instance_args)
 })
 
-# evaluate_default ------------------------------------------------------------------
+test_that("tune interface is equal to TuningInstanceAsyncSingleCrit", {
+  tune_args = formalArgs(tune)
+  tune_args = tune_args[tune_args %nin% c("tuner", "method", "...")]
+  tune_args[tune_args == "measures"] = "measure"
 
-test_that("evaluate_default works", {
-  learner = lrn("classif.rpart", cp = to_tune(1e-3, 1))
+  instance_args = formalArgs(TuningInstanceAsyncSingleCrit$public_methods$initialize)
+  instance_args = c(instance_args, "term_evals", "term_time")
 
-  instance = tune(
-    tuner = tnr("random_search"),
-    task = tsk("iris"),
-    learner = learner,
-    resampling = rsmp("cv", folds = 3),
-    measures = msr("classif.ce"),
-    term_evals = 2,
-    evaluate_default = TRUE
-  )
-
-  expect_equal(instance$archive$data$x_domain[[1]]$cp, 0.01)
-  expect_equal(instance$archive$data$cp[[1]], 0.01)
+  expect_set_equal(tune_args, instance_args)
 })
 
-test_that("evaluate_default works with logscale", {
-  learner = lrn("classif.rpart", cp = to_tune(1e-3, 1, logscale = TRUE))
+test_that("tune interface is equal to TuningInstanceAsyncMultiCrit", {
+  tune_args = formalArgs(tune)
+  tune_args = tune_args[tune_args %nin% c("tuner", "method", "...")]
 
-  instance = tune(
-    tuner = tnr("random_search"),
-    task = tsk("iris"),
-    learner = learner,
-    resampling = rsmp("cv", folds = 3),
-    measures = msr("classif.ce"),
-    term_evals = 2,
-    evaluate_default = TRUE
-  )
+  instance_args = formalArgs(TuningInstanceAsyncMultiCrit$public_methods$initialize)
+  instance_args = c(instance_args, "term_evals", "term_time")
 
-  expect_equal(instance$archive$data$x_domain[[1]]$cp, 0.01)
-  expect_equal(instance$archive$data$cp[[1]], log(0.01))
+  expect_set_equal(tune_args, instance_args)
 })
-
-test_that("evaluate_default errors with trafo", {
-  learner = lrn("classif.rpart", cp = to_tune(p_dbl(-10, 0, trafo = function(x) 10^x)))
-
-  expect_error(tune(
-    tuner = tnr("random_search"),
-    task = tsk("iris"),
-    learner = learner,
-    resampling = rsmp("cv", folds = 3),
-    measures = msr("classif.ce"),
-    term_evals = 2,
-    evaluate_default = TRUE
-  ), "Cannot evaluate default hyperparameter values")
-})
-
-test_that("evaluate_default works without transformation and with logscale", {
-  learner = lrn("classif.rpart",
-    cp = to_tune(1e-3, 1, logscale = TRUE),
-    minbucket = to_tune(1, 20))
-
-  instance = tune(
-    tuner = tnr("random_search"),
-    task = tsk("iris"),
-    learner = learner,
-    resampling = rsmp("cv", folds = 3),
-    measures = msr("classif.ce"),
-    term_evals = 2,
-    evaluate_default = TRUE
-  )
-
-  expect_equal(instance$archive$data$x_domain[[1]]$cp, 0.01)
-  expect_equal(instance$archive$data$cp[[1]], log(0.01))
-  expect_equal(instance$archive$data$x_domain[[1]]$minbucket, 7)
-  expect_equal(instance$archive$data$minbucket[[1]], 7)
-})
-
-test_that("evaluate_default errors without transformation and with logscale and trafo", {
-  learner = lrn("classif.rpart",
-    cp = to_tune(1e-3, 1, logscale = TRUE),
-    minbucket = to_tune(1, 20),
-    minsplit = to_tune(p_int(0, 3, trafo = function(x) 2^x)))
-
-  expect_error(tune(
-    tuner = tnr("random_search"),
-    task = tsk("iris"),
-    learner = learner,
-    resampling = rsmp("cv", folds = 3),
-    measures = msr("classif.ce"),
-    term_evals = 2,
-    evaluate_default = TRUE
-  ), "Cannot evaluate default hyperparameter values")
-})
-
-test_that("evaluate_default errors with extra trafo", {
-  learner = lrn("classif.rpart")
-  search_space = ps(
-    cp = p_dbl(1e-3, 1, logscale = TRUE),
-    minbucket = p_int(1, 20),
-    minsplit = p_int(1, 20),
-    .extra_trafo = function(x, param_set) {
-      x$minsplit = 3
-      x
-    }
-  )
-
-  expect_error(tune(
-    tuner = tnr("random_search"),
-    task = tsk("iris"),
-    learner = learner,
-    resampling = rsmp("cv", folds = 3),
-    measures = msr("classif.ce"),
-    search_space = search_space,
-    term_evals = 2,
-    evaluate_default = TRUE
-  ), "Cannot evaluate default hyperparameter values")
-})
-
-test_that("evaluate_default errors with old parameter set api", {
-  learner = lrn("classif.rpart")
-  search_space = ps(
-    cp = p_dbl(lower = -10, upper = 0, trafo = function(x) 10^x)
-  )
-
-  expect_error(tune(
-    tuner = tnr("random_search"),
-    task = tsk("iris"),
-    learner = learner,
-    resampling = rsmp("cv", folds = 3),
-    measures = msr("classif.ce"),
-    search_space = search_space,
-    term_evals = 2,
-    evaluate_default = TRUE
-  ), "Cannot evaluate default hyperparameter values")
-})
-

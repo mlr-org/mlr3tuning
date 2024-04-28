@@ -5,7 +5,7 @@
 \title{Class for Tuning Objective}
 \description{
 Stores the objective function that estimates the performance of hyperparameter configurations.
-This class is usually constructed internally by the \link{TuningInstanceSingleCrit} or \link{TuningInstanceMultiCrit}.
+This class is usually constructed internally by the \link{TuningInstanceBatchSingleCrit} or \link{TuningInstanceBatchMultiCrit}.
 }
 \section{Super class}{
 \code{\link[bbotk:Objective]{bbotk::Objective}} -> \code{ObjectiveTuning}
@@ -17,9 +17,6 @@ This class is usually constructed internally by the \link{TuningInstanceSingleCr
 
 \item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner}).}
 
-\item{\code{default_values}}{(named list).
-Default hyperparameter values of the learner.}
-
 \item{\code{resampling}}{(\link[mlr3:Resampling]{mlr3::Resampling}).}
 
 \item{\code{measures}}{(list of \link[mlr3:Measure]{mlr3::Measure}).}
@@ -28,15 +25,9 @@ Default hyperparameter values of the learner.}
 
 \item{\code{store_benchmark_result}}{(\code{logical(1)}).}
 
-\item{\code{archive}}{(\link{ArchiveTuning}).}
+\item{\code{callbacks}}{(List of \link{Callback}).}
 
-\item{\code{hotstart_stack}}{(\link[mlr3:HotstartStack]{mlr3::HotstartStack}).}
-
-\item{\code{allow_hotstart}}{(\code{logical(1)}).}
-
-\item{\code{keep_hotstart_stack}}{(\code{logical(1)}).}
-
-\item{\code{callbacks}}{(List of \link{CallbackTuning}s).}
+\item{\code{default_values}}{(named \code{list()}).}
 }
 \if{html}{\out{</div>}}
 }
@@ -71,11 +62,8 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   measures,
   store_benchmark_result = TRUE,
   store_models = FALSE,
-  check_values = TRUE,
-  allow_hotstart = FALSE,
-  keep_hotstart_stack = FALSE,
-  archive = NULL,
-  callbacks = list()
+  check_values = FALSE,
+  callbacks = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -113,20 +101,7 @@ If \code{TRUE}, hyperparameter values are checked before evaluation and
 performance scores after. If \code{FALSE} (default), values are unchecked but
 computational overhead is reduced.}
 
-\item{\code{allow_hotstart}}{(\code{logical(1)})\cr
-Allow to hotstart learners with previously fitted models. See also
-\link[mlr3:HotstartStack]{mlr3::HotstartStack}. The learner must support hotstarting. Sets
-\code{store_models = TRUE}.}
-
-\item{\code{keep_hotstart_stack}}{(\code{logical(1)})\cr
-If \code{TRUE}, \link[mlr3:HotstartStack]{mlr3::HotstartStack} is kept in \verb{$objective$hotstart_stack}
-after tuning.}
-
-\item{\code{archive}}{(\link{ArchiveTuning})\cr
-Reference to archive of \link{TuningInstanceSingleCrit} | \link{TuningInstanceMultiCrit}.
-If \code{NULL} (default), benchmark result and models cannot be stored.}
-
-\item{\code{callbacks}}{(list of \link{CallbackTuning})\cr
+\item{\code{callbacks}}{(list of \link{Callback})\cr
 List of callbacks.}
 }
 \if{html}{\out{</div>}}

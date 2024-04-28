@@ -15,7 +15,7 @@ test_tuner = function(key, ..., n_dim = 1L, term_evals = 2L, real_evals = term_e
     )
   }
   term = trm("evals", n_evals = term_evals)
-  inst = TuningInstanceSingleCrit$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), term, search_space)
+  inst = TuningInstanceBatchSingleCrit$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), term, search_space)
   tuner = tnr(key, ...)
   expect_tuner(tuner)
   expect_man_exists(tuner$man)
@@ -43,7 +43,7 @@ test_tuner = function(key, ..., n_dim = 1L, term_evals = 2L, real_evals = term_e
 test_tuner_dependencies = function(key, ..., term_evals = 2L) {
   term = trm("evals", n_evals = term_evals)
   ll = LearnerRegrDepParams$new()
-  inst = TuningInstanceSingleCrit$new(tsk("boston_housing"), ll, rsmp("holdout"), msr("regr.mse"), term, ll$param_set)
+  inst = TuningInstanceBatchSingleCrit$new(tsk("boston_housing"), ll, rsmp("holdout"), msr("regr.mse"), term, ll$param_set)
   tuner = tnr(key, ...)
   expect_tuner(tuner)
   tuner$optimize(inst)

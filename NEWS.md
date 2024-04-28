@@ -1,5 +1,13 @@
 # mlr3tuning (development version)
 
+* feat: Introduce asynchronous optimization with the `TunerAsync` and `TuningInstanceAsync*` classes.
+* BREAKING CHANGE: The `Tuner` class is `TunerBatch` now.
+* BREAKING CHANGE: THe `TuningInstanceSingleCrit` and `TuningInstanceMultiCrit` classes are `TuningInstanceBatchSingleCrit` and `TuningInstanceBatchMultiCrit` now.
+* BREAKING CHANGE: The `CallbackTuning` class is `CallbackBatchTuning` now.
+* BREAKING CHANGE: The `ContextEval` class is `ContextBatchTuning` now.
+* refactor: Remove hotstarting from batch optimization due to low performance.
+* refactor: The option `evaluate_default` is a callback now.
+
 # mlr3tuning 0.20.0
 
 * compatibility: Work with new paradox version 1.0.0
@@ -52,7 +60,7 @@
 
 * feat: Add new callback that enables early stopping while tuning to `mlr_callbacks`.
 * feat: Add new callback that backups the benchmark result to disk after each batch.
-* feat: Create custom callbacks with the `callback_tuning()` function.
+* feat: Create custom callbacks with the `callback_batch_tuning()` function.
 
 # mlr3tuning 0.15.0
 

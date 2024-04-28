@@ -29,49 +29,70 @@ Depends:
     paradox (>= 0.10.0),
     R (>= 3.1.0)
 Imports:
-    bbotk (>= 0.7.3),
+    bbotk (>= 0.8.0.9000),
     checkmate (>= 2.0.0),
     data.table,
     lgr,
     mlr3misc (>= 0.13.0),
+    rush,
     R6
 Suggests:
     adagio,
+    future,
     GenSA,
     irace,
     knitr,
+    mlflow,
     mlr3learners (>= 0.5.5),
     mlr3pipelines,
     nloptr,
+    redux,
     rmarkdown,
     rpart,
     testthat (>= 3.0.0),
     xgboost
+Remotes:
+    mlr-org/bbotk,
+    mlr-org/rush
 Config/testthat/edition: 3
-Config/testthat/parallel: true
+Config/testthat/parallel: false
 Encoding: UTF-8
 NeedsCompilation: no
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
 Collate:
-    'ArchiveTuning.R'
+    'ArchiveAsyncTuning.R'
+    'ArchiveBatchTuning.R'
     'AutoTuner.R'
-    'CallbackTuning.R'
-    'ContextEval.R'
+    'CallbackAsyncTuning.R'
+    'CallbackBatchTuning.R'
+    'ContextAsyncTuning.R'
+    'ContextBatchTuning.R'
     'ObjectiveTuning.R'
+    'ObjectiveTuningAsync.R'
+    'ObjectiveTuningBatch.R'
     'mlr_tuners.R'
     'Tuner.R'
-    'TunerCmaes.R'
-    'TunerDesignPoints.R'
-    'TunerFromOptimizer.R'
-    'TunerGenSA.R'
-    'TunerGridSearch.R'
-    'TunerIrace.R'
-    'TunerNLoptr.R'
-    'TunerRandomSearch.R'
-    'TuningInstanceSingleCrit.R'
-    'TuningInstanceMulticrit.R'
+    'TunerAsync.R'
+    'TunerAsyncDesignPoints.R'
+    'TunerAsyncFromOptimizerAsync.R'
+    'TunerAsyncGridSearch.R'
+    'TunerAsyncRandomSearch.R'
+    'TunerBatch.R'
+    'TunerBatchCmaes.R'
+    'TunerBatchDesignPoints.R'
+    'TunerBatchFromBatchOptimizer.R'
+    'TunerBatchGenSA.R'
+    'TunerBatchGridSearch.R'
+    'TunerBatchIrace.R'
+    'TunerBatchNLoptr.R'
+    'TunerBatchRandomSearch.R'
+    'TuningInstanceBatchSingleCrit.R'
+    'TuningInstanceAsyncMulticrit.R'
+    'TuningInstanceAsyncSingleCrit.R'
+    'TuningInstanceBatchMulticrit.R'
     'as_search_space.R'
+    'as_tuner.R'
     'assertions.R'
     'auto_tuner.R'
     'bibentries.R'

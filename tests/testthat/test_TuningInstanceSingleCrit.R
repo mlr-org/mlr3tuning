@@ -1,4 +1,4 @@
-test_that("TuningInstanceSingleCrit", {
+test_that("TuningInstanceBatchSingleCrit", {
   inst = TEST_MAKE_INST1(values = list(maxdepth = 10), folds = 2L, measure = msr("dummy.cp.classif", fun = function(pv) pv$cp), n_dim = 2)
   # test empty inst
   expect_data_table(inst$archive$data, nrows = 0)
@@ -95,7 +95,7 @@ test_that("tuning with custom resampling", {
   terminator = trm("evals", n_evals = 10)
   tuner = tnr("random_search")
 
-  inst = TuningInstanceSingleCrit$new(task, learner, resampling, measure, terminator, tune_ps)
+  inst = TuningInstanceBatchSingleCrit$new(task, learner, resampling, measure, terminator, tune_ps)
   tuner$optimize(inst)
   rr = as.data.table(inst$archive$benchmark_result)$resampling
   expect_list(rr, len = 20)
@@ -124,9 +124,9 @@ test_that("non-scalar hyperpars (#201)", {
     }
   )
 
-  inst = TuningInstanceSingleCrit$new(tsk("iris"), learner, rsmp("holdout"),
+  inst = TuningInstanceBatchSingleCrit$new(tsk("iris"), learner, rsmp("holdout"),
     msr("classif.ce"), trm("evals", n_evals = 1), search_space,
-    check_values = TRUE)
+    check_values = FALSE)
 
   tnr("random_search")$optimize(inst)
   expect_data_table(inst$archive$data, nrows = 1)
@@ -168,12 +168,12 @@ test_that("check_values flag with parameter set dependencies", {
   terminator = trm("evals", n_evals = 20)
   tuner = tnr("random_search")
 
-  inst = TuningInstanceSingleCrit$new(tsk("boston_housing"), learner,
-    rsmp("holdout"), msr("regr.mse"), terminator, search_space)
+  inst = TuningInstanceBatchSingleCrit$new(tsk("boston_housing"), learner,
+    rsmp("holdout"), msr("regr.mse"), terminator, search_space, check_values = FALSE)
   tuner$optimize(inst)
   expect_named(inst$result_learner_param_vals, c("xx", "cp", "yy"))
 
-  inst = TuningInstanceSingleCrit$new(tsk("boston_housing"), learner,
+  inst = TuningInstanceBatchSingleCrit$new(tsk("boston_housing"), learner,
     rsmp("holdout"), msr("regr.mse"), terminator, search_space,
     check_values = TRUE)
   expect_error(tuner$optimize(inst),
@@ -184,7 +184,7 @@ test_that("search space from TuneToken works", {
   learner = lrn("classif.rpart")
   learner$param_set$values$cp = to_tune(0.1, 0.3)
 
-  instance = TuningInstanceSingleCrit$new(task = tsk("iris"), learner = learner,
+  instance = TuningInstanceBatchSingleCrit$new(task = tsk("iris"), learner = learner,
     resampling = rsmp("holdout"), measure = msr("classif.ce"),
     terminator = trm("evals", n_evals = 1))
 
@@ -195,13 +195,13 @@ test_that("search space from TuneToken works", {
     cp = p_dbl(lower = 0.1, upper = 0.3)
   )
 
-  expect_error(TuningInstanceSingleCrit$new(task = tsk("iris"), learner = learner,
+  expect_error(TuningInstanceBatchSingleCrit$new(task = tsk("iris"), learner = learner,
     resampling = rsmp("holdout"), measure = msr("classif.ce"),
     search_space = ps, terminator = trm("evals", n_evals = 1)),
     regexp = "If the values of the ParamSet of the Learner contain TuneTokens you cannot supply a search_space.",
     fixed = TRUE)
 
-  instance = TuningInstanceSingleCrit$new(task = tsk("iris"),
+  instance = TuningInstanceBatchSingleCrit$new(task = tsk("iris"),
     learner = lrn("classif.rpart"), resampling = rsmp("holdout"),
     measure = msr("classif.ce"), search_space = ps,
     terminator = trm("evals", n_evals = 1))
@@ -214,7 +214,7 @@ test_that("TuneToken and result_learner_param_vals works", {
   learner = lrn("classif.rpart", xval = 0)
   learner$param_set$values$cp = to_tune(0.1, 0.3)
 
-  instance = TuningInstanceSingleCrit$new(task = tsk("iris"), learner = learner,
+  instance = TuningInstanceBatchSingleCrit$new(task = tsk("iris"), learner = learner,
     resampling = rsmp("holdout"), measure = msr("classif.ce"),
     terminator = trm("evals", n_evals = 1))
 
@@ -227,7 +227,7 @@ test_that("TuneToken and result_learner_param_vals works", {
 })
 
 
-test_that("TuningInstanceSingleCrit and empty search space works", {
+test_that("TuningInstanceBatchSingleCrit and empty search space works", {
 
   # xval constant
   instance = tune(
@@ -269,7 +269,7 @@ test_that("assign_result works with one hyperparameter", {
   measure = msr("classif.ce")
   terminator = trm("evals", n_evals = 10)
 
-  instance = TuningInstanceSingleCrit$new(task, learner, resampling, measure, terminator)
+  instance = TuningInstanceBatchSingleCrit$new(task, learner, resampling, measure, terminator)
 
   xdt = data.table(cp = 0.1)
   y = c(classif.ce = 0.8)
@@ -290,7 +290,7 @@ test_that("assign_result works with two hyperparameters", {
   measure = msr("classif.ce")
   terminator = trm("evals", n_evals = 10)
 
-  instance = TuningInstanceSingleCrit$new(task, learner, resampling, measure, terminator)
+  instance = TuningInstanceBatchSingleCrit$new(task, learner, resampling, measure, terminator)
 
   xdt = data.table(cp = 0.1, minbucket = 1)
   y = c(classif.ce = 0.8)
@@ -311,7 +311,7 @@ test_that("assign_result works with two hyperparameters and one constant", {
   measure = msr("classif.ce")
   terminator = trm("evals", n_evals = 10)
 
-  instance = TuningInstanceSingleCrit$new(task, learner, resampling, measure, terminator)
+  instance = TuningInstanceBatchSingleCrit$new(task, learner, resampling, measure, terminator)
 
   xdt = data.table(cp = 0.1, minbucket = 1)
   y = c(classif.ce = 0.8)
@@ -332,7 +332,7 @@ test_that("assign_result works with no hyperparameters and one constant", {
   measure = msr("classif.ce")
   terminator = trm("evals", n_evals = 10)
 
-  instance = TuningInstanceSingleCrit$new(task, learner, resampling, measure, terminator)
+  instance = TuningInstanceBatchSingleCrit$new(task, learner, resampling, measure, terminator)
 
   xdt = data.table()
   y = c(classif.ce = 0.8)
@@ -352,7 +352,7 @@ test_that("assign_result works with no hyperparameters and two constant", {
   measure = msr("classif.ce")
   terminator = trm("evals", n_evals = 10)
 
-  instance = TuningInstanceSingleCrit$new(task, learner, resampling, measure, terminator)
+  instance = TuningInstanceBatchSingleCrit$new(task, learner, resampling, measure, terminator)
 
   xdt = data.table()
   y = c(classif.ce = 0.8)
@@ -371,7 +371,7 @@ test_that("assign_result works with one hyperparameters and one constant", {
   measure = msr("classif.ce")
   terminator = trm("evals", n_evals = 10)
 
-  instance = TuningInstanceSingleCrit$new(task, learner, resampling, measure, terminator)
+  instance = TuningInstanceBatchSingleCrit$new(task, learner, resampling, measure, terminator)
 
   xdt = data.table(cp = 0.1)
   y = c(classif.ce = 0.8)
@@ -392,7 +392,7 @@ test_that("assign_result works with no hyperparameter and constant", {
   measure = msr("classif.ce")
   terminator = trm("evals", n_evals = 10)
 
-  instance = TuningInstanceSingleCrit$new(task, learner, resampling, measure, terminator)
+  instance = TuningInstanceBatchSingleCrit$new(task, learner, resampling, measure, terminator)
 
   xdt = data.table()
   y = c(classif.ce = 0.8)

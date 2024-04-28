@@ -24,7 +24,7 @@
 #'     Includes fixed and proposed hyperparameter values.
 #' * `x_domain` (`list()`)\cr
 #'     List of transformed hyperparameter values.
-#' * `tuning_instance` ([TuningInstanceSingleCrit] | [TuningInstanceMultiCrit])\cr
+#' * `tuning_instance` ([TuningInstanceBatchSingleCrit] | [TuningInstanceBatchMultiCrit])\cr
 #'     Optionally, tuning instances.
 #' * `task_id` (`character(1)`).
 #' * `learner_id` (`character(1)`).

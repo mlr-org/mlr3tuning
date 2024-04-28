@@ -129,7 +129,7 @@ instance = ti(
 instance
 ```
 
-    ## <TuningInstanceSingleCrit>
+    ## <TuningInstanceBatchSingleCrit>
     ## * State:  Not optimized
     ## * Objective: <ObjectiveTuning:classif.svm_on_sonar>
     ## * Search Space:
@@ -175,7 +175,7 @@ as.data.table(instance$archive)[, .(cost, gamma, classif.ce, batch_nr, resample_
     ##  3:  11.512925   5.756463  0.4665977        3 <ResampleResult>
     ##  4:   5.756463  11.512925  0.4665977        4 <ResampleResult>
     ##  5: -11.512925 -11.512925  0.4665977        5 <ResampleResult>
-    ## ---                                                           
+    ## ---
     ## 21:  -5.756463  -5.756463  0.4665977       21 <ResampleResult>
     ## 22:  11.512925  11.512925  0.4665977       22 <ResampleResult>
     ## 23: -11.512925  11.512925  0.4665977       23 <ResampleResult>
