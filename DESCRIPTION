@@ -25,7 +25,7 @@ License: LGPL-3
 URL: https://mlr3tuning.mlr-org.com, https://github.com/mlr-org/mlr3tuning
 BugReports: https://github.com/mlr-org/mlr3tuning/issues
 Depends:
-    mlr3 (>= 0.17.0),
+    mlr3 (>= 0.19.0),
     paradox (>= 0.10.0),
     R (>= 3.1.0)
 Imports:
@@ -33,7 +33,7 @@ Imports:
     checkmate (>= 2.0.0),
     data.table,
     lgr,
-    mlr3misc (>= 0.13.0),
+    mlr3misc (>= 0.15.0.9000),
     rush,
     R6
 Suggests:
@@ -44,7 +44,7 @@ Suggests:
     knitr,
     mlflow,
     mlr3learners (>= 0.5.5),
-    mlr3pipelines,
+    mlr3pipelines (>= 0.5.2-9000),
     nloptr,
     redux,
     rmarkdown,
@@ -53,6 +53,8 @@ Suggests:
     xgboost
 Remotes:
     mlr-org/bbotk,
+    mlr-org/mlr3misc,
+    mlr-org/mlr3pipelines@bundle,
     mlr-org/rush
 Config/testthat/edition: 3
 Config/testthat/parallel: false

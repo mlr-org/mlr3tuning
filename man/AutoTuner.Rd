@@ -139,11 +139,11 @@ Archive of the \link{TuningInstanceBatchSingleCrit}.}
 \item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner})\cr
 Trained learner}
 
-\item{\code{tuning_instance}}{(\link{TuningInstanceBatchSingleCrit})\cr
+\item{\code{tuning_instance}}{(\link{TuningInstanceAsyncSingleCrit} | \link{TuningInstanceBatchSingleCrit})\cr
 Internally created tuning instance with all intermediate results.}
 
 \item{\code{tuning_result}}{(\link[data.table:data.table]{data.table::data.table})\cr
-Short-cut to \code{result} from \link{TuningInstanceBatchSingleCrit}.}
+Short-cut to \code{result} from  tuning instance.}
 
 \item{\code{predict_type}}{(\code{character(1)})\cr
 Stores the currently active predict type, e.g. \code{"response"}.
@@ -167,6 +167,9 @@ Hash (unique identifier) for this partial object, excluding some components whic
 \item \href{#method-AutoTuner-oob_error}{\code{AutoTuner$oob_error()}}
 \item \href{#method-AutoTuner-loglik}{\code{AutoTuner$loglik()}}
 \item \href{#method-AutoTuner-print}{\code{AutoTuner$print()}}
+\item \href{#method-AutoTuner-marshal}{\code{AutoTuner$marshal()}}
+\item \href{#method-AutoTuner-unmarshal}{\code{AutoTuner$unmarshal()}}
+\item \href{#method-AutoTuner-marshaled}{\code{AutoTuner$marshaled()}}
 \item \href{#method-AutoTuner-clone}{\code{AutoTuner$clone()}}
 }
 }
@@ -348,6 +351,58 @@ Printer.
 }
 \if{html}{\out{</div>}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-AutoTuner-marshal"></a>}}
+\if{latex}{\out{\hypertarget{method-AutoTuner-marshal}{}}}
+\subsection{Method \code{marshal()}}{
+Marshal the learner.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AutoTuner$marshal(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{(any)\cr
+Additional parameters.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+self
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-AutoTuner-unmarshal"></a>}}
+\if{latex}{\out{\hypertarget{method-AutoTuner-unmarshal}{}}}
+\subsection{Method \code{unmarshal()}}{
+Unmarshal the learner.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AutoTuner$unmarshal(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{(any)\cr
+Additional parameters.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+self
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-AutoTuner-marshaled"></a>}}
+\if{latex}{\out{\hypertarget{method-AutoTuner-marshaled}{}}}
+\subsection{Method \code{marshaled()}}{
+Whether the learner is marshaled.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{AutoTuner$marshaled()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AutoTuner-clone"></a>}}
