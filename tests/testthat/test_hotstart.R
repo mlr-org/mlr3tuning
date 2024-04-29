@@ -144,3 +144,4 @@ test_that("hotstarting works with marshalable learner", {
   expect_equal(unique(instance$archive$data$iter), c(1, 25, 50, 75, 100))
   expect_null(instance$archive$data$resample_result)
 })
+

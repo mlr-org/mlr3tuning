@@ -20,7 +20,7 @@ TEST_MAKE_INST1 = function(values = NULL, folds = 2L,
   }
   rs = rsmp("cv", folds = folds)
   term = trm("evals", n_evals = term_evals)
-  inst = TuningInstanceSingleCrit$new(tsk("iris"), lrn, rs, measure, term, ps, ...)
+  inst = TuningInstanceBatchSingleCrit$new(tsk("iris"), lrn, rs, measure, term, ps, ...)
   return(inst)
 }
 
@@ -34,7 +34,7 @@ TEST_MAKE_INST1_2D = function(values = NULL, folds = 2L,
   }
   rs = rsmp("cv", folds = folds)
   term = trm("evals", n_evals = term_evals)
-  inst = TuningInstanceMultiCrit$new(tsk("iris"), lrn, rs, measures, term, ps,
+  inst = TuningInstanceBatchMultiCrit$new(tsk("iris"), lrn, rs, measures, term, ps,
     ...)
   return(inst)
 }
@@ -54,7 +54,7 @@ TEST_MAKE_INST2 = function(measure = msr("dummy.cp.regr"), term_evals = 5L) {
   ll = LearnerRegrDepParams$new()
   rs = rsmp("holdout")
   term = trm("evals", n_evals = term_evals)
-  inst = TuningInstanceSingleCrit$new(tsk("boston_housing"), ll, rs, measure, term, ps)
+  inst = TuningInstanceBatchSingleCrit$new(tsk("boston_housing"), ll, rs, measure, term, ps)
   return(inst)
 }
 
@@ -138,4 +138,17 @@ MAKE_GL = function() {
   g$add_pipeop(op_lrn)
   g$add_edge("subsample", "classif.rpart")
   GraphLearner$new(g)
+}
+
+flush_redis = function() {
+  config = redux::redis_config()
+  r = redux::hiredis(config)
+  r$FLUSHDB()
+}
+
+expect_rush_reset = function(rush, type = "kill") {
+  processes = rush$processes
+  rush$reset(type = type)
+  expect_list(rush$connector$command(c("KEYS", "*")), len = 0)
+  walk(processes, function(p) p$kill())
 }

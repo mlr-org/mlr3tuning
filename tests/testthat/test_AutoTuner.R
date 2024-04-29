@@ -48,7 +48,7 @@ test_that("AutoTuner / resample", {
     assert_r6(ll, "AutoTuner")
     expect_equal(sortnames(ll$learner$param_set$values), list(xval = 0, cp = 0.2))
     inst = ll$tuning_instance
-    assert_r6(inst, "TuningInstanceSingleCrit")
+    assert_r6(inst, "TuningInstanceBatchSingleCrit")
     expect_data_table(inst$archive$data, nrows = inner_evals)
     expect_numeric(inst$result_y, len = 1L)
   })
@@ -88,7 +88,7 @@ test_that("AT training does not change learner in instance args", {
   # https://github.com/mlr-org/mlr3/issues/428
   task = tsk("iris")
   ps = TEST_MAKE_PS1()
-  at = AutoTuner$new(TunerRandomSearch$new(), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), trm("evals", n_evals = 3), ps)
+  at = AutoTuner$new(TunerBatchRandomSearch$new(), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), trm("evals", n_evals = 3), ps)
   expect_equal(at$instance_args$learner$param_set$values, list(xval = 0))
   at$train(task)
   expect_equal(at$instance_args$learner$param_set$values, list(xval = 0))
@@ -184,7 +184,7 @@ test_that("store_tuning_instance, store_benchmark_result and store_models flags 
     store_models = TRUE)
   at$train(task)
 
-  assert_r6(at$tuning_instance, "TuningInstanceSingleCrit")
+  assert_r6(at$tuning_instance, "TuningInstanceBatchSingleCrit")
   assert_benchmark_result(at$tuning_instance$archive$benchmark_result)
   assert_class(at$tuning_instance$archive$benchmark_result$resample_result(1)$learners[[1]]$model, "rpart")
 
@@ -193,7 +193,7 @@ test_that("store_tuning_instance, store_benchmark_result and store_models flags 
     store_models = FALSE)
   at$train(task)
 
-  assert_r6(at$tuning_instance, "TuningInstanceSingleCrit")
+  assert_r6(at$tuning_instance, "TuningInstanceBatchSingleCrit")
   assert_benchmark_result(at$tuning_instance$archive$benchmark_result)
   assert_null(at$tuning_instance$archive$benchmark_result$resample_result(1)$learners[[1]]$model)
 
@@ -202,7 +202,7 @@ test_that("store_tuning_instance, store_benchmark_result and store_models flags 
     store_models = FALSE)
   at$train(task)
 
-  assert_r6(at$tuning_instance, "TuningInstanceSingleCrit")
+  assert_r6(at$tuning_instance, "TuningInstanceBatchSingleCrit")
   expect_equal(at$tuning_instance$archive$benchmark_result$n_resample_results, 0)
 
   at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te,
@@ -217,7 +217,7 @@ test_that("store_tuning_instance, store_benchmark_result and store_models flags 
     store_models = TRUE)
   at$train(task)
 
-  assert_r6(at$tuning_instance, "TuningInstanceSingleCrit")
+  assert_r6(at$tuning_instance, "TuningInstanceBatchSingleCrit")
   assert_benchmark_result(at$tuning_instance$archive$benchmark_result)
   assert_class(at$tuning_instance$archive$benchmark_result$resample_result(1)$learners[[1]]$model, "rpart")
 
@@ -226,7 +226,7 @@ test_that("store_tuning_instance, store_benchmark_result and store_models flags 
     store_models = FALSE)
   at$train(task)
 
-  assert_r6(at$tuning_instance, "TuningInstanceSingleCrit")
+  assert_r6(at$tuning_instance, "TuningInstanceBatchSingleCrit")
   assert_benchmark_result(at$tuning_instance$archive$benchmark_result)
   assert_null(at$tuning_instance$archive$benchmark_result$resample_result(1)$learners[[1]]$model)
 })
@@ -455,6 +455,7 @@ test_that("AutoTuner works with instantiated resampling", {
     term_evals = 4)
 
   at$train(task)
+  expect_data_table(at$tuning_instance$result, nrows = 1)
 })
 
 test_that("AutoTuner errors when train set is not a subset of task ids", {
@@ -565,6 +566,8 @@ test_that("AutoTuner errors when second test set is not a subset of task ids", {
   expect_error(resample(task, at, resampling_outer, store_models = TRUE), "Test set 2")
 })
 
+# Marshal ----------------------------------------------------------------------
+
 test_that("marshalable learner", {
   task = tsk("iris")
   at = auto_tuner(
@@ -606,4 +609,27 @@ test_that("marshal", {
   expect_false(model2$learner$marshaled)
   expect_equal(class(model), class(model2))
   expect_class(model1, "marshaled")
+})
+
+# Async ------------------------------------------------------------------------
+
+test_that("AutoTuner works with async tuner", {
+  skip_on_cran()
+  skip_if_not_installed("rush")
+  flush_redis()
+
+  rush_plan(n_workers = 2)
+  at = auto_tuner(
+    tuner = tnr("async_random_search"),
+    learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
+    resampling = rsmp("holdout"),
+    measure = msr("classif.ce"),
+    term_evals = 4
+  )
+
+  at$train(tsk("pima"))
+
+  expect_data_table(at$tuning_instance$result, nrows = 1)
+  expect_data_table(at$tuning_instance$archive$data, min.rows = 4)
+  expect_rush_reset(at$tuning_instance$rush, type = "terminate")
 })

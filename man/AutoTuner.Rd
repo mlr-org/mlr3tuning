@@ -123,7 +123,7 @@ rr$aggregate()
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
 \item{\code{instance_args}}{(\code{list()})\cr
-All arguments from construction to create the \link{TuningInstanceSingleCrit}.}
+All arguments from construction to create the \link{TuningInstanceBatchSingleCrit}.}
 
 \item{\code{tuner}}{(\link{Tuner})\cr
 Optimization algorithm.}
@@ -133,17 +133,17 @@ Optimization algorithm.}
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
-\item{\code{archive}}{\link{ArchiveTuning}\cr
-Archive of the \link{TuningInstanceSingleCrit}.}
+\item{\code{archive}}{\link{Archive}\cr
+Archive of the \link{TuningInstanceBatchSingleCrit}.}
 
 \item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner})\cr
 Trained learner}
 
-\item{\code{tuning_instance}}{(\link{TuningInstanceSingleCrit})\cr
+\item{\code{tuning_instance}}{(\link{TuningInstanceBatchSingleCrit})\cr
 Internally created tuning instance with all intermediate results.}
 
 \item{\code{tuning_result}}{(\link[data.table:data.table]{data.table::data.table})\cr
-Short-cut to \code{result} from \link{TuningInstanceSingleCrit}.}
+Short-cut to \code{result} from \link{TuningInstanceBatchSingleCrit}.}
 
 \item{\code{predict_type}}{(\code{character(1)})\cr
 Stores the currently active predict type, e.g. \code{"response"}.
@@ -202,10 +202,8 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   store_benchmark_result = TRUE,
   store_models = FALSE,
   check_values = FALSE,
-  allow_hotstart = FALSE,
-  keep_hotstart_stack = FALSE,
-  evaluate_default = FALSE,
-  callbacks = list()
+  callbacks = NULL,
+  rush = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -237,7 +235,7 @@ constructed from the \link{TuneToken} of the learner's parameter set
 (learner$param_set).}
 
 \item{\code{store_tuning_instance}}{(\code{logical(1)})\cr
-If \code{TRUE} (default), stores the internally created \link{TuningInstanceSingleCrit} with all intermediate results in slot \verb{$tuning_instance}.}
+If \code{TRUE} (default), stores the internally created \link{TuningInstanceBatchSingleCrit} with all intermediate results in slot \verb{$tuning_instance}.}
 
 \item{\code{store_benchmark_result}}{(\code{logical(1)})\cr
 If \code{TRUE} (default), store resample result of evaluated hyperparameter
@@ -254,21 +252,11 @@ If \code{TRUE}, hyperparameter values are checked before evaluation and
 performance scores after. If \code{FALSE} (default), values are unchecked but
 computational overhead is reduced.}
 
-\item{\code{allow_hotstart}}{(\code{logical(1)})\cr
-Allow to hotstart learners with previously fitted models. See also
-\link[mlr3:HotstartStack]{mlr3::HotstartStack}. The learner must support hotstarting. Sets
-\code{store_models = TRUE}.}
-
-\item{\code{keep_hotstart_stack}}{(\code{logical(1)})\cr
-If \code{TRUE}, \link[mlr3:HotstartStack]{mlr3::HotstartStack} is kept in \verb{$objective$hotstart_stack}
-after tuning.}
-
-\item{\code{evaluate_default}}{(\code{logical(1)})\cr
-If \code{TRUE}, learner is evaluated with hyperparameters set to their default
-values at the start of the optimization.}
-
-\item{\code{callbacks}}{(list of \link{CallbackTuning})\cr
+\item{\code{callbacks}}{(list of \link{Callback})\cr
 List of callbacks.}
+
+\item{\code{rush}}{(\code{Rush})\cr
+If a rush instance is supplied, the tuning runs without batches.}
 }
 \if{html}{\out{</div>}}
 }

@@ -18,7 +18,7 @@
 #' During `$predict()` the `AutoTuner` just calls the predict method of the wrapped (inner) learner.
 #' A set timeout is disabled while fitting the final model.
 #'
-#' @inheritSection TuningInstanceSingleCrit Default Measures
+#' @inheritSection TuningInstanceBatchSingleCrit Default Measures
 #'
 #' @section Resources:
 #' There are several sections about hyperparameter optimization in the [mlr3book](https://mlr3book.mlr-org.com).
@@ -45,10 +45,8 @@
 #' @template param_store_benchmark_result
 #' @template param_store_models
 #' @template param_check_values
-#' @template param_allow_hotstart
-#' @template param_keep_hotstart_stack
-#' @template param_evaluate_default
 #' @template param_callbacks
+#' @template param_rush
 #'
 #' @export
 #' @examples
@@ -115,7 +113,7 @@ AutoTuner = R6Class("AutoTuner",
   public = list(
 
     #' @field instance_args (`list()`)\cr
-    #' All arguments from construction to create the [TuningInstanceSingleCrit].
+    #' All arguments from construction to create the [TuningInstanceBatchSingleCrit].
     instance_args = NULL,
 
     #' @field tuner ([Tuner])\cr
@@ -127,7 +125,20 @@ AutoTuner = R6Class("AutoTuner",
     #'
     #' @param tuner ([Tuner])\cr
     #'   Optimization algorithm.
-    initialize = function(tuner, learner, resampling, measure = NULL, terminator, search_space = NULL, store_tuning_instance = TRUE, store_benchmark_result = TRUE, store_models = FALSE, check_values = FALSE, allow_hotstart = FALSE, keep_hotstart_stack = FALSE, evaluate_default = FALSE, callbacks = list()) {
+    initialize = function(
+      tuner,
+      learner,
+      resampling,
+      measure = NULL,
+      terminator,
+      search_space = NULL,
+      store_tuning_instance = TRUE,
+      store_benchmark_result = TRUE,
+      store_models = FALSE,
+      check_values = FALSE,
+      callbacks = NULL,
+      rush = NULL
+      ) {
       learner = assert_learner(as_learner(learner, clone = TRUE))
 
       if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token")) > 0) {
@@ -135,7 +146,7 @@ AutoTuner = R6Class("AutoTuner",
       }
 
       ia = list()
-      self$tuner = assert_tuner(tuner)$clone()
+      self$tuner = assert_tuner(tuner)
       ia$learner = learner
       ia$resampling = assert_resampling(resampling)$clone()
       if (!is.null(measure)) ia$measure = assert_measure(as_measure(measure), learner = learner)
@@ -147,9 +158,6 @@ AutoTuner = R6Class("AutoTuner",
       private$.store_tuning_instance = assert_flag(store_tuning_instance) || ia$store_benchmark_result
 
       ia$check_values = assert_flag(check_values)
-      ia$allow_hotstart = assert_flag(allow_hotstart)
-      ia$keep_hotstart_stack = assert_flag(keep_hotstart_stack)
-      ia$evaluate_default = assert_flag(evaluate_default)
       ia$callbacks = assert_callbacks(as_callbacks(callbacks))
       self$instance_args = ia
 
@@ -275,8 +283,8 @@ AutoTuner = R6Class("AutoTuner",
 
   active = list(
 
-    #' @field archive [ArchiveTuning]\cr
-    #' Archive of the [TuningInstanceSingleCrit].
+    #' @field archive [Archive]\cr
+    #' Archive of the [TuningInstanceBatchSingleCrit].
     archive = function() self$tuning_instance$archive,
 
     #' @field learner ([mlr3::Learner])\cr
@@ -289,12 +297,13 @@ AutoTuner = R6Class("AutoTuner",
         self$model$learner
       }
     },
-    #' @field tuning_instance ([TuningInstanceSingleCrit])\cr
+
+    #' @field tuning_instance ([TuningInstanceAsyncSingleCrit] | [TuningInstanceBatchSingleCrit])\cr
     #' Internally created tuning instance with all intermediate results.
     tuning_instance = function() self$model$tuning_instance,
 
     #' @field tuning_result ([data.table::data.table])\cr
-    #' Short-cut to `result` from [TuningInstanceSingleCrit].
+    #' Short-cut to `result` from  tuning instance.
     tuning_result = function() self$tuning_instance$result,
 
     #' @field predict_type (`character(1)`)\cr
@@ -352,7 +361,8 @@ AutoTuner = R6Class("AutoTuner",
         })
       }
 
-      instance = do.call(TuningInstanceSingleCrit$new, ia)
+      TuningInstance = if (inherits(self$tuner, "TunerBatch")) TuningInstanceBatchSingleCrit else TuningInstanceAsyncSingleCrit
+      instance = do.call(TuningInstance$new, ia)
       self$tuner$optimize(instance)
 
       # get learner, set params to optimal, then train we REALLY need to clone

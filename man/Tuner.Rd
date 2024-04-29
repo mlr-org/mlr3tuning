@@ -2,39 +2,13 @@
 % Please edit documentation in R/Tuner.R
 \name{Tuner}
 \alias{Tuner}
-\title{Class for Tuning Algorithms}
+\title{Tuner}
 \description{
-The \link{Tuner} implements the optimization algorithm.
+The \code{Tuner} implements the optimization algorithm.
 }
 \details{
-\link{Tuner} is a abstract base class that implements the base functionality each tuner must provide.
-A subclass is implemented in the following way:
-\itemize{
-\item Inherit from Tuner.
-\item Specify the private abstract method \verb{$.optimize()} and use it to call into your optimizer.
-\item You need to call \code{instance$eval_batch()} to evaluate design points.
-\item The batch evaluation is requested at the \link{TuningInstanceSingleCrit}/\link{TuningInstanceMultiCrit} object \code{instance}, so each batch is possibly executed in parallel via \code{\link[mlr3:benchmark]{mlr3::benchmark()}}, and all evaluations are stored inside of \code{instance$archive}.
-\item Before the batch evaluation, the \link[bbotk:Terminator]{bbotk::Terminator} is checked, and if it is positive, an exception of class \code{"terminated_error"} is generated.
-In the  later case the current batch of evaluations is still stored in \code{instance}, but the numeric scores are not sent back to the handling optimizer as it has lost execution control.
-\item After such an exception was caught we select the best configuration from \code{instance$archive} and return it.
-\item Note that therefore more points than specified by the \link[bbotk:Terminator]{bbotk::Terminator} may be evaluated, as the Terminator is only checked before a batch evaluation, and not in-between evaluation in a batch.
-How many more depends on the setting of the batch size.
-\item Overwrite the private super-method \code{.assign_result()} if you want to decide yourself how to estimate the final configuration in the instance and its estimated performance.
-The default behavior is: We pick the best resample-experiment, regarding the given measure, then assign its configuration and aggregated performance to the instance.
+\code{Tuner} is an abstract base class that implements the base functionality each tuner must provide.
 }
-}
-\section{Private Methods}{
-
-\itemize{
-\item \code{.optimize(instance)} -> \code{NULL}\cr
-Abstract base method. Implement to specify tuning of your subclass.
-See details sections.
-\item \code{.assign_result(instance)} -> \code{NULL}\cr
-Abstract base method. Implement to specify how the final configuration is selected.
-See details sections.
-}
-}
-
 \section{Resources}{
 
 There are several sections about hyperparameter optimization in the \href{https://mlr3book.mlr-org.com}{mlr3book}.
@@ -100,7 +74,6 @@ The referenced help package can be opened via method \verb{$help()}.}
 \item \href{#method-Tuner-format}{\code{Tuner$format()}}
 \item \href{#method-Tuner-print}{\code{Tuner$print()}}
 \item \href{#method-Tuner-help}{\code{Tuner$help()}}
-\item \href{#method-Tuner-optimize}{\code{Tuner$optimize()}}
 \item \href{#method-Tuner-clone}{\code{Tuner$clone()}}
 }
 }
@@ -194,28 +167,6 @@ Opens the corresponding help page referenced by field \verb{$man}.
 \if{html}{\out{<div class="r">}}\preformatted{Tuner$help()}\if{html}{\out{</div>}}
 }
 
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Tuner-optimize"></a>}}
-\if{latex}{\out{\hypertarget{method-Tuner-optimize}{}}}
-\subsection{Method \code{optimize()}}{
-Performs the tuning on a \link{TuningInstanceSingleCrit} or \link{TuningInstanceMultiCrit} until termination.
-The single evaluations will be written into the \link{ArchiveTuning} that resides in the \link{TuningInstanceSingleCrit}/\link{TuningInstanceMultiCrit}.
-The result will be written into the instance object.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Tuner$optimize(inst)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{inst}}{(\link{TuningInstanceSingleCrit} | \link{TuningInstanceMultiCrit}).}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-\code{\link[data.table:data.table]{data.table::data.table()}}
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Tuner-clone"></a>}}
