@@ -139,11 +139,11 @@ Archive of the \link{TuningInstanceBatchSingleCrit}.}
 \item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner})\cr
 Trained learner}
 
-\item{\code{tuning_instance}}{(\link{TuningInstanceBatchSingleCrit})\cr
+\item{\code{tuning_instance}}{(\link{TuningInstanceAsyncSingleCrit} | \link{TuningInstanceBatchSingleCrit})\cr
 Internally created tuning instance with all intermediate results.}
 
 \item{\code{tuning_result}}{(\link[data.table:data.table]{data.table::data.table})\cr
-Short-cut to \code{result} from \link{TuningInstanceBatchSingleCrit}.}
+Short-cut to \code{result} from  tuning instance.}
 
 \item{\code{predict_type}}{(\code{character(1)})\cr
 Stores the currently active predict type, e.g. \code{"response"}.
