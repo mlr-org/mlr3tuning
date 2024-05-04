@@ -154,12 +154,14 @@ See also the documentation of <a href="https://bbotk.mlr-org.com/" class="extern
     <h2 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a></h2>
     
 
-<p>There are several sections about hyperparameter optimization in the <a href="https://mlr3book.mlr-org.com" class="external-link">mlr3book</a>.</p><ul><li><p>Learn more about <a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-tuner" class="external-link">tuners</a>.</p></li>
+<p>There are several sections about hyperparameter optimization in the <a href="https://mlr3book.mlr-org.com" class="external-link">mlr3book</a>.</p><ul><li><p>An overview of all tuners can be found on our <a href="https://mlr-org.com/tuners.html" class="external-link">website</a>.</p></li>
+<li><p>Learn more about <a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-tuner" class="external-link">tuners</a>.</p></li>
 </ul><p>The <a href="https://mlr-org.com/gallery-all-optimization.html" class="external-link">gallery</a> features a collection of case studies and demos about optimization.</p><ul><li><p>Use the <a href="https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/" class="external-link">Hyperband</a> optimizer with different budget parameters.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other Tuner: 
+<code><a href="Tuner.html">Tuner</a></code>,
 <code><a href="mlr_tuners.html">mlr_tuners</a></code>,
 <code><a href="mlr_tuners_cmaes.html">mlr_tuners_cmaes</a></code>,
 <code><a href="mlr_tuners_design_points.html">mlr_tuners_design_points</a></code>,
@@ -241,16 +243,16 @@ See also the documentation of <a href="https://bbotk.mlr-org.com/" class="extern
 <span class="r-in"><span><span class="fu">as.data.table</span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            cp classif.ce  x_domain_cp runtime_learners           timestamp</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;num&gt;      &lt;num&gt;        &lt;num&gt;            &lt;num&gt;              &lt;POSc&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -8.442812 0.06956522 0.0002154435            0.010 2024-04-30 07:46:47</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -3.070113 0.06956522 0.0464158883            0.009 2024-04-30 07:46:47</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -6.140227 0.06956522 0.0021544347            0.011 2024-04-30 07:46:47</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -5.372699 0.06956522 0.0046415888            0.009 2024-04-30 07:46:47</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -3.837642 0.06956522 0.0215443469            0.009 2024-04-30 07:46:47</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -6.907755 0.06956522 0.0010000000            0.025 2024-04-30 07:46:47</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -9.210340 0.06956522 0.0001000000            0.009 2024-04-30 07:46:47</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -7.675284 0.06956522 0.0004641589            0.009 2024-04-30 07:46:47</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -4.605170 0.06956522 0.0100000000            0.009 2024-04-30 07:46:47</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -2.302585 0.06956522 0.1000000000            0.012 2024-04-30 07:46:47</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -8.442812 0.06956522 0.0002154435            0.010 2024-05-04 07:55:32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -3.070113 0.06956522 0.0464158883            0.009 2024-05-04 07:55:33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -6.140227 0.06956522 0.0021544347            0.011 2024-05-04 07:55:33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -5.372699 0.06956522 0.0046415888            0.010 2024-05-04 07:55:33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -3.837642 0.06956522 0.0215443469            0.010 2024-05-04 07:55:33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -6.907755 0.06956522 0.0010000000            0.009 2024-05-04 07:55:33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -9.210340 0.06956522 0.0001000000            0.011 2024-05-04 07:55:33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -7.675284 0.06956522 0.0004641589            0.009 2024-05-04 07:55:33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -4.605170 0.06956522 0.0100000000            0.012 2024-05-04 07:55:33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -2.302585 0.06956522 0.1000000000            0.029 2024-05-04 07:55:33</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     batch_nr warnings errors  resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;int&gt;    &lt;int&gt;  &lt;int&gt;           &lt;list&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:        1        0      0 &lt;ResampleResult&gt;</span>
