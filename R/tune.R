@@ -8,6 +8,8 @@
 #' It executes the tuning with the [Tuner] (`tuner`) and returns the result with the tuning instance (`$result`).
 #' The [ArchiveBatchTuning] and [ArchiveAsyncTuning] (`$archive`) stores all evaluated hyperparameter configurations and performance scores.
 #'
+#' You can find an overview of all tuners on our [website](https://mlr-org.com/tuners.html).
+#'
 #' @details
 #' The [mlr3::Task], [mlr3::Learner], [mlr3::Resampling], [mlr3::Measure] and [Terminator] are used to construct a [TuningInstanceBatchSingleCrit].
 #' If multiple performance [Measures][Measure] are supplied, a [TuningInstanceBatchMultiCrit] is created.

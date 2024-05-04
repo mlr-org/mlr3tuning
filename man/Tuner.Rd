@@ -13,6 +13,7 @@ The \code{Tuner} implements the optimization algorithm.
 
 There are several sections about hyperparameter optimization in the \href{https://mlr3book.mlr-org.com}{mlr3book}.
 \itemize{
+\item An overview of all tuners can be found on our \href{https://mlr-org.com/tuners.html}{website}.
 \item Learn more about \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-tuner}{tuners}.
 }
 
@@ -31,6 +32,18 @@ Additional tuners are provided by the following packages.
 }
 }
 
+\seealso{
+Other Tuner: 
+\code{\link{mlr_tuners}},
+\code{\link{mlr_tuners_cmaes}},
+\code{\link{mlr_tuners_design_points}},
+\code{\link{mlr_tuners_gensa}},
+\code{\link{mlr_tuners_grid_search}},
+\code{\link{mlr_tuners_irace}},
+\code{\link{mlr_tuners_nloptr}},
+\code{\link{mlr_tuners_random_search}}
+}
+\concept{Tuner}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
