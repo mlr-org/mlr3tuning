@@ -403,3 +403,28 @@ test_that("assign_result works with no hyperparameter and constant", {
   expect_equal(res$classif.ce, 0.8)
   expect_list(res$learner_param_vals[[1]], len = 0)
 })
+
+test_that("InnerTuneToken", {
+  # works with to_tune()
+  # * default aggregation function is used if non is supplied
+  # * custom aggregation function is used if supplied
+  # * works with 1 and 2 inner tune token (bug in data.table)
+  # * result_learner_param_vals is correctly set
+  # * correct error when store_benchmark_result = FALSE
+
+  learner = lrn("classif.debug", early_stopping = TRUE, validate = 0.3)
+
+  tune(
+    learner,
+    method =
+  )
+
+
+
+  # works with given search space:
+  # * error is thrown when aggr is missing
+  # * error is thrown, when parameter is tagged for inner tuning, but learner not configured appropriately
+  # (e.g. missing early_stopping = TRUE for debug learner)
+  # * error when InnerTuneToken is set but parameter is missing "inner_tuning" tag
+
+})

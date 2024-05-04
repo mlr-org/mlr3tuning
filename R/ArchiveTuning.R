@@ -73,12 +73,24 @@ ArchiveTuning = R6Class("ArchiveTuning",
     #'
     #' @param check_values (`logical(1)`)\cr
     #'   If `TRUE` (default), hyperparameter configurations are checked for validity.
-    initialize = function(search_space, codomain, check_values = TRUE) {
+    initialize = function(search_space, codomain, check_values = TRUE, inner_search_space = NULL) {
       super$initialize(search_space, codomain, check_values)
 
-      private$.inner_tuning = names(search_space$tags[map_lgl(search_space$tags, function(tags) "inner_tuning" %in% tags)])
+      # FIXME: aggrs are included in the inner search space and don't have to be passsed as an argument
+      # * assert that they exist
+      # * then extract then from the iss
+      if (!is.null(inner_search_space)) {
+        private$.inner_search_space = as_search_space(inner_search_space)
+        assert_disjunct(search_space$ids(), inner_search_space$ids())
 
-      # initialize empty benchmark result
+        assert_list(aggrs, types = "function")
+        assert_permutation(inner_search_space$ids(), names(aggrs))
+      } else {
+        assert_true(is.null(aggr))
+      }
+      private$.aggrs = aggrs
+
+
       self$benchmark_result = BenchmarkResult$new()
     },
 
@@ -170,46 +182,39 @@ ArchiveTuning = R6Class("ArchiveTuning",
     #'   Column names have to match ids of the `search_space`.
     #'   However, `xdt` can contain additional columns.
     add_evals = function(xdt, xss_trafoed = NULL, ydt) {
-      raw_inner_tuned_values = NULL
-      if (length(private$.inner_tuning)) {
-        # store the raw values before they are overwritten with the internally optimized values
-        raw_inner_tuned_values = map(seq_len(nrow(xdt)), function(i) {
-          # only use those that are tagged with inner tuning
-          as.list(xdt[i, private$.inner_tuning, with = FALSE])
-        })
+      # FIXME: the search space does not have the aggregation function when the default from the parameter se3
+      # is used.
+
+      inner_tuned_values_aggr = NULL
+      ii = NULL
+
+      if (length(private$.aggrs)) {
+        ii = tail(seq_len(self$benchmark_result$n_resample_results), n = length(xdt))
         n_rrs = self$benchmark_result$n_resample_results
-        aggrs = get_private(self$search_space)$.aggrs
         # access the inner tuned values from the learner states (also works when models are not stored)
         # then call the aggregator to aggregate the values over the folds of the resamplings
-        itvs_aggr = map(seq(n_rrs - length(xdt) + 1, n_rrs), function(i) {
+        inner_tuned_values_aggr = map(ii, function(i) {
           itvs_rr = map(self$resample_result(i)$learners, "inner_tuned_values")
-          set_names(
-            map(
-              private$.inner_tuning,
-              function(param_id) aggrs[param_id, "aggr", on = "id"][[1L]][[1L]](map(itvs_rr, param_id))
-            ), nm = private$.inner_tuning
-          )
-        })
-        itvs_aggr_dt = rbindlist(itvs_aggr)
 
-        xdt[, names(itvs_aggr_dt)] = itvs_aggr_dt
-        # trafos with inner tuning is not allowed, therefore we can just insert the parameters here as-is
-        if (!is.null(xss_trafoed)) {
-          xss_trafoed = map(seq_along(xss_trafoed), function(i) {
-            insert_named(xss_trafoed[[i]], itvs_aggr[[i]])
+          # FIXME: this needs to be captured earlier
+          imap(private$.aggrs, function(aggr, id) {
+            if (is.null(itvs_rr) || !length(itvs_rr)) {
+              stopf("Trying to extract inner tuned values from learner '%s', but it does not have any. Did you configure it correctly?", self$learner$id)
+            }
+            aggr(map(itvs_rr, id))
           })
-        }
+        })
       }
-
       super$add_evals(xdt, xss_trafoed, ydt)
-      if (!is.null(raw_inner_tuned_values)) {
-        set(self$data, j = "raw_inner_tuned_values", value = raw_inner_tuned_values)
+      if (!is.null(inner_tuned_values_aggr)) {
+        set(self$data, i = ii, j = "inner_tuned_values", value = list(inner_tuned_values_aggr))
       }
       invisible(self)
     }
   ),
   private = list(
-    .inner_tuning = NULL
+    .aggrs = NULL,
+    .inner_search_space = NULL
   )
 )
 

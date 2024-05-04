@@ -122,22 +122,50 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
         search_space = as_search_space(search_space)
       }
 
-      inner_tune = map_lgl(search_space$params$.tags, function(x) "inner_tune" %in% x)
-      if (any(inner_tune) && isFALSE(store_benchmark_result)) {
+      ISS = NULL
+      inner_tune_ids = keep(names(search_space$tags), map_lgl(search_space$tags, function(t) "inner_tuning" %in% t))
+
+      if (length(inner_tune_ids) && isFALSE(store_benchmark_result)) {
         # we need to access the inner_tuned_vals from the bmr
         stopf("To allow for inner tuning it is required to store the benchmark results.")
       }
-      trafo_with_inner_tune = any(map_lgl(search_space$params$.trafo, function(x) !is.null(x)) & inner_tune)
-      if (trafo_with_inner_tune) {
-        stopf("Inner Tuning and Parameter Transformations are currently not supported.")
+
+      aggrs = NULL
+      if (length(inner_tune_ids)) {
+        iss = search_space$subset(inner_tune_ids)
+        if (iss$has_trafo) {
+          stopf("Inner Tuning and Parameter Transformations are currently not supported.")
+        }
+        search_space = search_space$subset(setdiff(search_space$ids(), inner_tune_ids))
+
+        # the learner dictates how to interprete the to_tune(..., inner)
+
+        learner$param_set$set_values(.values = convert_inner_tune_tokens(iss, learner$param_set))
+
+        walk(seq_len())
+
+        get_private(search_space)$.params[inner_tune_ids, "aggr", on = "id"][[1L]] = map(inner_tune)
+
+        aggrs = map(inner_tune_ids, function(.__id) {
+          if ("inner_tuning" %nin% learner$param_set$tags[[.__id]]) {
+            stopf("Trying to tune parameter '%s' using inner tuning, but it is not possible.", .__id)
+          }
+          if is.null(iss$params[.__id, "cargo", on = "id"][[1L]][[1L]]$aggr)  {
+            stopf("Missing aggregation function for parameter '%s' (tagged for inner tuning).", .__id
+          }
+          aggr
+        })
+        aggrs = set_names(aggrs, inner_tune_ids)
+
       }
+
 
       # create codomain from measure
       measures = assert_measures(as_measures(measure, task_type = task$task_type), task = task, learner = learner)
       codomain = measures_to_codomain(measures)
 
       # initialized specialized tuning archive and objective
-      archive = ArchiveTuning$new(search_space, codomain, check_values)
+      archive = ArchiveTuning$new(search_space, codomain, check_values, ISS, aggrs)
       objective = ObjectiveTuning$new(task, learner, resampling, measures, store_benchmark_result, store_models, check_values, allow_hotstart, keep_hotstart_stack, archive, callbacks)
 
       super$initialize(objective, search_space, terminator, callbacks = callbacks)
@@ -154,6 +182,7 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
     assign_result = function(xdt, y, learner_param_vals = NULL) {
       # set the column with the learner param_vals that were not optimized over but set implicitly
       assert_list(learner_param_vals, null.ok = TRUE, names = "named")
+      browser()
 
       if (is.null(learner_param_vals)) {
         learner_param_vals = self$objective$learner$param_set$values
@@ -178,6 +207,7 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
   ),
 
   private = list(
-    .evaluate_default = NULL
+    .evaluate_default = NULL,
+    .inner_search_space = NULL
   )
 )

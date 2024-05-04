@@ -207,7 +207,24 @@ Tuner = R6Class("Tuner",
 
     .assign_result = function(inst) {
       assert_multi_class(inst, c("TuningInstanceSingleCrit", "TuningInstanceMultiCrit"))
-      assign_result_default(inst)
+      res = inst$archive$best()
+
+      xdt = res[, c(inst$search_space$ids()), with = FALSE]
+
+      browser()
+      xdtit = unnest(res[, "inner_tuned_values", with = FALSE], cols = "inner_tuned_values")
+      if (ncol(xdtit) > 0) {
+        xdt = cbind(xdt, xdtit)
+      }
+
+      if (inherits(inst, "OptimInstanceMultiCrit")) {
+        ydt = res[, inst$archive$cols_y, with = FALSE]
+        inst$assign_result(xdt, ydt)
+      } else {
+        # unlist keeps name!
+        y = unlist(res[, inst$archive$cols_y, with = FALSE])
+        inst$assign_result(xdt, y)
+      }
     },
 
     .param_set = NULL,

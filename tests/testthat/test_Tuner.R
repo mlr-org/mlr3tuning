@@ -179,3 +179,31 @@ test_that("Tuner active bindings work", {
     regexp = "$packages is read-only",
     fixed = TRUE)
 })
+
+test_that("inner", {
+  parent = new.env()
+  parent$z = 0
+  aggr = crate(function(x) {z <<- z + 1}, .parent = parent)
+  learner = lrn("classif.debug",
+    iter = to_tune(upper = 1000L, inner = TRUE, aggr = aggr),
+    x = to_tune(0.2, 0.3),
+    validate = 0.3,
+    early_stopping = TRUE
+  )
+  ti = tune(
+    tuner = tnr("grid_search"),
+    learner = learner,
+    task = tsk("iris"),
+    resampling = rsmp("cv"),
+    term_evals = 2
+  )
+  expect_equal(
+    ti$archive$data$inner_tuned_values,
+    list(list(iter = 1), list(iter = 2))
+  )
+})
+
+test_that("inner tuning works when no other parameters are tuned", {
+  # arghhh
+
+})

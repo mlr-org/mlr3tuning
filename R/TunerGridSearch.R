@@ -38,11 +38,11 @@ TunerGridSearch = R6Class("TunerGridSearch",
   public = list(
 
     #' @description
-    #' Creates a new instance of this [R6][R6::R6Class] class.
+    #' creates a new instance of this [r6][r6::r6class] class.
     initialize = function() {
       param_set = ps(
-        batch_size = p_int(lower = 1L, tags = "required"),
-        resolution = p_int(lower = 1L),
+        batch_size = p_int(lower = 1l, tags = "required"),
+        resolution = p_int(lower = 1l),
         param_resolutions = p_uty()
       )
       param_set$values = list(resolution = 10L, batch_size = 1L)
