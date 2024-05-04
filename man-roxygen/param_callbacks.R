@@ -1,2 +1,2 @@
-#' @param callbacks (list of [CallbackTuning])\cr
+#' @param callbacks (list of [Callback])\cr
 #'   List of callbacks.

@@ -1,32 +1,12 @@
-#' @title Class for Tuning Algorithms
+#' @title Tuner
 #'
 #' @include mlr_tuners.R
 #'
 #' @description
-#' The [Tuner] implements the optimization algorithm.
+#' The `Tuner` implements the optimization algorithm.
 #'
 #' @details
-#' [Tuner] is a abstract base class that implements the base functionality each tuner must provide.
-#' A subclass is implemented in the following way:
-#'  * Inherit from Tuner.
-#'  * Specify the private abstract method `$.optimize()` and use it to call into your optimizer.
-#'  * You need to call `instance$eval_batch()` to evaluate design points.
-#'  * The batch evaluation is requested at the [TuningInstanceSingleCrit]/[TuningInstanceMultiCrit] object `instance`, so each batch is possibly executed in parallel via [mlr3::benchmark()], and all evaluations are stored inside of `instance$archive`.
-#'  * Before the batch evaluation, the [bbotk::Terminator] is checked, and if it is positive, an exception of class `"terminated_error"` is generated.
-#'    In the  later case the current batch of evaluations is still stored in `instance`, but the numeric scores are not sent back to the handling optimizer as it has lost execution control.
-#'  * After such an exception was caught we select the best configuration from `instance$archive` and return it.
-#'  * Note that therefore more points than specified by the [bbotk::Terminator] may be evaluated, as the Terminator is only checked before a batch evaluation, and not in-between evaluation in a batch.
-#'    How many more depends on the setting of the batch size.
-#'  * Overwrite the private super-method `.assign_result()` if you want to decide yourself how to estimate the final configuration in the instance and its estimated performance.
-#'    The default behavior is: We pick the best resample-experiment, regarding the given measure, then assign its configuration and aggregated performance to the instance.
-#'
-#' @section Private Methods:
-#' * `.optimize(instance)` -> `NULL`\cr
-#'   Abstract base method. Implement to specify tuning of your subclass.
-#'   See details sections.
-#' * `.assign_result(instance)` -> `NULL`\cr
-#'   Abstract base method. Implement to specify how the final configuration is selected.
-#'   See details sections.
+#' `Tuner` is an abstract base class that implements the base functionality each tuner must provide.
 #'
 #' @section Resources:
 #' There are several sections about hyperparameter optimization in the [mlr3book](https://mlr3book.mlr-org.com).
@@ -46,41 +26,33 @@
 #'  * [mlr3mbo](https://github.com/mlr-org/mlr3mbo) adds Bayesian optimization methods.
 #'
 #' @family Tuner
+#' @template field_id
+#'
+#' @template param_id
+#' @template param_param_set
+#' @template param_param_classes
+#' @template param_properties
+#' @template param_packages
+#' @template param_label
 #' @template param_man
 #'
 #' @export
 Tuner = R6Class("Tuner",
   public = list(
 
-    #' @field id (`character(1)`)\cr
-    #'   Identifier of the object.
-    #'   Used in tables, plot and text output.
     id = NULL,
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
-    #'
-    #' @param id (`character(1)`)\cr
-    #'   Identifier for the new instance.
-    #'
-    #' @param param_set ([paradox::ParamSet])\cr
-    #'   Set of control parameters.
-    #'
-    #' @param param_classes (`character()`)\cr
-    #'   Supported parameter classes for learner hyperparameters that the tuner can optimize, as given in the [paradox::ParamSet] `$class` field.
-    #'
-    #' @param properties (`character()`)\cr
-    #'   Set of properties of the tuner.
-    #'   Must be a subset of [`mlr_reflections$tuner_properties`][mlr3::mlr_reflections].
-    #'
-    #' @param packages (`character()`)\cr
-    #'   Set of required packages.
-    #'   Note that these packages will be loaded via [requireNamespace()], and are not attached.
-    #'
-    #' @param label (`character(1)`)\cr
-    #'   Label for this object.
-    #'   Can be used in tables, plot and text output instead of the ID.
-    initialize = function(id = "tuner", param_set, param_classes, properties, packages = character(), label = NA_character_, man = NA_character_) {
+    initialize = function(
+      id = "tuner",
+      param_set,
+      param_classes,
+      properties,
+      packages = character(),
+      label = NA_character_,
+      man = NA_character_
+      ) {
       self$id = assert_string(id, min.chars = 1L)
       private$.param_set = assert_param_set(param_set)
       private$.param_classes = assert_subset(param_classes, c("ParamLgl", "ParamInt", "ParamDbl", "ParamFct", "ParamUty"))
@@ -118,29 +90,6 @@ Tuner = R6Class("Tuner",
     #' Opens the corresponding help page referenced by field `$man`.
     help = function() {
       open_help(self$man)
-    },
-
-    #' @description
-    #' Performs the tuning on a [TuningInstanceSingleCrit] or [TuningInstanceMultiCrit] until termination.
-    #' The single evaluations will be written into the [ArchiveTuning] that resides in the [TuningInstanceSingleCrit]/[TuningInstanceMultiCrit].
-    #' The result will be written into the instance object.
-    #'
-    #' @param inst ([TuningInstanceSingleCrit] | [TuningInstanceMultiCrit]).
-    #'
-    #' @return [data.table::data.table()]
-    optimize = function(inst) {
-      assert_multi_class(inst, c("TuningInstanceSingleCrit", "TuningInstanceMultiCrit"))
-      inst$archive$start_time = Sys.time()
-      inst$.__enclos_env__$private$.context = ContextOptimization$new(instance = inst, optimizer = self)
-      call_back("on_optimization_begin", inst$callbacks, get_private(inst)$.context)
-
-      # evaluate learner with default hyperparameter values
-      if (get_private(inst)$.evaluate_default) evaluate_default(inst)
-
-      result = optimize_default(inst, self, private)
-      call_back("on_optimization_end", inst$callbacks, get_private(inst)$.context)
-      if (!inst$objective$keep_hotstart_stack) inst$objective$hotstart_stack = NULL
-      result
     }
   ),
 
@@ -209,7 +158,7 @@ Tuner = R6Class("Tuner",
     .optimize = function(inst) stop("abstract"),
 
     .assign_result = function(inst) {
-      assert_multi_class(inst, c("TuningInstanceSingleCrit", "TuningInstanceMultiCrit"))
+      assert_tuning_instance(inst)
       assign_result_default(inst)
     },
 

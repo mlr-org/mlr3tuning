@@ -9,7 +9,7 @@ Caceres
 CallbackTuning
 CallbackTunings
 Codomain
-ContextEval
+ContextBatchTuning
 ContextOptimization
 Dubois
 GenSA
@@ -35,9 +35,9 @@ Stuetzle
 Subclasses
 Suomela
 Tsallis
-TunerFromOptimizer
-TuningInstanceMultiCrit
-TuningInstanceSingleCrit
+TunerBatchFromOptimizerBatch
+TuningInstanceBatchMultiCrit
+TuningInstanceBatchSingleCrit
 Uninstantiated
 XGBoost
 Xiang

@@ -14,7 +14,7 @@ test_that("tuning with multiple objectives", {
   terminator = trm("evals", n_evals = 10)
   tuner = tnr("random_search")
 
-  inst = TuningInstanceMultiCrit$new(task, learner, resampling, measures, terminator, tune_ps)
+  inst = TuningInstanceBatchMultiCrit$new(task, learner, resampling, measures, terminator, tune_ps)
 
   tuner$optimize(inst)
 
@@ -58,13 +58,13 @@ test_that("check_values flag with parameter set dependencies", {
   terminator = trm("evals", n_evals = 20)
   tuner = tnr("random_search")
 
-  inst = TuningInstanceMultiCrit$new(
+  inst = TuningInstanceBatchMultiCrit$new(
     tsk("boston_housing"), learner,
-    rsmp("holdout"), msrs(c("regr.mse", "regr.rmse")), terminator, search_space)
+    rsmp("holdout"), msrs(c("regr.mse", "regr.rmse")), terminator, search_space, check_values = FALSE)
   tuner$optimize(inst)
   expect_named(inst$result_learner_param_vals[[1]], c("xx", "cp", "yy"))
 
-  inst = TuningInstanceMultiCrit$new(tsk("boston_housing"), learner,
+  inst = TuningInstanceBatchMultiCrit$new(tsk("boston_housing"), learner,
     rsmp("holdout"), msr("regr.mse"), terminator, search_space,
     check_values = TRUE)
   expect_error(tuner$optimize(inst),
@@ -75,7 +75,7 @@ test_that("search space from TuneToken works", {
   learner = lrn("classif.rpart")
   learner$param_set$values$cp = to_tune(0.1, 0.3)
 
-  instance = TuningInstanceMultiCrit$new(task = tsk("iris"), learner = learner,
+  instance = TuningInstanceBatchMultiCrit$new(task = tsk("iris"), learner = learner,
     resampling = rsmp("holdout"), measures = msrs(c("classif.acc", "classif.ce")),
     terminator = trm("evals", n_evals = 1))
 
@@ -86,13 +86,13 @@ test_that("search space from TuneToken works", {
     cp = p_dbl(lower = 0.1, upper = 0.3)
   )
 
-  expect_error(TuningInstanceMultiCrit$new(task = tsk("iris"), learner = learner,
+  expect_error(TuningInstanceBatchMultiCrit$new(task = tsk("iris"), learner = learner,
     resampling = rsmp("holdout"), measures = msrs(c("classif.acc", "classif.ce")),
     search_space = ps, terminator = trm("evals", n_evals = 1)),
     regexp = "If the values of the ParamSet of the Learner contain TuneTokens you cannot supply a search_space.",
     fixed = TRUE)
 
-  instance = TuningInstanceMultiCrit$new(task = tsk("iris"),
+  instance = TuningInstanceBatchMultiCrit$new(task = tsk("iris"),
     learner = lrn("classif.rpart"), resampling = rsmp("holdout"),
     measures = msrs(c("classif.acc", "classif.ce")), search_space = ps,
     terminator = trm("evals", n_evals = 1))
@@ -105,7 +105,7 @@ test_that("TuneToken and result_learner_param_vals works", {
   learner = lrn("classif.rpart", xval = 0)
   learner$param_set$values$cp = to_tune(0.1, 0.3)
 
-  instance = TuningInstanceMultiCrit$new(task = tsk("iris"), learner = learner,
+  instance = TuningInstanceBatchMultiCrit$new(task = tsk("iris"), learner = learner,
     resampling = rsmp("holdout"), measures = msrs(c("classif.ce", "classif.acc")),
     terminator = trm("evals", n_evals = 1))
 
@@ -117,7 +117,7 @@ test_that("TuneToken and result_learner_param_vals works", {
   expect_equal(instance$result_learner_param_vals[[1]]$cp, 0.1)
 })
 
-test_that("TuningInstanceMultiCrit and empty search space works", {
+test_that("TuningInstanceBatchMultiCrit and empty search space works", {
   # xval constant
   instance = tune(
     tuner = tnr("random_search", batch_size = 5),
@@ -171,7 +171,7 @@ test_that("assign_result works", {
   measures = msrs(c("classif.fpr", "classif.tpr"))
   terminator = trm("evals", n_evals = 10)
 
-  instance = TuningInstanceMultiCrit$new(task, learner, resampling, measures, terminator)
+  instance = TuningInstanceBatchMultiCrit$new(task, learner, resampling, measures, terminator)
 
   xdt = data.table(cp = c(0.1, 0.01))
   ydt = data.table(classif.fpr = c(0.8, 0.7), classif.tpr = c(0.3, 0.2))

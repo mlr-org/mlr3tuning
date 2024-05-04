@@ -1,99 +1,10 @@
-#' @title Early Stopping Callback
-#'
-#' @include CallbackTuning.R
-#' @name mlr3tuning.early_stopping
-#'
-#' @description
-#' This [CallbackTuning] integrates early stopping into the hyperparameter tuning of an XGBoost learner.
-#' Early stopping estimates the optimal number of trees (`nrounds`) for a given hyperparameter configuration.
-#' Since early stopping is performed in each resampling iteration, there are several optimal `nrounds` values.
-#' The callback writes the maximum value to the archive in the `max_nrounds` column.
-#' In the best hyperparameter configuration (`instance$result_learner_param_vals`), the value of `nrounds` is replaced by `max_nrounds` and early stopping is deactivated.
-#'
-#' @details
-#' Currently, the callback does not work with `GraphLearner`s from the package \CRANpkg{mlr3pipelines}.
-#' The callback is compatible with the [AutoTuner].
-#' The final model is fitted with the best hyperparameter configuration and `max_nrounds` i.e. early stopping is not performed.
-#'
-#' @section Resources:
-#' * [gallery post](https://mlr-org.com/gallery/optimization/2022-11-04-early-stopping-with-xgboost/) on early stopping with XGBoost.
-#'
-#' @examples
-#' clbk("mlr3tuning.early_stopping")
-#' \donttest{
-#' if (requireNamespace("mlr3learners") && requireNamespace("xgboost") ) {
-#'   library(mlr3learners)
-#'
-#'   # activate early stopping on the test set and set search space
-#'   learner = lrn("classif.xgboost",
-#'     eta = to_tune(1e-02, 1e-1, logscale = TRUE),
-#'     early_stopping_rounds = 5,
-#'     nrounds = 100,
-#'     early_stopping_set = "test")
-#'
-#'   # tune xgboost on the pima data set
-#'   instance = tune(
-#'     tuner = tnr("random_search"),
-#'     task = tsk("pima"),
-#'     learner = learner,
-#'     resampling = rsmp("cv", folds = 3),
-#'     measures = msr("classif.ce"),
-#'     term_evals = 10,
-#'     callbacks = clbk("mlr3tuning.early_stopping")
-#'   )
-#' }
-#' }
-NULL
-
-load_callback_early_stopping = function() {
-  callback_tuning("mlr3tuning.early_stopping",
-    label = "Early Stopping Callback",
-    man = "mlr3tuning::mlr3tuning.early_stopping",
-    on_optimization_begin = function(callback, context) {
-      learner = context$instance$objective$learner
-
-      if (all(c("LearnerClassifXgboost", "LearnerRegrXgboost", "LearnerSurvXgboost") %nin% class(learner))) {
-        stopf("%s is incompatible with %s", format(learner), format(callback))
-      }
-
-      if (is.null(learner$param_set$values$early_stopping_rounds)) {
-        stop("Early stopping is not activated. Set `early_stopping_rounds` parameter.")
-      }
-
-      # store models temporary
-      callback$state$store_models = context$instance$objective$store_models
-      context$instance$objective$store_models = TRUE
-    },
-
-    on_eval_after_benchmark = function(callback, context) {
-      callback$state$max_nrounds = map_dbl(context$benchmark_result$resample_results$resample_result, function(rr) {
-          max(map_dbl(get_private(rr)$.data$learner_states(get_private(rr)$.view), function(state) {
-            state$model$best_iteration # GraphLearner state$model$xgboost$model$niter
-          }))
-      })
-    },
-
-    on_eval_before_archive = function(callback, context) {
-      set(context$aggregated_performance, j = "max_nrounds", value = callback$state$max_nrounds)
-      if (!callback$state$store_models) context$benchmark_result$discard(models = TRUE)
-    },
-
-    on_result = function(callback, context) {
-      context$result$learner_param_vals[[1]]$early_stopping_rounds = NULL
-      context$result$learner_param_vals[[1]]$nrounds = context$instance$archive$best()$max_nrounds
-      context$result$learner_param_vals[[1]]$early_stopping_set = "none"
-      context$instance$objective$store_models = callback$state$store_models
-    }
-  )
-}
-
 #' @title Backup Benchmark Result Callback
 #'
-#' @include CallbackTuning.R
+#' @include CallbackAsyncTuning.R CallbackBatchTuning.R
 #' @name mlr3tuning.backup
 #'
 #' @description
-#' This [CallbackTuning] writes the [mlr3::BenchmarkResult] after each batch to disk.
+#' This [Callback] writes the [mlr3::BenchmarkResult] after each batch to disk.
 #'
 #' @examples
 #' clbk("mlr3tuning.backup", path = "backup.rds")
@@ -111,7 +22,7 @@ load_callback_early_stopping = function() {
 NULL
 
 load_callback_backup = function() {
-  callback_tuning("mlr3tuning.backup",
+  callback_batch_tuning("mlr3tuning.backup",
     label = "Backup Benchmark Result Callback",
     man = "mlr3tuning::mlr3tuning.backup",
     on_optimization_begin = function(callback, context) {
@@ -128,12 +39,13 @@ load_callback_backup = function() {
 
 #' @title Measure Callback
 #'
-#' @include CallbackTuning.R
+#' @include CallbackAsyncTuning.R CallbackBatchTuning.R
 #' @name mlr3tuning.measures
+#' @aliases mlr3tuning.async_measures
 #'
 #' @description
-#' This [CallbackTuning] scores the hyperparameter configurations on additional measures while tuning.
-#' Usually, the configurations can be scored on additional measures after tuning (see [ArchiveTuning]).
+#' This [Callback] scores the hyperparameter configurations on additional measures while tuning.
+#' Usually, the configurations can be scored on additional measures after tuning (see [ArchiveBatchTuning]).
 #' However, if the memory is not sufficient to store the [mlr3::BenchmarkResult], it is necessary to score the additional measures while tuning.
 #' The measures are not taken into account by the tuner.
 #'
@@ -173,7 +85,7 @@ load_callback_backup = function() {
 NULL
 
 load_callback_measures = function() {
-  callback_tuning("mlr3tuning.measures",
+  callback_batch_tuning("mlr3tuning.measures",
     label = "Additional Measures Callback",
     man = "mlr3tuning::mlr3tuning.measures",
     on_optimization_begin = function(callback, context) {
@@ -187,6 +99,237 @@ load_callback_measures = function() {
 
     on_eval_before_archive = function(callback, context) {
       set(context$aggregated_performance, j = callback$state$ids, value = context$benchmark_result$aggregate(callback$state$measures)[, callback$state$ids, with = FALSE])
+    }
+  )
+}
+
+load_callback_async_measures = function() {
+  callback_async_tuning("mlr3tuning.async_measures",
+    label = "Additional Rush Measures Callback",
+    man = "mlr3tuning::mlr3tuning.measures",
+
+    on_optimization_begin = function(callback, context) {
+      assert_measures(callback$state$measures)
+      ids = map_chr(callback$state$measures, "id")
+      assert_names(ids, type = "unique", .var.name = "measures")
+      if (any(ids %in% map_chr(context$instance$objective$measures, "id"))) {
+        stopf("The measure id(s) '%s' are already used by the instance. Please pass the measures with a different id.", as_short_string(ids))
+      }
+    },
+
+    on_eval_before_archive = function(callback, context) {
+      ids = map_chr(callback$state$measures, "id")
+      scores = as.list(context$resample_result$aggregate(callback$state$measures))
+      context$aggregated_performance = c(context$aggregated_performance, scores)
+    }
+  )
+}
+
+#' @title MLflow Connector Callback
+#'
+#' @include CallbackAsyncTuning.R CallbackBatchTuning.R
+#' @name mlr3tuning.asnyc_mlflow
+#'
+#' @description
+#' This [Callback] logs the hyperparameter configurations and the performance of the configurations to MLflow.
+#'
+#' @examplesIf requireNamespace("mlflow")
+#' @examples
+#' clbk("mlr3tuning.async_mlflow", tracking_uri = "http://localhost:5000")
+#'
+#' \dontrun{
+#' rush::rush_plan(n_workers = 4)
+#'
+#' learner = lrn("classif.rpart",
+#'   minsplit  = to_tune(2, 128),
+#'   cp        = to_tune(1e-04, 1e-1))
+#'
+#' instance = TuningInstanceAsyncSingleCrit$new(
+#'   task = tsk("pima"),
+#'   learner = learner,
+#'   resampling = rsmp("cv", folds = 3),
+#'   measure = msr("classif.ce"),
+#'   terminator = trm("evals", n_evals = 20),
+#'   store_benchmark_result = FALSE,
+#'   callbacks = clbk("mlr3tuning.rush_mlflow", tracking_uri = "http://localhost:8080")
+#' )
+#'
+#' tuner = tnr("random_search_v2")
+#' tuner$optimize(instance)
+#' }
+NULL
+
+load_callback_async_mlflow = function() {
+  callback_async_tuning("mlr3tuning.async_mlflow",
+    label = "MLflow Connector",
+    man = "mlr3tuning::mlr3tuning.async_mlflow",
+
+    on_optimization_begin = function(callback, context) {
+      require_namespaces("mlflow")
+
+      # create mlflow client
+      callback$state$client = mlflow::mlflow_client(callback$state$tracking_uri)
+
+      # setup experiment
+      name = sprintf("%s_%s_%s", context$optimizer$id, context$instance$objective$id, context$instance$rush$network_id)
+      callback$state$experiment_id = mlflow::mlflow_create_experiment(
+        name = name,
+        client = callback$state$client)
+
+      callback$state$measure_ids = context$instance$archive$cols_y
+    },
+
+    on_eval_after_xs = function(callback, context) {
+      require_namespaces("mlflow")
+
+      client = callback$state$client
+      experiment_id = callback$state$experiment_id
+
+      # start run
+      callback$state$run_uuid = mlflow::mlflow_start_run(
+        experiment_id = experiment_id,
+        client =  client)$run_uuid
+
+      iwalk(context$xs, function(value, id) {
+        mlflow::mlflow_log_param(
+          key = id,
+          value = value,
+          run = callback$state$run_uuid,
+          client = client)
+      })
+    },
+
+    on_eval_before_archive = function(callback, context) {
+      client = callback$state$client
+      run_uuid = callback$state$run_uuid
+
+      walk(callback$state$measure_ids, function(id) {
+        mlflow::mlflow_log_metric(
+          key = id,
+          value = context$aggregated_performance[[id]],
+          run = run_uuid,
+          client = client)
+      })
+
+      mlflow::mlflow_end_run(
+        status = "FINISHED",
+        run_id = run_uuid,
+        client = client
+      )
+    }
+  )
+}
+
+#' @title Default Configuration Callback
+#'
+#' @include CallbackAsyncTuning.R CallbackBatchTuning.R
+#' @name mlr3tuning.async_default_configuration
+#'
+#' @description
+#' These [CallbackAsyncTuning] and [CallbackBatchTuning] evaluate the default hyperparameter values of a learner.
+NULL
+
+load_callback_async_default_configuration = function() {
+  callback_async_tuning("mlr3tuning.async_default_configuration",
+    label = "Default Configuration",
+    man = "mlr3tuning::mlr3tuning.default_configuration",
+
+    on_optimization_begin = function(callback, context) {
+      instance = context$instance
+      # values are on the learner scale i.e. possible transformation are already applied
+      xs = default_values(instance$objective$learner, instance$search_space, instance$objective$task)
+
+      # parameters with exp transformation and log inverse transformation
+      # parameters with unknown inverse transformation
+      # parameter set with trafo
+      if ("set_id" %in% names(ps())) {
+        # old paradox
+        has_logscale = map_lgl(instance$search_space$params, function(param) get_private(param)$.has_logscale)
+
+        has_trafo = map_lgl(instance$search_space$params, function(param) get_private(param)$.has_trafo)
+
+        has_extra_trafo = get_private(instance$search_space)$.has_extra_trafo
+      } else {
+        has_logscale = map_lgl(instance$search_space$params$.trafo, function(x) identical(x, exp))
+
+        has_trafo = map_lgl(instance$search_space$params$.trafo, function(x) !is.null(x) && !identical(x, exp))
+
+        has_extra_trafo = !is.null(instance$search_space$extra_trafo)
+      }
+
+      if (any(has_trafo) || has_extra_trafo) {
+        stop("Cannot evaluate default hyperparameter values. Search space contains transformation functions with unknown inverse function.")
+      }
+
+      # inverse parameter with exp transformation
+      xs = map_if(xs, has_logscale, log)
+
+      context$instance$archive$push_points(list(xs))
+    }
+  )
+}
+
+load_callback_default_configuration = function() {
+  callback_batch_tuning("mlr3tuning.default_configuration",
+    label = "Default Configuration",
+    man = "mlr3tuning::mlr3tuning.default_configuration",
+
+    on_optimization_begin = function(callback, context) {
+      instance = context$instance
+      # values are on the learner scale i.e. possible transformation are already applied
+      xs = default_values(instance$objective$learner, instance$search_space, instance$objective$task)
+
+      # parameters with exp transformation and log inverse transformation
+      # parameters with unknown inverse transformation
+      # parameter set with trafo
+      if ("set_id" %in% names(ps())) {
+        # old paradox
+        has_logscale = map_lgl(instance$search_space$params, function(param) get_private(param)$.has_logscale)
+
+        has_trafo = map_lgl(instance$search_space$params, function(param) get_private(param)$.has_trafo)
+
+        has_extra_trafo = get_private(instance$search_space)$.has_extra_trafo
+      } else {
+        has_logscale = map_lgl(instance$search_space$params$.trafo, function(x) identical(x, exp))
+
+        has_trafo = map_lgl(instance$search_space$params$.trafo, function(x) !is.null(x) && !identical(x, exp))
+
+        has_extra_trafo = !is.null(instance$search_space$extra_trafo)
+      }
+
+      if (any(has_trafo) || has_extra_trafo) {
+        stop("Cannot evaluate default hyperparameter values. Search space contains transformation functions with unknown inverse function.")
+      }
+
+      # inverse parameter with exp transformation
+      xdt = as.data.table(map_if(xs, has_logscale, log))
+
+      context$instance$eval_batch(xdt)
+    }
+  )
+}
+
+#' @title Save Logs Callback
+#'
+#' @include CallbackAsyncTuning.R
+#' @name mlr3tuning.async_save_logs
+#'
+#' @description
+#' This [CallbackAsyncTuning] saves the logs of the learners to the archive.
+NULL
+
+load_callback_async_save_logs = function() {
+  callback_async_tuning("mlr3tuning.async_save_logs",
+    label = "Save Logs Callback",
+    man = "mlr3tuning::mlr3tuning.async_save_logs",
+
+    on_eval_after_resample = function(callback, context) {
+      states = get_private(context$resample_result)$.data$learner_states()
+      callback$state$log = map(states, function(state) state$log)
+    },
+
+    on_eval_before_archive = function(callback, context) {
+      context$aggregated_performance = c(context$aggregated_performance, list(log = list(callback$state$log)))
     }
   )
 }

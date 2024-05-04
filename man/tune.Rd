@@ -17,11 +17,8 @@ tune(
   store_benchmark_result = TRUE,
   store_models = FALSE,
   check_values = FALSE,
-  allow_hotstart = FALSE,
-  keep_hotstart_stack = FALSE,
-  evaluate_default = FALSE,
-  callbacks = list(),
-  method
+  callbacks = NULL,
+  rush = NULL
 )
 }
 \arguments{
@@ -42,7 +39,7 @@ Specialized \link{Tuner} change the resampling e.g. to evaluate a hyperparameter
 This field, however, always returns the resampling passed in construction.}
 
 \item{measures}{(\link[mlr3:Measure]{mlr3::Measure} or list of \link[mlr3:Measure]{mlr3::Measure})\cr
-A single measure creates a \link{TuningInstanceSingleCrit} and multiple measures a \link{TuningInstanceMultiCrit}.
+A single measure creates a \link{TuningInstanceBatchSingleCrit} and multiple measures a \link{TuningInstanceBatchMultiCrit}.
 If \code{NULL}, default measure is used.}
 
 \item{term_evals}{(\code{integer(1)})\cr
@@ -76,39 +73,24 @@ If \code{TRUE}, hyperparameter values are checked before evaluation and
 performance scores after. If \code{FALSE} (default), values are unchecked but
 computational overhead is reduced.}
 
-\item{allow_hotstart}{(\code{logical(1)})\cr
-Allow to hotstart learners with previously fitted models. See also
-\link[mlr3:HotstartStack]{mlr3::HotstartStack}. The learner must support hotstarting. Sets
-\code{store_models = TRUE}.}
-
-\item{keep_hotstart_stack}{(\code{logical(1)})\cr
-If \code{TRUE}, \link[mlr3:HotstartStack]{mlr3::HotstartStack} is kept in \verb{$objective$hotstart_stack}
-after tuning.}
-
-\item{evaluate_default}{(\code{logical(1)})\cr
-If \code{TRUE}, learner is evaluated with hyperparameters set to their default
-values at the start of the optimization.}
-
-\item{callbacks}{(list of \link{CallbackTuning})\cr
+\item{callbacks}{(list of \link{Callback})\cr
 List of callbacks.}
 
-\item{method}{(\code{character(1)})\cr
-Deprecated. Use \code{tuner} instead.}
+\item{rush}{(\code{Rush})\cr
+If a rush instance is supplied, the tuning runs without batches.}
 }
 \value{
-\link{TuningInstanceSingleCrit} | \link{TuningInstanceMultiCrit}
+\link{TuningInstanceBatchSingleCrit} | \link{TuningInstanceBatchMultiCrit}
 }
 \description{
 Function to tune a \link[mlr3:Learner]{mlr3::Learner}.
-The function internally creates a \link{TuningInstanceSingleCrit} or \link{TuningInstanceMultiCrit} which describe the tuning problem.
+The function internally creates a \link{TuningInstanceBatchSingleCrit} or \link{TuningInstanceBatchMultiCrit} which describes the tuning problem.
 It executes the tuning with the \link{Tuner} (\code{tuner}) and returns the result with the tuning instance (\verb{$result}).
-The \link{ArchiveTuning} (\verb{$archive}) stores all evaluated hyperparameter configurations and performance scores.
 
-You can find an overview of all tuners on our \href{https://mlr-org.com/tuners.html}{website}.
 }
 \details{
-The \link[mlr3:Task]{mlr3::Task}, \link[mlr3:Learner]{mlr3::Learner}, \link[mlr3:Resampling]{mlr3::Resampling}, \link[mlr3:Measure]{mlr3::Measure} and \link{Terminator} are used to construct a \link{TuningInstanceSingleCrit}.
-If multiple performance \link[=Measure]{Measures} are supplied, a \link{TuningInstanceMultiCrit} is created.
+The \link[mlr3:Task]{mlr3::Task}, \link[mlr3:Learner]{mlr3::Learner}, \link[mlr3:Resampling]{mlr3::Resampling}, \link[mlr3:Measure]{mlr3::Measure} and \link{Terminator} are used to construct a \link{TuningInstanceBatchSingleCrit}.
+If multiple performance \link[=Measure]{Measures} are supplied, a \link{TuningInstanceBatchMultiCrit} is created.
 The parameter \code{term_evals} and \code{term_time} are shortcuts to create a \link{Terminator}.
 If both parameters are passed, a \link{TerminatorCombo} is constructed.
 For other \link[=Terminator]{Terminators}, pass one with \code{terminator}.
@@ -149,7 +131,7 @@ The default measure depends on the task type.\tabular{lll}{
 
 \section{Analysis}{
 
-For analyzing the tuning results, it is recommended to pass the \link{ArchiveTuning} to \code{as.data.table()}.
+For analyzing the tuning results, it is recommended to pass the \link{ArchiveBatchTuning} to \code{as.data.table()}.
 The returned data table is joined with the benchmark result which adds the \link[mlr3:ResampleResult]{mlr3::ResampleResult} for each hyperparameter evaluation.
 
 The archive provides various getters (e.g. \verb{$learners()}) to ease the access.
