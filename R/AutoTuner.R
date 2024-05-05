@@ -406,10 +406,9 @@ AutoTuner = R6Class("AutoTuner",
       learner$timeout = c(train = Inf, predict = Inf)
 
       # FIXME: Here we need to ensure that we only deactivate inner tuning for those parameters
-      # that were tuned
+      # that were set to InnerTuneTokens
       if (private$.inner_tuning) {
         disable_inner_tuning(learner, ids = self$instance_args$t)
-        invoke(set_inner_tuning, .learner = learner, .args = insert_named(list(.disable = TRUE), private$.inner_tuning_args))
       }
 
       learner$train(task)
