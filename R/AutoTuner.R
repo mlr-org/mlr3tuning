@@ -5,6 +5,20 @@
 #' The [AutoTuner] wraps a [mlr3::Learner] and augments it with an automatic tuning process for a given set of hyperparameters.
 #' The [auto_tuner()] function creates an [AutoTuner] object.
 #'
+#' @section Validation:
+#' For this learner it is possible to specify validation both for the `AutoTuner` itself, as well as for the wrapped learner.
+#' The `$validate` field of the `AutoTuner` specifies data that is unused during the hyperparameter optimization,
+#' (unless the wrapped learner specifies `validate = "inner_valid"`) and only used for the final model fit.
+#' The `$validate` field of the wrapped learner specifies how to construct the validation data during the tuning, but
+#' the data is then used for the final model fit.
+#'
+#' In most cases, the final model fit should be performed on the whole data, hence the `$validate` field of the
+#' `AutoTuner` will usually be set to `NULL`.
+#' When conducting inner tuning via validation data (e.g. early stopping for XGBoost), one might want to set
+#' `$validate = "test"` for the wrapped learner, which will then use the same data for early stopping and for evaluating
+#' the hyperparameter configurations.
+#'
+#'
 #' @details
 #' The [AutoTuner] is a [mlr3::Learner] which wraps another [mlr3::Learner] and performs the following steps during `$train()`:
 #'
@@ -137,7 +151,8 @@ AutoTuner = R6Class("AutoTuner",
       store_models = FALSE,
       check_values = FALSE,
       callbacks = NULL,
-      rush = NULL
+      rush = NULL,
+      validate = NULL
       ) {
       learner = assert_learner(as_learner(learner, clone = TRUE))
 
@@ -167,7 +182,7 @@ AutoTuner = R6Class("AutoTuner",
         packages = c("mlr3tuning", learner$packages),
         feature_types = learner$feature_types,
         predict_types = learner$predict_types,
-        properties = learner$properties
+        properties = setdiff(learner$properties, "internal_tuning")
       )
 
       self$predict_type = learner$predict_type
@@ -283,6 +298,13 @@ AutoTuner = R6Class("AutoTuner",
 
   active = list(
 
+    validate = function(rhs) {
+      if (!missing(rhs)) {
+        private$.validate = assert_validate(rhs)
+      }
+      private$.validate
+    },
+
     #' @field archive [Archive]\cr
     #' Archive of the [TuningInstanceBatchSingleCrit].
     archive = function() self$tuning_instance$archive,
@@ -341,6 +363,7 @@ AutoTuner = R6Class("AutoTuner",
   ),
 
   private = list(
+    .validate = NULL,
     .train = function(task) {
       # construct instance from args; then tune
       ia = self$instance_args
@@ -436,4 +459,31 @@ unmarshal_model.auto_tuner_model_marshaled = function(model, inplace = FALSE, ..
   at_model$learner$model = unmarshal_model(prev_model, inplace = FALSE)
 
   return(structure(at_model, class = c("auto_tuner_model", "list")))
+}
+
+#' @title Configure Validation for AutoTuner
+#'
+#' @description
+#'
+#' @param learner ([`AutoTuner`])\cr
+#'   The autotuner for which to enable validation.
+#' @param validate (`numeric(1)`, `"inner_valid"`, `"test"`, or `NULL`)\cr
+#'   How to configure the validation of the `AutoTuner` itself (usually not enabled).
+#' @param validate_tuning (`numeric(1)`, `"inner_valid"`, `"test"` or `NULL`)\cr
+#'   How to set the validation during the tuning of the wrapped [`Learner`].
+#' @export
+#' at = auto_tuner(
+#'   tuner = tnr("random_search"),
+#'   learner = lrn("classif.debug", early_stopping = TRUE, iter = to_tune(upper = 1000L, inner = TRUE), validate = 0.2),
+#'   resampling = rsmp("holdout")
+#' )
+#' # use the test set of the tuning resampling for validation
+#' set_validate(at
+#'   validate = NULL,
+#'   validate_tuning = "test"
+#' )
+set_validate.AutoTuner = function(learner, validate, validate_tuning, ...) {
+  learner$validate = validate
+  set_validate(learner$learner, validate = validate_tuning, ...)
+  invisible(learner)
 }
