@@ -91,6 +91,7 @@ Benchmark result.}
 \item \href{#method-ArchiveBatchTuning-predictions}{\code{ArchiveBatchTuning$predictions()}}
 \item \href{#method-ArchiveBatchTuning-resample_result}{\code{ArchiveBatchTuning$resample_result()}}
 \item \href{#method-ArchiveBatchTuning-print}{\code{ArchiveBatchTuning$print()}}
+\item \href{#method-ArchiveBatchTuning-add_evals}{\code{ArchiveBatchTuning$add_evals()}}
 \item \href{#method-ArchiveBatchTuning-clone}{\code{ArchiveBatchTuning$clone()}}
 }
 }
@@ -98,7 +99,6 @@ Benchmark result.}
 <details open><summary>Inherited methods</summary>
 <ul>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="format"><a href='../../bbotk/html/Archive.html#method-Archive-format'><code>bbotk::Archive$format()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveBatch" data-id="add_evals"><a href='../../bbotk/html/ArchiveBatch.html#method-ArchiveBatch-add_evals'><code>bbotk::ArchiveBatch$add_evals()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveBatch" data-id="best"><a href='../../bbotk/html/ArchiveBatch.html#method-ArchiveBatch-best'><code>bbotk::ArchiveBatch$best()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveBatch" data-id="clear"><a href='../../bbotk/html/ArchiveBatch.html#method-ArchiveBatch-clear'><code>bbotk::ArchiveBatch$clear()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveBatch" data-id="nds_selection"><a href='../../bbotk/html/ArchiveBatch.html#method-ArchiveBatch-nds_selection'><code>bbotk::ArchiveBatch$nds_selection()</code></a></span></li>
@@ -111,7 +111,12 @@ Benchmark result.}
 \subsection{Method \code{new()}}{
 Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ArchiveBatchTuning$new(search_space, codomain, check_values = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ArchiveBatchTuning$new(
+  search_space,
+  codomain,
+  check_values = FALSE,
+  internal_search_space = NULL
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -259,6 +264,15 @@ Printer.
 }
 \if{html}{\out{</div>}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-ArchiveBatchTuning-add_evals"></a>}}
+\if{latex}{\out{\hypertarget{method-ArchiveBatchTuning-add_evals}{}}}
+\subsection{Method \code{add_evals()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{ArchiveBatchTuning$add_evals(xdt, xss_trafoed = NULL, ydt)}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ArchiveBatchTuning-clone"></a>}}

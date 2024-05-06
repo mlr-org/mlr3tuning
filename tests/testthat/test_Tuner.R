@@ -162,3 +162,39 @@ test_that("Tuner active bindings work", {
     regexp = "$packages is read-only",
     fixed = TRUE)
 })
+
+test_that("inner", {
+  aggr = function(x) 99
+  learner = lrn("classif.debug",
+    iter = to_tune(upper = 1000L, internal = TRUE, aggr = aggr),
+    x = to_tune(0.2, 0.3),
+    validate = 0.3,
+    early_stopping = TRUE
+  )
+  ti = tune(
+    tuner = tnr("grid_search"),
+    learner = learner,
+    task = tsk("iris"),
+    resampling = rsmp("cv"),
+    term_evals = 2
+  )
+  expect_equal(
+    ti$archive$data$iter, rep(99, 2)
+  )
+  expect_equal(
+    ti$result_learner_param_vals$iter, 99
+  )
+})
+
+test_that("proper error when primary search space is empty", {
+  instance = ti(
+    task = tsk("pima"),
+    learner = lrn("classif.debug", validate = 0.2, early_stopping = TRUE, iter = to_tune(upper = 1000, internal = TRUE, aggr = function(x) 99)),
+    resampling = rsmp("holdout"),
+    measures = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 10)
+  )
+
+  tuner = tnr("random_search", batch_size = 1)
+  expect_error(tuner$optimize(instance), "To only conduct")
+})

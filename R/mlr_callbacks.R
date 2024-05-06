@@ -63,25 +63,6 @@ load_callback_backup = function() {
 #'   callbacks = clbk("mlr3tuning.measures", measures = msr("classif.acc"))
 #' )
 #'
-#' # score the configurations on the holdout set
-#' task = tsk("pima")
-#' splits = partition(task, ratio = 0.8)
-#' task$row_roles$use = splits$train
-#' task$row_roles$holdout = splits$test
-#'
-#' learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
-#' learner$predict_sets = c("test", "holdout")
-#'
-#' instance = tune(
-#'   tuner = tnr("random_search", batch_size = 2),
-#'   task = task,
-#'   learner = learner,
-#'   resampling = rsmp("cv", folds = 3),
-#'   measures = msr("classif.ce"),
-#'   term_evals = 4,
-#'   callbacks = clbk("mlr3tuning.measures", measures = msr("classif.ce",
-#'     predict_sets = "holdout", id = "classif.ce_holdout"))
-#' )
 NULL
 
 load_callback_measures = function() {
@@ -158,6 +139,42 @@ load_callback_async_measures = function() {
 #' tuner$optimize(instance)
 #' }
 NULL
+
+# we need this as a callback, because we cannot overwrite the private$.assign_result method from the Tuner,
+# because for TunerFromOptimizer this method is never called
+load_callback_internal_tuning = function(batch, single_crit) {
+  if (batch && single_crit) {
+    cb = callback_batch_tuning("internal_tuning_batch_single_crit",
+      man = "mlr3tuning::internal_tuning",
+      on_result = function(callback, context) {
+        inst = context$instance
+        internal_tuned_ids = inst$internal_search_space$ids()
+        internal_tuned_vals = as.list(inst$archive$best()[, internal_tuned_ids, with = FALSE])
+
+
+        # right now, this contains the values tuned by the optimizer and the values that were set in the learner
+        learner_param_vals = context$result$learner_param_vals[[1L]]
+        # we now have to:
+        # * add the internally optimized values
+        # * disable the internal tuning for the internally optimized values
+
+        learner = inst$objective$learner
+
+        prev_pvs = inst$objective$learner$param_set$values
+        learner$param_set$values = insert_named(learner_param_vals, internal_tuned_vals)
+        on.exit({inst$objective$learner$param_set$values = prev_pvs})
+
+        disable_internal_tuning(learner, internal_tuned_ids)
+        new_learner_param_vals = inst$objective$learner$param_set$values
+        on.exit()
+
+        context$result$learner_param_vals = list(new_learner_param_vals)
+      }
+    )
+
+  }
+  return(cb)
+}
 
 load_callback_async_mlflow = function() {
   callback_async_tuning("mlr3tuning.async_mlflow",

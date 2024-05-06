@@ -73,8 +73,21 @@ ArchiveBatchTuning = R6Class("ArchiveBatchTuning",
     #'
     #' @param check_values (`logical(1)`)\cr
     #'   If `TRUE` (default), hyperparameter configurations are check for validity.
-    initialize = function(search_space, codomain, check_values = FALSE) {
+    initialize = function(search_space, codomain, check_values = FALSE, internal_search_space = NULL) {
       super$initialize(search_space, codomain, check_values)
+
+      if (!is.null(internal_search_space)) {
+        private$.internal_search_space = as_search_space(internal_search_space)
+        assert_disjunct(search_space$ids(), internal_search_space$ids())
+
+        internal_params = internal_search_space$params
+        private$.aggrs = set_names(map(internal_params$cargo, "aggr"), internal_params$id)
+
+        assert_list(private$.aggrs, types = "function")
+        assert_permutation(internal_search_space$ids(), names(private$.aggrs))
+      } else {
+        private$.internal_search_space = ps()
+      }
 
       # initialize empty benchmark result
       self$benchmark_result = BenchmarkResult$new()
@@ -153,7 +166,44 @@ ArchiveBatchTuning = R6Class("ArchiveBatchTuning",
     print = function() {
       catf("%s with %i evaluations", format(self), self$n_evals)
       print(as.data.table(self, unnest = NULL, exclude_columns = c("x_domain", "uhash", "timestamp", "runtime_learners", "resample_result")), digits = 2)
+    },
+    add_evals = function(xdt, xss_trafoed = NULL, ydt) {
+      internal_tuned_values_aggr = NULL
+      ii = NULL
+
+      if (length(private$.aggrs)) {
+        ii = tail(seq_len(self$benchmark_result$n_resample_results), n = length(xdt))
+        n_rrs = self$benchmark_result$n_resample_results
+        # access the inner tuned values from the learner states (also works when models are not stored)
+        # then call the aggregator to aggregate the values over the folds of the resamplings
+        internal_tuned_values_aggr = map(ii, function(i) {
+          itvs_rr = map(self$resample_result(i)$learners, "internal_tuned_values")
+
+          # FIXME: this needs to be captured earlier
+          imap(private$.aggrs, function(aggr, id) {
+            if (is.null(itvs_rr) || !length(itvs_rr)) {
+              stopf("Trying to extract inner tuned values from learner '%s', but it does not have any. Did you configure it correctly?", self$learner$id)
+            }
+            aggr(map(itvs_rr, id))
+          })
+        })
+      }
+      super$add_evals(xdt, xss_trafoed, ydt)
+      if (!is.null(private$.aggrs)) {
+        set(self$data, i = ii, j = names(private$.aggrs), value = rbindlist(internal_tuned_values_aggr))
+      }
+      invisible(self)
     }
+  ),
+  active = list(
+    internal_search_space = function(rhs) {
+      assert_ro_binding(rhs)
+      private$.internal_search_space
+    }
+  ),
+  private = list(
+    .internal_search_space = NULL,
+    .aggrs = NULL
   )
 )
 
@@ -185,6 +235,7 @@ as.data.table.ArchiveBatchTuning = function(x, ..., unnest = "x_domain", exclude
     setdiff(x_domain_ids, exclude_columns)
   }
 
-  setcolorder(tab, c(x$cols_x, x$cols_y, cols_y_extra, cols_x_domain, "runtime_learners", "timestamp", "batch_nr"))
+  setcolorder(tab, c(x$cols_x, x$internal_search_space$ids(),  x$cols_y, cols_y_extra, cols_x_domain,
+      "runtime_learners", "timestamp", "batch_nr"))
   tab[, setdiff(names(tab), exclude_columns), with = FALSE]
 }

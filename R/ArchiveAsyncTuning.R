@@ -191,6 +191,7 @@ as.data.table.ArchiveAsyncTuning = function(x, ..., unnest = "x_domain", exclude
     setdiff(x_domain_ids, exclude_columns)
   }
 
-  setcolorder(tab, c(x$cols_x, x$cols_y, cols_y_extra, cols_x_domain, "runtime_learners", "timestamp_xs", "timestamp_ys"))
+  setcolorder(tab, c(x$cols_x, x$internal_search_space(), x$cols_y, cols_y_extra, cols_x_domain,
+      "runtime_learners", "timestamp_xs", "timestamp_ys"))
   tab[, setdiff(names(tab), exclude_columns), with = FALSE]
 }

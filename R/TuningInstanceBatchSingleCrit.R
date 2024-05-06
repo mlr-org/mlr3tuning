@@ -129,15 +129,45 @@ TuningInstanceBatchSingleCrit = R6Class("TuningInstanceBatchSingleCrit",
       } else {
         search_space = as_search_space(search_space)
       }
+      internal_search_space = NULL
+      internal_tune_ids = keep(names(search_space$tags), map_lgl(search_space$tags, function(t) "internal_tuning" %in% t))
+
+      if (length(internal_tune_ids) && isFALSE(store_benchmark_result)) {
+        # we need to access the inner_tuned_vals from the bmr
+        stopf("To allow for internal tuning it is required to store the benchmark results.")
+      }
+
+      if (length(internal_tune_ids)) {
+        internal_search_space = search_space$subset(internal_tune_ids)
+        if (internal_search_space$has_trafo) {
+          stopf("Inner Tuning and Parameter Transformations are currently not supported.")
+        }
+        search_space = search_space$subset(setdiff(search_space$ids(), internal_tune_ids))
+
+        # the learner dictates how to interprete the to_tune(..., inner)
+
+        learner$param_set$set_values(.values = convert_inner_tune_tokens(internal_search_space, learner$param_set))
+
+        # we need to use a callback to change how the Optimizer writes the result to the ArchiveTuning
+        # This is because overwriting the Tuner's .assign_result method has no effect, as it is not called.
+        callbacks = c(load_callback_internal_tuning(batch = TRUE, single_crit = TRUE), callbacks)
+
+        #FIXME: more checks
+      }
+
+      private$.internal_search_space = internal_search_space %??% ps()
 
       # create codomain from measure
       measures = assert_measures(as_measures(measure, task_type = task$task_type), task = task, learner = learner)
       codomain = measures_to_codomain(measures)
 
+
       archive = ArchiveBatchTuning$new(
         search_space = search_space,
         codomain = codomain,
-        check_values = check_values)
+        check_values = check_values,
+        internal_search_space = internal_search_space
+      )
 
       objective = ObjectiveTuningBatch$new(
         task = task,
@@ -187,10 +217,16 @@ TuningInstanceBatchSingleCrit = R6Class("TuningInstanceBatchSingleCrit",
     #' Param values for the optimal learner call.
     result_learner_param_vals = function() {
       private$.result$learner_param_vals[[1]]
+    },
+    internal_search_space = function(rhs) {
+      assert_ro_binding(rhs)
+      private$.internal_search_space
     }
+
   ),
 
   private = list(
+    .internal_search_space = NULL,
     # initialize context for optimization
     .initialize_context = function(optimizer) {
       context = ContextBatchTuning$new(self, optimizer)

@@ -21,6 +21,21 @@ The respective model is available via field \code{at$learner$model}.
 During \verb{$predict()} the \code{AutoTuner} just calls the predict method of the wrapped (inner) learner.
 A set timeout is disabled while fitting the final model.
 }
+\section{Validation}{
+
+For this learner it is possible to specify validation both for the \code{AutoTuner} itself, as well as for the wrapped learner.
+The \verb{$validate} field of the \code{AutoTuner} specifies data that is unused during the hyperparameter optimization,
+(unless the wrapped learner specifies \code{validate = "inner_valid"}) and only used for the final model fit.
+The \verb{$validate} field of the wrapped learner specifies how to construct the validation data during the tuning, but
+the data is then used for the final model fit.
+
+In most cases, the final model fit should be performed on the whole data, hence the \verb{$validate} field of the
+\code{AutoTuner} will usually be set to \code{NULL}.
+When conducting inner tuning via validation data (e.g. early stopping for XGBoost), one might want to set
+\verb{$validate = "test"} for the wrapped learner, which will then use the same data for early stopping and for evaluating
+the hyperparameter configurations.
+}
+
 \section{Resources}{
 
 There are several sections about hyperparameter optimization in the \href{https://mlr3book.mlr-org.com}{mlr3book}.
@@ -203,7 +218,8 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   store_models = FALSE,
   check_values = FALSE,
   callbacks = NULL,
-  rush = NULL
+  rush = NULL,
+  validate = NULL
 )}\if{html}{\out{</div>}}
 }
 
