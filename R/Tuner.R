@@ -205,6 +205,7 @@ Tuner = R6Class("Tuner",
   private = list(
     .optimize = function(inst) stop("abstract"),
 
+<<<<<<< Updated upstream
     .assign_result = function(inst) {
       assert_multi_class(inst, c("TuningInstanceSingleCrit", "TuningInstanceMultiCrit"))
       res = inst$archive$best()
@@ -227,6 +228,8 @@ Tuner = R6Class("Tuner",
       }
     },
 
+=======
+>>>>>>> Stashed changes
     .param_set = NULL,
     .param_classes = NULL,
     .properties = NULL,
