@@ -148,6 +148,12 @@ Optimization algorithm.}
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
+\item{\code{internal_valid_scores}}{Retrieves the inner validation scores as a named \code{list()}.
+Returns \code{NULL} if learner is not trained yet.}
+
+\item{\code{validate}}{How to construct the internal validation data. This parameter can be either \code{NULL},
+a ratio in $(0, 1)$, \code{"test"}, or \code{"predefined"}.}
+
 \item{\code{archive}}{\link{Archive}\cr
 Archive of the \link{TuningInstanceBatchSingleCrit}.}
 
@@ -273,6 +279,9 @@ List of callbacks.}
 
 \item{\code{rush}}{(\code{Rush})\cr
 If a rush instance is supplied, the tuning runs without batches.}
+
+\item{\code{validate}}{(\code{numeric(1)}, \code{"test"}, \code{"predefined"} or \code{NULL})\cr
+How to construct the internal validation data.}
 }
 \if{html}{\out{</div>}}
 }

@@ -21,6 +21,7 @@ If the archive is passed to \code{as.data.table()}, both are joined automaticall
 The table (\verb{$data}) has the following columns:
 \itemize{
 \item One column for each hyperparameter of the search space (\verb{$search_space}).
+\item One (list-)column for the \code{internal_tuned_values}
 \item One column for each performance measure (\verb{$codomain}).
 \item \code{x_domain} (\code{list()})\cr
 Lists of (transformed) hyperparameter values that are passed to the learner.
@@ -81,6 +82,14 @@ Benchmark result.}
 }
 \if{html}{\out{</div>}}
 }
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{internal_search_space}}{(\code{\link{ParamSet}})\cr
+The search space containing those parameters that are internally optimized by the \code{\link[mlr3:Learner]{mlr3::Learner}}.}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
@@ -91,7 +100,6 @@ Benchmark result.}
 \item \href{#method-ArchiveBatchTuning-predictions}{\code{ArchiveBatchTuning$predictions()}}
 \item \href{#method-ArchiveBatchTuning-resample_result}{\code{ArchiveBatchTuning$resample_result()}}
 \item \href{#method-ArchiveBatchTuning-print}{\code{ArchiveBatchTuning$print()}}
-\item \href{#method-ArchiveBatchTuning-add_evals}{\code{ArchiveBatchTuning$add_evals()}}
 \item \href{#method-ArchiveBatchTuning-clone}{\code{ArchiveBatchTuning$clone()}}
 }
 }
@@ -99,6 +107,7 @@ Benchmark result.}
 <details open><summary>Inherited methods</summary>
 <ul>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="format"><a href='../../bbotk/html/Archive.html#method-Archive-format'><code>bbotk::Archive$format()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveBatch" data-id="add_evals"><a href='../../bbotk/html/ArchiveBatch.html#method-ArchiveBatch-add_evals'><code>bbotk::ArchiveBatch$add_evals()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveBatch" data-id="best"><a href='../../bbotk/html/ArchiveBatch.html#method-ArchiveBatch-best'><code>bbotk::ArchiveBatch$best()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveBatch" data-id="clear"><a href='../../bbotk/html/ArchiveBatch.html#method-ArchiveBatch-clear'><code>bbotk::ArchiveBatch$clear()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveBatch" data-id="nds_selection"><a href='../../bbotk/html/ArchiveBatch.html#method-ArchiveBatch-nds_selection'><code>bbotk::ArchiveBatch$nds_selection()</code></a></span></li>
@@ -133,6 +142,10 @@ Internally created from provided \link[mlr3:Measure]{mlr3::Measure}s.}
 
 \item{\code{check_values}}{(\code{logical(1)})\cr
 If \code{TRUE} (default), hyperparameter configurations are check for validity.}
+
+\item{\code{internal_search_space}}{(\code{\link{ParamSet}} or \code{NULL})\cr
+The internal search space of the tuner. This includes parameters that the learner can optimize internally
+durign \verb{$train()}, such as the number of epochs via early stopping.}
 }
 \if{html}{\out{</div>}}
 }
@@ -264,15 +277,6 @@ Printer.
 }
 \if{html}{\out{</div>}}
 }
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ArchiveBatchTuning-add_evals"></a>}}
-\if{latex}{\out{\hypertarget{method-ArchiveBatchTuning-add_evals}{}}}
-\subsection{Method \code{add_evals()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ArchiveBatchTuning$add_evals(xdt, xss_trafoed = NULL, ydt)}\if{html}{\out{</div>}}
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ArchiveBatchTuning-clone"></a>}}

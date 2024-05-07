@@ -142,38 +142,68 @@ NULL
 
 # we need this as a callback, because we cannot overwrite the private$.assign_result method from the Tuner,
 # because for TunerFromOptimizer this method is never called
-load_callback_internal_tuning = function(batch, single_crit) {
-  if (batch && single_crit) {
-    cb = callback_batch_tuning("internal_tuning_batch_single_crit",
-      man = "mlr3tuning::internal_tuning",
-      on_result = function(callback, context) {
-        inst = context$instance
-        internal_tuned_ids = inst$internal_search_space$ids()
-        internal_tuned_vals = as.list(inst$archive$best()[, internal_tuned_ids, with = FALSE])
+load_callback_internal_tuning = function(batch) {
 
+  on_result = function(callback, context) {
+    inst = context$instance
+    internal_tuned_values = inst$archive$best()[, "internal_tuned_values", with = FALSE]$internal_tuned_values
 
-        # right now, this contains the values tuned by the optimizer and the values that were set in the learner
-        learner_param_vals = context$result$learner_param_vals[[1L]]
-        # we now have to:
-        # * add the internally optimized values
-        # * disable the internal tuning for the internally optimized values
+    # right now, this contains the values tuned by the optimizer and the values that were set in the learner
+    learner_param_vals = context$result$learner_param_vals
+    # we now have to:
+    # * add the internally optimized values
+    # * disable the internal tuning for the internally optimized values
 
-        learner = inst$objective$learner
+    learner = inst$objective$learner
+    new_learner_param_vals = pmap(list(itv = internal_tuned_values, lpv = learner_param_vals), function(itv, lpv) {
+      prev_pvs = inst$objective$learner$param_set$values
+      learner$param_set$values = insert_named(lpv, itv)
+      on.exit({inst$objective$learner$param_set$values = prev_pvs})
 
-        prev_pvs = inst$objective$learner$param_set$values
-        learner$param_set$values = insert_named(learner_param_vals, internal_tuned_vals)
-        on.exit({inst$objective$learner$param_set$values = prev_pvs})
+      disable_internal_tuning(learner, names(itv))
+      nlpv = inst$objective$learner$param_set$values
+      on.exit()
 
-        disable_internal_tuning(learner, internal_tuned_ids)
-        new_learner_param_vals = inst$objective$learner$param_set$values
-        on.exit()
-
-        context$result$learner_param_vals = list(new_learner_param_vals)
-      }
-    )
-
+      nlpv
+    })
+    context$result[, let(learner_param_vals = new_learner_param_vals, internal_tuned_values = internal_tuned_values)]
   }
-  return(cb)
+
+  if (batch) {
+    callback_batch_tuning("mlr3tuning.batch_internal_tuning",
+      man = "mlr3tuning::internal_tuning",
+      on_eval_before_archive = function(callback, context) {
+        new_uhashes = tail(context$benchmark_result$uhashes, n = nrow(context$aggregated_performance))
+
+        internal_tuned_values_aggr = map(new_uhashes, function(uhash) {
+          states = get_private(context$benchmark_result)$.data$learner_states(uhash)
+
+          internal_tuned_values = map(states, "internal_tuned_values")
+          imap(get_private(context$instance$archive)$.aggrs, function(aggr, id) {
+            aggr(map(internal_tuned_values, id))
+          })
+        })
+        context$aggregated_performance[, let(internal_tuned_values = internal_tuned_values_aggr)]
+      },
+      on_result = on_result
+    )
+  } else {
+    callback_async_tuning("mlr3tuning.async_internal_tuning",
+      on_eval_before_archive = function(callback, context) {
+        states = get_private(context$resample_result)$.data$learner_states()
+        internal_tuned_values = map(states, "internal_tuned_value")
+        internal_tuned_values_aggr = imap(get_private(callback$instance$archive)$.aggrs, function(aggr, id) {
+          itvs_rr = map(internal_tuned_values, id)
+          if (is.null(itvs_rr) || !length(itvs_rr)) {
+            stopf("Trying to extract inner tuned values from learner '%s', but it does not have any. Did you configure it correctly?", self$learner$id)
+          }
+          aggr(map(itvs_rr, id))
+        })
+        context$aggregated_performance[, let(internal_tuned_values = internal_tuned_values_aggr)]
+      },
+      on_result = on_result
+    )
+  }
 }
 
 load_callback_async_mlflow = function() {

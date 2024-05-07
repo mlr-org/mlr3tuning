@@ -62,6 +62,14 @@ mlr3tuning is extended by the following packages.
 }
 }
 
+\section{Internal Search Space}{
+
+(Developer information):
+Because \code{TunerFromOptimizer} calls the optimizer on the tuning instance, there are some restrictions to how we
+can change the tuning instnace. E.g., we cannot change the \code{cols_x} of the tuning instance to include the
+inner search space.
+}
+
 \section{Analysis}{
 
 For analyzing the tuning results, it is recommended to pass the \link{ArchiveBatchTuning} to \code{as.data.table()}.
@@ -118,6 +126,9 @@ as.data.table(instance$archive)
 \describe{
 \item{\code{result_learner_param_vals}}{(\code{list()})\cr
 Param values for the optimal learner call.}
+
+\item{\code{internal_search_space}}{(\code{\link{ParamSet}})\cr
+The search space containing those parameters that are internally optimized by the \code{\link[mlr3:Learner]{mlr3::Learner}}.}
 }
 \if{html}{\out{</div>}}
 }

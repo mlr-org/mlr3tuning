@@ -61,6 +61,7 @@
 #' @template param_check_values
 #' @template param_callbacks
 #' @template param_rush
+#' @template param_validate
 #'
 #' @export
 #' @examples
@@ -175,6 +176,7 @@ AutoTuner = R6Class("AutoTuner",
       ia$check_values = assert_flag(check_values)
       ia$callbacks = assert_callbacks(as_callbacks(callbacks))
       self$instance_args = ia
+      private$.can_validate = "validation" %in% learner$properties
 
       super$initialize(
         id = paste0(learner$id, ".tuned"),
@@ -184,7 +186,7 @@ AutoTuner = R6Class("AutoTuner",
         predict_types = learner$predict_types,
         properties = setdiff(learner$properties, "internal_tuning")
       )
-
+      self$validate = validate
       self$predict_type = learner$predict_type
       self$predict_sets = learner$predict_sets
     },
@@ -297,9 +299,21 @@ AutoTuner = R6Class("AutoTuner",
   ),
 
   active = list(
+    #' @field internal_valid_scores
+    #' Retrieves the inner validation scores as a named `list()`.
+    #' Returns `NULL` if learner is not trained yet.
+    internal_valid_scores = function() {
+      self$state$internal_valid_scores
+    },
 
+    #' @field validate
+    #' How to construct the internal validation data. This parameter can be either `NULL`,
+    #' a ratio in $(0, 1)$, `"test"`, or `"predefined"`.
     validate = function(rhs) {
       if (!missing(rhs)) {
+        if (!private$.can_validate && !is.null(rhs)) {
+          stopf("The learner that is tuned by AutoTuner '%s' does not support validation", self$id)
+        }
         private$.validate = assert_validate(rhs)
       }
       private$.validate
@@ -351,7 +365,7 @@ AutoTuner = R6Class("AutoTuner",
     #' Hash (unique identifier) for this object.
     hash = function(rhs) {
       assert_ro_binding(rhs)
-      calculate_hash(class(self), self$id, self$param_set$values, private$.predict_type, self$fallback$hash, self$parallel_predict, self$tuner, self$instance_args, private$.store_tuning_instance)
+      calculate_hash(class(self), self$id, self$param_set$values, private$.predict_type, self$fallback$hash, self$parallel_predict, self$tuner, self$instance_args, private$.store_tuning_instance, private$.validate)
     },
 
     #' @field phash (`character(1)`)\cr
@@ -364,10 +378,23 @@ AutoTuner = R6Class("AutoTuner",
 
   private = list(
     .validate = NULL,
+    .can_validate = NULL,
     .train = function(task) {
       # construct instance from args; then tune
       ia = self$instance_args
       ia$task = task
+
+      tune_validate = get0("validate", ia$learner)
+      if (is.numeric(tune_validate) || identical(tune_validate, "test")) { # either row ids or ratio
+        # the learner that is tuned does validation in this case, but we throw an error if a predefined validation
+        # task exists and the learner wants to create the validation task in a different way, so we have to
+        # remove it temporarily
+        # note that we don't remove the validation task if learner has validate = NULL, because even if he does not
+        # use the validation task during training, he might still predict on the validation task
+        prev_valid_task = task$internal_valid_task
+        task$internal_valid_task = NULL
+        on.exit({task$internal_valid_task = prev_valid_task})
+      }
 
       # check if task contains all row ids required for instantiated resampling
       if (ia$resampling$is_instantiated) {
@@ -388,9 +415,19 @@ AutoTuner = R6Class("AutoTuner",
       instance = do.call(TuningInstance$new, ia)
       self$tuner$optimize(instance)
 
+      # now we reset the validation task
+      on.exit()
+
       # get learner, set params to optimal, then train we REALLY need to clone
       # here we write to the object and this would change instance_args
       learner = ia$learner$clone(deep = TRUE)
+
+      if (private$.can_validate) {
+        learner$validate = self$validate
+      }
+
+      # in the case of internal tuing, the result_learner_param_vals already contains the aggregated internally
+      # optimized values and the switches to disable the internal tuning were already set via disabel_internal_tuning
       learner$param_set$values = instance$result_learner_param_vals
       # disable timeout to allow train on full data set without time limit
       # timeout during tuning is not affected
@@ -402,11 +439,12 @@ AutoTuner = R6Class("AutoTuner",
       if (private$.store_tuning_instance) result_model$tuning_instance = instance
       structure(result_model, class = c("auto_tuner_model", "list"))
     },
-
     .predict = function(task) {
       self$model$learner$predict(task)
     },
-
+    .extract_internal_valid_scores = function() {
+      self$model$learner$internal_valid_scores
+    },
     .store_tuning_instance = NULL
   )
 )
@@ -464,26 +502,32 @@ unmarshal_model.auto_tuner_model_marshaled = function(model, inplace = FALSE, ..
 #' @title Configure Validation for AutoTuner
 #'
 #' @description
+#' Configure validation for the auto-tuner and the wrapped learner.
+#' In most cases, the validation data for the [`AutoTuner`] itself should be `NULL` and one only wants to
+#' configure the validation data during the hyperparameter optimization via the parameter `tune_validate`.
 #'
 #' @param learner ([`AutoTuner`])\cr
 #'   The autotuner for which to enable validation.
 #' @param validate (`numeric(1)`, `"inner_valid"`, `"test"`, or `NULL`)\cr
 #'   How to configure the validation of the `AutoTuner` itself (usually not enabled).
-#' @param validate_tuning (`numeric(1)`, `"inner_valid"`, `"test"` or `NULL`)\cr
+#' @param tune_validate (`numeric(1)`, `"inner_valid"`, `"test"` or `NULL`)\cr
 #'   How to set the validation during the tuning of the wrapped [`Learner`].
+#' @param ... (any)\cr
+#'   Passed when calling `set_validate()` on the wrapped leaerner.
 #' @export
+#' @examples
 #' at = auto_tuner(
 #'   tuner = tnr("random_search"),
 #'   learner = lrn("classif.debug", early_stopping = TRUE, iter = to_tune(upper = 1000L, inner = TRUE), validate = 0.2),
 #'   resampling = rsmp("holdout")
 #' )
-#' # use the test set of the tuning resampling for validation
-#' set_validate(at
+#' # use the test set of the tuning resampling for validation, don't do validation for the AutoTuner itself
+#' set_validate(at,
 #'   validate = NULL,
 #'   validate_tuning = "test"
 #' )
-set_validate.AutoTuner = function(learner, validate, validate_tuning, ...) {
+set_validate.AutoTuner = function(learner, validate, tune_validate, ...) {
   learner$validate = validate
-  set_validate(learner$learner, validate = validate_tuning, ...)
+  set_validate(learner$learner, validate = tune_validate, ...)
   invisible(learner)
 }

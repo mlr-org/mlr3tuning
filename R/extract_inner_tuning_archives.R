@@ -85,7 +85,7 @@ extract_inner_tuning_archives.ResampleResult = function(x, unnest = "x_domain", 
   tab[, "resampling_id" := rr$resampling$id]
   cols_x = rr$learners[[1]]$archive$cols_x
   cols_y = rr$learners[[1]]$archive$cols_y
-  setcolorder(tab, c("iteration", cols_x, cols_y))
+  setcolorder(tab, c("iteration", cols_x, if (!is.null(tab$internal_tuned_values)) "internal_tuned_values", cols_y))
   tab
 }
 
@@ -102,7 +102,7 @@ extract_inner_tuning_archives.BenchmarkResult = function(x, unnest = "x_domain",
     cols_x = unique(unlist(map(unique(tab$experiment), function(i) bmr$resample_results$resample_result[[i]]$learners[[1]]$archive$cols_x)))
     cols_y = unique(unlist(map(unique(tab$experiment), function(i) bmr$resample_results$resample_result[[i]]$learners[[1]]$archive$cols_y)))
     cols_x_domain =  if ("x_domain" %in% unnest) names(tab)[grepl("^x_domain_.*", names(tab))] else NULL
-    setcolorder(tab, c("experiment", "iteration", unique(c(cols_x, cols_y)), cols_x_domain))
+    setcolorder(tab, c("experiment", "iteration", unique(c(cols_x, cols_y)), if(!is.null(tab$internal_tuned_values)) "internal_tuned_values", cols_x_domain))
   }
   tab
 }

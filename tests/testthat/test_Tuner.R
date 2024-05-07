@@ -163,7 +163,7 @@ test_that("Tuner active bindings work", {
     fixed = TRUE)
 })
 
-test_that("inner", {
+test_that("internal single crit", {
   aggr = function(x) 99
   learner = lrn("classif.debug",
     iter = to_tune(upper = 1000L, internal = TRUE, aggr = aggr),
@@ -172,18 +172,53 @@ test_that("inner", {
     early_stopping = TRUE
   )
   ti = tune(
-    tuner = tnr("grid_search"),
+    tuner = tnr("grid_search", batch_size = 2),
     learner = learner,
     task = tsk("iris"),
     resampling = rsmp("cv"),
-    term_evals = 2
+    term_evals = 4
   )
   expect_equal(
-    ti$archive$data$iter, rep(99, 2)
+    ti$archive$data$internal_tuned_values, replicate(list(list(iter = 99L)), n = 4L)
   )
   expect_equal(
-    ti$result_learner_param_vals$iter, 99
+    ti$result_learner_param_vals$iter, 99L
   )
+})
+
+test_that("internal multi crit", {
+  learner = lrn("classif.debug",
+    iter = to_tune(upper = 1000L, internal = TRUE, aggr = function(x) as.integer(ceiling(mean(unlist(x))) + 2000L)),
+    x = to_tune(0.2, 0.3),
+    predict_type = "prob",
+    validate = 0.3,
+    early_stopping = TRUE
+  )
+  # this ensures we get a pareto front that contains all values
+  m1 = msr("classif.acc")
+  m2 = msr("classif.acc", id = "classif.acc2")
+  m2$minimize = TRUE
+
+  ti = tune(
+    tuner = tnr("random_search", batch_size = 2),
+    learner = learner,
+    task = tsk("sonar"),
+    resampling = rsmp("cv", folds = 2L),
+    measures = list(m1, m2),
+    term_evals = 20
+  )
+
+  expect_true(length(ti$result_learner_param_vals) == 20L)
+  expect_true(all(map_int(ti$archive$data$internal_tuned_values, "iter") >= 2000L))
+  expect_true(all(map_lgl(ti$result_learner_param_vals, function(x) x$iter >= 2000L)))
+  expect_true(length(unique(map_int(ti$archive$data$internal_tuned_values, "iter"))) > 1L)
+
+  expect_permutation(
+    map_int(ti$result_learner_param_vals, "iter"),
+    map_int(ti$archive$data$internal_tuned_values, "iter")
+  )
+
+  # test that all the results are not identicaly
 })
 
 test_that("proper error when primary search space is empty", {
@@ -197,4 +232,8 @@ test_that("proper error when primary search space is empty", {
 
   tuner = tnr("random_search", batch_size = 1)
   expect_error(tuner$optimize(instance), "To only conduct")
+})
+
+test_that("async works with internal tuning", {
+
 })

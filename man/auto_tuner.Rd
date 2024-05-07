@@ -17,7 +17,8 @@ auto_tuner(
   store_benchmark_result = TRUE,
   store_models = FALSE,
   check_values = FALSE,
-  callbacks = NULL
+  callbacks = NULL,
+  validate = NULL
 )
 }
 \arguments{
@@ -73,6 +74,9 @@ computational overhead is reduced.}
 
 \item{callbacks}{(list of \link{Callback})\cr
 List of callbacks.}
+
+\item{validate}{(\code{numeric(1)}, \code{"test"}, \code{"predefined"} or \code{NULL})\cr
+How to construct the internal validation data.}
 }
 \value{
 \link{AutoTuner}.

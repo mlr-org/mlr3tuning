@@ -53,6 +53,13 @@
 #'  * [mlr3hyperband](https://github.com/mlr-org/mlr3hyperband) adds the Hyperband and Successive Halving algorithm.
 #'  * [mlr3mbo](https://github.com/mlr-org/mlr3mbo) adds Bayesian optimization methods.
 #'
+#'
+#' @section Internal Search Space:
+#' (Developer information):
+#' Because `TunerFromOptimizer` calls the optimizer on the tuning instance, there are some restrictions to how we
+#' can change the tuning instnace. E.g., we cannot change the `cols_x` of the tuning instance to include the
+#' inner search space.
+#'
 #' @template param_task
 #' @template param_learner
 #' @template param_resampling
@@ -63,9 +70,12 @@
 #' @template param_store_models
 #' @template param_check_values
 #' @template param_callbacks
-#'
+#' @template param_internal_search_space
 #' @template param_xdt
 #' @template param_learner_param_vals
+#'
+#' @template field_internal_search_space
+#'
 #'
 #' @export
 #' @examples
@@ -129,33 +139,14 @@ TuningInstanceBatchSingleCrit = R6Class("TuningInstanceBatchSingleCrit",
       } else {
         search_space = as_search_space(search_space)
       }
-      internal_search_space = NULL
-      internal_tune_ids = keep(names(search_space$tags), map_lgl(search_space$tags, function(t) "internal_tuning" %in% t))
 
-      if (length(internal_tune_ids) && isFALSE(store_benchmark_result)) {
-        # we need to access the inner_tuned_vals from the bmr
-        stopf("To allow for internal tuning it is required to store the benchmark results.")
-      }
+      # modifies tuning instance in-place and adds the internal tuning callback
+      res = init_internal_search_space(self, private, super, search_space, store_benchmark_result, learner,
+        callbacks, batch = TRUE)
 
-      if (length(internal_tune_ids)) {
-        internal_search_space = search_space$subset(internal_tune_ids)
-        if (internal_search_space$has_trafo) {
-          stopf("Inner Tuning and Parameter Transformations are currently not supported.")
-        }
-        search_space = search_space$subset(setdiff(search_space$ids(), internal_tune_ids))
-
-        # the learner dictates how to interprete the to_tune(..., inner)
-
-        learner$param_set$set_values(.values = convert_inner_tune_tokens(internal_search_space, learner$param_set))
-
-        # we need to use a callback to change how the Optimizer writes the result to the ArchiveTuning
-        # This is because overwriting the Tuner's .assign_result method has no effect, as it is not called.
-        callbacks = c(load_callback_internal_tuning(batch = TRUE, single_crit = TRUE), callbacks)
-
-        #FIXME: more checks
-      }
-
-      private$.internal_search_space = internal_search_space %??% ps()
+      private$.internal_search_space = res$internal_search_space
+      callbacks = res$callbacks
+      search_space = res$search_space
 
       # create codomain from measure
       measures = assert_measures(as_measures(measure, task_type = task$task_type), task = task, learner = learner)
@@ -166,7 +157,7 @@ TuningInstanceBatchSingleCrit = R6Class("TuningInstanceBatchSingleCrit",
         search_space = search_space,
         codomain = codomain,
         check_values = check_values,
-        internal_search_space = internal_search_space
+        internal_search_space = private$.internal_search_space
       )
 
       objective = ObjectiveTuningBatch$new(
@@ -218,11 +209,12 @@ TuningInstanceBatchSingleCrit = R6Class("TuningInstanceBatchSingleCrit",
     result_learner_param_vals = function() {
       private$.result$learner_param_vals[[1]]
     },
+    #' @field internal_search_space ([`ParamSet`])\cr
+    #'   The search space containing those parameters that are internally optimized by the [`mlr3::Learner`].
     internal_search_space = function(rhs) {
       assert_ro_binding(rhs)
       private$.internal_search_space
     }
-
   ),
 
   private = list(

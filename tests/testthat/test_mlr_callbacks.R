@@ -44,11 +44,11 @@ test_that("async measures callback works", {
   rush_plan(n_workers = 2)
   instance = ti_async(
     task = tsk("pima"),
-    learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1), predict_sets = c("test", "holdout")),
+    learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1), predict_sets = "test"),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 3),
-    callbacks = clbk("mlr3tuning.async_measures", measures = list(msr("classif.ce", predict_sets = "holdout", id = "classif.ce_holdout"))))
+    callbacks = clbk("mlr3tuning.async_measures", measures = list(msr("classif.ce", predict_sets = "test", id = "classif.ce_holdout"))))
 
   tuner = tnr("async_random_search")
   tuner$optimize(instance)

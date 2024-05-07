@@ -66,7 +66,7 @@ test_that("extract_inner_tuning_results function works", {
 
   expect_data_table(extract_inner_tuning_results(rr), nrows = 0, ncols = 0)
 
- # instance
+  # instance
   at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space,
     store_tuning_instance = FALSE, store_benchmark_result = FALSE)
   resampling_outer = rsmp("cv", folds = 2)

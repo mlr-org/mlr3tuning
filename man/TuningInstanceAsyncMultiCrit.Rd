@@ -41,6 +41,9 @@ The returned data table contains the \link[mlr3:ResampleResult]{mlr3::ResampleRe
 \describe{
 \item{\code{result_learner_param_vals}}{(\code{list()})\cr
 List of param values for the optimal learner call.}
+
+\item{\code{internal_search_space}}{(\code{\link{ParamSet}})\cr
+The search space containing those parameters that are internally optimized by the \code{\link[mlr3:Learner]{mlr3::Learner}}.}
 }
 \if{html}{\out{</div>}}
 }

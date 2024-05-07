@@ -22,6 +22,8 @@
 #' @template param_callbacks
 #' @template param_rush
 #'
+#' @template field_internal_search_space
+#'
 #' @template param_xdt
 #' @template param_learner_param_vals
 #'
@@ -57,6 +59,14 @@ TuningInstanceAsyncMultiCrit = R6Class("TuningInstanceAsyncMultiCrit",
         search_space = as_search_space(search_space)
       }
 
+      # modifies tuning instance in-place and adds the internal tuning callback
+      res = init_internal_search_space(self, private, super, search_space, store_benchmark_result, learner,
+        callbacks, batch = FALSE)
+
+      private$.internal_search_space = res$internal_search_space
+      callbacks = res$callbacks
+      search_space = res$search_space
+
       if (is.null(rush)) rush = rsh()
 
       # create codomain from measure
@@ -66,7 +76,9 @@ TuningInstanceAsyncMultiCrit = R6Class("TuningInstanceAsyncMultiCrit",
       archive = ArchiveAsyncTuning$new(
         search_space = search_space,
         codomain = codomain,
-        rush = rush)
+        rush = rush,
+        internal_search_space = private$.internal_search_space
+      )
 
       objective = ObjectiveTuningAsync$new(
         task = task,
@@ -115,10 +127,17 @@ TuningInstanceAsyncMultiCrit = R6Class("TuningInstanceAsyncMultiCrit",
     #'   List of param values for the optimal learner call.
     result_learner_param_vals = function() {
       private$.result$learner_param_vals
+    },
+    #' @field internal_search_space ([`ParamSet`])\cr
+    #'   The search space containing those parameters that are internally optimized by the [`mlr3::Learner`].
+    internal_search_space = function(rhs) {
+      assert_ro_binding(rhs)
+      private$.internal_search_space
     }
   ),
 
   private = list(
+    .internal_search_space = NULL,
 
     # initialize context for optimization
     .initialize_context = function(optimizer) {

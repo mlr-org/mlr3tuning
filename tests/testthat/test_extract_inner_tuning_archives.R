@@ -12,7 +12,7 @@ test_that("extract_inner_tuning_archives function works", {
 
   irr = extract_inner_tuning_archives(rr)
   expect_data_table(irr, nrows = 6)
-  expect_named(irr, c("iteration", "cp", "classif.ce", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "resample_result", "task_id", "learner_id", "resampling_id", "errors", "warnings"), ignore.order = TRUE)
+  expect_named(irr, c("iteration", "cp", "classif.ce", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "resample_result", "task_id", "learner_id", "resampling_id", "errors", "warnings" ), ignore.order = TRUE)
 
   # repeated cv
   at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
@@ -117,4 +117,21 @@ test_that("extract_inner_tuning_archives function works", {
   expect_data_table(ibmr, nrows = 14)
   expect_named(ibmr, c("experiment", "iteration", "cp", "minsplit", "x", "classif.ce", "x_domain_cp", "x_domain_minsplit", "x_domain_x", "runtime_learners", "timestamp", "batch_nr", "resample_result", "task_id", "learner_id", "resampling_id", "errors", "warnings"), ignore.order = TRUE)
   expect_equal(unique(ibmr$experiment), c(1, 2))
+})
+
+test_that("works with internal tuning", {
+  at = auto_tuner(
+    tuner = tnr("random_search", batch_size = 2),
+    learner = lrn("classif.debug", iter = to_tune(upper = 1000L, internal = TRUE), x = to_tune(0.2, 0.3), early_stopping = TRUE, validate = "test"),
+    resampling = rsmp("cv", folds = 3),
+    measure = msr("classif.ce"),
+    term_evals = 4
+  )
+
+  bmr = benchmark(benchmark_grid(tsk("iris"), at, rsmp("cv", folds = 2L)), store_models = TRUE)
+
+  ita = extract_inner_tuning_archives(bmr)
+  expect_list(ita$internal_tuned_values)
+  itr = extract_inner_tuning_results(bmr)
+  expect_list(itr$internal_tuned_values)
 })

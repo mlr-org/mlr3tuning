@@ -633,3 +633,80 @@ test_that("AutoTuner works with async tuner", {
   expect_data_table(at$tuning_instance$archive$data, min.rows = 4)
   expect_rush_reset(at$tuning_instance$rush, type = "terminate")
 })
+
+# Internal ---------------------------------------------------------------------
+
+test_that("internal tuning and validation", {
+  # we can use the internally optimized values for the final model fit
+  task = tsk("iris")
+  at = auto_tuner(
+    tuner = tnr("random_search", batch_size = 2),
+    learner = lrn("classif.debug", iter = to_tune(1, 1000L, aggr = function(x) length(x)), x = to_tune(0.2, 0.3),
+      early_stopping = TRUE, validate = "test"),
+    resampling = rsmp("cv", folds = 3),
+    measure = msr("classif.ce"),
+    term_evals = 4
+  )
+  at$train(task)
+  expect_equal(at$model$learner$param_set$values$iter, 3)
+  expect_false(at$model$learner$param_set$values$early_stopping)
+
+  # the AutoTuner's validate field controls the validation data for the final model fit,
+  # because it was set to NULL, the full data was used for the final model fit
+  expect_true(is.null(at$model$learner$state$internal_valid_task_ids))
+
+  # we can also still do early stopping on the final model fit if we want to
+  at = auto_tuner(
+    tuner = tnr("random_search", batch_size = 2),
+    learner = lrn("classif.debug", iter = 1000L, x = to_tune(0.2, 0.3), early_stopping = TRUE, validate = "test"),
+    resampling = rsmp("cv", folds = 3),
+    measure = msr("classif.ce"),
+    term_evals = 4
+  )
+  expect_error(at$train(task), "when a validation task is present")
+  at$validate = 0.2
+  at$train(task)
+
+  # early stopping was not disabled
+  expect_equal(at$model$learner$param_set$values$iter, 1000)
+  expect_true(at$model$learner$param_set$values$early_stopping)
+})
+
+test_that("set_validate works on AutoTuner", {
+  at = auto_tuner(
+    tuner = tnr("random_search", batch_size = 2),
+    learner = lrn("classif.debug", iter = 1000L, x = to_tune(0.2, 0.3), early_stopping = TRUE),
+    resampling = rsmp("cv", folds = 3),
+    measure = msr("classif.ce"),
+    term_evals = 4
+  )
+  set_validate(at, validate = 0.3, tune_validate = "test")
+
+  expect_equal(at$validate, 0.3)
+  expect_equal(at$learner$validate, "test")
+})
+
+test_that("valdiate field can only be set if the tuned learner supports validation", {
+  at = auto_tuner(
+    tuner = tnr("random_search", batch_size = 2),
+    learner = lrn("classif.debug", iter = 1000L, x = to_tune(0.2, 0.3), early_stopping = TRUE),
+    resampling = rsmp("cv", folds = 3),
+    measure = msr("classif.ce"),
+    term_evals = 4,
+    validate = 0.3
+  )
+  expect_equal(at$validate, 0.3)
+
+  expect_error(
+    auto_tuner(
+      tuner = tnr("random_search", batch_size = 2),
+      learner = lrn("classif.rpart"),
+      resampling = rsmp("cv", folds = 3),
+      measure = msr("classif.ce"),
+      term_evals = 4,
+      validate = 0.3
+    ),
+    "The learner that is tuned by"
+  )
+
+})
