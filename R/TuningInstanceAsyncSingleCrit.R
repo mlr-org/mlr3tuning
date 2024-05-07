@@ -54,6 +54,7 @@ TuningInstanceAsyncSingleCrit = R6Class("TuningInstanceAsyncSingleCrit",
       callbacks = NULL,
       rush = NULL
       ) {
+      require_namespaces("rush")
       learner = assert_learner(as_learner(learner, clone = TRUE))
 
       if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token"))) {
@@ -66,7 +67,7 @@ TuningInstanceAsyncSingleCrit = R6Class("TuningInstanceAsyncSingleCrit",
         search_space = as_search_space(search_space)
       }
 
-      if (is.null(rush)) rush = rsh()
+      if (is.null(rush)) rush = rush::rsh()
 
       # create codomain from measure
       measures = assert_measures(as_measures(measure, task_type = task$task_type), task = task, learner = learner)
