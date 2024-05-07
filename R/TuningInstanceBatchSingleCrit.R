@@ -74,9 +74,6 @@
 #' @template param_xdt
 #' @template param_learner_param_vals
 #'
-#' @template field_internal_search_space
-#'
-#'
 #' @export
 #' @examples
 #' # Hyperparameter optimization on the Palmer Penguins data set

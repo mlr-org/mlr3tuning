@@ -22,8 +22,6 @@
 #' @template param_callbacks
 #' @template param_rush
 #'
-#' @template field_internal_search_space
-#'
 #' @template param_xdt
 #' @template param_learner_param_vals
 #'
