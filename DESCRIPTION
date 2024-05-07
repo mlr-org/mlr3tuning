@@ -54,7 +54,7 @@ Suggests:
 VignetteBuilder:
     knitr
 Remotes:
-    mlr-org/bbotk@just_another_branc
+    mlr-org/bbotk@just_another_branch,
     mlr-org/mlr3misc,
     mlr-org/mlr3pipelines@feat/inner_valid,
     mlr-org/paradox@feat/inner_valid,
