@@ -33,6 +33,6 @@ at = auto_tuner(
 # use the test set of the tuning resampling for validation, don't do validation for the AutoTuner itself
 set_validate(at,
   validate = NULL,
-  validate_tuning = "test"
+  tune_validate = "test"
 )
 }

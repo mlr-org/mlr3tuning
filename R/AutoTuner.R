@@ -524,7 +524,7 @@ unmarshal_model.auto_tuner_model_marshaled = function(model, inplace = FALSE, ..
 #' # use the test set of the tuning resampling for validation, don't do validation for the AutoTuner itself
 #' set_validate(at,
 #'   validate = NULL,
-#'   validate_tuning = "test"
+#'   tune_validate = "test"
 #' )
 set_validate.AutoTuner = function(learner, validate, tune_validate, ...) {
   learner$validate = validate
