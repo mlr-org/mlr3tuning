@@ -44,7 +44,7 @@ Suggests:
     knitr,
     mlflow,
     mlr3learners (>= 0.5.5),
-    mlr3pipelines (>= 0.5.2-9000),
+    mlr3pipelines,
     nloptr,
     redux,
     rmarkdown,
@@ -54,7 +54,7 @@ Suggests:
 VignetteBuilder:
     knitr
 Remotes:
-    mlr-org/bbotk,
+    mlr-org/bbotk@just_another_branc
     mlr-org/mlr3misc,
     mlr-org/mlr3pipelines@feat/inner_valid,
     mlr-org/paradox@feat/inner_valid,
