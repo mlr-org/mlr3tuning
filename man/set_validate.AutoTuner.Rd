@@ -27,7 +27,7 @@ configure the validation data during the hyperparameter optimization via the par
 \examples{
 at = auto_tuner(
   tuner = tnr("random_search"),
-  learner = lrn("classif.debug", early_stopping = TRUE, iter = to_tune(upper = 1000L, inner = TRUE), validate = 0.2),
+  learner = lrn("classif.debug", early_stopping = TRUE, iter = to_tune(upper = 1000L, internal = TRUE), validate = 0.2),
   resampling = rsmp("holdout")
 )
 # use the test set of the tuning resampling for validation, don't do validation for the AutoTuner itself
