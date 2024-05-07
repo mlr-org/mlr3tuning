@@ -192,7 +192,7 @@ load_callback_internal_tuning = function(batch) {
       on_eval_before_archive = function(callback, context) {
         states = get_private(context$resample_result)$.data$learner_states()
         internal_tuned_values = map(states, "internal_tuned_value")
-        internal_tuned_values_aggr = imap(get_private(contexg$instance$archive)$.aggrs, function(aggr, id) {
+        internal_tuned_values_aggr = imap(get_private(context$instance$archive)$.aggrs, function(aggr, id) {
           itvs_rr = map(internal_tuned_values, id)
           if (is.null(itvs_rr) || !length(itvs_rr)) {
             stopf("Trying to extract inner tuned values from learner '%s', but it does not have any. Did you configure it correctly?", context$instance$learner$id)
