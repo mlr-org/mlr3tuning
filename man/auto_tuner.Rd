@@ -17,7 +17,8 @@ auto_tuner(
   store_benchmark_result = TRUE,
   store_models = FALSE,
   check_values = FALSE,
-  callbacks = NULL
+  callbacks = NULL,
+  rush = NULL
 )
 }
 \arguments{
@@ -73,6 +74,9 @@ computational overhead is reduced.}
 
 \item{callbacks}{(list of \link{Callback})\cr
 List of callbacks.}
+
+\item{rush}{(\code{Rush})\cr
+If a rush instance is supplied, the tuning runs without batches.}
 }
 \value{
 \link{AutoTuner}.

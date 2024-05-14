@@ -60,8 +60,8 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       self$measures = assert_measures(as_measures(measures), task = self$task, learner = self$learner)
       self$store_models = assert_flag(store_models)
       self$store_benchmark_result = assert_flag(store_benchmark_result) || self$store_models
-
       self$callbacks = assert_callbacks(as_callbacks(callbacks))
+
       self$default_values = self$learner$param_set$values
 
       super$initialize(

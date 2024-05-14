@@ -159,6 +159,7 @@ AutoTuner = R6Class("AutoTuner",
 
       ia$check_values = assert_flag(check_values)
       ia$callbacks = assert_callbacks(as_callbacks(callbacks))
+      if (!is.null(rush)) ia$rush = assert_class(rush, "Rush")
       self$instance_args = ia
 
       super$initialize(
