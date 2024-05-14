@@ -99,7 +99,8 @@ The <code>auto_tuner()</code> function creates an <a href="AutoTuner.html">AutoT
 <span>  store_benchmark_result <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  store_models <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  check_values <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  callbacks <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  callbacks <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  rush <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -182,6 +183,11 @@ computational overhead is reduced.</p></dd>
 <dt>callbacks</dt>
 <dd><p>(list of Callback)<br>
 List of callbacks.</p></dd>
+
+
+<dt>rush</dt>
+<dd><p>(<code>Rush</code>)<br>
+If a rush instance is supplied, the tuning runs without batches.</p></dd>
 
 </dl></div>
     <div class="section level2">
