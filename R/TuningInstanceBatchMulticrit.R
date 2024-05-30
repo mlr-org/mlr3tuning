@@ -99,6 +99,8 @@ TuningInstanceBatchMultiCrit = R6Class("TuningInstanceBatchMultiCrit",
       callbacks = res$callbacks
       search_space = res$search_space
 
+      assert_internal_tuning(learner, private$.internal_search_space$ids())
+
       # create codomain from measure
       measures = assert_measures(as_measures(measures, task_type = task$task_type), task = task, learner = learner)
       codomain = measures_to_codomain(measures)

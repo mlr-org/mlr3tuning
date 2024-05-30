@@ -62,14 +62,6 @@ mlr3tuning is extended by the following packages.
 }
 }
 
-\section{Internal Search Space}{
-
-(Developer information):
-Because \code{TunerFromOptimizer} calls the optimizer on the tuning instance, there are some restrictions to how we
-can change the tuning instnace. E.g., we cannot change the \code{cols_x} of the tuning instance to include the
-inner search space.
-}
-
 \section{Analysis}{
 
 For analyzing the tuning results, it is recommended to pass the \link{ArchiveBatchTuning} to \code{as.data.table()}.

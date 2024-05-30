@@ -122,8 +122,8 @@ load_callback_async_measures = function() {
 #' rush::rush_plan(n_workers = 4)
 #'
 #' learner = lrn("classif.rpart",
-#'   minsplit  = to_tune(2, 128),
-#'   cp        = to_tune(1e-04, 1e-1))
+#'   minsplit = to_tune(2, 128),
+#'   cp = to_tune(1e-04, 1e-1))
 #'
 #' instance = TuningInstanceAsyncSingleCrit$new(
 #'   task = tsk("pima"),
@@ -156,11 +156,14 @@ load_callback_internal_tuning = function(batch) {
 
     learner = inst$objective$learner
     new_learner_param_vals = pmap(list(itv = internal_tuned_values, lpv = learner_param_vals), function(itv, lpv) {
-      prev_pvs = inst$objective$learner$param_set$values
-      learner$param_set$values = insert_named(lpv, itv)
-      on.exit({inst$objective$learner$param_set$values = prev_pvs})
+      prev_pvs = learner$param_set$values
 
-      disable_internal_tuning(learner, names(itv))
+      learner$param_set$values = insert_named(lpv, itv)
+      on.exit({
+        inst$objective$learner$param_set$values = prev_pvs
+      })
+
+      learner$param_set$disable_internal_tuning(context$instance$internal_search_space$ids())
       nlpv = inst$objective$learner$param_set$values
       on.exit()
 
@@ -178,10 +181,8 @@ load_callback_internal_tuning = function(batch) {
         internal_tuned_values_aggr = map(new_uhashes, function(uhash) {
           states = get_private(context$benchmark_result)$.data$learner_states(uhash)
 
-          internal_tuned_values = map(states, "internal_tuned_values")
-          imap(get_private(context$instance$archive)$.aggrs, function(aggr, id) {
-            aggr(map(internal_tuned_values, id))
-          })
+          internal_tuned_values = transpose_list(map(states, "internal_tuned_values"))
+          context$instance$internal_search_space$aggr(internal_tuned_values)
         })
         context$aggregated_performance[, let(internal_tuned_values = internal_tuned_values_aggr)]
       },
@@ -191,15 +192,10 @@ load_callback_internal_tuning = function(batch) {
     callback_async_tuning("mlr3tuning.async_internal_tuning",
       on_eval_before_archive = function(callback, context) {
         states = get_private(context$resample_result)$.data$learner_states()
-        internal_tuned_values = map(states, "internal_tuned_value")
-        internal_tuned_values_aggr = imap(get_private(context$instance$archive)$.aggrs, function(aggr, id) {
-          itvs_rr = map(internal_tuned_values, id)
-          if (is.null(itvs_rr) || !length(itvs_rr)) {
-            stopf("Trying to extract inner tuned values from learner '%s', but it does not have any. Did you configure it correctly?", context$instance$learner$id)
-          }
-          aggr(map(itvs_rr, id))
-        })
-        context$aggregated_performance[, let(internal_tuned_values = internal_tuned_values_aggr)]
+        itvs = transpose_list(map(states, "internal_tuned_values"))
+        internal_tuned_values_aggr = context$instance$internal_search_space$aggr(itvs)
+        # here, aggregated_performance is a list not a data.table
+        context$aggregated_performance$internal_tuned_values = list(internal_tuned_values_aggr)
       },
       on_result = on_result
     )
@@ -235,7 +231,7 @@ load_callback_async_mlflow = function() {
       # start run
       callback$state$run_uuid = mlflow::mlflow_start_run(
         experiment_id = experiment_id,
-        client =  client)$run_uuid
+        client = client)$run_uuid
 
       iwalk(context$xs, function(value, id) {
         mlflow::mlflow_log_param(

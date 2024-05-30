@@ -74,6 +74,7 @@ TuningInstanceAsyncSingleCrit = R6Class("TuningInstanceAsyncSingleCrit",
       callbacks = res$callbacks
       search_space = res$search_space
 
+      assert_internal_tuning(learner, private$.internal_search_space$ids())
       if (is.null(rush)) rush = rsh()
 
       # create codomain from measure

@@ -53,13 +53,6 @@
 #'  * [mlr3hyperband](https://github.com/mlr-org/mlr3hyperband) adds the Hyperband and Successive Halving algorithm.
 #'  * [mlr3mbo](https://github.com/mlr-org/mlr3mbo) adds Bayesian optimization methods.
 #'
-#'
-#' @section Internal Search Space:
-#' (Developer information):
-#' Because `TunerFromOptimizer` calls the optimizer on the tuning instance, there are some restrictions to how we
-#' can change the tuning instnace. E.g., we cannot change the `cols_x` of the tuning instance to include the
-#' inner search space.
-#'
 #' @template param_task
 #' @template param_learner
 #' @template param_resampling
@@ -144,6 +137,8 @@ TuningInstanceBatchSingleCrit = R6Class("TuningInstanceBatchSingleCrit",
       private$.internal_search_space = res$internal_search_space
       callbacks = res$callbacks
       search_space = res$search_space
+
+      assert_internal_tuning(learner, private$.internal_search_space$ids())
 
       # create codomain from measure
       measures = assert_measures(as_measures(measure, task_type = task$task_type), task = task, learner = learner)

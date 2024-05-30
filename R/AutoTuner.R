@@ -423,7 +423,7 @@ AutoTuner = R6Class("AutoTuner",
       learner = ia$learner$clone(deep = TRUE)
 
       if (private$.can_validate) {
-        learner$validate = self$validate
+        set_validate(learner, validate = self$validate)
       }
 
       # in the case of internal tuing, the result_learner_param_vals already contains the aggregated internally
@@ -518,10 +518,12 @@ unmarshal_model.auto_tuner_model_marshaled = function(model, inplace = FALSE, ..
 #' @examples
 #' at = auto_tuner(
 #'   tuner = tnr("random_search"),
-#'   learner = lrn("classif.debug", early_stopping = TRUE, iter = to_tune(upper = 1000L, internal = TRUE), validate = 0.2),
+#'   learner = lrn("classif.debug", early_stopping = TRUE,
+#'     iter = to_tune(upper = 1000L, internal = TRUE), validate = 0.2),
 #'   resampling = rsmp("holdout")
 #' )
-#' # use the test set of the tuning resampling for validation, don't do validation for the AutoTuner itself
+#' # use the test set of the tuning resampling for validation,
+#' # no tvalidation for the AutoTuner itself
 #' set_validate(at,
 #'   validate = NULL,
 #'   tune_validate = "test"
@@ -530,4 +532,9 @@ set_validate.AutoTuner = function(learner, validate, tune_validate, ...) {
   learner$validate = validate
   set_validate(learner$learner, validate = tune_validate, ...)
   invisible(learner)
+}
+
+#' @export
+assert_internal_tuning.AutoTuner = function(learner, ids, ...) {
+  assert_internal_tuning(learner$learner, ids, ...)
 }

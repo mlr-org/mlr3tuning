@@ -56,9 +56,6 @@ ArchiveAsyncTuning = R6Class("ArchiveAsyncTuning",
     #' @param check_values (`logical(1)`)\cr
     #'   If `TRUE` (default), hyperparameter configurations are check for validity.
     initialize = function(search_space, codomain, rush, internal_search_space = NULL) {
-      if (!is.null(internal_search_space) && internal_search_space$length) {
-        stopf("Async tuners currently dont work with internal search spaces") # TODO:
-      }
       init_internal_search_space_archive(self, private, super, search_space, internal_search_space)
 
       super$initialize(

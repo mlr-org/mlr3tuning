@@ -25,24 +25,12 @@ extract_runtime = function(resample_result) {
   sum(runtimes)
 }
 
-# this function translates things like nrounds = p_int(upper = 1000, internal = TRUE) to the actual value used by the learner,
-# in this case, the upper value 1000. The information on how to translate is stored in the translator function.
-# The param_set is the parameter set of the learner, possbily containing other information for the translation.
-#
-# search_space: The search space that con
-convert_internal_tune_tokens = function(search_space, param_set) {
-  imap(search_space$domains, function(domain, .__id) {
-    param_set$params[.__id, "cargo", on = "id"][[1L]][[1L]]$in_tune_fn(domain, param_set)
-  })
-}
-
-
 init_internal_search_space = function(self, private, super, search_space, store_benchmark_result, learner, callbacks, batch) {
   internal_search_space = NULL
   internal_tune_ids = keep(names(search_space$tags), map_lgl(search_space$tags, function(t) "internal_tuning" %in% t))
 
   if (length(internal_tune_ids) && isFALSE(store_benchmark_result)) {
-    # we need to access the inner_tuned_vals from the bmr
+    # we need to access the internal_tuned_values from the bmr
     stopf("To allow for internal tuning it is required to store the benchmark results.")
   }
 
@@ -55,13 +43,15 @@ init_internal_search_space = function(self, private, super, search_space, store_
 
     # the learner dictates how to interprete the to_tune(..., inner)
 
-    learner$param_set$set_values(.values = convert_internal_tune_tokens(internal_search_space, learner$param_set))
+    learner$param_set$set_values(
+      .values = learner$param_set$convert_internal_search_space(internal_search_space)
+    )
 
     # we need to use a callback to change how the Optimizer writes the result to the ArchiveTuning
     # This is because overwriting the Tuner's .assign_result method has no effect, as it is not called.helper
     callbacks = c(load_callback_internal_tuning(batch), callbacks)
 
-    #FIXME: more checks
+    # FIXME: more checks
   }
 
   list(
@@ -85,4 +75,3 @@ init_internal_search_space_archive = function(self, private, super, search_space
     private$.internal_search_space = ps()
   }
 }
-

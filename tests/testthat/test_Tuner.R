@@ -146,21 +146,29 @@ test_that("Tuner active bindings work", {
   expect_equal(tuner$properties, properties)
   expect_subset(packages, tuner$packages)
 
-  expect_error({tuner$param_set = ps(p2 = p_lgl())},
-    regexp = "$param_set is read-only",
-    fixed = TRUE)
+  expect_error({
+    tuner$param_set = ps(p2 = p_lgl())
+  },
+  regexp = "$param_set is read-only",
+  fixed = TRUE)
 
-  expect_error({tuner$param_classes = "foo"},
-    regexp = "$param_classes is read-only",
-    fixed = TRUE)
+  expect_error({
+    tuner$param_classes = "foo"
+  },
+  regexp = "$param_classes is read-only",
+  fixed = TRUE)
 
-  expect_error({tuner$properties = "foo"},
-    regexp = "$properties is read-only",
-    fixed = TRUE)
+  expect_error({
+    tuner$properties = "foo"
+  },
+  regexp = "$properties is read-only",
+  fixed = TRUE)
 
-  expect_error({tuner$packages = "foo"},
-    regexp = "$packages is read-only",
-    fixed = TRUE)
+  expect_error({
+    tuner$packages = "foo"
+  },
+  regexp = "$packages is read-only",
+  fixed = TRUE)
 })
 
 test_that("internal single crit", {
@@ -236,4 +244,39 @@ test_that("proper error when primary search space is empty", {
 
 test_that("async works with internal tuning", {
 
+})
+
+test_that("internal tuning works with branching pipeop", {
+  glrn = ppl("branch", graphs = list(
+    lrn("classif.debug", id = "lrn1", iter = to_tune(upper = 500, internal = TRUE, aggr = function(x) 1L), early_stopping = TRUE),
+    lrn("classif.debug", id = "lrn2", iter = to_tune(upper = 1000, internal = TRUE, aggr = function(x) 2L), early_stopping = TRUE)
+  ))
+
+  learner = as_learner(glrn)
+  set_validate(learner, 0.2, ids = c("lrn1", "lrn2"))
+
+  task = tsk("iris")
+  learner$param_set$set_values(
+    branch.selection = to_tune()
+  )
+
+  instance = ti(
+    task = tsk("pima"),
+    learner = learner,
+    resampling = rsmp("holdout"),
+    measures = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 10)
+  )
+
+  tuner = tnr("grid_search")
+  tuner$optimize(instance)
+
+  expect_equal(
+    instance$archive$data[list(1), "internal_tuned_values", on = "branch.selection"][[1L]][[1L]]$lrn1.iter,
+    1L
+  )
+  expect_equal(
+    instance$archive$data[list(2), "internal_tuned_values", on = "branch.selection"][[1L]][[1L]]$lrn2.iter,
+    2L
+  )
 })
