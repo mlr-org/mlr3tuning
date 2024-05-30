@@ -34,8 +34,7 @@ Imports:
     data.table,
     lgr,
     mlr3misc (>= 0.15.0.9000),
-    R6,
-    rush
+    R6
 Suggests:
     adagio,
     future,
@@ -46,7 +45,7 @@ Suggests:
     mlr3learners (>= 0.5.5),
     mlr3pipelines,
     nloptr,
-    redux,
+    rush,
     rmarkdown,
     rpart,
     testthat (>= 3.0.0),

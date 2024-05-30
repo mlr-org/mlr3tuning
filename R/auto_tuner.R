@@ -22,6 +22,7 @@
 #' @template param_check_values
 #' @template param_callbacks
 #' @template param_validate
+#' @template param_rush
 #'
 #' @export
 #' @examples
@@ -47,7 +48,8 @@ auto_tuner = function(
   store_models = FALSE,
   check_values = FALSE,
   callbacks = NULL,
-  validate = NULL
+  validate = NULL,
+  rush = NULL
   ) {
   terminator = terminator %??% terminator_selection(term_evals, term_time)
 
@@ -63,6 +65,6 @@ auto_tuner = function(
     store_models = store_models,
     check_values = check_values,
     callbacks = callbacks,
-    validate = validate
-  )
+    validate = validate,
+    rush = rush)
 }
