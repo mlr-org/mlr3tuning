@@ -168,8 +168,7 @@ ArchiveBatchTuning = R6Class("ArchiveBatchTuning",
     }
   ),
   private = list(
-    .internal_search_space = NULL,
-    .aggrs = NULL
+    .internal_search_space = NULL
   )
 )
 

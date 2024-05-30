@@ -65,12 +65,6 @@ init_internal_search_space_archive = function(self, private, super, search_space
   if (!is.null(internal_search_space)) {
     private$.internal_search_space = as_search_space(internal_search_space)
     assert_disjunct(search_space$ids(), internal_search_space$ids())
-
-    internal_params = internal_search_space$params
-    private$.aggrs = set_names(map(internal_params$cargo, "aggr"), internal_params$id)
-
-    assert_list(private$.aggrs, types = "function")
-    assert_permutation(internal_search_space$ids(), names(private$.aggrs))
   } else {
     private$.internal_search_space = ps()
   }

@@ -172,7 +172,6 @@ ArchiveAsyncTuning = R6Class("ArchiveAsyncTuning",
   ),
 
   private = list(
-    .aggrs = NULL,
     .internal_search_space = NULL,
     .benchmark_result = NULL
   )
