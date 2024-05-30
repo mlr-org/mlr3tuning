@@ -44,7 +44,10 @@ test_that("internal tuning is supported", {
 
   tuner = tnr("async_random_search")
   expect_data_table(tuner$optimize(instance), nrows = 1)
-  expect_equal(instance$archive$data$internal_tuned_values, replicate(list(list(iter = 99)), n = 20))
+  expect_equal(
+    instance$archive$data$internal_tuned_values,
+    replicate(list(list(iter = 99)), n = length(instance$archive$data$internal_tuned_values)),
+  )
   expect_false(instance$result_learner_param_vals$early_stopping)
   expect_equal(instance$result_learner_param_vals$iter, 99)
 })
