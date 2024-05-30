@@ -8,7 +8,7 @@
 #' @section Validation:
 #' For this learner it is possible to specify validation both for the `AutoTuner` itself, as well as for the wrapped learner.
 #' The `$validate` field of the `AutoTuner` specifies data that is unused during the hyperparameter optimization,
-#' (unless the wrapped learner specifies `validate = "inner_valid"`) and only used for the final model fit.
+#' (unless the wrapped learner specifies `validate = "predefined"`) and only used for the final model fit.
 #' The `$validate` field of the wrapped learner specifies how to construct the validation data during the tuning, but
 #' the data is then used for the final model fit.
 #'
@@ -385,13 +385,9 @@ AutoTuner = R6Class("AutoTuner",
       ia = self$instance_args
       ia$task = task
 
-      tune_validate = get0("validate", ia$learner)
-      if (is.numeric(tune_validate) || identical(tune_validate, "test")) { # either row ids or ratio
-        # the learner that is tuned does validation in this case, but we throw an error if a predefined validation
-        # task exists and the learner wants to create the validation task in a different way, so we have to
-        # remove it temporarily
-        # note that we don't remove the validation task if learner has validate = NULL, because even if he does not
-        # use the validation task during training, he might still predict on the validation task
+      validate = get0("validate", ia$learner)
+      if (is.numeric(validate) || identical(validate, "test") && !is.null(task$internal_valid_task)) {
+        # we temporarily remove the internal validation task, because we need to overwrite it
         prev_valid_task = task$internal_valid_task
         task$internal_valid_task = NULL
         on.exit({task$internal_valid_task = prev_valid_task})
@@ -424,7 +420,7 @@ AutoTuner = R6Class("AutoTuner",
       learner = ia$learner$clone(deep = TRUE)
 
       if (private$.can_validate) {
-        set_validate(learner, validate = self$validate)
+        set_validate(learner, self$validate)
       }
 
       # in the case of internal tuing, the result_learner_param_vals already contains the aggregated internally
@@ -503,16 +499,16 @@ unmarshal_model.auto_tuner_model_marshaled = function(model, inplace = FALSE, ..
 #' @title Configure Validation for AutoTuner
 #'
 #' @description
-#' Configure validation for the auto-tuner and the wrapped learner.
-#' In most cases, the validation data for the [`AutoTuner`] itself should be `NULL` and one only wants to
-#' configure the validation data during the hyperparameter optimization via the parameter `tune_validate`.
+#' Configure validation for the final model fit (`final_validate`), as well as 
+#' during the tuning (`valdiate`).
 #'
 #' @param learner ([`AutoTuner`])\cr
 #'   The autotuner for which to enable validation.
-#' @param validate (`numeric(1)`, `"inner_valid"`, `"test"`, or `NULL`)\cr
-#'   How to configure the validation of the `AutoTuner` itself (usually not enabled).
-#' @param tune_validate (`numeric(1)`, `"inner_valid"`, `"test"` or `NULL`)\cr
-#'   How to set the validation during the tuning of the wrapped [`Learner`].
+#' @param validate (`numeric(1)`, `"predefined"`, `"test"`, or `NULL`)\cr
+#'   How to configure the validation during the hyperparameter tuning.
+#'   Rarely needed.
+#' @param final_validate (`numeric(1)`, `"predefined"`, `"test"` or `NULL`)\cr
+#'  How to configure the validation during the final model fit. Default is `NULL`, i.e. no validation.
 #' @param ... (any)\cr
 #'   Passed when calling `set_validate()` on the wrapped leaerner.
 #' @export
@@ -523,19 +519,11 @@ unmarshal_model.auto_tuner_model_marshaled = function(model, inplace = FALSE, ..
 #'     iter = to_tune(upper = 1000L, internal = TRUE), validate = 0.2),
 #'   resampling = rsmp("holdout")
 #' )
-#' # use the test set of the tuning resampling for validation,
-#' # no tvalidation for the AutoTuner itself
-#' set_validate(at,
-#'   validate = NULL,
-#'   tune_validate = "test"
-#' )
-set_validate.AutoTuner = function(learner, validate, tune_validate, ...) {
-  learner$validate = validate
-  set_validate(learner$learner, validate = tune_validate, ...)
+#' # use the test set as validation data during tuning
+#' set_validate(at, validate = "test")
+#' at$learner$validate
+set_validate.AutoTuner = function(learner, validate, final_validate = NULL, ...) {
+  learner$validate = final_validate
+  set_validate(learner$learner, validate = validate, ...)
   invisible(learner)
-}
-
-#' @export
-assert_internal_tuning.AutoTuner = function(learner, ids, ...) {
-  assert_internal_tuning(learner$learner, ids, ...)
 }

@@ -680,13 +680,13 @@ test_that("set_validate works on AutoTuner", {
     measure = msr("classif.ce"),
     term_evals = 4
   )
-  set_validate(at, validate = 0.3, tune_validate = "test")
+  set_validate(at, validate = "test", final_validate = 0.3)
 
   expect_equal(at$validate, 0.3)
   expect_equal(at$learner$validate, "test")
 })
 
-test_that("valdiate field can only be set if the tuned learner supports validation", {
+test_that("validate field can only be set if the tuned learner supports validation", {
   at = auto_tuner(
     tuner = tnr("random_search", batch_size = 2),
     learner = lrn("classif.debug", iter = 1000L, x = to_tune(0.2, 0.3), early_stopping = TRUE),
@@ -708,5 +708,4 @@ test_that("valdiate field can only be set if the tuned learner supports validati
     ),
     "The learner that is tuned by"
   )
-
 })

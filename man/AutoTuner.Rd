@@ -25,7 +25,7 @@ A set timeout is disabled while fitting the final model.
 
 For this learner it is possible to specify validation both for the \code{AutoTuner} itself, as well as for the wrapped learner.
 The \verb{$validate} field of the \code{AutoTuner} specifies data that is unused during the hyperparameter optimization,
-(unless the wrapped learner specifies \code{validate = "inner_valid"}) and only used for the final model fit.
+(unless the wrapped learner specifies \code{validate = "predefined"}) and only used for the final model fit.
 The \verb{$validate} field of the wrapped learner specifies how to construct the validation data during the tuning, but
 the data is then used for the final model fit.
 

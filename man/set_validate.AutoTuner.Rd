@@ -4,25 +4,25 @@
 \alias{set_validate.AutoTuner}
 \title{Configure Validation for AutoTuner}
 \usage{
-\method{set_validate}{AutoTuner}(learner, validate, tune_validate, ...)
+\method{set_validate}{AutoTuner}(learner, validate, final_validate = NULL, ...)
 }
 \arguments{
 \item{learner}{(\code{\link{AutoTuner}})\cr
 The autotuner for which to enable validation.}
 
-\item{validate}{(\code{numeric(1)}, \code{"inner_valid"}, \code{"test"}, or \code{NULL})\cr
-How to configure the validation of the \code{AutoTuner} itself (usually not enabled).}
+\item{validate}{(\code{numeric(1)}, \code{"predefined"}, \code{"test"}, or \code{NULL})\cr
+How to configure the validation during the hyperparameter tuning.
+Rarely needed.}
 
-\item{tune_validate}{(\code{numeric(1)}, \code{"inner_valid"}, \code{"test"} or \code{NULL})\cr
-How to set the validation during the tuning of the wrapped \code{\link{Learner}}.}
+\item{final_validate}{(\code{numeric(1)}, \code{"predefined"}, \code{"test"} or \code{NULL})\cr
+How to configure the validation during the final model fit. Default is \code{NULL}, i.e. no validation.}
 
 \item{...}{(any)\cr
 Passed when calling \code{set_validate()} on the wrapped leaerner.}
 }
 \description{
-Configure validation for the auto-tuner and the wrapped learner.
-In most cases, the validation data for the \code{\link{AutoTuner}} itself should be \code{NULL} and one only wants to
-configure the validation data during the hyperparameter optimization via the parameter \code{tune_validate}.
+Configure validation for the final model fit (\code{final_validate}), as well as
+during the tuning (\code{valdiate}).
 }
 \examples{
 at = auto_tuner(
@@ -31,10 +31,7 @@ at = auto_tuner(
     iter = to_tune(upper = 1000L, internal = TRUE), validate = 0.2),
   resampling = rsmp("holdout")
 )
-# use the test set of the tuning resampling for validation,
-# no tvalidation for the AutoTuner itself
-set_validate(at,
-  validate = NULL,
-  tune_validate = "test"
-)
+# use the test set as validation data during tuning
+set_validate(at, validate = "test")
+at$learner$validate
 }
