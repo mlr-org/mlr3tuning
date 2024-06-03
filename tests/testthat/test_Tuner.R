@@ -225,8 +225,6 @@ test_that("internal multi crit", {
     map_int(ti$result_learner_param_vals, "iter"),
     map_int(ti$archive$data$internal_tuned_values, "iter")
   )
-
-  # test that all the results are not identicaly
 })
 
 test_that("proper error when primary search space is empty", {
@@ -242,11 +240,9 @@ test_that("proper error when primary search space is empty", {
   expect_error(tuner$optimize(instance), "To only conduct")
 })
 
-test_that("async works with internal tuning", {
-
-})
-
-test_that("internal tuning works with branching pipeop", {
+test_that("internal tuning: branching", {
+  # this case is special, because not all internally tuned parameters are present in every iteration, only those that
+  # are in the active branch are
   glrn = ppl("branch", graphs = list(
     lrn("classif.debug", id = "lrn1", iter = to_tune(upper = 500, internal = TRUE, aggr = function(x) 1L), early_stopping = TRUE),
     lrn("classif.debug", id = "lrn2", iter = to_tune(upper = 1000, internal = TRUE, aggr = function(x) 2L), early_stopping = TRUE)
@@ -270,6 +266,7 @@ test_that("internal tuning works with branching pipeop", {
 
   tuner = tnr("grid_search")
   tuner$optimize(instance)
+  browser()
 
   expect_equal(
     instance$archive$data[list(1), "internal_tuned_values", on = "branch.selection"][[1L]][[1L]]$lrn1.iter,
@@ -279,4 +276,22 @@ test_that("internal tuning works with branching pipeop", {
     instance$archive$data[list(2), "internal_tuned_values", on = "branch.selection"][[1L]][[1L]]$lrn2.iter,
     2L
   )
+})
+
+test_that("internal tuning: error is thrown on incorrect configuration", {
+  expect_error(tune(
+    tuner = tnr("random_search"),
+    learner = lrn("classif.debug", iter = to_tune(upper = 1000, internal = TRUE)),
+    task = tsk("iris"),
+    resampling = rsmp("holdout")
+  ), "early_stopping")
+})
+
+test_that("internal tuning: error message when primary search space is empty", {
+  expect_error(tune(
+    tuner = tnr("random_search"),
+    learner = lrn("classif.debug", iter = to_tune(upper = 1000, internal = TRUE), early_stopping = TRUE, validate = 0.2),
+    task = tsk("iris"),
+    resampling = rsmp("holdout")
+  ), "tnr('internal')", fixed = TRUE)
 })

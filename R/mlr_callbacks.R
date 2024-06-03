@@ -182,7 +182,7 @@ load_callback_internal_tuning = function(batch) {
           states = get_private(context$benchmark_result)$.data$learner_states(uhash)
 
           internal_tuned_values = transpose_list(map(states, "internal_tuned_values"))
-          context$instance$internal_search_space$aggr(internal_tuned_values)
+          context$instance$internal_search_space$aggr_internal_tuned_values(internal_tuned_values)
         })
         context$aggregated_performance[, let(internal_tuned_values = internal_tuned_values_aggr)]
       },
@@ -193,7 +193,7 @@ load_callback_internal_tuning = function(batch) {
       on_eval_before_archive = function(callback, context) {
         states = get_private(context$resample_result)$.data$learner_states()
         itvs = transpose_list(map(states, "internal_tuned_values"))
-        internal_tuned_values_aggr = context$instance$internal_search_space$aggr(itvs)
+        internal_tuned_values_aggr = context$instance$internal_search_space$aggr_internal_tuned_values(itvs)
         # here, aggregated_performance is a list not a data.table
         context$aggregated_performance$internal_tuned_values = list(internal_tuned_values_aggr)
       },

@@ -42,7 +42,7 @@ Suggests:
     irace,
     knitr,
     mlflow,
-    mlr3learners (>= 0.5.5),
+    mlr3learners,
     mlr3pipelines,
     nloptr,
     rush,
@@ -56,6 +56,7 @@ Remotes:
     mlr-org/bbotk@just_another_branch,
     mlr-org/mlr3misc,
     mlr-org/mlr3pipelines@feat/inner_valid,
+    mlr-org/mlr3learners@feat/inner_valid,
     mlr-org/paradox@feat/inner_valid,
     mlr-org/mlr3@feat/inner_valid,
     mlr-org/rush

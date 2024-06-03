@@ -672,7 +672,7 @@ test_that("internal tuning and validation", {
   expect_true(at$model$learner$param_set$values$early_stopping)
 })
 
-test_that("set_validate works on AutoTuner", {
+test_that("set_validate", {
   at = auto_tuner(
     tuner = tnr("random_search", batch_size = 2),
     learner = lrn("classif.debug", iter = 1000L, x = to_tune(0.2, 0.3), early_stopping = TRUE),
@@ -708,4 +708,48 @@ test_that("validate field can only be set if the tuned learner supports validati
     ),
     "The learner that is tuned by"
   )
+})
+
+test_that("validation set can be used for final model fit", {
+  at = auto_tuner(
+    tuner = tnr("random_search"),
+    learner = lrn("classif.debug", early_stopping = TRUE, x = to_tune(0, 1)),
+    resampling = rsmp("holdout"),
+    store_models = TRUE,
+    term_evals = 1
+  )
+
+  task = tsk("iris")
+  task$divide(ratio = 0.2)
+
+  set_validate(at, final_validate = "predefined", validate = "predefined")
+  at$train(task)
+})
+
+test_that("internal tuning: nested resampling", {
+  task = tsk("iris")
+  test_outer = c(41:50, 91:100, 141:150)
+  train_outer = c(1:40, 51:90, 101:140)
+
+  test_inner = c(31:40, 81:90, 131:140)
+  train_inner = c(1:30, 51:80, 101:130)
+
+  resampling_outer = rsmp("custom")$instantiate(
+    task = task, train_sets = list(train_outer), test_sets = list(test_outer))
+
+  task_inner = task$clone(deep = TRUE)$filter(c(test_inner, train_inner))
+  resampling_inner = rsmp("custom")$instantiate(
+    task = task_inner, train_sets = list(train_inner), test_sets = list(test_inner))
+
+  at = auto_tuner(
+    tuner = tnr("random_search"),
+    learner = lrn("classif.debug", early_stopping = TRUE, x = to_tune(0, 1), iter = to_tune(upper = 1000, internal = TRUE)),
+    resampling = resampling_inner,
+    store_models = TRUE,
+    term_evals = 1
+  )
+
+
+  set_validate(at, validate = "test")
+  rr = resample(task, at, resampling_outer, store_models = TRUE)
 })

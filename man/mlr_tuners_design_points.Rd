@@ -126,6 +126,7 @@ Other Tuner:
 \code{\link{mlr_tuners_cmaes}},
 \code{\link{mlr_tuners_gensa}},
 \code{\link{mlr_tuners_grid_search}},
+\code{\link{mlr_tuners_internal}},
 \code{\link{mlr_tuners_irace}},
 \code{\link{mlr_tuners_nloptr}},
 \code{\link{mlr_tuners_random_search}}

@@ -72,7 +72,7 @@ Score hyperparameter configurations on additional measures.
 }
 
 \section{Super classes}{
-\code{\link[bbotk:Archive]{bbotk::Archive}} -> \code{\link[bbotk:ArchiveBatch]{bbotk::ArchiveBatch}} -> \code{ArchiveBatchTuning}
+\code{\link[bbotk:Archive]{bbotk::Archive}} -> \code{bbotk::ArchiveBatch} -> \code{ArchiveBatchTuning}
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}

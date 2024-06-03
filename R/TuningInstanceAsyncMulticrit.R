@@ -62,12 +62,9 @@ TuningInstanceAsyncMultiCrit = R6Class("TuningInstanceAsyncMultiCrit",
       res = init_internal_search_space(self, private, super, search_space, store_benchmark_result, learner,
         callbacks, batch = FALSE)
 
-      
       private$.internal_search_space = res$internal_search_space
       callbacks = res$callbacks
       search_space = res$search_space
-
-      assert_internal_tuning(learner, private$.internal_search_space$ids())
 
       if (is.null(rush)) rush = rush::rsh()
 
