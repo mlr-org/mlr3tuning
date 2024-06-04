@@ -23,17 +23,11 @@ A set timeout is disabled while fitting the final model.
 }
 \section{Validation}{
 
-For this learner it is possible to specify validation both for the \code{AutoTuner} itself, as well as for the wrapped learner.
-The \verb{$validate} field of the \code{AutoTuner} specifies data that is unused during the hyperparameter optimization,
-(unless the wrapped learner specifies \code{validate = "predefined"}) and only used for the final model fit.
-The \verb{$validate} field of the wrapped learner specifies how to construct the validation data during the tuning, but
-the data is then used for the final model fit.
-
-In most cases, the final model fit should be performed on the whole data, hence the \verb{$validate} field of the
-\code{AutoTuner} will usually be set to \code{NULL}.
-When conducting inner tuning via validation data (e.g. early stopping for XGBoost), one might want to set
-\verb{$validate = "test"} for the wrapped learner, which will then use the same data for early stopping and for evaluating
-the hyperparameter configurations.
+Both, the tuned \code{\link[mlr3:Learner]{Learner}} and the \code{AutoTuner} itself can make use of validation data.
+the \verb{$validate} field of the \code{AutoTuner} determines how validation is done during the final model fit.
+In most cases, this should be left as \code{NULL}.
+The \verb{$validate} field of the tuned \code{\link[mlr3:Learner]{Learner}} specifies how the validation data is constructed
+during the hyperparameter optimization.
 }
 
 \section{Resources}{

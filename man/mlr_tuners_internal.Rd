@@ -6,9 +6,9 @@
 \title{Internal Tuner}
 \description{
 Use this tuner to only conduct internal hyperparameter tuning for a \code{\link{Learner}}.
-Note that the selected \code{\link[mlr3:Measure]{Measure}} does not influence the tuning result,
-but only what is stored in the archive.
-To change the loss-function for the internal tuning, consult the hyperparameters of the
+Note that the selected \code{\link[mlr3:Measure]{Measure}} does not influence the tuning result.
+
+To change the loss-function for the internal tuning, consult the hyperparameter documentation of the
 tuned \code{\link[mlr3:Learner]{Learner}}.
 }
 \section{Dictionary}{

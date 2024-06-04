@@ -6,18 +6,11 @@
 #' The [auto_tuner()] function creates an [AutoTuner] object.
 #'
 #' @section Validation:
-#' For this learner it is possible to specify validation both for the `AutoTuner` itself, as well as for the wrapped learner.
-#' The `$validate` field of the `AutoTuner` specifies data that is unused during the hyperparameter optimization,
-#' (unless the wrapped learner specifies `validate = "predefined"`) and only used for the final model fit.
-#' The `$validate` field of the wrapped learner specifies how to construct the validation data during the tuning, but
-#' the data is then used for the final model fit.
-#'
-#' In most cases, the final model fit should be performed on the whole data, hence the `$validate` field of the
-#' `AutoTuner` will usually be set to `NULL`.
-#' When conducting inner tuning via validation data (e.g. early stopping for XGBoost), one might want to set
-#' `$validate = "test"` for the wrapped learner, which will then use the same data for early stopping and for evaluating
-#' the hyperparameter configurations.
-#'
+#' Both, the tuned [`Learner`][mlr3::Learner] and the `AutoTuner` itself can make use of validation data.
+#' the `$validate` field of the `AutoTuner` determines how validation is done during the final model fit.
+#' In most cases, this should be left as `NULL`.
+#' The `$validate` field of the tuned [`Learner`][mlr3::Learner] specifies how the validation data is constructed
+#' during the hyperparameter optimization.
 #'
 #' @details
 #' The [AutoTuner] is a [mlr3::Learner] which wraps another [mlr3::Learner] and performs the following steps during `$train()`:
@@ -423,8 +416,7 @@ AutoTuner = R6Class("AutoTuner",
         set_validate(learner, self$validate)
       }
 
-      # in the case of internal tuing, the result_learner_param_vals already contains the aggregated internally
-      # optimized values and the switches to disable the internal tuning were already set via disabel_internal_tuning
+      # in the case of internal tuning, the result_learner_param_vals already contains the aggregated internally
       learner$param_set$values = instance$result_learner_param_vals
       # disable timeout to allow train on full data set without time limit
       # timeout during tuning is not affected

@@ -2,9 +2,9 @@
 #' @name mlr_tuners_internal
 #' @description
 #' Use this tuner to only conduct internal hyperparameter tuning for a [`Learner`].
-#' Note that the selected [`Measure`][mlr3::Measure] does not influence the tuning result,
-#' but only what is stored in the archive.
-#' To change the loss-function for the internal tuning, consult the hyperparameters of the
+#' Note that the selected [`Measure`][mlr3::Measure] does not influence the tuning result.
+#'
+#' To change the loss-function for the internal tuning, consult the hyperparameter documentation of the
 #' tuned [`Learner`][mlr3::Learner].
 #'
 #' @templateVar id internal
