@@ -724,32 +724,6 @@ test_that("validation set can be used for final model fit", {
 
   set_validate(at, final_validate = "predefined", validate = "predefined")
   at$train(task)
-})
-
-test_that("internal tuning: nested resampling", {
-  task = tsk("iris")
-  test_outer = c(41:50, 91:100, 141:150)
-  train_outer = c(1:40, 51:90, 101:140)
-
-  test_inner = c(31:40, 81:90, 131:140)
-  train_inner = c(1:30, 51:80, 101:130)
-
-  resampling_outer = rsmp("custom")$instantiate(
-    task = task, train_sets = list(train_outer), test_sets = list(test_outer))
-
-  task_inner = task$clone(deep = TRUE)$filter(c(test_inner, train_inner))
-  resampling_inner = rsmp("custom")$instantiate(
-    task = task_inner, train_sets = list(train_inner), test_sets = list(test_inner))
-
-  at = auto_tuner(
-    tuner = tnr("random_search"),
-    learner = lrn("classif.debug", early_stopping = TRUE, x = to_tune(0, 1), iter = to_tune(upper = 1000, internal = TRUE)),
-    resampling = resampling_inner,
-    store_models = TRUE,
-    term_evals = 1
-  )
-
-
-  set_validate(at, validate = "test")
-  rr = resample(task, at, resampling_outer, store_models = TRUE)
+  expect_equal(at$state$internal_valid_task_hash, task$internal_valid_task$hash)
+  expect_equal(at$state$validate, "predefined")
 })

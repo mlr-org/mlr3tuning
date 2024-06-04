@@ -266,7 +266,6 @@ test_that("internal tuning: branching", {
 
   tuner = tnr("grid_search")
   tuner$optimize(instance)
-  browser()
 
   expect_equal(
     instance$archive$data[list(1), "internal_tuned_values", on = "branch.selection"][[1L]][[1L]]$lrn1.iter,
