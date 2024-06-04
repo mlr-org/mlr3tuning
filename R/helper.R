@@ -27,7 +27,6 @@ extract_runtime = function(resample_result) {
 
 init_internal_search_space = function(self, private, super, search_space, store_benchmark_result, learner, callbacks, batch) {
   assert_flag(store_benchmark_result)
-  assert_list(callbacks, types = if (batch) "CallbackBatchTuning" else "CallbackAsyncTuning")
   internal_search_space = NULL
   internal_tune_ids = keep(names(search_space$tags), map_lgl(search_space$tags, function(t) "internal_tuning" %in% t))
 
