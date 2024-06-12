@@ -390,7 +390,7 @@ test_that("async save logs callback works", {
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
-  options(bbotk_local = TRUE)
+
   rush_plan(n_workers = 2)
   instance = ti_async(
     task = tsk("pima"),

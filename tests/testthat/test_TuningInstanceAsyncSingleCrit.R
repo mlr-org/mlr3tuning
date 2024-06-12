@@ -1,5 +1,5 @@
 test_that("initializing TuningInstanceAsyncSingleCrit works", {
-#  skip_on_cran()
+  skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
 
@@ -24,7 +24,7 @@ test_that("initializing TuningInstanceAsyncSingleCrit works", {
 })
 
 test_that("rush controller can be passed to TuningInstanceAsyncSingleCrit", {
-#  skip_on_cran()
+  skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
 
@@ -44,7 +44,7 @@ test_that("rush controller can be passed to TuningInstanceAsyncSingleCrit", {
 })
 
 test_that("TuningInstanceAsyncSingleCrit can be passed to a tuner", {
-#  skip_on_cran()
+  skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
 
