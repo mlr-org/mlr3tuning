@@ -23,24 +23,4 @@ instance = tune(
   term_evals = 4,
   callbacks = clbk("mlr3tuning.measures", measures = msr("classif.acc"))
 )
-
-# score the configurations on the holdout set
-task = tsk("pima")
-splits = partition(task, ratio = 0.8)
-task$row_roles$use = splits$train
-task$row_roles$holdout = splits$test
-
-learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
-learner$predict_sets = c("test", "holdout")
-
-instance = tune(
-  tuner = tnr("random_search", batch_size = 2),
-  task = task,
-  learner = learner,
-  resampling = rsmp("cv", folds = 3),
-  measures = msr("classif.ce"),
-  term_evals = 4,
-  callbacks = clbk("mlr3tuning.measures", measures = msr("classif.ce",
-    predict_sets = "holdout", id = "classif.ce_holdout"))
-)
 }
