@@ -168,7 +168,7 @@ AutoTuner = R6Class("AutoTuner",
         packages = c("mlr3tuning", learner$packages),
         feature_types = learner$feature_types,
         predict_types = learner$predict_types,
-        properties = learner$properties
+        properties = setdiff(learner$properties, c("validation", "internal_tuning"))
       )
 
       self$predict_type = learner$predict_type
