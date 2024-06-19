@@ -254,22 +254,22 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 <span class="r-in"><span><span class="va">instance</span><span class="op">$</span><span class="va">result</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp learner_param_vals  x_domain classif.ce</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;             &lt;list&gt;    &lt;list&gt;      &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -5.159354          &lt;list[2]&gt; &lt;list[1]&gt; 0.08695652</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -8.819555          &lt;list[2]&gt; &lt;list[1]&gt; 0.05217391</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># all evaluated hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="fu">as.data.table</span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            cp classif.ce x_domain_cp runtime_learners           timestamp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;num&gt;      &lt;num&gt;       &lt;num&gt;            &lt;num&gt;              &lt;POSc&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -5.159354 0.08695652 0.005745407            0.009 2024-06-18 06:29:26</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -5.159354 0.08695652 0.005745407            0.013 2024-06-18 06:29:26</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -5.159354 0.08695652 0.005745407            0.010 2024-06-18 06:29:26</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -3.432416 0.08695652 0.032308800            0.009 2024-06-18 06:29:26</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -6.886293 0.08695652 0.001021694            0.012 2024-06-18 06:29:26</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -5.142085 0.08695652 0.005845489            0.009 2024-06-18 06:29:26</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -5.176624 0.08695652 0.005647040            0.010 2024-06-18 06:29:26</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -5.157628 0.08695652 0.005755338            0.010 2024-06-18 06:29:26</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -5.161081 0.08695652 0.005735494            0.011 2024-06-18 06:29:26</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -5.159354 0.08695652 0.005745407            0.009 2024-06-18 06:29:26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            cp classif.ce  x_domain_cp runtime_learners           timestamp</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;num&gt;      &lt;num&gt;        &lt;num&gt;            &lt;num&gt;              &lt;POSc&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -8.819555 0.05217391 0.0001478141            0.010 2024-06-19 09:41:25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -8.819555 0.05217391 0.0001478141            0.011 2024-06-19 09:41:25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -8.819555 0.05217391 0.0001478141            0.010 2024-06-19 09:41:25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -8.526466 0.05217391 0.0001981541            0.013 2024-06-19 09:41:26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -9.112644 0.05217391 0.0001102628            0.010 2024-06-19 09:41:26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -8.816624 0.05217391 0.0001482480            0.010 2024-06-19 09:41:26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -8.822486 0.05217391 0.0001473816            0.010 2024-06-19 09:41:26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -8.819526 0.05217391 0.0001478185            0.011 2024-06-19 09:41:26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -8.819584 0.05217391 0.0001478098            0.010 2024-06-19 09:41:26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -8.819555 0.05217391 0.0001478141            0.009 2024-06-19 09:41:26</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     batch_nr warnings errors  resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;int&gt;    &lt;int&gt;  &lt;int&gt;           &lt;list&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:        1        0      0 &lt;ResampleResult&gt;</span>
