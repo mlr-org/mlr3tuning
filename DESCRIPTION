@@ -50,6 +50,8 @@ Suggests:
     rpart,
     testthat (>= 3.0.0),
     xgboost
+Remotes:
+    mlr-org@feat/inner_valid
 VignetteBuilder:
     knitr
 Remotes:
