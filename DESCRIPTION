@@ -25,7 +25,7 @@ License: LGPL-3
 URL: https://mlr3tuning.mlr-org.com, https://github.com/mlr-org/mlr3tuning
 BugReports: https://github.com/mlr-org/mlr3tuning/issues
 Depends:
-    mlr3 (>= 0.19.0),
+    mlr3 (>= 0.19.0.9000),
     paradox (>= 1.0.0),
     R (>= 3.1.0)
 Imports:
@@ -42,7 +42,7 @@ Suggests:
     irace,
     knitr,
     mlflow,
-    mlr3learners (>= 0.5.5),
+    mlr3learners (>= 0.6.0.9000),
     mlr3pipelines (>= 0.5.2),
     nloptr,
     rush,
@@ -53,8 +53,10 @@ Suggests:
 VignetteBuilder:
     knitr
 Remotes:
-    mlr-org/bbotk,
     mlr-org/mlr3misc,
+    mlr-org/mlr3@feat/inner_valid,
+    mlr-org/mlr3learners@feat/inner_valid,
+    mlr-org/bbotk,
     mlr-org/rush
 Config/testthat/edition: 3
 Config/testthat/parallel: false
@@ -86,6 +88,7 @@ Collate:
     'TunerBatchFromBatchOptimizer.R'
     'TunerBatchGenSA.R'
     'TunerBatchGridSearch.R'
+    'TunerBatchInternal.R'
     'TunerBatchIrace.R'
     'TunerBatchNLoptr.R'
     'TunerBatchRandomSearch.R'

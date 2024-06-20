@@ -260,3 +260,20 @@ test_that("ArchiveTuning as.data.table function works", {
   tab = as.data.table(instance$archive)
   expect_equal(tab$batch_nr, 1:10)
 })
+
+test_that("internally tuned values are included when converting archive to data.table", {
+  instance = ti(
+    task = tsk("pima"),
+    learner = lrn("classif.debug", validate = 0.2, early_stopping = TRUE, iter = to_tune(upper = 1000, internal = TRUE, aggr = function(x) 99),
+      x = to_tune(0.1, 0.3)),
+    resampling = rsmp("holdout"),
+    measures = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 2)
+  )
+
+  tuner = tnr("random_search", batch_size = 1)
+  tuner$optimize(instance)
+
+  tab = as.data.table(instance$archive)
+  expect_equal(tab$internal_tuned_values, replicate(list(list(iter = 99L)), n = 2L))
+})

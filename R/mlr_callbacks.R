@@ -63,25 +63,6 @@ load_callback_backup = function() {
 #'   callbacks = clbk("mlr3tuning.measures", measures = msr("classif.acc"))
 #' )
 #'
-#' # score the configurations on the holdout set
-#' task = tsk("pima")
-#' splits = partition(task, ratio = 0.8)
-#' task$row_roles$use = splits$train
-#' task$row_roles$holdout = splits$test
-#'
-#' learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
-#' learner$predict_sets = c("test", "holdout")
-#'
-#' instance = tune(
-#'   tuner = tnr("random_search", batch_size = 2),
-#'   task = task,
-#'   learner = learner,
-#'   resampling = rsmp("cv", folds = 3),
-#'   measures = msr("classif.ce"),
-#'   term_evals = 4,
-#'   callbacks = clbk("mlr3tuning.measures", measures = msr("classif.ce",
-#'     predict_sets = "holdout", id = "classif.ce_holdout"))
-#' )
 NULL
 
 load_callback_measures = function() {
@@ -141,8 +122,8 @@ load_callback_async_measures = function() {
 #' rush::rush_plan(n_workers = 4)
 #'
 #' learner = lrn("classif.rpart",
-#'   minsplit  = to_tune(2, 128),
-#'   cp        = to_tune(1e-04, 1e-1))
+#'   minsplit = to_tune(2, 128),
+#'   cp = to_tune(1e-04, 1e-1))
 #'
 #' instance = TuningInstanceAsyncSingleCrit$new(
 #'   task = tsk("pima"),
@@ -158,6 +139,68 @@ load_callback_async_measures = function() {
 #' tuner$optimize(instance)
 #' }
 NULL
+
+# we need this as a callback, because we cannot overwrite the private$.assign_result method from the Tuner,
+# because for TunerFromOptimizer this method is never called
+load_callback_internal_tuning = function(batch) {
+
+  on_result = function(callback, context) {
+    inst = context$instance
+    internal_tuned_values = inst$archive$best()[, "internal_tuned_values", with = FALSE]$internal_tuned_values
+
+    # right now, this contains the values tuned by the optimizer and the values that were set in the learner
+    learner_param_vals = context$result$learner_param_vals
+    # we now have to:
+    # * add the internally optimized values
+    # * disable the internal tuning for the internally optimized values
+
+    learner = inst$objective$learner
+    new_learner_param_vals = pmap(list(itv = internal_tuned_values, lpv = learner_param_vals), function(itv, lpv) {
+      prev_pvs = learner$param_set$values
+
+      learner$param_set$values = insert_named(lpv, itv)
+      on.exit({
+        inst$objective$learner$param_set$values = prev_pvs
+      })
+
+      learner$param_set$disable_internal_tuning(context$instance$internal_search_space$ids())
+      nlpv = inst$objective$learner$param_set$values
+      on.exit()
+
+      nlpv
+    })
+    context$result[, let(learner_param_vals = new_learner_param_vals, internal_tuned_values = internal_tuned_values)]
+  }
+
+  if (batch) {
+    callback_batch_tuning("mlr3tuning.batch_internal_tuning",
+      man = "mlr3tuning::internal_tuning",
+      on_eval_before_archive = function(callback, context) {
+        new_uhashes = tail(context$benchmark_result$uhashes, n = nrow(context$aggregated_performance))
+
+        internal_tuned_values_aggr = map(new_uhashes, function(uhash) {
+          states = get_private(context$benchmark_result)$.data$learner_states(uhash)
+
+          internal_tuned_values = transpose_list(map(states, "internal_tuned_values"))
+          context$instance$internal_search_space$aggr_internal_tuned_values(internal_tuned_values)
+        })
+        context$aggregated_performance[, let(internal_tuned_values = internal_tuned_values_aggr)]
+      },
+      on_result = on_result
+    )
+  } else {
+    callback_async_tuning("mlr3tuning.async_internal_tuning",
+      on_eval_before_archive = function(callback, context) {
+        states = get_private(context$resample_result)$.data$learner_states()
+        itvs = transpose_list(map(states, "internal_tuned_values"))
+        internal_tuned_values_aggr = context$instance$internal_search_space$aggr_internal_tuned_values(itvs)
+        # here, aggregated_performance is a list not a data.table
+        context$aggregated_performance$internal_tuned_values = list(internal_tuned_values_aggr)
+      },
+      on_result = on_result
+    )
+  }
+}
 
 load_callback_async_mlflow = function() {
   callback_async_tuning("mlr3tuning.async_mlflow",
@@ -188,7 +231,7 @@ load_callback_async_mlflow = function() {
       # start run
       callback$state$run_uuid = mlflow::mlflow_start_run(
         experiment_id = experiment_id,
-        client =  client)$run_uuid
+        client = client)$run_uuid
 
       iwalk(context$xs, function(value, id) {
         mlflow::mlflow_log_param(

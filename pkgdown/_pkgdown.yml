@@ -54,6 +54,7 @@ reference:
       - tnr
       - AutoTuner
       - auto_tuner
+      - set_validate.AutoTuner
   - title: Terminators
     contents:
       - mlr_terminators

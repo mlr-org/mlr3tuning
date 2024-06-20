@@ -18,6 +18,7 @@ auto_tuner(
   store_models = FALSE,
   check_values = FALSE,
   callbacks = NULL,
+  validate = NULL,
   rush = NULL
 )
 }
@@ -74,6 +75,9 @@ computational overhead is reduced.}
 
 \item{callbacks}{(list of \link{Callback})\cr
 List of callbacks.}
+
+\item{validate}{(\code{numeric(1)}, \code{"test"}, \code{"predefined"} or \code{NULL})\cr
+How to construct the internal validation data.}
 
 \item{rush}{(\code{Rush})\cr
 If a rush instance is supplied, the tuning runs without batches.}

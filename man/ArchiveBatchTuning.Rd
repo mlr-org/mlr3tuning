@@ -21,6 +21,7 @@ If the archive is passed to \code{as.data.table()}, both are joined automaticall
 The table (\verb{$data}) has the following columns:
 \itemize{
 \item One column for each hyperparameter of the search space (\verb{$search_space}).
+\item One (list-)column for the \code{internal_tuned_values}
 \item One column for each performance measure (\verb{$codomain}).
 \item \code{x_domain} (\code{list()})\cr
 Lists of (transformed) hyperparameter values that are passed to the learner.
@@ -81,6 +82,14 @@ Benchmark result.}
 }
 \if{html}{\out{</div>}}
 }
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{internal_search_space}}{(\code{\link{ParamSet}})\cr
+The search space containing those parameters that are internally optimized by the \code{\link[mlr3:Learner]{mlr3::Learner}}.}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
@@ -111,7 +120,12 @@ Benchmark result.}
 \subsection{Method \code{new()}}{
 Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ArchiveBatchTuning$new(search_space, codomain, check_values = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{ArchiveBatchTuning$new(
+  search_space,
+  codomain,
+  check_values = FALSE,
+  internal_search_space = NULL
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -128,6 +142,10 @@ Internally created from provided \link[mlr3:Measure]{mlr3::Measure}s.}
 
 \item{\code{check_values}}{(\code{logical(1)})\cr
 If \code{TRUE} (default), hyperparameter configurations are check for validity.}
+
+\item{\code{internal_search_space}}{(\code{\link{ParamSet}} or \code{NULL})\cr
+The internal search space of the tuner. This includes parameters that the learner can optimize internally
+durign \verb{$train()}, such as the number of epochs via early stopping.}
 }
 \if{html}{\out{</div>}}
 }

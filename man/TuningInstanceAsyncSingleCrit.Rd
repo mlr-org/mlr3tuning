@@ -76,6 +76,9 @@ mlr3tuning is extended by the following packages.
 \describe{
 \item{\code{result_learner_param_vals}}{(\code{list()})\cr
 Param values for the optimal learner call.}
+
+\item{\code{internal_search_space}}{(\code{\link{ParamSet}})\cr
+The search space containing those parameters that are internally optimized by the \code{\link[mlr3:Learner]{mlr3::Learner}}.}
 }
 \if{html}{\out{</div>}}
 }

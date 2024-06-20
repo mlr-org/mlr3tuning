@@ -17,6 +17,7 @@
 #' The table (`$data`) has the following columns:
 #'
 #' * One column for each hyperparameter of the search space (`$search_space`).
+#' * One (list-)column for the `internal_tuned_values`
 #' * One column for each performance measure (`$codomain`).
 #' * `x_domain` (`list()`)\cr
 #'     Lists of (transformed) hyperparameter values that are passed to the learner.
@@ -58,6 +59,7 @@
 #'
 #' @template param_search_space
 #' @template param_codomain
+#' @template param_internal_search_space
 #'
 #' @export
 ArchiveBatchTuning = R6Class("ArchiveBatchTuning",
@@ -73,8 +75,15 @@ ArchiveBatchTuning = R6Class("ArchiveBatchTuning",
     #'
     #' @param check_values (`logical(1)`)\cr
     #'   If `TRUE` (default), hyperparameter configurations are check for validity.
-    initialize = function(search_space, codomain, check_values = FALSE) {
+    initialize = function(
+      search_space,
+      codomain,
+      check_values = FALSE,
+      internal_search_space = NULL
+      ) {
       super$initialize(search_space, codomain, check_values)
+
+      init_internal_search_space_archive(self, private, super, search_space, internal_search_space)
 
       # initialize empty benchmark result
       self$benchmark_result = BenchmarkResult$new()
@@ -154,6 +163,17 @@ ArchiveBatchTuning = R6Class("ArchiveBatchTuning",
       catf("%s with %i evaluations", format(self), self$n_evals)
       print(as.data.table(self, unnest = NULL, exclude_columns = c("x_domain", "uhash", "timestamp", "runtime_learners", "resample_result")), digits = 2)
     }
+  ),
+  active = list(
+    #' @field internal_search_space ([`ParamSet`])\cr
+    #'   The search space containing those parameters that are internally optimized by the [`mlr3::Learner`].
+    internal_search_space = function(rhs) {
+      assert_ro_binding(rhs)
+      private$.internal_search_space
+    }
+  ),
+  private = list(
+    .internal_search_space = NULL
   )
 )
 
@@ -185,6 +205,7 @@ as.data.table.ArchiveBatchTuning = function(x, ..., unnest = "x_domain", exclude
     setdiff(x_domain_ids, exclude_columns)
   }
 
-  setcolorder(tab, c(x$cols_x, x$cols_y, cols_y_extra, cols_x_domain, "runtime_learners", "timestamp", "batch_nr"))
+  setcolorder(tab, c(x$cols_x, if (length(x$internal_search_space$ids())) "internal_tuned_values",  x$cols_y, cols_y_extra, cols_x_domain,
+      "runtime_learners", "timestamp", "batch_nr"))
   tab[, setdiff(names(tab), exclude_columns), with = FALSE]
 }

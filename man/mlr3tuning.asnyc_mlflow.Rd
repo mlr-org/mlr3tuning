@@ -15,8 +15,8 @@ clbk("mlr3tuning.async_mlflow", tracking_uri = "http://localhost:5000")
 rush::rush_plan(n_workers = 4)
 
 learner = lrn("classif.rpart",
-  minsplit  = to_tune(2, 128),
-  cp        = to_tune(1e-04, 1e-1))
+  minsplit = to_tune(2, 128),
+  cp = to_tune(1e-04, 1e-1))
 
 instance = TuningInstanceAsyncSingleCrit$new(
   task = tsk("pima"),

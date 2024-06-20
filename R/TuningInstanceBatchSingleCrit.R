@@ -63,7 +63,7 @@
 #' @template param_store_models
 #' @template param_check_values
 #' @template param_callbacks
-#'
+#' @template param_internal_search_space
 #' @template param_xdt
 #' @template param_learner_param_vals
 #'
@@ -130,14 +130,25 @@ TuningInstanceBatchSingleCrit = R6Class("TuningInstanceBatchSingleCrit",
         search_space = as_search_space(search_space)
       }
 
+      # modifies tuning instance in-place and adds the internal tuning callback
+      res = init_internal_search_space(self, private, super, search_space, store_benchmark_result, learner,
+        callbacks, batch = TRUE)
+
+      private$.internal_search_space = res$internal_search_space
+      callbacks = res$callbacks
+      search_space = res$search_space
+
       # create codomain from measure
       measures = assert_measures(as_measures(measure, task_type = task$task_type), task = task, learner = learner)
       codomain = measures_to_codomain(measures)
 
+
       archive = ArchiveBatchTuning$new(
         search_space = search_space,
         codomain = codomain,
-        check_values = check_values)
+        check_values = check_values,
+        internal_search_space = private$.internal_search_space
+      )
 
       objective = ObjectiveTuningBatch$new(
         task = task,
@@ -187,10 +198,17 @@ TuningInstanceBatchSingleCrit = R6Class("TuningInstanceBatchSingleCrit",
     #' Param values for the optimal learner call.
     result_learner_param_vals = function() {
       private$.result$learner_param_vals[[1]]
+    },
+    #' @field internal_search_space ([`ParamSet`])\cr
+    #'   The search space containing those parameters that are internally optimized by the [`mlr3::Learner`].
+    internal_search_space = function(rhs) {
+      assert_ro_binding(rhs)
+      private$.internal_search_space
     }
   ),
 
   private = list(
+    .internal_search_space = NULL,
     # initialize context for optimization
     .initialize_context = function(optimizer) {
       context = ContextBatchTuning$new(self, optimizer)
