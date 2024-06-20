@@ -79,11 +79,11 @@ Tuner = R6Class("Tuner",
     #'
     #' @return (`character()`).
     print = function() {
-      catn(format(self), if (is.na(self$label)) "" else paste0(": ", self$label))
-      catn(str_indent("* Parameters:", as_short_string(self$param_set$values)))
-      catn(str_indent("* Parameter classes:", self$param_classes))
-      catn(str_indent("* Properties:", self$properties))
-      catn(str_indent("* Packages:", self$packages))
+      cli_h1(sprintf("%s %s", class(self)[1L], if (is.na(self$label)) "" else paste0("- ", self$label)))
+      cli_li(sprintf("Parameters: %s", if (length(self$param_set$values)) as_short_string(self$param_set$values) else "-"))
+      cli_li(sprintf("Parameter classes: %s", paste(self$param_classes, collapse = ", ")))
+      cli_li(sprintf("Properties: %s", paste(self$properties, collapse = ", ")))
+      cli_li(sprintf("Packages: %s", paste(self$packages, collapse = ", ")))
     },
 
     #' @description
