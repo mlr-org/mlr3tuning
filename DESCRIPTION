@@ -44,6 +44,8 @@ Suggests:
     mlflow,
     mlr3learners,
     mlr3pipelines,
+    mlr3learners (>= 0.5.5),
+    mlr3pipelines (>= 0.5.2),
     nloptr,
     rush,
     rmarkdown,
@@ -54,8 +56,6 @@ VignetteBuilder:
     knitr
 Remotes:
     mlr-org/mlr3misc,
-    mlr-org/mlr3pipelines@feat/inner_valid,
-    mlr-org/mlr3learners@feat/inner_valid,
     mlr-org/mlr3@feat/inner_valid,
     mlr-org/bbotk,
     mlr-org/rush
@@ -97,6 +97,8 @@ Collate:
     'TuningInstanceAsyncMulticrit.R'
     'TuningInstanceAsyncSingleCrit.R'
     'TuningInstanceBatchMulticrit.R'
+    'TuningInstanceMultiCrit.R'
+    'TuningInstanceSingleCrit.R'
     'as_search_space.R'
     'as_tuner.R'
     'assertions.R'
