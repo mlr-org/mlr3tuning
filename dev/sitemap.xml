@@ -76,6 +76,12 @@
     <loc>https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceBatchSingleCrit.html</loc>
   </url>
   <url>
+    <loc>https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceMultiCrit.html</loc>
+  </url>
+  <url>
+    <loc>https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceSingleCrit.html</loc>
+  </url>
+  <url>
     <loc>https://mlr3tuning.mlr-org.com/dev/reference/as_search_space.html</loc>
   </url>
   <url>

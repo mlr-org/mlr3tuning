@@ -3,7 +3,7 @@ pkgdown: 2.0.9
 pkgdown_sha: ~
 articles:
   extending: extending.html
-last_built: 2024-06-20T09:32Z
+last_built: 2024-06-20T10:08Z
 urls:
   reference: https://mlr3tuning.mlr-org.com/reference
   article: https://mlr3tuning.mlr-org.com/articles
