@@ -54,10 +54,9 @@ VignetteBuilder:
     knitr
 Remotes:
     mlr-org/mlr3misc,
-    mlr-org/mlr3@feat/inner_valid,
-    mlr-org/mlr3learners@feat/inner_valid,
-    mlr-org/bbotk,
-    mlr-org/rush
+    mlr-org/mlr3,
+    mlr-org/mlr3learners,
+    mlr-org/bbotk
 Config/testthat/edition: 3
 Config/testthat/parallel: false
 Encoding: UTF-8
