@@ -42,8 +42,6 @@ Suggests:
     irace,
     knitr,
     mlflow,
-    mlr3learners,
-    mlr3pipelines,
     mlr3learners (>= 0.6.0.9000),
     mlr3pipelines (>= 0.5.2),
     nloptr,
