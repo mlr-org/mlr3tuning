@@ -94,6 +94,8 @@ Collate:
     'TuningInstanceAsyncMulticrit.R'
     'TuningInstanceAsyncSingleCrit.R'
     'TuningInstanceBatchMulticrit.R'
+    'TuningInstanceMultiCrit.R'
+    'TuningInstanceSingleCrit.R'
     'as_search_space.R'
     'as_tuner.R'
     'assertions.R'
