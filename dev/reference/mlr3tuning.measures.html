@@ -108,6 +108,26 @@ The measures are not taken into account by the tuner.</p>
 <span class="r-in"><span>  term_evals <span class="op">=</span> <span class="fl">4</span>,</span></span>
 <span class="r-in"><span>  callbacks <span class="op">=</span> <span class="fu"><a href="https://mlr3misc.mlr-org.com/reference/clbk.html" class="external-link">clbk</a></span><span class="op">(</span><span class="st">"mlr3tuning.measures"</span>, measures <span class="op">=</span> <span class="fu">msr</span><span class="op">(</span><span class="st">"classif.acc"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># score the configurations on the holdout set</span></span></span>
+<span class="r-in"><span><span class="va">task</span> <span class="op">=</span> <span class="fu">tsk</span><span class="op">(</span><span class="st">"pima"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">splits</span> <span class="op">=</span> <span class="fu">partition</span><span class="op">(</span><span class="va">task</span>, ratio <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">task</span><span class="op">$</span><span class="va">row_roles</span><span class="op">$</span><span class="va">use</span> <span class="op">=</span> <span class="va">splits</span><span class="op">$</span><span class="va">train</span></span></span>
+<span class="r-in"><span><span class="va">task</span><span class="op">$</span><span class="va">row_roles</span><span class="op">$</span><span class="va">holdout</span> <span class="op">=</span> <span class="va">splits</span><span class="op">$</span><span class="va">test</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">learner</span> <span class="op">=</span> <span class="fu">lrn</span><span class="op">(</span><span class="st">"classif.rpart"</span>, cp <span class="op">=</span> <span class="fu">to_tune</span><span class="op">(</span><span class="fl">1e-04</span>, <span class="fl">1e-1</span>, logscale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">learner</span><span class="op">$</span><span class="va">predict_sets</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"test"</span>, <span class="st">"holdout"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">instance</span> <span class="op">=</span> <span class="fu"><a href="tune.html">tune</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  tuner <span class="op">=</span> <span class="fu"><a href="tnr.html">tnr</a></span><span class="op">(</span><span class="st">"random_search"</span>, batch_size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  task <span class="op">=</span> <span class="va">task</span>,</span></span>
+<span class="r-in"><span>  learner <span class="op">=</span> <span class="va">learner</span>,</span></span>
+<span class="r-in"><span>  resampling <span class="op">=</span> <span class="fu">rsmp</span><span class="op">(</span><span class="st">"cv"</span>, folds <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  measures <span class="op">=</span> <span class="fu">msr</span><span class="op">(</span><span class="st">"classif.ce"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  term_evals <span class="op">=</span> <span class="fl">4</span>,</span></span>
+<span class="r-in"><span>  callbacks <span class="op">=</span> <span class="fu"><a href="https://mlr3misc.mlr-org.com/reference/clbk.html" class="external-link">clbk</a></span><span class="op">(</span><span class="st">"mlr3tuning.measures"</span>, measures <span class="op">=</span> <span class="fu">msr</span><span class="op">(</span><span class="st">"classif.ce"</span>,</span></span>
+<span class="r-in"><span>    predict_sets <span class="op">=</span> <span class="st">"holdout"</span>, id <span class="op">=</span> <span class="st">"classif.ce_holdout"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </main></div>
