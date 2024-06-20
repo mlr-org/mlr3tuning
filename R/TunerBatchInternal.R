@@ -46,7 +46,7 @@
 #'
 #' instance$result_learner_param_vals$internal_tuned_values
 TunerBatchInternal = R6Class("TunerBatchInternal",
-  inherit = Tuner,
+  inherit = TunerBatch,
   public = list(
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
