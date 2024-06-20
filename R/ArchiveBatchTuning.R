@@ -75,7 +75,12 @@ ArchiveBatchTuning = R6Class("ArchiveBatchTuning",
     #'
     #' @param check_values (`logical(1)`)\cr
     #'   If `TRUE` (default), hyperparameter configurations are check for validity.
-    initialize = function(search_space, codomain, check_values = FALSE, internal_search_space = NULL) {
+    initialize = function(
+      search_space,
+      codomain,
+      check_values = FALSE,
+      internal_search_space = NULL
+      ) {
       super$initialize(search_space, codomain, check_values)
 
       init_internal_search_space_archive(self, private, super, search_space, internal_search_space)

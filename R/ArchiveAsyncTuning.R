@@ -55,7 +55,12 @@ ArchiveAsyncTuning = R6Class("ArchiveAsyncTuning",
     #'
     #' @param check_values (`logical(1)`)\cr
     #'   If `TRUE` (default), hyperparameter configurations are check for validity.
-    initialize = function(search_space, codomain, rush, internal_search_space = NULL) {
+    initialize = function(
+      search_space,
+      codomain,
+      rush,
+      internal_search_space = NULL
+      ) {
       init_internal_search_space_archive(self, private, super, search_space, internal_search_space)
 
       super$initialize(

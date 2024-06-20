@@ -3,13 +3,13 @@
 \name{mlr_tuners_internal}
 \alias{mlr_tuners_internal}
 \alias{TunerBatchInternal}
-\title{Internal Tuner}
+\title{Hyperparameter Tuning with Internal Tuning}
 \description{
-Use this tuner to only conduct internal hyperparameter tuning for a \code{\link{Learner}}.
-Note that the selected \code{\link[mlr3:Measure]{Measure}} does not influence the tuning result.
-
-To change the loss-function for the internal tuning, consult the hyperparameter documentation of the
-tuned \code{\link[mlr3:Learner]{Learner}}.
+Subclass to conduct only internal hyperparameter tuning for a \link[mlr3:Learner]{mlr3::Learner}.
+}
+\note{
+The selected \link[mlr3:Measure]{mlr3::Measure} does not influence the tuning result.
+To change the loss-function for the internal tuning, consult the hyperparameter documentation of the tuned \link[mlr3:Learner]{mlr3::Learner}.
 }
 \section{Dictionary}{
 
@@ -17,11 +17,6 @@ This \link{Tuner} can be instantiated with the associated sugar function \code{\
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{tnr("internal")
 }\if{html}{\out{</div>}}
-}
-
-\section{Control Parameters}{
-
-None.
 }
 
 \section{Progress Bars}{
@@ -54,21 +49,32 @@ The \href{https://mlr-org.com/gallery-all-optimization.html}{gallery} features a
 }
 
 \examples{
-\dontshow{if (mlr3misc::require_namespaces("XGBoost", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (mlr3misc::require_namespaces("mlr3learners", "xgboost", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+library(mlr3learners)
+
+# Retrieve task
+task = tsk("pima")
+
+# Load learner and set search space
 learner = lrn("classif.xgboost",
   nrounds = to_tune(upper = 1000, internal = TRUE),
   early_stopping_rounds = 10,
   validate = "test"
 )
-ti = tune(
+
+# Internal hyperparameter tuning on the pima indians diabetes data set
+instance = tune(
   tnr("internal"),
   tsk("iris"),
   learner,
   rsmp("cv", folds = 3),
-  msr("internal_tuned_values")
+  msr("internal_valid_score")
 )
-ti$result_learner_param_vals
-ti$result_learner_param_vals$internal_tuned_values
+
+# best performing hyperparameter configuration
+instance$result_learner_param_vals
+
+instance$result_learner_param_vals$internal_tuned_values
 \dontshow{\}) # examplesIf}
 }
 \seealso{
@@ -84,8 +90,8 @@ Other Tuner:
 \code{\link{mlr_tuners_random_search}}
 }
 \concept{Tuner}
-\section{Super classes}{
-\code{\link[mlr3tuning:Tuner]{mlr3tuning::Tuner}} -> \code{\link[mlr3tuning:TunerBatch]{mlr3tuning::TunerBatch}} -> \code{\link[mlr3tuning:TunerBatchFromOptimizerBatch]{mlr3tuning::TunerBatchFromOptimizerBatch}} -> \code{TunerBatchInternal}
+\section{Super class}{
+\code{\link[mlr3tuning:Tuner]{mlr3tuning::Tuner}} -> \code{TunerBatchInternal}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -100,7 +106,6 @@ Other Tuner:
 <li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="format"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-format'><code>mlr3tuning::Tuner$format()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="help"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-help'><code>mlr3tuning::Tuner$help()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="print"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-print'><code>mlr3tuning::Tuner$print()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="TunerBatchFromOptimizerBatch" data-id="optimize"><a href='../../mlr3tuning/html/TunerBatchFromOptimizerBatch.html#method-TunerBatchFromOptimizerBatch-optimize'><code>mlr3tuning::TunerBatchFromOptimizerBatch$optimize()</code></a></span></li>
 </ul>
 </details>
 }}
