@@ -85,6 +85,7 @@ Benchmark result.}
 <details><summary>Inherited methods</summary>
 <ul>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="format"><a href='../../bbotk/html/Archive.html#method-Archive-format'><code>bbotk::Archive$format()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="help"><a href='../../bbotk/html/Archive.html#method-Archive-help'><code>bbotk::Archive$help()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsync" data-id="best"><a href='../../bbotk/html/ArchiveAsync.html#method-ArchiveAsync-best'><code>bbotk::ArchiveAsync$best()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsync" data-id="clear"><a href='../../bbotk/html/ArchiveAsync.html#method-ArchiveAsync-clear'><code>bbotk::ArchiveAsync$clear()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsync" data-id="data_with_state"><a href='../../bbotk/html/ArchiveAsync.html#method-ArchiveAsync-data_with_state'><code>bbotk::ArchiveAsync$data_with_state()</code></a></span></li>
