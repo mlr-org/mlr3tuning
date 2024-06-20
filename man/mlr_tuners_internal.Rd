@@ -68,7 +68,7 @@ instance = tune(
   tsk("iris"),
   learner,
   rsmp("cv", folds = 3),
-  msr("internal_valid_score")
+  msr("classif.ce")
 )
 
 # best performing hyperparameter configuration
