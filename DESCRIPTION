@@ -43,7 +43,7 @@ Suggests:
     knitr,
     mlflow,
     mlr3learners (>= 0.5.5),
-    mlr3pipelines (>= 0.5.2-9000),
+    mlr3pipelines (>= 0.5.2),
     nloptr,
     rush,
     rmarkdown,
