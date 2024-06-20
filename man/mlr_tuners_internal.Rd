@@ -65,7 +65,7 @@ ti = tune(
   tsk("iris"),
   learner,
   rsmp("cv", folds = 3),
-  msr("internal_tuned_values")
+  msr("internal_valid_scores")
 )
 ti$result_learner_param_vals
 ti$result_learner_param_vals$internal_tuned_values
