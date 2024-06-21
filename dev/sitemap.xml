@@ -151,6 +151,9 @@
     <loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr_tuners_grid_search.html</loc>
   </url>
   <url>
+    <loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr_tuners_internal.html</loc>
+  </url>
+  <url>
     <loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr_tuners_irace.html</loc>
   </url>
   <url>
@@ -161,6 +164,9 @@
   </url>
   <url>
     <loc>https://mlr3tuning.mlr-org.com/dev/reference/reexports.html</loc>
+  </url>
+  <url>
+    <loc>https://mlr3tuning.mlr-org.com/dev/reference/set_validate.AutoTuner.html</loc>
   </url>
   <url>
     <loc>https://mlr3tuning.mlr-org.com/dev/reference/ti.html</loc>

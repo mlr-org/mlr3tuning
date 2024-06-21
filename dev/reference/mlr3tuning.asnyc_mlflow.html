@@ -94,8 +94,8 @@
 <span class="r-in"><span><span class="fu">rush</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rush/man/rush_plan.html" class="external-link">rush_plan</a></span><span class="op">(</span>n_workers <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">learner</span> <span class="op">=</span> <span class="fu">lrn</span><span class="op">(</span><span class="st">"classif.rpart"</span>,</span></span>
-<span class="r-in"><span>  minsplit  <span class="op">=</span> <span class="fu">to_tune</span><span class="op">(</span><span class="fl">2</span>, <span class="fl">128</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  cp        <span class="op">=</span> <span class="fu">to_tune</span><span class="op">(</span><span class="fl">1e-04</span>, <span class="fl">1e-1</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  minsplit <span class="op">=</span> <span class="fu">to_tune</span><span class="op">(</span><span class="fl">2</span>, <span class="fl">128</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  cp <span class="op">=</span> <span class="fu">to_tune</span><span class="op">(</span><span class="fl">1e-04</span>, <span class="fl">1e-1</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">instance</span> <span class="op">=</span> <span class="va"><a href="TuningInstanceAsyncSingleCrit.html">TuningInstanceAsyncSingleCrit</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  task <span class="op">=</span> <span class="fu">tsk</span><span class="op">(</span><span class="st">"pima"</span><span class="op">)</span>,</span></span>

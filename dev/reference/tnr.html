@@ -114,9 +114,8 @@ Key passed to the respective <a href="https://mlr3misc.mlr-org.com/reference/Dic
 
 
 <dt>...</dt>
-<dd><p>(named <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code>)<br>
-Named arguments passed to the constructor, to be set as parameters in the <a href="https://paradox.mlr-org.com/reference/ParamSet.html" class="external-link">paradox::ParamSet</a>, or to be set as public field.
-See <code><a href="https://mlr3misc.mlr-org.com/reference/dictionary_sugar_get.html" class="external-link">mlr3misc::dictionary_sugar_get()</a></code> for more details.</p></dd>
+<dd><p>(any)<br>
+Additional arguments.</p></dd>
 
 
 <dt>.keys</dt>
@@ -135,16 +134,18 @@ Keys passed to the respective <a href="https://mlr3misc.mlr-org.com/reference/Di
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># random search tuner with batch size of 5</span></span></span>
 <span class="r-in"><span><span class="fu">tnr</span><span class="op">(</span><span class="st">"random_search"</span>, batch_size <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;TunerBatchRandomSearch&gt;: Random Search</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * Parameters: batch_size=5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * Parameter classes: ParamLgl, ParamInt, ParamDbl, ParamFct</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * Properties: dependencies, single-crit, multi-crit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * Packages: mlr3tuning, bbotk</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">TunerBatchRandomSearch - Random Search</span> <span style="color: #00BBBB;">──────────────────────────────────────</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • Parameters: batch_size=5</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • Parameter classes: ParamLgl, ParamInt, ParamDbl, ParamFct</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • Properties: dependencies, single-crit, multi-crit</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • Packages: mlr3tuning, bbotk</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># run time terminator with 20 seconds</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://bbotk.mlr-org.com/reference/trm.html" class="external-link">trm</a></span><span class="op">(</span><span class="st">"run_time"</span>, secs <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;TerminatorRunTime&gt;: Run Time</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * Parameters: secs=20</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">TerminatorRunTime - Run Time</span> <span style="color: #00BBBB;">────────────────────────────────────────────────</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • Parameters: secs=20</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

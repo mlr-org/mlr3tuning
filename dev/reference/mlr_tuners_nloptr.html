@@ -184,6 +184,7 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 <code><a href="mlr_tuners_design_points.html">mlr_tuners_design_points</a></code>,
 <code><a href="mlr_tuners_gensa.html">mlr_tuners_gensa</a></code>,
 <code><a href="mlr_tuners_grid_search.html">mlr_tuners_grid_search</a></code>,
+<code><a href="mlr_tuners_internal.html">mlr_tuners_internal</a></code>,
 <code><a href="mlr_tuners_irace.html">mlr_tuners_irace</a></code>,
 <code><a href="mlr_tuners_random_search.html">mlr_tuners_random_search</a></code></p></div>
     </div>
@@ -237,39 +238,39 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># load learner and set search space</span></span></span>
-<span class="r-in"><span><span class="va">learner</span> <span class="op">=</span> <span class="fu">lrn</span><span class="op">(</span><span class="st">"classif.rpart"</span>,</span></span>
+<span class="r-in"><span><span class="va">learner</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"classif.rpart"</span>,</span></span>
 <span class="r-in"><span>  cp <span class="op">=</span> <span class="fu">to_tune</span><span class="op">(</span><span class="fl">1e-04</span>, <span class="fl">1e-1</span>, logscale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># run hyperparameter tuning on the Palmer Penguins data set</span></span></span>
 <span class="r-in"><span><span class="va">instance</span> <span class="op">=</span> <span class="fu"><a href="tune.html">tune</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  tuner <span class="op">=</span> <span class="fu"><a href="tnr.html">tnr</a></span><span class="op">(</span><span class="st">"nloptr"</span>, algorithm <span class="op">=</span> <span class="st">"NLOPT_LN_BOBYQA"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  task <span class="op">=</span> <span class="fu">tsk</span><span class="op">(</span><span class="st">"penguins"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  task <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">tsk</a></span><span class="op">(</span><span class="st">"penguins"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  learner <span class="op">=</span> <span class="va">learner</span>,</span></span>
-<span class="r-in"><span>  resampling <span class="op">=</span> <span class="fu">rsmp</span><span class="op">(</span><span class="st">"holdout"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  measure <span class="op">=</span> <span class="fu">msr</span><span class="op">(</span><span class="st">"classif.ce"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  resampling <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">rsmp</a></span><span class="op">(</span><span class="st">"holdout"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  measure <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">msr</a></span><span class="op">(</span><span class="st">"classif.ce"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># best performing hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="va">instance</span><span class="op">$</span><span class="va">result</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp learner_param_vals  x_domain classif.ce</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;             &lt;list&gt;    &lt;list&gt;      &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -5.159354          &lt;list[2]&gt; &lt;list[1]&gt; 0.08695652</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -6.698212          &lt;list[2]&gt; &lt;list[1]&gt; 0.06086957</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># all evaluated hyperparameter configuration</span></span></span>
-<span class="r-in"><span><span class="fu">as.data.table</span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            cp classif.ce x_domain_cp runtime_learners           timestamp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;num&gt;      &lt;num&gt;       &lt;num&gt;            &lt;num&gt;              &lt;POSc&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -5.159354 0.08695652 0.005745407            0.010 2024-06-20 10:09:03</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -5.159354 0.08695652 0.005745407            0.010 2024-06-20 10:09:03</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -5.159354 0.08695652 0.005745407            0.012 2024-06-20 10:09:03</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -3.432416 0.08695652 0.032308800            0.010 2024-06-20 10:09:04</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -6.886293 0.08695652 0.001021694            0.009 2024-06-20 10:09:04</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -5.142085 0.08695652 0.005845489            0.013 2024-06-20 10:09:04</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -5.176624 0.08695652 0.005647040            0.010 2024-06-20 10:09:04</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -5.157628 0.08695652 0.005755338            0.010 2024-06-20 10:09:04</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -5.161081 0.08695652 0.005735494            0.028 2024-06-20 10:09:04</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -5.159354 0.08695652 0.005745407            0.011 2024-06-20 10:09:04</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            cp classif.ce  x_domain_cp runtime_learners           timestamp</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;num&gt;      &lt;num&gt;        &lt;num&gt;            &lt;num&gt;              &lt;POSc&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -6.698212 0.06086957 0.0012331145            0.011 2024-06-21 08:34:28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -6.698212 0.06086957 0.0012331145            0.010 2024-06-21 08:34:28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -6.698212 0.06086957 0.0012331145            0.011 2024-06-21 08:34:28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -4.971273 0.06086957 0.0069343124            0.011 2024-06-21 08:34:28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -8.425151 0.06086957 0.0002192822            0.010 2024-06-21 08:34:29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -6.680943 0.06086957 0.0012545946            0.011 2024-06-21 08:34:29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -6.715482 0.06086957 0.0012120022            0.009 2024-06-21 08:34:29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -6.696485 0.06086957 0.0012352458            0.010 2024-06-21 08:34:29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -6.699939 0.06086957 0.0012309868            0.009 2024-06-21 08:34:29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -6.698212 0.06086957 0.0012331145            0.010 2024-06-21 08:34:29</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     batch_nr warnings errors  resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;int&gt;    &lt;int&gt;  &lt;int&gt;           &lt;list&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:        1        0      0 &lt;ResampleResult&gt;</span>
@@ -285,7 +286,7 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># fit final model on complete data set</span></span></span>
 <span class="r-in"><span><span class="va">learner</span><span class="op">$</span><span class="va">param_set</span><span class="op">$</span><span class="va">values</span> <span class="op">=</span> <span class="va">instance</span><span class="op">$</span><span class="va">result_learner_param_vals</span></span></span>
-<span class="r-in"><span><span class="va">learner</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="fu">tsk</span><span class="op">(</span><span class="st">"penguins"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">learner</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">tsk</a></span><span class="op">(</span><span class="st">"penguins"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

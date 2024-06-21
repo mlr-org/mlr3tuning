@@ -118,6 +118,7 @@ If <code>objects</code> is set to <code>TRUE</code>, the constructed objects are
 <code><a href="mlr_tuners_design_points.html">mlr_tuners_design_points</a></code>,
 <code><a href="mlr_tuners_gensa.html">mlr_tuners_gensa</a></code>,
 <code><a href="mlr_tuners_grid_search.html">mlr_tuners_grid_search</a></code>,
+<code><a href="mlr_tuners_internal.html">mlr_tuners_internal</a></code>,
 <code><a href="mlr_tuners_irace.html">mlr_tuners_irace</a></code>,
 <code><a href="mlr_tuners_nloptr.html">mlr_tuners_nloptr</a></code>,
 <code><a href="mlr_tuners_random_search.html">mlr_tuners_random_search</a></code></p></div>
@@ -136,9 +137,10 @@ If <code>objects</code> is set to <code>TRUE</code>, the constructed objects are
 <span class="r-out co"><span class="r-pr">#&gt;</span>  5:       design_points                                   Design Points</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  6:               gensa                 Generalized Simulated Annealing</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  7:         grid_search                                     Grid Search</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:               irace                                 Iterated Racing</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:              nloptr                         Non-linear Optimization</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:       random_search                                   Random Search</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:            internal                              Internal Optimizer</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:               irace                                 Iterated Racing</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:              nloptr                         Non-linear Optimization</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:       random_search                                   Random Search</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                    param_classes</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                           &lt;list&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1: ParamLgl,ParamInt,ParamDbl,ParamFct,ParamUty</span>
@@ -148,9 +150,10 @@ If <code>objects</code> is set to <code>TRUE</code>, the constructed objects are
 <span class="r-out co"><span class="r-pr">#&gt;</span>  5: ParamLgl,ParamInt,ParamDbl,ParamFct,ParamUty</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  6:                                     ParamDbl</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  7:          ParamLgl,ParamInt,ParamDbl,ParamFct</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:          ParamDbl,ParamInt,ParamFct,ParamLgl</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:                                     ParamDbl</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:          ParamLgl,ParamInt,ParamDbl,ParamFct</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:          ParamLgl,ParamInt,ParamDbl,ParamFct</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:          ParamDbl,ParamInt,ParamFct,ParamLgl</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:                                     ParamDbl</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:          ParamLgl,ParamInt,ParamDbl,ParamFct</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                              properties                packages</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                  &lt;list&gt;                  &lt;list&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1: dependencies,single-crit,multi-crit   mlr3tuning,bbotk,rush</span>
@@ -160,21 +163,24 @@ If <code>objects</code> is set to <code>TRUE</code>, the constructed objects are
 <span class="r-out co"><span class="r-pr">#&gt;</span>  5: dependencies,single-crit,multi-crit        mlr3tuning,bbotk</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  6:                         single-crit  mlr3tuning,bbotk,GenSA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  7: dependencies,single-crit,multi-crit        mlr3tuning,bbotk</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:            dependencies,single-crit  mlr3tuning,bbotk,irace</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:                         single-crit mlr3tuning,bbotk,nloptr</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: dependencies,single-crit,multi-crit        mlr3tuning,bbotk</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:            dependencies,single-crit              mlr3tuning</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:            dependencies,single-crit  mlr3tuning,bbotk,irace</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:                         single-crit mlr3tuning,bbotk,nloptr</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11: dependencies,single-crit,multi-crit        mlr3tuning,bbotk</span>
 <span class="r-in"><span><span class="va">mlr_tuners</span><span class="op">$</span><span class="fu">get</span><span class="op">(</span><span class="st">"random_search"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;TunerBatchRandomSearch&gt;: Random Search</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * Parameters: batch_size=1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * Parameter classes: ParamLgl, ParamInt, ParamDbl, ParamFct</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * Properties: dependencies, single-crit, multi-crit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * Packages: mlr3tuning, bbotk</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">TunerBatchRandomSearch - Random Search</span> <span style="color: #00BBBB;">──────────────────────────────────────</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • Parameters: batch_size=1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • Parameter classes: ParamLgl, ParamInt, ParamDbl, ParamFct</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • Properties: dependencies, single-crit, multi-crit</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • Packages: mlr3tuning, bbotk</span>
 <span class="r-in"><span><span class="fu"><a href="tnr.html">tnr</a></span><span class="op">(</span><span class="st">"random_search"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;TunerBatchRandomSearch&gt;: Random Search</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * Parameters: batch_size=1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * Parameter classes: ParamLgl, ParamInt, ParamDbl, ParamFct</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * Properties: dependencies, single-crit, multi-crit</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * Packages: mlr3tuning, bbotk</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">TunerBatchRandomSearch - Random Search</span> <span style="color: #00BBBB;">──────────────────────────────────────</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • Parameters: batch_size=1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • Parameter classes: ParamLgl, ParamInt, ParamDbl, ParamFct</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • Properties: dependencies, single-crit, multi-crit</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> • Packages: mlr3tuning, bbotk</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

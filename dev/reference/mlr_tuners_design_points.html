@@ -165,6 +165,7 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 <code><a href="mlr_tuners_cmaes.html">mlr_tuners_cmaes</a></code>,
 <code><a href="mlr_tuners_gensa.html">mlr_tuners_gensa</a></code>,
 <code><a href="mlr_tuners_grid_search.html">mlr_tuners_grid_search</a></code>,
+<code><a href="mlr_tuners_internal.html">mlr_tuners_internal</a></code>,
 <code><a href="mlr_tuners_irace.html">mlr_tuners_irace</a></code>,
 <code><a href="mlr_tuners_nloptr.html">mlr_tuners_nloptr</a></code>,
 <code><a href="mlr_tuners_random_search.html">mlr_tuners_random_search</a></code></p></div>
@@ -245,20 +246,20 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 <span class="r-in"><span><span class="va">instance</span><span class="op">$</span><span class="va">result</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       cp minbucket minsplit learner_param_vals  x_domain classif.ce</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    &lt;num&gt;     &lt;num&gt;    &lt;num&gt;             &lt;list&gt;    &lt;list&gt;      &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:  0.01        32       64          &lt;list[4]&gt; &lt;list[3]&gt; 0.04347826</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:  0.01        32       64          &lt;list[4]&gt; &lt;list[3]&gt; 0.06956522</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># all evaluated hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="fu">as.data.table</span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       cp minbucket minsplit classif.ce x_domain_cp x_domain_minbucket</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    &lt;num&gt;     &lt;num&gt;    &lt;num&gt;      &lt;num&gt;       &lt;num&gt;              &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 0.100        64        2 0.12173913       0.100                 64</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 0.010        32       64 0.04347826       0.010                 32</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 0.001         1      128 0.04347826       0.001                  1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 0.100        64        2 0.15652174       0.100                 64</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 0.010        32       64 0.06956522       0.010                 32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 0.001         1      128 0.06956522       0.001                  1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    x_domain_minsplit runtime_learners           timestamp batch_nr warnings</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                &lt;num&gt;            &lt;num&gt;              &lt;POSc&gt;    &lt;int&gt;    &lt;int&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:                 2            0.010 2024-06-20 10:08:57        1        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:                64            0.013 2024-06-20 10:08:57        2        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:               128            0.010 2024-06-20 10:08:57        3        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:                 2            0.009 2024-06-21 08:34:19        1        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:                64            0.009 2024-06-21 08:34:19        2        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:               128            0.011 2024-06-21 08:34:20        3        0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    errors  resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;int&gt;           &lt;list&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:      0 &lt;ResampleResult&gt;</span>

@@ -167,6 +167,7 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 <code><a href="mlr_tuners_design_points.html">mlr_tuners_design_points</a></code>,
 <code><a href="mlr_tuners_gensa.html">mlr_tuners_gensa</a></code>,
 <code><a href="mlr_tuners_grid_search.html">mlr_tuners_grid_search</a></code>,
+<code><a href="mlr_tuners_internal.html">mlr_tuners_internal</a></code>,
 <code><a href="mlr_tuners_irace.html">mlr_tuners_irace</a></code>,
 <code><a href="mlr_tuners_nloptr.html">mlr_tuners_nloptr</a></code></p></div>
     </div>
@@ -219,17 +220,17 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Hyperparameter Optimization</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># load learner and set search space</span></span></span>
-<span class="r-in"><span><span class="va">learner</span> <span class="op">=</span> <span class="fu">lrn</span><span class="op">(</span><span class="st">"classif.rpart"</span>,</span></span>
+<span class="r-in"><span><span class="va">learner</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"classif.rpart"</span>,</span></span>
 <span class="r-in"><span>  cp <span class="op">=</span> <span class="fu">to_tune</span><span class="op">(</span><span class="fl">1e-04</span>, <span class="fl">1e-1</span>, logscale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># run hyperparameter tuning on the Palmer Penguins data set</span></span></span>
 <span class="r-in"><span><span class="va">instance</span> <span class="op">=</span> <span class="fu"><a href="tune.html">tune</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  tuner <span class="op">=</span> <span class="fu"><a href="tnr.html">tnr</a></span><span class="op">(</span><span class="st">"random_search"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  task <span class="op">=</span> <span class="fu">tsk</span><span class="op">(</span><span class="st">"penguins"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  task <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">tsk</a></span><span class="op">(</span><span class="st">"penguins"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  learner <span class="op">=</span> <span class="va">learner</span>,</span></span>
-<span class="r-in"><span>  resampling <span class="op">=</span> <span class="fu">rsmp</span><span class="op">(</span><span class="st">"holdout"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  measure <span class="op">=</span> <span class="fu">msr</span><span class="op">(</span><span class="st">"classif.ce"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  resampling <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">rsmp</a></span><span class="op">(</span><span class="st">"holdout"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  measure <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">msr</a></span><span class="op">(</span><span class="st">"classif.ce"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  term_evals <span class="op">=</span> <span class="fl">10</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -237,22 +238,22 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 <span class="r-in"><span><span class="va">instance</span><span class="op">$</span><span class="va">result</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp learner_param_vals  x_domain classif.ce</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;             &lt;list&gt;    &lt;list&gt;      &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -3.344631          &lt;list[2]&gt; &lt;list[1]&gt; 0.09565217</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -5.758013          &lt;list[2]&gt; &lt;list[1]&gt; 0.07826087</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># all evaluated hyperparameter configuration</span></span></span>
-<span class="r-in"><span><span class="fu">as.data.table</span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            cp classif.ce  x_domain_cp runtime_learners           timestamp</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;num&gt;      &lt;num&gt;        &lt;num&gt;            &lt;num&gt;              &lt;POSc&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -3.344631 0.09565217 0.0352732381            0.010 2024-06-20 10:09:05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -6.567172 0.09565217 0.0014057680            0.009 2024-06-20 10:09:05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -3.615875 0.09565217 0.0268933921            0.029 2024-06-20 10:09:05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -9.037606 0.09565217 0.0001188550            0.010 2024-06-20 10:09:05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -3.907591 0.09565217 0.0200888272            0.010 2024-06-20 10:09:05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -8.685638 0.09565217 0.0001689955            0.028 2024-06-20 10:09:05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -6.119299 0.09565217 0.0021999981            0.009 2024-06-20 10:09:05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -5.065579 0.09565217 0.0063102590            0.010 2024-06-20 10:09:05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -6.275206 0.09565217 0.0018824038            0.010 2024-06-20 10:09:05</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -9.185300 0.09565217 0.0001025356            0.010 2024-06-20 10:09:05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -5.758013 0.07826087 0.0031573806            0.011 2024-06-21 08:34:30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -4.141436 0.07826087 0.0159000048            0.010 2024-06-21 08:34:30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -7.233137 0.07826087 0.0007222517            0.009 2024-06-21 08:34:30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -4.807480 0.07826087 0.0081684173            0.011 2024-06-21 08:34:30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -3.932615 0.07826087 0.0195923750            0.010 2024-06-21 08:34:30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -7.006127 0.07826087 0.0009063120            0.010 2024-06-21 08:34:30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -2.903986 0.07826087 0.0548043435            0.010 2024-06-21 08:34:30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -7.110971 0.07826087 0.0008161022            0.010 2024-06-21 08:34:30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -4.970553 0.07826087 0.0069393095            0.010 2024-06-21 08:34:30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -3.614064 0.07826087 0.0269421266            0.010 2024-06-21 08:34:30</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     batch_nr warnings errors  resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;int&gt;    &lt;int&gt;  &lt;int&gt;           &lt;list&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:        1        0      0 &lt;ResampleResult&gt;</span>
@@ -268,7 +269,7 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># fit final model on complete data set</span></span></span>
 <span class="r-in"><span><span class="va">learner</span><span class="op">$</span><span class="va">param_set</span><span class="op">$</span><span class="va">values</span> <span class="op">=</span> <span class="va">instance</span><span class="op">$</span><span class="va">result_learner_param_vals</span></span></span>
-<span class="r-in"><span><span class="va">learner</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="fu">tsk</span><span class="op">(</span><span class="st">"penguins"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">learner</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">tsk</a></span><span class="op">(</span><span class="st">"penguins"</span><span class="op">)</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
