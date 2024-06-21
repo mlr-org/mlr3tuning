@@ -82,7 +82,8 @@ remotes::install_github("mlr-org/mlr3tuning")
 We optimize the `cost` and `gamma` hyperparameters of a support vector machine on the [Sonar](https://mlr3.mlr-org.com/reference/mlr_tasks_sonar.html) data set.
 
 ```{r}
-library("mlr3verse")
+library("mlr3learners")
+library("mlr3tuning")
 
 learner = lrn("classif.svm",
   cost  = to_tune(1e-5, 1e5, logscale = TRUE),

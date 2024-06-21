@@ -266,9 +266,10 @@ AutoTuner = R6Class("AutoTuner",
       } else {
         self$instance_args$search_space
       }
-      catf("* Search Space:")
-      print(search_space)
+      cli_li("Search Space:")
+      print(as.data.table(search_space)[, c("id", "class", "lower", "upper", "nlevels"), with = FALSE])
     },
+
     #' @description
     #' Marshal the learner.
     #' @param ... (any)\cr
@@ -491,7 +492,7 @@ unmarshal_model.auto_tuner_model_marshaled = function(model, inplace = FALSE, ..
 #' @title Configure Validation for AutoTuner
 #'
 #' @description
-#' Configure validation for the final model fit (`final_validate`), as well as 
+#' Configure validation for the final model fit (`final_validate`), as well as
 #' during the tuning (`valdiate`).
 #'
 #' @param learner ([`AutoTuner`])\cr

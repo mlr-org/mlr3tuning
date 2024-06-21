@@ -63,10 +63,7 @@ test_that("print method workds", {
     param_classes = param_classes,
     properties = "single-crit",
     packages = packages)
-  expect_output(print(tuner), "p1=TRUE")
-  expect_output(print(tuner), "ParamLgl")
-  expect_output(print(tuner), "single-crit")
-  expect_output(print(tuner), "GenSA")
+  expect_snapshot(tuner)
 })
 
 test_that("Tuner works with graphlearner", {
