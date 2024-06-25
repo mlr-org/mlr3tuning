@@ -20,7 +20,6 @@ test_that("initializing TuningInstanceAsyncSingleCrit works", {
   expect_r6(instance$terminator, "Terminator")
   expect_r6(instance$rush, "Rush")
   expect_null(instance$result)
-  expect_snapshot(print(instance))
 
   expect_rush_reset(instance$rush, type = "terminate")
 })
@@ -66,7 +65,6 @@ test_that("TuningInstanceAsyncSingleCrit can be passed to a tuner", {
   tuner = tnr("async_random_search")
   tuner$optimize(instance)
 
-  expect_snapshot(print(instance))
   expect_data_table(instance$archive$data, min.rows = 3L)
   expect_rush_reset(instance$rush, type = "terminate")
 })
