@@ -132,21 +132,14 @@ instance = ti(
 instance
 ```
 
-    ## 
-
-    ## ── TuningInstanceBatchSingleCrit ───────────────────────────────────────────────────────────────────
-
-    ## • State: Not optimized
-
-    ## • Objective: ObjectiveTuningBatch
-
-    ## • Search Space:
-
+    ## <TuningInstanceBatchSingleCrit>
+    ## * State:  Not optimized
+    ## * Objective: <ObjectiveTuningBatch:classif.svm_on_sonar>
+    ## * Search Space:
     ##       id    class     lower    upper nlevels
     ## 1:  cost ParamDbl -11.51293 11.51293     Inf
     ## 2: gamma ParamDbl -11.51293 11.51293     Inf
-
-    ## • Terminator: TerminatorNone
+    ## * Terminator: <TerminatorNone>
 
 We select a simple grid search as the optimization algorithm.
 
@@ -155,17 +148,11 @@ tuner = tnr("grid_search", resolution = 5)
 tuner
 ```
 
-    ## 
-
-    ## ── TunerBatchGridSearch - Grid Search ──────────────────────────────────────────────────────────────
-
-    ## • Parameters: batch_size=1, resolution=5
-
-    ## • Parameter classes: ParamLgl, ParamInt, ParamDbl, ParamFct
-
-    ## • Properties: dependencies, single-crit, multi-crit
-
-    ## • Packages: mlr3tuning, bbotk
+    ## <TunerBatchGridSearch>: Grid Search
+    ## * Parameters: batch_size=1, resolution=5
+    ## * Parameter classes: ParamLgl, ParamInt, ParamDbl, ParamFct
+    ## * Properties: dependencies, single-crit, multi-crit
+    ## * Packages: mlr3tuning, bbotk
 
 To start the tuning, we simply pass the tuning instance to the tuner.
 
