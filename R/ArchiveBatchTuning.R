@@ -160,8 +160,8 @@ ArchiveBatchTuning = R6Class("ArchiveBatchTuning",
     #'
     #' @param ... (ignored).
     print = function() {
-      cli_h1(sprintf("%s %s", class(self)[1L], if (is.na(self$label)) "" else paste0("- ", self$label)))
-      cli_li(sprintf("Evaluations: %i", self$n_evals))
+      catf("%s with %i evaluations", format(self), self$n_evals)
+      print(as.data.table(self, unnest = NULL, exclude_columns = c("x_domain", "uhash", "timestamp", "runtime_learners", "resample_result")), digits = 2)
       print(as.data.table(self, unnest = "x_domain",
         exclude_columns = c("uhash", "timestamp", "runtime_learners", "resample_result")),
         digits = 2)

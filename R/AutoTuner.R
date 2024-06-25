@@ -266,7 +266,7 @@ AutoTuner = R6Class("AutoTuner",
       } else {
         self$instance_args$search_space
       }
-      cli_li("Search Space:")
+      catf("* Search Space:")
       print(as.data.table(search_space)[, c("id", "class", "lower", "upper", "nlevels"), with = FALSE])
     },
 

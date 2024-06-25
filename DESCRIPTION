@@ -31,10 +31,9 @@ Depends:
 Imports:
     bbotk (>= 0.8.0.9000),
     checkmate (>= 2.0.0),
-    cli,
     data.table,
     lgr,
-    mlr3misc (>= 0.15.0.9000),
+    mlr3misc (>= 0.15.1),
     R6
 Suggests:
     adagio,
@@ -54,7 +53,6 @@ Suggests:
 VignetteBuilder:
     knitr
 Remotes:
-    mlr-org/mlr3misc,
     mlr-org/mlr3,
     mlr-org/mlr3learners,
     mlr-org/bbotk

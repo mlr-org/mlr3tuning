@@ -141,9 +141,9 @@ ArchiveAsyncTuning = R6Class("ArchiveAsyncTuning",
     #'
     #' @param ... (ignored).
     print = function() {
-      cli_h1(sprintf("%s %s", class(self)[1L], if (is.na(self$label)) "" else paste0("- ", self$label)))
-      cli_li(sprintf("Evaluations: %i", self$n_evals))
-      print(as.data.table(self, unnest = "x_domain", exclude_columns = c(
+      catf("%s with %i evaluations", format(self), self$n_evals)
+      print(as.data.table(self, unnest = NULL, exclude_columns = c(
+        "x_domain",
         "timestamp_xs",
         "timestamp_ys",
         "runtime_learners",
