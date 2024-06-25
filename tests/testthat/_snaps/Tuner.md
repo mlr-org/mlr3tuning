@@ -2,9 +2,8 @@
 
     Code
       tuner
-    Message
-      
-      -- Tuner  ----------------------------------------------------------------------
+    Output
+      <Tuner>
       * Parameters: p1=TRUE
       * Parameter classes: ParamLgl
       * Properties: single-crit
