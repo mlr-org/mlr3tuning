@@ -684,9 +684,10 @@ test_that("set_validate", {
     term_evals = 4
   )
   set_validate(at, validate = "test", final_validate = 0.3)
-
   expect_equal(at$validate, 0.3)
   expect_equal(at$learner$validate, "test")
+  set_validate(at, validate = NULL)
+  expect_equal(at$validate, 0.3)
 })
 
 test_that("validate field can only be set if the tuned learner supports validation", {
