@@ -234,6 +234,10 @@ test_that("default configuration callback errors with extra trafo", {
 })
 
 test_that("default configuration callback errors with old parameter set api", {
+  skip_on_cran()
+  skip_if_not_installed("rush")
+  flush_redis()
+
   learner = lrn("classif.rpart")
   search_space = ps(
     cp = p_dbl(lower = -10, upper = 0, trafo = function(x) 10^x)
