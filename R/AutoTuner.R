@@ -493,15 +493,15 @@ unmarshal_model.auto_tuner_model_marshaled = function(model, inplace = FALSE, ..
 #'
 #' @description
 #' Configure validation for the final model fit (`final_validate`), as well as
-#' during the tuning (`valdiate`).
+#' during the tuning (`validate`).
 #'
 #' @param learner ([`AutoTuner`])\cr
 #'   The autotuner for which to enable validation.
 #' @param validate (`numeric(1)`, `"predefined"`, `"test"`, or `NULL`)\cr
 #'   How to configure the validation during the hyperparameter tuning.
-#'   Rarely needed.
 #' @param final_validate (`numeric(1)`, `"predefined"`, `"test"` or `NULL`)\cr
-#'  How to configure the validation during the final model fit. Default is `NULL`, i.e. no validation.
+#'   How to configure the validation during the final model fit. Default is `NULL`, i.e. no validation.
+#'   Rarely needed.
 #' @param ... (any)\cr
 #'   Passed when calling `set_validate()` on the wrapped leaerner.
 #' @export

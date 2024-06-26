@@ -11,18 +11,18 @@
 The autotuner for which to enable validation.}
 
 \item{validate}{(\code{numeric(1)}, \code{"predefined"}, \code{"test"}, or \code{NULL})\cr
-How to configure the validation during the hyperparameter tuning.
-Rarely needed.}
+How to configure the validation during the hyperparameter tuning.}
 
 \item{final_validate}{(\code{numeric(1)}, \code{"predefined"}, \code{"test"} or \code{NULL})\cr
-How to configure the validation during the final model fit. Default is \code{NULL}, i.e. no validation.}
+How to configure the validation during the final model fit. Default is \code{NULL}, i.e. no validation.
+Rarely needed.}
 
 \item{...}{(any)\cr
 Passed when calling \code{set_validate()} on the wrapped leaerner.}
 }
 \description{
 Configure validation for the final model fit (\code{final_validate}), as well as
-during the tuning (\code{valdiate}).
+during the tuning (\code{validate}).
 }
 \examples{
 at = auto_tuner(
