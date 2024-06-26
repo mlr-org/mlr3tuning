@@ -4,7 +4,7 @@
 \alias{set_validate.AutoTuner}
 \title{Configure Validation for AutoTuner}
 \usage{
-\method{set_validate}{AutoTuner}(learner, validate, final_validate = NULL, ...)
+\method{set_validate}{AutoTuner}(learner, validate, final_validate, ...)
 }
 \arguments{
 \item{learner}{(\code{\link{AutoTuner}})\cr
@@ -14,7 +14,8 @@ The autotuner for which to enable validation.}
 How to configure the validation during the hyperparameter tuning.}
 
 \item{final_validate}{(\code{numeric(1)}, \code{"predefined"}, \code{"test"} or \code{NULL})\cr
-How to configure the validation during the final model fit. Default is \code{NULL}, i.e. no validation.
+How to configure the validation during the final model fit.
+The default behavior is to not change the value.
 Rarely needed.}
 
 \item{...}{(any)\cr

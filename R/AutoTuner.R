@@ -500,7 +500,8 @@ unmarshal_model.auto_tuner_model_marshaled = function(model, inplace = FALSE, ..
 #' @param validate (`numeric(1)`, `"predefined"`, `"test"`, or `NULL`)\cr
 #'   How to configure the validation during the hyperparameter tuning.
 #' @param final_validate (`numeric(1)`, `"predefined"`, `"test"` or `NULL`)\cr
-#'   How to configure the validation during the final model fit. Default is `NULL`, i.e. no validation.
+#'   How to configure the validation during the final model fit.
+#'   The default behavior is to not change the value.
 #'   Rarely needed.
 #' @param ... (any)\cr
 #'   Passed when calling `set_validate()` on the wrapped leaerner.
@@ -515,8 +516,10 @@ unmarshal_model.auto_tuner_model_marshaled = function(model, inplace = FALSE, ..
 #' # use the test set as validation data during tuning
 #' set_validate(at, validate = "test")
 #' at$learner$validate
-set_validate.AutoTuner = function(learner, validate, final_validate = NULL, ...) {
-  learner$validate = final_validate
+set_validate.AutoTuner = function(learner, validate, final_validate, ...) {
+  if (!missing(final_validate)) {
+    learner$validate = final_validate
+  }
   set_validate(learner$learner, validate = validate, ...)
   invisible(learner)
 }
