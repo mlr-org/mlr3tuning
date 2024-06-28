@@ -4,7 +4,7 @@
 \alias{mlr3tuning.asnyc_mlflow}
 \title{MLflow Connector Callback}
 \description{
-This \link{Callback} logs the hyperparameter configurations and the performance of the configurations to MLflow.
+This \link[mlr3misc:Callback]{mlr3misc::Callback} logs the hyperparameter configurations and the performance of the configurations to MLflow.
 }
 \examples{
 \dontshow{if (requireNamespace("mlflow")) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}

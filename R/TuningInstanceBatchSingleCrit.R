@@ -199,7 +199,7 @@ TuningInstanceBatchSingleCrit = R6Class("TuningInstanceBatchSingleCrit",
     result_learner_param_vals = function() {
       private$.result$learner_param_vals[[1]]
     },
-    #' @field internal_search_space ([`ParamSet`])\cr
+    #' @field internal_search_space ([paradox::ParamSet])\cr
     #'   The search space containing those parameters that are internally optimized by the [`mlr3::Learner`].
     internal_search_space = function(rhs) {
       assert_ro_binding(rhs)

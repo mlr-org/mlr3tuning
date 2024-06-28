@@ -36,7 +36,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     #' @field store_benchmark_result (`logical(1)`).
     store_benchmark_result = NULL,
 
-    #' @field callbacks (List of [Callback]).
+    #' @field callbacks (List of [mlr3misc::Callback]).
     callbacks = NULL,
 
     #' @field default_values (named `list()`).

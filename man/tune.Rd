@@ -50,12 +50,12 @@ Ignored if \code{terminator} is passed.}
 Maximum allowed time in seconds.
 Ignored if \code{terminator} is passed.}
 
-\item{terminator}{(\link{Terminator})\cr
+\item{terminator}{(\link[bbotk:Terminator]{bbotk::Terminator})\cr
 Stop criterion of the tuning process.}
 
 \item{search_space}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
 Hyperparameter search space. If \code{NULL} (default), the search space is
-constructed from the \link{TuneToken} of the learner's parameter set
+constructed from the \link[paradox:to_tune]{paradox::TuneToken} of the learner's parameter set
 (learner$param_set).}
 
 \item{store_benchmark_result}{(\code{logical(1)})\cr
@@ -73,7 +73,7 @@ If \code{TRUE}, hyperparameter values are checked before evaluation and
 performance scores after. If \code{FALSE} (default), values are unchecked but
 computational overhead is reduced.}
 
-\item{callbacks}{(list of \link{Callback})\cr
+\item{callbacks}{(list of \link[mlr3misc:Callback]{mlr3misc::Callback})\cr
 List of callbacks.}
 
 \item{rush}{(\code{Rush})\cr
@@ -91,11 +91,11 @@ The \link{ArchiveBatchTuning} and \link{ArchiveAsyncTuning} (\verb{$archive}) st
 You can find an overview of all tuners on our \href{https://mlr-org.com/tuners.html}{website}.
 }
 \details{
-The \link[mlr3:Task]{mlr3::Task}, \link[mlr3:Learner]{mlr3::Learner}, \link[mlr3:Resampling]{mlr3::Resampling}, \link[mlr3:Measure]{mlr3::Measure} and \link{Terminator} are used to construct a \link{TuningInstanceBatchSingleCrit}.
+The \link[mlr3:Task]{mlr3::Task}, \link[mlr3:Learner]{mlr3::Learner}, \link[mlr3:Resampling]{mlr3::Resampling}, \link[mlr3:Measure]{mlr3::Measure} and \link[bbotk:Terminator]{bbotk::Terminator} are used to construct a \link{TuningInstanceBatchSingleCrit}.
 If multiple performance \link[=Measure]{Measures} are supplied, a \link{TuningInstanceBatchMultiCrit} is created.
-The parameter \code{term_evals} and \code{term_time} are shortcuts to create a \link{Terminator}.
-If both parameters are passed, a \link{TerminatorCombo} is constructed.
-For other \link[=Terminator]{Terminators}, pass one with \code{terminator}.
+The parameter \code{term_evals} and \code{term_time} are shortcuts to create a \link[bbotk:Terminator]{bbotk::Terminator}.
+If both parameters are passed, a \link[bbotk:mlr_terminators_combo]{bbotk::TerminatorCombo} is constructed.
+For other \link[bbotk:Terminator]{Terminators}, pass one with \code{terminator}.
 If no termination criterion is needed, set \code{term_evals}, \code{term_time} and \code{terminator} to \code{NULL}.
 The search space is created from \link[paradox:to_tune]{paradox::TuneToken} or is supplied by \code{search_space}.
 }

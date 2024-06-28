@@ -36,12 +36,12 @@ This field, however, always returns the resampling passed in construction.}
 A single measure creates a \link{TuningInstanceAsyncSingleCrit} and multiple measures a \link{TuningInstanceAsyncMultiCrit}.
 If \code{NULL}, default measure is used.}
 
-\item{terminator}{(\link{Terminator})\cr
+\item{terminator}{(\link[bbotk:Terminator]{bbotk::Terminator})\cr
 Stop criterion of the tuning process.}
 
 \item{search_space}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
 Hyperparameter search space. If \code{NULL} (default), the search space is
-constructed from the \link{TuneToken} of the learner's parameter set
+constructed from the \link[paradox:to_tune]{paradox::TuneToken} of the learner's parameter set
 (learner$param_set).}
 
 \item{store_benchmark_result}{(\code{logical(1)})\cr
@@ -59,7 +59,7 @@ If \code{TRUE}, hyperparameter values are checked before evaluation and
 performance scores after. If \code{FALSE} (default), values are unchecked but
 computational overhead is reduced.}
 
-\item{callbacks}{(list of \link{Callback})\cr
+\item{callbacks}{(list of \link[mlr3misc:Callback]{mlr3misc::Callback})\cr
 List of callbacks.}
 
 \item{rush}{(\code{Rush})\cr

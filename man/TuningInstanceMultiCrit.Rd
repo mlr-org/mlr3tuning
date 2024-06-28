@@ -67,12 +67,12 @@ This field, however, always returns the resampling passed in construction.}
 \item{\code{measures}}{(list of \link[mlr3:Measure]{mlr3::Measure})\cr
 Measures to optimize.}
 
-\item{\code{terminator}}{(\link{Terminator})\cr
+\item{\code{terminator}}{(\link[bbotk:Terminator]{bbotk::Terminator})\cr
 Stop criterion of the tuning process.}
 
 \item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
 Hyperparameter search space. If \code{NULL} (default), the search space is
-constructed from the \link{TuneToken} of the learner's parameter set
+constructed from the \link[paradox:to_tune]{paradox::TuneToken} of the learner's parameter set
 (learner$param_set).}
 
 \item{\code{store_benchmark_result}}{(\code{logical(1)})\cr
@@ -90,7 +90,7 @@ If \code{TRUE}, hyperparameter values are checked before evaluation and
 performance scores after. If \code{FALSE} (default), values are unchecked but
 computational overhead is reduced.}
 
-\item{\code{callbacks}}{(list of \link{Callback})\cr
+\item{\code{callbacks}}{(list of \link[mlr3misc:Callback]{mlr3misc::Callback})\cr
 List of callbacks.}
 }
 \if{html}{\out{</div>}}

@@ -47,12 +47,12 @@ Ignored if \code{terminator} is passed.}
 Maximum allowed time in seconds.
 Ignored if \code{terminator} is passed.}
 
-\item{terminator}{(\link{Terminator})\cr
+\item{terminator}{(\link[bbotk:Terminator]{bbotk::Terminator})\cr
 Stop criterion of the tuning process.}
 
 \item{search_space}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
 Hyperparameter search space. If \code{NULL} (default), the search space is
-constructed from the \link{TuneToken} of the learner's parameter set
+constructed from the \link[paradox:to_tune]{paradox::TuneToken} of the learner's parameter set
 (learner$param_set).}
 
 \item{store_tuning_instance}{(\code{logical(1)})\cr
@@ -73,7 +73,7 @@ If \code{TRUE}, hyperparameter values are checked before evaluation and
 performance scores after. If \code{FALSE} (default), values are unchecked but
 computational overhead is reduced.}
 
-\item{callbacks}{(list of \link{Callback})\cr
+\item{callbacks}{(list of \link[mlr3misc:Callback]{mlr3misc::Callback})\cr
 List of callbacks.}
 
 \item{validate}{(\code{numeric(1)}, \code{"test"}, \code{"predefined"} or \code{NULL})\cr

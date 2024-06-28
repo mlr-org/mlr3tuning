@@ -6,10 +6,10 @@
 #' The [auto_tuner()] function creates an [AutoTuner] object.
 #'
 #' @section Validation:
-#' Both, the tuned [`Learner`][mlr3::Learner] and the `AutoTuner` itself can make use of validation data.
+#' Both, the tuned [mlr3::Learner] and the `AutoTuner` itself can make use of validation data.
 #' the `$validate` field of the `AutoTuner` determines how validation is done during the final model fit.
 #' In most cases, this should be left as `NULL`.
-#' The `$validate` field of the tuned [`Learner`][mlr3::Learner] specifies how the validation data is constructed
+#' The `$validate` field of the tuned [mlr3::Learner] specifies how the validation data is constructed
 #' during the hyperparameter optimization.
 #'
 #' @details
@@ -192,7 +192,7 @@ AutoTuner = R6Class("AutoTuner",
     #' @param recursive (`integer(1)`)\cr
     #'   Depth of recursion for multiple nested objects.
     #'
-    #' @return [Learner].
+    #' @return [mlr3::Learner].
     base_learner = function(recursive = Inf) {
       if (recursive == 0L) self$learner else self$learner$base_learner(recursive - 1L)
     },
@@ -314,7 +314,7 @@ AutoTuner = R6Class("AutoTuner",
       private$.validate
     },
 
-    #' @field archive [Archive]\cr
+    #' @field archive [ArchiveBatchTuning]\cr
     #' Archive of the [TuningInstanceBatchSingleCrit].
     archive = function() self$tuning_instance$archive,
 
