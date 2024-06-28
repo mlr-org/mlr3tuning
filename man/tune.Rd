@@ -92,7 +92,7 @@ You can find an overview of all tuners on our \href{https://mlr-org.com/tuners.h
 }
 \details{
 The \link[mlr3:Task]{mlr3::Task}, \link[mlr3:Learner]{mlr3::Learner}, \link[mlr3:Resampling]{mlr3::Resampling}, \link[mlr3:Measure]{mlr3::Measure} and \link[bbotk:Terminator]{bbotk::Terminator} are used to construct a \link{TuningInstanceBatchSingleCrit}.
-If multiple performance \link[=Measure]{Measures} are supplied, a \link{TuningInstanceBatchMultiCrit} is created.
+If multiple performance \link[mlr3:Measure]{mlr3::Measure}s are supplied, a \link{TuningInstanceBatchMultiCrit} is created.
 The parameter \code{term_evals} and \code{term_time} are shortcuts to create a \link[bbotk:Terminator]{bbotk::Terminator}.
 If both parameters are passed, a \link[bbotk:mlr_terminators_combo]{bbotk::TerminatorCombo} is constructed.
 For other \link[bbotk:Terminator]{Terminators}, pass one with \code{terminator}.

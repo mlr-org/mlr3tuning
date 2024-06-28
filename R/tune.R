@@ -12,7 +12,7 @@
 #'
 #' @details
 #' The [mlr3::Task], [mlr3::Learner], [mlr3::Resampling], [mlr3::Measure] and [bbotk::Terminator] are used to construct a [TuningInstanceBatchSingleCrit].
-#' If multiple performance [Measures][Measure] are supplied, a [TuningInstanceBatchMultiCrit] is created.
+#' If multiple performance [mlr3::Measure]s are supplied, a [TuningInstanceBatchMultiCrit] is created.
 #' The parameter `term_evals` and `term_time` are shortcuts to create a [bbotk::Terminator].
 #' If both parameters are passed, a [bbotk::TerminatorCombo] is constructed.
 #' For other [Terminators][bbotk::Terminator], pass one with `terminator`.
