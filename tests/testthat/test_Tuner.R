@@ -191,6 +191,31 @@ test_that("internal single crit", {
   )
 })
 
+test_that("internal single crit without benchmark_result", {
+  aggr = function(x) 99
+  learner = lrn("classif.debug",
+    iter = to_tune(upper = 1000L, internal = TRUE, aggr = aggr),
+    x = to_tune(0.2, 0.3),
+    validate = 0.3,
+    early_stopping = TRUE
+  )
+  ti = tune(
+    tuner = tnr("grid_search", batch_size = 2),
+    learner = learner,
+    task = tsk("iris"),
+    resampling = rsmp("cv"),
+    term_evals = 4,
+    store_benchmark_result = FALSE
+  )
+  expect_equal(
+    ti$archive$data$internal_tuned_values, replicate(list(list(iter = 99L)), n = 4L)
+  )
+  expect_equal(
+    ti$result_learner_param_vals$iter, 99L
+  )
+})
+
+
 test_that("internal multi crit", {
   learner = lrn("classif.debug",
     iter = to_tune(upper = 1000L, internal = TRUE, aggr = function(x) as.integer(ceiling(mean(unlist(x))) + 2000L)),

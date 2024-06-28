@@ -30,11 +30,6 @@ init_internal_search_space = function(self, private, super, search_space, store_
   internal_search_space = NULL
   internal_tune_ids = keep(names(search_space$tags), map_lgl(search_space$tags, function(t) "internal_tuning" %in% t))
 
-  if (length(internal_tune_ids) && isFALSE(store_benchmark_result)) {
-    # we need to access the internal_tuned_values from the bmr
-    stopf("To allow for internal tuning it is required to store the benchmark results.")
-  }
-
   if (length(internal_tune_ids)) {
     internal_search_space = search_space$subset(internal_tune_ids)
     if (internal_search_space$has_trafo) {
