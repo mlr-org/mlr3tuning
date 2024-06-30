@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.20.0.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -99,7 +99,7 @@ To change the loss-function for the internal tuning, consult the hyperparameter 
     
 
 <p><code>$optimize()</code> supports progress bars via the package <a href="https://CRAN.R-project.org/package=progressr" class="external-link"><span class="pkg">progressr</span></a>
-combined with a Terminator. Simply wrap the function in
+combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" class="external-link">bbotk::Terminator</a>. Simply wrap the function in
 <code>progressr::with_progress()</code> to enable them. We recommend to use package
 <a href="https://CRAN.R-project.org/package=progress" class="external-link"><span class="pkg">progress</span></a> as backend; enable with <code>progressr::handlers("progress")</code>.</p>
     </div>
@@ -185,7 +185,7 @@ Use <code>lgr::get_logger("bbotk")</code> to access and control the logger.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Load learner and set search space</span></span></span>
 <span class="r-in"><span><span class="va">learner</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"classif.xgboost"</span>,</span></span>
-<span class="r-in"><span>  nrounds <span class="op">=</span> <span class="fu">to_tune</span><span class="op">(</span>upper <span class="op">=</span> <span class="fl">1000</span>, internal <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  nrounds <span class="op">=</span> <span class="fu"><a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">to_tune</a></span><span class="op">(</span>upper <span class="op">=</span> <span class="fl">1000</span>, internal <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  early_stopping_rounds <span class="op">=</span> <span class="fl">10</span>,</span></span>
 <span class="r-in"><span>  validate <span class="op">=</span> <span class="st">"test"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>

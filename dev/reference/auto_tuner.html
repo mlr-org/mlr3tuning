@@ -12,7 +12,7 @@ The auto_tuner() function creates an AutoTuner object."><meta property="og:image
     
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.20.0.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -144,14 +144,14 @@ Ignored if <code>terminator</code> is passed.</p></dd>
 
 
 <dt>terminator</dt>
-<dd><p>(Terminator)<br>
+<dd><p>(<a href="https://bbotk.mlr-org.com/reference/Terminator.html" class="external-link">bbotk::Terminator</a>)<br>
 Stop criterion of the tuning process.</p></dd>
 
 
 <dt>search_space</dt>
 <dd><p>(<a href="https://paradox.mlr-org.com/reference/ParamSet.html" class="external-link">paradox::ParamSet</a>)<br>
 Hyperparameter search space. If <code>NULL</code> (default), the search space is
-constructed from the TuneToken of the learner's parameter set
+constructed from the <a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">paradox::TuneToken</a> of the learner's parameter set
 (learner$param_set).</p></dd>
 
 
@@ -182,7 +182,7 @@ computational overhead is reduced.</p></dd>
 
 
 <dt>callbacks</dt>
-<dd><p>(list of Callback)<br>
+<dd><p>(list of <a href="https://mlr3misc.mlr-org.com/reference/Callback.html" class="external-link">mlr3misc::Callback</a>)<br>
 List of callbacks.</p></dd>
 
 
@@ -242,12 +242,12 @@ If an instantiated resampling is passed, the <a href="AutoTuner.html">AutoTuner<
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">at</span> <span class="op">=</span> <span class="fu">auto_tuner</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  tuner <span class="op">=</span> <span class="fu"><a href="tnr.html">tnr</a></span><span class="op">(</span><span class="st">"random_search"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  learner <span class="op">=</span> <span class="fu">lrn</span><span class="op">(</span><span class="st">"classif.rpart"</span>, cp <span class="op">=</span> <span class="fu">to_tune</span><span class="op">(</span><span class="fl">1e-04</span>, <span class="fl">1e-1</span>, logscale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  resampling <span class="op">=</span> <span class="fu">rsmp</span> <span class="op">(</span><span class="st">"holdout"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  measure <span class="op">=</span> <span class="fu">msr</span><span class="op">(</span><span class="st">"classif.ce"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  learner <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"classif.rpart"</span>, cp <span class="op">=</span> <span class="fu"><a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">to_tune</a></span><span class="op">(</span><span class="fl">1e-04</span>, <span class="fl">1e-1</span>, logscale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  resampling <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">rsmp</a></span> <span class="op">(</span><span class="st">"holdout"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  measure <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">msr</a></span><span class="op">(</span><span class="st">"classif.ce"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  term_evals <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">at</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="fu">tsk</span><span class="op">(</span><span class="st">"pima"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">at</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">tsk</a></span><span class="op">(</span><span class="st">"pima"</span><span class="op">)</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

@@ -16,7 +16,7 @@ AutoTuner must be initialized with store_tuning_instance = TRUE and mlr3::resamp
     
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.20.0.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -159,42 +159,42 @@ Resample result of the inner resampling.</p></li>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Nested Resampling on Palmer Penguins Data Set</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">learner</span> <span class="op">=</span> <span class="fu">lrn</span><span class="op">(</span><span class="st">"classif.rpart"</span>,</span></span>
-<span class="r-in"><span>  cp <span class="op">=</span> <span class="fu">to_tune</span><span class="op">(</span><span class="fl">1e-04</span>, <span class="fl">1e-1</span>, logscale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">learner</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"classif.rpart"</span>,</span></span>
+<span class="r-in"><span>  cp <span class="op">=</span> <span class="fu"><a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">to_tune</a></span><span class="op">(</span><span class="fl">1e-04</span>, <span class="fl">1e-1</span>, logscale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># create auto tuner</span></span></span>
 <span class="r-in"><span><span class="va">at</span> <span class="op">=</span> <span class="fu"><a href="auto_tuner.html">auto_tuner</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  tuner <span class="op">=</span> <span class="fu"><a href="tnr.html">tnr</a></span><span class="op">(</span><span class="st">"random_search"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  learner <span class="op">=</span> <span class="va">learner</span>,</span></span>
-<span class="r-in"><span>  resampling <span class="op">=</span> <span class="fu">rsmp</span> <span class="op">(</span><span class="st">"holdout"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  measure <span class="op">=</span> <span class="fu">msr</span><span class="op">(</span><span class="st">"classif.ce"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  resampling <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">rsmp</a></span> <span class="op">(</span><span class="st">"holdout"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  measure <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">msr</a></span><span class="op">(</span><span class="st">"classif.ce"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  term_evals <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">resampling_outer</span> <span class="op">=</span> <span class="fu">rsmp</span><span class="op">(</span><span class="st">"cv"</span>, folds <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">rr</span> <span class="op">=</span> <span class="fu">resample</span><span class="op">(</span><span class="fu">tsk</span><span class="op">(</span><span class="st">"iris"</span><span class="op">)</span>, <span class="va">at</span>, <span class="va">resampling_outer</span>, store_models <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">resampling_outer</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">rsmp</a></span><span class="op">(</span><span class="st">"cv"</span>, folds <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">rr</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/resample.html" class="external-link">resample</a></span><span class="op">(</span><span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">tsk</a></span><span class="op">(</span><span class="st">"iris"</span><span class="op">)</span>, <span class="va">at</span>, <span class="va">resampling_outer</span>, store_models <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># extract inner archives</span></span></span>
 <span class="r-in"><span><span class="fu">extract_inner_tuning_archives</span><span class="op">(</span><span class="va">rr</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    iteration        cp classif.ce  x_domain_cp runtime_learners</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;int&gt;     &lt;num&gt;      &lt;num&gt;        &lt;num&gt;            &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:         1 -3.875155       0.16 0.0207511192            0.028</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:         1 -3.628193       0.16 0.0265641341            0.010</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:         1 -5.370171       0.16 0.0046533362            0.009</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4:         1 -7.556129       0.16 0.0005228955            0.010</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5:         2 -4.572012       0.12 0.0103371401            0.011</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6:         2 -7.401316       0.12 0.0006104490            0.010</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7:         2 -5.389435       0.12 0.0045645519            0.011</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8:         2 -8.077646       0.12 0.0003104008            0.010</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:         1 -3.875155       0.16 0.0207511192            0.009</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:         1 -3.628193       0.16 0.0265641341            0.007</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:         1 -5.370171       0.16 0.0046533362            0.008</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4:         1 -7.556129       0.16 0.0005228955            0.009</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5:         2 -4.572012       0.12 0.0103371401            0.008</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6:         2 -7.401316       0.12 0.0006104490            0.011</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7:         2 -5.389435       0.12 0.0045645519            0.008</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8:         2 -8.077646       0.12 0.0003104008            0.008</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              timestamp batch_nr warnings errors  resample_result task_id</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;POSc&gt;    &lt;int&gt;    &lt;int&gt;  &lt;int&gt;           &lt;list&gt;  &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 2024-06-28 13:09:35        1        0      0 &lt;ResampleResult&gt;    iris</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 2024-06-28 13:09:35        2        0      0 &lt;ResampleResult&gt;    iris</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 2024-06-28 13:09:35        3        0      0 &lt;ResampleResult&gt;    iris</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 2024-06-28 13:09:35        4        0      0 &lt;ResampleResult&gt;    iris</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 2024-06-28 13:09:35        1        0      0 &lt;ResampleResult&gt;    iris</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 2024-06-28 13:09:35        2        0      0 &lt;ResampleResult&gt;    iris</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7: 2024-06-28 13:09:35        3        0      0 &lt;ResampleResult&gt;    iris</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8: 2024-06-28 13:09:35        4        0      0 &lt;ResampleResult&gt;    iris</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 2024-06-30 09:46:13        1        0      0 &lt;ResampleResult&gt;    iris</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 2024-06-30 09:46:14        2        0      0 &lt;ResampleResult&gt;    iris</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 2024-06-30 09:46:14        3        0      0 &lt;ResampleResult&gt;    iris</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 2024-06-30 09:46:14        4        0      0 &lt;ResampleResult&gt;    iris</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5: 2024-06-30 09:46:13        1        0      0 &lt;ResampleResult&gt;    iris</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6: 2024-06-30 09:46:13        2        0      0 &lt;ResampleResult&gt;    iris</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7: 2024-06-30 09:46:13        3        0      0 &lt;ResampleResult&gt;    iris</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8: 2024-06-30 09:46:13        4        0      0 &lt;ResampleResult&gt;    iris</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             learner_id resampling_id</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;char&gt;        &lt;char&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1: classif.rpart.tuned            cv</span>

@@ -37,7 +37,7 @@
     
     <a class="navbar-brand me-2" href="index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.20.0.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -165,27 +165,28 @@
 </h2>
 <p>We optimize the <code>cost</code> and <code>gamma</code> hyperparameters of a support vector machine on the <a href="https://mlr3.mlr-org.com/reference/mlr_tasks_sonar.html" class="external-link">Sonar</a> data set.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://mlr3verse.mlr-org.com" class="external-link">"mlr3verse"</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://mlr3learners.mlr-org.com" class="external-link">"mlr3learners"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://mlr3tuning.mlr-org.com">"mlr3tuning"</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">learner</span> <span class="op">=</span> <span class="fu">lrn</span><span class="op">(</span><span class="st">"classif.svm"</span>,</span>
-<span>  cost  <span class="op">=</span> <span class="fu">to_tune</span><span class="op">(</span><span class="fl">1e-5</span>, <span class="fl">1e5</span>, logscale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span>  gamma <span class="op">=</span> <span class="fu">to_tune</span><span class="op">(</span><span class="fl">1e-5</span>, <span class="fl">1e5</span>, logscale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span><span class="va">learner</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"classif.svm"</span>,</span>
+<span>  cost  <span class="op">=</span> <span class="fu"><a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">to_tune</a></span><span class="op">(</span><span class="fl">1e-5</span>, <span class="fl">1e5</span>, logscale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>  gamma <span class="op">=</span> <span class="fu"><a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">to_tune</a></span><span class="op">(</span><span class="fl">1e-5</span>, <span class="fl">1e5</span>, logscale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>  kernel <span class="op">=</span> <span class="st">"radial"</span>,</span>
 <span>  type <span class="op">=</span> <span class="st">"C-classification"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>We construct a tuning instance with the <code><a href="reference/ti.html">ti()</a></code> function. The tuning instance describes the tuning problem.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">instance</span> <span class="op">=</span> <span class="fu"><a href="reference/ti.html">ti</a></span><span class="op">(</span></span>
-<span>  task <span class="op">=</span> <span class="fu">tsk</span><span class="op">(</span><span class="st">"sonar"</span><span class="op">)</span>,</span>
+<span>  task <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">tsk</a></span><span class="op">(</span><span class="st">"sonar"</span><span class="op">)</span>,</span>
 <span>  learner <span class="op">=</span> <span class="va">learner</span>,</span>
-<span>  resampling <span class="op">=</span> <span class="fu">rsmp</span><span class="op">(</span><span class="st">"cv"</span>, folds <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span>
-<span>  measures <span class="op">=</span> <span class="fu">msr</span><span class="op">(</span><span class="st">"classif.ce"</span><span class="op">)</span>,</span>
+<span>  resampling <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">rsmp</a></span><span class="op">(</span><span class="st">"cv"</span>, folds <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span>
+<span>  measures <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">msr</a></span><span class="op">(</span><span class="st">"classif.ce"</span><span class="op">)</span>,</span>
 <span>  terminator <span class="op">=</span> <span class="fu"><a href="https://bbotk.mlr-org.com/reference/trm.html" class="external-link">trm</a></span><span class="op">(</span><span class="st">"none"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">instance</span></span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="do">## &lt;TuningInstanceBatchSingleCrit&gt;</span></span>
 <span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="do">## * State:  Not optimized</span></span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="do">## * Objective: &lt;ObjectiveTuning:classif.svm_on_sonar&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="do">## * Objective: &lt;ObjectiveTuningBatch:classif.svm_on_sonar&gt;</span></span>
 <span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="do">## * Search Space:</span></span>
 <span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="do">##       id    class     lower    upper nlevels</span></span>
 <span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="do">## 1:  cost ParamDbl -11.51293 11.51293     Inf</span></span>
@@ -195,11 +196,11 @@
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tuner</span> <span class="op">=</span> <span class="fu"><a href="reference/tnr.html">tnr</a></span><span class="op">(</span><span class="st">"grid_search"</span>, resolution <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="va">tuner</span></span></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="do">## &lt;TunerGridSearch&gt;: Grid Search</span></span>
+<div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="do">## &lt;TunerBatchGridSearch&gt;: Grid Search</span></span>
 <span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="do">## * Parameters: batch_size=1, resolution=5</span></span>
 <span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="do">## * Parameter classes: ParamLgl, ParamInt, ParamDbl, ParamFct</span></span>
 <span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="do">## * Properties: dependencies, single-crit, multi-crit</span></span>
-<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="do">## * Packages: mlr3tuning</span></span></code></pre></div>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="do">## * Packages: mlr3tuning, bbotk</span></span></code></pre></div>
 <p>To start the tuning, we simply pass the tuning instance to the tuner.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tuner</span><span class="op">$</span><span class="fu">optimize</span><span class="op">(</span><span class="va">instance</span><span class="op">)</span></span></code></pre></div>
@@ -208,19 +209,19 @@
 <p>The tuner returns the best hyperparameter configuration and the corresponding measured performance.</p>
 <p>The archive contains all evaluated hyperparameter configurations.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">as.data.table</span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">cost</span>, <span class="va">gamma</span>, <span class="va">classif.ce</span>, <span class="va">batch_nr</span>, <span class="va">resample_result</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
-<div class="sourceCode" id="cb11"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="do">##           cost      gamma classif.ce batch_nr  resample_result</span></span>
-<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="do">##  1:  -5.756463   5.756463  0.4665977        1 &lt;ResampleResult&gt;</span></span>
-<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="do">##  2:   5.756463  -5.756463  0.1637681        2 &lt;ResampleResult&gt;</span></span>
-<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="do">##  3:  11.512925   5.756463  0.4665977        3 &lt;ResampleResult&gt;</span></span>
-<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a><span class="do">##  4:   5.756463  11.512925  0.4665977        4 &lt;ResampleResult&gt;</span></span>
-<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="do">##  5: -11.512925 -11.512925  0.4665977        5 &lt;ResampleResult&gt;</span></span>
-<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a><span class="do">## ---</span></span>
-<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a><span class="do">## 21:  -5.756463  -5.756463  0.4665977       21 &lt;ResampleResult&gt;</span></span>
-<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a><span class="do">## 22:  11.512925  11.512925  0.4665977       22 &lt;ResampleResult&gt;</span></span>
-<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a><span class="do">## 23: -11.512925  11.512925  0.4665977       23 &lt;ResampleResult&gt;</span></span>
-<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a><span class="do">## 24:  11.512925  -5.756463  0.1637681       24 &lt;ResampleResult&gt;</span></span>
-<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a><span class="do">## 25:   0.000000  -5.756463  0.2599034       25 &lt;ResampleResult&gt;</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">cost</span>, <span class="va">gamma</span>, <span class="va">classif.ce</span>, <span class="va">batch_nr</span>, <span class="va">resample_result</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="do">##           cost     gamma classif.ce batch_nr  resample_result</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="do">##  1:   5.756463  0.000000  0.4661146        1 &lt;ResampleResult&gt;</span></span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="do">##  2:  11.512925  0.000000  0.4661146        2 &lt;ResampleResult&gt;</span></span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="do">##  3: -11.512925  5.756463  0.4661146        3 &lt;ResampleResult&gt;</span></span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a><span class="do">##  4: -11.512925  0.000000  0.4661146        4 &lt;ResampleResult&gt;</span></span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="do">##  5:  -5.756463 11.512925  0.4661146        5 &lt;ResampleResult&gt;</span></span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a><span class="do">## ---                                                          </span></span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a><span class="do">## 21:  11.512925  5.756463  0.4661146       21 &lt;ResampleResult&gt;</span></span>
+<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a><span class="do">## 22: -11.512925 11.512925  0.4661146       22 &lt;ResampleResult&gt;</span></span>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a><span class="do">## 23:   0.000000  5.756463  0.4661146       23 &lt;ResampleResult&gt;</span></span>
+<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a><span class="do">## 24:   5.756463 11.512925  0.4661146       24 &lt;ResampleResult&gt;</span></span>
+<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a><span class="do">## 25: -11.512925 -5.756463  0.4661146       25 &lt;ResampleResult&gt;</span></span></code></pre></div>
 <p>The <a href="https://mlr3viz.mlr-org.com/" class="external-link">mlr3viz</a> package visualizes tuning results.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mlr3viz.mlr-org.com" class="external-link">mlr3viz</a></span><span class="op">)</span></span>
@@ -230,7 +231,7 @@
 <p>We fit a final model with optimized hyperparameters to make predictions on new data.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">learner</span><span class="op">$</span><span class="va">param_set</span><span class="op">$</span><span class="va">values</span> <span class="op">=</span> <span class="va">instance</span><span class="op">$</span><span class="va">result_learner_param_vals</span></span>
-<span><span class="va">learner</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="fu">tsk</span><span class="op">(</span><span class="st">"sonar"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">learner</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">tsk</a></span><span class="op">(</span><span class="st">"sonar"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">

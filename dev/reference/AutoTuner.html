@@ -12,7 +12,7 @@ The auto_tuner() function creates an AutoTuner object."><meta property="og:image
     
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.20.0.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -100,10 +100,10 @@ A set timeout is disabled while fitting the final model.</p>
     <h2 id="validation">Validation<a class="anchor" aria-label="anchor" href="#validation"></a></h2>
     
 
-<p>Both, the tuned <code><a href="https://mlr3.mlr-org.com/reference/Learner.html" class="external-link">Learner</a></code> and the <code>AutoTuner</code> itself can make use of validation data.
+<p>Both, the tuned <a href="https://mlr3.mlr-org.com/reference/Learner.html" class="external-link">mlr3::Learner</a> and the <code>AutoTuner</code> itself can make use of validation data.
 the <code>$validate</code> field of the <code>AutoTuner</code> determines how validation is done during the final model fit.
 In most cases, this should be left as <code>NULL</code>.
-The <code>$validate</code> field of the tuned <code><a href="https://mlr3.mlr-org.com/reference/Learner.html" class="external-link">Learner</a></code> specifies how the validation data is constructed
+The <code>$validate</code> field of the tuned <a href="https://mlr3.mlr-org.com/reference/Learner.html" class="external-link">mlr3::Learner</a> specifies how the validation data is constructed
 during the hyperparameter optimization.</p>
     </div>
     <div class="section level2">
@@ -161,7 +161,7 @@ a ratio in $(0, 1)$, <code>"test"</code>, or <code>"predefined"</code>.</p></dd>
 
 
 <dt><code>archive</code></dt>
-<dd><p>Archive<br>
+<dd><p><a href="ArchiveBatchTuning.html">ArchiveBatchTuning</a><br>
 Archive of the <a href="TuningInstanceBatchSingleCrit.html">TuningInstanceBatchSingleCrit</a>.</p></dd>
 
 
@@ -269,14 +269,14 @@ Measure to optimize. If <code>NULL</code>, default measure is used.</p></dd>
 
 
 <dt><code>terminator</code></dt>
-<dd><p>(Terminator)<br>
+<dd><p>(<a href="https://bbotk.mlr-org.com/reference/Terminator.html" class="external-link">bbotk::Terminator</a>)<br>
 Stop criterion of the tuning process.</p></dd>
 
 
 <dt><code>search_space</code></dt>
 <dd><p>(<a href="https://paradox.mlr-org.com/reference/ParamSet.html" class="external-link">paradox::ParamSet</a>)<br>
 Hyperparameter search space. If <code>NULL</code> (default), the search space is
-constructed from the TuneToken of the learner's parameter set
+constructed from the <a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">paradox::TuneToken</a> of the learner's parameter set
 (learner$param_set).</p></dd>
 
 
@@ -307,7 +307,7 @@ computational overhead is reduced.</p></dd>
 
 
 <dt><code>callbacks</code></dt>
-<dd><p>(list of Callback)<br>
+<dd><p>(list of <a href="https://mlr3misc.mlr-org.com/reference/Callback.html" class="external-link">mlr3misc::Callback</a>)<br>
 List of callbacks.</p></dd>
 
 
@@ -343,7 +343,7 @@ Depth of recursion for multiple nested objects.</p></dd>
 </div>
 <div class="section">
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
-<p>Learner.</p>
+<p><a href="https://mlr3.mlr-org.com/reference/Learner.html" class="external-link">mlr3::Learner</a>.</p>
 </div>
 
 </div><p></p><hr><a id="method-AutoTuner-importance"></a><div class="section">
@@ -487,20 +487,20 @@ Additional parameters.</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Automatic Tuning</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># split to train and external set</span></span></span>
-<span class="r-in"><span><span class="va">task</span> <span class="op">=</span> <span class="fu">tsk</span><span class="op">(</span><span class="st">"penguins"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">split</span> <span class="op">=</span> <span class="fu">partition</span><span class="op">(</span><span class="va">task</span>, ratio <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">task</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">tsk</a></span><span class="op">(</span><span class="st">"penguins"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">split</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/partition.html" class="external-link">partition</a></span><span class="op">(</span><span class="va">task</span>, ratio <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># load learner and set search space</span></span></span>
-<span class="r-in"><span><span class="va">learner</span> <span class="op">=</span> <span class="fu">lrn</span><span class="op">(</span><span class="st">"classif.rpart"</span>,</span></span>
-<span class="r-in"><span>  cp <span class="op">=</span> <span class="fu">to_tune</span><span class="op">(</span><span class="fl">1e-04</span>, <span class="fl">1e-1</span>, logscale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">learner</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"classif.rpart"</span>,</span></span>
+<span class="r-in"><span>  cp <span class="op">=</span> <span class="fu"><a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">to_tune</a></span><span class="op">(</span><span class="fl">1e-04</span>, <span class="fl">1e-1</span>, logscale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># create auto tuner</span></span></span>
 <span class="r-in"><span><span class="va">at</span> <span class="op">=</span> <span class="fu"><a href="auto_tuner.html">auto_tuner</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  tuner <span class="op">=</span> <span class="fu"><a href="tnr.html">tnr</a></span><span class="op">(</span><span class="st">"random_search"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  learner <span class="op">=</span> <span class="va">learner</span>,</span></span>
-<span class="r-in"><span>  resampling <span class="op">=</span> <span class="fu">rsmp</span> <span class="op">(</span><span class="st">"holdout"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  measure <span class="op">=</span> <span class="fu">msr</span><span class="op">(</span><span class="st">"classif.ce"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  resampling <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">rsmp</a></span> <span class="op">(</span><span class="st">"holdout"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  measure <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">msr</a></span><span class="op">(</span><span class="st">"classif.ce"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  term_evals <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># tune hyperparameters and fit final model</span></span></span>
@@ -599,12 +599,12 @@ Additional parameters.</p></dd>
 <span class="r-in"><span><span class="va">at</span> <span class="op">=</span> <span class="fu"><a href="auto_tuner.html">auto_tuner</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  tuner <span class="op">=</span> <span class="fu"><a href="tnr.html">tnr</a></span><span class="op">(</span><span class="st">"random_search"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  learner <span class="op">=</span> <span class="va">learner</span>,</span></span>
-<span class="r-in"><span>  resampling <span class="op">=</span> <span class="fu">rsmp</span> <span class="op">(</span><span class="st">"holdout"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  measure <span class="op">=</span> <span class="fu">msr</span><span class="op">(</span><span class="st">"classif.ce"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  resampling <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">rsmp</a></span> <span class="op">(</span><span class="st">"holdout"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  measure <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">msr</a></span><span class="op">(</span><span class="st">"classif.ce"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  term_evals <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">resampling_outer</span> <span class="op">=</span> <span class="fu">rsmp</span><span class="op">(</span><span class="st">"cv"</span>, folds <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">rr</span> <span class="op">=</span> <span class="fu">resample</span><span class="op">(</span><span class="va">task</span>, <span class="va">at</span>, <span class="va">resampling_outer</span>, store_models <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">resampling_outer</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">rsmp</a></span><span class="op">(</span><span class="st">"cv"</span>, folds <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">rr</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/resample.html" class="external-link">resample</a></span><span class="op">(</span><span class="va">task</span>, <span class="va">at</span>, <span class="va">resampling_outer</span>, store_models <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># retrieve inner tuning results.</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="extract_inner_tuning_results.html">extract_inner_tuning_results</a></span><span class="op">(</span><span class="va">rr</span><span class="op">)</span></span></span>

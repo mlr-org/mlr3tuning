@@ -12,7 +12,7 @@ during the tuning (validate)."><meta property="og:image" content="https://mlr3tu
     
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.20.0.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -120,7 +120,7 @@ Passed when calling <code><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">at</span> <span class="op">=</span> <span class="fu"><a href="auto_tuner.html">auto_tuner</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  tuner <span class="op">=</span> <span class="fu"><a href="tnr.html">tnr</a></span><span class="op">(</span><span class="st">"random_search"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  learner <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"classif.debug"</span>, early_stopping <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
-<span class="r-in"><span>    iter <span class="op">=</span> <span class="fu">to_tune</span><span class="op">(</span>upper <span class="op">=</span> <span class="fl">1000L</span>, internal <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, validate <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    iter <span class="op">=</span> <span class="fu"><a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">to_tune</a></span><span class="op">(</span>upper <span class="op">=</span> <span class="fl">1000L</span>, internal <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, validate <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  resampling <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">rsmp</a></span><span class="op">(</span><span class="st">"holdout"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># use the test set as validation data during tuning</span></span></span>

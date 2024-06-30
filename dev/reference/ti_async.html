@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.20.0.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -126,14 +126,14 @@ If <code>NULL</code>, default measure is used.</p></dd>
 
 
 <dt>terminator</dt>
-<dd><p>(Terminator)<br>
+<dd><p>(<a href="https://bbotk.mlr-org.com/reference/Terminator.html" class="external-link">bbotk::Terminator</a>)<br>
 Stop criterion of the tuning process.</p></dd>
 
 
 <dt>search_space</dt>
 <dd><p>(<a href="https://paradox.mlr-org.com/reference/ParamSet.html" class="external-link">paradox::ParamSet</a>)<br>
 Hyperparameter search space. If <code>NULL</code> (default), the search space is
-constructed from the TuneToken of the learner's parameter set
+constructed from the <a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">paradox::TuneToken</a> of the learner's parameter set
 (learner$param_set).</p></dd>
 
 
@@ -159,7 +159,7 @@ computational overhead is reduced.</p></dd>
 
 
 <dt>callbacks</dt>
-<dd><p>(list of Callback)<br>
+<dd><p>(list of <a href="https://mlr3misc.mlr-org.com/reference/Callback.html" class="external-link">mlr3misc::Callback</a>)<br>
 List of callbacks.</p></dd>
 
 
@@ -195,7 +195,7 @@ The default measure depends on the task type.</p><table class="table table"><tr>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Load learner and set search space</span></span></span>
 <span class="r-in"><span><span class="va">learner</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"classif.rpart"</span>,</span></span>
-<span class="r-in"><span>  cp <span class="op">=</span> <span class="fu">to_tune</span><span class="op">(</span><span class="fl">1e-04</span>, <span class="fl">1e-1</span>, logscale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  cp <span class="op">=</span> <span class="fu"><a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">to_tune</a></span><span class="op">(</span><span class="fl">1e-04</span>, <span class="fl">1e-1</span>, logscale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Construct tuning instance</span></span></span>
@@ -226,10 +226,10 @@ The default measure depends on the task type.</p><table class="table table"><tr>
 <span class="r-in"><span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp classif.ce  x_domain_cp runtime_learners           timestamp</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;      &lt;num&gt;        &lt;num&gt;            &lt;num&gt;              &lt;POSc&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -8.051083 0.06414950 0.0003187565            0.037 2024-06-28 13:09:57</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -6.329682 0.06414950 0.0017826013            0.034 2024-06-28 13:09:57</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -3.589528 0.06125095 0.0276113483            0.033 2024-06-28 13:09:57</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -8.000504 0.06414950 0.0003352937            0.034 2024-06-28 13:09:57</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -8.051083 0.06414950 0.0003187565            0.031 2024-06-30 09:46:34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -6.329682 0.06414950 0.0017826013            0.032 2024-06-30 09:46:34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -3.589528 0.06125095 0.0276113483            0.048 2024-06-30 09:46:34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -8.000504 0.06414950 0.0003352937            0.026 2024-06-30 09:46:34</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    batch_nr warnings errors  resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;int&gt;    &lt;int&gt;  &lt;int&gt;           &lt;list&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:        1        0      0 &lt;ResampleResult&gt;</span>

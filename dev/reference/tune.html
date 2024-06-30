@@ -18,7 +18,7 @@ You can find an overview of all tuners on our website."><meta property="og:image
     
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.20.0.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -158,14 +158,14 @@ Ignored if <code>terminator</code> is passed.</p></dd>
 
 
 <dt>terminator</dt>
-<dd><p>(Terminator)<br>
+<dd><p>(<a href="https://bbotk.mlr-org.com/reference/Terminator.html" class="external-link">bbotk::Terminator</a>)<br>
 Stop criterion of the tuning process.</p></dd>
 
 
 <dt>search_space</dt>
 <dd><p>(<a href="https://paradox.mlr-org.com/reference/ParamSet.html" class="external-link">paradox::ParamSet</a>)<br>
 Hyperparameter search space. If <code>NULL</code> (default), the search space is
-constructed from the TuneToken of the learner's parameter set
+constructed from the <a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">paradox::TuneToken</a> of the learner's parameter set
 (learner$param_set).</p></dd>
 
 
@@ -191,7 +191,7 @@ computational overhead is reduced.</p></dd>
 
 
 <dt>callbacks</dt>
-<dd><p>(list of Callback)<br>
+<dd><p>(list of <a href="https://mlr3misc.mlr-org.com/reference/Callback.html" class="external-link">mlr3misc::Callback</a>)<br>
 List of callbacks.</p></dd>
 
 
@@ -210,11 +210,11 @@ If a rush instance is supplied, the tuning runs without batches.</p></dd>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The <a href="https://mlr3.mlr-org.com/reference/Task.html" class="external-link">mlr3::Task</a>, <a href="https://mlr3.mlr-org.com/reference/Learner.html" class="external-link">mlr3::Learner</a>, <a href="https://mlr3.mlr-org.com/reference/Resampling.html" class="external-link">mlr3::Resampling</a>, <a href="https://mlr3.mlr-org.com/reference/Measure.html" class="external-link">mlr3::Measure</a> and Terminator are used to construct a <a href="TuningInstanceBatchSingleCrit.html">TuningInstanceBatchSingleCrit</a>.
-If multiple performance <a href="https://mlr3.mlr-org.com/reference/Measure.html" class="external-link">Measures</a> are supplied, a <a href="TuningInstanceBatchMultiCrit.html">TuningInstanceBatchMultiCrit</a> is created.
-The parameter <code>term_evals</code> and <code>term_time</code> are shortcuts to create a Terminator.
-If both parameters are passed, a TerminatorCombo is constructed.
-For other Terminators, pass one with <code>terminator</code>.
+    <p>The <a href="https://mlr3.mlr-org.com/reference/Task.html" class="external-link">mlr3::Task</a>, <a href="https://mlr3.mlr-org.com/reference/Learner.html" class="external-link">mlr3::Learner</a>, <a href="https://mlr3.mlr-org.com/reference/Resampling.html" class="external-link">mlr3::Resampling</a>, <a href="https://mlr3.mlr-org.com/reference/Measure.html" class="external-link">mlr3::Measure</a> and <a href="https://bbotk.mlr-org.com/reference/Terminator.html" class="external-link">bbotk::Terminator</a> are used to construct a <a href="TuningInstanceBatchSingleCrit.html">TuningInstanceBatchSingleCrit</a>.
+If multiple performance <a href="https://mlr3.mlr-org.com/reference/Measure.html" class="external-link">mlr3::Measure</a>s are supplied, a <a href="TuningInstanceBatchMultiCrit.html">TuningInstanceBatchMultiCrit</a> is created.
+The parameter <code>term_evals</code> and <code>term_time</code> are shortcuts to create a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" class="external-link">bbotk::Terminator</a>.
+If both parameters are passed, a <a href="https://bbotk.mlr-org.com/reference/mlr_terminators_combo.html" class="external-link">bbotk::TerminatorCombo</a> is constructed.
+For other <a href="https://bbotk.mlr-org.com/reference/Terminator.html" class="external-link">Terminators</a>, pass one with <code>terminator</code>.
 If no termination criterion is needed, set <code>term_evals</code>, <code>term_time</code> and <code>terminator</code> to <code>NULL</code>.
 The search space is created from <a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">paradox::TuneToken</a> or is supplied by <code>search_space</code>.</p>
     </div>
@@ -256,7 +256,7 @@ Alternatively, measures can be supplied to <code><a href="https://rdatatable.git
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Load learner and set search space</span></span></span>
 <span class="r-in"><span><span class="va">learner</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"classif.rpart"</span>,</span></span>
-<span class="r-in"><span>  cp <span class="op">=</span> <span class="fu">to_tune</span><span class="op">(</span><span class="fl">1e-04</span>, <span class="fl">1e-1</span>, logscale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  cp <span class="op">=</span> <span class="fu"><a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">to_tune</a></span><span class="op">(</span><span class="fl">1e-04</span>, <span class="fl">1e-1</span>, logscale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Run tuning</span></span></span>
@@ -279,10 +279,10 @@ Alternatively, measures can be supplied to <code><a href="https://rdatatable.git
 <span class="r-in"><span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp classif.ce  x_domain_cp runtime_learners           timestamp</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;      &lt;num&gt;        &lt;num&gt;            &lt;num&gt;              &lt;POSc&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -7.799657  0.2812500 0.0004098756            0.015 2024-06-28 13:09:58</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -2.629226  0.3085938 0.0721342997            0.035 2024-06-28 13:09:58</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -4.335535  0.2421875 0.0130948692            0.014 2024-06-28 13:09:58</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -5.830065  0.2578125 0.0029378859            0.014 2024-06-28 13:09:58</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -7.799657  0.2812500 0.0004098756            0.014 2024-06-30 09:46:36</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -2.629226  0.3085938 0.0721342997            0.013 2024-06-30 09:46:36</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -4.335535  0.2421875 0.0130948692            0.012 2024-06-30 09:46:36</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -5.830065  0.2578125 0.0029378859            0.012 2024-06-30 09:46:36</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    batch_nr warnings errors  resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;int&gt;    &lt;int&gt;  &lt;int&gt;           &lt;list&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:        1        0      0 &lt;ResampleResult&gt;</span>

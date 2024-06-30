@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.20.0.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -221,7 +221,7 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># load learner and set search space</span></span></span>
 <span class="r-in"><span><span class="va">learner</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"classif.rpart"</span>,</span></span>
-<span class="r-in"><span>  cp <span class="op">=</span> <span class="fu">to_tune</span><span class="op">(</span><span class="fl">1e-04</span>, <span class="fl">1e-1</span>, logscale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  cp <span class="op">=</span> <span class="fu"><a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">to_tune</a></span><span class="op">(</span><span class="fl">1e-04</span>, <span class="fl">1e-1</span>, logscale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># run hyperparameter tuning on the Palmer Penguins data set</span></span></span>
@@ -244,16 +244,16 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 <span class="r-in"><span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            cp classif.ce  x_domain_cp runtime_learners           timestamp</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;num&gt;      &lt;num&gt;        &lt;num&gt;            &lt;num&gt;              &lt;POSc&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -5.758013 0.07826087 0.0031573806            0.012 2024-06-28 13:09:54</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -4.141436 0.07826087 0.0159000048            0.011 2024-06-28 13:09:55</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -7.233137 0.07826087 0.0007222517            0.012 2024-06-28 13:09:55</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -4.807480 0.07826087 0.0081684173            0.011 2024-06-28 13:09:55</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -3.932615 0.07826087 0.0195923750            0.012 2024-06-28 13:09:55</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -7.006127 0.07826087 0.0009063120            0.010 2024-06-28 13:09:55</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -2.903986 0.07826087 0.0548043435            0.012 2024-06-28 13:09:55</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -7.110971 0.07826087 0.0008161022            0.009 2024-06-28 13:09:55</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -4.970553 0.07826087 0.0069393095            0.011 2024-06-28 13:09:55</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -3.614064 0.07826087 0.0269421266            0.011 2024-06-28 13:09:55</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -5.758013 0.07826087 0.0031573806            0.010 2024-06-30 09:46:32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -4.141436 0.07826087 0.0159000048            0.010 2024-06-30 09:46:32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -7.233137 0.07826087 0.0007222517            0.010 2024-06-30 09:46:32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -4.807480 0.07826087 0.0081684173            0.009 2024-06-30 09:46:32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -3.932615 0.07826087 0.0195923750            0.010 2024-06-30 09:46:32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -7.006127 0.07826087 0.0009063120            0.010 2024-06-30 09:46:32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -2.903986 0.07826087 0.0548043435            0.009 2024-06-30 09:46:32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -7.110971 0.07826087 0.0008161022            0.009 2024-06-30 09:46:32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -4.970553 0.07826087 0.0069393095            0.009 2024-06-30 09:46:32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -3.614064 0.07826087 0.0269421266            0.010 2024-06-30 09:46:32</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     batch_nr warnings errors  resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;int&gt;    &lt;int&gt;  &lt;int&gt;           &lt;list&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:        1        0      0 &lt;ResampleResult&gt;</span>

@@ -12,7 +12,7 @@ The function ti() creates a TuningInstanceBatchMultiCrit and the function tune()
     
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.20.0.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.0.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -107,13 +107,13 @@ The tuner is also supposed to store its final result, consisting of a selected h
     <h2 id="analysis">Analysis<a class="anchor" aria-label="anchor" href="#analysis"></a></h2>
     
 
-<p>For analyzing the tuning results, it is recommended to pass the <a href="ArchiveBatchTuning.html">ArchiveBatchTuning</a> to <code>as.data.table()</code>.
+<p>For analyzing the tuning results, it is recommended to pass the <a href="ArchiveBatchTuning.html">ArchiveBatchTuning</a> to <code><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table()</a></code>.
 The returned data table is joined with the benchmark result which adds the <a href="https://mlr3.mlr-org.com/reference/ResampleResult.html" class="external-link">mlr3::ResampleResult</a> for each hyperparameter evaluation.</p>
 <p>The archive provides various getters (e.g. <code>$learners()</code>) to ease the access.
 All getters extract by position (<code>i</code>) or unique hash (<code>uhash</code>).
 For a complete list of all getters see the methods section.</p>
 <p>The benchmark result (<code>$benchmark_result</code>) allows to score the hyperparameter configurations again on a different measure.
-Alternatively, measures can be supplied to <code>as.data.table()</code>.</p>
+Alternatively, measures can be supplied to <code><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table()</a></code>.</p>
 <p>The <a href="https://CRAN.R-project.org/package=mlr3viz" class="external-link"><span class="pkg">mlr3viz</span></a> package provides visualizations for tuning results.</p>
     </div>
     <div class="section level2">
@@ -128,7 +128,7 @@ List of param values for the optimal learner call.</p></dd>
 
 
 <dt><code>internal_search_space</code></dt>
-<dd><p>(<code>ParamSet</code>)<br>
+<dd><p>(<a href="https://paradox.mlr-org.com/reference/ParamSet.html" class="external-link">paradox::ParamSet</a>)<br>
 The search space containing those parameters that are internally optimized by the <code><a href="https://mlr3.mlr-org.com/reference/Learner.html" class="external-link">mlr3::Learner</a></code>.</p></dd>
 
 
@@ -193,14 +193,14 @@ Measures to optimize.</p></dd>
 
 
 <dt><code>terminator</code></dt>
-<dd><p>(Terminator)<br>
+<dd><p>(<a href="https://bbotk.mlr-org.com/reference/Terminator.html" class="external-link">bbotk::Terminator</a>)<br>
 Stop criterion of the tuning process.</p></dd>
 
 
 <dt><code>search_space</code></dt>
 <dd><p>(<a href="https://paradox.mlr-org.com/reference/ParamSet.html" class="external-link">paradox::ParamSet</a>)<br>
 Hyperparameter search space. If <code>NULL</code> (default), the search space is
-constructed from the TuneToken of the learner's parameter set
+constructed from the <a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">paradox::TuneToken</a> of the learner's parameter set
 (learner$param_set).</p></dd>
 
 
@@ -226,7 +226,7 @@ computational overhead is reduced.</p></dd>
 
 
 <dt><code>callbacks</code></dt>
-<dd><p>(list of Callback)<br>
+<dd><p>(list of <a href="https://mlr3misc.mlr-org.com/reference/Callback.html" class="external-link">mlr3misc::Callback</a>)<br>
 List of callbacks.</p></dd>
 
 
@@ -286,19 +286,19 @@ Fixed parameter values of the learner that are neither part of the</p></dd>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Hyperparameter optimization on the Palmer Penguins data set</span></span></span>
-<span class="r-in"><span><span class="va">task</span> <span class="op">=</span> <span class="fu">tsk</span><span class="op">(</span><span class="st">"penguins"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">task</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">tsk</a></span><span class="op">(</span><span class="st">"penguins"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Load learner and set search space</span></span></span>
-<span class="r-in"><span><span class="va">learner</span> <span class="op">=</span> <span class="fu">lrn</span><span class="op">(</span><span class="st">"classif.rpart"</span>,</span></span>
-<span class="r-in"><span>  cp <span class="op">=</span> <span class="fu">to_tune</span><span class="op">(</span><span class="fl">1e-04</span>, <span class="fl">1e-1</span>, logscale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">learner</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"classif.rpart"</span>,</span></span>
+<span class="r-in"><span>  cp <span class="op">=</span> <span class="fu"><a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">to_tune</a></span><span class="op">(</span><span class="fl">1e-04</span>, <span class="fl">1e-1</span>, logscale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Construct tuning instance</span></span></span>
 <span class="r-in"><span><span class="va">instance</span> <span class="op">=</span> <span class="fu"><a href="ti.html">ti</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  task <span class="op">=</span> <span class="va">task</span>,</span></span>
 <span class="r-in"><span>  learner <span class="op">=</span> <span class="va">learner</span>,</span></span>
-<span class="r-in"><span>  resampling <span class="op">=</span> <span class="fu">rsmp</span><span class="op">(</span><span class="st">"cv"</span>, folds <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  measures <span class="op">=</span> <span class="fu">msrs</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"classif.ce"</span>, <span class="st">"time_train"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  resampling <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">rsmp</a></span><span class="op">(</span><span class="st">"cv"</span>, folds <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  measures <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">msrs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"classif.ce"</span>, <span class="st">"time_train"</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  terminator <span class="op">=</span> <span class="fu"><a href="https://bbotk.mlr-org.com/reference/trm.html" class="external-link">trm</a></span><span class="op">(</span><span class="st">"evals"</span>, n_evals <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -309,30 +309,28 @@ Fixed parameter values of the learner that are neither part of the</p></dd>
 <span class="r-in"><span><span class="va">tuner</span><span class="op">$</span><span class="fu">optimize</span><span class="op">(</span><span class="va">instance</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp learner_param_vals  x_domain classif.ce time_train</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;             &lt;list&gt;    &lt;list&gt;      &lt;num&gt;      &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -7.095299          &lt;list[2]&gt; &lt;list[1]&gt; 0.06402237      0.006</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -8.488297          &lt;list[2]&gt; &lt;list[1]&gt; 0.06402237      0.006</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -8.488297          &lt;list[2]&gt; &lt;list[1]&gt; 0.06402237      0.005</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Optimal hyperparameter configurations</span></span></span>
 <span class="r-in"><span><span class="va">instance</span><span class="op">$</span><span class="va">result</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp learner_param_vals  x_domain classif.ce time_train</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;             &lt;list&gt;    &lt;list&gt;      &lt;num&gt;      &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -7.095299          &lt;list[2]&gt; &lt;list[1]&gt; 0.06402237      0.006</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -8.488297          &lt;list[2]&gt; &lt;list[1]&gt; 0.06402237      0.006</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -8.488297          &lt;list[2]&gt; &lt;list[1]&gt; 0.06402237      0.005</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Inspect all evaluated configurations</span></span></span>
-<span class="r-in"><span><span class="fu">as.data.table</span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           cp classif.ce time_train  x_domain_cp runtime_learners</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;      &lt;num&gt;      &lt;num&gt;        &lt;num&gt;            &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -7.095299 0.06402237 0.00600000 0.0008289927            0.033</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -7.349764 0.06402237 0.01233333 0.0006427440            0.052</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -2.357433 0.06692093 0.00600000 0.0946629107            0.034</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -8.488297 0.06402237 0.00600000 0.0002058636            0.034</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           cp classif.ce  time_train  x_domain_cp runtime_learners</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;      &lt;num&gt;       &lt;num&gt;        &lt;num&gt;            &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -7.095299 0.06402237 0.005000000 0.0008289927            0.029</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -7.349764 0.06402237 0.005000000 0.0006427440            0.027</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -2.357433 0.06692093 0.005666667 0.0946629107            0.032</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -8.488297 0.06402237 0.005000000 0.0002058636            0.027</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              timestamp batch_nr warnings errors  resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;POSc&gt;    &lt;int&gt;    &lt;int&gt;  &lt;int&gt;           &lt;list&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 2024-06-28 13:09:31        1        0      0 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 2024-06-28 13:09:31        1        0      0 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 2024-06-28 13:09:31        2        0      0 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 2024-06-28 13:09:31        2        0      0 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 2024-06-30 09:46:09        1        0      0 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 2024-06-30 09:46:09        1        0      0 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 2024-06-30 09:46:09        2        0      0 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: 2024-06-30 09:46:09        2        0      0 &lt;ResampleResult&gt;</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
