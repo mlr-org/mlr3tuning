@@ -1,9 +1,9 @@
 pandoc: 3.1.11
-pkgdown: 2.0.7
+pkgdown: 2.0.9
 pkgdown_sha: ~
 articles:
   extending: extending.html
-last_built: 2024-03-06T08:51Z
+last_built: 2024-06-30T09:40Z
 urls:
   reference: https://mlr3tuning.mlr-org.com/reference
   article: https://mlr3tuning.mlr-org.com/articles
