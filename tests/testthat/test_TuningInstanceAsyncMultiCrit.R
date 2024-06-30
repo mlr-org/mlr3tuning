@@ -145,14 +145,17 @@ test_that("saving the models with TuningInstanceRushSingleCrit works", {
 #   skip_if_not_installed("rush")
 #   flush_redis()
 
-#   rush_plan(n_workers = 2)
+#   rush_plan(n_workers = 2, start_worker_timeout = 10)
+
+#   learner = lrn("classif.debug", segfault_train = 0.2, x = to_tune())
+#   learner$encapsulate = c(train = "callr")
 
 #   instance = ti_async(
 #     task = tsk("pima"),
-#     learner = lrn("classif.debug", segfault_train = 1, x = to_tune()),
+#     learner = learner,
 #     resampling = rsmp("cv", folds = 3),
 #     measures = msr("classif.ce"),
-#     terminator = trm("evals", n_evals = 10)
+#     terminator = trm("evals", n_evals = 100)
 #   )
 
 #   tuner = tnr("async_random_search")

@@ -38,7 +38,7 @@ The fifth step is only required if the new tuner is added via `bbotk`.
 
 ## Template {#tuner-template}
 
-If the new custom tuner is implemented via `bbotk`, use one of the existing optimizer as a template e.g. [`bbotk::OptimizerRandomSearch`](https://github.com/mlr-org/bbotk/blob/master/R/OptimizerRandomSearch.R). There are currently only two tuners that are not based on a `Optimizer`: [`mlr3hyperband::TunerHyperband`](https://github.com/mlr-org/mlr3hyperband/blob/master/R/TunerHyperband.R) and [`mlr3tuning::TunerIrace`](https://github.com/mlr-org/mlr3tuning/blob/master/R/TunerIrace.R). Both are rather complex but you can still use the documentation and class structure as a template. The following steps are identical for optimizers and tuners.
+If the new custom tuner is implemented via `bbotk`, use one of the existing optimizer as a template e.g. [`bbotk::OptimizerRandomSearch`](https://github.com/mlr-org/bbotk/blob/master/R/OptimizerBatchRandomSearch.R). There are currently only two tuners that are not based on a `Optimizer`: [`mlr3hyperband::TunerHyperband`](https://github.com/mlr-org/mlr3hyperband/blob/master/R/TunerBatchHyperband.R) and [`mlr3tuning::TunerIrace`](https://github.com/mlr-org/mlr3tuning/blob/master/R/TunerBatchIrace.R). Both are rather complex but you can still use the documentation and class structure as a template. The following steps are identical for optimizers and tuners.
 
 Rewrite the meta information in the documentation and create a new class name.
 Scientific sources can be added in `R/bibentries.R` which are added under `@source` in the documentation.
@@ -66,21 +66,21 @@ Please consider the following points:
 
 Optimization functions from external packages usually take an objective function as an argument.
 In this case, you can pass `inst$objective_function` which internally calls `$eval_batch()`.
-Check out [`OptimizerGenSA`](https://github.com/mlr-org/bbotk/blob/master/R/OptimizerGenSA.R) for an example.
+Check out [`OptimizerGenSA`](https://github.com/mlr-org/bbotk/blob/master/R/OptimizerBatchGenSA.R) for an example.
 
 ## Assign result method
 
 The default `$.assign_result()` private method simply obtains the best performing result from the archive.
 The default method can be overwritten if the new tuner determines the result of the optimization in a different way.
 The new function must call the `$assign_result()` method of the instance to write the final result to the instance.
-See [`mlr3tuning::TunerIrace`](https://github.com/mlr-org/mlr3tuning/blob/master/R/TunerIrace.R) for an implementation of `$.assign_result()`.
+See [`mlr3tuning::TunerIrace`](https://github.com/mlr-org/mlr3tuning/blob/master/R/TunerBatchIrace.R) for an implementation of `$.assign_result()`.
 
 ## Transform optimizer to tuner
 
 This step is only needed if you implement via `bbotk`.
 The `mlr3tuning::TunerBatchFromOptimizerBatch` class transforms a `Optimizer` to a `Tuner`.
 Just add the `Optimizer` to the `optimizer` field.
-See [`mlr3tuning::TunerRandomSearch`](https://github.com/mlr-org/mlr3tuning/blob/master/R/TunerRandomSearch.R) for an example.
+See [`mlr3tuning::TunerRandomSearch`](https://github.com/mlr-org/mlr3tuning/blob/master/R/TunerBatchRandomSearch.R) for an example.
 
 ## Add unit tests
 

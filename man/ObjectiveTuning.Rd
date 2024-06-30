@@ -25,7 +25,7 @@ This class is usually constructed internally by the \link{TuningInstanceBatchSin
 
 \item{\code{store_benchmark_result}}{(\code{logical(1)}).}
 
-\item{\code{callbacks}}{(List of \link{Callback}).}
+\item{\code{callbacks}}{(List of \link[mlr3misc:Callback]{mlr3misc::Callback}).}
 
 \item{\code{default_values}}{(named \code{list()}).}
 }
@@ -102,7 +102,7 @@ If \code{TRUE}, hyperparameter values are checked before evaluation and
 performance scores after. If \code{FALSE} (default), values are unchecked but
 computational overhead is reduced.}
 
-\item{\code{callbacks}}{(list of \link{Callback})\cr
+\item{\code{callbacks}}{(list of \link[mlr3misc:Callback]{mlr3misc::Callback})\cr
 List of callbacks.}
 }
 \if{html}{\out{</div>}}

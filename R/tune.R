@@ -11,11 +11,11 @@
 #' You can find an overview of all tuners on our [website](https://mlr-org.com/tuners.html).
 #'
 #' @details
-#' The [mlr3::Task], [mlr3::Learner], [mlr3::Resampling], [mlr3::Measure] and [Terminator] are used to construct a [TuningInstanceBatchSingleCrit].
-#' If multiple performance [Measures][Measure] are supplied, a [TuningInstanceBatchMultiCrit] is created.
-#' The parameter `term_evals` and `term_time` are shortcuts to create a [Terminator].
-#' If both parameters are passed, a [TerminatorCombo] is constructed.
-#' For other [Terminators][Terminator], pass one with `terminator`.
+#' The [mlr3::Task], [mlr3::Learner], [mlr3::Resampling], [mlr3::Measure] and [bbotk::Terminator] are used to construct a [TuningInstanceBatchSingleCrit].
+#' If multiple performance [mlr3::Measure]s are supplied, a [TuningInstanceBatchMultiCrit] is created.
+#' The parameter `term_evals` and `term_time` are shortcuts to create a [bbotk::Terminator].
+#' If both parameters are passed, a [bbotk::TerminatorCombo] is constructed.
+#' For other [Terminators][bbotk::Terminator], pass one with `terminator`.
 #' If no termination criterion is needed, set `term_evals`, `term_time` and `terminator` to `NULL`.
 #' The search space is created from [paradox::TuneToken] or is supplied by `search_space`.
 #'

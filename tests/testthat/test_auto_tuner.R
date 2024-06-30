@@ -22,6 +22,7 @@ test_that("auto_tuner function works", {
 })
 
 test_that("async auto tuner works", {
+  skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
 
@@ -42,6 +43,7 @@ test_that("async auto tuner works", {
 })
 
 test_that("async auto tuner works with rush controller", {
+  skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
 

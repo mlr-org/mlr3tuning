@@ -23,10 +23,10 @@ A set timeout is disabled while fitting the final model.
 }
 \section{Validation}{
 
-Both, the tuned \code{\link[mlr3:Learner]{Learner}} and the \code{AutoTuner} itself can make use of validation data.
+Both, the tuned \link[mlr3:Learner]{mlr3::Learner} and the \code{AutoTuner} itself can make use of validation data.
 the \verb{$validate} field of the \code{AutoTuner} determines how validation is done during the final model fit.
 In most cases, this should be left as \code{NULL}.
-The \verb{$validate} field of the tuned \code{\link[mlr3:Learner]{Learner}} specifies how the validation data is constructed
+The \verb{$validate} field of the tuned \link[mlr3:Learner]{mlr3::Learner} specifies how the validation data is constructed
 during the hyperparameter optimization.
 }
 
@@ -148,7 +148,7 @@ Returns \code{NULL} if learner is not trained yet.}
 \item{\code{validate}}{How to construct the internal validation data. This parameter can be either \code{NULL},
 a ratio in $(0, 1)$, \code{"test"}, or \code{"predefined"}.}
 
-\item{\code{archive}}{\link{Archive}\cr
+\item{\code{archive}}{\link{ArchiveBatchTuning}\cr
 Archive of the \link{TuningInstanceBatchSingleCrit}.}
 
 \item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner})\cr
@@ -242,12 +242,12 @@ This field, however, always returns the resampling passed in construction.}
 \item{\code{measure}}{(\link[mlr3:Measure]{mlr3::Measure})\cr
 Measure to optimize. If \code{NULL}, default measure is used.}
 
-\item{\code{terminator}}{(\link{Terminator})\cr
+\item{\code{terminator}}{(\link[bbotk:Terminator]{bbotk::Terminator})\cr
 Stop criterion of the tuning process.}
 
 \item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
 Hyperparameter search space. If \code{NULL} (default), the search space is
-constructed from the \link{TuneToken} of the learner's parameter set
+constructed from the \link[paradox:to_tune]{paradox::TuneToken} of the learner's parameter set
 (learner$param_set).}
 
 \item{\code{store_tuning_instance}}{(\code{logical(1)})\cr
@@ -268,7 +268,7 @@ If \code{TRUE}, hyperparameter values are checked before evaluation and
 performance scores after. If \code{FALSE} (default), values are unchecked but
 computational overhead is reduced.}
 
-\item{\code{callbacks}}{(list of \link{Callback})\cr
+\item{\code{callbacks}}{(list of \link[mlr3misc:Callback]{mlr3misc::Callback})\cr
 List of callbacks.}
 
 \item{\code{rush}}{(\code{Rush})\cr
@@ -299,7 +299,7 @@ Depth of recursion for multiple nested objects.}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-\link{Learner}.
+\link[mlr3:Learner]{mlr3::Learner}.
 }
 }
 \if{html}{\out{<hr>}}

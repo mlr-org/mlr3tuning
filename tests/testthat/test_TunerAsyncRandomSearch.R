@@ -100,6 +100,8 @@ test_that("internal tuning: error is thrown on incorrect configuration", {
 })
 
 test_that("internal tuning: error message when primary search space is empty", {
+  skip_on_cran()
+
   expect_error(tune(
     tuner = tnr("async_random_search"),
     learner = lrn("classif.debug", iter = to_tune(upper = 1000, internal = TRUE), early_stopping = TRUE, validate = 0.2),

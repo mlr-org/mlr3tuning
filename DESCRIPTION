@@ -1,6 +1,6 @@
 Package: mlr3tuning
 Title: Hyperparameter Optimization for 'mlr3'
-Version: 0.20.0.9000
+Version: 1.0.0
 Authors@R: c(
     person("Marc", "Becker", , "marcbecker@posteo.de", role = c("cre", "aut"),
            comment = c(ORCID = "0000-0002-8115-0400")),
@@ -25,11 +25,11 @@ License: LGPL-3
 URL: https://mlr3tuning.mlr-org.com, https://github.com/mlr-org/mlr3tuning
 BugReports: https://github.com/mlr-org/mlr3tuning/issues
 Depends:
-    mlr3 (>= 0.19.0.9000),
+    mlr3 (>= 0.20.0),
     paradox (>= 1.0.0),
     R (>= 3.1.0)
 Imports:
-    bbotk (>= 0.8.0.9000),
+    bbotk (>= 1.0.0),
     checkmate (>= 2.0.0),
     data.table,
     lgr,
@@ -42,7 +42,7 @@ Suggests:
     irace,
     knitr,
     mlflow,
-    mlr3learners (>= 0.6.0.9000),
+    mlr3learners (>= 0.7.0),
     mlr3pipelines (>= 0.5.2),
     nloptr,
     rush,
@@ -52,10 +52,6 @@ Suggests:
     xgboost
 VignetteBuilder:
     knitr
-Remotes:
-    mlr-org/mlr3,
-    mlr-org/mlr3learners,
-    mlr-org/bbotk
 Config/testthat/edition: 3
 Config/testthat/parallel: false
 Encoding: UTF-8

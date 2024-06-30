@@ -31,7 +31,7 @@ Number of resampling instances.}
 
 For the meaning of all other parameters, see \code{\link[irace:defaultScenario]{irace::defaultScenario()}}. Note
 that we have removed all control parameters which refer to the termination of
-the algorithm. Use \link{TerminatorEvals} instead. Other terminators do not work
+the algorithm. Use \link[bbotk:mlr_terminators_evals]{bbotk::TerminatorEvals} instead. Other terminators do not work
 with \code{TunerIrace}.
 }
 
@@ -59,7 +59,7 @@ The reported performance is the average performance estimated on all used instan
 \section{Progress Bars}{
 
 \verb{$optimize()} supports progress bars via the package \CRANpkg{progressr}
-combined with a \link{Terminator}. Simply wrap the function in
+combined with a \link[bbotk:Terminator]{bbotk::Terminator}. Simply wrap the function in
 \code{progressr::with_progress()} to enable them. We recommend to use package
 \CRANpkg{progress} as backend; enable with \code{progressr::handlers("progress")}.
 }

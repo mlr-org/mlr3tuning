@@ -156,7 +156,7 @@ ArchiveAsyncTuning = R6Class("ArchiveAsyncTuning",
   ),
 
   active = list(
-    #' @field internal_search_space ([`ParamSet`])\cr
+    #' @field internal_search_space ([paradox::ParamSet])\cr
     #'   The search space containing those parameters that are internally optimized by the [`mlr3::Learner`].
     internal_search_space = function(rhs) {
       assert_ro_binding(rhs)

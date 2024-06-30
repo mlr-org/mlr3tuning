@@ -6,8 +6,8 @@
 #'
 #' * `tnr()` for a [Tuner] from [mlr_tuners].
 #' * `tnrs()` for a list of [Tuners][Tuner] from [mlr_tuners].
-#' * `trm()` for a [Terminator] from [mlr_terminators].
-#' * `trms()` for a list of [Terminators][Terminator] from [mlr_terminators].
+#' * `trm()` for a [bbotk::Terminator] from [mlr_terminators].
+#' * `trms()` for a list of [Terminators][bbotk::Terminator] from [mlr_terminators].
 #'
 #' @inheritParams mlr3::mlr_sugar
 #' @return [R6::R6Class] object of the respective type, or a list of [R6::R6Class] objects for the plural versions.

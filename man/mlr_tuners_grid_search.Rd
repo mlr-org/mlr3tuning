@@ -35,7 +35,7 @@ Maximum number of points to try in a batch.}
 \section{Progress Bars}{
 
 \verb{$optimize()} supports progress bars via the package \CRANpkg{progressr}
-combined with a \link{Terminator}. Simply wrap the function in
+combined with a \link[bbotk:Terminator]{bbotk::Terminator}. Simply wrap the function in
 \code{progressr::with_progress()} to enable them. We recommend to use package
 \CRANpkg{progress} as backend; enable with \code{progressr::handlers("progress")}.
 }

@@ -93,7 +93,7 @@ computational overhead is reduced.}
 Reference to archive of \link{TuningInstanceBatchSingleCrit} | \link{TuningInstanceBatchMultiCrit}.
 If \code{NULL} (default), benchmark result and models cannot be stored.}
 
-\item{\code{callbacks}}{(list of \link{Callback})\cr
+\item{\code{callbacks}}{(list of \link[mlr3misc:Callback]{mlr3misc::Callback})\cr
 List of callbacks.}
 }
 \if{html}{\out{</div>}}

@@ -1,4 +1,6 @@
 test_that("ti_async function creates a TuningInstanceAsyncSingleCrit", {
+  skip_on_cran()
+
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune()),
@@ -9,6 +11,8 @@ test_that("ti_async function creates a TuningInstanceAsyncSingleCrit", {
 })
 
 test_that("ti_async function creates a TuningInstanceAsyncMultiCrit", {
+  skip_on_cran()
+
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune()),
@@ -19,6 +23,8 @@ test_that("ti_async function creates a TuningInstanceAsyncMultiCrit", {
 })
 
 test_that("ti_async interface is equal to TuningInstanceAsyncSingleCrit", {
+  skip_on_cran()
+
   ti_args = formalArgs(ti_async)
   ti_args[ti_args == "measures"] = "measure"
   instance_args = formalArgs(TuningInstanceAsyncSingleCrit$public_methods$initialize)
@@ -27,6 +33,8 @@ test_that("ti_async interface is equal to TuningInstanceAsyncSingleCrit", {
 })
 
 test_that("ti_async interface is equal to TuningInstanceAsyncMultiCrit", {
+  skip_on_cran()
+
   ti_args = formalArgs(ti_async)
   instance_args = formalArgs(TuningInstanceAsyncMultiCrit$public_methods$initialize)
 

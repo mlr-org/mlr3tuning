@@ -4,7 +4,7 @@
 #' @name mlr3tuning.backup
 #'
 #' @description
-#' This [Callback] writes the [mlr3::BenchmarkResult] after each batch to disk.
+#' This [mlr3misc::Callback] writes the [mlr3::BenchmarkResult] after each batch to disk.
 #'
 #' @examples
 #' clbk("mlr3tuning.backup", path = "backup.rds")
@@ -44,7 +44,7 @@ load_callback_backup = function() {
 #' @aliases mlr3tuning.async_measures
 #'
 #' @description
-#' This [Callback] scores the hyperparameter configurations on additional measures while tuning.
+#' This [mlr3misc::Callback] scores the hyperparameter configurations on additional measures while tuning.
 #' Usually, the configurations can be scored on additional measures after tuning (see [ArchiveBatchTuning]).
 #' However, if the memory is not sufficient to store the [mlr3::BenchmarkResult], it is necessary to score the additional measures while tuning.
 #' The measures are not taken into account by the tuner.
@@ -112,7 +112,7 @@ load_callback_async_measures = function() {
 #' @name mlr3tuning.asnyc_mlflow
 #'
 #' @description
-#' This [Callback] logs the hyperparameter configurations and the performance of the configurations to MLflow.
+#' This [mlr3misc::Callback] logs the hyperparameter configurations and the performance of the configurations to MLflow.
 #'
 #' @examplesIf requireNamespace("mlflow")
 #' @examples
