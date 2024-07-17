@@ -673,6 +673,19 @@ test_that("internal tuning and validation", {
   # early stopping was not disabled
   expect_equal(at$model$learner$param_set$values$iter, 1000)
   expect_true(at$model$learner$param_set$values$early_stopping)
+
+  # ratios are handled correctly for the AutoTuner
+  at = auto_tuner(
+    tuner = tnr("random_search"),
+    learner = lrn("classif.debug", early_stopping = TRUE, x = to_tune(0, 1)),
+    resampling = rsmp("holdout"),
+    store_models = TRUE,
+    term_evals = 1
+  )
+  set_validate(at, final_validate = 0.2, validate = 0.2)
+  at$train(task)
+  expect_true(is.null(task$internal_valid_task))
+  expect_equal(at$model$learner$validate, "predefined")
 })
 
 test_that("set_validate", {
@@ -731,3 +744,4 @@ test_that("validation set can be used for final model fit", {
   expect_equal(at$state$internal_valid_task_hash, task$internal_valid_task$hash)
   expect_equal(at$state$validate, "predefined")
 })
+
