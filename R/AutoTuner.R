@@ -383,7 +383,9 @@ AutoTuner = R6Class("AutoTuner",
       # in case the auto-tuner has its validate field set,
       # the internal validation task is now already created and we need to set the validate
       # field of the wrapped learner to "predefined", this is similar to the graph learner
-      set_validate(learner, validate = if (!is.null(self$validate)) "predefined")
+      if (private$.can_validate) {
+        set_validate(learner, validate = if (!is.null(self$validate)) "predefined")
+      }
 
       validate = get0("validate", ia$learner)
       prev_valid_task = task$internal_valid_task
