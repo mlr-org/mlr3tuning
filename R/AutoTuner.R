@@ -379,10 +379,18 @@ AutoTuner = R6Class("AutoTuner",
       ia = self$instance_args
       ia$task = task
 
+      learner = ia$learner$clone(deep = TRUE)
+      # in case the auto-tuner has its validate field set,
+      # the internal validation task is now already created and we need to set the validate
+      # field of the wrapped learner to "predefined", this is similar to the graph learner
+      if (private$.can_validate) {
+        set_validate(learner, validate = if (!is.null(self$validate)) "predefined")
+      }
+
       validate = get0("validate", ia$learner)
+      prev_valid_task = task$internal_valid_task
       if (is.numeric(validate) || identical(validate, "test") && !is.null(task$internal_valid_task)) {
-        # we temporarily remove the internal validation task, because we need to overwrite it
-        prev_valid_task = task$internal_valid_task
+        # we temporarily remove the internal validation task, because we need to be able to overwrite it
         task$internal_valid_task = NULL
         on.exit({task$internal_valid_task = prev_valid_task})
       }
@@ -406,16 +414,9 @@ AutoTuner = R6Class("AutoTuner",
       instance = do.call(TuningInstance$new, ia)
       self$tuner$optimize(instance)
 
-      # now we reset the validation task
+      # now we reset the validation task and clear the exit handlers
+      task$internal_valid_task = prev_valid_task
       on.exit()
-
-      # get learner, set params to optimal, then train we REALLY need to clone
-      # here we write to the object and this would change instance_args
-      learner = ia$learner$clone(deep = TRUE)
-
-      if (private$.can_validate) {
-        set_validate(learner, self$validate)
-      }
 
       # in the case of internal tuning, the result_learner_param_vals already contains the aggregated internally
       learner$param_set$values = instance$result_learner_param_vals
