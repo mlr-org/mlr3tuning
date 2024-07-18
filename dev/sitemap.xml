@@ -1,186 +1,64 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/articles/extending.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/index.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/ArchiveAsyncTuning.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/ArchiveBatchTuning.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/AutoTuner.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/CallbackAsyncTuning.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/CallbackBatchTuning.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/ContextAsyncTuning.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/ContextBatchTuning.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/ObjectiveTuning.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/ObjectiveTuningAsync.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/ObjectiveTuningBatch.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/TunerAsync.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/TunerAsyncFromOptimizerAsync.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/TunerBatch.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/TunerBatchFromOptimizerBatch.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceAsyncMultiCrit.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceAsyncSingleCrit.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceBatchMultiCrit.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceBatchSingleCrit.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceMultiCrit.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceSingleCrit.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/as_search_space.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/as_tuner.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/auto_tuner.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/callback_async_tuning.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/callback_batch_tuning.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/extract_inner_tuning_archives.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/extract_inner_tuning_results.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr3tuning-package.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr3tuning.asnyc_mlflow.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr3tuning.async_default_configuration.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr3tuning.async_save_logs.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr3tuning.backup.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr3tuning.measures.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr3tuning_assertions.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr_tuners.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr_tuners_async_design_points.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr_tuners_async_grid_search.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr_tuners_async_random_search.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr_tuners_cmaes.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr_tuners_design_points.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr_tuners_gensa.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr_tuners_grid_search.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr_tuners_internal.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr_tuners_irace.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr_tuners_nloptr.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr_tuners_random_search.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/reexports.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/set_validate.AutoTuner.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/ti.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/ti_async.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/tnr.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/tune.html</loc>
-  </url>
-  <url>
-    <loc>https://mlr3tuning.mlr-org.com/dev/reference/tune_nested.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/LICENSE-text.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/articles/extending.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/articles/index.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/authors.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/index.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/news/index.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/ArchiveAsyncTuning.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/ArchiveBatchTuning.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/AutoTuner.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/CallbackAsyncTuning.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/CallbackBatchTuning.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/ContextAsyncTuning.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/ContextBatchTuning.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/ObjectiveTuning.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/ObjectiveTuningAsync.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/ObjectiveTuningBatch.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/TunerAsync.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/TunerAsyncFromOptimizerAsync.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/TunerBatch.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/TunerBatchFromOptimizerBatch.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceAsyncMultiCrit.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceAsyncSingleCrit.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceBatchMultiCrit.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceBatchSingleCrit.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceMultiCrit.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceSingleCrit.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/as_search_space.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/as_tuner.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/auto_tuner.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/callback_async_tuning.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/callback_batch_tuning.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/extract_inner_tuning_archives.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/extract_inner_tuning_results.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/index.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr3tuning-package.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr3tuning.asnyc_mlflow.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr3tuning.async_default_configuration.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr3tuning.async_save_logs.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr3tuning.backup.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr3tuning.measures.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr3tuning_assertions.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr_tuners.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr_tuners_async_design_points.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr_tuners_async_grid_search.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr_tuners_async_random_search.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr_tuners_cmaes.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr_tuners_design_points.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr_tuners_gensa.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr_tuners_grid_search.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr_tuners_internal.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr_tuners_irace.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr_tuners_nloptr.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr_tuners_random_search.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/reexports.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/set_validate.AutoTuner.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/ti.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/ti_async.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/tnr.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/tune.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/tune_nested.html</loc></url>
 </urlset>
+
