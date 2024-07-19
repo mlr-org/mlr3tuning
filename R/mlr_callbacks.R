@@ -166,6 +166,7 @@ load_callback_internal_tuning = function(batch) {
       learner$param_set$disable_internal_tuning(context$instance$internal_search_space$ids())
       nlpv = inst$objective$learner$param_set$values
       on.exit()
+      inst$objective$learner$param_set$values = prev_pvs
 
       nlpv
     })
