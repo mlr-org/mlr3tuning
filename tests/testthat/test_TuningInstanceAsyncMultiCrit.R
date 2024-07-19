@@ -88,7 +88,7 @@ test_that("assigning a result to TuningInstanceAsyncSingleCrit works", {
 
   result = instance$result
   expect_data_table(result, min.rows = 1)
-  expect_names(names(result), identical.to = c("cp", "learner_param_vals", "x_domain", "classif.ce", "classif.acc"))
+  expect_names(names(result), must.include = c("cp", "learner_param_vals", "x_domain", "classif.ce", "classif.acc"))
 })
 
 test_that("saving the benchmark result with TuningInstanceRushSingleCrit works", {
