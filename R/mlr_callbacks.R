@@ -146,7 +146,12 @@ load_callback_internal_tuning = function(batch) {
 
   on_result = function(callback, context) {
     inst = context$instance
-    internal_tuned_values = inst$archive$best()[, "internal_tuned_values", with = FALSE]$internal_tuned_values
+
+    internal_tuned_values = if ("keys" %in% names(inst$result)) {
+      inst$archive$data[inst$result$keys, , on = "keys"]$internal_tuned_values
+    } else {
+      inst$archive$best()[, "internal_tuned_values", with = FALSE]$internal_tuned_values
+    }
 
     # right now, this contains the values tuned by the optimizer and the values that were set in the learner
     learner_param_vals = context$result$learner_param_vals
