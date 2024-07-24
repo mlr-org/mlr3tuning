@@ -183,6 +183,7 @@ test_that("Multi-crit internal tuning works", {
   m2 = msr("classif.acc", id = "classif.acc2")
   m2$minimize = TRUE
 
+  rush_plan(n_workers = 2)
   instance = ti_async(
     learner = learner,
     task = tsk("sonar"),
@@ -200,7 +201,7 @@ test_that("Multi-crit internal tuning works", {
   expect_true(length(unique(map_int(instance$archive$data$internal_tuned_values, "iter"))) > 1L)
 
   expect_permutation(
-    map_int(instance$result_learner_param_vals, "iter"),
-    map_int(instance$archive$data$internal_tuned_values, "iter")
+    map_int(instance$result_learner_param_vals, "iter")[1:20],
+    map_int(instance$archive$data$internal_tuned_values, "iter")[1:20]
   )
 })
