@@ -1,5 +1,7 @@
 # mlr3tuning (development version)
 
+* refactor: Replace internal tuning callback.
+
 # mlr3tuning 1.0.0
 
 * feat: Introduce asynchronous optimization with the `TunerAsync` and `TuningInstanceAsync*` classes.
