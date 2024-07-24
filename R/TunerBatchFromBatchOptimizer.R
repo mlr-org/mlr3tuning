@@ -45,7 +45,12 @@ TunerBatchFromOptimizerBatch = R6Class("TunerBatchFromOptimizerBatch",
         if (!inst$search_space$length && inst$internal_search_space$length && !test_class(self, "TunerBatchInternal")) {
           stopf("To only conduct internal parameter tuning, use tnr('internal')")
         }
-        private$.optimizer$optimize(inst)
+        result = private$.optimizer$optimize(inst)
+        inst$objective$.__enclos_env__$private$.xss = NULL
+        inst$objective$.__enclos_env__$private$.design = NULL
+        inst$objective$.__enclos_env__$private$.benchmark_result = NULL
+        inst$objective$.__enclos_env__$private$.aggregated_performance = NULL
+        return(result)
       }
     ),
 

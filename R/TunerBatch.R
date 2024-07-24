@@ -75,7 +75,12 @@ TunerBatch = R6Class("TunerBatch",
     #' @return [data.table::data.table()]
     optimize = function(inst) {
       assert_tuning_instance_batch(inst)
-      optimize_batch_default(inst, self)
+      result = optimize_batch_default(inst, self)
+      inst$objective$.__enclos_env__$private$.xss = NULL
+      inst$objective$.__enclos_env__$private$.design = NULL
+      inst$objective$.__enclos_env__$private$.benchmark_result = NULL
+      inst$objective$.__enclos_env__$private$.aggregated_performance = NULL
+      return(result)
     }
   )
 )

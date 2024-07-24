@@ -403,3 +403,17 @@ test_that("assign_result works with no hyperparameter and constant", {
   expect_equal(res$classif.ce, 0.8)
   expect_list(res$learner_param_vals[[1]], len = 0)
 })
+
+test_that("objective contains no benchmark results", {
+  task = tsk("pima")
+  learner = lrn("classif.rpart")
+  resampling = rsmp("holdout")
+  measure = msr("classif.ce")
+  terminator = trm("evals", n_evals = 10)
+
+  instance = ti(task, learner, resampling, measure, terminator)
+  tuner = tnr("random_search", batch_size = 1)
+  tuner$optimize(instance)
+
+  expect_null(instance$objective$.__enclos_env__$private$.benchmark_result)
+})
