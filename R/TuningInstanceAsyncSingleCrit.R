@@ -30,14 +30,20 @@
 #' @template param_check_values
 #' @template param_callbacks
 #' @template param_rush
+#'
 #' @template param_internal_search_space
 #' @template param_xdt
 #' @template param_learner_param_vals
+#' @template param_internal_tuned_values
+#'
+#' @template field_internal_search_space
 #'
 #' @export
 TuningInstanceAsyncSingleCrit = R6Class("TuningInstanceAsyncSingleCrit",
   inherit = OptimInstanceAsyncSingleCrit,
   public = list(
+
+    internal_search_space = NULL,
 
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
@@ -57,6 +63,7 @@ TuningInstanceAsyncSingleCrit = R6Class("TuningInstanceAsyncSingleCrit",
       require_namespaces("rush")
       learner = assert_learner(as_learner(learner, clone = TRUE))
 
+      # tune token and search space
       if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token"))) {
         stop("If the values of the ParamSet of the Learner contain TuneTokens you cannot supply a search_space.")
       }
@@ -67,13 +74,20 @@ TuningInstanceAsyncSingleCrit = R6Class("TuningInstanceAsyncSingleCrit",
         search_space = as_search_space(search_space)
       }
 
-      # modifies tuning instance in-place and adds the internal tuning callback
-      res = init_internal_search_space(self, private, super, search_space, store_benchmark_result, learner,
-        callbacks, batch = FALSE)
+      # internal search space
+      internal_tune_ids = keep(names(search_space$tags), map_lgl(search_space$tags, function(tag) "internal_tuning" %in% tag))
+      if (length(internal_tune_ids)) {
+        self$internal_search_space = search_space$subset(internal_tune_ids)
 
-      private$.internal_search_space = res$internal_search_space
-      callbacks = res$callbacks
-      search_space = res$search_space
+        if (self$internal_search_space$has_trafo) {
+          stopf("Inner tuning and parameter transformations are currently not supported.")
+        }
+
+        search_space = search_space$subset(setdiff(search_space$ids(), internal_tune_ids))
+
+        # the learner dictates how to interpret the to_tune(..., inner)
+        learner$param_set$set_values(.values = learner$param_set$convert_internal_search_space(self$internal_search_space))
+      }
 
       if (is.null(rush)) rush = rush::rsh()
 
@@ -85,7 +99,7 @@ TuningInstanceAsyncSingleCrit = R6Class("TuningInstanceAsyncSingleCrit",
         search_space = search_space,
         codomain = codomain,
         rush = rush,
-        internal_search_space = private$.internal_search_space
+        internal_search_space = self$internal_search_space
       )
 
       objective = ObjectiveTuningAsync$new(
@@ -96,7 +110,8 @@ TuningInstanceAsyncSingleCrit = R6Class("TuningInstanceAsyncSingleCrit",
         store_benchmark_result = store_benchmark_result,
         store_models = store_models,
         check_values = check_values,
-        callbacks = callbacks)
+        callbacks = callbacks,
+        internal_search_space = self$internal_search_space)
 
       super$initialize(
         objective,
@@ -113,7 +128,9 @@ TuningInstanceAsyncSingleCrit = R6Class("TuningInstanceAsyncSingleCrit",
     #'
     #' @param y (`numeric(1)`)\cr
     #' Optimal outcome.
-    assign_result = function(xdt, y, learner_param_vals = NULL) {
+    #' @param ... (`any`)\cr
+    #' ignored.
+    assign_result = function(xdt, y, learner_param_vals = NULL, ...) {
       # set the column with the learner param_vals that were not optimized over but set implicitly
       assert_list(learner_param_vals, null.ok = TRUE, names = "named")
 
@@ -126,27 +143,30 @@ TuningInstanceAsyncSingleCrit = R6Class("TuningInstanceAsyncSingleCrit",
       # maintain list column
       if (length(learner_param_vals) < 2 | !nrow(xdt)) learner_param_vals = list(learner_param_vals)
 
+      # disable internal tuning
+      if (!is.null(xdt$internal_tuned_values)) {
+        learner = self$objective$learner$clone(deep = TRUE)
+        learner_param_vals = insert_named(learner_param_vals, xdt$internal_tuned_values[[1]])
+        learner$param_set$set_values(.values = learner_param_vals)
+        learner$param_set$disable_internal_tuning(self$internal_search_space$ids())
+        learner_param_vals = learner$param_set$values
+      }
+
       set(xdt, j = "learner_param_vals", value = list(learner_param_vals))
       super$assign_result(xdt, y)
     }
   ),
 
   active = list(
+
     #' @field result_learner_param_vals (`list()`)\cr
     #' Param values for the optimal learner call.
     result_learner_param_vals = function() {
       private$.result$learner_param_vals[[1]]
-    },
-    #' @field internal_search_space ([paradox::ParamSet])\cr
-    #'   The search space containing those parameters that are internally optimized by the [`mlr3::Learner`].
-    internal_search_space = function(rhs) {
-      assert_ro_binding(rhs)
-      private$.internal_search_space
     }
   ),
 
   private = list(
-    .internal_search_space = NULL,
 
     # initialize context for optimization
     .initialize_context = function(optimizer) {

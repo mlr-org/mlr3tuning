@@ -12,6 +12,7 @@
 #' @template param_check_values
 #' @template param_store_benchmark_result
 #' @template param_callbacks
+#' @template param_internal_search_space
 #'
 #' @export
 ObjectiveTuningBatch = R6Class("ObjectiveTuningBatch",
@@ -36,7 +37,8 @@ ObjectiveTuningBatch = R6Class("ObjectiveTuningBatch",
       store_models = FALSE,
       check_values = FALSE,
       archive = NULL,
-      callbacks = NULL
+      callbacks = NULL,
+      internal_search_space = NULL
       ) {
       self$archive = assert_r6(archive, "ArchiveBatchTuning", null.ok = TRUE)
       if (is.null(self$archive)) store_benchmark_result = store_models = FALSE
@@ -49,7 +51,8 @@ ObjectiveTuningBatch = R6Class("ObjectiveTuningBatch",
         store_benchmark_result = store_benchmark_result,
         store_models = store_models,
         check_values = check_values,
-        callbacks = callbacks
+        callbacks = callbacks,
+        internal_search_space = internal_search_space
       )
     }
   ),
@@ -81,7 +84,17 @@ ObjectiveTuningBatch = R6Class("ObjectiveTuningBatch",
       time = map_dbl(private$.benchmark_result$resample_results$resample_result, function(rr) {
         extract_runtime(rr)
       })
+
       set(private$.aggregated_performance, j = "runtime_learners", value = time)
+
+      # add internal tuned values
+      if (!is.null(self$internal_search_space)) {
+        internal_tuned_values = map(private$.benchmark_result$resample_results$resample_result, function(resample_result) {
+          extract_inner_tuned_values(resample_result, self$internal_search_space)
+        })
+
+        set(private$.aggregated_performance, j = "internal_tuned_values", value = list(internal_tuned_values))
+      }
 
       call_back("on_eval_before_archive", self$callbacks, self$context)
 

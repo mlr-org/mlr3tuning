@@ -163,3 +163,44 @@ test_that("saving the models with TuningInstanceRushSingleCrit works", {
 #   tuner$optimize(instance)
 # })
 
+
+# Internal Tuning --------------------------------------------------------------
+
+test_that("Multi-crit internal tuning works", {
+  skip_on_cran()
+  skip_if_not_installed("rush")
+  flush_redis()
+
+  learner = lrn("classif.debug",
+    iter = to_tune(upper = 1000L, internal = TRUE, aggr = function(x) as.integer(ceiling(mean(unlist(x))) + 2000L)),
+    x = to_tune(0.2, 0.3),
+    predict_type = "prob",
+    validate = 0.3,
+    early_stopping = TRUE
+  )
+  # this ensures we get a pareto front that contains all values
+  m1 = msr("classif.acc")
+  m2 = msr("classif.acc", id = "classif.acc2")
+  m2$minimize = TRUE
+
+  instance = ti_async(
+    learner = learner,
+    task = tsk("sonar"),
+    resampling = rsmp("cv", folds = 2L),
+    measures = list(m1, m2),
+    terminator = trm("evals", n_evals = 20),
+  )
+
+  tuner = tnr("async_random_search")
+  expect_data_table(tuner$optimize(instance), min.rows = 20)
+
+  expect_list(instance$result_learner_param_vals, min.len = 20L)
+  expect_true(all(map_int(instance$archive$data$internal_tuned_values, "iter") >= 2000L))
+  expect_true(all(map_lgl(instance$result_learner_param_vals, function(x) x$iter >= 2000L)))
+  expect_true(length(unique(map_int(instance$archive$data$internal_tuned_values, "iter"))) > 1L)
+
+  expect_permutation(
+    map_int(instance$result_learner_param_vals, "iter"),
+    map_int(instance$archive$data$internal_tuned_values, "iter")
+  )
+})

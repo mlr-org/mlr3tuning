@@ -164,23 +164,28 @@ test_that("TuningInstanceBatchMultiCrit and empty search space works", {
   expect_equal(instance$result$x_domain[[1]], list())
 })
 
-test_that("assign_result works", {
-  learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1))
-  task = tsk("pima")
-  resampling = rsmp("holdout")
-  measures = msrs(c("classif.fpr", "classif.tpr"))
-  terminator = trm("evals", n_evals = 10)
+# Internal Tuning --------------------------------------------------------------
 
-  instance = TuningInstanceBatchMultiCrit$new(task, learner, resampling, measures, terminator)
+test_that("Batch multi-crit internal tuning works", {
+  learner = lrn("classif.debug",
+    validate = 0.2,
+    early_stopping = TRUE,
+    x = to_tune(0.2, 0.3),
+    iter = to_tune(upper = 1000, internal = TRUE, aggr = function(x) 99))
 
-  xdt = data.table(cp = c(0.1, 0.01))
-  ydt = data.table(classif.fpr = c(0.8, 0.7), classif.tpr = c(0.3, 0.2))
+  instance = ti(
+    task = tsk("pima"),
+    learner = learner,
+    resampling = rsmp("cv", folds = 3),
+    measures = msrs(c("classif.ce", "classif.acc")),
+    terminator = trm("evals", n_evals = 20),
+    store_benchmark_result = TRUE
+  )
 
-  instance$assign_result(xdt, ydt)
-  res = instance$result
-  expect_data_table(res, nrows = 2)
-  expect_equal(res$cp, c(0.1, 0.01))
-  expect_equal(res$classif.fpr, c(0.8, 0.7))
-  expect_equal(res$classif.tpr, c(0.3, 0.2))
-  expect_equal(sortnames(res$learner_param_vals[[1]]), list(xval = 0, cp = 0.1))
+  tuner = tnr("random_search", batch_size = 2)
+  expect_data_table(tuner$optimize(instance), min.rows = 1)
+  expect_list(instance$archive$data$internal_tuned_values, len = 20, types = "list")
+  expect_equal(instance$archive$data$internal_tuned_values[[1]], list(iter = 99))
+  expect_false(instance$result_learner_param_vals[[1]]$early_stopping)
+  expect_equal(instance$result_learner_param_vals[[1]]$iter, 99)
 })

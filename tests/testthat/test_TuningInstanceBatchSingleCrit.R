@@ -403,3 +403,29 @@ test_that("assign_result works with no hyperparameter and constant", {
   expect_equal(res$classif.ce, 0.8)
   expect_list(res$learner_param_vals[[1]], len = 0)
 })
+
+# Internal Tuning --------------------------------------------------------------
+
+test_that("Batch single-crit internal tuning works", {
+  learner = lrn("classif.debug",
+    validate = 0.2,
+    early_stopping = TRUE,
+    x = to_tune(0.2, 0.3),
+    iter = to_tune(upper = 1000, internal = TRUE, aggr = function(x) 99))
+
+  instance = ti(
+    task = tsk("pima"),
+    learner = learner,
+    resampling = rsmp("cv", folds = 3),
+    measures = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 20),
+    store_benchmark_result = TRUE
+  )
+
+  tuner = tnr("random_search", batch_size = 2)
+  expect_data_table(tuner$optimize(instance), nrows = 1)
+  expect_list(instance$archive$data$internal_tuned_values, len = 20, types = "list")
+  expect_equal(instance$archive$data$internal_tuned_values[[1]], list(iter = 99))
+  expect_false(instance$result_learner_param_vals$early_stopping)
+  expect_equal(instance$result_learner_param_vals$iter, 99)
+})

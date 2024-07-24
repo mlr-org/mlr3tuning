@@ -42,9 +42,11 @@ TunerBatchFromOptimizerBatch = R6Class("TunerBatchFromOptimizerBatch",
       #' @return [data.table::data.table].
       optimize = function(inst) {
         assert_tuning_instance_batch(inst)
-        if (!inst$search_space$length && inst$internal_search_space$length && !test_class(self, "TunerBatchInternal")) {
+
+        if (!inst$search_space$length && !is.null(inst$internal_search_space) && !test_class(self, "TunerBatchInternal")) {
           stopf("To only conduct internal parameter tuning, use tnr('internal')")
         }
+
         private$.optimizer$optimize(inst)
       }
     ),

@@ -44,7 +44,7 @@ TunerAsyncFromOptimizerAsync = R6Class("TunerAsyncFromOptimizerAsync",
       #' @return [data.table::data.table].
       optimize = function(inst) {
         assert_tuning_instance_async(inst)
-        if (!inst$search_space$length && inst$internal_search_space$length) {
+        if (!inst$search_space$length && !is.null(inst$internal_search_space)) {
           stopf("To only conduct internal parameter tuning, use tnr('internal')")
         }
         private$.optimizer$optimize(inst)
