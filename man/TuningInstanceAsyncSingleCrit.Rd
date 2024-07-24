@@ -71,14 +71,19 @@ mlr3tuning is extended by the following packages.
 \section{Super classes}{
 \code{\link[bbotk:OptimInstance]{bbotk::OptimInstance}} -> \code{\link[bbotk:OptimInstanceAsync]{bbotk::OptimInstanceAsync}} -> \code{\link[bbotk:OptimInstanceAsyncSingleCrit]{bbotk::OptimInstanceAsyncSingleCrit}} -> \code{TuningInstanceAsyncSingleCrit}
 }
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{internal_search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
+The search space containing those parameters that are internally optimized by the \link[mlr3:Learner]{mlr3::Learner}.}
+}
+\if{html}{\out{</div>}}
+}
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
 \item{\code{result_learner_param_vals}}{(\code{list()})\cr
 Param values for the optimal learner call.}
-
-\item{\code{internal_search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
-The search space containing those parameters that are internally optimized by the \code{\link[mlr3:Learner]{mlr3::Learner}}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -178,7 +183,12 @@ If a rush instance is supplied, the tuning runs without batches.}
 The \link{TunerAsync} object writes the best found point and estimated performance value here.
 For internal use.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TuningInstanceAsyncSingleCrit$assign_result(xdt, y, learner_param_vals = NULL)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TuningInstanceAsyncSingleCrit$assign_result(
+  xdt,
+  y,
+  learner_param_vals = NULL,
+  ...
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -194,6 +204,9 @@ Optimal outcome.}
 
 \item{\code{learner_param_vals}}{(List of named \verb{list()s})\cr
 Fixed parameter values of the learner that are neither part of the}
+
+\item{\code{...}}{(\code{any})\cr
+ignored.}
 }
 \if{html}{\out{</div>}}
 }

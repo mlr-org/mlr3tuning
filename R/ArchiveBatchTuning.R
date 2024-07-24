@@ -81,9 +81,8 @@ ArchiveBatchTuning = R6Class("ArchiveBatchTuning",
       check_values = FALSE,
       internal_search_space = NULL
       ) {
+      if (!is.null(internal_search_space)) private$.internal_search_space = assert_param_set(internal_search_space)
       super$initialize(search_space, codomain, check_values)
-
-      init_internal_search_space_archive(self, private, super, search_space, internal_search_space)
 
       # initialize empty benchmark result
       self$benchmark_result = BenchmarkResult$new()
@@ -181,7 +180,7 @@ ArchiveBatchTuning = R6Class("ArchiveBatchTuning",
 )
 
 #' @export
-as.data.table.ArchiveBatchTuning = function(x, ..., unnest = "x_domain", exclude_columns = "uhash", measures = NULL) {
+as.data.table.ArchiveBatchTuning = function(x, ..., unnest = c("x_domain", "internal_tuned_values"), exclude_columns = "uhash", measures = NULL) {
   if (!nrow(x$data)) return(data.table())
   data = copy(x$data)
 
@@ -208,7 +207,11 @@ as.data.table.ArchiveBatchTuning = function(x, ..., unnest = "x_domain", exclude
     setdiff(x_domain_ids, exclude_columns)
   }
 
-  setcolorder(tab, c(x$cols_x, if (length(x$internal_search_space$ids())) "internal_tuned_values",  x$cols_y, cols_y_extra, cols_x_domain,
-      "runtime_learners", "timestamp", "batch_nr"))
+  cols_internal_tuned_values =  if ("internal_tuned_values" %in% cols) {
+    internal_tuned_values_ids = paste0("internal_tuned_values_", unique(unlist(map(x$data$internal_tuned_values, names))))
+    setdiff(internal_tuned_values_ids, exclude_columns)
+  }
+
+  setcolorder(tab, c(x$cols_x, x$cols_y, cols_y_extra, cols_internal_tuned_values, cols_x_domain, "runtime_learners", "timestamp"))
   tab[, setdiff(names(tab), exclude_columns), with = FALSE]
 }

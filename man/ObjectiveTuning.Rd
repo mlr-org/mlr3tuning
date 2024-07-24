@@ -28,6 +28,9 @@ This class is usually constructed internally by the \link{TuningInstanceBatchSin
 \item{\code{callbacks}}{(List of \link[mlr3misc:Callback]{mlr3misc::Callback}).}
 
 \item{\code{default_values}}{(named \code{list()}).}
+
+\item{\code{internal_search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet}).
+Internal search space for internal tuning.}
 }
 \if{html}{\out{</div>}}
 }
@@ -64,7 +67,8 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   store_benchmark_result = TRUE,
   store_models = FALSE,
   check_values = FALSE,
-  callbacks = NULL
+  callbacks = NULL,
+  internal_search_space = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -104,6 +108,10 @@ computational overhead is reduced.}
 
 \item{\code{callbacks}}{(list of \link[mlr3misc:Callback]{mlr3misc::Callback})\cr
 List of callbacks.}
+
+\item{\code{internal_search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet} or \code{NULL})\cr
+The internal search space of the tuner. This includes parameters that the learner can optimize internally
+durign \verb{$train()}, such as the number of epochs via early stopping.}
 }
 \if{html}{\out{</div>}}
 }

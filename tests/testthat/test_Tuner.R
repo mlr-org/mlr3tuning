@@ -319,3 +319,4 @@ test_that("internal tuning: error message when primary search space is empty", {
     resampling = rsmp("holdout")
   ), "tnr('internal')", fixed = TRUE)
 })
+

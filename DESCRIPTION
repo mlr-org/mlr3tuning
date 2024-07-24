@@ -52,6 +52,8 @@ Suggests:
     xgboost
 VignetteBuilder:
     knitr
+Remotes:
+    mlr-org/bbotk
 Config/testthat/edition: 3
 Config/testthat/parallel: false
 Encoding: UTF-8

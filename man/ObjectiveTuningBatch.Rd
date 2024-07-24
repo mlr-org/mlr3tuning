@@ -51,7 +51,8 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   store_models = FALSE,
   check_values = FALSE,
   archive = NULL,
-  callbacks = NULL
+  callbacks = NULL,
+  internal_search_space = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -95,6 +96,10 @@ If \code{NULL} (default), benchmark result and models cannot be stored.}
 
 \item{\code{callbacks}}{(list of \link[mlr3misc:Callback]{mlr3misc::Callback})\cr
 List of callbacks.}
+
+\item{\code{internal_search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet} or \code{NULL})\cr
+The internal search space of the tuner. This includes parameters that the learner can optimize internally
+durign \verb{$train()}, such as the number of epochs via early stopping.}
 }
 \if{html}{\out{</div>}}
 }

@@ -637,9 +637,9 @@ test_that("AutoTuner works with async tuner", {
   expect_rush_reset(at$tuning_instance$rush, type = "terminate")
 })
 
-# Internal ---------------------------------------------------------------------
+# Internal Tuning --------------------------------------------------------------
 
-test_that("internal tuning and validation", {
+test_that("AutoTuner works with internal tuning and validation", {
   # we can use the internally optimized values for the final model fit
   task = tsk("iris")
   at = auto_tuner(
@@ -688,7 +688,7 @@ test_that("internal tuning and validation", {
   expect_equal(at$model$learner$validate, "predefined")
 })
 
-test_that("set_validate", {
+test_that("AutoTuner works with set_validate function", {
   at = auto_tuner(
     tuner = tnr("random_search", batch_size = 2),
     learner = lrn("classif.debug", iter = 1000L, x = to_tune(0.2, 0.3), early_stopping = TRUE),
@@ -703,7 +703,7 @@ test_that("set_validate", {
   expect_equal(at$validate, 0.3)
 })
 
-test_that("validate field can only be set if the tuned learner supports validation", {
+test_that("AutoTuner validate field can only be set if the tuned learner supports validation", {
   at = auto_tuner(
     tuner = tnr("random_search", batch_size = 2),
     learner = lrn("classif.debug", iter = 1000L, x = to_tune(0.2, 0.3), early_stopping = TRUE),
@@ -727,7 +727,7 @@ test_that("validate field can only be set if the tuned learner supports validati
   )
 })
 
-test_that("validation set can be used for final model fit", {
+test_that("AutoTuner validation set can be used for final model fit", {
   at = auto_tuner(
     tuner = tnr("random_search"),
     learner = lrn("classif.debug", early_stopping = TRUE, x = to_tune(0, 1)),

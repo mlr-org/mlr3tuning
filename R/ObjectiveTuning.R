@@ -12,6 +12,7 @@
 #' @template param_check_values
 #' @template param_store_benchmark_result
 #' @template param_callbacks
+#' @template param_internal_search_space
 #'
 #' @export
 ObjectiveTuning = R6Class("ObjectiveTuning",
@@ -42,6 +43,10 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
     #' @field default_values (named `list()`).
     default_values = NULL,
 
+    #' @field internal_search_space ([paradox::ParamSet]).
+    #' Internal search space for internal tuning.
+    internal_search_space = NULL,
+
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function(
@@ -52,7 +57,8 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       store_benchmark_result = TRUE,
       store_models = FALSE,
       check_values = FALSE,
-      callbacks = NULL
+      callbacks = NULL,
+      internal_search_space = NULL
       ) {
       self$task = assert_task(as_task(task, clone = TRUE))
       self$learner = assert_learner(as_learner(learner, clone = TRUE))
@@ -61,6 +67,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       self$store_models = assert_flag(store_models)
       self$store_benchmark_result = assert_flag(store_benchmark_result) || self$store_models
       self$callbacks = assert_callbacks(as_callbacks(callbacks))
+      self$internal_search_space = if (!is.null(internal_search_space)) assert_param_set(internal_search_space)
 
       self$default_values = self$learner$param_set$values
 
