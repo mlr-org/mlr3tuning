@@ -1,6 +1,7 @@
 # mlr3tuning (development version)
 
 * refactor: Replace internal tuning callback.
+* fix: Delete intermediate `BenchmarkResult` in `ObjectiveTuningBatch` after optimization.
 
 # mlr3tuning 1.0.0
 
