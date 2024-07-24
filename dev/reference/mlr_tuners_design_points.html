@@ -218,16 +218,16 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1: 0.100        64        2 0.15652174       0.100                 64</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2: 0.010        32       64 0.06956522       0.010                 32</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3: 0.001         1      128 0.06956522       0.001                  1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    x_domain_minsplit runtime_learners           timestamp batch_nr warnings</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                &lt;num&gt;            &lt;num&gt;              &lt;POSc&gt;    &lt;int&gt;    &lt;int&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:                 2            0.006 2024-07-24 10:03:25        1        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:                64            0.005 2024-07-24 10:03:25        2        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:               128            0.006 2024-07-24 10:03:25        3        0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    errors  resample_result</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     &lt;int&gt;           &lt;list&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:      0 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:      0 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:      0 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    x_domain_minsplit runtime_learners           timestamp warnings errors</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                &lt;num&gt;            &lt;num&gt;              &lt;POSc&gt;    &lt;int&gt;  &lt;int&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:                 2            0.006 2024-07-24 10:53:15        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:                64            0.005 2024-07-24 10:53:15        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:               128            0.005 2024-07-24 10:53:15        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    batch_nr  resample_result</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;int&gt;           &lt;list&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:        1 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:        2 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:        3 &lt;ResampleResult&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># fit final model on complete data set</span></span></span>
 <span class="r-in"><span><span class="va">learner</span><span class="op">$</span><span class="va">param_set</span><span class="op">$</span><span class="va">values</span> <span class="op">=</span> <span class="va">instance</span><span class="op">$</span><span class="va">result_learner_param_vals</span></span></span>

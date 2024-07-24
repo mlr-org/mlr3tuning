@@ -86,6 +86,11 @@ This class is usually constructed internally by the <a href="TuningInstanceBatch
 <dd><p>(named <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code>).</p></dd>
 
 
+<dt><code>internal_search_space</code></dt>
+<dd><p>(<a href="https://paradox.mlr-org.com/reference/ParamSet.html" class="external-link">paradox::ParamSet</a>).
+Internal search space for internal tuning.</p></dd>
+
+
 </dl><p></p></div>
     </div>
     <div class="section level2">
@@ -114,7 +119,8 @@ This class is usually constructed internally by the <a href="TuningInstanceBatch
 <span>  store_benchmark_result <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  store_models <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  check_values <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  callbacks <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  callbacks <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  internal_search_space <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -168,6 +174,12 @@ computational overhead is reduced.</p></dd>
 <dt><code>callbacks</code></dt>
 <dd><p>(list of <a href="https://mlr3misc.mlr-org.com/reference/Callback.html" class="external-link">mlr3misc::Callback</a>)<br>
 List of callbacks.</p></dd>
+
+
+<dt><code>internal_search_space</code></dt>
+<dd><p>(<a href="https://paradox.mlr-org.com/reference/ParamSet.html" class="external-link">paradox::ParamSet</a> or <code>NULL</code>)<br>
+The internal search space of the tuner. This includes parameters that the learner can optimize internally
+durign <code>$train()</code>, such as the number of epochs via early stopping.</p></dd>
 
 
 </dl><p></p></div>
