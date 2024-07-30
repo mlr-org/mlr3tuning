@@ -26,7 +26,7 @@ URL: https://mlr3tuning.mlr-org.com, https://github.com/mlr-org/mlr3tuning
 BugReports: https://github.com/mlr-org/mlr3tuning/issues
 Depends:
     mlr3 (>= 0.20.0),
-    paradox (>= 1.0.0),
+    paradox (>= 1.0.1),
     R (>= 3.1.0)
 Imports:
     bbotk (>= 1.0.0),

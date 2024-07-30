@@ -286,20 +286,10 @@ load_callback_async_default_configuration = function() {
       # parameters with exp transformation and log inverse transformation
       # parameters with unknown inverse transformation
       # parameter set with trafo
-      if ("set_id" %in% names(ps())) {
-        # old paradox
-        has_logscale = map_lgl(instance$search_space$params, function(param) get_private(param)$.has_logscale)
+      has_logscale = map_lgl(instance$search_space$params$.trafo, function(x) identical(x, exp))
+      has_trafo = map_lgl(instance$search_space$params$.trafo, function(x) !is.null(x) && !identical(x, exp))
+      has_extra_trafo = !is.null(instance$search_space$extra_trafo)
 
-        has_trafo = map_lgl(instance$search_space$params, function(param) get_private(param)$.has_trafo)
-
-        has_extra_trafo = get_private(instance$search_space)$.has_extra_trafo
-      } else {
-        has_logscale = map_lgl(instance$search_space$params$.trafo, function(x) identical(x, exp))
-
-        has_trafo = map_lgl(instance$search_space$params$.trafo, function(x) !is.null(x) && !identical(x, exp))
-
-        has_extra_trafo = !is.null(instance$search_space$extra_trafo)
-      }
 
       if (any(has_trafo) || has_extra_trafo) {
         stop("Cannot evaluate default hyperparameter values. Search space contains transformation functions with unknown inverse function.")
@@ -326,20 +316,9 @@ load_callback_default_configuration = function() {
       # parameters with exp transformation and log inverse transformation
       # parameters with unknown inverse transformation
       # parameter set with trafo
-      if ("set_id" %in% names(ps())) {
-        # old paradox
-        has_logscale = map_lgl(instance$search_space$params, function(param) get_private(param)$.has_logscale)
-
-        has_trafo = map_lgl(instance$search_space$params, function(param) get_private(param)$.has_trafo)
-
-        has_extra_trafo = get_private(instance$search_space)$.has_extra_trafo
-      } else {
-        has_logscale = map_lgl(instance$search_space$params$.trafo, function(x) identical(x, exp))
-
-        has_trafo = map_lgl(instance$search_space$params$.trafo, function(x) !is.null(x) && !identical(x, exp))
-
-        has_extra_trafo = !is.null(instance$search_space$extra_trafo)
-      }
+      has_logscale = map_lgl(instance$search_space$params$.trafo, function(x) identical(x, exp))
+      has_trafo = map_lgl(instance$search_space$params$.trafo, function(x) !is.null(x) && !identical(x, exp))
+      has_extra_trafo = !is.null(instance$search_space$extra_trafo)
 
       if (any(has_trafo) || has_extra_trafo) {
         stop("Cannot evaluate default hyperparameter values. Search space contains transformation functions with unknown inverse function.")

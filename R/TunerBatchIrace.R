@@ -89,11 +89,6 @@ TunerBatchIrace = R6Class("TunerBatchIrace",
         targetRunnerParallel = target_runner_tuning
       )
 
-      if ("set_id" %in% names(optimizer$param_set)) {
-        # old paradox
-        optimizer$param_set$set_id = ""
-      }
-
       super$initialize(
         optimizer = optimizer,
         man = "mlr3tuning::mlr_tuners_irace"
