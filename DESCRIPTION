@@ -51,6 +51,7 @@ Suggests:
     testthat (>= 3.0.0),
     xgboost
 Remotes:
+    mlr-org/bbotk@irace,
     MLopez-Ibanez/irace
 VignetteBuilder:
     knitr

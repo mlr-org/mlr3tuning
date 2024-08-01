@@ -2,6 +2,7 @@
 
 * refactor: Replace internal tuning callback.
 * fix: Delete intermediate `BenchmarkResult` in `ObjectiveTuningBatch` after optimization.
+* compatibility: Work with new irace 4.0.0
 
 # mlr3tuning 1.0.0
 
