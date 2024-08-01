@@ -94,7 +94,7 @@ TunerBatchIrace = R6Class("TunerBatchIrace",
         man = "mlr3tuning::mlr_tuners_irace"
       )
 
-      private$.param_set = ParamSetCollection$new(list(
+      private$.optimizer$.__enclos_env__$private$.param_set = ParamSetCollection$new(list(
         optimizer$param_set,
         extra_ps
       ))
