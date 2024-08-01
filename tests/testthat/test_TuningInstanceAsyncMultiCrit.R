@@ -206,6 +206,9 @@ test_that("Multi-crit internal tuning works", {
   }
 
   expect_list(instance$archive$data$internal_tuned_values, min.len = 20L)
+  print(instance$archive$data)
+  print(instance$archive$data$internal_tuned_values)
+
   if (is.null(instance$archive$data$internal_tuned_values[[1]]$iter)) {
     print(instance$archive$data$internal_tuned_values)
     stopf("Iter is null")
