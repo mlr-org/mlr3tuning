@@ -149,6 +149,7 @@ flush_redis = function() {
 expect_rush_reset = function(rush, type = "kill") {
   processes = rush$processes
   rush$reset(type = type)
+  Sys.sleep(1)
   expect_list(rush$connector$command(c("KEYS", "*")), len = 0)
   walk(processes, function(p) p$kill())
 }
