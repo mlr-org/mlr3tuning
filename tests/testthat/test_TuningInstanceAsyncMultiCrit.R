@@ -197,6 +197,9 @@ test_that("Multi-crit internal tuning works", {
 
   expect_list(instance$result_learner_param_vals, min.len = 20L)
   expect_list(instance$archive$data$internal_tuned_values, min.len = 20L)
+  if (is.null(instance$archive$data$internal_tuned_values[[1]]$iter)) {
+    stopf("Iter is null")
+  }
   expect_true(all(map_int(instance$archive$data$internal_tuned_values, "iter") >= 2000L))
   expect_true(all(map_lgl(instance$result_learner_param_vals, function(x) x$iter >= 2000L)))
   expect_true(length(unique(map_int(instance$archive$data$internal_tuned_values, "iter"))) > 1L)
