@@ -3,7 +3,7 @@ test_that("TunerBatchFromOptimizerBatch parameter set works after cloning", {
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
     resampling = rsmp("cv", folds = 3),
-    measure = msr("classif.ce"),
+    measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 10)
   )
   tuner_1 = tnr("random_search", batch_size = 10)
