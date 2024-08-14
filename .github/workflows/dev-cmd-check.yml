@@ -27,7 +27,6 @@ jobs:
           - {os: ubuntu-latest, r: 'release', dev-package: 'mlr-org/bbotk'}
           - {os: ubuntu-latest, r: 'release', dev-package: 'mlr-org/mlr3'}
           - {os: ubuntu-latest, r: 'release', dev-package: "mlr-org/paradox', 'mlr-org/mlr3learners', 'mlr-org/mlr3pipelines', 'mlr-org/bbotk"}
-          - {os: ubuntu-latest, r: 'release', dev-package: "mlr-org/mlr3@reworked-weights"}
 
     steps:
       - uses: actions/checkout@v3
