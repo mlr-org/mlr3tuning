@@ -195,9 +195,14 @@ test_that("Multi-crit internal tuning works", {
   tuner = tnr("async_random_search")
   expect_data_table(tuner$optimize(instance), min.rows = 20)
 
+  if (!nrow((instance$archive$data))) {
+    stop("No data in archive")
+  }
+
   expect_list(instance$result_learner_param_vals, min.len = 20L)
   expect_list(instance$archive$data$internal_tuned_values, min.len = 20L)
   if (is.null(instance$archive$data$internal_tuned_values[[1]]$iter)) {
+    print(instance$archive$data)
     stopf("Iter is null")
   }
   expect_true(all(map_int(instance$archive$data$internal_tuned_values, "iter") >= 2000L))
