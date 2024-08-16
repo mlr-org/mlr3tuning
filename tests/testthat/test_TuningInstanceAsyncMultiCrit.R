@@ -205,7 +205,8 @@ test_that("Multi-crit internal tuning works", {
 
   expect_list(instance$result_learner_param_vals, min.len = 20L)
   if (is.null(instance$result_learner_param_vals)) {
-    message(instance$result_learner_param_vals)
+    message(paste(capture.output(print(instance$archive$data)), collape = "\n"))
+    message(paste(capture.output(print(instance$result_learner_param_vals)), collape = "\n"))
     stopf("Iter is null")
   }
 
