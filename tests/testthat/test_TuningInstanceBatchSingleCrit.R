@@ -418,6 +418,28 @@ test_that("objective contains no benchmark results", {
   expect_null(instance$objective$.__enclos_env__$private$.benchmark_result)
 })
 
+test_that("dependencies in defaults work", {
+  learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1))
+  learner$param_set$add_dep("cp", "keep_model", CondEqual$new("keep_model" == TRUE))
+
+  expect_class(tune(
+    tuner = tnr("random_search", batch_size = 5),
+    task = tsk("pima"),
+    learner = learner,
+    resampling = rsmp("cv", folds = 3),
+    measures = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 20)), "TuningInstanceBatchSingleCrit")
+
+  expect_error(tune(
+    tuner = tnr("random_search", batch_size = 5),
+    task = tsk("pima"),
+    learner = learner,
+    resampling = rsmp("cv", folds = 3),
+    measures = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 20),
+    check_values = TRUE), regexp = "Assertion on")
+})
+
 # Internal Tuning --------------------------------------------------------------
 
 test_that("Batch single-crit internal tuning works", {
@@ -443,3 +465,4 @@ test_that("Batch single-crit internal tuning works", {
   expect_false(instance$result_learner_param_vals$early_stopping)
   expect_equal(instance$result_learner_param_vals$iter, 99)
 })
+
