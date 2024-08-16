@@ -21,7 +21,7 @@ test_that("TunerAsyncRandomSearch works", {
   expect_data_table(tuner$optimize(instance), nrows = 1)
 
   expect_data_table(instance$archive$data, min.rows = 20)
-  expect_rush_reset(instance$rush, type = "terminate")
+  expect_rush_reset(instance$rush, type = "kill")
 })
 
 
