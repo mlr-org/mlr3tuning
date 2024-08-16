@@ -199,34 +199,15 @@ test_that("Multi-crit internal tuning works", {
   tuner = tnr("async_random_search")
   expect_data_table(tuner$optimize(instance), min.rows = 20)
 
-  if (!nrow((instance$archive$data))) {
-    stop("No data in archive")
-  }
-
   expect_list(instance$result_learner_param_vals, min.len = 20L)
-  if (is.null(instance$result_learner_param_vals)) {
-    message(paste(capture.output(print(instance$archive$finished_data)), collape = "\n"))
-    message(paste(capture.output(print(instance$archive$data)), collape = "\n"))
-    message(paste(capture.output(print(instance$archive$data$internal_tuned_values)), collape = "\n"))
-    message(paste(capture.output(print(instance$result_learner_param_vals)), collape = "\n"))
-    stopf("Iter is null")
-  }
-
-  expect_list(instance$archive$data$internal_tuned_values, min.len = 20L)
-  if (is.null(instance$archive$data$internal_tuned_values[[1]]$iter)) {
-    message(paste(capture.output(print(instance$archive$finished_data)), collape = "\n"))
-    message(paste(capture.output(print(instance$result_learner_param_vals)), collape = "\n"))
-    message(paste(capture.output(print(instance$archive$data$internal_tuned_values)), collape = "\n"))
-    message(paste(capture.output(print(instance$archive$data)), collape = "\n"))
-    stopf("Iter is null2")
-  }
-  expect_true(all(map_int(instance$archive$data$internal_tuned_values, "iter") >= 2000L))
+  expect_list(instance$archive$finished_data$internal_tuned_values, min.len = 20L)
+  expect_true(all(map_int(instance$archive$finished_data$internal_tuned_values, "iter") >= 2000L))
   expect_true(all(map_lgl(instance$result_learner_param_vals, function(x) x$iter >= 2000L)))
-  expect_true(length(unique(map_int(instance$archive$data$internal_tuned_values, "iter"))) > 1L)
+  expect_true(length(unique(map_int(instance$archive$finished_data$internal_tuned_values, "iter"))) > 1L)
 
   expect_permutation(
     map_int(instance$result_learner_param_vals, "iter")[1:20],
-    map_int(instance$archive$data$internal_tuned_values, "iter")[1:20]
+    map_int(instance$archive$finished_data$internal_tuned_values, "iter")[1:20]
   )
 
   expect_rush_reset(instance$rush, type = "kill")
