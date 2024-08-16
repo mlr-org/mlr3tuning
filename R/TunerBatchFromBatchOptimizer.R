@@ -55,6 +55,18 @@ TunerBatchFromOptimizerBatch = R6Class("TunerBatchFromOptimizerBatch",
       }
     ),
 
+    active = list(
+
+      #' @field param_set ([paradox::ParamSet])\cr
+      #' Set of control parameters.
+      param_set = function(rhs) {
+        if (!missing(rhs) && !identical(rhs, private$.optimizer$param_set)) {
+          stop("$param_set is read-only.")
+        }
+        private$.optimizer$param_set
+      }
+    ),
+
     private = list(
       .optimizer = NULL
     )

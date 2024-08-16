@@ -113,6 +113,8 @@ test_that("saving the benchmark result with TuningInstanceRushSingleCrit works",
   expect_benchmark_result(instance$archive$benchmark_result)
   expect_gte(instance$archive$benchmark_result$n_resample_results, 3L)
   expect_null(instance$archive$resample_result(1)$learners[[1]]$model)
+
+  expect_rush_reset(instance$rush, type = "terminate")
 })
 
 test_that("saving the models with TuningInstanceRushSingleCrit works", {
@@ -138,6 +140,8 @@ test_that("saving the models with TuningInstanceRushSingleCrit works", {
   expect_benchmark_result(instance$archive$benchmark_result)
   expect_gte(instance$archive$benchmark_result$n_resample_results, 3L)
   expect_class(instance$archive$resample_result(1)$learners[[1]]$model, "rpart")
+
+  expect_rush_reset(instance$rush, type = "terminate")
 })
 
 # test_that("crashing workers are detected", {
@@ -196,7 +200,22 @@ test_that("Multi-crit internal tuning works", {
   expect_data_table(tuner$optimize(instance), min.rows = 20)
 
   expect_list(instance$result_learner_param_vals, min.len = 20L)
+  if (is.null(instance$result_learner_param_vals)) {
+    print(instance$result_learner_param_vals)
+    stopf("Iter is null")
+  }
+
   expect_list(instance$archive$data$internal_tuned_values, min.len = 20L)
+  print(instance$archive$data)
+  print(instance$archive$data$internal_tuned_values)
+
+  if (is.null(instance$archive$data$internal_tuned_values[[1]]$iter)) {
+    print(instance$archive$data$internal_tuned_values)
+    stopf("Iter is null")
+  }
+
+
+
   expect_true(all(map_int(instance$archive$data$internal_tuned_values, "iter") >= 2000L))
   expect_true(all(map_lgl(instance$result_learner_param_vals, function(x) x$iter >= 2000L)))
   expect_true(length(unique(map_int(instance$archive$data$internal_tuned_values, "iter"))) > 1L)
@@ -205,4 +224,6 @@ test_that("Multi-crit internal tuning works", {
     map_int(instance$result_learner_param_vals, "iter")[1:20],
     map_int(instance$archive$data$internal_tuned_values, "iter")[1:20]
   )
+
+  expect_rush_reset(instance$rush, type = "terminate")
 })
