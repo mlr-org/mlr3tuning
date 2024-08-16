@@ -205,6 +205,7 @@ test_that("Multi-crit internal tuning works", {
 
   expect_list(instance$result_learner_param_vals, min.len = 20L)
   if (is.null(instance$result_learner_param_vals)) {
+    message(paste(capture.output(print(instance$archive$finished_data)), collape = "\n"))
     message(paste(capture.output(print(instance$archive$data)), collape = "\n"))
     message(paste(capture.output(print(instance$archive$data$internal_tuned_values)), collape = "\n"))
     message(paste(capture.output(print(instance$result_learner_param_vals)), collape = "\n"))
@@ -213,6 +214,7 @@ test_that("Multi-crit internal tuning works", {
 
   expect_list(instance$archive$data$internal_tuned_values, min.len = 20L)
   if (is.null(instance$archive$data$internal_tuned_values[[1]]$iter)) {
+    message(paste(capture.output(print(instance$archive$finished_data)), collape = "\n"))
     message(paste(capture.output(print(instance$result_learner_param_vals)), collape = "\n"))
     message(paste(capture.output(print(instance$archive$data$internal_tuned_values)), collape = "\n"))
     message(paste(capture.output(print(instance$archive$data)), collape = "\n"))
