@@ -218,7 +218,7 @@ test_that("Multi-crit internal tuning works", {
     message(paste(capture.output(print(instance$result_learner_param_vals)), collape = "\n"))
     message(paste(capture.output(print(instance$archive$data$internal_tuned_values)), collape = "\n"))
     message(paste(capture.output(print(instance$archive$data)), collape = "\n"))
-    stopf("Iter is null")
+    stopf("Iter is null2")
   }
   expect_true(all(map_int(instance$archive$data$internal_tuned_values, "iter") >= 2000L))
   expect_true(all(map_lgl(instance$result_learner_param_vals, function(x) x$iter >= 2000L)))
