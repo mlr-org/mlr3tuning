@@ -132,14 +132,14 @@ TunerBatchIrace = R6Class("TunerBatchIrace",
   )
 )
 
-target_runner_tuning = function(experiment, exec.target.runner, scenario, target.runner) {# nolint
+target_runner_tuning = function(experiment, exec_target_runner, scenario, target_runner) {# nolint
   tuning_instance = scenario$targetRunnerData$inst
 
   xdt = map_dtr(experiment, function(e) {
     configuration = as.data.table(e$configuration)
     # add configuration and instance id to archive
-    set(configuration, j = "configuration", value = e$id.configuration)
-    set(configuration, j = "instance", value = e$id.instance)
+    set(configuration, j = "configuration", value = e$id_configuration)
+    set(configuration, j = "instance", value = e$id_instance)
     configuration
   })
   # fix logicals
