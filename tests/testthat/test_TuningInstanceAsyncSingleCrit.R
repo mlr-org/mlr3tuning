@@ -186,6 +186,8 @@ test_that("Async single-crit internal tuning works", {
 
   as.data.table(instance$archive)
 
+  message(instance$archive$data$internal_tuned_values)
+
   expect_list(instance$archive$data$internal_tuned_values, min.len = 20, types = "list")
   expect_equal(instance$archive$data$internal_tuned_values[[1]], list(iter = 99))
   expect_false(instance$result_learner_param_vals$early_stopping)
