@@ -55,7 +55,7 @@ test_that("async measures callback works", {
 
   expect_numeric(instance$archive$data$classif.ce_holdout)
 
-  expect_rush_reset(instance$rush, type = "terminate")
+  expect_rush_reset(instance$rush, type = "kill")
 })
 
 # async mlflow callback --------------------------------------------------------
