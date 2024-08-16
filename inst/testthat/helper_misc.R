@@ -149,6 +149,10 @@ flush_redis = function() {
 expect_rush_reset = function(rush, type = "kill") {
   processes = rush$processes
   rush$reset(type = type)
-  expect_list(rush$connector$command(c("KEYS", "*")), len = 0)
+  Sys.sleep(1)
+  keys = rush$connector$command(c("KEYS", "*"))
+  if (!test_list(keys, len = 0)) {
+    stopf("Found keys in redis after reset: %s", keys)
+  }
   walk(processes, function(p) p$kill())
 }

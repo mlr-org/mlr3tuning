@@ -21,7 +21,7 @@ test_that("initializing TuningInstanceAsyncSingleCrit works", {
   expect_r6(instance$rush, "Rush")
   expect_null(instance$result)
 
-  expect_rush_reset(instance$rush, type = "terminate")
+  expect_rush_reset(instance$rush, type = "kill")
 })
 
 test_that("rush controller can be passed to TuningInstanceAsyncSingleCrit", {
@@ -44,7 +44,7 @@ test_that("rush controller can be passed to TuningInstanceAsyncSingleCrit", {
   expect_class(instance$rush, "Rush")
   expect_equal(instance$rush$network_id, "remote_network")
 
-  expect_rush_reset(instance$rush, type = "terminate")
+  expect_rush_reset(instance$rush, type = "kill")
 })
 
 test_that("TuningInstanceAsyncSingleCrit can be passed to a tuner", {
@@ -66,7 +66,7 @@ test_that("TuningInstanceAsyncSingleCrit can be passed to a tuner", {
   tuner$optimize(instance)
 
   expect_data_table(instance$archive$data, min.rows = 3L)
-  expect_rush_reset(instance$rush, type = "terminate")
+  expect_rush_reset(instance$rush, type = "kill")
 })
 
 test_that("assigning a result to TuningInstanceAsyncSingleCrit works", {
@@ -113,6 +113,8 @@ test_that("saving the benchmark result with TuningInstanceRushSingleCrit works",
   expect_benchmark_result(instance$archive$benchmark_result)
   expect_gte(instance$archive$benchmark_result$n_resample_results, 3L)
   expect_null(instance$archive$resample_result(1)$learners[[1]]$model)
+
+  expect_rush_reset(instance$rush, type = "kill")
 })
 
 test_that("saving the models with TuningInstanceRushSingleCrit works", {
@@ -138,6 +140,8 @@ test_that("saving the models with TuningInstanceRushSingleCrit works", {
   expect_benchmark_result(instance$archive$benchmark_result)
   expect_gte(instance$archive$benchmark_result$n_resample_results, 3L)
   expect_class(instance$archive$resample_result(1)$learners[[1]]$model, "rpart")
+
+  expect_rush_reset(instance$rush, type = "kill")
 })
 
 # test_that("crashing workers are detected", {
@@ -196,12 +200,15 @@ test_that("Multi-crit internal tuning works", {
   expect_data_table(tuner$optimize(instance), min.rows = 20)
 
   expect_list(instance$result_learner_param_vals, min.len = 20L)
-  expect_true(all(map_int(instance$archive$data$internal_tuned_values, "iter") >= 2000L))
+  expect_list(instance$archive$finished_data$internal_tuned_values, min.len = 20L)
+  expect_true(all(map_int(instance$archive$finished_data$internal_tuned_values, "iter") >= 2000L))
   expect_true(all(map_lgl(instance$result_learner_param_vals, function(x) x$iter >= 2000L)))
-  expect_true(length(unique(map_int(instance$archive$data$internal_tuned_values, "iter"))) > 1L)
+  expect_true(length(unique(map_int(instance$archive$finished_data$internal_tuned_values, "iter"))) > 1L)
 
   expect_permutation(
     map_int(instance$result_learner_param_vals, "iter")[1:20],
-    map_int(instance$archive$data$internal_tuned_values, "iter")[1:20]
+    map_int(instance$archive$finished_data$internal_tuned_values, "iter")[1:20]
   )
+
+  expect_rush_reset(instance$rush, type = "kill")
 })
