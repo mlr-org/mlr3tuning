@@ -48,7 +48,7 @@ test_that("ArchiveAsyncTuning access methods work", {
     expect_resample_result(instance$archive$resample_result(i))
   })
 
-  expect_rush_reset(instance$rush, type = "terminate")
+  expect_rush_reset(instance$rush, type = "kill")
 })
 
 test_that("ArchiveAsyncTuning as.data.table function works", {

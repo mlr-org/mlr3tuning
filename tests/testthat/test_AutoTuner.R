@@ -634,7 +634,7 @@ test_that("AutoTuner works with async tuner", {
 
   expect_data_table(at$tuning_instance$result, nrows = 1)
   expect_data_table(at$tuning_instance$archive$data, min.rows = 4)
-  expect_rush_reset(at$tuning_instance$rush, type = "terminate")
+  expect_rush_reset(at$tuning_instance$rush, type = "kill")
 })
 
 # Internal Tuning --------------------------------------------------------------
