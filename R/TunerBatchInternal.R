@@ -29,7 +29,9 @@
 #' learner = lrn("classif.xgboost",
 #'   nrounds = to_tune(upper = 1000, internal = TRUE),
 #'   early_stopping_rounds = 10,
-#'   validate = "test"
+#'   validate = "test",
+#'   predict_sets = NULL,
+#'   eval_metric = "error"
 #' )
 #'
 #' # Internal hyperparameter tuning on the pima indians diabetes data set
@@ -38,7 +40,7 @@
 #'   tsk("iris"),
 #'   learner,
 #'   rsmp("cv", folds = 3),
-#'   msr("classif.ce")
+#'   msr("internal_valid_score", minimize = TRUE, select = "error")
 #' )
 #'
 #' # best performing hyperparameter configuration
