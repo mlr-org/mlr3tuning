@@ -30,7 +30,6 @@
 #'   nrounds = to_tune(upper = 1000, internal = TRUE),
 #'   early_stopping_rounds = 10,
 #'   validate = "test",
-#'   predict_sets = NULL,
 #'   eval_metric = "error"
 #' )
 #'
