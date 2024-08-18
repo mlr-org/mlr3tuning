@@ -10,6 +10,14 @@ Internally used to transform \link[bbotk:Optimizer]{bbotk::Optimizer} to \link{T
 \section{Super classes}{
 \code{\link[mlr3tuning:Tuner]{mlr3tuning::Tuner}} -> \code{\link[mlr3tuning:TunerAsync]{mlr3tuning::TunerAsync}} -> \code{TunerAsyncFromOptimizerAsync}
 }
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
+\describe{
+\item{\code{param_set}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
+Set of control parameters.}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{

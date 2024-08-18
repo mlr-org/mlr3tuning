@@ -657,35 +657,6 @@ test_that("AutoTuner works with internal tuning and validation", {
   # the AutoTuner's validate field controls the validation data for the final model fit,
   # because it was set to NULL, the full data was used for the final model fit
   expect_true(is.null(at$model$learner$state$internal_valid_task_ids))
-
-  # we can also still do early stopping on the final model fit if we want to
-  at = auto_tuner(
-    tuner = tnr("random_search", batch_size = 2),
-    learner = lrn("classif.debug", iter = 1000L, x = to_tune(0.2, 0.3), early_stopping = TRUE, validate = "test"),
-    resampling = rsmp("cv", folds = 3),
-    measure = msr("classif.ce"),
-    term_evals = 4
-  )
-  expect_error(at$train(task), "when a validation task is present")
-  at$validate = 0.2
-  at$train(task)
-
-  # early stopping was not disabled
-  expect_equal(at$model$learner$param_set$values$iter, 1000)
-  expect_true(at$model$learner$param_set$values$early_stopping)
-
-  # ratios are handled correctly for the AutoTuner
-  at = auto_tuner(
-    tuner = tnr("random_search"),
-    learner = lrn("classif.debug", early_stopping = TRUE, x = to_tune(0, 1)),
-    resampling = rsmp("holdout"),
-    store_models = TRUE,
-    term_evals = 1
-  )
-  set_validate(at, final_validate = 0.2, validate = 0.2)
-  at$train(task)
-  expect_true(is.null(task$internal_valid_task))
-  expect_equal(at$model$learner$validate, "predefined")
 })
 
 test_that("AutoTuner works with set_validate function", {
@@ -696,52 +667,8 @@ test_that("AutoTuner works with set_validate function", {
     measure = msr("classif.ce"),
     term_evals = 4
   )
-  set_validate(at, validate = "test", final_validate = 0.3)
-  expect_equal(at$validate, 0.3)
+  set_validate(at, validate = "test")
   expect_equal(at$learner$validate, "test")
   set_validate(at, validate = NULL)
-  expect_equal(at$validate, 0.3)
+  expect_true(is.null(at$learner$validate))
 })
-
-test_that("AutoTuner validate field can only be set if the tuned learner supports validation", {
-  at = auto_tuner(
-    tuner = tnr("random_search", batch_size = 2),
-    learner = lrn("classif.debug", iter = 1000L, x = to_tune(0.2, 0.3), early_stopping = TRUE),
-    resampling = rsmp("cv", folds = 3),
-    measure = msr("classif.ce"),
-    term_evals = 4,
-    validate = 0.3
-  )
-  expect_equal(at$validate, 0.3)
-
-  expect_error(
-    auto_tuner(
-      tuner = tnr("random_search", batch_size = 2),
-      learner = lrn("classif.rpart"),
-      resampling = rsmp("cv", folds = 3),
-      measure = msr("classif.ce"),
-      term_evals = 4,
-      validate = 0.3
-    ),
-    "The learner that is tuned by"
-  )
-})
-
-test_that("AutoTuner validation set can be used for final model fit", {
-  at = auto_tuner(
-    tuner = tnr("random_search"),
-    learner = lrn("classif.debug", early_stopping = TRUE, x = to_tune(0, 1)),
-    resampling = rsmp("holdout"),
-    store_models = TRUE,
-    term_evals = 1
-  )
-
-  task = tsk("iris")
-  task$divide(ratio = 0.2)
-
-  set_validate(at, final_validate = "predefined", validate = "predefined")
-  at$train(task)
-  expect_equal(at$state$internal_valid_task_hash, task$internal_valid_task$hash)
-  expect_equal(at$state$validate, "predefined")
-})
-
