@@ -152,7 +152,8 @@ Use <code>lgr::get_logger("bbotk")</code> to access and control the logger.</p>
 <span class="r-in"><span><span class="va">learner</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"classif.xgboost"</span>,</span></span>
 <span class="r-in"><span>  nrounds <span class="op">=</span> <span class="fu"><a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">to_tune</a></span><span class="op">(</span>upper <span class="op">=</span> <span class="fl">1000</span>, internal <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  early_stopping_rounds <span class="op">=</span> <span class="fl">10</span>,</span></span>
-<span class="r-in"><span>  validate <span class="op">=</span> <span class="st">"test"</span></span></span>
+<span class="r-in"><span>  validate <span class="op">=</span> <span class="st">"test"</span>,</span></span>
+<span class="r-in"><span>  eval_metric <span class="op">=</span> <span class="st">"merror"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Internal hyperparameter tuning on the pima indians diabetes data set</span></span></span>
@@ -161,13 +162,16 @@ Use <code>lgr::get_logger("bbotk")</code> to access and control the logger.</p>
 <span class="r-in"><span>  <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">tsk</a></span><span class="op">(</span><span class="st">"iris"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  <span class="va">learner</span>,</span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">rsmp</a></span><span class="op">(</span><span class="st">"cv"</span>, folds <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">msr</a></span><span class="op">(</span><span class="st">"classif.ce"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">msr</a></span><span class="op">(</span><span class="st">"internal_valid_score"</span>, minimize <span class="op">=</span> <span class="cn">TRUE</span>, select <span class="op">=</span> <span class="st">"merror"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># best performing hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="va">instance</span><span class="op">$</span><span class="va">result_learner_param_vals</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $eval_metric</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "merror"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $nrounds</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $nthread</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>

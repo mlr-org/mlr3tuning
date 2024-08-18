@@ -65,11 +65,9 @@ A set timeout is disabled while fitting the final model.</p>
     <h2 id="validation">Validation<a class="anchor" aria-label="anchor" href="#validation"></a></h2>
 
 
-<p>Both, the tuned <a href="https://mlr3.mlr-org.com/reference/Learner.html" class="external-link">mlr3::Learner</a> and the <code>AutoTuner</code> itself can make use of validation data.
-the <code>$validate</code> field of the <code>AutoTuner</code> determines how validation is done during the final model fit.
-In most cases, this should be left as <code>NULL</code>.
-The <code>$validate</code> field of the tuned <a href="https://mlr3.mlr-org.com/reference/Learner.html" class="external-link">mlr3::Learner</a> specifies how the validation data is constructed
-during the hyperparameter optimization.</p>
+<p>The <code>AutoTuner</code> itself does <strong>not</strong> have the <code>"validation"</code> property.
+To enable validation during the tuning, set the <code>$validate</code> field of the tuned learner.
+This is also possible via <code><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">set_validate()</a></code>.</p>
     </div>
     <div class="section level2">
     <h2 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a></h2>
@@ -118,11 +116,6 @@ Optimization algorithm.</p></dd>
     <p></p><div class="r6-active-bindings"><dl><dt><code>internal_valid_scores</code></dt>
 <dd><p>Retrieves the inner validation scores as a named <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code>.
 Returns <code>NULL</code> if learner is not trained yet.</p></dd>
-
-
-<dt><code>validate</code></dt>
-<dd><p>How to construct the internal validation data. This parameter can be either <code>NULL</code>,
-a ratio in $(0, 1)$, <code>"test"</code>, or <code>"predefined"</code>.</p></dd>
 
 
 <dt><code>archive</code></dt>
@@ -202,8 +195,7 @@ Hash (unique identifier) for this partial object, excluding some components whic
 <span>  store_models <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  check_values <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  callbacks <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  rush <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  validate <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  rush <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -279,11 +271,6 @@ List of callbacks.</p></dd>
 <dt><code>rush</code></dt>
 <dd><p>(<code>Rush</code>)<br>
 If a rush instance is supplied, the tuning runs without batches.</p></dd>
-
-
-<dt><code>validate</code></dt>
-<dd><p>(<code>numeric(1)</code>, <code>"test"</code>, <code>"predefined"</code> or <code>NULL</code>)<br>
-How to construct the internal validation data.</p></dd>
 
 
 </dl><p></p></div>
