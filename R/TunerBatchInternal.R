@@ -30,7 +30,7 @@
 #'   nrounds = to_tune(upper = 1000, internal = TRUE),
 #'   early_stopping_rounds = 10,
 #'   validate = "test",
-#'   eval_metric = "error"
+#'   eval_metric = "merror"
 #' )
 #'
 #' # Internal hyperparameter tuning on the pima indians diabetes data set
@@ -39,7 +39,7 @@
 #'   tsk("iris"),
 #'   learner,
 #'   rsmp("cv", folds = 3),
-#'   msr("internal_valid_score", minimize = TRUE, select = "error")
+#'   msr("internal_valid_score", minimize = TRUE, select = "merror")
 #' )
 #'
 #' # best performing hyperparameter configuration
