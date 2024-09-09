@@ -11,8 +11,12 @@ test_that("failing learner", {
     measure = msr("classif.ce"), search_space = param_set, terminator = trm("evals", n_evals = 10))
   expect_error(tt$optimize(instance), "classif.debug->train")
 
-  learner$fallback = lrn("classif.featureless")
-  learner$encapsulate = c (train = "evaluate", predict = "evaluate")
+  if (packageVersion("mlr3") > "0.20.2") {
+    learner$encapsulate("evaluate", lrn("classif.featureless"))
+  } else {
+    learner$fallback = lrn("classif.featureless")
+    learner$encapsulate = c(train = "evaluate", predict = "evaluate")
+  }
 
   instance = TuningInstanceBatchSingleCrit$new(task = tsk("iris"), learner = learner, resampling = rsmp("holdout"),
     measure = msr("classif.ce"), search_space = param_set, terminator = trm("evals", n_evals = 10))
