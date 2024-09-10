@@ -26,7 +26,7 @@ test_that("async auto tuner works", {
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
 
   at = auto_tuner(
     tuner = tnr("async_random_search"),
@@ -47,8 +47,8 @@ test_that("async auto tuner works with rush controller", {
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush_plan(n_workers = 2)
-  rush = rsh(network_id = "tuning_network")
+  rush::rush_plan(n_workers = 2)
+  rush = rush::rsh(network_id = "tuning_network")
 
   at = auto_tuner(
     tuner = tnr("async_random_search"),

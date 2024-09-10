@@ -3,7 +3,7 @@ test_that("ArchiveAsyncTuning access methods work", {
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
@@ -56,7 +56,7 @@ test_that("ArchiveAsyncTuning as.data.table function works", {
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
@@ -111,7 +111,7 @@ test_that("ArchiveAsyncTuning as.data.table function works without resample resu
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
@@ -135,7 +135,7 @@ test_that("ArchiveAsyncTuning as.data.table function works with empty archive", 
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
@@ -167,7 +167,7 @@ test_that("ArchiveAsyncTuning as.data.table function works with new ids in x_dom
     }
   )
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.rpart"),
@@ -206,7 +206,7 @@ test_that("ArchiveAsyncTuning as.data.table function works with switched new ids
     }
   )
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.rpart"),
@@ -233,7 +233,7 @@ test_that("ArchiveAsyncTuning as.data.table function works internally tuned valu
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.debug", validate = 0.2, early_stopping = TRUE, iter = to_tune(upper = 1000, internal = TRUE, aggr = function(x) 99),

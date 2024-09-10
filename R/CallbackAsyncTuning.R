@@ -43,11 +43,15 @@ CallbackAsyncTuning = R6Class("CallbackAsyncTuning",
 #'      - on_optimization_begin
 #'     Start Worker
 #'          - on_worker_begin
-#'         Start Evaluation
-#'              - on_eval_after_xs
-#'              - on_eval_after_resample
-#'              - on_eval_before_archive
-#'         End Evaluation
+#'          Start Optimization on Worker
+#'            - on_optimizer_before_eval
+#'              Start Evaluation
+#'                - on_eval_after_xs
+#'                - on_eval_after_resample
+#'                - on_eval_before_archive
+#'              End Evaluation
+#'           - on_optimizer_after_eval
+#'          End Optimization on Worker
 #'          - on_worker_end
 #'     End Worker
 #'      - on_result
@@ -76,6 +80,9 @@ CallbackAsyncTuning = R6Class("CallbackAsyncTuning",
 #' @param on_worker_begin (`function()`)\cr
 #'   Stage called at the beginning of the optimization on the worker.
 #'   Called in the worker loop.
+#' @param on_optimizer_before_eval (`function()`)\cr
+#'   Stage called after the optimizer proposes points.
+#'   Called in `OptimInstance$.eval_point()`.
 #' @param on_eval_after_xs (`function()`)\cr
 #'   Stage called after xs is passed.
 #'   Called in `ObjectiveTuning$eval()`.
@@ -85,6 +92,9 @@ CallbackAsyncTuning = R6Class("CallbackAsyncTuning",
 #' @param on_eval_before_archive (`function()`)\cr
 #'   Stage called before performance values are written to the archive.
 #'   Called in `ObjectiveTuning$eval()`.
+#' @param on_optimizer_after_eval (`function()`)\cr
+#'   Stage called after points are evaluated.
+#'   Called in `OptimInstance$.eval_point()`.
 #' @param on_worker_end (`function()`)\cr
 #'   Stage called at the end of the optimization on the worker.
 #'   Called in the worker loop.
@@ -102,9 +112,11 @@ callback_async_tuning = function(
   man = NA_character_,
   on_optimization_begin = NULL,
   on_worker_begin = NULL,
+  on_optimizer_before_eval = NULL,
   on_eval_after_xs = NULL,
   on_eval_after_resample = NULL,
   on_eval_before_archive = NULL,
+  on_optimizer_after_eval = NULL,
   on_worker_end = NULL,
   on_result = NULL,
   on_optimization_end = NULL
@@ -112,18 +124,22 @@ callback_async_tuning = function(
   stages = discard(set_names(list(
     on_optimization_begin,
     on_worker_begin,
+    on_optimizer_before_eval,
     on_eval_after_xs,
     on_eval_after_resample,
     on_eval_before_archive,
+    on_optimizer_after_eval,
     on_worker_end,
     on_result,
     on_optimization_end),
     c(
       "on_optimization_begin",
+      "on_worker_begin",
       "on_optimizer_before_eval",
       "on_eval_after_xs",
       "on_eval_after_resample",
       "on_eval_before_archive",
+      "on_optimizer_after_eval",
       "on_worker_end",
       "on_result",
       "on_optimization_end")), is.null)

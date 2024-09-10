@@ -1,7 +1,7 @@
 skip_if_not_installed("irace")
 
 test_that("TunerIrace", {
-  z = test_tuner("irace", term_evals = 42, real_evals = 39)
+  x = capture.output({z = test_tuner("irace", term_evals = 42, real_evals = 39)})
   instance = z$inst
   archive = instance$archive$data
   tuner = z$tuner
@@ -29,7 +29,7 @@ test_that("TunerIrace works with dependencies", {
   instance = TuningInstanceBatchSingleCrit$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"),
     trm("evals", n_evals = 96), search_space)
   tuner = tnr("irace")
-  tuner$optimize(instance)
+  x = capture.output({tuner$optimize(instance)})
 
   archive = instance$archive$data
   expect_true(all(is.na(archive[cp != 0.005, minsplit])))
@@ -41,7 +41,7 @@ test_that("TunerIrace works with logical parameters", {
   instance = TuningInstanceBatchSingleCrit$new(tsk("mtcars"), lrn("regr.rpart"), rsmp("holdout"), msr("regr.mse"),
     trm("evals", n_evals = 42), search_space)
   tuner = tnr("irace")
-  tuner$optimize(instance)
+  x = capture.output({tuner$optimize(instance)})
   expect_logical(instance$archive$best()$keep_model)
 })
 
@@ -50,7 +50,7 @@ test_that("TunerIrace uses digits", {
   instance = TuningInstanceBatchSingleCrit$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"),
   trm("evals", n_evals = 30), search_space)
   tuner = tnr("irace", nbIterations = 1L, minNbSurvival = 1)
-  expect_data_table(tuner$optimize(instance))
+  x = capture.output({expect_data_table(tuner$optimize(instance))})
 })
 
 test_that("TunerIrace works with unnamed discrete values", {
@@ -59,5 +59,5 @@ test_that("TunerIrace works with unnamed discrete values", {
   inst = TuningInstanceBatchSingleCrit$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"),
     trm("evals", n_evals = 50), search_space)
   tuner = tnr("irace")
-  expect_data_table(tuner$optimize(inst))
+  x = capture.output({expect_data_table(tuner$optimize(inst))})
 })

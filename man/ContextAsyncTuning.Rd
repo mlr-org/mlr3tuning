@@ -17,7 +17,7 @@ Changes to \verb{$instance} and \verb{$optimizer} in the stages executed on the 
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
-\item{\code{xs}}{(list())\cr
+\item{\code{hpc_xs}}{(list())\cr
 The hyperparameter configuration currently evaluated.
 Contains the values on the learner scale i.e. transformations are applied.}
 
