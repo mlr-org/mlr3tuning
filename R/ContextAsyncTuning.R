@@ -16,10 +16,10 @@ ContextAsyncTuning = R6Class("ContextAsyncTuning",
   inherit = ContextAsync,
   active = list(
 
-    #' @field hpc_xs (list())\cr
+    #' @field xs_learner (list())\cr
     #'   The hyperparameter configuration currently evaluated.
     #'   Contains the values on the learner scale i.e. transformations are applied.
-    hpc_xs = function(rhs) {
+    xs_learner = function(rhs) {
       if (missing(rhs)) {
         return(get_private(self$instance$objective)$.xs)
       } else {

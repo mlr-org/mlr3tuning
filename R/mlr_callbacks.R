@@ -171,7 +171,7 @@ load_callback_async_mlflow = function() {
         experiment_id = experiment_id,
         client = client)$run_uuid
 
-      iwalk(context$hpc_xs, function(value, id) {
+      iwalk(context$xs, function(value, id) {
         mlflow::mlflow_log_param(
           key = id,
           value = value,
