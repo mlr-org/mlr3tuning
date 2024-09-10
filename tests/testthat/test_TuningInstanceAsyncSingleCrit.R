@@ -3,7 +3,7 @@ test_that("initializing TuningInstanceAsyncSingleCrit works", {
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
 
   instance = ti_async(
     task = tsk("pima"),
@@ -28,7 +28,7 @@ test_that("rush controller can be passed to TuningInstanceAsyncSingleCrit", {
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush = rsh(network_id = "remote_network")
+  rush = rush::rsh(network_id = "remote_network")
 
   instance = ti_async(
     task = tsk("pima"),
@@ -49,7 +49,7 @@ test_that("TuningInstanceAsyncSingleCrit can be passed to a tuner", {
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
 
   instance = ti_async(
     task = tsk("pima"),
@@ -71,7 +71,7 @@ test_that("assigning a result to TuningInstanceAsyncSingleCrit works", {
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
 
   instance = ti_async(
     task = tsk("pima"),
@@ -95,7 +95,7 @@ test_that("saving the benchmark result with TuningInstanceRushSingleCrit works",
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
 
   instance = ti_async(
     task = tsk("pima"),
@@ -120,7 +120,7 @@ test_that("saving the models with TuningInstanceRushSingleCrit works", {
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
 
   instance = ti_async(
     task = tsk("pima"),
@@ -146,7 +146,7 @@ test_that("saving the models with TuningInstanceRushSingleCrit works", {
 #   skip_if_not_installed("rush")
 #   flush_redis()
 
-#   rush_plan(n_workers = 2)
+#   rush::rush_plan(n_workers = 2)
 
 #   instance = ti_async(
 #     task = tsk("pima"),
@@ -171,7 +171,7 @@ test_that("Async single-crit internal tuning works", {
   learner = lrn("classif.debug", validate = 0.2, early_stopping = TRUE, x = to_tune(0.2, 0.3),
     iter = to_tune(upper = 1000, internal = TRUE, aggr = function(x) 99))
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
   instance = ti_async(
     task = tsk("pima"),
     learner = learner,

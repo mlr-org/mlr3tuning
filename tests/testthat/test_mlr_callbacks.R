@@ -41,7 +41,7 @@ test_that("async measures callback works", {
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1), predict_sets = "test"),
@@ -70,7 +70,7 @@ test_that("async measures callback works", {
 #     minsplit  = to_tune(2, 128),
 #     cp        = to_tune(1e-04, 1e-1))
 
-#   rush_plan(n_workers = 2)
+#   rush::rush_plan(n_workers = 2)
 #   instance = ti_async(
 #     task = tsk("pima"),
 #     learner = learner,
@@ -92,7 +92,7 @@ test_that("default configuration callback works", {
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
@@ -114,7 +114,7 @@ test_that("default configuration callback works with logscale", {
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
@@ -136,7 +136,7 @@ test_that("default configuration callback errors with trafo", {
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(p_dbl(-10, 0, trafo = function(x) 10^x))),
@@ -159,7 +159,7 @@ test_that("default configuration callback works without transformation and with 
     cp = to_tune(1e-3, 1, logscale = TRUE),
     minbucket = to_tune(1, 20))
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
   instance = ti_async(
     task = tsk("pima"),
     learner = learner,
@@ -188,7 +188,7 @@ test_that("default configuration callback errors without transformation and with
     minbucket = to_tune(1, 20),
     minsplit = to_tune(p_int(0, 3, trafo = function(x) 2^x)))
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
   instance = ti_async(
     task = tsk("pima"),
     learner = learner,
@@ -218,7 +218,7 @@ test_that("default configuration callback errors with extra trafo", {
     }
   )
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
   instance = ti_async(
     task = tsk("pima"),
     learner = learner,
@@ -243,7 +243,7 @@ test_that("default configuration callback errors with old parameter set api", {
     cp = p_dbl(lower = -10, upper = 0, trafo = function(x) 10^x)
   )
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
   instance = ti_async(
     task = tsk("pima"),
     learner = learner,
@@ -395,7 +395,7 @@ test_that("async save logs callback works", {
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.debug", message_train = 1, x = to_tune()),

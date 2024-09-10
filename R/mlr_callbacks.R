@@ -119,7 +119,7 @@ load_callback_async_measures = function() {
 #' clbk("mlr3tuning.async_mlflow", tracking_uri = "http://localhost:5000")
 #'
 #' \dontrun{
-#' rush::rush_plan(n_workers = 4)
+#' rush::rush::rush_plan(n_workers = 4)
 #'
 #' learner = lrn("classif.rpart",
 #'   minsplit = to_tune(2, 128),

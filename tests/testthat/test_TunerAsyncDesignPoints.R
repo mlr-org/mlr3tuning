@@ -7,7 +7,7 @@ test_that("TunerAsyncDesignPoints works", {
     minsplit  = to_tune(2, 128),
     cp        = to_tune(1e-04, 1e-1))
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
   instance = ti_async(
     task = tsk("pima"),
     learner = learner,
