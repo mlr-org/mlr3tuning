@@ -192,6 +192,10 @@ test_that("Async single-crit internal tuning works", {
 })
 
 test_that("Internal tuning throws an error on incorrect configuration", {
+  skip_on_cran()
+  skip_if_not_installed("rush")
+  flush_redis()
+
   expect_error(tune(
     tuner = tnr("async_random_search"),
     learner = lrn("classif.debug", iter = to_tune(upper = 1000, internal = TRUE)),
@@ -202,6 +206,8 @@ test_that("Internal tuning throws an error on incorrect configuration", {
 
 test_that("Internal tuning throws an error message when primary search space is empty", {
   skip_on_cran()
+  skip_if_not_installed("rush")
+  flush_redis()
 
   expect_error(tune(
     tuner = tnr("async_random_search"),
