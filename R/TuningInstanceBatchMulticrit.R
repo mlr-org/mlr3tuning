@@ -157,7 +157,7 @@ TuningInstanceBatchMultiCrit = R6Class("TuningInstanceBatchMultiCrit",
     assign_result = function(xdt, ydt, learner_param_vals = NULL, xydt = NULL) {
       # extract internal tuned values
       if ("internal_tuned_values" %in% names(xydt)) {
-        set(xdt, j = "internal_tuned_values", value = xydt[["internal_tuned_values"]])
+        set(xdt, j = "internal_tuned_values", value = list(xydt[["internal_tuned_values"]]))
       }
 
       # set the column with the learner param_vals that were not optimized over but set implicitly

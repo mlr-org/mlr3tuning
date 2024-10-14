@@ -136,7 +136,7 @@ TuningInstanceAsyncSingleCrit = R6Class("TuningInstanceAsyncSingleCrit",
 
       # extract internal tuned values
       if ("internal_tuned_values" %in% names(xydt)) {
-        set(xdt, j = "internal_tuned_values", value = xydt[["internal_tuned_values"]])
+        set(xdt, j = "internal_tuned_values", value = list(xydt[["internal_tuned_values"]]))
       }
 
       if (is.null(learner_param_vals)) {
