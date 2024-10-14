@@ -1,6 +1,7 @@
 test_that("TunerBatchCmaes", {
+  skip_if_not_installed("adagio")
 
-expect_tuner(tnr("cmaes"))
+  expect_tuner(tnr("cmaes"))
 
   learner = lrn("classif.rpart",
     cp = to_tune(1e-04, 1e-1, logscale = TRUE),

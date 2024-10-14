@@ -51,6 +51,8 @@ test_that("we get a result when some subordinate params are not fulfilled", {
 })
 
 test_that("print method workds", {
+  skip_if_not_installed("GenSA")
+
   param_set = ps(p1 = p_lgl())
   param_set$values$p1 = TRUE
   param_classes = "ParamLgl"
@@ -125,6 +127,8 @@ test_that("Tuner works with instantiated resampling", {
 })
 
 test_that("Tuner active bindings work", {
+  skip_if_not_installed("GenSA")
+
   param_set = ps(p1 = p_lgl())
   param_set$values$p1 = TRUE
   param_classes = "ParamLgl"

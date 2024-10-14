@@ -118,9 +118,14 @@ TuningInstanceAsyncMultiCrit = R6Class("TuningInstanceAsyncMultiCrit",
     #'
     #' @param ydt (`numeric(1)`)\cr
     #'  Optimal outcomes, e.g. the Pareto front.
-    #' @param ... (`any`)\cr
-    #' ignored.
-    assign_result = function(xdt, ydt, learner_param_vals = NULL, ...) {
+    #' @param xydt (`data.table::data.table()`)\cr
+    #'   Point, outcome, and additional information.
+    assign_result = function(xdt, ydt, learner_param_vals = NULL, xydt = NULL) {
+      # extract internal tuned values
+      if ("internal_tuned_values" %in% names(xydt)) {
+        set(xdt, j = "internal_tuned_values", value = list(xydt[["internal_tuned_values"]]))
+      }
+
       # set the column with the learner param_vals that were not optimized over but set implicitly
       if (is.null(learner_param_vals)) {
         learner_param_vals = self$objective$learner$param_set$values

@@ -191,11 +191,17 @@ TuningInstanceBatchSingleCrit = R6Class("TuningInstanceBatchSingleCrit",
     #'
     #' @param y (`numeric(1)`)\cr
     #'   Optimal outcome.
-    #' @param ... (`any`)\cr
-    #' ignored.
-    assign_result = function(xdt, y, learner_param_vals = NULL, ...) {
+    #' @param xydt (`data.table::data.table()`)\cr
+    #'   Point, outcome, and additional information.
+    assign_result = function(xdt, y, learner_param_vals = NULL, xydt = NULL) {
+
       # set the column with the learner param_vals that were not optimized over but set implicitly
       assert_list(learner_param_vals, null.ok = TRUE, names = "named")
+
+      # extract internal tuned values
+      if ("internal_tuned_values" %in% names(xydt)) {
+        set(xdt, j = "internal_tuned_values", value = list(xydt[["internal_tuned_values"]]))
+      }
 
       # learner param values
       if (is.null(learner_param_vals)) {

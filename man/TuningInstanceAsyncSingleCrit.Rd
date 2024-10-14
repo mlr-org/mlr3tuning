@@ -187,7 +187,7 @@ For internal use.
   xdt,
   y,
   learner_param_vals = NULL,
-  ...
+  xydt = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -205,8 +205,8 @@ Optimal outcome.}
 \item{\code{learner_param_vals}}{(List of named \verb{list()s})\cr
 Fixed parameter values of the learner that are neither part of the}
 
-\item{\code{...}}{(\code{any})\cr
-ignored.}
+\item{\code{xydt}}{(\code{data.table::data.table()})\cr
+Point, outcome, and additional information.}
 }
 \if{html}{\out{</div>}}
 }
