@@ -1,4 +1,6 @@
-# mlr3tuning (development version)
+# mlr3tuning 1.0.2
+
+* refactor: Extract internal tuned values in instance.
 
 # mlr3tuning 1.0.1
 
