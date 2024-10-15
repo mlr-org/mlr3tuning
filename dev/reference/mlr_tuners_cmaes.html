@@ -193,42 +193,30 @@ See also the documentation of <a href="https://bbotk.mlr-org.com/" class="extern
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># all evaluated hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            cp minbucket  minsplit classif.ce  x_domain_cp x_domain_minbucket</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;num&gt;     &lt;num&gt;     &lt;num&gt;      &lt;num&gt;        &lt;num&gt;              &lt;int&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -4.045155  1.000000  90.44631 0.08695652 0.0175069861                  1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -8.367289 28.494118   2.00000 0.08695652 0.0002323446                 28</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -4.001328 30.269024  67.38902 0.08695652 0.0182913401                 30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -9.210340  6.729087  61.96532 0.09565217 0.0001000000                  6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -3.664998 45.191486  62.03971 0.08695652 0.0256042167                 45</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -5.050641 64.000000   2.00000 0.15652174 0.0064052290                 64</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -3.036495  1.000000  41.93174 0.08695652 0.0480028629                  1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -4.689063 13.771028  49.83565 0.08695652 0.0091953013                 13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -4.989467  1.000000  80.53079 0.08695652 0.0068092961                  1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -3.313686 55.076066 105.37130 0.13913043 0.0363818215                 55</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     x_domain_minsplit runtime_learners           timestamp warnings errors</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 &lt;int&gt;            &lt;num&gt;              &lt;POSc&gt;    &lt;int&gt;  &lt;int&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:                90            0.024 2024-10-15 06:28:05        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:                 2            0.005 2024-10-15 06:28:05        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:                67            0.005 2024-10-15 06:28:05        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:                61            0.006 2024-10-15 06:28:06        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:                62            0.006 2024-10-15 06:28:06        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:                 2            0.005 2024-10-15 06:28:06        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:                41            0.005 2024-10-15 06:28:06        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:                49            0.006 2024-10-15 06:28:06        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:                80            0.005 2024-10-15 06:28:06        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:               105            0.006 2024-10-15 06:28:06        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     batch_nr  resample_result</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;int&gt;           &lt;list&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:        1 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:        2 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:        3 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:        4 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:        5 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:        6 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:        7 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:        8 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:        9 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:       10 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            cp minbucket  minsplit classif.ce runtime_learners</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;num&gt;     &lt;num&gt;     &lt;num&gt;      &lt;num&gt;            &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -4.045155  1.000000  90.44631 0.08695652            0.007</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -8.367289 28.494118   2.00000 0.08695652            0.005</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -4.001328 30.269024  67.38902 0.08695652            0.006</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -9.210340  6.729087  61.96532 0.09565217            0.006</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -3.664998 45.191486  62.03971 0.08695652            0.005</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -5.050641 64.000000   2.00000 0.15652174            0.006</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -3.036495  1.000000  41.93174 0.08695652            0.005</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -4.689063 13.771028  49.83565 0.08695652            0.006</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -4.989467  1.000000  80.53079 0.08695652            0.005</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -3.313686 55.076066 105.37130 0.13913043            0.005</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               timestamp warnings errors  x_domain batch_nr  resample_result</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  &lt;POSc&gt;    &lt;int&gt;  &lt;int&gt;    &lt;list&gt;    &lt;int&gt;           &lt;list&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: 2024-10-15 18:02:55        0      0 &lt;list[3]&gt;        1 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2: 2024-10-15 18:02:55        0      0 &lt;list[3]&gt;        2 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: 2024-10-15 18:02:55        0      0 &lt;list[3]&gt;        3 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: 2024-10-15 18:02:55        0      0 &lt;list[3]&gt;        4 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: 2024-10-15 18:02:55        0      0 &lt;list[3]&gt;        5 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: 2024-10-15 18:02:55        0      0 &lt;list[3]&gt;        6 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: 2024-10-15 18:02:55        0      0 &lt;list[3]&gt;        7 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: 2024-10-15 18:02:55        0      0 &lt;list[3]&gt;        8 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: 2024-10-15 18:02:55        0      0 &lt;list[3]&gt;        9 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: 2024-10-15 18:02:55        0      0 &lt;list[3]&gt;       10 &lt;ResampleResult&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># fit final model on complete data set</span></span></span>
 <span class="r-in"><span><span class="va">learner</span><span class="op">$</span><span class="va">param_set</span><span class="op">$</span><span class="va">values</span> <span class="op">=</span> <span class="va">instance</span><span class="op">$</span><span class="va">result_learner_param_vals</span></span></span>
