@@ -9,7 +9,7 @@ Calls GenSA::GenSA() from package GenSA."><meta property="og:image" content="htt
 
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.1</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,7 +40,7 @@ Calls GenSA::GenSA() from package GenSA."><meta property="og:image" content="htt
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Hyperparameter Tuning with Generalized Simulated Annealing</h1>
-      <small class="dont-index">Source: <a href="https://github.com/mlr-org/mlr3tuning/blob/v1.0.1/R/TunerBatchGenSA.R" class="external-link"><code>R/TunerBatchGenSA.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/mlr-org/mlr3tuning/blob/main/R/TunerBatchGenSA.R" class="external-link"><code>R/TunerBatchGenSA.R</code></a></small>
       <div class="d-none name"><code>mlr_tuners_gensa.Rd</code></div>
     </div>
 
@@ -231,22 +231,22 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 <span class="r-in"><span><span class="va">instance</span><span class="op">$</span><span class="va">result</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp learner_param_vals  x_domain classif.ce</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;             &lt;list&gt;    &lt;list&gt;      &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -3.818725          &lt;list[2]&gt; &lt;list[1]&gt; 0.06086957</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -3.320634          &lt;list[2]&gt; &lt;list[1]&gt; 0.08695652</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># all evaluated hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            cp classif.ce x_domain_cp runtime_learners           timestamp</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;num&gt;      &lt;num&gt;       &lt;num&gt;            &lt;num&gt;              &lt;POSc&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -6.689053 0.08695652 0.001244460            0.024 2024-09-11 07:59:37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -3.818725 0.06086957 0.021955772            0.006 2024-09-11 07:59:37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -5.276831 0.08695652 0.005108592            0.006 2024-09-11 07:59:37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -3.818725 0.06086957 0.021955772            0.005 2024-09-11 07:59:37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -3.818725 0.06086957 0.021955772            0.005 2024-09-11 07:59:37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -3.818725 0.06086957 0.021955772            0.023 2024-09-11 07:59:37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -3.436853 0.06086957 0.032165761            0.005 2024-09-11 07:59:37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -4.200598 0.06086957 0.014986616            0.005 2024-09-11 07:59:37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -4.009661 0.06086957 0.018139535            0.006 2024-09-11 07:59:37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -3.627789 0.06086957 0.026574878            0.005 2024-09-11 07:59:37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -6.190962 0.10434783 0.002047856            0.006 2024-10-15 06:22:20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -3.320634 0.08695652 0.036129923            0.005 2024-10-15 06:22:20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -4.778740 0.08695652 0.008406585            0.006 2024-10-15 06:22:20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -3.320634 0.08695652 0.036129923            0.005 2024-10-15 06:22:20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -3.320634 0.08695652 0.036129923            0.005 2024-10-15 06:22:20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -3.320634 0.08695652 0.036129923            0.006 2024-10-15 06:22:20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -2.988570 0.08695652 0.050359374            0.006 2024-10-15 06:22:20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -3.652697 0.08695652 0.025921118            0.005 2024-10-15 06:22:20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -3.486666 0.08695652 0.030602745            0.006 2024-10-15 06:22:20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -3.154602 0.08695652 0.042655367            0.006 2024-10-15 06:22:20</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     warnings errors batch_nr  resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;int&gt;  &lt;int&gt;    &lt;int&gt;           &lt;list&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1:        0      0        1 &lt;ResampleResult&gt;</span>
@@ -274,7 +274,7 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer></div>

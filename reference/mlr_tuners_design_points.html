@@ -11,7 +11,7 @@ The points in the design are evaluated in order as given."><meta property="og:im
 
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.1</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,7 +42,7 @@ The points in the design are evaluated in order as given."><meta property="og:im
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Hyperparameter Tuning with Design Points</h1>
-      <small class="dont-index">Source: <a href="https://github.com/mlr-org/mlr3tuning/blob/v1.0.1/R/TunerBatchDesignPoints.R" class="external-link"><code>R/TunerBatchDesignPoints.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/mlr-org/mlr3tuning/blob/main/R/TunerBatchDesignPoints.R" class="external-link"><code>R/TunerBatchDesignPoints.R</code></a></small>
       <div class="d-none name"><code>mlr_tuners_design_points.Rd</code></div>
     </div>
 
@@ -211,20 +211,20 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 <span class="r-in"><span><span class="va">instance</span><span class="op">$</span><span class="va">result</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       cp minbucket minsplit learner_param_vals  x_domain classif.ce</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    &lt;num&gt;     &lt;num&gt;    &lt;num&gt;             &lt;list&gt;    &lt;list&gt;      &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:  0.01        32       64          &lt;list[4]&gt; &lt;list[3]&gt; 0.06956522</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:  0.01        32       64          &lt;list[4]&gt; &lt;list[3]&gt; 0.03478261</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># all evaluated hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       cp minbucket minsplit classif.ce x_domain_cp x_domain_minbucket</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    &lt;num&gt;     &lt;num&gt;    &lt;num&gt;      &lt;num&gt;       &lt;num&gt;              &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 0.100        64        2 0.15652174       0.100                 64</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 0.010        32       64 0.06956522       0.010                 32</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 0.001         1      128 0.06956522       0.001                  1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 0.100        64        2 0.08695652       0.100                 64</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 0.010        32       64 0.03478261       0.010                 32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 0.001         1      128 0.03478261       0.001                  1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    x_domain_minsplit runtime_learners           timestamp warnings errors</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                &lt;num&gt;            &lt;num&gt;              &lt;POSc&gt;    &lt;int&gt;  &lt;int&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:                 2            0.006 2024-09-11 07:59:36        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2:                64            0.006 2024-09-11 07:59:36        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:               128            0.006 2024-09-11 07:59:36        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:                 2            0.005 2024-10-15 06:22:19        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2:                64            0.005 2024-10-15 06:22:19        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:               128            0.005 2024-10-15 06:22:19        0      0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    batch_nr  resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;int&gt;           &lt;list&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:        1 &lt;ResampleResult&gt;</span>
@@ -245,7 +245,7 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer></div>
