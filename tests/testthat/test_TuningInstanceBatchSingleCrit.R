@@ -36,7 +36,7 @@ test_that("TuningInstanceBatchSingleCrit", {
   expect_data_table(a, nrows = 4L)
   a = as.data.table(inst$archive)
   expect_data_table(a, nrows = 4L)
-  expect_true("x_domain_cp" %in% colnames(a))
+  expect_true("x_domain" %in% colnames(a))
   expect_true("dummy.cp.classif" %in% colnames(a))
 })
 

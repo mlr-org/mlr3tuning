@@ -1,5 +1,7 @@
 # mlr3tuning (development version)
 
+fix: The `as_data_table()` functions do not unnest the `x_domain` colum anymore by default.
+
 # mlr3tuning 1.0.2
 
 * refactor: Extract internal tuned values in instance.
