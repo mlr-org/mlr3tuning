@@ -180,7 +180,7 @@ ArchiveBatchTuning = R6Class("ArchiveBatchTuning",
 )
 
 #' @export
-as.data.table.ArchiveBatchTuning = function(x, ..., unnest = c("x_domain", "internal_tuned_values"), exclude_columns = "uhash", measures = NULL) {
+as.data.table.ArchiveBatchTuning = function(x, ..., unnest = "internal_tuned_values", exclude_columns = "uhash", measures = NULL) {
   if (!nrow(x$data)) return(data.table())
   data = copy(x$data)
 

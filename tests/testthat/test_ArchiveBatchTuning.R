@@ -128,32 +128,32 @@ test_that("ArchiveTuning as.data.table function works", {
   # default
   tab = as.data.table(instance$archive)
   expect_data_table(tab, nrows = 4)
-  expect_names(names(tab), permutation.of =  c("cp", "classif.ce", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "resample_result", "errors", "warnings"))
+  expect_names(names(tab), permutation.of =  c("cp", "classif.ce", "x_domain", "runtime_learners", "timestamp", "batch_nr", "resample_result", "errors", "warnings"))
 
   # extra measure
   tab = as.data.table(instance$archive, measures = msr("classif.acc"))
   expect_data_table(tab, nrows = 4)
-  expect_names(names(tab), permutation.of = c("cp", "classif.ce", "classif.acc", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "resample_result", "errors", "warnings"))
+  expect_names(names(tab), permutation.of = c("cp", "classif.ce", "classif.acc", "x_domain", "runtime_learners", "timestamp", "batch_nr", "resample_result", "errors", "warnings"))
 
   # extra measures
   tab = as.data.table(instance$archive, measures = msrs(c("classif.acc", "classif.mcc")))
   expect_data_table(tab, nrows = 4)
-  expect_names(names(tab), permutation.of = c("cp", "classif.ce", "classif.acc", "classif.mcc", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "resample_result", "errors", "warnings"))
+  expect_names(names(tab), permutation.of = c("cp", "classif.ce", "classif.acc", "classif.mcc", "x_domain", "runtime_learners", "timestamp", "batch_nr", "resample_result", "errors", "warnings"))
 
   # exclude column
   tab = as.data.table(instance$archive, exclude_columns = "timestamp")
   expect_data_table(tab, nrows = 4)
-  expect_names(names(tab), permutation.of = c("cp", "classif.ce", "x_domain_cp", "runtime_learners", "batch_nr", "uhash", "resample_result", "errors", "warnings"))
+  expect_names(names(tab), permutation.of = c("cp", "classif.ce", "x_domain", "runtime_learners", "batch_nr", "uhash", "resample_result", "errors", "warnings"))
 
   # exclude columns
   tab = as.data.table(instance$archive, exclude_columns = c("timestamp", "uhash"))
   expect_data_table(tab, nrows = 4)
-  expect_names(names(tab), permutation.of = c("cp", "classif.ce", "x_domain_cp", "runtime_learners", "batch_nr", "resample_result", "errors", "warnings"))
+  expect_names(names(tab), permutation.of = c("cp", "classif.ce", "x_domain", "runtime_learners", "batch_nr", "resample_result", "errors", "warnings"))
 
   # no exclude
   tab = as.data.table(instance$archive, exclude_columns = NULL)
   expect_data_table(tab, nrows = 4)
-  expect_names(names(tab), permutation.of = c("cp", "classif.ce", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "uhash", "resample_result", "errors", "warnings"))
+  expect_names(names(tab), permutation.of = c("cp", "classif.ce", "x_domain", "runtime_learners", "timestamp", "batch_nr", "uhash", "resample_result", "errors", "warnings"))
 
   # no unnest
   tab = as.data.table(instance$archive, unnest = NULL)
@@ -175,7 +175,7 @@ test_that("ArchiveTuning as.data.table function works", {
 
   tab = as.data.table(instance$archive)
   expect_data_table(tab, nrows = 4, ncols = 8)
-  expect_names(names(tab), permutation.of = c("cp", "classif.ce", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "errors", "warnings"))
+  expect_names(names(tab), permutation.of = c("cp", "classif.ce", "x_domain", "runtime_learners", "timestamp", "batch_nr", "errors", "warnings"))
 
   # empty archive
   instance = ti(
@@ -214,7 +214,7 @@ test_that("ArchiveTuning as.data.table function works", {
 
   tab = as.data.table(instance$archive)
   expect_data_table(tab, nrows = 4)
-  expect_names(names(tab), permutation.of = c("x1", "x2", "classif.ce", "x_domain_minsplit", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "resample_result", "errors", "warnings"))
+  expect_names(names(tab), permutation.of = c("x1", "x2", "classif.ce", "x_domain", "runtime_learners", "timestamp", "batch_nr", "resample_result", "errors", "warnings"))
 
   # new ids in x_domain switch
   search_space = ps(
@@ -243,7 +243,7 @@ test_that("ArchiveTuning as.data.table function works", {
 
   tab = as.data.table(instance$archive)
   expect_data_table(tab, nrows = 100)
-  expect_names(names(tab), permutation.of = c("x1", "x2", "classif.ce", "x_domain_minsplit", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "resample_result", "errors", "warnings"))
+  expect_names(names(tab), permutation.of = c("x1", "x2", "classif.ce", "x_domain", "runtime_learners", "timestamp", "batch_nr", "resample_result", "errors", "warnings"))
 
   # row order
  instance = ti(
