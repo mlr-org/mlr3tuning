@@ -324,3 +324,21 @@ test_that("internal tuning: error message when primary search space is empty", {
   ), "tnr('internal')", fixed = TRUE)
 })
 
+test_that("parameter transformations can be used with internal tuning", {
+  ti = tune(
+    tuner = tnr("random_search"),
+    learner = lrn("classif.debug",
+      iter = to_tune(upper = 1000, internal = TRUE),
+      x = to_tune(ps(a = p_dbl(0, 0.5), b = p_dbl(0, 0.5), .extra_trafo = function(x, param_set) {
+        list(x = x$a + x$b)
+      })),
+      early_stopping = TRUE, validate = 0.2),
+    task = tsk("iris"),
+    resampling = rsmp("holdout"),
+    term_evals = 2
+  )
+  expect_set_equal(
+    names(ti$result_learner_param_vals),
+    c("x", "iter", "early_stopping")
+  )
+})

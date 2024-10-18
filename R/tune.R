@@ -99,6 +99,7 @@ tune = function(
   terminator = NULL,
   search_space = NULL,
   store_benchmark_result = TRUE,
+  internal_search_space = NULL,
   store_models = FALSE,
   check_values = FALSE,
   callbacks = NULL,
@@ -120,7 +121,9 @@ tune = function(
       store_models = store_models,
       check_values = check_values,
       callbacks = callbacks,
-      rush = rush)
+      rush = rush,
+      internal_search_space = internal_search_space,
+      )
   } else {
     TuningInstance = if (is.null(measures) || inherits(measures, "Measure")) TuningInstanceBatchSingleCrit else TuningInstanceBatchMultiCrit
     TuningInstance$new(

@@ -70,7 +70,7 @@ TuningInstanceAsyncMultiCrit = R6Class("TuningInstanceAsyncMultiCrit",
         self$internal_search_space = search_space$subset(internal_tune_ids)
 
         if (self$internal_search_space$has_trafo) {
-          stopf("Inner tuning and parameter transformations are currently not supported.")
+          stopf("Internal tuning and parameter transformations are currently not supported.")
         }
 
         search_space = search_space$subset(setdiff(search_space$ids(), internal_tune_ids))
