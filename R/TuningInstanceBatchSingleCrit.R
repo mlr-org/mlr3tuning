@@ -59,16 +59,11 @@
 #' @template param_measure
 #' @template param_terminator
 #' @template param_search_space
+#' @template param_internal_search_space
 #' @template param_store_benchmark_result
 #' @template param_store_models
 #' @template param_check_values
 #' @template param_callbacks
-#' @param internal_search_space (`NULL` or [`ParamSet`][paradox::ParamSet])\cr
-#'   The internal search space.
-#'   If this is `NULL`, the internal search space is constructed from the `search_space` from all
-#'   parameters that have the `"internal_tuning"` tag.
-#'   When the primary `search_space` has an `.extra_trafo`, however, it is necessary to pass
-#'   the internal search space separately.
 #'
 #' @template param_xdt
 #' @template param_learner_param_vals
@@ -140,8 +135,10 @@ TuningInstanceBatchSingleCrit = R6Class("TuningInstanceBatchSingleCrit",
 
       search_space_from_tokens = is.null(search_space)
 
-      if (is.null(search_space)) {
-        search_space = learner$param_set$search_space()
+      search_space = if (is.null(search_space)) {
+        learner$param_set$search_space()
+      } else {
+        as_search_space(search_space)
       }
       sids = search_space$ids()
       internal_tune_ids = keep(sids, map_lgl(search_space$tags, function(tag) "internal_tuning" %in% tag))
@@ -149,30 +146,29 @@ TuningInstanceBatchSingleCrit = R6Class("TuningInstanceBatchSingleCrit",
       if (length(internal_tune_ids)) {
         search_space = search_space$subset(setdiff(sids, internal_tune_ids))
       }
-      if (is.null(internal_search_space)) {
+      self$internal_search_space = if (is.null(internal_search_space)) {
         # We DO NOT subset the search space because there we might keep an extra_trafo which is now allowed
         # for the internal tuning search space
-        internal_search_space = learner$param_set$subset(internal_tune_ids)$search_space()
+        if (length(internal_tune_ids)) {
+          learner$param_set$subset(internal_tune_ids)$search_space()
+        }
       } else {
         if (length(internal_tune_ids)) {
-          stopf("Either tags parameters in the search space with 'internal_tuning' OR provide an `internal_search_space`.")
+          stopf("Either tag parameters in the search space with 'internal_tuning' OR provide an `internal_search_space`.")
         }
+        as_search_space(internal_search_space)
       }
       if (search_space_from_tokens) {
         learner$param_set$values = learner$param_set$get_values(type = "without_token")
       }
 
-      if (!is.null(internal_search_space)) {
-        self$internal_search_space = assert_param_set(internal_search_space)
-      }
-
-      if (!is.null(self$internal_search_space) && internal_search_space$has_trafo) {
+      if (!is.null(self$internal_search_space) && self$internal_search_space$has_trafo) {
         stopf("Internal tuning and parameter transformations are currently not supported.
           If you manually provided a search space that has a trafo and parameters tagged with 'internal_tuning',
           please pass the latter separately via the argument `internal_search_space`.")
       }
 
-      if (!is.null(internal_search_space)) {
+      if (!is.null(self$internal_search_space)) {
         # the learner dictates how to interpret the to_tune(..., inner)
         learner$param_set$set_values(.values = learner$param_set$convert_internal_search_space(self$internal_search_space))
       }

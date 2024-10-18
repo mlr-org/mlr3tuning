@@ -216,19 +216,3 @@ test_that("Internal tuning throws an error message when primary search space is 
     resampling = rsmp("holdout")
   ), "tnr('internal')", fixed = TRUE)
 })
-
-test_that("internal_search_space can be passed separately", {
-  tune(
-    tuner = tnr("async_random_search"),
-    learner = lrn("classif.debug",
-      iter = to_tune(upper = 1000, internal = TRUE),
-      early_stopping = TRUE, validate = 0.2),
-    task = tsk("iris"),
-    resampling = rsmp("holdout")
-  )
-  
-})
-
-test_that("internal_search_space OR parameters tagged with 'internal_tuning'", {
-  
-})
