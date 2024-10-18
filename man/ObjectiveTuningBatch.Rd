@@ -98,8 +98,7 @@ If \code{NULL} (default), benchmark result and models cannot be stored.}
 List of callbacks.}
 
 \item{\code{internal_search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet} or \code{NULL})\cr
-The internal search space of the tuner. This includes parameters that the learner can optimize internally
-durign \verb{$train()}, such as the number of epochs via early stopping.}
+The internal search space.}
 }
 \if{html}{\out{</div>}}
 }
