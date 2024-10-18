@@ -120,11 +120,11 @@ TuningInstanceBatchSingleCrit = R6Class("TuningInstanceBatchSingleCrit",
       measure = NULL,
       terminator,
       search_space = NULL,
+      internal_search_space = NULL,
       store_benchmark_result = TRUE,
       store_models = FALSE,
       check_values = FALSE,
-      callbacks = NULL,
-      internal_search_space = NULL
+      callbacks = NULL
       ) {
       learner = assert_learner(as_learner(learner, clone = TRUE))
 
@@ -154,7 +154,7 @@ TuningInstanceBatchSingleCrit = R6Class("TuningInstanceBatchSingleCrit",
         }
       } else {
         if (length(internal_tune_ids)) {
-          stopf("Either tag parameters in the search space with 'internal_tuning' OR provide an `internal_search_space`.")
+          stopf("Either tag parameters in the `search_space` with 'internal_tuning' OR provide an `internal_search_space`.")
         }
         as_search_space(internal_search_space)
       }

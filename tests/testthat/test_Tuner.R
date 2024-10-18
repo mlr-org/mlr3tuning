@@ -355,7 +355,7 @@ test_that("either provide internal_search_space OR tag params with 'internal_tun
       resampling = rsmp("holdout"),
       term_evals = 2
     ),
-    "Either tag parameters in the search_space"
+    "Either tag parameters in the `search_space`"
   )
 })
 
@@ -371,7 +371,7 @@ test_that("Can pass internal_search_space separately", {
     resampling = rsmp("holdout"),
     term_evals = 2
   )
-  expect_true("iter" %in% ti$internal_search_space$ids(0))
+  expect_true("iter" %in% ti$internal_search_space$ids())
   expect_true(is.integer(ti$result$internal_tuned_values[[1]]$iter))
   expect_double(ti$result$x)
 

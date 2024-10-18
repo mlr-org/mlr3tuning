@@ -81,7 +81,7 @@ TuningInstanceAsyncMultiCrit = R6Class("TuningInstanceAsyncMultiCrit",
         }
       } else {
         if (length(internal_tune_ids)) {
-          stopf("Either tag parameters in the search space with 'internal_tuning' OR provide an `internal_search_space`.")
+          stopf("Either tag parameters in the `search_space` with 'internal_tuning' OR provide an `internal_search_space`.")
         }
         as_search_space(internal_search_space)
       }
