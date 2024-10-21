@@ -62,19 +62,25 @@ TuningInstanceAsyncMultiCrit = R6Class("TuningInstanceAsyncMultiCrit",
 
       search_space_from_tokens = is.null(search_space)
 
+      # convert tune token to search space
       search_space = if (is.null(search_space)) {
         learner$param_set$search_space()
       } else {
         as_search_space(search_space)
       }
-      sids = search_space$ids()
-      internal_tune_ids = keep(sids, map_lgl(search_space$tags, function(tag) "internal_tuning" %in% tag))
 
+      # get ids of primary and internal hyperparameters
+      sids = search_space$ids()
+      internal_tune_ids = search_space$ids(any_tags = "internal_tuning")
+
+      # subset search space to primary hyperparameters
       if (length(internal_tune_ids)) {
         search_space = search_space$subset(setdiff(sids, internal_tune_ids))
       }
+
+      # get internal search space
       self$internal_search_space = if (is.null(internal_search_space)) {
-        # We DO NOT subset the search space because there we might keep an extra_trafo which is now allowed
+        # We DO NOT subset the search space because there we might keep an extra_trafo which is not allowed
         # for the internal tuning search space
         if (length(internal_tune_ids)) {
           learner$param_set$subset(internal_tune_ids)$search_space()
@@ -85,6 +91,8 @@ TuningInstanceAsyncMultiCrit = R6Class("TuningInstanceAsyncMultiCrit",
         }
         as_search_space(internal_search_space)
       }
+
+      # set learner parameter values
       if (search_space_from_tokens) {
         learner$param_set$values = learner$param_set$get_values(type = "without_token")
       }
@@ -95,6 +103,7 @@ TuningInstanceAsyncMultiCrit = R6Class("TuningInstanceAsyncMultiCrit",
           please pass the latter separately via the argument `internal_search_space`.")
       }
 
+      # set internal search space
       if (!is.null(self$internal_search_space)) {
         # the learner dictates how to interpret the to_tune(..., inner)
         learner$param_set$set_values(.values = learner$param_set$convert_internal_search_space(self$internal_search_space))
