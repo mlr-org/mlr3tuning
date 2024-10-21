@@ -46,6 +46,7 @@
 #' @template param_measure
 #' @template param_terminator
 #' @template param_search_space
+#' @template param_internal_search_space
 #' @template param_store_tuning_instance
 #' @template param_store_benchmark_result
 #' @template param_store_models
@@ -137,6 +138,7 @@ AutoTuner = R6Class("AutoTuner",
       measure = NULL,
       terminator,
       search_space = NULL,
+      internal_search_space = NULL,
       store_tuning_instance = TRUE,
       store_benchmark_result = TRUE,
       store_models = FALSE,
@@ -156,6 +158,7 @@ AutoTuner = R6Class("AutoTuner",
       ia$resampling = assert_resampling(resampling)$clone()
       if (!is.null(measure)) ia$measure = assert_measure(as_measure(measure), learner = learner)
       if (!is.null(search_space)) ia$search_space = assert_param_set(as_search_space(search_space))$clone()
+      if (!is.null(internal_search_space)) ia$search_space = assert_param_set(as_search_space(internal_search_space))$clone()
       ia$terminator = assert_terminator(terminator)$clone()
 
       ia$store_models = assert_flag(store_models)

@@ -15,6 +15,7 @@ tune(
   terminator = NULL,
   search_space = NULL,
   store_benchmark_result = TRUE,
+  internal_search_space = NULL,
   store_models = FALSE,
   check_values = FALSE,
   callbacks = NULL,
@@ -61,6 +62,9 @@ constructed from the \link[paradox:to_tune]{paradox::TuneToken} of the learner's
 \item{store_benchmark_result}{(\code{logical(1)})\cr
 If \code{TRUE} (default), store resample result of evaluated hyperparameter
 configurations in archive as \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}.}
+
+\item{internal_search_space}{(\link[paradox:ParamSet]{paradox::ParamSet} or \code{NULL})\cr
+The internal search space.}
 
 \item{store_models}{(\code{logical(1)})\cr
 If \code{TRUE}, fitted models are stored in the benchmark result

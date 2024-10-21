@@ -59,11 +59,11 @@
 #' @template param_measure
 #' @template param_terminator
 #' @template param_search_space
+#' @template param_internal_search_space
 #' @template param_store_benchmark_result
 #' @template param_store_models
 #' @template param_check_values
 #' @template param_callbacks
-#' @template param_internal_search_space
 #'
 #' @template param_xdt
 #' @template param_learner_param_vals
@@ -120,6 +120,7 @@ TuningInstanceBatchSingleCrit = R6Class("TuningInstanceBatchSingleCrit",
       measure = NULL,
       terminator,
       search_space = NULL,
+      internal_search_space = NULL,
       store_benchmark_result = TRUE,
       store_models = FALSE,
       check_values = FALSE,
@@ -131,24 +132,52 @@ TuningInstanceBatchSingleCrit = R6Class("TuningInstanceBatchSingleCrit",
       if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token"))) {
         stop("If the values of the ParamSet of the Learner contain TuneTokens you cannot supply a search_space.")
       }
-      if (is.null(search_space)) {
-        search_space = as_search_space(learner)
-        learner$param_set$values = learner$param_set$get_values(type = "without_token")
+
+      search_space_from_tokens = is.null(search_space)
+
+      # convert tune token to search space
+      search_space = if (is.null(search_space)) {
+        learner$param_set$search_space()
       } else {
-        search_space = as_search_space(search_space)
+        as_search_space(search_space)
       }
 
-      # internal search space
-      internal_tune_ids = keep(names(search_space$tags), map_lgl(search_space$tags, function(tag) "internal_tuning" %in% tag))
+      # get ids of primary and internal hyperparameters
+      sids = search_space$ids()
+      internal_tune_ids = search_space$ids(any_tags = "internal_tuning")
+
+      # subset search space to primary hyperparameters
       if (length(internal_tune_ids)) {
-        self$internal_search_space = search_space$subset(internal_tune_ids)
+        search_space = search_space$subset(setdiff(sids, internal_tune_ids))
+      }
 
-        if (self$internal_search_space$has_trafo) {
-          stopf("Inner tuning and parameter transformations are currently not supported.")
+      # get internal search space
+      self$internal_search_space = if (is.null(internal_search_space)) {
+        # We DO NOT subset the search space because there we might keep an extra_trafo which is not allowed
+        # for the internal tuning search space
+        if (length(internal_tune_ids)) {
+          learner$param_set$subset(internal_tune_ids)$search_space()
         }
+      } else {
+        if (length(internal_tune_ids)) {
+          stopf("Either tag parameters in the `search_space` with 'internal_tuning' OR provide an `internal_search_space`.")
+        }
+        as_search_space(internal_search_space)
+      }
 
-        search_space = search_space$subset(setdiff(search_space$ids(), internal_tune_ids))
+      # set learner parameter values
+      if (search_space_from_tokens) {
+        learner$param_set$values = learner$param_set$get_values(type = "without_token")
+      }
 
+      if (!is.null(self$internal_search_space) && self$internal_search_space$has_trafo) {
+        stopf("Internal tuning and parameter transformations are currently not supported.
+          If you manually provided a search space that has a trafo and parameters tagged with 'internal_tuning',
+          please pass the latter separately via the argument `internal_search_space`.")
+      }
+
+      # set internal search space
+      if (!is.null(self$internal_search_space)) {
         # the learner dictates how to interpret the to_tune(..., inner)
         learner$param_set$set_values(.values = learner$param_set$convert_internal_search_space(self$internal_search_space))
       }
