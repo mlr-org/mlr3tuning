@@ -157,9 +157,11 @@ TuningInstanceAsyncMultiCrit = R6Class("TuningInstanceAsyncMultiCrit",
       # workaround
       extra = extra %??% xydt
 
+      browser()
+
       # extract internal tuned values
-      if ("internal_tuned_values" %in% names(xydt)) {
-        set(xdt, j = "internal_tuned_values", value = list(xydt[["internal_tuned_values"]]))
+      if ("internal_tuned_values" %in% names(extra)) {
+        set(xdt, j = "internal_tuned_values", value = list(extra[["internal_tuned_values"]]))
       }
 
       # set the column with the learner param_vals that were not optimized over but set implicitly
