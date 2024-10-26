@@ -157,8 +157,6 @@ TuningInstanceAsyncMultiCrit = R6Class("TuningInstanceAsyncMultiCrit",
       # workaround
       extra = extra %??% xydt
 
-      browser()
-
       # extract internal tuned values
       if ("internal_tuned_values" %in% names(extra)) {
         set(xdt, j = "internal_tuned_values", value = list(extra[["internal_tuned_values"]]))
