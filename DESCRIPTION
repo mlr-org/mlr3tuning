@@ -29,7 +29,7 @@ Depends:
     paradox (>= 1.0.1),
     R (>= 3.1.0)
 Imports:
-    bbotk (>= 1.1.1),
+    bbotk (>= 1.2.0),
     checkmate (>= 2.0.0),
     data.table,
     lgr,

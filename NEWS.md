@@ -1,11 +1,10 @@
 # mlr3tuning (development version)
 
 * fix: The `as_data_table()` functions do not unnest the `x_domain` colum anymore by default.
-* fix: `to_tune(internal = TRUE)` now also works if non-internal tuning parameters require have
-  an `.extra_trafo`
+* fix: `to_tune(internal = TRUE)` now also works if non-internal tuning parameters require have an `.extra_trafo`.
 * feat: It is now possible to pass an `internal_search_space` manually.
-  This allows to use parameter transformations on the primary search space in combination with
-  internal hyperparameter tuning.
+  This allows to use parameter transformations on the primary search space in combination with internal hyperparameter tuning.
+* refactor: The `Tuner` pass extra information of the result in the `extra` parameter now.
 
 # mlr3tuning 1.0.2
 

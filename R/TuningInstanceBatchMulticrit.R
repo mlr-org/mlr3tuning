@@ -33,6 +33,7 @@
 #' @template param_xdt
 #' @template param_learner_param_vals
 #' @template param_internal_tuned_values
+#' @template param_extra
 #'
 #' @template field_internal_search_space
 #'
@@ -181,13 +182,18 @@ TuningInstanceBatchMultiCrit = R6Class("TuningInstanceBatchMultiCrit",
     #' For internal use.
     #'
     #' @param ydt (`data.table::data.table()`)\cr
-    #'   Optimal outcomes, e.g. the Pareto front.
+    #' Optimal outcomes, e.g. the Pareto front.
     #' @param xydt (`data.table::data.table()`)\cr
-    #'   Point, outcome, and additional information.
-    assign_result = function(xdt, ydt, learner_param_vals = NULL, xydt = NULL) {
+    #' Point, outcome, and additional information (Deprecated).
+    #' @param ... (`any`)\cr
+    #' ignored.
+    assign_result = function(xdt, ydt, learner_param_vals = NULL, extra = NULL, xydt = NULL, ...) {
+      # workaround
+      extra = extra %??% xydt
+
       # extract internal tuned values
-      if ("internal_tuned_values" %in% names(xydt)) {
-        set(xdt, j = "internal_tuned_values", value = list(xydt[["internal_tuned_values"]]))
+      if ("internal_tuned_values" %in% names(extra)) {
+        set(xdt, j = "internal_tuned_values", value = list(extra[["internal_tuned_values"]]))
       }
 
       # set the column with the learner param_vals that were not optimized over but set implicitly

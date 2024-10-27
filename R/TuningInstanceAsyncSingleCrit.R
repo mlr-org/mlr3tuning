@@ -36,6 +36,7 @@
 #' @template param_xdt
 #' @template param_learner_param_vals
 #' @template param_internal_tuned_values
+#' @template param_extra
 #'
 #' @template field_internal_search_space
 #'
@@ -159,14 +160,19 @@ TuningInstanceAsyncSingleCrit = R6Class("TuningInstanceAsyncSingleCrit",
     #' @param y (`numeric(1)`)\cr
     #' Optimal outcome.
     #' @param xydt (`data.table::data.table()`)\cr
-    #'   Point, outcome, and additional information.
-    assign_result = function(xdt, y, learner_param_vals = NULL, xydt = NULL) {
+    #' Point, outcome, and additional information (Deprecated).
+    #' @param ... (`any`)\cr
+    #' ignored.
+    assign_result = function(xdt, y, learner_param_vals = NULL, extra = NULL, xydt = NULL, ...) {
+      # workaround
+      extra = extra %??% xydt
+
       # set the column with the learner param_vals that were not optimized over but set implicitly
       assert_list(learner_param_vals, null.ok = TRUE, names = "named")
 
       # extract internal tuned values
-      if ("internal_tuned_values" %in% names(xydt)) {
-        set(xdt, j = "internal_tuned_values", value = list(xydt[["internal_tuned_values"]]))
+      if ("internal_tuned_values" %in% names(extra)) {
+        set(xdt, j = "internal_tuned_values", value = list(extra[["internal_tuned_values"]]))
       }
 
       if (is.null(learner_param_vals)) {
