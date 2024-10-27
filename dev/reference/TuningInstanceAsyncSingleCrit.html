@@ -241,7 +241,9 @@ For internal use.</p><div class="section">
 <span>  <span class="va">xdt</span>,</span>
 <span>  <span class="va">y</span>,</span>
 <span>  learner_param_vals <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  xydt <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  extra <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  xydt <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
@@ -264,9 +266,19 @@ Optimal outcome.</p></dd>
 Fixed parameter values of the learner that are neither part of the</p></dd>
 
 
+<dt><code>extra</code></dt>
+<dd><p>(<code><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table::data.table()</a></code>)<br>
+Additional information.</p></dd>
+
+
 <dt><code>xydt</code></dt>
 <dd><p>(<code><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table::data.table()</a></code>)<br>
-Point, outcome, and additional information.</p></dd>
+Point, outcome, and additional information (Deprecated).</p></dd>
+
+
+<dt><code>...</code></dt>
+<dd><p>(<code>any</code>)<br>
+ignored.</p></dd>
 
 
 </dl><p></p></div>

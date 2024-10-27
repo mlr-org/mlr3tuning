@@ -44,9 +44,9 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="mlr3tuning-development-version">mlr3tuning (development version)<a class="anchor" aria-label="anchor" href="#mlr3tuning-development-version"></a></h2>
 <ul><li>fix: The <code>as_data_table()</code> functions do not unnest the <code>x_domain</code> colum anymore by default.</li>
-<li>fix: <code>to_tune(internal = TRUE)</code> now also works if non-internal tuning parameters require have an <code>.extra_trafo</code>
-</li>
+<li>fix: <code>to_tune(internal = TRUE)</code> now also works if non-internal tuning parameters require have an <code>.extra_trafo</code>.</li>
 <li>feat: It is now possible to pass an <code>internal_search_space</code> manually. This allows to use parameter transformations on the primary search space in combination with internal hyperparameter tuning.</li>
+<li>refactor: The <code>Tuner</code> pass extra information of the result in the <code>extra</code> parameter now.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.0.2" id="mlr3tuning-102">mlr3tuning 1.0.2<a class="anchor" aria-label="anchor" href="#mlr3tuning-102"></a></h2><p class="text-muted">CRAN release: 2024-10-14</p>
