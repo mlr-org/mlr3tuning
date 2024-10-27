@@ -9,7 +9,7 @@ The auto_tuner() function creates an AutoTuner object."><meta property="og:image
 
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.2</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -191,6 +191,7 @@ Hash (unique identifier) for this partial object, excluding some components whic
 <span>  measure <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">terminator</span>,</span>
 <span>  search_space <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  internal_search_space <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  store_tuning_instance <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  store_benchmark_result <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  store_models <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -236,6 +237,11 @@ Stop criterion of the tuning process.</p></dd>
 Hyperparameter search space. If <code>NULL</code> (default), the search space is
 constructed from the <a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">paradox::TuneToken</a> of the learner's parameter set
 (learner$param_set).</p></dd>
+
+
+<dt><code>internal_search_space</code></dt>
+<dd><p>(<a href="https://paradox.mlr-org.com/reference/ParamSet.html" class="external-link">paradox::ParamSet</a> or <code>NULL</code>)<br>
+The internal search space.</p></dd>
 
 
 <dt><code>store_tuning_instance</code></dt>

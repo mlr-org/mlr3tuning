@@ -9,7 +9,7 @@ Calls nloptr::nloptr from package nloptr."><meta property="og:image" content="ht
 
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.0.2</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -220,34 +220,34 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 <span class="r-in"><span><span class="va">instance</span><span class="op">$</span><span class="va">result</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp learner_param_vals  x_domain classif.ce</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;             &lt;list&gt;    &lt;list&gt;      &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -4.248887          &lt;list[2]&gt; &lt;list[1]&gt; 0.06086957</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -4.875713          &lt;list[2]&gt; &lt;list[1]&gt; 0.07826087</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># all evaluated hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            cp classif.ce x_domain_cp runtime_learners           timestamp</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;num&gt;      &lt;num&gt;       &lt;num&gt;            &lt;num&gt;              &lt;POSc&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -4.248887 0.06086957 0.014280125            0.005 2024-10-15 06:22:27</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -4.248887 0.06086957 0.014280125            0.006 2024-10-15 06:22:27</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -4.248887 0.06086957 0.014280125            0.007 2024-10-15 06:22:27</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -2.521948 0.06086957 0.080303044            0.006 2024-10-15 06:22:28</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -5.975825 0.06086957 0.002539405            0.005 2024-10-15 06:22:28</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -4.231617 0.06086957 0.014528876            0.006 2024-10-15 06:22:28</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -4.266156 0.06086957 0.014035633            0.006 2024-10-15 06:22:28</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -4.247160 0.06086957 0.014304807            0.006 2024-10-15 06:22:28</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -4.250614 0.06086957 0.014255485            0.005 2024-10-15 06:22:28</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -4.248887 0.06086957 0.014280125            0.005 2024-10-15 06:22:28</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     warnings errors batch_nr  resample_result</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;int&gt;  &lt;int&gt;    &lt;int&gt;           &lt;list&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1:        0      0        1 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2:        0      0        2 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3:        0      0        3 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4:        0      0        4 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5:        0      0        5 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6:        0      0        6 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7:        0      0        7 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8:        0      0        8 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9:        0      0        9 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10:        0      0       10 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            cp classif.ce runtime_learners           timestamp warnings errors</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;num&gt;      &lt;num&gt;            &lt;num&gt;              &lt;POSc&gt;    &lt;int&gt;  &lt;int&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -4.875713 0.07826087            0.005 2024-10-27 08:20:23        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -4.875713 0.07826087            0.005 2024-10-27 08:20:23        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -4.875713 0.07826087            0.006 2024-10-27 08:20:24        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -3.148774 0.07826087            0.005 2024-10-27 08:20:24        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -6.602651 0.07826087            0.005 2024-10-27 08:20:24        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -4.858443 0.07826087            0.005 2024-10-27 08:20:24        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -4.892982 0.07826087            0.005 2024-10-27 08:20:24        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -4.873986 0.07826087            0.005 2024-10-27 08:20:24        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -4.877440 0.07826087            0.006 2024-10-27 08:20:24        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -4.875713 0.07826087            0.005 2024-10-27 08:20:24        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      x_domain batch_nr  resample_result</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;list&gt;    &lt;int&gt;           &lt;list&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: &lt;list[1]&gt;        1 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2: &lt;list[1]&gt;        2 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: &lt;list[1]&gt;        3 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: &lt;list[1]&gt;        4 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: &lt;list[1]&gt;        5 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: &lt;list[1]&gt;        6 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: &lt;list[1]&gt;        7 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: &lt;list[1]&gt;        8 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: &lt;list[1]&gt;        9 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: &lt;list[1]&gt;       10 &lt;ResampleResult&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># fit final model on complete data set</span></span></span>
 <span class="r-in"><span><span class="va">learner</span><span class="op">$</span><span class="va">param_set</span><span class="op">$</span><span class="va">values</span> <span class="op">=</span> <span class="va">instance</span><span class="op">$</span><span class="va">result_learner_param_vals</span></span></span>
