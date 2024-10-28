@@ -390,3 +390,48 @@ test_that("Can pass internal_search_space separately", {
   expect_true(is.integer(ti$result$internal_tuned_values[[1]]$iter))
   expect_double(ti$result$x)
 })
+
+test_that("tag internal tune token manually in primary search space", {
+  search_space = ps(
+    x = p_dbl(0, 1),
+    iter = p_int(upper = 100, aggr = function(x) as.integer(mean(unlist(x))), tags = "internal_tuning")
+  )
+  ti = tune(
+    tuner = tnr("random_search"),
+    learner = lrn("classif.debug", early_stopping = TRUE, validate = 0.2),
+    search_space = search_space,
+    task = tsk("iris"),
+    resampling = rsmp("holdout"),
+    term_evals = 2
+  )
+  expect_true("iter" %in% ti$internal_search_space$ids())
+  expect_true(is.integer(ti$result$internal_tuned_values[[1]]$iter))
+  expect_double(ti$result$x)
+})
+
+test_that("Can only pass internal tune tokens one way", {
+  skip_if_not_installed("mlr3pipelines")
+  l1 = lrn("classif.debug", early_stopping = TRUE)
+  l1$id = "l1"
+  l2 = l1$clone()
+  l2$id = "l2"
+
+  l1$param_set$set_values(
+    iter = to_tune(upper = 100, internal = TRUE)
+  )
+  l = ppl("branch", list(l1 = l1, l2 = l2))
+  l = as_learner(l)
+  set_validate(l, 0.2, ids = c("l1", "l2"))
+
+  internal_search_space = ps(
+    l2.iter = p_int(upper = 100, aggr = function(x) as.integer(mean(unlist(x))), tags = "internal_tuning")
+  )
+  expect_error(tune(
+    tuner = tnr("random_search"),
+    learner = l,
+    internal_search_space = internal_search_space,
+    task = tsk("iris"),
+    resampling = rsmp("holdout"),
+    term_evals = 2),
+    "Either tag parameters")
+})

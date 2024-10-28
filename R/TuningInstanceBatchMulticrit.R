@@ -109,23 +109,27 @@ TuningInstanceBatchMultiCrit = R6Class("TuningInstanceBatchMultiCrit",
       sids = search_space$ids()
       internal_tune_ids = search_space$ids(any_tags = "internal_tuning")
 
-      # subset search space to primary hyperparameters
-      if (length(internal_tune_ids)) {
-        search_space = search_space$subset(setdiff(sids, internal_tune_ids))
-      }
-
       # get internal search space
       self$internal_search_space = if (is.null(internal_search_space)) {
         # We DO NOT subset the search space because there we might keep an extra_trafo which is not allowed
         # for the internal tuning search space
         if (length(internal_tune_ids)) {
-          learner$param_set$subset(internal_tune_ids)$search_space()
+          if (search_space_from_tokens) {
+            learner$param_set$subset(internal_tune_ids)$search_space()
+          } else {
+            search_space$subset(internal_tune_ids)
+          }
         }
       } else {
         if (length(internal_tune_ids)) {
           stopf("Either tag parameters in the `search_space` with 'internal_tuning' OR provide an `internal_search_space`.")
         }
         as_search_space(internal_search_space)
+      }
+
+      # subset search space to primary hyperparameters
+      if (length(internal_tune_ids)) {
+        search_space = search_space$subset(setdiff(sids, internal_tune_ids))
       }
 
       # set learner parameter values
