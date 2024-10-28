@@ -16,6 +16,7 @@
 #' @template param_term_time
 #' @template param_terminator
 #' @template param_search_space
+#' @template param_internal_search_space
 #' @template param_store_tuning_instance
 #' @template param_store_benchmark_result
 #' @template param_store_models
@@ -42,6 +43,7 @@ auto_tuner = function(
   term_time = NULL,
   terminator = NULL,
   search_space = NULL,
+  internal_search_space = NULL,
   store_tuning_instance = TRUE,
   store_benchmark_result = TRUE,
   store_models = FALSE,
@@ -58,6 +60,7 @@ auto_tuner = function(
     measure = measure,
     terminator = terminator,
     search_space = search_space,
+    internal_search_space = internal_search_space,
     store_tuning_instance = store_tuning_instance,
     store_benchmark_result = store_benchmark_result,
     store_models = store_models,
