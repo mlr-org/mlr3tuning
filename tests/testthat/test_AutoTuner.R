@@ -688,7 +688,6 @@ test_that("AutoTuner works when internal_search_space is part of primary search 
     learner = lrn("classif.debug", early_stopping = TRUE, validate = "test"),
     resampling = rsmp("cv", folds = 3),
     search_space = search_space,
-    internal_search_space = internal_search_space,
     measure = msr("classif.ce"),
     term_evals = 4
   )
