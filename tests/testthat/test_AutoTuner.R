@@ -660,7 +660,6 @@ test_that("AutoTuner works with internal tuning and validation", {
 })
 
 test_that("AutoTuner works when internal_search_space is passed separately", {
-  # we can use the internally optimized values for the final model fit
   task = tsk("iris")
   search_space = ps(x = p_dbl(0.2, 0.3))
   internal_search_space = ps(iter = p_int(upper = 1000L, aggr = function(x) length(x)))
@@ -679,7 +678,6 @@ test_that("AutoTuner works when internal_search_space is passed separately", {
 })
 
 test_that("AutoTuner works when internal_search_space is part of primary search space", {
-  # we can use the internally optimized values for the final model fit
   task = tsk("iris")
   search_space = ps(
     x = p_dbl(0.2, 0.3),
