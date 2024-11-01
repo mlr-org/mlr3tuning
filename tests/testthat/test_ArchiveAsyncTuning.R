@@ -226,6 +226,35 @@ test_that("ArchiveAsyncTuning as.data.table function works with switched new ids
   expect_rush_reset(instance$rush)
 })
 
+test_that("Saving ArchiveAsyncTuning works", {
+  skip_on_cran()
+  skip_if_not_installed("rush")
+  flush_redis()
+
+  on.exit({
+    file.remove("instance.rds")
+  })
+
+  rush::rush_plan(n_workers = 2)
+  instance = ti_async(
+    task = tsk("pima"),
+    learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
+    resampling = rsmp("cv", folds = 3),
+    measures = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 20),
+    store_benchmark_result = TRUE
+  )
+  tuner = tnr("async_random_search")
+  tuner$optimize(instance)
+
+  saveRDS(instance, file = "instance.rds")
+
+  loaded_instance = readRDS(file = "instance.rds")
+
+  loaded_instance$reconnect()
+  loaded_instance
+})
+
 # Internal Tuning --------------------------------------------------------------
 
 test_that("ArchiveAsyncTuning as.data.table function works internally tuned values", {
@@ -254,3 +283,4 @@ test_that("ArchiveAsyncTuning as.data.table function works internally tuned valu
   expect_names(names(tab), must.include = "internal_tuned_values_iter")
   expect_equal(tab$internal_tuned_values_iter[1], 99)
 })
+
