@@ -14,9 +14,9 @@ ContextBatchTuning = R6Class("ContextBatchTuning",
   active = list(
 
     #' @field xss (list())\cr
-    #'   The hyperparameter configurations of the latest batch.
-    #'   Contains the values on the learner scale i.e. transformations are applied.
-    #'   See `$xdt` for the untransformed values.
+    #' The hyperparameter configurations of the latest batch.
+    #' Contains the values on the learner scale i.e. transformations are applied.
+    #' See `$xdt` for the untransformed values.
     xss = function(rhs) {
       if (missing(rhs)) {
         return(get_private(self$instance$objective)$.xss)
@@ -26,7 +26,7 @@ ContextBatchTuning = R6Class("ContextBatchTuning",
     },
 
     #' @field design ([data.table::data.table])\cr
-    #'   The benchmark design of the latest batch.
+    #' The benchmark design of the latest batch.
     design = function(rhs) {
       if (missing(rhs)) {
         return(get_private(self$instance$objective)$.design)
@@ -36,7 +36,7 @@ ContextBatchTuning = R6Class("ContextBatchTuning",
     },
 
     #' @field benchmark_result ([mlr3::BenchmarkResult])\cr
-    #'   The benchmark result of the latest batch.
+    #' The benchmark result of the latest batch.
     benchmark_result = function(rhs) {
       if (missing(rhs)) {
         return(get_private(self$instance$objective)$.benchmark_result)
@@ -46,14 +46,24 @@ ContextBatchTuning = R6Class("ContextBatchTuning",
     },
 
     #' @field aggregated_performance ([data.table::data.table])\cr
-    #'   Aggregated performance scores and training time of the latest batch.
-    #'   This data table is passed to the archive.
-    #'   A callback can add additional columns which are also written to the archive.
+    #' Aggregated performance scores and training time of the latest batch.
+    #' This data table is passed to the archive.
+    #' A callback can add additional columns which are also written to the archive.
     aggregated_performance = function(rhs) {
       if (missing(rhs)) {
         return(get_private(self$instance$objective)$.aggregated_performance)
       } else {
         self$instance$objective$.__enclos_env__$private$.aggregated_performance = rhs
+      }
+    },
+
+    #' @field result_learner_param_vals (list())\cr
+    #' The learner parameter values passed to `instance$assign_result()`.
+    result_learner_param_vals = function(rhs) {
+      if (missing(rhs)) {
+        return(get_private(self$instance)$.result_learner_param_vals)
+      } else {
+        self$instance$.__enclos_env__$private$.result_learner_param_vals = rhs
       }
     }
   )

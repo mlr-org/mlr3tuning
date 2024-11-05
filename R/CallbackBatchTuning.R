@@ -32,7 +32,12 @@ CallbackBatchTuning= R6Class("CallbackBatchTuning",
     #' @field on_eval_before_archive (`function()`)\cr
     #'   Stage called before performance values are written to the archive.
     #'   Called in `ObjectiveTuning$eval_many()`.
-    on_eval_before_archive = NULL
+    on_eval_before_archive = NULL,
+
+    #' @field on_tuning_result_begin (`function()`)\cr
+    #'   Stage called before the results are written.
+    #'   Called in `TuningInstance*$assign_result()`.
+    on_tuning_result_begin = NULL
   )
 )
 
@@ -57,7 +62,9 @@ CallbackBatchTuning= R6Class("CallbackBatchTuning",
 #'         End Evaluation
 #'          - on_optimizer_after_eval
 #'     End Tuner Batch
-#'      - on_result
+#'      - on_tuning_result_begin
+#'      - on_result_begin
+#'      - on_result_end
 #'      - on_optimization_end
 #' End Tuning
 #' ```
@@ -98,7 +105,17 @@ CallbackBatchTuning= R6Class("CallbackBatchTuning",
 #' @param on_optimizer_after_eval (`function()`)\cr
 #'   Stage called after points are evaluated.
 #'   Called in `OptimInstance$eval_batch()`.
+#' @param on_tuning_result_begin (`function()`)\cr
+#'   Stage called at the beginning of the result writing.
+#'   Called in `TuningInstance*$assign_result()`.
+#' @param on_result_begin (`function()`)\cr
+#'   Stage called at the beginning of the result writing.
+#'   Called in `OptimInstance$assign_result()`.
+#' @param on_result_end(`function()`)\cr
+#'   Stage called after the result is written.
+#'   Called in `OptimInstance$assign_result()`.
 #' @param on_result (`function()`)\cr
+#'   Deprecated. Use `on_result_end` instead.
 #'   Stage called after the result is written.
 #'   Called in `OptimInstance$assign_result()`.
 #' @param on_optimization_end (`function()`)\cr
@@ -117,6 +134,9 @@ callback_batch_tuning = function(
   on_eval_after_benchmark = NULL,
   on_eval_before_archive = NULL,
   on_optimizer_after_eval = NULL,
+  on_tuning_result_begin = NULL,
+  on_result_begin = NULL,
+  on_result_end = NULL,
   on_result = NULL,
   on_optimization_end = NULL
   ) {
@@ -127,6 +147,9 @@ callback_batch_tuning = function(
     on_eval_after_benchmark,
     on_eval_before_archive,
     on_optimizer_after_eval,
+    on_tuning_result_begin,
+    on_result_begin,
+    on_result_end,
     on_result,
     on_optimization_end),
     c(
@@ -136,8 +159,18 @@ callback_batch_tuning = function(
       "on_eval_after_benchmark",
       "on_eval_before_archive",
       "on_optimizer_after_eval",
+      "on_tuning_result_begin",
+      "on_result_begin",
+      "on_result_end",
       "on_result",
       "on_optimization_end")), is.null)
+
+  if ("on_result" %in% names(stages)) {
+    .Deprecated(old = "on_result", new = "on_result_end")
+    stages$on_result_end = stages$on_result
+    stages$on_result = NULL
+  }
+
   walk(stages, function(stage) assert_function(stage, args = c("callback", "context")))
   callback = CallbackBatchTuning$new(id, label, man)
   iwalk(stages, function(stage, name) callback[[name]] = stage)

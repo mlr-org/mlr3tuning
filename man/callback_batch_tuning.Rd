@@ -14,6 +14,9 @@ callback_batch_tuning(
   on_eval_after_benchmark = NULL,
   on_eval_before_archive = NULL,
   on_optimizer_after_eval = NULL,
+  on_tuning_result_begin = NULL,
+  on_result_begin = NULL,
+  on_result_end = NULL,
   on_result = NULL,
   on_optimization_end = NULL
 )
@@ -56,13 +59,25 @@ The context available is \link{ContextBatchTuning}.}
 Stage called after points are evaluated.
 Called in \code{OptimInstance$eval_batch()}.}
 
+\item{on_tuning_result_begin}{(\verb{function()})\cr
+Stage called at the beginning of the result writing.
+Called in \verb{TuningInstance*$assign_result()}.}
+
+\item{on_result_begin}{(\verb{function()})\cr
+Stage called at the beginning of the result writing.
+Called in \code{OptimInstance$assign_result()}.}
+
 \item{on_result}{(\verb{function()})\cr
+Deprecated. Use \code{on_result_end} instead.
 Stage called after the result is written.
 Called in \code{OptimInstance$assign_result()}.}
 
 \item{on_optimization_end}{(\verb{function()})\cr
 Stage called at the end of the optimization.
 Called in \code{Optimizer$optimize()}.}
+
+\item{on_result_end(`function()`)\cr}{Stage called after the result is written.
+Called in \code{OptimInstance$assign_result()}.}
 }
 \description{
 Function to create a \link{CallbackBatchTuning}.
@@ -82,7 +97,9 @@ The stages are prefixed with \verb{on_*}.
         End Evaluation
          - on_optimizer_after_eval
     End Tuner Batch
-     - on_result
+     - on_tuning_result_begin
+     - on_result_begin
+     - on_result_end
      - on_optimization_end
 End Tuning
 }\if{html}{\out{</div>}}

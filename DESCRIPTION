@@ -51,7 +51,7 @@ Suggests:
     testthat (>= 3.0.0),
     xgboost
 Remotes:
-    mlr-org/bbotk
+    mlr-org/bbotk@callbacks
 VignetteBuilder:
     knitr
 Config/testthat/edition: 3

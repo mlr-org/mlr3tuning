@@ -22,6 +22,7 @@
   x$add("mlr3tuning.backup", load_callback_backup)
   x$add("mlr3tuning.default_configuration", load_callback_default_configuration)
   x$add("mlr3tuning.measures", load_callback_measures)
+  x$add("mlr3tuning.one_se_rule", load_callback_one_se_rule)
 
   assign("lg", lgr::get_logger("bbotk"), envir = parent.env(environment()))
   if (Sys.getenv("IN_PKGDOWN") == "true") {
