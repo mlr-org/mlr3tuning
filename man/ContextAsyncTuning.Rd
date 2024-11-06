@@ -28,6 +28,9 @@ The resample result of the hyperparameter configuration currently evaluated.}
 Aggregated performance scores and training time of the evaluated hyperparameter configuration.
 This list is passed to the archive.
 A callback can add additional elements which are also written to the archive.}
+
+\item{\code{result_learner_param_vals}}{(list())\cr
+The learner parameter values passed to \code{instance$assign_result()}.}
 }
 \if{html}{\out{</div>}}
 }

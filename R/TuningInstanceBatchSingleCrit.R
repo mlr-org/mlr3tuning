@@ -245,8 +245,8 @@ TuningInstanceBatchSingleCrit = R6Class("TuningInstanceBatchSingleCrit",
       assert_list(private$.result_learner_param_vals, null.ok = TRUE, names = "named")
 
       # extract internal tuned values
-      if ("internal_tuned_values" %in% names(extra)) {
-        set(private$.result_xdt, j = "internal_tuned_values", value = list(extra[["internal_tuned_values"]]))
+      if ("internal_tuned_values" %in% names(private$.result_extra)) {
+        set(private$.result_xdt, j = "internal_tuned_values", value = list(private$.result_extra[["internal_tuned_values"]]))
       }
 
       # learner param values
@@ -282,6 +282,7 @@ TuningInstanceBatchSingleCrit = R6Class("TuningInstanceBatchSingleCrit",
   ),
 
   private = list(
+    # intermediate objects
     .result_learner_param_vals = NULL,
 
     # initialize context for optimization

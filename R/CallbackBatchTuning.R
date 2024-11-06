@@ -20,23 +20,23 @@ CallbackBatchTuning= R6Class("CallbackBatchTuning",
   public = list(
 
     #' @field on_eval_after_design (`function()`)\cr
-    #'   Stage called after design is created.
-    #'   Called in `ObjectiveTuning$eval_many()`.
+    #' Stage called after design is created.
+    #' Called in `ObjectiveTuningBatch$eval_many()`.
     on_eval_after_design = NULL,
 
     #' @field on_eval_after_benchmark (`function()`)\cr
-    #'   Stage called after hyperparameter configurations are evaluated.
-    #'   Called in `ObjectiveTuning$eval_many()`.
+    #' Stage called after hyperparameter configurations are evaluated.
+    #' Called in `ObjectiveTuningBatch$eval_many()`.
     on_eval_after_benchmark = NULL,
 
     #' @field on_eval_before_archive (`function()`)\cr
-    #'   Stage called before performance values are written to the archive.
-    #'   Called in `ObjectiveTuning$eval_many()`.
+    #' Stage called before performance values are written to the archive.
+    #' Called in `ObjectiveTuningBatch$eval_many()`.
     on_eval_before_archive = NULL,
 
     #' @field on_tuning_result_begin (`function()`)\cr
-    #'   Stage called before the results are written.
-    #'   Called in `TuningInstance*$assign_result()`.
+    #' Stage called before the results are written.
+    #' Called in `TuningInstance*$assign_result()`.
     on_tuning_result_begin = NULL
   )
 )
@@ -78,49 +78,68 @@ CallbackBatchTuning= R6Class("CallbackBatchTuning",
 #' Tuning callbacks access [ContextBatchTuning].
 #'
 #' @param id (`character(1)`)\cr
-#'   Identifier for the new instance.
+#'  Identifier for the new instance.
 #' @param label (`character(1)`)\cr
-#'   Label for the new instance.
+#'  Label for the new instance.
 #' @param man (`character(1)`)\cr
-#'   String in the format `[pkg]::[topic]` pointing to a manual page for this object.
-#'   The referenced help package can be opened via method `$help()`.
+#'  String in the format `[pkg]::[topic]` pointing to a manual page for this object.
+#'  The referenced help package can be opened via method `$help()`.
+#'
 #' @param on_optimization_begin (`function()`)\cr
-#'   Stage called at the beginning of the optimization.
-#'   Called in `Optimizer$optimize()`.
+#'  Stage called at the beginning of the optimization.
+#'  Called in `Optimizer$optimize()`.
+#'  The functions must have two arguments named `callback` and `context`.
 #' @param on_optimizer_before_eval (`function()`)\cr
-#'   Stage called after the optimizer proposes points.
-#'   Called in `OptimInstance$eval_batch()`.
+#'  Stage called after the optimizer proposes points.
+#'  Called in `OptimInstance$eval_batch()`.
+#'  The functions must have two arguments named `callback` and `context`.
+#'  The argument of `$eval_batch(xdt)` is available in `context`.
 #' @param on_eval_after_design (`function()`)\cr
-#'   Stage called after the design is created.
-#'   Called in `ObjectiveTuning$eval_many()`.
-#'   The context available is [ContextBatchTuning].
+#'  Stage called after the design is created.
+#'  Called in `ObjectiveTuningBatch$eval_many()`.
+#'  The functions must have two arguments named `callback` and `context`.
+#'  The arguments of `$eval_many(xss, resampling)` are available in `context`.
+#'  Additionally, the `design` is available in `context`.
 #' @param on_eval_after_benchmark (`function()`)\cr
-#'   Stage called after hyperparameter configurations are evaluated.
-#'   Called in `ObjectiveTuning$eval_many()`.
-#'   The context available is [ContextBatchTuning].
+#'  Stage called after hyperparameter configurations are evaluated.
+#'  Called in `ObjectiveTuningBatch$eval_many()`.
+#'  The functions must have two arguments named `callback` and `context`.
+#'  The `benchmark_result` is available in `context`.
 #' @param on_eval_before_archive (`function()`)\cr
-#'   Stage called before performance values are written to the archive.
-#'   Called in `ObjectiveTuning$eval_many()`.
-#'   The context available is [ContextBatchTuning].
+#'  Stage called before performance values are written to the archive.
+#'  Called in `ObjectiveTuningBatch$eval_many()`.
+#'  The functions must have two arguments named `callback` and `context`.
+#'  The `aggregated_performance` is available in `context`.
 #' @param on_optimizer_after_eval (`function()`)\cr
-#'   Stage called after points are evaluated.
-#'   Called in `OptimInstance$eval_batch()`.
+#'  Stage called after points are evaluated.
+#'  Called in `OptimInstance$eval_batch()`.
+#'  The functions must have two arguments named `callback` and `context`.
+#'  The new configurations and performances in `instance$archive` are available in `context`.
 #' @param on_tuning_result_begin (`function()`)\cr
-#'   Stage called at the beginning of the result writing.
-#'   Called in `TuningInstance*$assign_result()`.
+#'  Stage called at the beginning of the result writing.
+#'  Called in `TuningInstanceBatch$assign_result()`.
+#'  The functions must have two arguments named `callback` and `context`.
+#'  The arguments of `$assign_result(xdt, y, learner_param_vals, extra)` are available in `context`.
 #' @param on_result_begin (`function()`)\cr
-#'   Stage called at the beginning of the result writing.
-#'   Called in `OptimInstance$assign_result()`.
+#'  Stage called at the beginning of the result writing.
+#'  Called in `OptimInstance$assign_result()`.
+#'  The functions must have two arguments named `callback` and `context`.
+#'  The arguments of `$assign_result(xdt, y, extra)` are available in `context`.
 #' @param on_result_end(`function()`)\cr
-#'   Stage called after the result is written.
-#'   Called in `OptimInstance$assign_result()`.
+#'  Stage called after the result is written.
+#'  Called in `OptimInstance$assign_result()`.
+#'  The functions must have two arguments named `callback` and `context`.
+#'  The final result `instance$result` is available in `context`.
 #' @param on_result (`function()`)\cr
-#'   Deprecated. Use `on_result_end` instead.
-#'   Stage called after the result is written.
-#'   Called in `OptimInstance$assign_result()`.
+#'  Deprecated.
+#'  Use `on_result_end` instead.
+#'  Stage called after the result is written.
+#'  Called in `OptimInstance$assign_result()`.
+#'  The functions must have two arguments named `callback` and `context`.
 #' @param on_optimization_end (`function()`)\cr
-#'   Stage called at the end of the optimization.
-#'   Called in `Optimizer$optimize()`.
+#'  Stage called at the end of the optimization.
+#'  Called in `Optimizer$optimize()`.
+#'  The functions must have two arguments named `callback` and `context`.
 #'
 #' @export
 #' @inherit CallbackBatchTuning examples
