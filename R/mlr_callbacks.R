@@ -309,7 +309,7 @@ load_callback_async_save_logs = function() {
 #' `r format_bib("kuhn2013")`
 #'
 #' @examples
-#' clbk("mlr3fselect.one_se_rule")
+#' clbk("mlr3tuning.one_se_rule")
 #'
 #' # Run optimization on the pima data set with the callback
 #' instance = tune(
@@ -354,11 +354,11 @@ load_callback_one_se_rule = function() {
 
       if (se == 0) {
         # select smallest future set when all scores are the same
-        best = data[which.min(n_features)]
+        best = data[which.min(get("n_features"))]
       } else {
         # select smallest future set within one standard error of the best
         best_y = context$result_y
-        best = data[y > best_y - se & y < best_y + se, ][which.min(n_features)]
+        best = data[y > best_y - se & y < best_y + se, ][which.min(get("n_features"))]
       }
 
       cols_x = context$instance$archive$cols_x

@@ -17,7 +17,7 @@ If there are multiple such hyperparameter configurations with the same number of
 If the configurations have exactly the same performance but different number of features, the one with the smallest number of features is selected.
 }
 \examples{
-clbk("mlr3fselect.one_se_rule")
+clbk("mlr3tuning.one_se_rule")
 
 # Run optimization on the pima data set with the callback
 instance = tune(

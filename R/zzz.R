@@ -6,6 +6,7 @@
 #' @import bbotk
 #' @importFrom R6 R6Class
 #' @importFrom utils tail
+#' @importFrom stats sd
 "_PACKAGE"
 
 .onLoad = function(libname, pkgname) {
