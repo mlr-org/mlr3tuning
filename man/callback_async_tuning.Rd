@@ -91,6 +91,12 @@ Called in \code{OptimInstance$assign_result()}.
 The functions must have two arguments named \code{callback} and \code{context}.
 The arguments of \verb{$.assign_result(xdt, y, extra)} are available in the \code{context}.}
 
+\item{on_result_end}{(\verb{function()})\cr
+Stage called after the result is written.
+Called in \code{OptimInstance$assign_result()}.
+The functions must have two arguments named \code{callback} and \code{context}.
+The final result \code{instance$result} is available in the \code{context}.}
+
 \item{on_result}{(\verb{function()})\cr
 Deprecated.
 Use \code{on_result_end} instead.
@@ -100,11 +106,6 @@ Called in \code{OptimInstance$assign_result()}.}
 \item{on_optimization_end}{(\verb{function()})\cr
 Stage called at the end of the optimization.
 Called in \code{Optimizer$optimize()}.}
-
-\item{on_result_end(`function()`)\cr}{Stage called after the result is written.
-Called in \code{OptimInstance$assign_result()}.
-The functions must have two arguments named \code{callback} and \code{context}.
-The final result \code{instance$result} is available in the \code{context}.}
 }
 \description{
 Function to create a \link{CallbackAsyncTuning}.

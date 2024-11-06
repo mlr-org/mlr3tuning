@@ -125,7 +125,7 @@ CallbackBatchTuning= R6Class("CallbackBatchTuning",
 #'  Called in `OptimInstance$assign_result()`.
 #'  The functions must have two arguments named `callback` and `context`.
 #'  The arguments of `$assign_result(xdt, y, extra)` are available in `context`.
-#' @param on_result_end(`function()`)\cr
+#' @param on_result_end (`function()`)\cr
 #'  Stage called after the result is written.
 #'  Called in `OptimInstance$assign_result()`.
 #'  The functions must have two arguments named `callback` and `context`.
