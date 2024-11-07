@@ -4,6 +4,7 @@
 * feat: Add new stages `on_tuning_result_begin` and `on_result_begin` to `CallbackAsyncTuning` and `CallbackBatchTuning`.
 * refactor: Rename stage `on_result` to `on_result_end` in `CallbackAsyncTuning` and `CallbackBatchTuning`.
 * docs: Extend the `CallbackAsyncTuning` and `CallbackBatchTuning` documentation.
+* compatibility: mlr3 0.22.0
 
 # mlr3tuning 1.1.0
 

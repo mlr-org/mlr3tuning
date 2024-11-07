@@ -59,12 +59,12 @@ test_that("check_values flag with parameter set dependencies", {
   tuner = tnr("random_search")
 
   inst = TuningInstanceBatchMultiCrit$new(
-    tsk("boston_housing"), learner,
+    tsk("mtcars"), learner,
     rsmp("holdout"), msrs(c("regr.mse", "regr.rmse")), terminator, search_space, check_values = FALSE)
   tuner$optimize(inst)
   expect_named(inst$result_learner_param_vals[[1]], c("xx", "cp", "yy"))
 
-  inst = TuningInstanceBatchMultiCrit$new(tsk("boston_housing"), learner,
+  inst = TuningInstanceBatchMultiCrit$new(tsk("mtcars"), learner,
     rsmp("holdout"), msr("regr.mse"), terminator, search_space,
     check_values = TRUE)
   expect_error(tuner$optimize(inst),

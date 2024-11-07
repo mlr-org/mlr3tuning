@@ -53,6 +53,7 @@
 #' @template param_check_values
 #' @template param_callbacks
 #' @template param_rush
+#' @template param_id
 #'
 #' @export
 #' @examples
@@ -144,7 +145,8 @@ AutoTuner = R6Class("AutoTuner",
       store_models = FALSE,
       check_values = FALSE,
       callbacks = NULL,
-      rush = NULL
+      rush = NULL,
+      id = NULL
       ) {
       learner = assert_learner(as_learner(learner, clone = TRUE))
 
@@ -170,8 +172,10 @@ AutoTuner = R6Class("AutoTuner",
       if (!is.null(rush)) ia$rush = assert_class(rush, "Rush")
       self$instance_args = ia
 
+      id = assert_string(id, null.ok = TRUE) %??% paste0(learner$id, ".tuned")
+
       super$initialize(
-        id = paste0(learner$id, ".tuned"),
+        id = id,
         task_type = learner$task_type,
         packages = c("mlr3tuning", learner$packages),
         feature_types = learner$feature_types,
