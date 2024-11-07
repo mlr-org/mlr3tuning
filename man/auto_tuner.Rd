@@ -19,7 +19,8 @@ auto_tuner(
   store_models = FALSE,
   check_values = FALSE,
   callbacks = NULL,
-  rush = NULL
+  rush = NULL,
+  id = NULL
 )
 }
 \arguments{
@@ -81,6 +82,9 @@ List of callbacks.}
 
 \item{rush}{(\code{Rush})\cr
 If a rush instance is supplied, the tuning runs without batches.}
+
+\item{id}{(\code{character(1)})\cr
+Identifier for the new instance.}
 }
 \value{
 \link{AutoTuner}.
