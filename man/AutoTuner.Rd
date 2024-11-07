@@ -215,7 +215,8 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   store_models = FALSE,
   check_values = FALSE,
   callbacks = NULL,
-  rush = NULL
+  rush = NULL,
+  id = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -272,6 +273,9 @@ List of callbacks.}
 
 \item{\code{rush}}{(\code{Rush})\cr
 If a rush instance is supplied, the tuning runs without batches.}
+
+\item{\code{id}}{(\code{character(1)})\cr
+Identifier for the new instance.}
 }
 \if{html}{\out{</div>}}
 }

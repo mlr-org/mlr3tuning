@@ -337,14 +337,16 @@ test_that("AutoTuner hash works #647 in mlr3", {
     resampling = rsmp("holdout"),
     measure = msr("classif.ce"),
     terminator = trm("evals", n_evals = 4),
-    tuner = tnr("grid_search", resolution = 3))
+    tuner = tnr("grid_search", resolution = 3),
+    id = "at_1")
 
   at_2 = AutoTuner$new(
     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
     resampling = rsmp("holdout"),
     measure = msr("classif.ce"),
     terminator = trm("evals", n_evals = 4),
-    tuner = tnr("grid_search", resolution = 3))
+    tuner = tnr("grid_search", resolution = 3),
+    id = "at_2")
 
   expect_true(at_1$hash != at_2$hash)
 
