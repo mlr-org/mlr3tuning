@@ -1,5 +1,7 @@
 # mlr3tuning (development version)
 
+* compatibility: mlr3 0.22.0
+
 # mlr3tuning 1.1.0
 
 * fix: The `as_data_table()` functions do not unnest the `x_domain` colum anymore by default.

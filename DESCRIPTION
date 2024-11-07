@@ -52,6 +52,7 @@ Suggests:
     xgboost
 Remotes:
     mlr-org/bbotk
+    mlr-org/mlr3
 VignetteBuilder:
     knitr
 Config/testthat/edition: 3

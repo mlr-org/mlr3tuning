@@ -54,7 +54,7 @@ TEST_MAKE_INST2 = function(measure = msr("dummy.cp.regr"), term_evals = 5L) {
   ll = LearnerRegrDepParams$new()
   rs = rsmp("holdout")
   term = trm("evals", n_evals = term_evals)
-  inst = TuningInstanceBatchSingleCrit$new(tsk("boston_housing"), ll, rs, measure, term, ps)
+  inst = TuningInstanceBatchSingleCrit$new(tsk("mtcars"), ll, rs, measure, term, ps)
   return(inst)
 }
 
