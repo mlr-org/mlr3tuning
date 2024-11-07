@@ -103,13 +103,11 @@
 <li>Learn about <a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-defining-search-spaces" class="external-link">tuning spaces</a>.</li>
 <li>Estimate the model performance with <a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-nested-resampling" class="external-link">nested resampling</a>.</li>
 <li>Learn about <a href="https://mlr3book.mlr-org.com/chapters/chapter5/advanced_tuning_methods_and_black_box_optimization.html#sec-multi-metrics-tuning" class="external-link">multi-objective optimization</a>.</li>
+<li>Simultaneously optimize hyperparameters and use <a href="https://mlr3book.mlr-org.com/chapters/chapter15/predsets_valid_inttune.html" class="external-link">early stopping</a> with XGBoost.</li>
 </ul>
 <p>The <a href="https://mlr-org.com/gallery-all-optimization.html" class="external-link">gallery</a> features a collection of case studies and demos about optimization.</p>
 <ul>
 <li>Learn more advanced methods with the <a href="https://mlr-org.com/gallery/series/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/" class="external-link">Practical Tuning Series</a>.</li>
-<li>Optimize an rpart classification tree with only a <a href="https://mlr-org.com/gallery/optimization/2022-11-10-hyperparameter-optimization-on-the-palmer-penguins/" class="external-link">few lines of code</a>.</li>
-<li>Simultaneously optimize hyperparameters and use <a href="https://mlr-org.com/gallery/optimization/2022-11-04-early-stopping-with-xgboost/" class="external-link">early stopping</a> with XGBoost.</li>
-<li>Make us of proven <a href="https://mlr-org.com/gallery/optimization/2021-07-06-introduction-to-mlr3tuningspaces/" class="external-link">search space</a>.</li>
 <li>Learn about <a href="https://mlr-org.com/gallery/optimization/2023-01-16-hotstart/" class="external-link">hotstarting</a> models.</li>
 <li>Run the <a href="https://mlr-org.com/gallery/optimization/2023-01-31-default-configuration/" class="external-link">default hyperparameter configuration</a> of learners as a baseline.</li>
 <li>Use the <a href="https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/" class="external-link">Hyperband</a> optimizer with different budget parameters.</li>
@@ -171,23 +169,23 @@
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tuner</span><span class="op">$</span><span class="fu">optimize</span><span class="op">(</span><span class="va">instance</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="do">##        cost     gamma learner_param_vals  x_domain classif.ce</span></span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="do">## 1: 5.756463 -5.756463          &lt;list[4]&gt; &lt;list[2]&gt;  0.2063492</span></span></code></pre></div>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="do">## 1: 5.756463 -5.756463          &lt;list[4]&gt; &lt;list[2]&gt;  0.1828847</span></span></code></pre></div>
 <p>The tuner returns the best hyperparameter configuration and the corresponding measured performance.</p>
 <p>The archive contains all evaluated hyperparameter configurations.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">cost</span>, <span class="va">gamma</span>, <span class="va">classif.ce</span>, <span class="va">batch_nr</span>, <span class="va">resample_result</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
-<div class="sourceCode" id="cb11"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="do">##           cost     gamma classif.ce batch_nr  resample_result</span></span>
-<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="do">##  1:   5.756463  0.000000  0.4661146        1 &lt;ResampleResult&gt;</span></span>
-<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="do">##  2:  11.512925  0.000000  0.4661146        2 &lt;ResampleResult&gt;</span></span>
-<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="do">##  3: -11.512925  5.756463  0.4661146        3 &lt;ResampleResult&gt;</span></span>
-<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a><span class="do">##  4: -11.512925  0.000000  0.4661146        4 &lt;ResampleResult&gt;</span></span>
-<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="do">##  5:  -5.756463 11.512925  0.4661146        5 &lt;ResampleResult&gt;</span></span>
-<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a><span class="do">## ---                                                          </span></span>
-<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a><span class="do">## 21:  11.512925  5.756463  0.4661146       21 &lt;ResampleResult&gt;</span></span>
-<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a><span class="do">## 22: -11.512925 11.512925  0.4661146       22 &lt;ResampleResult&gt;</span></span>
-<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a><span class="do">## 23:   0.000000  5.756463  0.4661146       23 &lt;ResampleResult&gt;</span></span>
-<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a><span class="do">## 24:   5.756463 11.512925  0.4661146       24 &lt;ResampleResult&gt;</span></span>
-<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a><span class="do">## 25: -11.512925 -5.756463  0.4661146       25 &lt;ResampleResult&gt;</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="do">##           cost      gamma classif.ce batch_nr  resample_result</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="do">##  1:  -5.756463   5.756463  0.4663216        1 &lt;ResampleResult&gt;</span></span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="do">##  2:   5.756463  -5.756463  0.1828847        2 &lt;ResampleResult&gt;</span></span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a><span class="do">##  3:  11.512925   5.756463  0.4663216        3 &lt;ResampleResult&gt;</span></span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a><span class="do">##  4:   5.756463  11.512925  0.4663216        4 &lt;ResampleResult&gt;</span></span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a><span class="do">##  5: -11.512925 -11.512925  0.4663216        5 &lt;ResampleResult&gt;</span></span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a><span class="do">## ---                                                           </span></span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a><span class="do">## 21:  -5.756463  -5.756463  0.4663216       21 &lt;ResampleResult&gt;</span></span>
+<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a><span class="do">## 22:  11.512925  11.512925  0.4663216       22 &lt;ResampleResult&gt;</span></span>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a><span class="do">## 23: -11.512925  11.512925  0.4663216       23 &lt;ResampleResult&gt;</span></span>
+<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a><span class="do">## 24:  11.512925  -5.756463  0.1828847       24 &lt;ResampleResult&gt;</span></span>
+<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a><span class="do">## 25:   0.000000  -5.756463  0.2402346       25 &lt;ResampleResult&gt;</span></span></code></pre></div>
 <p>The <a href="https://mlr3viz.mlr-org.com/" class="external-link">mlr3viz</a> package visualizes tuning results.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mlr3viz.mlr-org.com" class="external-link">mlr3viz</a></span><span class="op">)</span></span>
