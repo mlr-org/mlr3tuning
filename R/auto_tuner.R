@@ -2,7 +2,7 @@
 #'
 #' @inherit AutoTuner description
 #' @inheritSection TuningInstanceBatchSingleCrit Default Measures
-#' @inheritSection AutoTuner Resources
+#' @inheritSection TuningInstanceBatchSingleCrit Resources
 #' @inherit AutoTuner details
 #' @inheritSection AutoTuner Nested Resampling
 #'

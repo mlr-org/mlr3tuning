@@ -8,16 +8,7 @@
 #' @details
 #' `Tuner` is an abstract base class that implements the base functionality each tuner must provide.
 #'
-#' @section Resources:
-#' There are several sections about hyperparameter optimization in the [mlr3book](https://mlr3book.mlr-org.com).
-#'
-#' * An overview of all tuners can be found on our [website](https://mlr-org.com/tuners.html).
-#'
-#'  * Learn more about [tuners](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-tuner).
-#'
-#' The [gallery](https://mlr-org.com/gallery-all-optimization.html) features a collection of case studies and demos about optimization.
-#'
-#'  * Use the [Hyperband](https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/) optimizer with different budget parameters.
+#' @inheritSection TuningInstanceBatchSingleCrit Resources
 #'
 #' @section Extension Packages:
 #' Additional tuners are provided by the following packages.

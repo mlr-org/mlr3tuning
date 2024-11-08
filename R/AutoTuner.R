@@ -24,14 +24,7 @@
 #' A set timeout is disabled while fitting the final model.
 #'
 #' @inheritSection TuningInstanceBatchSingleCrit Default Measures
-#'
-#' @section Resources:
-#' There are several sections about hyperparameter optimization in the [mlr3book](https://mlr3book.mlr-org.com).
-#'
-#'  * [Automate](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-autotuner) the tuning.
-#'  * Estimate the model performance with [nested resampling](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-nested-resampling).
-#'
-#' The [gallery](https://mlr-org.com/gallery-all-optimization.html) features a collection of case studies and demos about optimization.
+#' @inheritSection TuningInstanceBatchSingleCrit Resources
 #'
 #' @section Nested Resampling:
 #' Nested resampling is performed by passing an [AutoTuner] to [mlr3::resample()] or [mlr3::benchmark()].
