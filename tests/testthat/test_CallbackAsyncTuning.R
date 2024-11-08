@@ -26,6 +26,10 @@ test_that("on_optimization_begin works", {
 })
 
 test_that("on_optimization_end works", {
+  skip_on_cran()
+  skip_if_not_installed("rush")
+  flush_redis()
+
   callback = callback_async_tuning(id = "test",
     on_optimization_end = function(callback, context) {
       context$instance$terminator$param_set$values$n_evals = 20
@@ -237,6 +241,10 @@ test_that("on_result_end in TuningInstanceSingleCrit works", {
 })
 
 test_that("on_result in TuningInstanceSingleCrit works", {
+  skip_on_cran()
+  skip_if_not_installed("rush")
+  flush_redis()
+
   expect_warning({callback = callback_async_tuning(id = "test",
     on_result = function(callback, context) {
       context$result$classif.ce = 0.7
@@ -263,7 +271,6 @@ test_that("on_tuning_result_begin in TuningInstanceBatchMultiCrit works", {
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
-
 
   callback = callback_async_tuning(id = "test",
     on_tuning_result_begin = function(callback, context) {
