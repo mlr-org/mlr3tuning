@@ -59,7 +59,8 @@ task = tsk("pima")
 learner = lrn("classif.xgboost",
   nrounds = to_tune(upper = 1000, internal = TRUE),
   early_stopping_rounds = 10,
-  validate = "test"
+  validate = "test",
+  eval_metric = "merror"
 )
 
 # Internal hyperparameter tuning on the pima indians diabetes data set
@@ -68,7 +69,7 @@ instance = tune(
   tsk("iris"),
   learner,
   rsmp("cv", folds = 3),
-  msr("classif.ce")
+  msr("internal_valid_score", minimize = TRUE, select = "merror")
 )
 
 # best performing hyperparameter configuration

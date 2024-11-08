@@ -36,7 +36,7 @@ test_that("TuningInstanceBatchSingleCrit", {
   expect_data_table(a, nrows = 4L)
   a = as.data.table(inst$archive)
   expect_data_table(a, nrows = 4L)
-  expect_true("x_domain_cp" %in% colnames(a))
+  expect_true("x_domain" %in% colnames(a))
   expect_true("dummy.cp.classif" %in% colnames(a))
 })
 
@@ -168,12 +168,12 @@ test_that("check_values flag with parameter set dependencies", {
   terminator = trm("evals", n_evals = 20)
   tuner = tnr("random_search")
 
-  inst = TuningInstanceBatchSingleCrit$new(tsk("boston_housing"), learner,
+  inst = TuningInstanceBatchSingleCrit$new(tsk("mtcars"), learner,
     rsmp("holdout"), msr("regr.mse"), terminator, search_space, check_values = FALSE)
   tuner$optimize(inst)
   expect_named(inst$result_learner_param_vals, c("xx", "cp", "yy"))
 
-  inst = TuningInstanceBatchSingleCrit$new(tsk("boston_housing"), learner,
+  inst = TuningInstanceBatchSingleCrit$new(tsk("mtcars"), learner,
     rsmp("holdout"), msr("regr.mse"), terminator, search_space,
     check_values = TRUE)
   expect_error(tuner$optimize(inst),

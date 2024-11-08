@@ -3,7 +3,7 @@ test_that("ArchiveAsyncTuning access methods work", {
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
@@ -56,7 +56,7 @@ test_that("ArchiveAsyncTuning as.data.table function works", {
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
@@ -71,32 +71,32 @@ test_that("ArchiveAsyncTuning as.data.table function works", {
   # default
   tab = as.data.table(instance$archive)
   expect_data_table(tab, min.rows = 20)
-  expect_names(names(tab), permutation.of = c("state", "cp", "classif.ce", "x_domain_cp", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors"))
+  expect_names(names(tab), permutation.of = c("state", "cp", "classif.ce", "x_domain", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors"))
 
   # extra measure
   tab = as.data.table(instance$archive, measures = msr("classif.acc"))
   expect_data_table(tab, min.rows = 20)
-  expect_names(names(tab), permutation.of = c("state", "cp", "classif.ce", "x_domain_cp", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors", "classif.acc"))
+  expect_names(names(tab), permutation.of = c("state", "cp", "classif.ce", "x_domain", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors", "classif.acc"))
 
   # extra measures
   tab = as.data.table(instance$archive, measures = msrs(c("classif.acc", "classif.mcc")))
   expect_data_table(tab, min.rows = 20)
-  expect_names(names(tab), permutation.of = c("state", "cp", "classif.ce", "x_domain_cp", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors", "classif.acc", "classif.mcc"))
+  expect_names(names(tab), permutation.of = c("state", "cp", "classif.ce", "x_domain", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors", "classif.acc", "classif.mcc"))
 
   # exclude column
   tab = as.data.table(instance$archive, exclude_columns = "timestamp_xs")
   expect_data_table(tab, min.rows = 20)
-  expect_names(names(tab), permutation.of = c("state", "cp", "classif.ce", "x_domain_cp", "runtime_learners", "worker_id", "resample_result", "timestamp_ys", "pid", "keys", "warnings", "errors"))
+  expect_names(names(tab), permutation.of = c("state", "cp", "classif.ce", "x_domain", "runtime_learners", "worker_id", "resample_result", "timestamp_ys", "pid", "keys", "warnings", "errors"))
 
   # exclude columns
   tab = as.data.table(instance$archive, exclude_columns = c("timestamp_xs", "resample_result"))
   expect_data_table(tab, min.rows = 20)
-  expect_names(names(tab), permutation.of = c("state", "cp", "classif.ce", "x_domain_cp", "runtime_learners", "worker_id", "timestamp_ys", "pid", "keys", "warnings", "errors"))
+  expect_names(names(tab), permutation.of = c("state", "cp", "classif.ce", "x_domain", "runtime_learners", "worker_id", "timestamp_ys", "pid", "keys", "warnings", "errors"))
 
   # no exclude
   tab = as.data.table(instance$archive, exclude_columns = NULL)
   expect_data_table(tab, min.rows = 20)
-  expect_names(names(tab), permutation.of = c("state", "cp", "classif.ce", "x_domain_cp", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors"))
+  expect_names(names(tab), permutation.of = c("state", "cp", "classif.ce", "x_domain", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors"))
 
   # no unnest
   tab = as.data.table(instance$archive, unnest = NULL)
@@ -111,7 +111,7 @@ test_that("ArchiveAsyncTuning as.data.table function works without resample resu
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
@@ -125,7 +125,7 @@ test_that("ArchiveAsyncTuning as.data.table function works without resample resu
 
   tab = as.data.table(instance$archive)
   expect_data_table(tab, min.rows = 20)
-  expect_names(names(tab), permutation.of = c("state", "cp", "classif.ce", "x_domain_cp", "runtime_learners", "worker_id", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors"))
+  expect_names(names(tab), permutation.of = c("state", "cp", "classif.ce", "x_domain", "runtime_learners", "worker_id", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors"))
 
   expect_rush_reset(instance$rush)
 })
@@ -135,7 +135,7 @@ test_that("ArchiveAsyncTuning as.data.table function works with empty archive", 
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
@@ -167,7 +167,7 @@ test_that("ArchiveAsyncTuning as.data.table function works with new ids in x_dom
     }
   )
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.rpart"),
@@ -182,7 +182,7 @@ test_that("ArchiveAsyncTuning as.data.table function works with new ids in x_dom
 
   tab = as.data.table(instance$archive)
   expect_data_table(tab, min.rows = 20)
-  expect_names(names(tab), permutation.of = c("state", "x1", "x2", "classif.ce", "x_domain_cp", "x_domain_minsplit", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors"))
+  expect_names(names(tab), permutation.of = c("state", "x1", "x2", "classif.ce", "x_domain", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors"))
 
   expect_rush_reset(instance$rush)
 })
@@ -206,7 +206,7 @@ test_that("ArchiveAsyncTuning as.data.table function works with switched new ids
     }
   )
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.rpart"),
@@ -221,9 +221,38 @@ test_that("ArchiveAsyncTuning as.data.table function works with switched new ids
 
   tab = as.data.table(instance$archive)
   expect_data_table(tab, min.rows = 20)
-  expect_names(names(tab), permutation.of = c("state", "x1", "x2", "classif.ce", "x_domain_cp", "x_domain_minsplit", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors"))
+  expect_names(names(tab), permutation.of = c("state", "x1", "x2", "classif.ce", "x_domain", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors"))
 
   expect_rush_reset(instance$rush)
+})
+
+test_that("Saving ArchiveAsyncTuning works", {
+  skip_on_cran()
+  skip_if_not_installed("rush")
+  flush_redis()
+
+  on.exit({
+    file.remove("instance.rds")
+  })
+
+  rush::rush_plan(n_workers = 2)
+  instance = ti_async(
+    task = tsk("pima"),
+    learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
+    resampling = rsmp("cv", folds = 3),
+    measures = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 20),
+    store_benchmark_result = TRUE
+  )
+  tuner = tnr("async_random_search")
+  tuner$optimize(instance)
+
+  saveRDS(instance, file = "instance.rds")
+
+  loaded_instance = readRDS(file = "instance.rds")
+
+  loaded_instance$reconnect()
+  loaded_instance
 })
 
 # Internal Tuning --------------------------------------------------------------
@@ -233,7 +262,7 @@ test_that("ArchiveAsyncTuning as.data.table function works internally tuned valu
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.debug", validate = 0.2, early_stopping = TRUE, iter = to_tune(upper = 1000, internal = TRUE, aggr = function(x) 99),
@@ -254,3 +283,4 @@ test_that("ArchiveAsyncTuning as.data.table function works internally tuned valu
   expect_names(names(tab), must.include = "internal_tuned_values_iter")
   expect_equal(tab$internal_tuned_values_iter[1], 99)
 })
+

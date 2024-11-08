@@ -128,8 +128,7 @@ Internally created from provided \link[mlr3:Measure]{mlr3::Measure}s.}
 If a rush instance is supplied, the tuning runs without batches.}
 
 \item{\code{internal_search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet} or \code{NULL})\cr
-The internal search space of the tuner. This includes parameters that the learner can optimize internally
-durign \verb{$train()}, such as the number of epochs via early stopping.}
+The internal search space.}
 
 \item{\code{check_values}}{(\code{logical(1)})\cr
 If \code{TRUE} (default), hyperparameter configurations are check for validity.}

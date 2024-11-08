@@ -24,8 +24,8 @@ test_that("extract_inner_tuning_results function works", {
   expect_named(irr, c("iteration", "cp", "classif.ce", "learner_param_vals", "x_domain", "task_id", "learner_id", "resampling_id"))
 
   # cv
-  at_1 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
-  at_2 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
+  at_1 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space, id = "at_1")
+  at_2 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space, id = "at_2")
   resampling_outer = rsmp("cv", folds = 2)
   grid = benchmark_grid(task, list(at_1, at_2), resampling_outer)
   bmr = benchmark(grid, store_models = TRUE)
@@ -36,8 +36,8 @@ test_that("extract_inner_tuning_results function works", {
   expect_equal(unique(ibmr$experiment), c(1, 2))
 
    # repeated cv
-  at_1 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
-  at_2 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
+  at_1 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space, id = "at_1")
+  at_2 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space, id = "at_2")
   resampling_outer = rsmp("repeated_cv", folds = 2, repeats = 3)
   grid = benchmark_grid(task, list(at_1, at_2), resampling_outer)
   bmr = benchmark(grid, store_models = TRUE)
@@ -75,8 +75,8 @@ test_that("extract_inner_tuning_results function works", {
   expect_data_table(extract_inner_tuning_results(rr), nrows = 0, ncols = 0)
 
   # no models
-  at_1 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
-  at_2 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
+  at_1 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space, id = "at_1")
+  at_2 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space, id = "at_2")
   resampling_outer = rsmp("cv", folds = 2)
   grid = benchmark_grid(task, list(at_1, at_2), resampling_outer)
   bmr = benchmark(grid, store_models = FALSE)
@@ -135,16 +135,28 @@ test_that("extract_inner_tuning_results returns tuning_instance", {
   expect_named(tab, c("iteration", "cp", "classif.ce", "learner_param_vals", "x_domain", "tuning_instance", "task_id", "learner_id", "resampling_id"))
   expect_class(tab$tuning_instance[[1]], "TuningInstanceBatchSingleCrit")
 
-  at = auto_tuner(
+  at_1 = auto_tuner(
     tuner =  tnr("random_search"),
     learner = lrn("classif.rpart"),
     resampling = rsmp("holdout"),
     term_evals = 4,
     search_space = TEST_MAKE_PS1(n_dim = 1),
-    store_tuning_instance = TRUE
+    store_tuning_instance = TRUE,
+    id = "at_1"
   )
+
+  at_2 = auto_tuner(
+    tuner =  tnr("random_search"),
+    learner = lrn("classif.rpart"),
+    resampling = rsmp("holdout"),
+    term_evals = 4,
+    search_space = TEST_MAKE_PS1(n_dim = 1),
+    store_tuning_instance = TRUE,
+    id = "at_2"
+  )
+
   resampling_outer = rsmp("cv", folds = 2)
-  grid = benchmark_grid(tsk("iris"), list(at, at), resampling_outer)
+  grid = benchmark_grid(tsk("iris"), list(at_1, at_2), resampling_outer)
   bmr = benchmark(grid, store_models = TRUE)
 
   tab = extract_inner_tuning_results(bmr, tuning_instance = TRUE)

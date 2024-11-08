@@ -101,6 +101,7 @@ Param values for the optimal learner call.}
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="format"><a href='../../bbotk/html/OptimInstance.html#method-OptimInstance-format'><code>bbotk::OptimInstance$format()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstanceAsync" data-id="clear"><a href='../../bbotk/html/OptimInstanceAsync.html#method-OptimInstanceAsync-clear'><code>bbotk::OptimInstanceAsync$clear()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstanceAsync" data-id="print"><a href='../../bbotk/html/OptimInstanceAsync.html#method-OptimInstanceAsync-print'><code>bbotk::OptimInstanceAsync$print()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstanceAsync" data-id="reconnect"><a href='../../bbotk/html/OptimInstanceAsync.html#method-OptimInstanceAsync-reconnect'><code>bbotk::OptimInstanceAsync$reconnect()</code></a></span></li>
 </ul>
 </details>
 }}
@@ -117,6 +118,7 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   measure = NULL,
   terminator,
   search_space = NULL,
+  internal_search_space = NULL,
   store_benchmark_result = TRUE,
   store_models = FALSE,
   check_values = FALSE,
@@ -151,6 +153,12 @@ Stop criterion of the tuning process.}
 Hyperparameter search space. If \code{NULL} (default), the search space is
 constructed from the \link[paradox:to_tune]{paradox::TuneToken} of the learner's parameter set
 (learner$param_set).}
+
+\item{\code{internal_search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet} or \code{NULL})\cr
+The internal search space.}
+
+\item{\code{internal_search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet} or \code{NULL})\cr
+The internal search space.}
 
 \item{\code{store_benchmark_result}}{(\code{logical(1)})\cr
 If \code{TRUE} (default), store resample result of evaluated hyperparameter
@@ -187,6 +195,8 @@ For internal use.
   xdt,
   y,
   learner_param_vals = NULL,
+  extra = NULL,
+  xydt = NULL,
   ...
 )}\if{html}{\out{</div>}}
 }
@@ -204,6 +214,12 @@ Optimal outcome.}
 
 \item{\code{learner_param_vals}}{(List of named \verb{list()s})\cr
 Fixed parameter values of the learner that are neither part of the}
+
+\item{\code{extra}}{(\code{data.table::data.table()})\cr
+Additional information.}
+
+\item{\code{xydt}}{(\code{data.table::data.table()})\cr
+Point, outcome, and additional information (Deprecated).}
 
 \item{\code{...}}{(\code{any})\cr
 ignored.}

@@ -184,7 +184,7 @@ ArchiveAsyncTuning = R6Class("ArchiveAsyncTuning",
 )
 
 #' @export
-as.data.table.ArchiveAsyncTuning = function(x, ..., unnest = c("x_domain", "internal_tuned_values"), exclude_columns = NULL, measures = NULL) {
+as.data.table.ArchiveAsyncTuning = function(x, ..., unnest = "internal_tuned_values", exclude_columns = NULL, measures = NULL) {
   data = x$data_with_state()
   if (!nrow(data)) return(data.table())
 

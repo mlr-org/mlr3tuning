@@ -1,6 +1,6 @@
 Package: mlr3tuning
 Title: Hyperparameter Optimization for 'mlr3'
-Version: 1.0.0.9000
+Version: 1.1.0.9000
 Authors@R: c(
     person("Marc", "Becker", , "marcbecker@posteo.de", role = c("cre", "aut"),
            comment = c(ORCID = "0000-0002-8115-0400")),
@@ -29,7 +29,7 @@ Depends:
     paradox (>= 1.0.1),
     R (>= 3.1.0)
 Imports:
-    bbotk (>= 1.0.1),
+    bbotk (>= 1.2.0),
     checkmate (>= 2.0.0),
     data.table,
     lgr,

@@ -13,13 +13,14 @@ auto_tuner(
   term_time = NULL,
   terminator = NULL,
   search_space = NULL,
+  internal_search_space = NULL,
   store_tuning_instance = TRUE,
   store_benchmark_result = TRUE,
   store_models = FALSE,
   check_values = FALSE,
   callbacks = NULL,
-  validate = NULL,
-  rush = NULL
+  rush = NULL,
+  id = NULL
 )
 }
 \arguments{
@@ -55,6 +56,9 @@ Hyperparameter search space. If \code{NULL} (default), the search space is
 constructed from the \link[paradox:to_tune]{paradox::TuneToken} of the learner's parameter set
 (learner$param_set).}
 
+\item{internal_search_space}{(\link[paradox:ParamSet]{paradox::ParamSet} or \code{NULL})\cr
+The internal search space.}
+
 \item{store_tuning_instance}{(\code{logical(1)})\cr
 If \code{TRUE} (default), stores the internally created \link{TuningInstanceBatchSingleCrit} with all intermediate results in slot \verb{$tuning_instance}.}
 
@@ -76,11 +80,11 @@ computational overhead is reduced.}
 \item{callbacks}{(list of \link[mlr3misc:Callback]{mlr3misc::Callback})\cr
 List of callbacks.}
 
-\item{validate}{(\code{numeric(1)}, \code{"test"}, \code{"predefined"} or \code{NULL})\cr
-How to construct the internal validation data.}
-
 \item{rush}{(\code{Rush})\cr
 If a rush instance is supplied, the tuning runs without batches.}
+
+\item{id}{(\code{character(1)})\cr
+Identifier for the new instance.}
 }
 \value{
 \link{AutoTuner}.

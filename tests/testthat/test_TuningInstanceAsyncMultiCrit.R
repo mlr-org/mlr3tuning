@@ -3,7 +3,7 @@ test_that("initializing TuningInstanceAsyncSingleCrit works", {
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
 
   instance = ti_async(
     task = tsk("pima"),
@@ -29,7 +29,7 @@ test_that("rush controller can be passed to TuningInstanceAsyncSingleCrit", {
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush = rsh(network_id = "remote_network")
+  rush = rush::rsh(network_id = "remote_network")
 
   instance = ti_async(
     task = tsk("pima"),
@@ -52,7 +52,7 @@ test_that("TuningInstanceAsyncSingleCrit can be passed to a tuner", {
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
 
   instance = ti_async(
     task = tsk("pima"),
@@ -74,7 +74,7 @@ test_that("assigning a result to TuningInstanceAsyncSingleCrit works", {
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
 
   instance = ti_async(
     task = tsk("pima"),
@@ -96,7 +96,7 @@ test_that("saving the benchmark result with TuningInstanceRushSingleCrit works",
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
 
   instance = ti_async(
     task = tsk("pima"),
@@ -122,7 +122,7 @@ test_that("saving the models with TuningInstanceRushSingleCrit works", {
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
 
   instance = ti_async(
     task = tsk("pima"),
@@ -149,7 +149,7 @@ test_that("saving the models with TuningInstanceRushSingleCrit works", {
 #   skip_if_not_installed("rush")
 #   flush_redis()
 
-#   rush_plan(n_workers = 2, start_worker_timeout = 10)
+#   rush::rush_plan(n_workers = 2, start_worker_timeout = 10)
 
 #   learner = lrn("classif.debug", segfault_train = 0.2, x = to_tune())
 #   learner$encapsulate = c(train = "callr")
@@ -187,7 +187,7 @@ test_that("Multi-crit internal tuning works", {
   m2 = msr("classif.acc", id = "classif.acc2")
   m2$minimize = TRUE
 
-  rush_plan(n_workers = 2)
+  rush::rush_plan(n_workers = 2)
   instance = ti_async(
     learner = learner,
     task = tsk("sonar"),

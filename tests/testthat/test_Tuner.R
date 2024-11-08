@@ -51,6 +51,8 @@ test_that("we get a result when some subordinate params are not fulfilled", {
 })
 
 test_that("print method workds", {
+  skip_if_not_installed("GenSA")
+
   param_set = ps(p1 = p_lgl())
   param_set$values$p1 = TRUE
   param_classes = "ParamLgl"
@@ -125,6 +127,8 @@ test_that("Tuner works with instantiated resampling", {
 })
 
 test_that("Tuner active bindings work", {
+  skip_if_not_installed("GenSA")
+
   param_set = ps(p1 = p_lgl())
   param_set$values$p1 = TRUE
   param_classes = "ParamLgl"
@@ -265,10 +269,9 @@ test_that("proper error when primary search space is empty", {
 test_that("internal tuning: branching", {
   skip_if_not_installed("mlr3pipelines")
   skip_if(packageVersion("mlr3pipelines") < "0.5.3")
-  requireNamespace("mlr3pipelines")
   # this case is special, because not all internally tuned parameters are present in every iteration, only those that
   # are in the active branch are
-  glrn = ppl("branch", graphs = list(
+  glrn = mlr3pipelines::ppl("branch", graphs = list(
     lrn("classif.debug", id = "lrn1", iter = to_tune(upper = 500, internal = TRUE, aggr = function(x) 1L), early_stopping = TRUE),
     lrn("classif.debug", id = "lrn2", iter = to_tune(upper = 1000, internal = TRUE, aggr = function(x) 2L), early_stopping = TRUE)
   ))
@@ -320,3 +323,115 @@ test_that("internal tuning: error message when primary search space is empty", {
   ), "tnr('internal')", fixed = TRUE)
 })
 
+test_that("parameter transformations can be used with internal tuning", {
+  ti = tune(
+    tuner = tnr("random_search"),
+    learner = lrn("classif.debug",
+      iter = to_tune(upper = 1000, internal = TRUE),
+      x = to_tune(ps(a = p_dbl(0, 0.5), b = p_dbl(0, 0.5), .extra_trafo = function(x, param_set) {
+        list(x = x$a + x$b)
+      })),
+      early_stopping = TRUE, validate = 0.2),
+    task = tsk("iris"),
+    resampling = rsmp("holdout"),
+    term_evals = 2
+  )
+  expect_set_equal(
+    names(ti$result_learner_param_vals),
+    c("x", "iter", "early_stopping")
+  )
+})
+
+test_that("either provide internal_search_space OR tag params with 'internal_tuning'", {
+  expect_error(
+    tune(
+      tuner = tnr("random_search"),
+      learner = lrn("classif.debug",
+        iter = to_tune(upper = 1000, internal = TRUE),
+        x = to_tune(),
+        early_stopping = TRUE, validate = 0.2),
+      task = tsk("iris"),
+      internal_search_space = ps(iter = p_int(upper = 100, aggr = function(x) round(mean(unlist(x))))),
+      resampling = rsmp("holdout"),
+      term_evals = 2
+    ),
+    "Either tag parameters in the `search_space`"
+  )
+})
+
+test_that("Can pass internal_search_space separately", {
+  # 1. primary search space is passed manually
+  ti = tune(
+    tuner = tnr("random_search"),
+    learner = lrn("classif.debug",
+      x = to_tune(),
+      early_stopping = TRUE, validate = 0.2),
+    task = tsk("iris"),
+    internal_search_space = ps(iter = p_int(upper = 100, aggr = function(x) as.integer(mean(unlist(x))))),
+    resampling = rsmp("holdout"),
+    term_evals = 2
+  )
+  expect_true("iter" %in% ti$internal_search_space$ids())
+  expect_true(is.integer(ti$result$internal_tuned_values[[1]]$iter))
+  expect_double(ti$result$x)
+
+  # 2. primary search space is passed via to_tune
+  ti = tune(
+    tuner = tnr("random_search"),
+    learner = lrn("classif.debug",
+      early_stopping = TRUE, validate = 0.2),
+    task = tsk("iris"),
+    search_space = ps(x = p_dbl(0, 1)),
+    internal_search_space = ps(iter = p_int(upper = 100, aggr = function(x) as.integer(mean(unlist(x))))),
+    resampling = rsmp("holdout"),
+    term_evals = 2
+  )
+  expect_true("iter" %in% ti$internal_search_space$ids())
+  expect_true(is.integer(ti$result$internal_tuned_values[[1]]$iter))
+  expect_double(ti$result$x)
+})
+
+test_that("tag internal tune token manually in primary search space", {
+  search_space = ps(
+    x = p_dbl(0, 1),
+    iter = p_int(upper = 100, aggr = function(x) as.integer(mean(unlist(x))), tags = "internal_tuning")
+  )
+  ti = tune(
+    tuner = tnr("random_search"),
+    learner = lrn("classif.debug", early_stopping = TRUE, validate = 0.2),
+    search_space = search_space,
+    task = tsk("iris"),
+    resampling = rsmp("holdout"),
+    term_evals = 2
+  )
+  expect_true("iter" %in% ti$internal_search_space$ids())
+  expect_true(is.integer(ti$result$internal_tuned_values[[1]]$iter))
+  expect_double(ti$result$x)
+})
+
+test_that("Can only pass internal tune tokens one way", {
+  skip_if_not_installed("mlr3pipelines")
+  l1 = lrn("classif.debug", early_stopping = TRUE)
+  l1$id = "l1"
+  l2 = l1$clone()
+  l2$id = "l2"
+
+  l1$param_set$set_values(
+    iter = to_tune(upper = 100, internal = TRUE)
+  )
+  l = ppl("branch", list(l1 = l1, l2 = l2))
+  l = as_learner(l)
+  set_validate(l, 0.2, ids = c("l1", "l2"))
+
+  internal_search_space = ps(
+    l2.iter = p_int(upper = 100, aggr = function(x) as.integer(mean(unlist(x))), tags = "internal_tuning")
+  )
+  expect_error(tune(
+    tuner = tnr("random_search"),
+    learner = l,
+    internal_search_space = internal_search_space,
+    task = tsk("iris"),
+    resampling = rsmp("holdout"),
+    term_evals = 2),
+    "Either tag parameters")
+})

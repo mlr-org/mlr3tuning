@@ -34,7 +34,7 @@ test_that("TunerIrace works with dependencies", {
     terminator = trm("evals", n_evals = 96),
     search_space = search_space)
   tuner = tnr("irace")
-  tuner$optimize(instance)
+  x = capture.output({tuner$optimize(instance)})
 
   archive = instance$archive$data
   expect_true(all(is.na(archive[cp != 0.005, minsplit])))
@@ -53,7 +53,7 @@ test_that("TunerIrace works with logical parameters", {
     terminator = trm("evals", n_evals = 96),
     search_space = search_space)
   tuner = tnr("irace")
-  tuner$optimize(instance)
+  x = capture.output({tuner$optimize(instance)})
   expect_logical(instance$archive$best()$keep_model)
 })
 
@@ -67,7 +67,7 @@ test_that("TunerIrace uses digits", {
     terminator = trm("evals", n_evals = 96),
     search_space = search_space)
   tuner = tnr("irace", nbIterations = 1L, minNbSurvival = 1)
-  expect_data_table(tuner$optimize(instance))
+  x = capture.output({expect_data_table(tuner$optimize(instance))})
 })
 
 test_that("TunerIrace works with unnamed discrete values", {
@@ -81,5 +81,9 @@ test_that("TunerIrace works with unnamed discrete values", {
     terminator = trm("evals", n_evals = 96),
     search_space = search_space)
   tuner = tnr("irace")
+<<<<<<< HEAD
   expect_data_table(tuner$optimize(instance))
+=======
+  x = capture.output({expect_data_table(tuner$optimize(inst))})
+>>>>>>> main
 })

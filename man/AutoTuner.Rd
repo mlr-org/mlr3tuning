@@ -23,11 +23,9 @@ A set timeout is disabled while fitting the final model.
 }
 \section{Validation}{
 
-Both, the tuned \link[mlr3:Learner]{mlr3::Learner} and the \code{AutoTuner} itself can make use of validation data.
-the \verb{$validate} field of the \code{AutoTuner} determines how validation is done during the final model fit.
-In most cases, this should be left as \code{NULL}.
-The \verb{$validate} field of the tuned \link[mlr3:Learner]{mlr3::Learner} specifies how the validation data is constructed
-during the hyperparameter optimization.
+The \code{AutoTuner} itself does \strong{not} have the \code{"validation"} property.
+To enable validation during the tuning, set the \verb{$validate} field of the tuned learner.
+This is also possible via \code{set_validate()}.
 }
 
 \section{Resources}{
@@ -145,9 +143,6 @@ Optimization algorithm.}
 \item{\code{internal_valid_scores}}{Retrieves the inner validation scores as a named \code{list()}.
 Returns \code{NULL} if learner is not trained yet.}
 
-\item{\code{validate}}{How to construct the internal validation data. This parameter can be either \code{NULL},
-a ratio in $(0, 1)$, \code{"test"}, or \code{"predefined"}.}
-
 \item{\code{archive}}{\link{ArchiveBatchTuning}\cr
 Archive of the \link{TuningInstanceBatchSingleCrit}.}
 
@@ -191,6 +186,7 @@ Hash (unique identifier) for this partial object, excluding some components whic
 \if{html}{\out{
 <details><summary>Inherited methods</summary>
 <ul>
+<li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="encapsulate"><a href='../../mlr3/html/Learner.html#method-Learner-encapsulate'><code>mlr3::Learner$encapsulate()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="format"><a href='../../mlr3/html/Learner.html#method-Learner-format'><code>mlr3::Learner$format()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="help"><a href='../../mlr3/html/Learner.html#method-Learner-help'><code>mlr3::Learner$help()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="predict"><a href='../../mlr3/html/Learner.html#method-Learner-predict'><code>mlr3::Learner$predict()</code></a></span></li>
@@ -213,13 +209,14 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   measure = NULL,
   terminator,
   search_space = NULL,
+  internal_search_space = NULL,
   store_tuning_instance = TRUE,
   store_benchmark_result = TRUE,
   store_models = FALSE,
   check_values = FALSE,
   callbacks = NULL,
   rush = NULL,
-  validate = NULL
+  id = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -250,6 +247,9 @@ Hyperparameter search space. If \code{NULL} (default), the search space is
 constructed from the \link[paradox:to_tune]{paradox::TuneToken} of the learner's parameter set
 (learner$param_set).}
 
+\item{\code{internal_search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet} or \code{NULL})\cr
+The internal search space.}
+
 \item{\code{store_tuning_instance}}{(\code{logical(1)})\cr
 If \code{TRUE} (default), stores the internally created \link{TuningInstanceBatchSingleCrit} with all intermediate results in slot \verb{$tuning_instance}.}
 
@@ -274,8 +274,8 @@ List of callbacks.}
 \item{\code{rush}}{(\code{Rush})\cr
 If a rush instance is supplied, the tuning runs without batches.}
 
-\item{\code{validate}}{(\code{numeric(1)}, \code{"test"}, \code{"predefined"} or \code{NULL})\cr
-How to construct the internal validation data.}
+\item{\code{id}}{(\code{character(1)})\cr
+Identifier for the new instance.}
 }
 \if{html}{\out{</div>}}
 }

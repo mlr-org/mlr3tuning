@@ -24,8 +24,8 @@ test_that("extract_inner_tuning_archives function works", {
   expect_named(irr, c("iteration", "cp", "classif.ce", "x_domain_cp", "runtime_learners", "timestamp", "batch_nr", "resample_result", "task_id", "learner_id", "resampling_id", "errors", "warnings"), ignore.order = TRUE)
 
   # cv
-  at_1 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
-  at_2 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
+  at_1 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space, id = "at_1")
+  at_2 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space, id = "at_2")
   resampling_outer = rsmp("cv", folds = 2)
   grid = benchmark_grid(task, list(at_1, at_2), resampling_outer)
   bmr = benchmark(grid, store_models = TRUE)
@@ -36,8 +36,8 @@ test_that("extract_inner_tuning_archives function works", {
   expect_equal(unique(ibmr$experiment), c(1, 2))
 
    # repeated cv
-  at_1 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
-  at_2 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
+  at_1 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space, id = "at_1")
+  at_2 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space, id = "at_2")
   resampling_outer = rsmp("repeated_cv", folds = 2, repeats = 3)
   grid = benchmark_grid(task, list(at_1, at_2), resampling_outer)
   bmr = benchmark(grid, store_models = TRUE)
@@ -75,8 +75,8 @@ test_that("extract_inner_tuning_archives function works", {
   expect_data_table(extract_inner_tuning_archives(rr), nrows = 0, ncols = 0)
 
   # no models
-  at_1 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
-  at_2 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space)
+  at_1 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space, id = "at_1")
+  at_2 = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te, tuner = tuner, search_space, id = "at_2")
   resampling_outer = rsmp("cv", folds = 2)
   grid = benchmark_grid(task, list(at_1, at_2), resampling_outer)
   bmr = benchmark(grid, store_models = FALSE)
