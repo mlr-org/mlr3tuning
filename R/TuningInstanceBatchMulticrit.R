@@ -90,7 +90,7 @@ TuningInstanceBatchMultiCrit = R6Class("TuningInstanceBatchMultiCrit",
       callbacks = NULL
       ) {
       learner = assert_learner(as_learner(learner, clone = TRUE))
-      callbacks = assert_batch_tuning_callbacks(as_callbacks(callbacks), null_ok = TRUE)
+      callbacks = assert_batch_tuning_callbacks(as_callbacks(callbacks))
 
       # tune token and search space
       if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token"))) {
