@@ -26,15 +26,19 @@ callback_batch_tuning("mlr3tuning.backup",
 \describe{
 \item{\code{on_eval_after_design}}{(\verb{function()})\cr
 Stage called after design is created.
-Called in \code{ObjectiveTuning$eval_many()}.}
+Called in \code{ObjectiveTuningBatch$eval_many()}.}
 
 \item{\code{on_eval_after_benchmark}}{(\verb{function()})\cr
 Stage called after hyperparameter configurations are evaluated.
-Called in \code{ObjectiveTuning$eval_many()}.}
+Called in \code{ObjectiveTuningBatch$eval_many()}.}
 
 \item{\code{on_eval_before_archive}}{(\verb{function()})\cr
 Stage called before performance values are written to the archive.
-Called in \code{ObjectiveTuning$eval_many()}.}
+Called in \code{ObjectiveTuningBatch$eval_many()}.}
+
+\item{\code{on_tuning_result_begin}}{(\verb{function()})\cr
+Stage called before the results are written.
+Called in \verb{TuningInstance*$assign_result()}.}
 }
 \if{html}{\out{</div>}}
 }

@@ -29,6 +29,9 @@ The benchmark result of the latest batch.}
 Aggregated performance scores and training time of the latest batch.
 This data table is passed to the archive.
 A callback can add additional columns which are also written to the archive.}
+
+\item{\code{result_learner_param_vals}}{(list())\cr
+The learner parameter values passed to \code{instance$assign_result()}.}
 }
 \if{html}{\out{</div>}}
 }

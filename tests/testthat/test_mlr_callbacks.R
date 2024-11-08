@@ -412,4 +412,42 @@ test_that("async save logs callback works", {
   expect_data_table(instance$archive$data$log[[1]][[1]])
 })
 
+# one se rule callback --------------------------------------------------------
 
+test_that("one se rule callback works", {
+
+  instance = tune(
+    tuner = tnr("random_search", batch_size = 15),
+    task = tsk("pima"),
+    learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
+    resampling = rsmp("cv", folds = 3),
+    measures = msr("classif.ce"),
+    term_evals = 30,
+    callbacks = clbk("mlr3tuning.one_se_rule")
+  )
+
+  expect_numeric(instance$archive$data$n_features)
+  expect_numeric(instance$result$n_features)
+})
+
+test_that("one se rule callback works", {
+  skip_on_cran()
+  skip_if_not_installed("rush")
+  flush_redis()
+
+  rush::rush_plan(n_workers = 2)
+  instance = ti_async(
+    task = tsk("pima"),
+    learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
+    resampling = rsmp("cv", folds = 3),
+    measures = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 5),
+    callbacks = clbk("mlr3tuning.async_one_se_rule")
+  )
+
+  tuner = tnr("async_random_search")
+  tuner$optimize(instance)
+
+  expect_numeric(instance$archive$data$n_features)
+  expect_numeric(instance$result$n_features)
+})
