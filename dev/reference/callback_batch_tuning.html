@@ -14,7 +14,9 @@ Start Tuning
         End Evaluation
          - on_optimizer_after_eval
     End Tuner Batch
-     - on_result
+     - on_tuning_result_begin
+     - on_result_begin
+     - on_result_end
      - on_optimization_end
 End Tuning
 
@@ -34,7 +36,9 @@ Start Tuning
         End Evaluation
          - on_optimizer_after_eval
     End Tuner Batch
-     - on_result
+     - on_tuning_result_begin
+     - on_result_begin
+     - on_result_end
      - on_optimization_end
 End Tuning
 
@@ -98,9 +102,11 @@ The stages are prefixed with <code>on_*</code>.</p>
 <span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>        End Evaluation</span>
 <span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>         <span class="sc">-</span> on_optimizer_after_eval</span>
 <span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>    End Tuner Batch</span>
-<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>     <span class="sc">-</span> on_result</span>
-<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>     <span class="sc">-</span> on_optimization_end</span>
-<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>End Tuning</span></code></pre><p></p></div>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>     <span class="sc">-</span> on_tuning_result_begin</span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>     <span class="sc">-</span> on_result_begin</span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>     <span class="sc">-</span> on_result_end</span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>     <span class="sc">-</span> on_optimization_end</span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>End Tuning</span></code></pre><p></p></div>
 <p>See also the section on parameters for more information on the stages.
 A tuning callback works with <a href="ContextBatchTuning.html">ContextBatchTuning</a>.</p>
     </div>
@@ -117,6 +123,9 @@ A tuning callback works with <a href="ContextBatchTuning.html">ContextBatchTunin
 <span>  on_eval_after_benchmark <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  on_eval_before_archive <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  on_optimizer_after_eval <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  on_tuning_result_begin <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  on_result_begin <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  on_result_end <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  on_result <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  on_optimization_end <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -145,52 +154,89 @@ The referenced help package can be opened via method <code>$help()</code>.</p></
 <dt id="arg-on-optimization-begin">on_optimization_begin<a class="anchor" aria-label="anchor" href="#arg-on-optimization-begin"></a></dt>
 <dd><p>(<code>function()</code>)<br>
 Stage called at the beginning of the optimization.
-Called in <code>Optimizer$optimize()</code>.</p></dd>
+Called in <code>Optimizer$optimize()</code>.
+The functions must have two arguments named <code>callback</code> and <code>context</code>.</p></dd>
 
 
 <dt id="arg-on-optimizer-before-eval">on_optimizer_before_eval<a class="anchor" aria-label="anchor" href="#arg-on-optimizer-before-eval"></a></dt>
 <dd><p>(<code>function()</code>)<br>
 Stage called after the optimizer proposes points.
-Called in <code>OptimInstance$eval_batch()</code>.</p></dd>
+Called in <code>OptimInstance$eval_batch()</code>.
+The functions must have two arguments named <code>callback</code> and <code>context</code>.
+The argument of <code>$eval_batch(xdt)</code> is available in <code>context</code>.</p></dd>
 
 
 <dt id="arg-on-eval-after-design">on_eval_after_design<a class="anchor" aria-label="anchor" href="#arg-on-eval-after-design"></a></dt>
 <dd><p>(<code>function()</code>)<br>
 Stage called after the design is created.
-Called in <code>ObjectiveTuning$eval_many()</code>.
-The context available is <a href="ContextBatchTuning.html">ContextBatchTuning</a>.</p></dd>
+Called in <code>ObjectiveTuningBatch$eval_many()</code>.
+The functions must have two arguments named <code>callback</code> and <code>context</code>.
+The arguments of <code>$eval_many(xss, resampling)</code> are available in <code>context</code>.
+Additionally, the <code>design</code> is available in <code>context</code>.</p></dd>
 
 
 <dt id="arg-on-eval-after-benchmark">on_eval_after_benchmark<a class="anchor" aria-label="anchor" href="#arg-on-eval-after-benchmark"></a></dt>
 <dd><p>(<code>function()</code>)<br>
 Stage called after hyperparameter configurations are evaluated.
-Called in <code>ObjectiveTuning$eval_many()</code>.
-The context available is <a href="ContextBatchTuning.html">ContextBatchTuning</a>.</p></dd>
+Called in <code>ObjectiveTuningBatch$eval_many()</code>.
+The functions must have two arguments named <code>callback</code> and <code>context</code>.
+The <code>benchmark_result</code> is available in <code>context</code>.</p></dd>
 
 
 <dt id="arg-on-eval-before-archive">on_eval_before_archive<a class="anchor" aria-label="anchor" href="#arg-on-eval-before-archive"></a></dt>
 <dd><p>(<code>function()</code>)<br>
 Stage called before performance values are written to the archive.
-Called in <code>ObjectiveTuning$eval_many()</code>.
-The context available is <a href="ContextBatchTuning.html">ContextBatchTuning</a>.</p></dd>
+Called in <code>ObjectiveTuningBatch$eval_many()</code>.
+The functions must have two arguments named <code>callback</code> and <code>context</code>.
+The <code>aggregated_performance</code> is available in <code>context</code>.</p></dd>
 
 
 <dt id="arg-on-optimizer-after-eval">on_optimizer_after_eval<a class="anchor" aria-label="anchor" href="#arg-on-optimizer-after-eval"></a></dt>
 <dd><p>(<code>function()</code>)<br>
 Stage called after points are evaluated.
-Called in <code>OptimInstance$eval_batch()</code>.</p></dd>
+Called in <code>OptimInstance$eval_batch()</code>.
+The functions must have two arguments named <code>callback</code> and <code>context</code>.
+The new configurations and performances in <code>instance$archive</code> are available in <code>context</code>.</p></dd>
+
+
+<dt id="arg-on-tuning-result-begin">on_tuning_result_begin<a class="anchor" aria-label="anchor" href="#arg-on-tuning-result-begin"></a></dt>
+<dd><p>(<code>function()</code>)<br>
+Stage called at the beginning of the result writing.
+Called in <code>TuningInstanceBatch$assign_result()</code>.
+The functions must have two arguments named <code>callback</code> and <code>context</code>.
+The arguments of <code>$assign_result(xdt, y, learner_param_vals, extra)</code> are available in <code>context</code>.</p></dd>
+
+
+<dt id="arg-on-result-begin">on_result_begin<a class="anchor" aria-label="anchor" href="#arg-on-result-begin"></a></dt>
+<dd><p>(<code>function()</code>)<br>
+Stage called at the beginning of the result writing.
+Called in <code>OptimInstance$assign_result()</code>.
+The functions must have two arguments named <code>callback</code> and <code>context</code>.
+The arguments of <code>$assign_result(xdt, y, extra)</code> are available in <code>context</code>.</p></dd>
+
+
+<dt id="arg-on-result-end">on_result_end<a class="anchor" aria-label="anchor" href="#arg-on-result-end"></a></dt>
+<dd><p>(<code>function()</code>)<br>
+Stage called after the result is written.
+Called in <code>OptimInstance$assign_result()</code>.
+The functions must have two arguments named <code>callback</code> and <code>context</code>.
+The final result <code>instance$result</code> is available in <code>context</code>.</p></dd>
 
 
 <dt id="arg-on-result">on_result<a class="anchor" aria-label="anchor" href="#arg-on-result"></a></dt>
 <dd><p>(<code>function()</code>)<br>
+Deprecated.
+Use <code>on_result_end</code> instead.
 Stage called after the result is written.
-Called in <code>OptimInstance$assign_result()</code>.</p></dd>
+Called in <code>OptimInstance$assign_result()</code>.
+The functions must have two arguments named <code>callback</code> and <code>context</code>.</p></dd>
 
 
 <dt id="arg-on-optimization-end">on_optimization_end<a class="anchor" aria-label="anchor" href="#arg-on-optimization-end"></a></dt>
 <dd><p>(<code>function()</code>)<br>
 Stage called at the end of the optimization.
-Called in <code>Optimizer$optimize()</code>.</p></dd>
+Called in <code>Optimizer$optimize()</code>.
+The functions must have two arguments named <code>callback</code> and <code>context</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">

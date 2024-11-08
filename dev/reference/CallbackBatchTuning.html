@@ -68,19 +68,25 @@ For more information on tuning callbacks see <code><a href="callback_batch_tunin
     <p></p><div class="r6-fields"><dl><dt><code>on_eval_after_design</code></dt>
 <dd><p>(<code>function()</code>)<br>
 Stage called after design is created.
-Called in <code>ObjectiveTuning$eval_many()</code>.</p></dd>
+Called in <code>ObjectiveTuningBatch$eval_many()</code>.</p></dd>
 
 
 <dt><code>on_eval_after_benchmark</code></dt>
 <dd><p>(<code>function()</code>)<br>
 Stage called after hyperparameter configurations are evaluated.
-Called in <code>ObjectiveTuning$eval_many()</code>.</p></dd>
+Called in <code>ObjectiveTuningBatch$eval_many()</code>.</p></dd>
 
 
 <dt><code>on_eval_before_archive</code></dt>
 <dd><p>(<code>function()</code>)<br>
 Stage called before performance values are written to the archive.
-Called in <code>ObjectiveTuning$eval_many()</code>.</p></dd>
+Called in <code>ObjectiveTuningBatch$eval_many()</code>.</p></dd>
+
+
+<dt><code>on_tuning_result_begin</code></dt>
+<dd><p>(<code>function()</code>)<br>
+Stage called before the results are written.
+Called in <code>TuningInstance*$assign_result()</code>.</p></dd>
 
 
 </dl><p></p></div>

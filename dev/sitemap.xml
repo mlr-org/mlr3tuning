@@ -28,6 +28,8 @@
 <url><loc>https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceSingleCrit.html</loc></url>
 <url><loc>https://mlr3tuning.mlr-org.com/dev/reference/as_search_space.html</loc></url>
 <url><loc>https://mlr3tuning.mlr-org.com/dev/reference/as_tuner.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/assert_async_tuning_callback.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/assert_batch_tuning_callback.html</loc></url>
 <url><loc>https://mlr3tuning.mlr-org.com/dev/reference/auto_tuner.html</loc></url>
 <url><loc>https://mlr3tuning.mlr-org.com/dev/reference/callback_async_tuning.html</loc></url>
 <url><loc>https://mlr3tuning.mlr-org.com/dev/reference/callback_batch_tuning.html</loc></url>
@@ -40,6 +42,7 @@
 <url><loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr3tuning.async_save_logs.html</loc></url>
 <url><loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr3tuning.backup.html</loc></url>
 <url><loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr3tuning.measures.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr3tuning.one_se_rule.html</loc></url>
 <url><loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr3tuning_assertions.html</loc></url>
 <url><loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr_tuners.html</loc></url>
 <url><loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr_tuners_async_design_points.html</loc></url>

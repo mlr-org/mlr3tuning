@@ -43,7 +43,11 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="mlr3tuning-development-version">mlr3tuning (development version)<a class="anchor" aria-label="anchor" href="#mlr3tuning-development-version"></a></h2>
-<ul><li>compatibility: mlr3 0.22.0</li>
+<ul><li>feat: Add new callback <code>clbk("mlr3tuning.one_se_rule")</code> that selects the the hyperparameter configuration with the smallest feature set within one standard error of the best.</li>
+<li>feat: Add new stages <code>on_tuning_result_begin</code> and <code>on_result_begin</code> to <code>CallbackAsyncTuning</code> and <code>CallbackBatchTuning</code>.</li>
+<li>refactor: Rename stage <code>on_result</code> to <code>on_result_end</code> in <code>CallbackAsyncTuning</code> and <code>CallbackBatchTuning</code>.</li>
+<li>docs: Extend the <code>CallbackAsyncTuning</code> and <code>CallbackBatchTuning</code> documentation.</li>
+<li>compatibility: mlr3 0.22.0</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.1.0" id="mlr3tuning-110">mlr3tuning 1.1.0<a class="anchor" aria-label="anchor" href="#mlr3tuning-110"></a></h2><p class="text-muted">CRAN release: 2024-10-27</p>
