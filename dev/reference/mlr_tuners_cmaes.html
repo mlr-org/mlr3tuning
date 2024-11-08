@@ -9,7 +9,7 @@ Calls adagio::pureCMAES() from package adagio."><meta property="og:image" conten
 
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.0.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.2.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -104,10 +104,20 @@ See also the documentation of <a href="https://bbotk.mlr-org.com/" class="extern
     <h2 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a></h2>
 
 
-<p>There are several sections about hyperparameter optimization in the <a href="https://mlr3book.mlr-org.com" class="external-link">mlr3book</a>.</p><ul><li><p>An overview of all tuners can be found on our <a href="https://mlr-org.com/tuners.html" class="external-link">website</a>.</p></li>
-<li><p>Learn more about <a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-tuner" class="external-link">tuners</a>.</p></li>
-</ul><p>The <a href="https://mlr-org.com/gallery-all-optimization.html" class="external-link">gallery</a> features a collection of case studies and demos about optimization.</p><ul><li><p>Use the <a href="https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/" class="external-link">Hyperband</a> optimizer with different budget parameters.</p></li>
-</ul></div>
+<p>There are several sections about hyperparameter optimization in the <a href="https://mlr3book.mlr-org.com" class="external-link">mlr3book</a>.</p><ul><li><p>Getting started with <a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html" class="external-link">hyperparameter optimization</a>.</p></li>
+<li><p>An overview of all tuners can be found on our <a href="https://mlr-org.com/tuners.html" class="external-link">website</a>.</p></li>
+<li><p><a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-model-tuning" class="external-link">Tune</a> a support vector machine on the Sonar data set.</p></li>
+<li><p>Learn about <a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-defining-search-spaces" class="external-link">tuning spaces</a>.</p></li>
+<li><p>Estimate the model performance with <a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-nested-resampling" class="external-link">nested resampling</a>.</p></li>
+<li><p>Learn about <a href="https://mlr3book.mlr-org.com/chapters/chapter5/advanced_tuning_methods_and_black_box_optimization.html#sec-multi-metrics-tuning" class="external-link">multi-objective optimization</a>.</p></li>
+<li><p>Simultaneously optimize hyperparameters and use <a href="https://mlr3book.mlr-org.com/chapters/chapter15/predsets_valid_inttune.html" class="external-link">early stopping</a> with XGBoost.</p></li>
+<li><p><a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-autotuner" class="external-link">Automate</a> the tuning.</p></li>
+</ul><p>The <a href="https://mlr-org.com/gallery-all-optimization.html" class="external-link">gallery</a> features a collection of case studies and demos about optimization.</p><ul><li><p>Learn more advanced methods with the <a href="https://mlr-org.com/gallery/series/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/" class="external-link">Practical Tuning Series</a>.</p></li>
+<li><p>Learn about <a href="https://mlr-org.com/gallery/optimization/2023-01-16-hotstart/" class="external-link">hotstarting</a> models.</p></li>
+<li><p>Run the <a href="https://mlr-org.com/gallery/optimization/2023-01-31-default-configuration/" class="external-link">default hyperparameter configuration</a> of learners as a baseline.</p></li>
+<li><p>Use the <a href="https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/" class="external-link">Hyperband</a> optimizer with different budget parameters.</p></li>
+</ul><p>The <a href="https://cheatsheets.mlr-org.com/mlr3tuning.pdf" class="external-link">cheatsheet</a> summarizes the most important functions of mlr3tuning.</p>
+    </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other Tuner:
@@ -197,26 +207,26 @@ See also the documentation of <a href="https://bbotk.mlr-org.com/" class="extern
 <span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;num&gt;     &lt;num&gt;     &lt;num&gt;      &lt;num&gt;            &lt;num&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1: -7.336334 15.209063 107.23382 0.07826087            0.005</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  2: -9.210340 64.000000  22.89758 0.12173913            0.005</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -2.621780 31.763900 128.00000 0.07826087            0.005</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -2.302585  1.000000 106.26335 0.07826087            0.006</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -2.302585 62.039211 128.00000 0.12173913            0.023</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -2.621780 31.763900 128.00000 0.07826087            0.006</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -2.302585  1.000000 106.26335 0.07826087            0.005</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -2.302585 62.039211 128.00000 0.12173913            0.006</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  6: -4.416664 54.268412 108.94055 0.07826087            0.006</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -2.302585  4.755131  72.28910 0.07826087            0.005</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -4.734599 30.835601  24.51517 0.07826087            0.005</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -2.302585  4.755131  72.28910 0.07826087            0.006</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -4.734599 30.835601  24.51517 0.07826087            0.006</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  9: -9.210340 39.906483  97.63893 0.07826087            0.005</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -6.242816 18.946310  96.50841 0.07826087            0.006</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -6.242816 18.946310  96.50841 0.07826087            0.005</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>               timestamp warnings errors  x_domain batch_nr  resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                  &lt;POSc&gt;    &lt;int&gt;  &lt;int&gt;    &lt;list&gt;    &lt;int&gt;           &lt;list&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: 2024-11-08 10:18:32        0      0 &lt;list[3]&gt;        1 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: 2024-11-08 10:18:32        0      0 &lt;list[3]&gt;        2 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: 2024-11-08 10:18:32        0      0 &lt;list[3]&gt;        3 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: 2024-11-08 10:18:32        0      0 &lt;list[3]&gt;        4 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: 2024-11-08 10:18:32        0      0 &lt;list[3]&gt;        5 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: 2024-11-08 10:18:32        0      0 &lt;list[3]&gt;        6 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: 2024-11-08 10:18:32        0      0 &lt;list[3]&gt;        7 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: 2024-11-08 10:18:32        0      0 &lt;list[3]&gt;        8 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: 2024-11-08 10:18:32        0      0 &lt;list[3]&gt;        9 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: 2024-11-08 10:18:32        0      0 &lt;list[3]&gt;       10 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: 2024-11-08 15:17:52        0      0 &lt;list[3]&gt;        1 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2: 2024-11-08 15:17:52        0      0 &lt;list[3]&gt;        2 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: 2024-11-08 15:17:52        0      0 &lt;list[3]&gt;        3 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: 2024-11-08 15:17:52        0      0 &lt;list[3]&gt;        4 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: 2024-11-08 15:17:52        0      0 &lt;list[3]&gt;        5 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: 2024-11-08 15:17:52        0      0 &lt;list[3]&gt;        6 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: 2024-11-08 15:17:52        0      0 &lt;list[3]&gt;        7 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: 2024-11-08 15:17:52        0      0 &lt;list[3]&gt;        8 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: 2024-11-08 15:17:52        0      0 &lt;list[3]&gt;        9 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: 2024-11-08 15:17:53        0      0 &lt;list[3]&gt;       10 &lt;ResampleResult&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># fit final model on complete data set</span></span></span>
 <span class="r-in"><span><span class="va">learner</span><span class="op">$</span><span class="va">param_set</span><span class="op">$</span><span class="va">values</span> <span class="op">=</span> <span class="va">instance</span><span class="op">$</span><span class="va">result_learner_param_vals</span></span></span>

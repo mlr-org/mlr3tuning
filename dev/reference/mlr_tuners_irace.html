@@ -9,7 +9,7 @@ Calls irace::irace() from package irace."><meta property="og:image" content="htt
 
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.0.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.2.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -127,10 +127,20 @@ See also the documentation of <a href="https://bbotk.mlr-org.com/" class="extern
     <h2 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a></h2>
 
 
-<p>There are several sections about hyperparameter optimization in the <a href="https://mlr3book.mlr-org.com" class="external-link">mlr3book</a>.</p><ul><li><p>An overview of all tuners can be found on our <a href="https://mlr-org.com/tuners.html" class="external-link">website</a>.</p></li>
-<li><p>Learn more about <a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-tuner" class="external-link">tuners</a>.</p></li>
-</ul><p>The <a href="https://mlr-org.com/gallery-all-optimization.html" class="external-link">gallery</a> features a collection of case studies and demos about optimization.</p><ul><li><p>Use the <a href="https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/" class="external-link">Hyperband</a> optimizer with different budget parameters.</p></li>
-</ul></div>
+<p>There are several sections about hyperparameter optimization in the <a href="https://mlr3book.mlr-org.com" class="external-link">mlr3book</a>.</p><ul><li><p>Getting started with <a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html" class="external-link">hyperparameter optimization</a>.</p></li>
+<li><p>An overview of all tuners can be found on our <a href="https://mlr-org.com/tuners.html" class="external-link">website</a>.</p></li>
+<li><p><a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-model-tuning" class="external-link">Tune</a> a support vector machine on the Sonar data set.</p></li>
+<li><p>Learn about <a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-defining-search-spaces" class="external-link">tuning spaces</a>.</p></li>
+<li><p>Estimate the model performance with <a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-nested-resampling" class="external-link">nested resampling</a>.</p></li>
+<li><p>Learn about <a href="https://mlr3book.mlr-org.com/chapters/chapter5/advanced_tuning_methods_and_black_box_optimization.html#sec-multi-metrics-tuning" class="external-link">multi-objective optimization</a>.</p></li>
+<li><p>Simultaneously optimize hyperparameters and use <a href="https://mlr3book.mlr-org.com/chapters/chapter15/predsets_valid_inttune.html" class="external-link">early stopping</a> with XGBoost.</p></li>
+<li><p><a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-autotuner" class="external-link">Automate</a> the tuning.</p></li>
+</ul><p>The <a href="https://mlr-org.com/gallery-all-optimization.html" class="external-link">gallery</a> features a collection of case studies and demos about optimization.</p><ul><li><p>Learn more advanced methods with the <a href="https://mlr-org.com/gallery/series/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/" class="external-link">Practical Tuning Series</a>.</p></li>
+<li><p>Learn about <a href="https://mlr-org.com/gallery/optimization/2023-01-16-hotstart/" class="external-link">hotstarting</a> models.</p></li>
+<li><p>Run the <a href="https://mlr-org.com/gallery/optimization/2023-01-31-default-configuration/" class="external-link">default hyperparameter configuration</a> of learners as a baseline.</p></li>
+<li><p>Use the <a href="https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/" class="external-link">Hyperband</a> optimizer with different budget parameters.</p></li>
+</ul><p>The <a href="https://cheatsheets.mlr-org.com/mlr3tuning.pdf" class="external-link">cheatsheet</a> summarizes the most important functions of mlr3tuning.</p>
+    </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other Tuner:
@@ -228,7 +238,7 @@ result is returned.</p><div class="section">
 <span class="r-in"><span>  measure <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">msr</a></span><span class="op">(</span><span class="st">"classif.ce"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  term_evals <span class="op">=</span> <span class="fl">42</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> # 2024-11-08 10:18:39 UTC: Initialization</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # 2024-11-08 15:17:59 UTC: Initialization</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> # Elitist race</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> # Elitist new instances: 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> # Elitist limit: 2</span>
@@ -241,7 +251,7 @@ result is returned.</p><div class="section">
 <span class="r-out co"><span class="r-pr">#&gt;</span> # mu: 5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> # deterministic: FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> # 2024-11-08 10:18:39 UTC: Iteration 1 of 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # 2024-11-08 15:17:59 UTC: Iteration 1 of 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> # experimentsUsedSoFar: 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> # remainingBudget: 42</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> # currentBudget: 21</span>
@@ -268,10 +278,10 @@ result is returned.</p><div class="section">
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .ID.               cp .PARENT.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3    3 -2.7229877489945       NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> # 2024-11-08 10:18:39 UTC: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # 2024-11-08 15:17:59 UTC: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                 cp</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3 -2.7229877489945</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> # 2024-11-08 10:18:39 UTC: Iteration 2 of 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # 2024-11-08 15:17:59 UTC: Iteration 2 of 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> # experimentsUsedSoFar: 15</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> # remainingBudget: 27</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> # currentBudget: 27</span>
@@ -300,11 +310,11 @@ result is returned.</p><div class="section">
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .ID.                cp .PARENT.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5    5 -3.17982221206359        3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> # 2024-11-08 10:18:40 UTC: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # 2024-11-08 15:18:00 UTC: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                  cp</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5 -3.17982221206359</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6 -3.29396533989700</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> # 2024-11-08 10:18:40 UTC: Stopped because there is not enough budget left to race more than the minimum (2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # 2024-11-08 15:18:00 UTC: Stopped because there is not enough budget left to race more than the minimum (2)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> # You may either increase the budget or set 'minNbSurvival' to a lower value</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> # Iteration: 3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> # nbIterations: 3</span>
@@ -314,7 +324,7 @@ result is returned.</p><div class="section">
 <span class="r-out co"><span class="r-pr">#&gt;</span> # currentBudget: 4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> # number of elites: 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> # nbConfigurations: 2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> # Total CPU user time: 1.356, CPU sys time: 0.036, Wall-clock time: 1.392</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Total CPU user time: 1.384, CPU sys time: 0.032, Wall-clock time: 1.417</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># best performing hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="va">instance</span><span class="op">$</span><span class="va">result</span></span></span>
@@ -326,44 +336,44 @@ result is returned.</p><div class="section">
 <span class="r-in"><span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            cp classif.ce runtime_learners           timestamp  race  step</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;num&gt;      &lt;num&gt;            &lt;num&gt;              &lt;POSc&gt; &lt;num&gt; &lt;int&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -8.192526  0.3085938            0.007 2024-11-08 10:18:39     1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -8.612223  0.3085938            0.006 2024-11-08 10:18:39     1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -2.722988  0.2812500            0.006 2024-11-08 10:18:39     1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -8.192526  0.3359375            0.007 2024-11-08 10:18:39     1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -8.612223  0.3359375            0.007 2024-11-08 10:18:39     1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -2.722988  0.2539062            0.006 2024-11-08 10:18:39     1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -8.192526  0.2851562            0.006 2024-11-08 10:18:39     1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -8.612223  0.2851562            0.006 2024-11-08 10:18:39     1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -2.722988  0.2460938            0.006 2024-11-08 10:18:39     1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -8.192526  0.2617188            0.007 2024-11-08 10:18:39     1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11: -8.612223  0.2617188            0.006 2024-11-08 10:18:39     1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12: -2.722988  0.2148438            0.006 2024-11-08 10:18:39     1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13: -8.192526  0.2382812            0.007 2024-11-08 10:18:39     1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14: -8.612223  0.2382812            0.007 2024-11-08 10:18:39     1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15: -2.722988  0.2304688            0.006 2024-11-08 10:18:39     1     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16: -2.722988  0.2890625            0.006 2024-11-08 10:18:40     2     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17: -3.680872  0.2734375            0.006 2024-11-08 10:18:40     2     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18: -3.179822  0.2734375            0.006 2024-11-08 10:18:40     2     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19: -3.293965  0.2734375            0.006 2024-11-08 10:18:40     2     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20: -3.680872  0.2460938            0.006 2024-11-08 10:18:40     2     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21: -3.179822  0.2539062            0.006 2024-11-08 10:18:40     2     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22: -3.293965  0.2539062            0.007 2024-11-08 10:18:40     2     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23: -3.680872  0.2148438            0.007 2024-11-08 10:18:40     2     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24: -3.179822  0.2148438            0.006 2024-11-08 10:18:40     2     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25: -3.293965  0.2148438            0.005 2024-11-08 10:18:40     2     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26: -3.680872  0.2460938            0.007 2024-11-08 10:18:40     2     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27: -3.179822  0.2460938            0.006 2024-11-08 10:18:40     2     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28: -3.293965  0.2460938            0.007 2024-11-08 10:18:40     2     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29: -3.680872  0.2304688            0.006 2024-11-08 10:18:40     2     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30: -3.179822  0.2304688            0.006 2024-11-08 10:18:40     2     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31: -3.293965  0.2304688            0.006 2024-11-08 10:18:40     2     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32: -3.680872  0.2968750            0.007 2024-11-08 10:18:40     2     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 33: -3.179822  0.2968750            0.006 2024-11-08 10:18:40     2     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 34: -3.293965  0.2968750            0.006 2024-11-08 10:18:40     2     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 35: -2.722988  0.2500000            0.006 2024-11-08 10:18:40     2     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 36: -3.680872  0.2617188            0.025 2024-11-08 10:18:40     2     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 37: -3.179822  0.2500000            0.006 2024-11-08 10:18:40     2     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 38: -3.293965  0.2500000            0.006 2024-11-08 10:18:40     2     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -8.192526  0.3085938            0.007 2024-11-08 15:17:59     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -8.612223  0.3085938            0.007 2024-11-08 15:17:59     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -2.722988  0.2812500            0.006 2024-11-08 15:17:59     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -8.192526  0.3359375            0.007 2024-11-08 15:17:59     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -8.612223  0.3359375            0.007 2024-11-08 15:17:59     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -2.722988  0.2539062            0.007 2024-11-08 15:17:59     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -8.192526  0.2851562            0.007 2024-11-08 15:17:59     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -8.612223  0.2851562            0.007 2024-11-08 15:17:59     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -2.722988  0.2460938            0.006 2024-11-08 15:17:59     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -8.192526  0.2617188            0.006 2024-11-08 15:17:59     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11: -8.612223  0.2617188            0.007 2024-11-08 15:17:59     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12: -2.722988  0.2148438            0.006 2024-11-08 15:17:59     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13: -8.192526  0.2382812            0.007 2024-11-08 15:17:59     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14: -8.612223  0.2382812            0.007 2024-11-08 15:17:59     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15: -2.722988  0.2304688            0.007 2024-11-08 15:17:59     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16: -2.722988  0.2890625            0.006 2024-11-08 15:18:00     2     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17: -3.680872  0.2734375            0.006 2024-11-08 15:18:00     2     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18: -3.179822  0.2734375            0.006 2024-11-08 15:18:00     2     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19: -3.293965  0.2734375            0.006 2024-11-08 15:18:00     2     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20: -3.680872  0.2460938            0.006 2024-11-08 15:18:00     2     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21: -3.179822  0.2539062            0.008 2024-11-08 15:18:00     2     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22: -3.293965  0.2539062            0.006 2024-11-08 15:18:00     2     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23: -3.680872  0.2148438            0.007 2024-11-08 15:18:00     2     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24: -3.179822  0.2148438            0.007 2024-11-08 15:18:00     2     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25: -3.293965  0.2148438            0.007 2024-11-08 15:18:00     2     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26: -3.680872  0.2460938            0.007 2024-11-08 15:18:00     2     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27: -3.179822  0.2460938            0.006 2024-11-08 15:18:00     2     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28: -3.293965  0.2460938            0.006 2024-11-08 15:18:00     2     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29: -3.680872  0.2304688            0.007 2024-11-08 15:18:00     2     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30: -3.179822  0.2304688            0.006 2024-11-08 15:18:00     2     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31: -3.293965  0.2304688            0.007 2024-11-08 15:18:00     2     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32: -3.680872  0.2968750            0.006 2024-11-08 15:18:00     2     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33: -3.179822  0.2968750            0.006 2024-11-08 15:18:00     2     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34: -3.293965  0.2968750            0.006 2024-11-08 15:18:00     2     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35: -2.722988  0.2500000            0.007 2024-11-08 15:18:00     2     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36: -3.680872  0.2617188            0.007 2024-11-08 15:18:00     2     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37: -3.179822  0.2500000            0.007 2024-11-08 15:18:00     2     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38: -3.293965  0.2500000            0.007 2024-11-08 15:18:00     2     1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            cp classif.ce runtime_learners           timestamp  race  step</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     instance configuration warnings errors  x_domain batch_nr  resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;int&gt;         &lt;num&gt;    &lt;int&gt;  &lt;int&gt;    &lt;list&gt;    &lt;int&gt;           &lt;list&gt;</span>
