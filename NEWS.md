@@ -1,4 +1,4 @@
-# mlr3tuning (development version)
+# mlr3tuning 1.2.0
 
 * feat: Add new callback `clbk("mlr3tuning.one_se_rule")` that selects the the hyperparameter configuration with the smallest feature set within one standard error of the best.
 * feat: Add new stages `on_tuning_result_begin` and `on_result_begin` to `CallbackAsyncTuning` and `CallbackBatchTuning`.
