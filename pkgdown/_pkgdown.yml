@@ -73,6 +73,10 @@ reference:
       - starts_with("Context")
       - starts_with("callback")
       - starts_with("mlr3tuning.")
+      - assert_async_tuning_callback
+      - assert_async_tuning_callbacks
+      - assert_batch_tuning_callback
+      - assert_batch_tuning_callbacks
   - title: Converters
     contents:
       - starts_with("as_")
