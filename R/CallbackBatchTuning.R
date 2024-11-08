@@ -195,3 +195,27 @@ callback_batch_tuning = function(
   iwalk(stages, function(stage, name) callback[[name]] = stage)
   callback
 }
+
+#' @title Assertions for Callbacks
+#'
+#' @description
+#' Assertions for [CallbackBatchTuning] class.
+#'
+#' @param callback ([CallbackBatchTuning]).
+#' @param null_ok (`logical(1)`)\cr
+#'   If `TRUE`, `NULL` is allowed.
+#'
+#' @return [CallbackBatchTuning | List of [CallbackBatchTuning]s.
+#' @export
+assert_batch_tuning_callback = function(callback, null_ok = FALSE) {
+  if (null_ok && is.null(callback)) return(invisible(NULL))
+  assert_class(callback, "CallbackBatchTuning")
+  invisible(callback)
+}
+
+#' @export
+#' @param callbacks (list of [CallbackBatchTuning]).
+#' @rdname assert_batch_tuning_callback
+assert_batch_tuning_callbacks = function(callbacks) {
+  invisible(lapply(callbacks, assert_callback))
+}

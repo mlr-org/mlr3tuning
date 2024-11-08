@@ -202,3 +202,28 @@ callback_async_tuning = function(
   iwalk(stages, function(stage, name) callback[[name]] = stage)
   callback
 }
+
+
+#' @title Assertions for Callbacks
+#'
+#' @description
+#' Assertions for [CallbackAsyncTuning] class.
+#'
+#' @param callback ([CallbackAsyncTuning]).
+#' @param null_ok (`logical(1)`)\cr
+#'   If `TRUE`, `NULL` is allowed.
+#'
+#' @return [CallbackAsyncTuning | List of [CallbackAsyncTuning]s.
+#' @export
+assert_async_tuning_callback = function(callback, null_ok = FALSE) {
+  if (null_ok && is.null(callback)) return(invisible(NULL))
+  assert_class(callback, "CallbackAsyncTuning")
+  invisible(callback)
+}
+
+#' @export
+#' @param callbacks (list of [CallbackAsyncTuning]).
+#' @rdname assert_async_tuning_callback
+assert_async_tuning_callbacks = function(callbacks) {
+  invisible(lapply(callbacks, assert_callback))
+}

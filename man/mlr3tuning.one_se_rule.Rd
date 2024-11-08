@@ -11,10 +11,10 @@ Springer New York, New York, NY.
 ISBN 978-1-4614-6849-3.
 }
 \description{
-Selects the hyperparameter configuration with the smallest feature set within one standard error of the best.
-The learner must support \verb{$selected_features()}.
+The one standard error rule takes the number of features into account when selecting the best hyperparameter configuration.
+Many learners support internal feature selection, which can be accessed via \verb{$selected_features()}.
+The callback selects the hyperparameter configuration with the smallest feature set within one standard error of the best performing configuration.
 If there are multiple such hyperparameter configurations with the same number of features, the first one is selected.
-If the configurations have exactly the same performance but different number of features, the one with the smallest number of features is selected.
 }
 \examples{
 clbk("mlr3tuning.one_se_rule")
