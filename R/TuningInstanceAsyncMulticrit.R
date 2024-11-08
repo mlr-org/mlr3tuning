@@ -55,7 +55,7 @@ TuningInstanceAsyncMultiCrit = R6Class("TuningInstanceAsyncMultiCrit",
       ) {
       require_namespaces("rush")
       learner = assert_learner(as_learner(learner, clone = TRUE))
-      callbacks = assert_async_tuning_callback(as_callbacks(callbacks), null_ok = TRUE)
+      callbacks = assert_async_tuning_callbacks(as_callbacks(callbacks), null_ok = TRUE)
 
       # tune token and search space
       if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token"))) {
