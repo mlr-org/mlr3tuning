@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.0</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,7 +42,15 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.1.0" id="mlr3tuning-110">mlr3tuning 1.1.0<a class="anchor" aria-label="anchor" href="#mlr3tuning-110"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.2.0" id="mlr3tuning-120">mlr3tuning 1.2.0<a class="anchor" aria-label="anchor" href="#mlr3tuning-120"></a></h2>
+<ul><li>feat: Add new callback <code>clbk("mlr3tuning.one_se_rule")</code> that selects the the hyperparameter configuration with the smallest feature set within one standard error of the best.</li>
+<li>feat: Add new stages <code>on_tuning_result_begin</code> and <code>on_result_begin</code> to <code>CallbackAsyncTuning</code> and <code>CallbackBatchTuning</code>.</li>
+<li>refactor: Rename stage <code>on_result</code> to <code>on_result_end</code> in <code>CallbackAsyncTuning</code> and <code>CallbackBatchTuning</code>.</li>
+<li>docs: Extend the <code>CallbackAsyncTuning</code> and <code>CallbackBatchTuning</code> documentation.</li>
+<li>compatibility: mlr3 0.22.0</li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.1.0" id="mlr3tuning-110">mlr3tuning 1.1.0<a class="anchor" aria-label="anchor" href="#mlr3tuning-110"></a></h2><p class="text-muted">CRAN release: 2024-10-27</p>
 <ul><li>fix: The <code>as_data_table()</code> functions do not unnest the <code>x_domain</code> colum anymore by default.</li>
 <li>fix: <code>to_tune(internal = TRUE)</code> now also works if non-internal tuning parameters require have an <code>.extra_trafo</code>.</li>
 <li>feat: It is now possible to pass an <code>internal_search_space</code> manually. This allows to use parameter transformations on the primary search space in combination with internal hyperparameter tuning.</li>

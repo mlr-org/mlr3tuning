@@ -11,7 +11,7 @@ See callback_async_tuning() for a list of stages that access ContextAsyncTuning.
 
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.1.0</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -79,6 +79,11 @@ The resample result of the hyperparameter configuration currently evaluated.</p>
 Aggregated performance scores and training time of the evaluated hyperparameter configuration.
 This list is passed to the archive.
 A callback can add additional elements which are also written to the archive.</p></dd>
+
+
+<dt><code>result_learner_param_vals</code></dt>
+<dd><p>(list())<br>
+The learner parameter values passed to <code>instance$assign_result()</code>.</p></dd>
 
 
 </dl><p></p></div>
