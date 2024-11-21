@@ -267,8 +267,7 @@ test_that("proper error when primary search space is empty", {
 })
 
 test_that("internal tuning: branching", {
-  skip_if_not_installed("mlr3pipelines")
-  skip_if(packageVersion("mlr3pipelines") < "0.5.3")
+  skip_if_not_installed("mlr3pipelines", "0.5.3")
   # this case is special, because not all internally tuned parameters are present in every iteration, only those that
   # are in the active branch are
   glrn = mlr3pipelines::ppl("branch", graphs = list(
