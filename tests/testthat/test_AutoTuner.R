@@ -133,8 +133,7 @@ test_that("AutoTuner works with graphlearner", {
 })
 
 test_that("Nested resampling works with graphlearner", {
-  skip_if_not_installed("mlr3pipelines")
-  skip_if(packageVersion("mlr3pipelines") < "0.5.3")
+  skip_if_not_installed("mlr3pipelines", "0.5.3")
   requireNamespace("mlr3pipelines")
 
   gl = MAKE_GL()
@@ -275,8 +274,7 @@ test_that("search space from TuneToken works", {
 })
 
 test_that("AutoTuner get_base_learner method works", {
-  skip_if_not_installed("mlr3pipelines")
-  skip_if(packageVersion("mlr3pipelines") < "0.5.3")
+  skip_if_not_installed("mlr3pipelines", "0.5.3")
   requireNamespace("mlr3pipelines")
 
   # simple learner
