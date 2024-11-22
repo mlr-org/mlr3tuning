@@ -131,13 +131,13 @@ LearnerRegrDepParams = R6Class("LearnerRegrDepParams", inherit = LearnerRegr,
 )
 
 MAKE_GL = function() {
-  g = Graph$new()
-  op_ds = PipeOpSubsample$new()
-  op_lrn = PipeOpLearner$new(lrn("classif.rpart"))
+  g = mlr3pipelines::Graph$new()
+  op_ds = mlr3pipelines::PipeOpSubsample$new()
+  op_lrn = mlr3pipelines::PipeOpLearner$new(lrn("classif.rpart"))
   g$add_pipeop(op_ds)
   g$add_pipeop(op_lrn)
   g$add_edge("subsample", "classif.rpart")
-  GraphLearner$new(g)
+  mlr3pipelines::GraphLearner$new(g)
 }
 
 flush_redis = function() {
