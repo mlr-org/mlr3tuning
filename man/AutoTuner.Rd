@@ -154,9 +154,6 @@ Optimization algorithm.}
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
-\item{\code{internal_valid_scores}}{Retrieves the inner validation scores as a named \code{list()}.
-Returns \code{NULL} if learner is not trained yet.}
-
 \item{\code{archive}}{\link{ArchiveBatchTuning}\cr
 Archive of the \link{TuningInstanceBatchSingleCrit}.}
 
