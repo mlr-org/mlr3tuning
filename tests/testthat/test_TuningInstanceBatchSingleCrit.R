@@ -109,10 +109,7 @@ test_that("tuning with custom resampling", {
 
 test_that("non-scalar hyperpars (#201)", {
   skip_if_not_installed("mlr3pipelines")
-
-  requireNamespace("mlr3pipelines")
-  `%>>%` = getFromNamespace("%>>%", asNamespace("mlr3pipelines"))
-
+  `%>>%` = mlr3pipelines::`%>>%`
 
   learner = mlr3pipelines::po("select") %>>% lrn("classif.rpart")
 

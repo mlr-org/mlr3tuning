@@ -1,7 +1,6 @@
 library(mlr3)
 library(checkmate)
 library(mlr3misc)
-library(mlr3pipelines)
 library(paradox)
 library(R6)
 
