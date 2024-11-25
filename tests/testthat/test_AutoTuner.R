@@ -273,7 +273,7 @@ test_that("search space from TuneToken works", {
 
 test_that("AutoTuner get_base_learner method works", {
   skip_if_not_installed("mlr3pipelines", "0.5.3")
-  `%>>%` = getFromNamespace("%>>%", asNamespace("mlr3pipelines"))
+  `%>>%` = mlr3pipelines::`%>>%`
 
   # simple learner
   learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
