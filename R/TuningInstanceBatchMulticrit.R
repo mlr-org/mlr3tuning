@@ -182,14 +182,9 @@ TuningInstanceBatchMultiCrit = R6Class("TuningInstanceBatchMultiCrit",
     #'
     #' @param ydt (`data.table::data.table()`)\cr
     #' Optimal outcomes, e.g. the Pareto front.
-    #' @param xydt (`data.table::data.table()`)\cr
-    #' Point, outcome, and additional information (Deprecated).
     #' @param ... (`any`)\cr
     #' ignored.
-    assign_result = function(xdt, ydt, learner_param_vals = NULL, extra = NULL, xydt = NULL, ...) {
-      # workaround
-      extra = extra %??% xydt
-
+    assign_result = function(xdt, ydt, learner_param_vals = NULL, extra = NULL, ...) {
       # assign for callbacks
       private$.result_xdt = xdt
       private$.result_ydt = ydt
