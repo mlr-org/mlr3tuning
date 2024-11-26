@@ -164,11 +164,9 @@ TuningInstanceAsyncSingleCrit = R6Class("TuningInstanceAsyncSingleCrit",
     #'
     #' @param y (`numeric(1)`)\cr
     #' Optimal outcome.
-    #' @param xydt (`data.table::data.table()`)\cr
-    #' Point, outcome, and additional information (Deprecated).
     #' @param ... (`any`)\cr
     #' ignored.
-    assign_result = function(xdt, y, learner_param_vals = NULL, extra = NULL, xydt = NULL, ...) {
+    assign_result = function(xdt, y, learner_param_vals = NULL, extra = NULL, ...) {
       # workaround
       extra = extra %??% xydt
 

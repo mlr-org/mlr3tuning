@@ -154,11 +154,9 @@ TuningInstanceAsyncMultiCrit = R6Class("TuningInstanceAsyncMultiCrit",
     #'
     #' @param ydt (`numeric(1)`)\cr
     #' Optimal outcomes, e.g. the Pareto front.
-    #' @param xydt (`data.table::data.table()`)\cr
-    #' Point, outcome, and additional information.
     #' @param ... (`any`)\cr
     #' ignored.
-    assign_result = function(xdt, ydt, learner_param_vals = NULL, extra = NULL, xydt = NULL, ...) {
+    assign_result = function(xdt, ydt, learner_param_vals = NULL, extra = NULL, ...) {
       # workaround
       extra = extra %??% xydt
 
