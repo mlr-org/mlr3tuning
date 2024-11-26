@@ -167,9 +167,6 @@ TuningInstanceAsyncSingleCrit = R6Class("TuningInstanceAsyncSingleCrit",
     #' @param ... (`any`)\cr
     #' ignored.
     assign_result = function(xdt, y, learner_param_vals = NULL, extra = NULL, ...) {
-      # workaround
-      extra = extra %??% xydt
-
       # assign for callbacks
       private$.result_xdt = xdt
       private$.result_y = y
