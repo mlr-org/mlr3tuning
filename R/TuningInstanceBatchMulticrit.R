@@ -87,7 +87,7 @@ TuningInstanceBatchMultiCrit = R6Class("TuningInstanceBatchMultiCrit",
       callbacks = assert_batch_tuning_callbacks(as_callbacks(callbacks))
 
       # tune token and search space
-      if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token"))) {
+      if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token", check_required = FALSE))) {
         stop("If the values of the ParamSet of the Learner contain TuneTokens you cannot supply a search_space.")
       }
 
@@ -129,7 +129,7 @@ TuningInstanceBatchMultiCrit = R6Class("TuningInstanceBatchMultiCrit",
 
       # set learner parameter values
       if (search_space_from_tokens) {
-        learner$param_set$values = learner$param_set$get_values(type = "without_token")
+        learner$param_set$values = learner$param_set$get_values(type = "without_token", check_required = TRUE)
       }
 
       if (!is.null(self$internal_search_space) && self$internal_search_space$has_trafo) {

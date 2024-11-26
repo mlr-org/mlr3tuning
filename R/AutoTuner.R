@@ -143,7 +143,7 @@ AutoTuner = R6Class("AutoTuner",
       ) {
       learner = assert_learner(as_learner(learner, clone = TRUE))
 
-      if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token")) > 0) {
+      if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token", check_required = FALSE)) > 0) {
         stop("If the values of the ParamSet of the Learner contain TuneTokens you cannot supply a search_space.")
       }
 
@@ -288,13 +288,6 @@ AutoTuner = R6Class("AutoTuner",
   ),
 
   active = list(
-    #' @field internal_valid_scores
-    #' Retrieves the inner validation scores as a named `list()`.
-    #' Returns `NULL` if learner is not trained yet.
-    internal_valid_scores = function() {
-      self$state$internal_valid_scores
-    },
-
     #' @field archive [ArchiveBatchTuning]\cr
     #' Archive of the [TuningInstanceBatchSingleCrit].
     archive = function() self$tuning_instance$archive,
