@@ -212,7 +212,6 @@ For internal use.
   ydt,
   learner_param_vals = NULL,
   extra = NULL,
-  xydt = NULL,
   ...
 )}\if{html}{\out{</div>}}
 }
@@ -233,9 +232,6 @@ Fixed parameter values of the learner that are neither part of the}
 
 \item{\code{extra}}{(\code{data.table::data.table()})\cr
 Additional information.}
-
-\item{\code{xydt}}{(\code{data.table::data.table()})\cr
-Point, outcome, and additional information (Deprecated).}
 
 \item{\code{...}}{(\code{any})\cr
 ignored.}
