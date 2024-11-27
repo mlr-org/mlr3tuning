@@ -1,4 +1,6 @@
-# mlr3tuning (development version)
+# mlr3tuning 1.2.1
+
+* refactor: Only pass `extra` to `$assign_result()`.
 
 # mlr3tuning 1.2.0
 

@@ -1,4 +1,5 @@
 skip_if_not_installed("irace")
+skip_on_cran()
 
 test_that("TunerIrace", {
   x = capture.output({z = test_tuner("irace", term_evals = 42, real_evals = 39)})
