@@ -17,8 +17,8 @@
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/Roboto-0.4.9/font.css" rel="stylesheet">
 <link href="deps/JetBrains_Mono-0.4.9/font.css" rel="stylesheet">
 <link href="deps/Roboto_Slab-0.4.9/font.css" rel="stylesheet">
-<link href="deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
-<link href="deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
+<link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><script src="deps/MathJax-3.2.2/tex-chtml.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Hyperparameter Optimization for mlr3">
 <meta name="description" content="Hyperparameter optimization package of the mlr3 ecosystem. It features highly configurable search spaces via the paradox package and finds optimal hyperparameter configurations for any mlr3 learner. mlr3tuning works with several optimization algorithms e.g. Random Search, Iterated Racing, Bayesian Optimization (in mlr3mbo) and Hyperband (in mlr3hyperband). Moreover, it can automatically optimize learners and estimate the performance of optimized models with nested resampling.">
 <meta property="og:description" content="Hyperparameter optimization package of the mlr3 ecosystem. It features highly configurable search spaces via the paradox package and finds optimal hyperparameter configurations for any mlr3 learner. mlr3tuning works with several optimization algorithms e.g. Random Search, Iterated Racing, Bayesian Optimization (in mlr3mbo) and Hyperband (in mlr3hyperband). Moreover, it can automatically optimize learners and estimate the performance of optimized models with nested resampling.">
@@ -32,7 +32,7 @@
 
     <a class="navbar-brand me-2" href="index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.2.0</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.2.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -172,7 +172,7 @@
 <p>The tuner returns the best hyperparameter configuration and the corresponding measured performance.</p>
 <p>The archive contains all evaluated hyperparameter configurations.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">cost</span>, <span class="va">gamma</span>, <span class="va">classif.ce</span>, <span class="va">batch_nr</span>, <span class="va">resample_result</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">cost</span>, <span class="va">gamma</span>, <span class="va">classif.ce</span>, <span class="va">batch_nr</span>, <span class="va">resample_result</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="do">##           cost      gamma classif.ce batch_nr  resample_result</span></span>
 <span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="do">##  1:  -5.756463   5.756463  0.4663216        1 &lt;ResampleResult&gt;</span></span>
 <span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a><span class="do">##  2:   5.756463  -5.756463  0.1828847        2 &lt;ResampleResult&gt;</span></span>
