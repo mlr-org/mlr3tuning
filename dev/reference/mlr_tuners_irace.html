@@ -238,7 +238,36 @@ result is returned.</p><div class="section">
 <span class="r-in"><span>  measure <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">msr</a></span><span class="op">(</span><span class="st">"classif.ce"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  term_evals <span class="op">=</span> <span class="fl">42</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in irace::irace(scenario = scenario, parameters = paradox_to_irace(inst$search_space,     pv$digits)):</span> unused argument (parameters = paradox_to_irace(inst$search_space, pv$digits))</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # 2024-11-28 18:51:33 UTC: Initialization</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Elitist race</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Elitist new instances: 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Elitist limit: 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # nbIterations: 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # minNbSurvival: 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # nbParameters: 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # seed: 1855097766</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # confidence level: 0.95</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # budget: 42</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # mu: 5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # deterministic: FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # 2024-11-28 18:51:34 UTC: Iteration 1 of 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # experimentsUsedSoFar: 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # remainingBudget: 42</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # currentBudget: 21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # nbConfigurations: 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Markers:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      x No test is performed.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      c Configurations are discarded only due to capping.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      - The test is performed and some configurations are discarded.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      = The test is performed but no configuration is discarded.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      ! The test is performed and configurations could be discarded but elite configurations are preserved.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      . All alive configurations are elite and nothing is discarded.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> | |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in scenario$targetRunnerParallel(experiments, exec_target_runner,     scenario = scenario, target_runner = target_runner):</span> unused argument (target_runner = target_runner)</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># best performing hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="va">instance</span><span class="op">$</span><span class="va">result</span></span></span>
