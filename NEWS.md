@@ -1,5 +1,7 @@
 # mlr3tuning (development version)
 
+perf: save models on worker only when requested in `ObjectiveTuningAsync`.
+
 # mlr3tuning 1.2.1
 
 * refactor: Only pass `extra` to `$assign_result()`.
