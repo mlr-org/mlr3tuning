@@ -81,9 +81,5 @@ test_that("TunerIrace works with unnamed discrete values", {
     terminator = trm("evals", n_evals = 96),
     search_space = search_space)
   tuner = tnr("irace")
-<<<<<<< HEAD
-  expect_data_table(tuner$optimize(instance))
-=======
-  x = capture.output({expect_data_table(tuner$optimize(inst))})
->>>>>>> main
+  x = capture.output({expect_data_table(tuner$optimize(instance))})
 })
