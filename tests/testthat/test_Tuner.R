@@ -70,7 +70,6 @@ test_that("print method workds", {
 
 test_that("Tuner works with graphlearner", {
   skip_if_not_installed("mlr3pipelines")
-  requireNamespace("mlr3pipelines")
 
   gl = MAKE_GL()
   task = tsk("iris")
@@ -267,8 +266,7 @@ test_that("proper error when primary search space is empty", {
 })
 
 test_that("internal tuning: branching", {
-  skip_if_not_installed("mlr3pipelines")
-  skip_if(packageVersion("mlr3pipelines") < "0.5.3")
+  skip_if_not_installed("mlr3pipelines", "0.5.3")
   # this case is special, because not all internally tuned parameters are present in every iteration, only those that
   # are in the active branch are
   glrn = mlr3pipelines::ppl("branch", graphs = list(
@@ -411,6 +409,7 @@ test_that("tag internal tune token manually in primary search space", {
 
 test_that("Can only pass internal tune tokens one way", {
   skip_if_not_installed("mlr3pipelines")
+
   l1 = lrn("classif.debug", early_stopping = TRUE)
   l1$id = "l1"
   l2 = l1$clone()
@@ -419,7 +418,7 @@ test_that("Can only pass internal tune tokens one way", {
   l1$param_set$set_values(
     iter = to_tune(upper = 100, internal = TRUE)
   )
-  l = ppl("branch", list(l1 = l1, l2 = l2))
+  l = mlr3pipelines::ppl("branch", list(l1 = l1, l2 = l2))
   l = as_learner(l)
   set_validate(l, 0.2, ids = c("l1", "l2"))
 

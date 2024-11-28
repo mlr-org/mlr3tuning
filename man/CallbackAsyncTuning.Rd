@@ -18,15 +18,19 @@ For more information on tuning callbacks see \code{\link[=callback_async_tuning]
 \describe{
 \item{\code{on_eval_after_xs}}{(\verb{function()})\cr
 Stage called after xs is passed.
-Called in \code{ObjectiveTuning$eval()}.}
+Called in \code{ObjectiveTuningAsync$eval()}.}
 
 \item{\code{on_eval_after_resample}}{(\verb{function()})\cr
 Stage called after hyperparameter configurations are evaluated.
-Called in \code{ObjectiveTuning$eval()}.}
+Called in \code{ObjectiveTuningAsync$eval()}.}
 
 \item{\code{on_eval_before_archive}}{(\verb{function()})\cr
 Stage called before performance values are written to the archive.
-Called in \code{ObjectiveTuning$eval()}.}
+Called in \code{ObjectiveTuningAsync$eval()}.}
+
+\item{\code{on_tuning_result_begin}}{(\verb{function()})\cr
+Stage called before the results are written.
+Called in \verb{TuningInstance*$assign_result()}.}
 }
 \if{html}{\out{</div>}}
 }

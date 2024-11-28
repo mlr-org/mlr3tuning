@@ -33,17 +33,23 @@
 #' @section Resources:
 #' There are several sections about hyperparameter optimization in the [mlr3book](https://mlr3book.mlr-org.com).
 #'
-#'  * Getting started with [hyperparameter optimization](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html).
-#'  * [Tune](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-model-tuning) a simple classification tree on the Sonar data set.
-#'  * Learn about [tuning spaces](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-defining-search-spaces).
+#' * Getting started with [hyperparameter optimization](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html).
+#' * An overview of all tuners can be found on our [website](https://mlr-org.com/tuners.html).
+#' * [Tune](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-model-tuning) a support vector machine on the Sonar data set.
+#' * Learn about [tuning spaces](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-defining-search-spaces).
+#' * Estimate the model performance with [nested resampling](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-nested-resampling).
+#' * Learn about [multi-objective optimization](https://mlr3book.mlr-org.com/chapters/chapter5/advanced_tuning_methods_and_black_box_optimization.html#sec-multi-metrics-tuning).
+#' * Simultaneously optimize hyperparameters and use [early stopping](https://mlr3book.mlr-org.com/chapters/chapter15/predsets_valid_inttune.html) with XGBoost.
+#' * [Automate](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-autotuner) the tuning.
 #'
 #' The [gallery](https://mlr-org.com/gallery-all-optimization.html) features a collection of case studies and demos about optimization.
 #'
-#'  * Learn more advanced methods with the [practical tuning series](https://mlr-org.com/gallery/series/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/).
-#'  * Simultaneously optimize hyperparameters and use [early stopping](https://mlr-org.com/gallery/optimization/2022-11-04-early-stopping-with-xgboost/) with XGBoost.
-#'  * Make us of proven [search space](https://mlr-org.com/gallery/optimization/2021-07-06-introduction-to-mlr3tuningspaces/).
-#'  * Learn about [hotstarting](https://mlr-org.com/gallery/optimization/2023-01-16-hotstart/) models.
-#'  * Run the [default hyperparameter configuration](https://mlr-org.com/gallery/optimization/2023-01-31-default-configuration/) of learners as a baseline.
+#' * Learn more advanced methods with the [Practical Tuning Series](https://mlr-org.com/gallery/series/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/).
+#' * Learn about [hotstarting](https://mlr-org.com/gallery/optimization/2023-01-16-hotstart/) models.
+#' * Run the [default hyperparameter configuration](https://mlr-org.com/gallery/optimization/2023-01-31-default-configuration/) of learners as a baseline.
+#' * Use the [Hyperband](https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/) optimizer with different budget parameters.
+#'
+#' The [cheatsheet](https://cheatsheets.mlr-org.com/mlr3tuning.pdf) summarizes the most important functions of mlr3tuning.
 #'
 #' @section Extension Packages:
 #'
@@ -128,9 +134,10 @@ TuningInstanceBatchSingleCrit = R6Class("TuningInstanceBatchSingleCrit",
       callbacks = NULL
       ) {
       learner = assert_learner(as_learner(learner, clone = TRUE))
+      callbacks = assert_batch_tuning_callbacks(as_callbacks(callbacks))
 
       # tune token and search space
-      if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token"))) {
+      if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token", check_required = FALSE))) {
         stop("If the values of the ParamSet of the Learner contain TuneTokens you cannot supply a search_space.")
       }
 
@@ -225,43 +232,46 @@ TuningInstanceBatchSingleCrit = R6Class("TuningInstanceBatchSingleCrit",
     #'
     #' @param y (`numeric(1)`)\cr
     #' Optimal outcome.
-    #' @param xydt (`data.table::data.table()`)\cr
-    #' Point, outcome, and additional information (Deprecated).
     #' @param ... (`any`)\cr
     #' ignored.
-    assign_result = function(xdt, y, learner_param_vals = NULL, extra = NULL, xydt = NULL, ...) {
-      # workaround
-      extra = extra %??% xydt
+    assign_result = function(xdt, y, learner_param_vals = NULL, extra = NULL, ...) {
+      # assign for callbacks
+      private$.result_xdt = xdt
+      private$.result_y = y
+      private$.result_learner_param_vals = learner_param_vals
+      private$.result_extra = extra
+
+      call_back("on_tuning_result_begin", self$objective$callbacks, self$objective$context)
 
       # set the column with the learner param_vals that were not optimized over but set implicitly
-      assert_list(learner_param_vals, null.ok = TRUE, names = "named")
+      assert_list(private$.result_learner_param_vals, null.ok = TRUE, names = "named")
 
       # extract internal tuned values
-      if ("internal_tuned_values" %in% names(extra)) {
-        set(xdt, j = "internal_tuned_values", value = list(extra[["internal_tuned_values"]]))
+      if ("internal_tuned_values" %in% names(private$.result_extra)) {
+        set(private$.result_xdt, j = "internal_tuned_values", value = list(private$.result_extra[["internal_tuned_values"]]))
       }
 
       # learner param values
-      if (is.null(learner_param_vals)) {
-        learner_param_vals = self$objective$learner$param_set$values
+      if (is.null(private$.result_learner_param_vals)) {
+        private$.result_learner_param_vals = self$objective$learner$param_set$values
       }
-      opt_x = unlist(transform_xdt_to_xss(xdt, self$search_space), recursive = FALSE)
-      learner_param_vals = insert_named(learner_param_vals, opt_x)
+      opt_x = unlist(transform_xdt_to_xss(private$.result_xdt, self$search_space), recursive = FALSE)
+      private$.result_learner_param_vals = insert_named(private$.result_learner_param_vals, opt_x)
 
       # disable internal tuning
-      if (!is.null(xdt$internal_tuned_values)) {
+      if (!is.null(private$.result_xdt$internal_tuned_values)) {
         learner = self$objective$learner$clone(deep = TRUE)
-        learner_param_vals = insert_named(learner_param_vals, xdt$internal_tuned_values[[1]])
-        learner$param_set$set_values(.values = learner_param_vals)
+        private$.result_learner_param_vals = insert_named(private$.result_learner_param_vals, private$.result_xdt$internal_tuned_values[[1]])
+        learner$param_set$set_values(.values = private$.result_learner_param_vals)
         learner$param_set$disable_internal_tuning(self$internal_search_space$ids())
-        learner_param_vals = learner$param_set$values
+        private$.result_learner_param_vals = learner$param_set$values
       }
 
       # maintain list column
-      if (length(learner_param_vals) < 2 | !nrow(xdt)) learner_param_vals = list(learner_param_vals)
+      if (length(private$.result_learner_param_vals) < 2 | !nrow(private$.result_xdt)) private$.result_learner_param_vals = list(private$.result_learner_param_vals)
 
-      set(xdt, j = "learner_param_vals", value = list(learner_param_vals))
-      super$assign_result(xdt, y)
+      set(private$.result_xdt, j = "learner_param_vals", value = list(private$.result_learner_param_vals))
+      super$assign_result(private$.result_xdt, private$.result_y)
     }
   ),
 
@@ -274,6 +284,9 @@ TuningInstanceBatchSingleCrit = R6Class("TuningInstanceBatchSingleCrit",
   ),
 
   private = list(
+    # intermediate objects
+    .result_learner_param_vals = NULL,
+
     # initialize context for optimization
     .initialize_context = function(optimizer) {
       context = ContextBatchTuning$new(self, optimizer)

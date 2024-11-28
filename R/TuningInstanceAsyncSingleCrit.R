@@ -65,9 +65,10 @@ TuningInstanceAsyncSingleCrit = R6Class("TuningInstanceAsyncSingleCrit",
       ) {
       require_namespaces("rush")
       learner = assert_learner(as_learner(learner, clone = TRUE))
+      callbacks = assert_async_tuning_callbacks(as_callbacks(callbacks))
 
       # tune token and search space
-      if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token"))) {
+      if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token", check_required = FALSE))) {
         stop("If the values of the ParamSet of the Learner contain TuneTokens you cannot supply a search_space.")
       }
 
@@ -163,42 +164,46 @@ TuningInstanceAsyncSingleCrit = R6Class("TuningInstanceAsyncSingleCrit",
     #'
     #' @param y (`numeric(1)`)\cr
     #' Optimal outcome.
-    #' @param xydt (`data.table::data.table()`)\cr
-    #' Point, outcome, and additional information (Deprecated).
     #' @param ... (`any`)\cr
     #' ignored.
-    assign_result = function(xdt, y, learner_param_vals = NULL, extra = NULL, xydt = NULL, ...) {
-      # workaround
-      extra = extra %??% xydt
+    assign_result = function(xdt, y, learner_param_vals = NULL, extra = NULL, ...) {
+      # assign for callbacks
+      private$.result_xdt = xdt
+      private$.result_y = y
+      private$.result_learner_param_vals = learner_param_vals
+      private$.result_extra = extra
+
+      call_back("on_tuning_result_begin", self$objective$callbacks, self$objective$context)
 
       # set the column with the learner param_vals that were not optimized over but set implicitly
-      assert_list(learner_param_vals, null.ok = TRUE, names = "named")
+      assert_list(private$.result_learner_param_vals, null.ok = TRUE, names = "named")
 
       # extract internal tuned values
-      if ("internal_tuned_values" %in% names(extra)) {
-        set(xdt, j = "internal_tuned_values", value = list(extra[["internal_tuned_values"]]))
+      if ("internal_tuned_values" %in% names(private$.result_extra)) {
+        set(private$.result_xdt, j = "internal_tuned_values", value = list(private$.result_extra[["internal_tuned_values"]]))
       }
 
-      if (is.null(learner_param_vals)) {
-        learner_param_vals = self$objective$learner$param_set$values
+      # learner param values
+      if (is.null(private$.result_learner_param_vals)) {
+        private$.result_learner_param_vals = self$objective$learner$param_set$values
       }
-      opt_x = unlist(transform_xdt_to_xss(xdt, self$search_space), recursive = FALSE)
-      learner_param_vals = insert_named(learner_param_vals, opt_x)
-
-      # maintain list column
-      if (length(learner_param_vals) < 2 | !nrow(xdt)) learner_param_vals = list(learner_param_vals)
+      opt_x = unlist(transform_xdt_to_xss(private$.result_xdt, self$search_space), recursive = FALSE)
+      private$.result_learner_param_vals = insert_named(private$.result_learner_param_vals, opt_x)
 
       # disable internal tuning
-      if (!is.null(xdt$internal_tuned_values)) {
+      if (!is.null(private$.result_xdt$internal_tuned_values)) {
         learner = self$objective$learner$clone(deep = TRUE)
-        learner_param_vals = insert_named(learner_param_vals, xdt$internal_tuned_values[[1]])
-        learner$param_set$set_values(.values = learner_param_vals)
+        private$.result_learner_param_vals = insert_named(private$.result_learner_param_vals, private$.result_xdt$internal_tuned_values[[1]])
+        learner$param_set$set_values(.values = private$.result_learner_param_vals)
         learner$param_set$disable_internal_tuning(self$internal_search_space$ids())
-        learner_param_vals = learner$param_set$values
+        private$.result_learner_param_vals = learner$param_set$values
       }
 
-      set(xdt, j = "learner_param_vals", value = list(learner_param_vals))
-      super$assign_result(xdt, y)
+      # maintain list column
+      if (length(private$.result_learner_param_vals) < 2 | !nrow(private$.result_xdt)) private$.result_learner_param_vals = list(private$.result_learner_param_vals)
+
+      set(private$.result_xdt, j = "learner_param_vals", value = list(private$.result_learner_param_vals))
+      super$assign_result(private$.result_xdt, private$.result_y)
     }
   ),
 
@@ -212,6 +217,8 @@ TuningInstanceAsyncSingleCrit = R6Class("TuningInstanceAsyncSingleCrit",
   ),
 
   private = list(
+    # intermediate objects
+    .result_learner_param_vals = NULL,
 
     # initialize context for optimization
     .initialize_context = function(optimizer) {

@@ -97,7 +97,6 @@ test_that("AT training does not change learner in instance args", {
 test_that("AutoTuner works with graphlearner", {
   skip_if_not_installed("mlr3pipelines")
   skip_if(packageVersion("mlr3pipelines") < "0.5.3")
-  requireNamespace("mlr3pipelines")
 
   gl = MAKE_GL()
   task = tsk("iris")
@@ -133,9 +132,7 @@ test_that("AutoTuner works with graphlearner", {
 })
 
 test_that("Nested resampling works with graphlearner", {
-  skip_if_not_installed("mlr3pipelines")
-  skip_if(packageVersion("mlr3pipelines") < "0.5.3")
-  requireNamespace("mlr3pipelines")
+  skip_if_not_installed("mlr3pipelines", "0.5.3")
 
   gl = MAKE_GL()
   task = tsk("iris")
@@ -275,9 +272,8 @@ test_that("search space from TuneToken works", {
 })
 
 test_that("AutoTuner get_base_learner method works", {
-  skip_if_not_installed("mlr3pipelines")
-  skip_if(packageVersion("mlr3pipelines") < "0.5.3")
-  requireNamespace("mlr3pipelines")
+  skip_if_not_installed("mlr3pipelines", "0.5.3")
+  `%>>%` = mlr3pipelines::`%>>%`
 
   # simple learner
   learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
@@ -295,7 +291,7 @@ test_that("AutoTuner get_base_learner method works", {
   expect_equal(at$base_learner(recursive = 0)$id, "classif.rpart")
 
   # graph learner
-  learner = as_learner(pipeline_robustify() %>>% lrn("classif.rpart"))
+  learner = as_learner(mlr3pipelines::pipeline_robustify() %>>% lrn("classif.rpart"))
   learner$param_set$values$classif.rpart.cp = to_tune(1e-04, 1e-1, logscale = TRUE)
   learner$id = "graphlearner.classif.rpart"
 

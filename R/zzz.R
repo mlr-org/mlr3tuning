@@ -6,6 +6,7 @@
 #' @import bbotk
 #' @importFrom R6 R6Class
 #' @importFrom utils tail
+#' @importFrom stats sd
 "_PACKAGE"
 
 .onLoad = function(libname, pkgname) {
@@ -19,9 +20,11 @@
   x$add("mlr3tuning.async_measures", load_callback_async_measures)
   x$add("mlr3tuning.async_mlflow", load_callback_async_mlflow)
   x$add("mlr3tuning.async_save_logs", load_callback_async_save_logs)
+  x$add("mlr3tuning.async_one_se_rule", load_callback_async_one_se_rule)
   x$add("mlr3tuning.backup", load_callback_backup)
   x$add("mlr3tuning.default_configuration", load_callback_default_configuration)
   x$add("mlr3tuning.measures", load_callback_measures)
+  x$add("mlr3tuning.one_se_rule", load_callback_one_se_rule)
 
   assign("lg", lgr::get_logger("bbotk"), envir = parent.env(environment()))
   if (Sys.getenv("IN_PKGDOWN") == "true") {

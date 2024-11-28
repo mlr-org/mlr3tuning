@@ -16,6 +16,9 @@ callback_async_tuning(
   on_eval_before_archive = NULL,
   on_optimizer_after_eval = NULL,
   on_worker_end = NULL,
+  on_tuning_result_begin = NULL,
+  on_result_begin = NULL,
+  on_result_end = NULL,
   on_result = NULL,
   on_optimization_end = NULL
 )
@@ -33,37 +36,70 @@ The referenced help package can be opened via method \verb{$help()}.}
 
 \item{on_optimization_begin}{(\verb{function()})\cr
 Stage called at the beginning of the optimization.
-Called in \code{Optimizer$optimize()}.}
+Called in \code{Optimizer$optimize()}.
+The functions must have two arguments named \code{callback} and \code{context}.}
 
 \item{on_worker_begin}{(\verb{function()})\cr
 Stage called at the beginning of the optimization on the worker.
-Called in the worker loop.}
+Called in the worker loop.
+The functions must have two arguments named \code{callback} and \code{context}.}
 
 \item{on_optimizer_before_eval}{(\verb{function()})\cr
 Stage called after the optimizer proposes points.
-Called in \code{OptimInstance$.eval_point()}.}
+Called in \code{OptimInstance$.eval_point()}.
+The functions must have two arguments named \code{callback} and \code{context}.
+The argument of \code{instance$.eval_point(xs)} and \code{xs_trafoed} and \code{extra} are available in the \code{context}.
+Or \code{xs} and \code{xs_trafoed} of \code{instance$.eval_queue()} are available in the \code{context}.}
 
 \item{on_eval_after_xs}{(\verb{function()})\cr
-Stage called after xs is passed.
-Called in \code{ObjectiveTuning$eval()}.}
+Stage called after xs is passed to the objective.
+Called in \code{ObjectiveTuningAsync$eval()}.
+The functions must have two arguments named \code{callback} and \code{context}.
+The argument of \verb{$.eval(xs)} is available in the \code{context}.}
 
 \item{on_eval_after_resample}{(\verb{function()})\cr
 Stage called after a hyperparameter configuration is evaluated.
-Called in \code{ObjectiveTuning$eval()}.}
+Called in \code{ObjectiveTuningAsync$eval()}.
+The functions must have two arguments named \code{callback} and \code{context}.
+The \code{resample_result} is available in the `context}
 
 \item{on_eval_before_archive}{(\verb{function()})\cr
 Stage called before performance values are written to the archive.
-Called in \code{ObjectiveTuning$eval()}.}
+Called in \code{ObjectiveTuningAsync$eval()}.
+The functions must have two arguments named \code{callback} and \code{context}.
+The \code{aggregated_performance} is available in \code{context}.}
 
 \item{on_optimizer_after_eval}{(\verb{function()})\cr
 Stage called after points are evaluated.
-Called in \code{OptimInstance$.eval_point()}.}
+Called in \code{OptimInstance$.eval_point()}.
+The functions must have two arguments named \code{callback} and \code{context}.}
 
 \item{on_worker_end}{(\verb{function()})\cr
 Stage called at the end of the optimization on the worker.
-Called in the worker loop.}
+Called in the worker loop.
+The functions must have two arguments named \code{callback} and \code{context}.}
+
+\item{on_tuning_result_begin}{(\verb{function()})\cr
+Stage called at the beginning of the result writing.
+Called in \verb{TuningInstance*$assign_result()}.
+The functions must have two arguments named \code{callback} and \code{context}.
+The arguments of \verb{$assign_result(xdt, y, learner_param_vals, extra)} are available in \code{context}.}
+
+\item{on_result_begin}{(\verb{function()})\cr
+Stage called at the beginning of the result writing.
+Called in \code{OptimInstance$assign_result()}.
+The functions must have two arguments named \code{callback} and \code{context}.
+The arguments of \verb{$.assign_result(xdt, y, extra)} are available in the \code{context}.}
+
+\item{on_result_end}{(\verb{function()})\cr
+Stage called after the result is written.
+Called in \code{OptimInstance$assign_result()}.
+The functions must have two arguments named \code{callback} and \code{context}.
+The final result \code{instance$result} is available in the \code{context}.}
 
 \item{on_result}{(\verb{function()})\cr
+Deprecated.
+Use \code{on_result_end} instead.
 Stage called after the result is written.
 Called in \code{OptimInstance$assign_result()}.}
 
@@ -93,7 +129,9 @@ The stages are prefixed with \verb{on_*}.
          End Optimization on Worker
          - on_worker_end
     End Worker
-     - on_result
+     - on_tuning_result_begin
+     - on_result_begin
+     - on_result_end
      - on_optimization_end
 End Tuning
 }\if{html}{\out{</div>}}

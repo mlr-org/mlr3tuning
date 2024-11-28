@@ -60,5 +60,16 @@ bibentries = c(
     eprint        = "1604.00772",
     archivePrefix = "arXiv",
     primaryClass  = "cs.LG"
+  ),
+
+  kuhn2013 = bibentry("Inbook",
+    author    = "Kuhn, Max and Johnson, Kjell",
+    chapter   = "Over-Fitting and Model Tuning",
+    title     = "Applied Predictive Modeling",
+    year      = "2013",
+    publisher = "Springer New York",
+    address   = "New York, NY",
+    pages     = "61--92",
+    isbn      = "978-1-4614-6849-3"
   )
 )

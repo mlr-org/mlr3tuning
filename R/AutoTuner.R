@@ -24,14 +24,7 @@
 #' A set timeout is disabled while fitting the final model.
 #'
 #' @inheritSection TuningInstanceBatchSingleCrit Default Measures
-#'
-#' @section Resources:
-#' There are several sections about hyperparameter optimization in the [mlr3book](https://mlr3book.mlr-org.com).
-#'
-#'  * [Automate](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-autotuner) the tuning.
-#'  * Estimate the model performance with [nested resampling](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-nested-resampling).
-#'
-#' The [gallery](https://mlr-org.com/gallery-all-optimization.html) features a collection of case studies and demos about optimization.
+#' @inheritSection TuningInstanceBatchSingleCrit Resources
 #'
 #' @section Nested Resampling:
 #' Nested resampling is performed by passing an [AutoTuner] to [mlr3::resample()] or [mlr3::benchmark()].
@@ -150,7 +143,7 @@ AutoTuner = R6Class("AutoTuner",
       ) {
       learner = assert_learner(as_learner(learner, clone = TRUE))
 
-      if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token")) > 0) {
+      if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token", check_required = FALSE)) > 0) {
         stop("If the values of the ParamSet of the Learner contain TuneTokens you cannot supply a search_space.")
       }
 
@@ -295,13 +288,6 @@ AutoTuner = R6Class("AutoTuner",
   ),
 
   active = list(
-    #' @field internal_valid_scores
-    #' Retrieves the inner validation scores as a named `list()`.
-    #' Returns `NULL` if learner is not trained yet.
-    internal_valid_scores = function() {
-      self$state$internal_valid_scores
-    },
-
     #' @field archive [ArchiveBatchTuning]\cr
     #' Archive of the [TuningInstanceBatchSingleCrit].
     archive = function() self$tuning_instance$archive,

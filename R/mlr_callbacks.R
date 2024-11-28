@@ -293,3 +293,136 @@ load_callback_async_save_logs = function() {
     }
   )
 }
+
+#' @title One Standard Error Rule Callback
+#'
+#' @include CallbackBatchTuning.R
+#' @name mlr3tuning.one_se_rule
+#'
+#' @description
+#' The one standard error rule takes the number of features into account when selecting the best hyperparameter configuration.
+#' Many learners support internal feature selection, which can be accessed via `$selected_features()`.
+#' The callback selects the hyperparameter configuration with the smallest feature set within one standard error of the best performing configuration.
+#' If there are multiple such hyperparameter configurations with the same number of features, the first one is selected.
+#'
+#' @source
+#' `r format_bib("kuhn2013")`
+#'
+#' @examples
+#' clbk("mlr3tuning.one_se_rule")
+#'
+#' # Run optimization on the pima data set with the callback
+#' instance = tune(
+#'   tuner = tnr("random_search", batch_size = 15),
+#'   task = tsk("pima"),
+#'   learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
+#'   resampling = rsmp("cv", folds = 3),
+#'   measures = msr("classif.ce"),
+#'   term_evals = 30,
+#'   callbacks = clbk("mlr3tuning.one_se_rule")
+#' )
+#'
+#' # Hyperparameter configuration with the smallest feature set within one standard error of the best
+#' instance$result
+NULL
+
+load_callback_async_one_se_rule = function() {
+  callback_async_tuning("mlr3tuning.async_one_se_rule",
+    label = "One Standard Error Rule Callback",
+    man = "mlr3tuning::mlr3tuning.one_se_rule",
+
+    on_optimization_begin = function(callback, context) {
+      if ("selected_features" %nin% context$instance$objective$learner$properties) {
+        stopf("Learner '%s' does not support `$selected_features()`", context$instance$objective$learner$id)
+      }
+      callback$state$store_models = context$instance$objective$store_models
+      context$instance$objective$store_models = TRUE
+    },
+
+    on_eval_before_archive = function(callback, context) {
+      res = context$resample_result$aggregate(msr("selected_features"))
+      context$aggregated_performance$n_features = res
+      if (!callback$state$store_models) {
+        context$resample_result$discard(models = TRUE)
+      }
+    },
+
+    on_tuning_result_begin = function(callback, context) {
+      archive = context$instance$archive
+      data = as.data.table(archive)
+
+      # standard error
+      y = data[[archive$cols_y]]
+      se = sd(y) / sqrt(length(y))
+
+      if (se == 0) {
+        # select smallest future set when all scores are the same
+        best = data[which.min(get("n_features"))]
+      } else {
+        # select smallest future set within one standard error of the best
+        best_y = context$result_y
+        best = data[y > best_y - se & y < best_y + se, ][which.min(get("n_features"))]
+      }
+
+      cols_x = context$instance$archive$cols_x
+      cols_y = context$instance$archive$cols_y
+
+      context$result_xdt = best[, c(cols_x, "n_features"), with = FALSE]
+      context$result_extra = best[, !c(cols_x, cols_y), with = FALSE]
+      context$result_y = unlist(best[, cols_y, with = FALSE])
+
+      context$instance$objective$store_models = callback$state$store_models
+    }
+  )
+}
+
+
+load_callback_one_se_rule = function() {
+  callback_batch_tuning("mlr3tuning.one_se_rule",
+    label = "One Standard Error Rule Callback",
+    man = "mlr3tuning::mlr3tuning.one_se_rule",
+
+    on_optimization_begin = function(callback, context) {
+      if ("selected_features" %nin% context$instance$objective$learner$properties) {
+        stopf("Learner '%s' does not support `$selected_features()`", context$instance$objective$learner$id)
+      }
+      callback$state$store_models = context$instance$objective$store_models
+      context$instance$objective$store_models = TRUE
+    },
+
+    on_eval_before_archive = function(callback, context) {
+      res = context$benchmark_result$aggregate(msr("selected_features"))
+      set(context$aggregated_performance, j = "n_features", value = res$selected_features)
+      if (!callback$state$store_models) {
+        context$benchmark_result$discard(models = TRUE)
+      }
+    },
+
+    on_tuning_result_begin = function(callback, context) {
+      archive = context$instance$archive
+      data = as.data.table(archive)
+
+      # standard error
+      y = data[[archive$cols_y]]
+      se = sd(y) / sqrt(length(y))
+
+      if (se == 0) {
+        # select smallest future set when all scores are the same
+        best = data[which.min(get("n_features"))]
+      } else {
+        # select smallest future set within one standard error of the best
+        best_y = context$result_y
+        best = data[y > best_y - se & y < best_y + se, ][which.min(get("n_features"))]
+      }
+
+      cols_x = context$instance$archive$cols_x
+      cols_y = context$instance$archive$cols_y
+
+      context$result_xdt = best[, c(cols_x, "n_features"), with = FALSE]
+      context$result_extra = best[, !c(cols_x, cols_y), with = FALSE]
+      context$result_y = unlist(best[, cols_y, with = FALSE])
+
+      context$instance$objective$store_models = callback$state$store_models
+    }
+  )
+}
