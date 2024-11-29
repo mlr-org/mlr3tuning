@@ -177,11 +177,6 @@ TuningInstanceBatchSingleCrit = R6Class("TuningInstanceBatchSingleCrit",
         search_space = search_space$subset(setdiff(sids, internal_tune_ids))
       }
 
-      # set learner parameter values
-      if (search_space_from_tokens) {
-        learner$param_set$values = learner$param_set$get_values(type = "without_token")
-      }
-
       if (!is.null(self$internal_search_space) && self$internal_search_space$has_trafo) {
         stopf("Internal tuning and parameter transformations are currently not supported.
           If you manually provided a search space that has a trafo and parameters tagged with 'internal_tuning',
@@ -192,6 +187,11 @@ TuningInstanceBatchSingleCrit = R6Class("TuningInstanceBatchSingleCrit",
       if (!is.null(self$internal_search_space)) {
         # the learner dictates how to interpret the to_tune(..., inner)
         learner$param_set$set_values(.values = learner$param_set$convert_internal_search_space(self$internal_search_space))
+      }
+
+      # set learner parameter values
+      if (search_space_from_tokens) {
+        learner$param_set$values = learner$param_set$get_values(type = "without_token")
       }
 
       # create codomain from measure
