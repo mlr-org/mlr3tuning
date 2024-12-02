@@ -9,10 +9,9 @@ TunerAsyncSuccessiveHalving = R6Class("TunerAsyncSuccessiveHalving",
     initialize = function() {
       param_set = ps(
         eta                   = p_dbl(lower = 1.0001, default = 2),
-        sampler               = p_uty(custom_check = crate({function(x) check_r6(x, "Sampler", null.ok = TRUE)})),
-        adjust_minimum_budget = p_lgl(default = FALSE))
+        sampler               = p_uty(custom_check = crate({function(x) check_r6(x, "Sampler", null.ok = TRUE)})))
 
-      param_set$values = list(eta = 2, sampler = NULL, adjust_minimum_budget = FALSE)
+      param_set$values = list(eta = 2, sampler = NULL)
 
       super$initialize(
         id = "async_successive_halving",
