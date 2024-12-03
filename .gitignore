@@ -182,4 +182,5 @@ revdep/
 # misc
 Meta/
 attic/
-inst/docd
+inst/doc
+Rplots.pdf
