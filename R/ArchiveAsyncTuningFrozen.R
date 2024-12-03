@@ -1,53 +1,6 @@
-#' @title Rush Data Storage
-#'
-#' @description
-#' The `ArchiveAsyncTuning`` stores all evaluated hyperparameter configurations and performance scores in a [rush::Rush] database.
-#'
-#' @details
-#' The [ArchiveAsyncTuning] is a connector to a [rush::Rush] database.
-#'
-#' @section Data Structure:
-#'
-#' The table (`$data`) has the following columns:
-#'
-#' * One column for each hyperparameter of the search space (`$search_space`).
-#' * One (list-)column for the `internal_tuned_values`
-#' * One column for each performance measure (`$codomain`).
-#' * `x_domain` (`list()`)\cr
-#'     Lists of (transformed) hyperparameter values that are passed to the learner.
-#' * `runtime_learners` (`numeric(1)`)\cr
-#'     Sum of training and predict times logged in learners per [mlr3::ResampleResult] / evaluation.
-#'     This does not include potential overhead time.
-#' * `timestamp` (`POSIXct`)\cr
-#'     Time stamp when the evaluation was logged into the archive.
-#' * `batch_nr` (`integer(1)`)\cr
-#'     Hyperparameters are evaluated in batches.
-#'     Each batch has a unique batch number.
-#'
-#' @section Analysis:
-#' For analyzing the tuning results, it is recommended to pass the [ArchiveAsyncTuning] to `as.data.table()`.
-#' The returned data table contains the [mlr3::ResampleResult] for each hyperparameter evaluation.
-#'
-#' @section S3 Methods:
-#' * `as.data.table.ArchiveTuning(x, unnest = "x_domain", exclude_columns = "uhash", measures = NULL)`\cr
-#' Returns a tabular view of all evaluated hyperparameter configurations.\cr
-#' [ArchiveAsyncTuning] -> [data.table::data.table()]\cr
-#'     * `x` ([ArchiveAsyncTuning])
-#'     * `unnest` (`character()`)\cr
-#'       Transforms list columns to separate columns. Set to `NULL` if no column should be unnested.
-#'     * `exclude_columns` (`character()`)\cr
-#'       Exclude columns from table. Set to `NULL` if no column should be excluded.
-#'     * `measures` (List of [mlr3::Measure])\cr
-#'       Score hyperparameter configurations on additional measures.
-#'
-#' @template param_search_space
-#' @template param_codomain
-#' @template param_rush
-#' @template param_internal_search_space
-#'
 #' @export
 ArchiveAsyncTuningFrozen = R6Class("ArchiveAsyncTuning",
-  inherit = bbotk::ArchiveAsync,
+  inherit = ArchiveAsyncTuning,
   public = list(
 
     frozen_data = NULL,
@@ -63,8 +16,6 @@ ArchiveAsyncTuningFrozen = R6Class("ArchiveAsyncTuning",
       private$.internal_search_space = archive$internal_search_space
       self$search_space = archive$search_space
       self$codomain = archive$codomain
-
-
     },
 
     #' @description
@@ -288,7 +239,7 @@ ArchiveAsyncTuningFrozen = R6Class("ArchiveAsyncTuning",
 
 #' @export
 as.data.table.ArchiveAsyncTuning = function(x, ..., unnest = "internal_tuned_values", exclude_columns = NULL, measures = NULL) {
-  data = x$data_with_state()
+  data = copy(x$frozen_data)
   if (!nrow(data)) return(data.table())
 
   # unnest columns
