@@ -100,7 +100,7 @@ ArchiveAsyncTuningFrozen = R6Class("ArchiveAsyncTuningFrozen",
     #' @param ... (ignored).
     print = function() {
       catf("%s with %i evaluations", format(self), self$n_evals)
-      print(as.data.table(self$data, unnest = NULL, exclude_columns = c(
+      print(as.data.table(self, unnest = NULL, exclude_columns = c(
         "x_domain",
         "timestamp_xs",
         "timestamp_ys",
@@ -135,7 +135,7 @@ ArchiveAsyncTuningFrozen = R6Class("ArchiveAsyncTuningFrozen",
 )
 
 #' @export
-as.data.table.ArchiveAsyncTuning = function(x, ..., unnest = "internal_tuned_values", exclude_columns = NULL, measures = NULL) {
+as.data.table.ArchiveAsyncTuningFrozen = function(x, ..., unnest = "internal_tuned_values", exclude_columns = NULL, measures = NULL) {
   data = copy(x$data)
   if (!nrow(data)) return(data.table())
 

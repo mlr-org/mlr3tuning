@@ -16,7 +16,7 @@ test_that("ArchiveAsyncTuningFrozen works", {
   tuner$optimize(instance)
 
   archive = instance$archive
-  frozen_archive = ArchiveAsyncFrozen$new(archive)
+  frozen_archive = ArchiveAsyncTuningFrozen$new(archive)
 
   expect_data_table(frozen_archive$data)
   expect_data_table(frozen_archive$queued_data)
@@ -28,6 +28,7 @@ test_that("ArchiveAsyncTuningFrozen works", {
   expect_number(frozen_archive$n_finished)
   expect_number(frozen_archive$n_failed)
   expect_number(frozen_archive$n_evals)
+  expect_benchmark_result(frozen_archive$benchmark_result)
 
   expect_data_table(as.data.table(frozen_archive))
 })
