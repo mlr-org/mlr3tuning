@@ -7,5 +7,5 @@
 This \link{CallbackAsync} freezes the \link{ArchiveAsync} to \link{ArchiveAsyncFrozen} after the optimization has finished.
 }
 \examples{
-clbk("bbotk.async_freeze_archive")
+clbk("mlr3tuning.async_freeze_archive")
 }
