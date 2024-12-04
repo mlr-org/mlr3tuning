@@ -426,3 +426,25 @@ load_callback_one_se_rule = function() {
     }
   )
 }
+
+#' @title Freeze Archive Callback
+#'
+#' @include CallbackAsyncTuning.R
+#' @name mlr3tuning.async_freeze_archive
+#'
+#' @description
+#' This [CallbackAsync] freezes the [ArchiveAsync] to [ArchiveAsyncFrozen] after the optimization has finished.
+#'
+#' @examples
+#' clbk("bbotk.async_freeze_archive")
+NULL
+
+load_callback_freeze_archive = function() {
+  callback_async_tuning("mlr3tuning.async_freeze_archive",
+    label = "Archive Freeze Callback",
+    man = "mlr3tuning::mlr3tuning.async_freeze_archive",
+    on_optimization_end = function(callback, context) {
+      context$instance$archive = ArchiveAsyncTuningFrozen$new(context$instance$archive)
+    }
+  )
+}
