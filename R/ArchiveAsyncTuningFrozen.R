@@ -4,7 +4,7 @@
 #' Freezes the Redis data base of an [ArchiveAsyncTuning] to a  `data.table::data.table()`.
 #' No further points can be added to the archive but the data can be accessed and analyzed.
 #' Useful when the Redis data base is not permanently available.
-#' Use the callback [bbotk.async_freeze_archive] to freeze the archive after the optimization has finished.
+#' Use the callback [mlr3tuning.async_freeze_archive] to freeze the archive after the optimization has finished.
 #'
 #' @section S3 Methods:
 #' * `as.data.table(archive)`\cr
