@@ -52,7 +52,7 @@ Suggests:
     xgboost
 Remotes:
     mlr-org/mlr3@callback,
-    mlr-org/bbotk
+    mlr-org/bbotk@mirai
 VignetteBuilder:
     knitr
 Config/testthat/edition: 3
