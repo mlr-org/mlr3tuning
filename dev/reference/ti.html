@@ -186,7 +186,7 @@ The default measure depends on the task type.</p><table class="table table"><tr>
 <span class="r-in"><span><span class="va">tuner</span><span class="op">$</span><span class="fu">optimize</span><span class="op">(</span><span class="va">instance</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp learner_param_vals  x_domain classif.ce</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;             &lt;list&gt;    &lt;list&gt;      &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -2.855632          &lt;list[2]&gt; &lt;list[1]&gt; 0.06114925</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -8.017804          &lt;list[2]&gt; &lt;list[1]&gt;  0.0639461</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Set optimal hyperparameter configuration to learner</span></span></span>
 <span class="r-in"><span><span class="va">learner</span><span class="op">$</span><span class="va">param_set</span><span class="op">$</span><span class="va">values</span> <span class="op">=</span> <span class="va">instance</span><span class="op">$</span><span class="va">result_learner_param_vals</span></span></span>
@@ -198,10 +198,10 @@ The default measure depends on the task type.</p><table class="table table"><tr>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp classif.ce runtime_learners           timestamp warnings errors</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;      &lt;num&gt;            &lt;num&gt;              &lt;POSc&gt;    &lt;int&gt;  &lt;int&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -9.030764 0.06117468            0.015 2024-12-04 16:04:13        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -2.855632 0.06114925            0.015 2024-12-04 16:04:13        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -8.367724 0.06117468            0.038 2024-12-04 16:04:13        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -4.812496 0.06117468            0.015 2024-12-04 16:04:13        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -8.017804  0.0639461            0.018 2024-12-08 16:41:49        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -2.310650  0.0697432            0.015 2024-12-08 16:41:49        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -3.109744  0.0697432            0.015 2024-12-08 16:41:49        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -6.465621  0.0639461            0.015 2024-12-08 16:41:49        0      0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     x_domain batch_nr  resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;list&gt;    &lt;int&gt;           &lt;list&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1: &lt;list[1]&gt;        1 &lt;ResampleResult&gt;</span>
