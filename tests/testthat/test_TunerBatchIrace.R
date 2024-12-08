@@ -1,7 +1,7 @@
 skip_if_not_installed("irace")
 
 test_that("TunerIrace", {
-  z = test_tuner("irace", term_evals = 42)
+  z = test_tuner("irace", term_evals = 200)
   instance = z$inst
   archive = instance$archive$data
   tuner = z$tuner
@@ -31,7 +31,7 @@ test_that("TunerIrace works with dependencies", {
     learner = lrn("regr.rpart"),
     resampling = rsmp("holdout"),
     measures = msr("regr.mse"),
-    terminator = trm("evals", n_evals = 96),
+    terminator = trm("evals", n_evals = 200),
     search_space = search_space)
   tuner = tnr("irace")
   x = capture.output({tuner$optimize(instance)})
@@ -50,7 +50,7 @@ test_that("TunerIrace works with logical parameters", {
     learner = lrn("regr.rpart"),
     resampling = rsmp("holdout"),
     measures = msr("regr.mse"),
-    terminator = trm("evals", n_evals = 96),
+    terminator = trm("evals", n_evals = 200),
     search_space = search_space)
   tuner = tnr("irace")
   x = capture.output({tuner$optimize(instance)})
@@ -78,7 +78,7 @@ test_that("TunerIrace works with unnamed discrete values", {
     learner = lrn("regr.rpart"),
     resampling = rsmp("holdout"),
     measures = msr("regr.mse"),
-    terminator = trm("evals", n_evals = 96),
+    terminator = trm("evals", n_evals = 200),
     search_space = search_space)
   tuner = tnr("irace")
   x = capture.output({expect_data_table(tuner$optimize(instance))})
