@@ -190,9 +190,9 @@ The default measure depends on the task type.</p><table class="table table"><tr>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Run tuning</span></span></span>
 <span class="r-in"><span><span class="va">tuner</span><span class="op">$</span><span class="fu">optimize</span><span class="op">(</span><span class="va">instance</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          cp learner_param_vals  x_domain classif.ce</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;num&gt;             &lt;list&gt;    &lt;list&gt;      &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -7.24258          &lt;list[2]&gt; &lt;list[1]&gt; 0.05519959</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           cp learner_param_vals  x_domain classif.ce</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;             &lt;list&gt;    &lt;list&gt;      &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -3.289145          &lt;list[2]&gt; &lt;list[1]&gt; 0.06384439</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Set optimal hyperparameter configuration to learner</span></span></span>
 <span class="r-in"><span><span class="va">learner</span><span class="op">$</span><span class="va">param_set</span><span class="op">$</span><span class="va">values</span> <span class="op">=</span> <span class="va">instance</span><span class="op">$</span><span class="va">result_learner_param_vals</span></span></span>
@@ -204,10 +204,10 @@ The default measure depends on the task type.</p><table class="table table"><tr>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp classif.ce runtime_learners           timestamp warnings errors</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;      &lt;num&gt;            &lt;num&gt;              &lt;POSc&gt;    &lt;int&gt;  &lt;int&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -7.242580 0.05519959            0.016 2024-12-10 09:43:43        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -3.836611 0.06099669            0.014 2024-12-10 09:43:43        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -3.695190 0.06099669            0.015 2024-12-10 09:43:43        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -3.182191 0.06099669            0.015 2024-12-10 09:43:43        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -3.289145 0.06384439            0.017 2024-12-10 09:46:04        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -2.668513 0.06384439            0.015 2024-12-10 09:46:04        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -8.651948 0.06966692            0.034 2024-12-10 09:46:04        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -4.841774 0.06676837            0.016 2024-12-10 09:46:04        0      0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     x_domain batch_nr  resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;list&gt;    &lt;int&gt;           &lt;list&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1: &lt;list[1]&gt;        1 &lt;ResampleResult&gt;</span>
