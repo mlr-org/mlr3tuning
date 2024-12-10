@@ -53,7 +53,9 @@
 #'
 #' # load learner and set search space
 #' learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
-#' \donttest{
+#'
+#' # currently there is bug in irace 4.0.0 that sometimes let the example crash
+#' \dontrun{
 #' # hyperparameter tuning on the pima indians diabetes data set
 #' instance = tune(
 #'   tuner = tnr("irace"),
