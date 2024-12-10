@@ -63,7 +63,7 @@
 #'   learner = learner,
 #'   resampling = rsmp("holdout"),
 #'   measure = msr("classif.ce"),
-#'   term_evals = 42
+#'   term_evals = 200
 #' )
 #'
 #' # best performing hyperparameter configuration
