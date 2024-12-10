@@ -17,6 +17,26 @@ CallbackAsyncTuning = R6Class("CallbackAsyncTuning",
     #' Called in `ObjectiveTuningAsync$eval()`.
     on_eval_after_xs = NULL,
 
+    #' @field on_evaluation_begin (`function()`)\cr
+    #' Stage called at the beginning of an evaluation.
+    #' Called in `workhorse()` (internal).
+    on_evaluation_begin = NULL,
+
+    #' @field on_evaluation_before_train (`function()`)\cr
+    #' Stage called before training the learner.
+    #' Called in `workhorse()` (internal).
+    on_evaluation_before_train = NULL,
+
+    #' @field on_evaluation_before_predict (`function()`)\cr
+    #' Stage called before predicting.
+    #' Called in `workhorse()` (internal).
+    on_evaluation_before_predict = NULL,
+
+    #' @field on_evaluation_end (`function()`)\cr
+    #' Stage called at the end of an evaluation.
+    #' Called in `workhorse()` (internal).
+    on_evaluation_end = NULL,
+
     #' @field on_eval_after_resample (`function()`)\cr
     #' Stage called after hyperparameter configurations are evaluated.
     #' Called in `ObjectiveTuningAsync$eval()`.
@@ -152,6 +172,10 @@ callback_async_tuning = function(
   on_worker_begin = NULL,
   on_optimizer_before_eval = NULL,
   on_eval_after_xs = NULL,
+  on_evaluation_begin = NULL,
+  on_evaluation_before_train = NULL,
+  on_evaluation_before_predict = NULL,
+  on_evaluation_end = NULL,
   on_eval_after_resample = NULL,
   on_eval_before_archive = NULL,
   on_optimizer_after_eval = NULL,
@@ -167,6 +191,10 @@ callback_async_tuning = function(
     on_worker_begin,
     on_optimizer_before_eval,
     on_eval_after_xs,
+    on_evaluation_begin,
+    on_evaluation_before_train,
+    on_evaluation_before_predict,
+    on_evaluation_end,
     on_eval_after_resample,
     on_eval_before_archive,
     on_optimizer_after_eval,
@@ -181,6 +209,10 @@ callback_async_tuning = function(
       "on_worker_begin",
       "on_optimizer_before_eval",
       "on_eval_after_xs",
+      "on_evaluation_begin",
+      "on_evaluation_before_train",
+      "on_evaluation_before_predict",
+      "on_evaluation_end",
       "on_eval_after_resample",
       "on_eval_before_archive",
       "on_optimizer_after_eval",
