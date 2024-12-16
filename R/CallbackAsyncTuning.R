@@ -1,4 +1,4 @@
-#' @title Create Asynchronous Tuning Callback
+#' @title Asynchronous Tuning Callback
 #'
 #' @description
 #' Specialized [bbotk::CallbackAsync] for asynchronous tuning.
