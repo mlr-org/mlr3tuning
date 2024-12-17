@@ -39,7 +39,7 @@ Suggests:
     adagio,
     future,
     GenSA,
-    irace (>= 4.0.0),
+    irace (>= 4.1.0),
     knitr,
     mlflow,
     mlr3learners (>= 0.7.0),
