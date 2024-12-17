@@ -13,7 +13,7 @@ Use the callback \link{mlr3tuning.async_freeze_archive} to freeze the archive af
 
 \itemize{
 \item \code{as.data.table(archive)}\cr
-\link{ArchiveAsync} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
+\link{ArchiveAsyncTuningFrozen} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
 Returns a tabular view of all performed function calls of the Objective.
 The \code{x_domain} column is unnested to separate columns.
 }

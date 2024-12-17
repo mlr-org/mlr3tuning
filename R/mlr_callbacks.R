@@ -433,7 +433,7 @@ load_callback_one_se_rule = function() {
 #' @name mlr3tuning.async_freeze_archive
 #'
 #' @description
-#' This [CallbackAsync] freezes the [ArchiveAsync] to [ArchiveAsyncFrozen] after the optimization has finished.
+#' This [CallbackAsyncTuning] freezes the [ArchiveAsyncTuning] to [ArchiveAsyncTuningFrozen] after the optimization has finished.
 #'
 #' @examples
 #' clbk("mlr3tuning.async_freeze_archive")
