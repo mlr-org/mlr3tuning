@@ -9,7 +9,7 @@ Calls irace::irace() from package irace."><meta property="og:image" content="htt
 
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.2.1.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.3.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -229,8 +229,8 @@ result is returned.</p><div class="section">
 <span class="r-in"><span><span class="co"># load learner and set search space</span></span></span>
 <span class="r-in"><span><span class="va">learner</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"classif.rpart"</span>, cp <span class="op">=</span> <span class="fu"><a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">to_tune</a></span><span class="op">(</span><span class="fl">1e-04</span>, <span class="fl">1e-1</span>, logscale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># currently there is bug in irace 4.0.0 that sometimes let the example crash</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span><span class="co"># runtime of the example is too long</span></span></span>
+<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="co"># hyperparameter tuning on the pima indians diabetes data set</span></span></span>
 <span class="r-in"><span><span class="va">instance</span> <span class="op">=</span> <span class="fu"><a href="tune.html">tune</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  tuner <span class="op">=</span> <span class="fu"><a href="tnr.html">tnr</a></span><span class="op">(</span><span class="st">"irace"</span><span class="op">)</span>,</span></span>
@@ -240,17 +240,174 @@ result is returned.</p><div class="section">
 <span class="r-in"><span>  measure <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">msr</a></span><span class="op">(</span><span class="st">"classif.ce"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  term_evals <span class="op">=</span> <span class="fl">200</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # 2024-12-18 10:09:57 UTC: Initialization</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Elitist race</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Elitist new instances: 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Elitist limit: 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # nbIterations: 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # minNbSurvival: 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # nbParameters: 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # seed: 1855097766</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # confidence level: 0.95</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # budget: 200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # mu: 5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # deterministic: FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # 2024-12-18 10:09:57 UTC: Iteration 1 of 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # experimentsUsedSoFar: 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # remainingBudget: 200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # currentBudget: 100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # nbConfigurations: 16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Markers:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      x No test is performed.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      c Configurations are discarded only due to capping.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      - The test is performed and some configurations are discarded.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      = The test is performed but no configuration is discarded.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      ! The test is performed and configurations could be discarded but elite configurations are preserved.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      . All alive configurations are elite and nothing is discarded.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> | |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |x|          1|         16|          2|    0.2460937500|         16|00:00:00|   NA|  NA|    NA|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |x|          2|         16|          5|    0.2539062500|         32|00:00:00|+0.85|0.93|0.2432|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |x|          3|         16|          5|    0.2513020833|         48|00:00:00|+0.72|0.81|0.5409|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |x|          4|         16|          5|    0.2421875000|         64|00:00:00|+0.63|0.73|0.4926|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |-|          5|          6|          5|    0.2398437500|         80|00:00:00|+0.01|0.21|0.8365|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |=|          6|          6|          2|    0.2513020833|         86|00:00:00|-0.12|0.07|0.9438|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |=|          7|          6|          5|    0.2483258929|         92|00:00:00|-0.01|0.13|0.8680|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Best-so-far configuration:           5    mean value:     0.2483258929</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Description of the best-so-far configuration:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   .ID.                cp .PARENT.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5    5 -2.86582979189387       NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # 2024-12-18 10:09:59 UTC: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  cp</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 -2.86582979189387</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 -3.72929920176664</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # 2024-12-18 10:09:59 UTC: Iteration 2 of 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # experimentsUsedSoFar: 92</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # remainingBudget: 108</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # currentBudget: 108</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # nbConfigurations: 15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Markers:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      x No test is performed.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      c Configurations are discarded only due to capping.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      - The test is performed and some configurations are discarded.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      = The test is performed but no configuration is discarded.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      ! The test is performed and configurations could be discarded but elite configurations are preserved.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      . All alive configurations are elite and nothing is discarded.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> | |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |x|          8|         15|         24|    0.2695312500|         15|00:00:00|   NA|  NA|    NA|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |x|          4|         15|         24|    0.2421875000|         28|00:00:00|+0.00|0.50|0.4667|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |x|          3|         15|         24|    0.2434895833|         41|00:00:00|+0.00|0.33|0.3111|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |x|          6|         15|         24|    0.2509765625|         54|00:00:00|-0.13|0.16|0.5342|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |=|          5|         15|         24|    0.2460937500|         67|00:00:00|-0.00|0.20|0.5544|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |=|          7|         15|         24|    0.2486979167|         80|00:00:00|-0.02|0.15|0.6385|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |=|          2|         15|         18|    0.2488839286|         93|00:00:00|+0.04|0.18|0.6580|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |=|          1|         15|         18|    0.2495117188|        106|00:00:00|-0.01|0.12|0.7102|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Best-so-far configuration:          18    mean value:     0.2495117188</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Description of the best-so-far configuration:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .ID.                cp .PARENT.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18   18 -3.03505397360393        5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # 2024-12-18 10:10:02 UTC: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   cp</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 -3.03505397360393</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26 -3.07347033861101</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # 2024-12-18 10:10:02 UTC: Stopped because there is not enough budget left to race more than the minimum (2).</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # You may either increase the budget or set 'minNbSurvival' to a lower value.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Iteration: 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # nbIterations: 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # experimentsUsedSoFar: 198</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # timeUsed: 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # remainingBudget: 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # currentBudget: 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # number of elites: 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # nbConfigurations: 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Total CPU user time: 5.342, CPU sys time: 0.104, Wall-clock time: 5.457</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # 2024-12-18 10:10:02 UTC: Starting post-selection:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Configurations selected: 18, 26.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Pending instances: 0, 0.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Seed: 1855097766</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Configurations: 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Available experiments: 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # minSurvival: 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Markers:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      x No test is performed.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      c Configurations are discarded only due to capping.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      - The test is performed and some configurations are discarded.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      = The test is performed but no configuration is discarded.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      ! The test is performed and configurations could be discarded but elite configurations are preserved.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      . All alive configurations are elite and nothing is discarded.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> | |   Instance|      Alive|       Best|       Mean best| Exp so far|  W time|  rho|KenW|  Qvar|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |.|          1|          2|         18|    0.2539062500|          0|00:00:00|   NA|  NA|    NA|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |.|          8|          2|         18|    0.2636718750|          0|00:00:00|+1.00|1.00|0.0000|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |.|          4|          2|         18|    0.2473958333|          0|00:00:00|+1.00|1.00|0.0000|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |.|          3|          2|         18|    0.2470703125|          0|00:00:00|+1.00|1.00|0.0000|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |.|          7|          2|         18|    0.2476562500|          0|00:00:00|+1.00|1.00|0.0000|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |.|          2|          2|         18|    0.2486979167|          0|00:00:00|+1.00|1.00|0.0000|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |.|          5|          2|         18|    0.2460937500|          0|00:00:00|+1.00|1.00|0.0000|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |.|          6|          2|         18|    0.2495117188|          0|00:00:00|+1.00|1.00|0.0000|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> |-|          9|          1|         18|    0.2513020833|          2|00:00:00|   NA|  NA|    NA|</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> +-+-----------+-----------+-----------+----------------+-----------+--------+-----+----+------+</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Best-so-far configuration:          18    mean value:     0.2513020833</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Description of the best-so-far configuration:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    .ID.                cp .PARENT.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18   18 -3.03505397360393        5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # 2024-12-18 10:10:02 UTC: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   cp</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 -3.03505397360393</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> # Total CPU user time: 5.438, CPU sys time: 0.108, Wall-clock time: 5.556</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># best performing hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="va">instance</span><span class="op">$</span><span class="va">result</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           cp configuration learner_param_vals  x_domain classif.ce</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;         &lt;int&gt;             &lt;list&gt;    &lt;list&gt;      &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -3.035054            18          &lt;list[2]&gt; &lt;list[1]&gt;  0.2513021</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># all evaluated hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             cp classif.ce runtime_learners           timestamp  race  step</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          &lt;num&gt;      &lt;num&gt;            &lt;num&gt;              &lt;POSc&gt; &lt;int&gt; &lt;int&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1: -7.183177  0.3085938            0.007 2024-12-18 10:09:57     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2: -3.729299  0.2460938            0.006 2024-12-18 10:09:57     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3: -8.910116  0.3085938            0.007 2024-12-18 10:09:57     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4: -5.456238  0.3085938            0.007 2024-12-18 10:09:57     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5: -2.865830  0.2539062            0.007 2024-12-18 10:09:57     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 196: -3.782776  0.2578125            0.006 2024-12-18 10:10:02     2     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 197: -2.949281  0.2539062            0.006 2024-12-18 10:10:02     2     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 198: -2.692814  0.2812500            0.006 2024-12-18 10:10:02     2     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 199: -3.035054  0.2656250            0.007 2024-12-18 10:10:02     3     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 200: -3.073470  0.2656250            0.006 2024-12-18 10:10:02     3     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      instance configuration warnings errors  x_domain batch_nr  resample_result</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;int&gt;         &lt;int&gt;    &lt;int&gt;  &lt;int&gt;    &lt;list&gt;    &lt;int&gt;           &lt;list&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1:       10             1        0      0 &lt;list[1]&gt;        1 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2:       10             2        0      0 &lt;list[1]&gt;        1 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3:       10             3        0      0 &lt;list[1]&gt;        1 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4:       10             4        0      0 &lt;list[1]&gt;        1 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5:       10             5        0      0 &lt;list[1]&gt;        1 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 196:       10            27        0      0 &lt;list[1]&gt;       15 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 197:       10            28        0      0 &lt;list[1]&gt;       15 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 198:       10            29        0      0 &lt;list[1]&gt;       15 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 199:        2            18        0      0 &lt;list[1]&gt;       16 &lt;ResampleResult&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 200:        2            26        0      0 &lt;list[1]&gt;       16 &lt;ResampleResult&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># fit final model on complete data set</span></span></span>
 <span class="r-in"><span><span class="va">learner</span><span class="op">$</span><span class="va">param_set</span><span class="op">$</span><span class="va">values</span> <span class="op">=</span> <span class="va">instance</span><span class="op">$</span><span class="va">result_learner_param_vals</span></span></span>
 <span class="r-in"><span><span class="va">learner</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
