@@ -314,6 +314,8 @@ AutoTuner = R6Class("AutoTuner",
     #' @field predict_type (`character(1)`)\cr
     #' Stores the currently active predict type, e.g. `"response"`.
     #' Must be an element of `$predict_types`.
+    #' A few learners already use the predict type during training.
+    #' So there is no guarantee that changing the predict type after tuning and training will have any effect or does not lead to errors.
     predict_type = function(rhs) {
       if (missing(rhs)) {
         return(private$.predict_type)
@@ -322,10 +324,12 @@ AutoTuner = R6Class("AutoTuner",
         stopf("Learner '%s' does not support predict type '%s'", self$id, rhs)
       }
 
-      # Catches 'Error: Field/Binding is read-only' bug
-      tryCatch({
+      self$instance_args$learner$predict_type = rhs
+
+
+      if (!is.null(self$model)) {
         self$model$learner$predict_type = rhs
-      }, error = function(cond){})
+      }
 
       private$.predict_type = rhs
     },
