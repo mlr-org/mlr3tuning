@@ -1,6 +1,9 @@
 # mlr3tuning (development version)
 
-perf: save models on worker only when requested in `ObjectiveTuningAsync`.
+# mlr3tuning 1.3.0
+
+* feat: Save `ArchiveAsyncTuning` to a `data.table` with `ArchiveAsyncTuningFrozen`.
+* perf: Save models on worker only when requested in `ObjectiveTuningAsync`.
 
 # mlr3tuning 1.2.1
 

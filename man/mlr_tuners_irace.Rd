@@ -108,6 +108,8 @@ task = tsk("pima")
 
 # load learner and set search space
 learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
+
+# runtime of the example is too long
 \donttest{
 # hyperparameter tuning on the pima indians diabetes data set
 instance = tune(
@@ -116,7 +118,7 @@ instance = tune(
   learner = learner,
   resampling = rsmp("holdout"),
   measure = msr("classif.ce"),
-  term_evals = 42
+  term_evals = 200
 )
 
 # best performing hyperparameter configuration

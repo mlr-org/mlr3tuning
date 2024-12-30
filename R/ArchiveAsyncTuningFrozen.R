@@ -8,7 +8,7 @@
 #'
 #' @section S3 Methods:
 #' * `as.data.table(archive)`\cr
-#'   [ArchiveAsync] -> [data.table::data.table()]\cr
+#'   [ArchiveAsyncTuningFrozen] -> [data.table::data.table()]\cr
 #'   Returns a tabular view of all performed function calls of the Objective.
 #'   The `x_domain` column is unnested to separate columns.
 #'
