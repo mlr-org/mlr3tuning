@@ -434,3 +434,15 @@ test_that("Can only pass internal tune tokens one way", {
     term_evals = 2),
     "Either tag parameters")
 })
+
+test_that("Correct error when minimize is NA", {
+  m = msr("classif.acc")
+  m$minimize = NA
+  expect_error(tune(
+    tuner = tnr("random_search"),
+    task = tsk("iris"),
+    learner = lrn("classif.debug", x = to_tune()),
+    resampling = rsmp("holdout"),
+    measure = m
+  ), "`minimize`")
+})
