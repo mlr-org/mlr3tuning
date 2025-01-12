@@ -31,6 +31,7 @@ Depends:
 Imports:
     bbotk (>= 1.5.0),
     checkmate (>= 2.0.0),
+    cli,
     data.table,
     lgr,
     mlr3misc (>= 0.15.1),
