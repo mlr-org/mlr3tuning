@@ -146,7 +146,9 @@ Short-cut to <code>result</code> from  tuning instance.</p></dd>
 <dt><code>predict_type</code></dt>
 <dd><p>(<code>character(1)</code>)<br>
 Stores the currently active predict type, e.g. <code>"response"</code>.
-Must be an element of <code>$predict_types</code>.</p></dd>
+Must be an element of <code>$predict_types</code>.
+A few learners already use the predict type during training.
+So there is no guarantee that changing the predict type after tuning and training will have any effect or does not lead to errors.</p></dd>
 
 
 <dt><code>hash</code></dt>
