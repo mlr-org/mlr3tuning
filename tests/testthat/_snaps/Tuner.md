@@ -3,9 +3,10 @@
     Code
       tuner
     Output
-      <Tuner>
+      
+      -- <Tuner> ---------------------------------------------------------------------
       * Parameters: p1=TRUE
-      * Parameter classes: ParamLgl
+      * Parameter classes: <ParamLgl>
       * Properties: single-crit
-      * Packages: mlr3tuning, GenSA
+      * Packages: mlr3tuning and GenSA
 
