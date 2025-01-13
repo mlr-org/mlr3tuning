@@ -168,7 +168,9 @@ Short-cut to \code{result} from  tuning instance.}
 
 \item{\code{predict_type}}{(\code{character(1)})\cr
 Stores the currently active predict type, e.g. \code{"response"}.
-Must be an element of \verb{$predict_types}.}
+Must be an element of \verb{$predict_types}.
+A few learners already use the predict type during training.
+So there is no guarantee that changing the predict type after tuning and training will have any effect or does not lead to errors.}
 
 \item{\code{hash}}{(\code{character(1)})\cr
 Hash (unique identifier) for this object.}
