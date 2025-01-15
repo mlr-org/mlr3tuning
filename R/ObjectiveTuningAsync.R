@@ -28,12 +28,17 @@ ObjectiveTuningAsync = R6Class("ObjectiveTuningAsync",
       call_back("on_eval_after_xs", self$callbacks, self$context)
       self$learner$param_set$set_values(.values = private$.xs, .insert = FALSE)
 
+      lg$debug("Resampling hyperparameter configuration")
+
       # resample hyperparameter configuration
       private$.resample_result = resample(self$task, self$learner, self$resampling, store_models = self$store_models, allow_hotstart = TRUE, clone = character(0))
       call_back("on_eval_after_resample", self$callbacks, self$context)
 
+      lg$debug("Aggregating performance")
+
       # aggregate performance
       private$.aggregated_performance = as.list(private$.resample_result$aggregate(self$measures))
+
       lg$debug("Aggregated performance %s", as_short_string(private$.aggregated_performance))
 
       # add runtime, errors and warnings
@@ -52,7 +57,7 @@ ObjectiveTuningAsync = R6Class("ObjectiveTuningAsync",
 
       # add benchmark result and models
       if (self$store_benchmark_result) {
-        lg$debug("Storing resample result.")
+        lg$debug("Storing resample result")
         private$.aggregated_performance = c(private$.aggregated_performance, list(resample_result = list(private$.resample_result)))
       }
 
