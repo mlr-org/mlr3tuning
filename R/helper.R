@@ -1,6 +1,9 @@
 measures_to_codomain = function(measures) {
   measures = as_measures(measures)
   domains = map(measures, function(s) {
+    if (is.na(s$minimize)) {
+      stopf("Measure %s has its `minimize` field set to NA, which is disallowed when tuning.", s$id)
+    }
     p_dbl(tags = ifelse(s$minimize, "minimize", "maximize"))
   })
   names(domains) = ids(measures)

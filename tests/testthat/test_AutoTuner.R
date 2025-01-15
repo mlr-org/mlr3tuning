@@ -231,22 +231,44 @@ test_that("store_tuning_instance, store_benchmark_result and store_models flags 
 })
 
 test_that("predict_type works", {
-  te = trm("evals", n_evals = 4)
-  task = tsk("iris")
-  ps = TEST_MAKE_PS1(n_dim = 1)
-  ms = msr("classif.ce")
-  tuner = tnr("grid_search", resolution = 3)
+  task = tsk("pima")
 
-  at = AutoTuner$new(lrn("classif.rpart"), rsmp("holdout"), ms, te,
-    tuner = tuner, ps)
+  # response predict type
+   at = auto_tuner(
+    tuner = tnr("random_search"),
+    learner = lrn("classif.rpart"),
+    resampling = rsmp("holdout"),
+    measure = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 4))
+
+  expect_equal(at$predict_type, "response")
 
   at$train(task)
   expect_equal(at$predict_type, "response")
   expect_equal(at$model$learner$predict_type, "response")
 
+  # change predict type after training
   at$predict_type = "prob"
   expect_equal(at$predict_type, "prob")
   expect_equal(at$model$learner$predict_type, "prob")
+
+  # prob predict type
+  at = auto_tuner(
+    tuner = tnr("random_search"),
+    learner = lrn("classif.rpart", predict_type = "prob"),
+    resampling = rsmp("holdout"),
+    measure = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 4))
+
+  expect_equal(at$predict_type, "prob")
+
+  at$train(task)
+
+  expect_equal(at$predict_type, "prob")
+  expect_equal(at$model$learner$predict_type, "prob")
+
+  pred = at$predict(task)
+  expect_numeric(pred$score(msr("classif.auc")))
 })
 
 test_that("search space from TuneToken works", {

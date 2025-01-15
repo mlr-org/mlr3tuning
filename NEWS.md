@@ -1,5 +1,7 @@
 # mlr3tuning (development version)
 
+* fix: The `$predict_type` was written to the model even when the `AutoTuner` was not trained.
+
 # mlr3tuning 1.3.0
 
 * feat: Save `ArchiveAsyncTuning` to a `data.table` with `ArchiveAsyncTuningFrozen`.

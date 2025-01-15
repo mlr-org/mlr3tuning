@@ -168,7 +168,9 @@ Short-cut to \code{result} from  tuning instance.}
 
 \item{\code{predict_type}}{(\code{character(1)})\cr
 Stores the currently active predict type, e.g. \code{"response"}.
-Must be an element of \verb{$predict_types}.}
+Must be an element of \verb{$predict_types}.
+A few learners already use the predict type during training.
+So there is no guarantee that changing the predict type after tuning and training will have any effect or does not lead to errors.}
 
 \item{\code{hash}}{(\code{character(1)})\cr
 Hash (unique identifier) for this object.}
@@ -197,6 +199,7 @@ Hash (unique identifier) for this partial object, excluding some components whic
 \if{html}{\out{
 <details><summary>Inherited methods</summary>
 <ul>
+<li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="configure"><a href='../../mlr3/html/Learner.html#method-Learner-configure'><code>mlr3::Learner$configure()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="encapsulate"><a href='../../mlr3/html/Learner.html#method-Learner-encapsulate'><code>mlr3::Learner$encapsulate()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="format"><a href='../../mlr3/html/Learner.html#method-Learner-format'><code>mlr3::Learner$format()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="help"><a href='../../mlr3/html/Learner.html#method-Learner-help'><code>mlr3::Learner$help()</code></a></span></li>
