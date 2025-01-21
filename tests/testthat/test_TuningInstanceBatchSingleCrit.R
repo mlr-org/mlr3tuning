@@ -471,27 +471,10 @@ test_that("required parameter can be tuned internally without having a value set
 
   learner$param_set$set_values(
     early_stopping = TRUE,
-    iter = NULL
+    iter = to_tune(upper = 1000, internal = TRUE)
   )
   learner$validate = "test"
 
-  internal_search_space = ps(
-    iter = p_int(upper = 1000, aggr = function(x) as.integer(mean(unlist(x))))
-  )
-
-
-  expect_error(tune(
-    task = tsk("iris"),
-    tuner = tnr("internal"),
-    learner = learner,
-    internal_search_space = internal_search_space,
-    resampling = rsmp("holdout"),
-    store_benchmark_result = TRUE
-  ), regexp = NA)
-
-  learner$param_set$set_values(
-    iter = to_tune(upper = 1000, internal = TRUE)
-  )
   expect_error(tune(
     task = tsk("iris"),
     tuner = tnr("internal"),
