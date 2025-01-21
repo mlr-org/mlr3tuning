@@ -27,3 +27,14 @@ extract_inner_tuned_values = function(resample_result, internal_search_space) {
   internal_tuned_values = transpose_list(map(get_private(resample_result)$.data$learner_states(get_private(resample_result)$.view), "internal_tuned_values"))
   internal_search_space$aggr_internal_tuned_values(internal_tuned_values)
 }
+
+
+split_internal_search_space = function(search_space) {
+  internal_tune_ids = search_space$ids(any_tags = "internal_tuning")
+  if (length(internal_tune_ids)) {
+    internal_search_space = search_space$subset(internal_tune_ids)
+    search_space = search_space$subset(setdiff(search_space$ids(), internal_tune_ids))
+    return(list(search_space = search_space, internal_search_space = internal_search_space))
+  }
+  list(search_space = search_space, internal_search_space = NULL)
+}

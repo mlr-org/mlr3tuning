@@ -42,7 +42,6 @@
 #' @template param_term_evals
 #' @template param_term_time
 #' @template param_search_space
-#' @template param_internal_search_space
 #' @template param_store_benchmark_result
 #' @template param_store_models
 #' @template param_check_values
@@ -88,7 +87,6 @@ tune = function(
   terminator = NULL,
   search_space = NULL,
   store_benchmark_result = TRUE,
-  internal_search_space = NULL,
   store_models = FALSE,
   check_values = FALSE,
   callbacks = NULL,
@@ -106,7 +104,6 @@ tune = function(
       measures,
       terminator = terminator,
       search_space = search_space,
-      internal_search_space = internal_search_space,
       store_benchmark_result = store_benchmark_result,
       store_models = store_models,
       check_values = check_values,
@@ -122,7 +119,6 @@ tune = function(
       measures,
       terminator = terminator,
       search_space = search_space,
-      internal_search_space = internal_search_space,
       store_benchmark_result = store_benchmark_result,
       store_models = store_models,
       check_values = check_values,
