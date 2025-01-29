@@ -80,9 +80,9 @@ TuningInstanceAsyncSingleCrit = R6Class("TuningInstanceAsyncSingleCrit",
       }
 
       # get ids of primary and internal hyperparameters
-      tmp = split_internal_search_space(search_space)
-      search_space = tmp$search_space
-      self$internal_search_space = tmp$internal_search_space
+      search_spaces = split_internal_search_space(search_space)
+      search_space = search_spaces$search_space
+      self$internal_search_space = search_spaces$internal_search_space
 
       if (!is.null(self$internal_search_space) && self$internal_search_space$has_trafo) {
         stopf("Internal tuning and parameter transformations are currently not supported.
