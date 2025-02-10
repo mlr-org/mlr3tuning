@@ -121,6 +121,22 @@ CallbackAsyncTuning = R6Class("CallbackAsyncTuning",
 #'  Called in `ObjectiveTuningAsync$eval()`.
 #'  The functions must have two arguments named `callback` and `context`.
 #'  The argument of `$.eval(xs)` is available in the `context`.
+#' @param on_resample_begin (`function()`)\cr
+#'  Stage called at the beginning of an evaluation.
+#'  Called in `workhorse()` (internal).
+#'  The functions must have two arguments named `callback` and `context`.
+#' @param on_resample_before_train (`function()`)\cr
+#'  Stage called before training the learner.
+#'  Called in `workhorse()` (internal).
+#'  The functions must have two arguments named `callback` and `context`.
+#' @param on_resample_before_predict (`function()`)\cr
+#'  Stage called before predicting.
+#'  Called in `workhorse()` (internal).
+#'  The functions must have two arguments named `callback` and `context`.
+#' @param on_resample_end (`function()`)\cr
+#'  Stage called at the end of an evaluation.
+#'  Called in `workhorse()` (internal).
+#'  The functions must have two arguments named `callback` and `context`.
 #' @param on_eval_after_resample (`function()`)\cr
 #'  Stage called after a hyperparameter configuration is evaluated.
 #'  Called in `ObjectiveTuningAsync$eval()`.
