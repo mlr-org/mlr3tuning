@@ -458,7 +458,7 @@ test_that("Batch single-crit internal tuning works", {
   tuner = tnr("random_search", batch_size = 2)
   expect_data_table(tuner$optimize(instance), nrows = 1)
   expect_list(instance$archive$data$internal_tuned_values, len = 20, types = "list")
-  expect_equal(unclass(instance$archive$data$internal_tuned_values[[1]]), list(iter = 99))
+  expect_equal(instance$archive$data$internal_tuned_values[[1]], set_class(list(iter = 99L), "internal_tuned_values"))
   expect_false(instance$result_learner_param_vals$early_stopping)
   expect_equal(instance$result_learner_param_vals$iter, 99)
 })

@@ -281,6 +281,6 @@ test_that("ArchiveAsyncTuning as.data.table function works internally tuned valu
 
   tab = as.data.table(instance$archive)
   expect_names(names(tab), must.include = "internal_tuned_values_iter")
-  expect_equal(unclass(tab$internal_tuned_values_iter[1]), 99)
+  expect_equal(tab$internal_tuned_values_iter[1], 99)
 })
 

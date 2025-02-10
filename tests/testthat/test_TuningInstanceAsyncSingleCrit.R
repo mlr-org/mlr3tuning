@@ -185,7 +185,7 @@ test_that("Async single-crit internal tuning works", {
   expect_data_table(tuner$optimize(instance), nrows = 1)
 
   expect_list(instance$archive$finished_data$internal_tuned_values, min.len = 20, types = "list")
-  expect_equal(unclass(instance$archive$finished_data$internal_tuned_values[[1]]), list(iter = 99))
+  expect_equal(instance$archive$finished_data$internal_tuned_values[[1]], set_class(list(iter = 99L), "internal_tuned_values"))
   expect_false(instance$result_learner_param_vals$early_stopping)
   expect_equal(instance$result_learner_param_vals$iter, 99)
   expect_rush_reset(instance$rush, type = "kill")
