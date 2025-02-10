@@ -346,3 +346,142 @@ test_that("on_result in TuningInstanceBatchMultiCrit works", {
   expect_equal(unique(instance$result$classif.ce), 0.7)
 })
 
+# stages in mlr3 workhorse -----------------------------------------------------
+
+test_that("on_resample_begin works", {
+  skip_on_cran()
+  skip_if_not_installed("rush")
+  flush_redis()
+
+  callback = callback_async_tuning("test",
+    on_resample_begin = function(callback, context) {
+      # expect_* does not work
+      assert_task(context$task)
+      assert_learner(context$learner)
+      assert_resampling(context$resampling)
+      checkmate::assert_number(context$iteration)
+      checkmate::assert_null(context$pdatas)
+      context$data_extra = list(success = TRUE)
+    }
+  )
+
+  rush::rush_plan(n_workers = 2)
+  instance = tune(
+    tuner = tnr("async_random_search"),
+    task = tsk("pima"),
+    learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
+    resampling = rsmp ("holdout"),
+    measures = msr("classif.ce"),
+    term_evals = 2,
+    callbacks = callback)
+
+  expect_class(instance$objective$context, "ContextAsyncTuning")
+
+  walk(as.data.table(instance$archive$benchmark_result)$data_extra, function(data_extra) {
+    expect_true(data_extra$success)
+  })
+})
+
+test_that("on_resample_before_train works", {
+  skip_on_cran()
+  skip_if_not_installed("rush")
+  flush_redis()
+
+  callback = callback_async_tuning("test",
+    on_resample_before_train = function(callback, context) {
+      assert_task(context$task)
+      assert_learner(context$learner)
+      assert_resampling(context$resampling)
+      checkmate::assert_number(context$iteration)
+      checkmate::assert_null(context$pdatas)
+      context$data_extra = list(success = TRUE)
+    }
+  )
+
+  rush::rush_plan(n_workers = 2)
+  instance = tune(
+    tuner = tnr("async_random_search"),
+    task = tsk("pima"),
+    learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
+    resampling = rsmp ("holdout"),
+    measures = msr("classif.ce"),
+    term_evals = 2,
+    callbacks = callback)
+
+  expect_class(instance$objective$context, "ContextAsyncTuning")
+
+  walk(as.data.table(instance$archive$benchmark_result)$data_extra, function(data_extra) {
+    expect_true(data_extra$success)
+  })
+})
+
+test_that("on_resample_before_predict works", {
+  skip_on_cran()
+  skip_if_not_installed("rush")
+  flush_redis()
+
+  callback = callback_async_tuning("test",
+    on_resample_before_predict = function(callback, context) {
+      assert_task(context$task)
+      assert_learner(context$learner)
+      assert_resampling(context$resampling)
+      checkmate::assert_null(context$pdatas)
+      context$data_extra = list(success = TRUE)
+    }
+  )
+
+  rush::rush_plan(n_workers = 2)
+  instance = tune(
+    tuner = tnr("async_random_search"),
+    task = tsk("pima"),
+    learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
+    resampling = rsmp ("holdout"),
+    measures = msr("classif.ce"),
+    term_evals = 2,
+    callbacks = callback)
+
+  expect_class(instance$objective$context, "ContextAsyncTuning")
+
+  walk(as.data.table(instance$archive$benchmark_result)$data_extra, function(data_extra) {
+    expect_true(data_extra$success)
+  })
+})
+
+test_that("on_resample_end works", {
+  skip_on_cran()
+  skip_if_not_installed("rush")
+  flush_redis()
+
+  callback = callback_async_tuning("test",
+    on_resample_end = function(callback, context) {
+      # expect_* does not work
+      assert_task(context$task)
+      assert_learner(context$learner)
+      assert_resampling(context$resampling)
+      checkmate::assert_number(context$iteration)
+      checkmate::assert_class(context$pdatas$test, "PredictionData")
+      context$learner$state = mlr3misc::insert_named(context$learner$state, list(state_success = TRUE))
+      context$data_extra = list(success = TRUE)
+    }
+  )
+
+  rush::rush_plan(n_workers = 2)
+  instance = tune(
+    tuner = tnr("async_random_search"),
+    task = tsk("pima"),
+    learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
+    resampling = rsmp ("holdout"),
+    measures = msr("classif.ce"),
+    term_evals = 2,
+    callbacks = callback)
+
+  expect_class(instance$objective$context, "ContextAsyncTuning")
+
+  walk(as.data.table(instance$archive$benchmark_result)$data_extra, function(data_extra) {
+    expect_true(data_extra$success)
+  })
+
+  walk(instance$archive$benchmark_result$score()$learner, function(learner, ...) {
+    expect_true(learner$state$state_success)
+  })
+})
