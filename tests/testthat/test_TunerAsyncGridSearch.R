@@ -7,7 +7,8 @@ test_that("TunerAsyncGridSearch works", {
     minsplit  = to_tune(2, 128),
     cp        = to_tune(1e-04, 1e-1))
 
-  rush::rush_plan(n_workers = 2)
+  mirai::daemons(2)
+  rush::rush_plan(n_workers = 2, worker_type = "remote")
   instance = ti_async(
     task = tsk("pima"),
     learner = learner,
