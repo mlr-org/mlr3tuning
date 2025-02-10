@@ -187,5 +187,5 @@ test_that("Batch multi-crit internal tuning works", {
   expect_list(instance$archive$data$internal_tuned_values, len = 20, types = "list")
   expect_equal(instance$archive$data$internal_tuned_values[[1]], list(iter = 99))
   expect_false(instance$result_learner_param_vals[[1]]$early_stopping)
-  expect_equal(instance$result_learner_param_vals[[1]]$iter, 99)
+  expect_equal(unclass(instance$result_learner_param_vals[[1]]$iter), 99)
 })

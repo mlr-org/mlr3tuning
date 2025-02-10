@@ -187,7 +187,7 @@ test_that("internal single crit", {
     term_evals = 4
   )
   expect_equal(
-    ti$archive$data$internal_tuned_values, replicate(list(list(iter = 99L)), n = 4L)
+    unclass(ti$archive$data$internal_tuned_values), replicate(list(list(iter = 99L)), n = 4L)
   )
   expect_equal(
     ti$result_learner_param_vals$iter, 99L
