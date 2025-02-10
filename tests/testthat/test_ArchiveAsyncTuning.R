@@ -252,7 +252,7 @@ test_that("Saving ArchiveAsyncTuning works", {
   loaded_instance = readRDS(file = "instance.rds")
 
   loaded_instance$reconnect()
-  loaded_instance
+  expect_class(loaded_instance, "TuningInstanceAsyncSingleCrit")
 })
 
 # Internal Tuning --------------------------------------------------------------
@@ -277,7 +277,7 @@ test_that("ArchiveAsyncTuning as.data.table function works internally tuned valu
 
   tab = as.data.table(instance$archive, unnest = "x_domain")
   expect_list(tab$internal_tuned_values, min.len = 2, types = "list")
-  expect_equal(tab$internal_tuned_values[[1]], list(iter = 99L))
+  expect_equal(tab$internal_tuned_values[[1]], set_class(list(iter = 99L), "internal_tuned_values"))
 
   tab = as.data.table(instance$archive)
   expect_names(names(tab), must.include = "internal_tuned_values_iter")
