@@ -51,7 +51,7 @@ Suggests:
     testthat (>= 3.0.0),
     xgboost
 Remotes:
-    mlr-org/mlr3@callback,
+    mlr-org/mlr3,
     mlr-org/bbotk@mirai
 VignetteBuilder:
     knitr
