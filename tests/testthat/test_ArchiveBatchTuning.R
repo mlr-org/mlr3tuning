@@ -278,7 +278,7 @@ test_that("ArchiveBatchTuning as.data.table function works for internally tuned 
 
   tab = as.data.table(instance$archive, unnest = "x_domain")
   expect_list(tab$internal_tuned_values, min.len = 2, types = "list")
-  expect_equal(tab$internal_tuned_values[[1]], list(iter = 99L))
+  expect_equal(unclass(tab$internal_tuned_values[[1]]), list(iter = 99L))
 
   tab = as.data.table(instance$archive)
   expect_names(names(tab), must.include = "internal_tuned_values_iter")
