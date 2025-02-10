@@ -17,7 +17,6 @@
 #' @template param_measures
 #' @template param_terminator
 #' @template param_search_space
-#' @template param_internal_search_space
 #' @template param_store_benchmark_result
 #' @template param_store_models
 #' @template param_check_values
@@ -77,7 +76,6 @@ TuningInstanceBatchMultiCrit = R6Class("TuningInstanceBatchMultiCrit",
       measures,
       terminator,
       search_space = NULL,
-      internal_search_space = NULL,
       store_benchmark_result = TRUE,
       store_models = FALSE,
       check_values = FALSE,
@@ -101,37 +99,9 @@ TuningInstanceBatchMultiCrit = R6Class("TuningInstanceBatchMultiCrit",
       }
 
       # get ids of primary and internal hyperparameters
-      sids = search_space$ids()
-      internal_tune_ids = search_space$ids(any_tags = "internal_tuning")
-
-      # get internal search space
-      self$internal_search_space = if (is.null(internal_search_space)) {
-        # We DO NOT subset the search space because there we might keep an extra_trafo which is not allowed
-        # for the internal tuning search space
-        if (length(internal_tune_ids)) {
-          if (search_space_from_tokens) {
-            learner$param_set$subset(internal_tune_ids)$search_space()
-          } else {
-            search_space$subset(internal_tune_ids)
-          }
-        }
-      } else {
-        if (length(internal_tune_ids)) {
-          stopf("Either tag parameters in the `search_space` with 'internal_tuning' OR provide an `internal_search_space`.")
-        }
-        as_search_space(internal_search_space)
-      }
-
-      # subset search space to primary hyperparameters
-      if (length(internal_tune_ids)) {
-        search_space = search_space$subset(setdiff(sids, internal_tune_ids))
-      }
-
-      if (!is.null(self$internal_search_space) && self$internal_search_space$has_trafo) {
-        stopf("Internal tuning and parameter transformations are currently not supported.
-          If you manually provided a search space that has a trafo and parameters tagged with 'internal_tuning',
-          please pass the latter separately via the argument `internal_search_space`.")
-      }
+      search_spaces = split_internal_search_space(search_space)
+      search_space = search_spaces$search_space
+      self$internal_search_space = search_spaces$internal_search_space
 
       # set internal search space
       if (!is.null(self$internal_search_space)) {

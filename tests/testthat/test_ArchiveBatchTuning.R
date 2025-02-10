@@ -263,7 +263,7 @@ test_that("ArchiveTuning as.data.table function works", {
 
 # Internal Tuning --------------------------------------------------------------
 
-test_that("ArchiveBatchTuning as.data.table function works internally tuned values", {
+test_that("ArchiveBatchTuning as.data.table function works for internally tuned values", {
   instance = ti(
     task = tsk("pima"),
     learner = lrn("classif.debug", validate = 0.2, early_stopping = TRUE, iter = to_tune(upper = 1000, internal = TRUE, aggr = function(x) 99),

@@ -13,7 +13,6 @@ auto_tuner(
   term_time = NULL,
   terminator = NULL,
   search_space = NULL,
-  internal_search_space = NULL,
   store_tuning_instance = TRUE,
   store_benchmark_result = TRUE,
   store_models = FALSE,
@@ -55,9 +54,6 @@ Stop criterion of the tuning process.}
 Hyperparameter search space. If \code{NULL} (default), the search space is
 constructed from the \link[paradox:to_tune]{paradox::TuneToken} of the learner's parameter set
 (learner$param_set).}
-
-\item{internal_search_space}{(\link[paradox:ParamSet]{paradox::ParamSet} or \code{NULL})\cr
-The internal search space.}
 
 \item{store_tuning_instance}{(\code{logical(1)})\cr
 If \code{TRUE} (default), stores the internally created \link{TuningInstanceBatchSingleCrit} with all intermediate results in slot \verb{$tuning_instance}.}
