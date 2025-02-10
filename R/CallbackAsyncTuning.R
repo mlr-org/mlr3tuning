@@ -1,4 +1,4 @@
-#' @title Create Asynchronous Tuning Callback
+#' @title Asynchronous Tuning Callback
 #'
 #' @description
 #' Specialized [bbotk::CallbackAsync] for asynchronous tuning.
@@ -16,6 +16,26 @@ CallbackAsyncTuning = R6Class("CallbackAsyncTuning",
     #' Stage called after xs is passed.
     #' Called in `ObjectiveTuningAsync$eval()`.
     on_eval_after_xs = NULL,
+
+    #' @field on_resample_begin (`function()`)\cr
+    #' Stage called at the beginning of an evaluation.
+    #' Called in `workhorse()` (internal).
+    on_resample_begin = NULL,
+
+    #' @field on_resample_before_train (`function()`)\cr
+    #' Stage called before training the learner.
+    #' Called in `workhorse()` (internal).
+    on_resample_before_train = NULL,
+
+    #' @field on_resample_before_predict (`function()`)\cr
+    #' Stage called before predicting.
+    #' Called in `workhorse()` (internal).
+    on_resample_before_predict = NULL,
+
+    #' @field on_resample_end (`function()`)\cr
+    #' Stage called at the end of an evaluation.
+    #' Called in `workhorse()` (internal).
+    on_resample_end = NULL,
 
     #' @field on_eval_after_resample (`function()`)\cr
     #' Stage called after hyperparameter configurations are evaluated.
@@ -101,6 +121,22 @@ CallbackAsyncTuning = R6Class("CallbackAsyncTuning",
 #'  Called in `ObjectiveTuningAsync$eval()`.
 #'  The functions must have two arguments named `callback` and `context`.
 #'  The argument of `$.eval(xs)` is available in the `context`.
+#' @param on_resample_begin (`function()`)\cr
+#'  Stage called at the beginning of an evaluation.
+#'  Called in `workhorse()` (internal).
+#'  The functions must have two arguments named `callback` and `context`.
+#' @param on_resample_before_train (`function()`)\cr
+#'  Stage called before training the learner.
+#'  Called in `workhorse()` (internal).
+#'  The functions must have two arguments named `callback` and `context`.
+#' @param on_resample_before_predict (`function()`)\cr
+#'  Stage called before predicting.
+#'  Called in `workhorse()` (internal).
+#'  The functions must have two arguments named `callback` and `context`.
+#' @param on_resample_end (`function()`)\cr
+#'  Stage called at the end of an evaluation.
+#'  Called in `workhorse()` (internal).
+#'  The functions must have two arguments named `callback` and `context`.
 #' @param on_eval_after_resample (`function()`)\cr
 #'  Stage called after a hyperparameter configuration is evaluated.
 #'  Called in `ObjectiveTuningAsync$eval()`.
@@ -152,6 +188,10 @@ callback_async_tuning = function(
   on_worker_begin = NULL,
   on_optimizer_before_eval = NULL,
   on_eval_after_xs = NULL,
+  on_resample_begin = NULL,
+  on_resample_before_train = NULL,
+  on_resample_before_predict = NULL,
+  on_resample_end = NULL,
   on_eval_after_resample = NULL,
   on_eval_before_archive = NULL,
   on_optimizer_after_eval = NULL,
@@ -167,6 +207,10 @@ callback_async_tuning = function(
     on_worker_begin,
     on_optimizer_before_eval,
     on_eval_after_xs,
+    on_resample_begin,
+    on_resample_before_train,
+    on_resample_before_predict,
+    on_resample_end,
     on_eval_after_resample,
     on_eval_before_archive,
     on_optimizer_after_eval,
@@ -181,6 +225,10 @@ callback_async_tuning = function(
       "on_worker_begin",
       "on_optimizer_before_eval",
       "on_eval_after_xs",
+      "on_resample_begin",
+      "on_resample_before_train",
+      "on_resample_before_predict",
+      "on_resample_end",
       "on_eval_after_resample",
       "on_eval_before_archive",
       "on_optimizer_after_eval",

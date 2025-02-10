@@ -12,6 +12,10 @@ callback_async_tuning(
   on_worker_begin = NULL,
   on_optimizer_before_eval = NULL,
   on_eval_after_xs = NULL,
+  on_resample_begin = NULL,
+  on_resample_before_train = NULL,
+  on_resample_before_predict = NULL,
+  on_resample_end = NULL,
   on_eval_after_resample = NULL,
   on_eval_before_archive = NULL,
   on_optimizer_after_eval = NULL,
@@ -56,6 +60,26 @@ Stage called after xs is passed to the objective.
 Called in \code{ObjectiveTuningAsync$eval()}.
 The functions must have two arguments named \code{callback} and \code{context}.
 The argument of \verb{$.eval(xs)} is available in the \code{context}.}
+
+\item{on_resample_begin}{(\verb{function()})\cr
+Stage called at the beginning of an evaluation.
+Called in \code{workhorse()} (internal).
+The functions must have two arguments named \code{callback} and \code{context}.}
+
+\item{on_resample_before_train}{(\verb{function()})\cr
+Stage called before training the learner.
+Called in \code{workhorse()} (internal).
+The functions must have two arguments named \code{callback} and \code{context}.}
+
+\item{on_resample_before_predict}{(\verb{function()})\cr
+Stage called before predicting.
+Called in \code{workhorse()} (internal).
+The functions must have two arguments named \code{callback} and \code{context}.}
+
+\item{on_resample_end}{(\verb{function()})\cr
+Stage called at the end of an evaluation.
+Called in \code{workhorse()} (internal).
+The functions must have two arguments named \code{callback} and \code{context}.}
 
 \item{on_eval_after_resample}{(\verb{function()})\cr
 Stage called after a hyperparameter configuration is evaluated.
