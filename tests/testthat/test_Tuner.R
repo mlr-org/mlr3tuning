@@ -187,7 +187,7 @@ test_that("internal single crit", {
     term_evals = 4
   )
   expect_equal(
-    ti$archive$data$internal_tuned_values, replicate(list(list(iter = 99L)), n = 4L)
+    ti$archive$data$internal_tuned_values, replicate(list(set_class(list(iter = 99L), "internal_tuned_values")), n = 4L)
   )
   expect_equal(
     ti$result_learner_param_vals$iter, 99L
@@ -211,7 +211,7 @@ test_that("internal single crit without benchmark_result", {
     store_benchmark_result = FALSE
   )
   expect_equal(
-    ti$archive$data$internal_tuned_values, replicate(list(list(iter = 99L)), n = 4L)
+    ti$archive$data$internal_tuned_values, replicate(list(set_class(list(iter = 99L), "internal_tuned_values")), n = 4L)
   )
   expect_equal(
     ti$result_learner_param_vals$iter, 99L

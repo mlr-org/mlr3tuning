@@ -25,7 +25,7 @@ extract_runtime = function(resample_result) {
 
 extract_inner_tuned_values = function(resample_result, internal_search_space) {
   internal_tuned_values = transpose_list(map(get_private(resample_result)$.data$learner_states(get_private(resample_result)$.view), "internal_tuned_values"))
-  internal_search_space$aggr_internal_tuned_values(internal_tuned_values)
+  set_class(internal_search_space$aggr_internal_tuned_values(internal_tuned_values), "internal_tuned_values")
 }
 
 
@@ -37,4 +37,9 @@ split_internal_search_space = function(search_space) {
     return(list(search_space = search_space, internal_search_space = internal_search_space))
   }
   list(search_space = search_space, internal_search_space = NULL)
+}
+
+#' @export
+format_list_item.internal_tuned_values = function(x, ...) {
+  as_short_string(unclass(x))
 }
