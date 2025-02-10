@@ -147,7 +147,11 @@ flush_redis = function() {
 }
 
 expect_rush_reset = function(rush, type = "kill") {
-  processes = rush$processes
+  processes = if (exists("processes", rush)) {
+    rush$processes
+  } else {
+    rush$processes_processx %??% rush$processes_mirai
+  }
   rush$reset(type = type)
   Sys.sleep(1)
   keys = rush$connector$command(c("KEYS", "*"))
