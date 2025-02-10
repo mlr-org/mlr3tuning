@@ -31,7 +31,7 @@ ObjectiveTuningAsync = R6Class("ObjectiveTuningAsync",
       lg$debug("Resampling hyperparameter configuration")
 
       # resample hyperparameter configuration
-      private$.resample_result = resample(self$task, self$learner, self$resampling, store_models = self$store_models, allow_hotstart = TRUE, clone = character(0), callback = self$callbacks)
+      private$.resample_result = resample(self$task, self$learner, self$resampling, store_models = self$store_models, allow_hotstart = TRUE, clone = character(0), callbacks = self$callbacks)
       call_back("on_eval_after_resample", self$callbacks, self$context)
 
       lg$debug("Aggregating performance")
