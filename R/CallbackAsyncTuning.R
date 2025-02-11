@@ -72,6 +72,12 @@ CallbackAsyncTuning = R6Class("CallbackAsyncTuning",
 #'            - on_optimizer_before_eval
 #'              Start Evaluation
 #'                - on_eval_after_xs
+#'                  Start Resampling Iteration
+#'                    - on_resample_begin
+#'                    - on_resample_before_train
+#'                    - on_resample_before_predict
+#'                    - on_resample_end
+#'                  End Resampling Iteration
 #'                - on_eval_after_resample
 #'                - on_eval_before_archive
 #'              End Evaluation
@@ -92,7 +98,7 @@ CallbackAsyncTuning = R6Class("CallbackAsyncTuning",
 #' @details
 #' When implementing a callback, each function must have two arguments named `callback` and `context`.
 #' A callback can write data to the state (`$state`), e.g. settings that affect the callback itself.
-#' Tuning callbacks access [ContextAsyncTuning].
+#' Tuning callbacks access [ContextAsyncTuning] and [mlr3::ContextResample].
 #'
 #' @param id (`character(1)`)\cr
 #'  Identifier for the new instance.
@@ -122,20 +128,24 @@ CallbackAsyncTuning = R6Class("CallbackAsyncTuning",
 #'  The functions must have two arguments named `callback` and `context`.
 #'  The argument of `$.eval(xs)` is available in the `context`.
 #' @param on_resample_begin (`function()`)\cr
-#'  Stage called at the beginning of an evaluation.
+#'  Stage called at the beginning of a resampling iteration.
 #'  Called in `workhorse()` (internal).
+#'  See also [mlr3::callback_resample()].
 #'  The functions must have two arguments named `callback` and `context`.
 #' @param on_resample_before_train (`function()`)\cr
 #'  Stage called before training the learner.
 #'  Called in `workhorse()` (internal).
+#'  See also [mlr3::callback_resample()].
 #'  The functions must have two arguments named `callback` and `context`.
 #' @param on_resample_before_predict (`function()`)\cr
 #'  Stage called before predicting.
 #'  Called in `workhorse()` (internal).
+#'  See also [mlr3::callback_resample()].
 #'  The functions must have two arguments named `callback` and `context`.
 #' @param on_resample_end (`function()`)\cr
-#'  Stage called at the end of an evaluation.
+#'  Stage called at the end of a resampling iteration.
 #'  Called in `workhorse()` (internal).
+#'  See also [mlr3::callback_resample()].
 #'  The functions must have two arguments named `callback` and `context`.
 #' @param on_eval_after_resample (`function()`)\cr
 #'  Stage called after a hyperparameter configuration is evaluated.

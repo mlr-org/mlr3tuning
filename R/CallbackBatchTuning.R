@@ -24,6 +24,26 @@ CallbackBatchTuning= R6Class("CallbackBatchTuning",
     #' Called in `ObjectiveTuningBatch$eval_many()`.
     on_eval_after_design = NULL,
 
+   #' @field on_resample_begin (`function()`)\cr
+    #' Stage called at the beginning of an evaluation.
+    #' Called in `workhorse()` (internal).
+    on_resample_begin = NULL,
+
+    #' @field on_resample_before_train (`function()`)\cr
+    #' Stage called before training the learner.
+    #' Called in `workhorse()` (internal).
+    on_resample_before_train = NULL,
+
+    #' @field on_resample_before_predict (`function()`)\cr
+    #' Stage called before predicting.
+    #' Called in `workhorse()` (internal).
+    on_resample_before_predict = NULL,
+
+    #' @field on_resample_end (`function()`)\cr
+    #' Stage called at the end of an evaluation.
+    #' Called in `workhorse()` (internal).
+    on_resample_end = NULL,
+
     #' @field on_eval_after_benchmark (`function()`)\cr
     #' Stage called after hyperparameter configurations are evaluated.
     #' Called in `ObjectiveTuningBatch$eval_many()`.
@@ -57,6 +77,12 @@ CallbackBatchTuning= R6Class("CallbackBatchTuning",
 #'          - on_optimizer_before_eval
 #'         Start Evaluation
 #'              - on_eval_after_design
+#'                  Start Resampling Iteration
+#'                    - on_resample_begin
+#'                    - on_resample_before_train
+#'                    - on_resample_before_predict
+#'                    - on_resample_end
+#'                  End Resampling Iteration
 #'              - on_eval_after_benchmark
 #'              - on_eval_before_archive
 #'         End Evaluation
@@ -70,7 +96,7 @@ CallbackBatchTuning= R6Class("CallbackBatchTuning",
 #' ```
 #'
 #' See also the section on parameters for more information on the stages.
-#' A tuning callback works with [ContextBatchTuning].
+#' A tuning callback works with [ContextBatchTuning] and [mlr3::ContextResample].
 #'
 #' @details
 #' When implementing a callback, each function must have two arguments named `callback` and `context`.
@@ -100,6 +126,26 @@ CallbackBatchTuning= R6Class("CallbackBatchTuning",
 #'  The functions must have two arguments named `callback` and `context`.
 #'  The arguments of `$eval_many(xss, resampling)` are available in `context`.
 #'  Additionally, the `design` is available in `context`.
+#' @param on_resample_begin (`function()`)\cr
+#'  Stage called at the beginning of a resampling iteration.
+#'  Called in `workhorse()` (internal).
+#'  See also [mlr3::callback_resample()].
+#'  The functions must have two arguments named `callback` and `context`.
+#' @param on_resample_before_train (`function()`)\cr
+#'  Stage called before training the learner.
+#'  Called in `workhorse()` (internal).
+#'  See also [mlr3::callback_resample()].
+#'  The functions must have two arguments named `callback` and `context`.
+#' @param on_resample_before_predict (`function()`)\cr
+#'  Stage called before predicting.
+#'  Called in `workhorse()` (internal).
+#'  See also [mlr3::callback_resample()].
+#'  The functions must have two arguments named `callback` and `context`.
+#' @param on_resample_end (`function()`)\cr
+#'  Stage called at the end of a resampling iteration.
+#'  Called in `workhorse()` (internal).
+#'  See also [mlr3::callback_resample()].
+#'  The functions must have two arguments named `callback` and `context`.
 #' @param on_eval_after_benchmark (`function()`)\cr
 #'  Stage called after hyperparameter configurations are evaluated.
 #'  Called in `ObjectiveTuningBatch$eval_many()`.
@@ -150,6 +196,10 @@ callback_batch_tuning = function(
   on_optimization_begin = NULL,
   on_optimizer_before_eval = NULL,
   on_eval_after_design = NULL,
+  on_resample_begin = NULL,
+  on_resample_before_train = NULL,
+  on_resample_before_predict = NULL,
+  on_resample_end = NULL,
   on_eval_after_benchmark = NULL,
   on_eval_before_archive = NULL,
   on_optimizer_after_eval = NULL,
@@ -163,6 +213,10 @@ callback_batch_tuning = function(
     on_optimization_begin,
     on_optimizer_before_eval,
     on_eval_after_design,
+    on_resample_begin,
+    on_resample_before_train,
+    on_resample_before_predict,
+    on_resample_end,
     on_eval_after_benchmark,
     on_eval_before_archive,
     on_optimizer_after_eval,
@@ -175,6 +229,10 @@ callback_batch_tuning = function(
       "on_optimization_begin",
       "on_optimizer_before_eval",
       "on_eval_after_design",
+      "on_resample_begin",
+      "on_resample_before_train",
+      "on_resample_before_predict",
+      "on_resample_end",
       "on_eval_after_benchmark",
       "on_eval_before_archive",
       "on_optimizer_after_eval",

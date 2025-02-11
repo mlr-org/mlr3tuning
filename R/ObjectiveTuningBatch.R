@@ -74,7 +74,8 @@ ObjectiveTuningBatch = R6Class("ObjectiveTuningBatch",
       private$.benchmark_result = benchmark(
         design = private$.design,
         store_models = self$store_models,
-        clone = character(0))
+        clone = character(0),
+        callbacks = self$callbacks)
       call_back("on_eval_after_benchmark", self$callbacks, self$context)
 
       # aggregate performance scores

@@ -11,6 +11,10 @@ callback_batch_tuning(
   on_optimization_begin = NULL,
   on_optimizer_before_eval = NULL,
   on_eval_after_design = NULL,
+  on_resample_begin = NULL,
+  on_resample_before_train = NULL,
+  on_resample_before_predict = NULL,
+  on_resample_end = NULL,
   on_eval_after_benchmark = NULL,
   on_eval_before_archive = NULL,
   on_optimizer_after_eval = NULL,
@@ -49,6 +53,30 @@ Called in \code{ObjectiveTuningBatch$eval_many()}.
 The functions must have two arguments named \code{callback} and \code{context}.
 The arguments of \verb{$eval_many(xss, resampling)} are available in \code{context}.
 Additionally, the \code{design} is available in \code{context}.}
+
+\item{on_resample_begin}{(\verb{function()})\cr
+Stage called at the beginning of a resampling iteration.
+Called in \code{workhorse()} (internal).
+See also \code{\link[mlr3:callback_resample]{mlr3::callback_resample()}}.
+The functions must have two arguments named \code{callback} and \code{context}.}
+
+\item{on_resample_before_train}{(\verb{function()})\cr
+Stage called before training the learner.
+Called in \code{workhorse()} (internal).
+See also \code{\link[mlr3:callback_resample]{mlr3::callback_resample()}}.
+The functions must have two arguments named \code{callback} and \code{context}.}
+
+\item{on_resample_before_predict}{(\verb{function()})\cr
+Stage called before predicting.
+Called in \code{workhorse()} (internal).
+See also \code{\link[mlr3:callback_resample]{mlr3::callback_resample()}}.
+The functions must have two arguments named \code{callback} and \code{context}.}
+
+\item{on_resample_end}{(\verb{function()})\cr
+Stage called at the end of a resampling iteration.
+Called in \code{workhorse()} (internal).
+See also \code{\link[mlr3:callback_resample]{mlr3::callback_resample()}}.
+The functions must have two arguments named \code{callback} and \code{context}.}
 
 \item{on_eval_after_benchmark}{(\verb{function()})\cr
 Stage called after hyperparameter configurations are evaluated.
@@ -111,6 +139,12 @@ The stages are prefixed with \verb{on_*}.
          - on_optimizer_before_eval
         Start Evaluation
              - on_eval_after_design
+                 Start Resampling Iteration
+                   - on_resample_begin
+                   - on_resample_before_train
+                   - on_resample_before_predict
+                   - on_resample_end
+                 End Resampling Iteration
              - on_eval_after_benchmark
              - on_eval_before_archive
         End Evaluation
@@ -124,7 +158,7 @@ End Tuning
 }\if{html}{\out{</div>}}
 
 See also the section on parameters for more information on the stages.
-A tuning callback works with \link{ContextBatchTuning}.
+A tuning callback works with \link{ContextBatchTuning} and \link[mlr3:ContextResample]{mlr3::ContextResample}.
 }
 \details{
 When implementing a callback, each function must have two arguments named \code{callback} and \code{context}.

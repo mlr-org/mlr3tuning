@@ -28,6 +28,22 @@ callback_batch_tuning("mlr3tuning.backup",
 Stage called after design is created.
 Called in \code{ObjectiveTuningBatch$eval_many()}.}
 
+\item{\code{on_resample_begin}}{(\verb{function()})\cr
+Stage called at the beginning of an evaluation.
+Called in \code{workhorse()} (internal).}
+
+\item{\code{on_resample_before_train}}{(\verb{function()})\cr
+Stage called before training the learner.
+Called in \code{workhorse()} (internal).}
+
+\item{\code{on_resample_before_predict}}{(\verb{function()})\cr
+Stage called before predicting.
+Called in \code{workhorse()} (internal).}
+
+\item{\code{on_resample_end}}{(\verb{function()})\cr
+Stage called at the end of an evaluation.
+Called in \code{workhorse()} (internal).}
+
 \item{\code{on_eval_after_benchmark}}{(\verb{function()})\cr
 Stage called after hyperparameter configurations are evaluated.
 Called in \code{ObjectiveTuningBatch$eval_many()}.}
