@@ -258,4 +258,117 @@ test_that("on_result in TuningInstanceBatchMultiCrit works", {
   expect_equal(unique(instance$result$classif.ce), 0.7)
 })
 
+# stages in mlr3 workhorse -----------------------------------------------------
 
+test_that("on_resample_begin works", {
+
+  callback = callback_batch_tuning("test",
+    on_resample_begin = function(callback, context) {
+      # expect_* does not work
+      assert_task(context$task)
+      assert_learner(context$learner)
+      assert_resampling(context$resampling)
+      checkmate::assert_number(context$iteration)
+      checkmate::assert_null(context$pdatas)
+      context$data_extra = list(success = TRUE)
+    }
+  )
+
+  instance = tune(
+    tuner = tnr("random_search", batch_size = 1),
+    task = tsk("pima"),
+    learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
+    resampling = rsmp ("holdout"),
+    measures = msrs(c("classif.ce", "classif.acc")),
+    term_evals = 2,
+    callbacks = callback)
+
+   expect_class(instance$objective$context, "ContextBatchTuning")
+
+  walk(as.data.table(instance$archive$benchmark_result)$data_extra, function(data_extra) {
+    expect_true(data_extra$success)
+  })
+})
+
+test_that("on_resample_before_train works", {
+  callback = callback_batch_tuning("test",
+    on_resample_before_train = function(callback, context) {
+      assert_task(context$task)
+      assert_learner(context$learner)
+      assert_resampling(context$resampling)
+      checkmate::assert_number(context$iteration)
+      checkmate::assert_null(context$pdatas)
+      context$data_extra = list(success = TRUE)
+    }
+  )
+
+  instance = tune(
+    tuner = tnr("random_search", batch_size = 1),
+    task = tsk("pima"),
+    learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
+    resampling = rsmp ("holdout"),
+    measures = msrs(c("classif.ce", "classif.acc")),
+    term_evals = 2,
+    callbacks = callback)
+
+  expect_class(instance$objective$context, "ContextBatchTuning")
+
+  walk(as.data.table(instance$archive$benchmark_result)$data_extra, function(data_extra) {
+    expect_true(data_extra$success)
+  })
+})
+
+test_that("on_resample_before_predict works", {
+  callback = callback_batch_tuning("test",
+    on_resample_before_predict = function(callback, context) {
+      assert_task(context$task)
+      assert_learner(context$learner)
+      assert_resampling(context$resampling)
+      checkmate::assert_null(context$pdatas)
+      context$data_extra = list(success = TRUE)
+    }
+  )
+
+  instance = tune(
+    tuner = tnr("random_search", batch_size = 1),
+    task = tsk("pima"),
+    learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
+    resampling = rsmp ("holdout"),
+    measures = msrs(c("classif.ce", "classif.acc")),
+    term_evals = 2,
+    callbacks = callback)
+
+  expect_class(instance$objective$context, "ContextBatchTuning")
+
+  walk(as.data.table(instance$archive$benchmark_result)$data_extra, function(data_extra) {
+    expect_true(data_extra$success)
+  })
+})
+
+test_that("on_resample_end works", {
+  callback = callback_batch_tuning("test",
+    on_resample_end = function(callback, context) {
+      assert_task(context$task)
+      assert_learner(context$learner)
+      assert_resampling(context$resampling)
+      checkmate::assert_number(context$iteration)
+      checkmate::assert_class(context$pdatas$test, "PredictionData")
+      context$data_extra = list(success = TRUE)
+    }
+  )
+
+  instance = tune(
+    tuner = tnr("random_search", batch_size = 1),
+    task = tsk("pima"),
+    learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
+    resampling = rsmp ("holdout"),
+    measures = msrs(c("classif.ce", "classif.acc")),
+    term_evals = 2,
+    callbacks = callback)
+
+  expect_class(instance$objective$context, "ContextBatchTuning")
+
+  walk(as.data.table(instance$archive$benchmark_result)$data_extra, function(data_extra) {
+    expect_true(data_extra$success)
+  })
+})

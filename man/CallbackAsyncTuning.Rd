@@ -2,7 +2,7 @@
 % Please edit documentation in R/CallbackAsyncTuning.R
 \name{CallbackAsyncTuning}
 \alias{CallbackAsyncTuning}
-\title{Create Asynchronous Tuning Callback}
+\title{Asynchronous Tuning Callback}
 \description{
 Specialized \link[bbotk:CallbackAsync]{bbotk::CallbackAsync} for asynchronous tuning.
 Callbacks allow to customize the behavior of processes in mlr3tuning.
@@ -19,6 +19,22 @@ For more information on tuning callbacks see \code{\link[=callback_async_tuning]
 \item{\code{on_eval_after_xs}}{(\verb{function()})\cr
 Stage called after xs is passed.
 Called in \code{ObjectiveTuningAsync$eval()}.}
+
+\item{\code{on_resample_begin}}{(\verb{function()})\cr
+Stage called at the beginning of an evaluation.
+Called in \code{workhorse()} (internal).}
+
+\item{\code{on_resample_before_train}}{(\verb{function()})\cr
+Stage called before training the learner.
+Called in \code{workhorse()} (internal).}
+
+\item{\code{on_resample_before_predict}}{(\verb{function()})\cr
+Stage called before predicting.
+Called in \code{workhorse()} (internal).}
+
+\item{\code{on_resample_end}}{(\verb{function()})\cr
+Stage called at the end of an evaluation.
+Called in \code{workhorse()} (internal).}
 
 \item{\code{on_eval_after_resample}}{(\verb{function()})\cr
 Stage called after hyperparameter configurations are evaluated.

@@ -12,6 +12,9 @@ test_that("ArchiveAsyncTuning access methods work", {
     terminator = trm("evals", n_evals = 20),
     store_benchmark_result = TRUE
   )
+
+  expect_benchmark_result(instance$archive$benchmark_result)
+
   tuner = tnr("async_random_search")
   tuner$optimize(instance)
 

@@ -50,6 +50,9 @@ Suggests:
     rpart,
     testthat (>= 3.0.0),
     xgboost
+Remotes:
+    mlr-org/mlr3,
+    mlr-org/bbotk
 VignetteBuilder:
     knitr
 Config/testthat/edition: 3
