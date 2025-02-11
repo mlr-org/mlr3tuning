@@ -11,6 +11,12 @@ Start Tuning
            - on_optimizer_before_eval
              Start Evaluation
                - on_eval_after_xs
+                 Start Resampling Iteration
+                   - on_resample_begin
+                   - on_resample_before_train
+                   - on_resample_before_predict
+                   - on_resample_end
+                 End Resampling Iteration
                - on_eval_after_resample
                - on_eval_before_archive
              End Evaluation
@@ -37,6 +43,12 @@ Start Tuning
            - on_optimizer_before_eval
              Start Evaluation
                - on_eval_after_xs
+                 Start Resampling Iteration
+                   - on_resample_begin
+                   - on_resample_before_train
+                   - on_resample_before_predict
+                   - on_resample_end
+                 End Resampling Iteration
                - on_eval_after_resample
                - on_eval_before_archive
              End Evaluation
@@ -107,18 +119,24 @@ The stages are prefixed with <code>on_*</code>.</p>
 <span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>           <span class="sc">-</span> on_optimizer_before_eval</span>
 <span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>             Start Evaluation</span>
 <span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>               <span class="sc">-</span> on_eval_after_xs</span>
-<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>               <span class="sc">-</span> on_eval_after_resample</span>
-<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>               <span class="sc">-</span> on_eval_before_archive</span>
-<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>             End Evaluation</span>
-<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>          <span class="sc">-</span> on_optimizer_after_eval</span>
-<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>         End Optimization on Worker</span>
-<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>         <span class="sc">-</span> on_worker_end</span>
-<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>    End Worker</span>
-<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>     <span class="sc">-</span> on_tuning_result_begin</span>
-<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>     <span class="sc">-</span> on_result_begin</span>
-<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a>     <span class="sc">-</span> on_result_end</span>
-<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a>     <span class="sc">-</span> on_optimization_end</span>
-<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a>End Tuning</span></code></pre><p></p></div>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>                 Start Resampling Iteration</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>                   <span class="sc">-</span> on_resample_begin</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>                   <span class="sc">-</span> on_resample_before_train</span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>                   <span class="sc">-</span> on_resample_before_predict</span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>                   <span class="sc">-</span> on_resample_end</span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>                 End Resampling Iteration</span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>               <span class="sc">-</span> on_eval_after_resample</span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>               <span class="sc">-</span> on_eval_before_archive</span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>             End Evaluation</span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a>          <span class="sc">-</span> on_optimizer_after_eval</span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a>         End Optimization on Worker</span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a>         <span class="sc">-</span> on_worker_end</span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a>    End Worker</span>
+<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a>     <span class="sc">-</span> on_tuning_result_begin</span>
+<span id="cb1-23"><a href="#cb1-23" tabindex="-1"></a>     <span class="sc">-</span> on_result_begin</span>
+<span id="cb1-24"><a href="#cb1-24" tabindex="-1"></a>     <span class="sc">-</span> on_result_end</span>
+<span id="cb1-25"><a href="#cb1-25" tabindex="-1"></a>     <span class="sc">-</span> on_optimization_end</span>
+<span id="cb1-26"><a href="#cb1-26" tabindex="-1"></a>End Tuning</span></code></pre><p></p></div>
 <p>See also the section on parameters for more information on the stages.
 A tuning callback works with <a href="ContextAsyncTuning.html">ContextAsyncTuning</a>.</p>
     </div>
@@ -133,6 +151,10 @@ A tuning callback works with <a href="ContextAsyncTuning.html">ContextAsyncTunin
 <span>  on_worker_begin <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  on_optimizer_before_eval <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  on_eval_after_xs <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  on_resample_begin <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  on_resample_before_train <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  on_resample_before_predict <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  on_resample_end <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  on_eval_after_resample <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  on_eval_before_archive <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  on_optimizer_after_eval <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -194,6 +216,38 @@ Stage called after xs is passed to the objective.
 Called in <code>ObjectiveTuningAsync$eval()</code>.
 The functions must have two arguments named <code>callback</code> and <code>context</code>.
 The argument of <code>$.eval(xs)</code> is available in the <code>context</code>.</p></dd>
+
+
+<dt id="arg-on-resample-begin">on_resample_begin<a class="anchor" aria-label="anchor" href="#arg-on-resample-begin"></a></dt>
+<dd><p>(<code>function()</code>)<br>
+Stage called at the beginning of a resampling iteration.
+Called in <code>workhorse()</code> (internal).
+See also <code><a href="https://mlr3.mlr-org.com/reference/callback_resample.html" class="external-link">mlr3::callback_resample()</a></code>.
+The functions must have two arguments named <code>callback</code> and <code>context</code>.</p></dd>
+
+
+<dt id="arg-on-resample-before-train">on_resample_before_train<a class="anchor" aria-label="anchor" href="#arg-on-resample-before-train"></a></dt>
+<dd><p>(<code>function()</code>)<br>
+Stage called before training the learner.
+Called in <code>workhorse()</code> (internal).
+See also <code><a href="https://mlr3.mlr-org.com/reference/callback_resample.html" class="external-link">mlr3::callback_resample()</a></code>.
+The functions must have two arguments named <code>callback</code> and <code>context</code>.</p></dd>
+
+
+<dt id="arg-on-resample-before-predict">on_resample_before_predict<a class="anchor" aria-label="anchor" href="#arg-on-resample-before-predict"></a></dt>
+<dd><p>(<code>function()</code>)<br>
+Stage called before predicting.
+Called in <code>workhorse()</code> (internal).
+See also <code><a href="https://mlr3.mlr-org.com/reference/callback_resample.html" class="external-link">mlr3::callback_resample()</a></code>.
+The functions must have two arguments named <code>callback</code> and <code>context</code>.</p></dd>
+
+
+<dt id="arg-on-resample-end">on_resample_end<a class="anchor" aria-label="anchor" href="#arg-on-resample-end"></a></dt>
+<dd><p>(<code>function()</code>)<br>
+Stage called at the end of a resampling iteration.
+Called in <code>workhorse()</code> (internal).
+See also <code><a href="https://mlr3.mlr-org.com/reference/callback_resample.html" class="external-link">mlr3::callback_resample()</a></code>.
+The functions must have two arguments named <code>callback</code> and <code>context</code>.</p></dd>
 
 
 <dt id="arg-on-eval-after-resample">on_eval_after_resample<a class="anchor" aria-label="anchor" href="#arg-on-eval-after-resample"></a></dt>
@@ -268,7 +322,7 @@ Called in <code>Optimizer$optimize()</code>.</p></dd>
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>When implementing a callback, each function must have two arguments named <code>callback</code> and <code>context</code>.
 A callback can write data to the state (<code>$state</code>), e.g. settings that affect the callback itself.
-Tuning callbacks access <a href="ContextAsyncTuning.html">ContextAsyncTuning</a>.</p>
+Tuning callbacks access <a href="ContextAsyncTuning.html">ContextAsyncTuning</a> and <a href="https://mlr3.mlr-org.com/reference/ContextResample.html" class="external-link">mlr3::ContextResample</a>.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

@@ -71,6 +71,30 @@ Stage called after design is created.
 Called in <code>ObjectiveTuningBatch$eval_many()</code>.</p></dd>
 
 
+<dt><code>on_resample_begin</code></dt>
+<dd><p>(<code>function()</code>)<br>
+Stage called at the beginning of an evaluation.
+Called in <code>workhorse()</code> (internal).</p></dd>
+
+
+<dt><code>on_resample_before_train</code></dt>
+<dd><p>(<code>function()</code>)<br>
+Stage called before training the learner.
+Called in <code>workhorse()</code> (internal).</p></dd>
+
+
+<dt><code>on_resample_before_predict</code></dt>
+<dd><p>(<code>function()</code>)<br>
+Stage called before predicting.
+Called in <code>workhorse()</code> (internal).</p></dd>
+
+
+<dt><code>on_resample_end</code></dt>
+<dd><p>(<code>function()</code>)<br>
+Stage called at the end of an evaluation.
+Called in <code>workhorse()</code> (internal).</p></dd>
+
+
 <dt><code>on_eval_after_benchmark</code></dt>
 <dd><p>(<code>function()</code>)<br>
 Stage called after hyperparameter configurations are evaluated.
