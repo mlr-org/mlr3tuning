@@ -1,6 +1,10 @@
 # mlr3tuning (development version)
 
+* feat: Resample stages from `CallbackResample` are now available in `CallbackBatchTuning` and `CallbackAsyncTuning`.
 * fix: The `$predict_type` was written to the model even when the `AutoTuner` was not trained.
+* feat: Internal tuned values are now visible in logs.
+* BREAKING CHANGE: Remove internal search space argument.
+
 
 # mlr3tuning 1.3.0
 
