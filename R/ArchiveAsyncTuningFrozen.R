@@ -99,7 +99,7 @@ ArchiveAsyncTuningFrozen = R6Class("ArchiveAsyncTuningFrozen",
     #'
     #' @param ... (ignored).
     print = function() {
-      catf("%s with %i evaluations", format(self), self$n_evals)
+      cat_cli(cli_h1("{.cls {class(self)[1L]}} with {.val {self$n_evals}} evaluations"))
       print(as.data.table(self, unnest = NULL, exclude_columns = c(
         "x_domain",
         "timestamp_xs",
