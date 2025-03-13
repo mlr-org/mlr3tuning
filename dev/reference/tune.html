@@ -209,13 +209,13 @@ The default measure depends on the task type.</p><table class="table table"><tr>
     <h2 id="analysis">Analysis<a class="anchor" aria-label="anchor" href="#analysis"></a></h2>
 
 
-<p>For analyzing the tuning results, it is recommended to pass the <a href="ArchiveBatchTuning.html">ArchiveBatchTuning</a> to <code><a href="https://rdrr.io/pkg/data.table/man/as.data.table.html" class="external-link">as.data.table()</a></code>.
+<p>For analyzing the tuning results, it is recommended to pass the <a href="ArchiveBatchTuning.html">ArchiveBatchTuning</a> to <code><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table()</a></code>.
 The returned data table is joined with the benchmark result which adds the <a href="https://mlr3.mlr-org.com/reference/ResampleResult.html" class="external-link">mlr3::ResampleResult</a> for each hyperparameter evaluation.</p>
 <p>The archive provides various getters (e.g. <code>$learners()</code>) to ease the access.
 All getters extract by position (<code>i</code>) or unique hash (<code>uhash</code>).
 For a complete list of all getters see the methods section.</p>
 <p>The benchmark result (<code>$benchmark_result</code>) allows to score the hyperparameter configurations again on a different measure.
-Alternatively, measures can be supplied to <code><a href="https://rdrr.io/pkg/data.table/man/as.data.table.html" class="external-link">as.data.table()</a></code>.</p>
+Alternatively, measures can be supplied to <code><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table()</a></code>.</p>
 <p>The <a href="https://CRAN.R-project.org/package=mlr3viz" class="external-link"><span class="pkg">mlr3viz</span></a> package provides visualizations for tuning results.</p>
     </div>
 
@@ -246,13 +246,13 @@ Alternatively, measures can be supplied to <code><a href="https://rdrr.io/pkg/da
 <span class="r-in"><span><span class="va">learner</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="va">task</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Inspect all evaluated configurations</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp classif.ce runtime_learners           timestamp warnings errors</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;      &lt;num&gt;            &lt;num&gt;              &lt;POSc&gt;    &lt;int&gt;  &lt;int&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -6.062105  0.2734375            0.007 2025-02-12 08:55:54        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -5.192975  0.2695312            0.007 2025-02-12 08:55:54        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -2.592958  0.2304688            0.007 2025-02-12 08:55:54        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -5.708848  0.2734375            0.007 2025-02-12 08:55:54        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -3.260094  0.2265625            0.008 2025-03-13 08:22:02        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -4.455280  0.2148438            0.006 2025-03-13 08:22:02        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -4.124396  0.2265625            0.008 2025-03-13 08:22:02        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -3.159769  0.2265625            0.006 2025-03-13 08:22:02        0      0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     x_domain batch_nr  resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;list&gt;    &lt;int&gt;           &lt;list&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1: &lt;list[1]&gt;        1 &lt;ResampleResult&gt;</span>
