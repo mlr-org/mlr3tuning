@@ -25,7 +25,7 @@ License: LGPL-3
 URL: https://mlr3tuning.mlr-org.com, https://github.com/mlr-org/mlr3tuning
 BugReports: https://github.com/mlr-org/mlr3tuning/issues
 Depends:
-    mlr3 (>= 0.20.0),
+    mlr3 (>= 0.23.0),
     paradox (>= 1.0.1),
     R (>= 3.1.0)
 Imports:
@@ -51,7 +51,6 @@ Suggests:
     testthat (>= 3.0.0),
     xgboost
 Remotes:
-    mlr-org/mlr3,
     mlr-org/bbotk
 VignetteBuilder:
     knitr
