@@ -70,11 +70,16 @@ Tuner = R6Class("Tuner",
     #'
     #' @return (`character()`).
     print = function() {
-      catn(format(self), if (is.na(self$label)) "" else paste0(": ", self$label))
-      catn(str_indent("* Parameters:", as_short_string(self$param_set$values)))
-      catn(str_indent("* Parameter classes:", self$param_classes))
-      catn(str_indent("* Properties:", self$properties))
-      catn(str_indent("* Packages:", self$packages))
+      msg_h = if (is.na(self$label)) "" else paste0(": ", self$label)
+      msg_params = cli_vec(map_chr(self$param_classes, function(p) format_inline('{.cls {p}}')),
+                           style = list(last = ' and ', sep = ', '))
+      cat_cli({
+        cli_h1("{.cls {class(self)[1]}}{msg_h}")
+        cli_li("Parameters: {as_short_string(self$param_set$values)}")
+        cli_li("Parameter classes: {msg_params}")
+        cli_li("Properties: {self$properties}")
+        cli_li("Packages: {.pkg {self$packages}}")
+      })
     },
 
     #' @description
