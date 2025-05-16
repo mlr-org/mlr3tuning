@@ -151,7 +151,7 @@ AutoTuner = R6Class("AutoTuner",
       ia$learner = learner
       ia$resampling = assert_resampling(resampling)$clone()
       if (!is.null(measure)) ia$measure = assert_measure(as_measure(measure), learner = learner)
-      if (!is.null(search_space)) ia$search_space = search_space
+      if (!is.null(search_space)) ia$search_space = as_search_space(search_space)
       ia$terminator = assert_terminator(terminator)$clone()
 
       ia$store_models = assert_flag(store_models)
