@@ -31,6 +31,7 @@ Depends:
 Imports:
     bbotk (>= 1.5.0),
     checkmate (>= 2.0.0),
+    cli,
     data.table,
     lgr,
     mlr3misc (>= 0.15.1),
@@ -54,6 +55,7 @@ Remotes:
     mlr-org/bbotk
 VignetteBuilder:
     knitr
+Remotes: mlr-org/mlr3misc
 Config/testthat/edition: 3
 Config/testthat/parallel: false
 Encoding: UTF-8
