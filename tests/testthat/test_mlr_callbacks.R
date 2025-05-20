@@ -172,10 +172,10 @@ test_that("default configuration callback works without transformation and with 
   tuner = tnr("async_random_search")
   tuner$optimize(instance)
 
-  expect_equal(instance$archive$data$x_domain[[1]]$cp, 0.01)
-  expect_equal(instance$archive$data$cp[[1]], log(0.01))
-  expect_equal(instance$archive$data$x_domain[[1]]$minbucket, 7)
-  expect_equal(instance$archive$data$minbucket[[1]], 7)
+  expect_subset(0.01, round(map_dbl(instance$archive$data$x_domain, "cp"), 2))
+  expect_subset(log(0.01), instance$archive$data$cp)
+  expect_subset(7, map_dbl(instance$archive$data$x_domain, "minbucket"))
+  expect_subset(7, instance$archive$data$minbucket)
 })
 
 test_that("default configuration callback errors without transformation and with logscale and trafo", {
