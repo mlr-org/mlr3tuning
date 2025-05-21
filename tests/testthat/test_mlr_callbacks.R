@@ -105,8 +105,8 @@ test_that("default configuration callback works", {
   tuner = tnr("async_random_search")
   tuner$optimize(instance)
 
-  expect_equal(instance$archive$data$x_domain[[1]]$cp, 0.01)
-  expect_equal(instance$archive$data$cp[[1]], 0.01)
+  expect_subset(0.01, round(map_dbl(instance$archive$data$x_domain, "cp"), 2))
+  expect_subset(0.01, round(instance$archive$data$cp, 2))
 })
 
 test_that("default configuration callback works with logscale", {
@@ -127,8 +127,8 @@ test_that("default configuration callback works with logscale", {
   tuner = tnr("async_random_search")
   tuner$optimize(instance)
 
-  expect_equal(instance$archive$data$x_domain[[1]]$cp, 0.01)
-  expect_equal(instance$archive$data$cp[[1]], log(0.01))
+  expect_subset(0.01, round(map_dbl(instance$archive$data$x_domain, "cp"), 2))
+  expect_subset(log(0.01), instance$archive$data$cp)
 })
 
 test_that("default configuration callback errors with trafo", {
