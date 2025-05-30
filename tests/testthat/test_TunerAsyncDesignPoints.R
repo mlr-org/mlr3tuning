@@ -1,7 +1,6 @@
 test_that("TunerAsyncDesignPoints works", {
   skip_on_cran()
   skip_if_not_installed("rush")
-  skip_if(TRUE)
   flush_redis()
 
   learner = lrn("classif.rpart",
