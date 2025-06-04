@@ -42,6 +42,7 @@ Suggests:
     GenSA,
     irace (>= 4.1.0),
     knitr,
+    mirai,
     mlflow,
     mlr3learners (>= 0.7.0),
     mlr3pipelines (>= 0.5.2),
