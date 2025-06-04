@@ -25,11 +25,11 @@ License: LGPL-3
 URL: https://mlr3tuning.mlr-org.com, https://github.com/mlr-org/mlr3tuning
 BugReports: https://github.com/mlr-org/mlr3tuning/issues
 Depends:
-    mlr3 (>= 0.23.0.9000),
+    mlr3 (>= 0.23.0),
     paradox (>= 1.0.1),
     R (>= 3.1.0)
 Imports:
-    bbotk (>= 1.5.0.9000),
+    bbotk (>= 1.6.0),
     checkmate (>= 2.0.0),
     cli,
     data.table,
@@ -42,6 +42,7 @@ Suggests:
     GenSA,
     irace (>= 4.1.0),
     knitr,
+    mirai,
     mlflow,
     mlr3learners (>= 0.7.0),
     mlr3pipelines (>= 0.5.2),
@@ -51,9 +52,6 @@ Suggests:
     rpart,
     testthat (>= 3.0.0),
     xgboost
-Remotes:
-    mlr-org/mlr3,
-    mlr-org/bbotk
 VignetteBuilder:
     knitr
 Config/testthat/edition: 3
