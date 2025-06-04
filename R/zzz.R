@@ -8,7 +8,6 @@
 #' @importFrom R6 R6Class
 #' @importFrom utils tail
 #' @importFrom stats sd
-#' @importFrom mirai daemons
 "_PACKAGE"
 
 .onLoad = function(libname, pkgname) {
