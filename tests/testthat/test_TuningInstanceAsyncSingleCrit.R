@@ -154,8 +154,8 @@ test_that("saving the models with TuningInstanceRushSingleCrit works", {
 #   skip_if_not_installed("rush")
 #   flush_redis()
 
-#     mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
+#   mirai::daemons(2)
+#   rush::rush_plan(n_workers = 2, worker_type = "remote")
 
 #   instance = ti_async(
 #     task = tsk("pima"),
