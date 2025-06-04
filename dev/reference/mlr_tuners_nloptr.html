@@ -115,8 +115,20 @@ See also the documentation of <a href="https://bbotk.mlr-org.com/" class="extern
 
 <dt><code>start_values</code></dt>
 <dd><p><code>character(1)</code><br>
-Create <code>random</code> start values or based on <code>center</code> of search space? In the
-latter case, it is the center of the parameters before a trafo is applied.</p></dd>
+Create <code>"random"</code> start values or based on <code>"center"</code> of search space?
+In the latter case, it is the center of the parameters before a trafo is applied.
+If set to <code>"custom"</code>, the start values can be passed via the <code>start</code> parameter.</p></dd>
+
+<dt><code>start</code></dt>
+<dd><p><code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric()</a></code><br>
+Custom start values. Only applicable if <code>start_values</code> parameter is set to <code>"custom"</code>.</p></dd>
+
+<dt><code>approximate_eval_grad_f</code></dt>
+<dd><p><code>logical(1)</code><br>
+Should gradients be numerically approximated via finite differences (<a href="https://astamm.github.io/nloptr/reference/nl.grad.html" class="external-link">nloptr::nl.grad</a>).
+Only required for certain algorithms.
+Note that function evaluations required for the numerical gradient approximation will be logged as usual
+and are not treated differently than regular function evaluations by, e.g., <a href="https://bbotk.mlr-org.com/reference/Terminator.html" class="external-link">Terminator</a>s.</p></dd>
 
 
 </dl><p>For the meaning of the control parameters, see <code><a href="https://astamm.github.io/nloptr/reference/nloptr.html" class="external-link">nloptr::nloptr()</a></code> and
@@ -242,16 +254,16 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 <span class="r-in"><span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            cp classif.ce runtime_learners           timestamp warnings errors</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;num&gt;      &lt;num&gt;            &lt;num&gt;              &lt;POSc&gt;    &lt;int&gt;  &lt;int&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -7.518980 0.06086957            0.005 2025-06-03 08:25:03        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -7.518980 0.06086957            0.007 2025-06-03 08:25:03        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -7.518980 0.06086957            0.006 2025-06-03 08:25:03        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -6.250460 0.06086957            0.006 2025-06-03 08:25:03        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -8.787500 0.06086957            0.005 2025-06-03 08:25:03        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -7.506295 0.06086957            0.005 2025-06-03 08:25:03        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -7.531666 0.06086957            0.006 2025-06-03 08:25:03        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -7.517712 0.06086957            0.006 2025-06-03 08:25:03        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -7.520249 0.06086957            0.006 2025-06-03 08:25:03        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -7.518980 0.06086957            0.006 2025-06-03 08:25:03        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -7.518980 0.06086957            0.006 2025-06-04 09:52:06        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -7.518980 0.06086957            0.006 2025-06-04 09:52:07        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -7.518980 0.06086957            0.005 2025-06-04 09:52:07        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -6.250460 0.06086957            0.006 2025-06-04 09:52:07        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -8.787500 0.06086957            0.006 2025-06-04 09:52:07        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -7.506295 0.06086957            0.005 2025-06-04 09:52:07        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -7.531666 0.06086957            0.024 2025-06-04 09:52:07        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -7.517712 0.06086957            0.006 2025-06-04 09:52:07        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -7.520249 0.06086957            0.006 2025-06-04 09:52:07        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -7.518980 0.06086957            0.006 2025-06-04 09:52:07        0      0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      x_domain batch_nr  resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;list&gt;    &lt;int&gt;           &lt;list&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1: &lt;list[1]&gt;        1 &lt;ResampleResult&gt;</span>
