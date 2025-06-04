@@ -147,16 +147,11 @@ flush_redis = function() {
 }
 
 expect_rush_reset = function(rush, type = "kill") {
-  processes = if (exists("processes", rush)) {
-    rush$processes
-  } else {
-    rush$processes_processx %??% rush$processes_mirai
-  }
   rush$reset(type = type)
   Sys.sleep(1)
   keys = rush$connector$command(c("KEYS", "*"))
   if (!test_list(keys, len = 0)) {
     stopf("Found keys in redis after reset: %s", keys)
   }
-  walk(processes, function(p) p$kill())
+  mirai::daemons(0)
 }

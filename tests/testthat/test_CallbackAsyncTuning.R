@@ -11,7 +11,9 @@ test_that("on_optimization_begin works", {
     }
   )
 
-  rush::rush_plan(n_workers = 2)
+  mirai::daemons(2)
+  rush::rush_plan(n_workers = 2, worker_type = "remote")
+
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
@@ -23,6 +25,7 @@ test_that("on_optimization_begin works", {
 
   expect_class(instance$objective$context, "ContextAsyncTuning")
   expect_equal(instance$terminator$param_set$values$n_evals, 20)
+  expect_rush_reset(instance$rush, type = "kill")
 })
 
 test_that("on_optimization_end works", {
@@ -36,6 +39,9 @@ test_that("on_optimization_end works", {
     }
   )
 
+  mirai::daemons(2)
+  rush::rush_plan(n_workers = 2, worker_type = "remote")
+
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
@@ -47,6 +53,7 @@ test_that("on_optimization_end works", {
 
   expect_class(instance$objective$context, "ContextAsyncTuning")
   expect_equal(instance$terminator$param_set$values$n_evals, 20)
+  expect_rush_reset(instance$rush, type = "kill")
 })
 
 # stager in worker_loop() ------------------------------------------------------
@@ -63,7 +70,9 @@ test_that("on_worker_begin works", {
     }
   )
 
-  rush::rush_plan(n_workers = 2)
+  mirai::daemons(2)
+  rush::rush_plan(n_workers = 2, worker_type = "remote")
+
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
@@ -74,6 +83,7 @@ test_that("on_worker_begin works", {
     callbacks = callback)
 
   expect_subset(1, instance$archive$data$minsplit)
+  expect_rush_reset(instance$rush, type = "kill")
 })
 
 test_that("on_worker_end works", {
@@ -88,7 +98,9 @@ test_that("on_worker_end works", {
     }
   )
 
-  rush::rush_plan(n_workers = 2)
+  mirai::daemons(2)
+  rush::rush_plan(n_workers = 2, worker_type = "remote")
+
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
@@ -99,6 +111,7 @@ test_that("on_worker_end works", {
     callbacks = callback)
 
   expect_subset(1, instance$archive$data$minsplit)
+  expect_rush_reset(instance$rush, type = "kill")
 })
 
 # stages in $.eval_point() -----------------------------------------------------
@@ -119,7 +132,9 @@ test_that("on_optimizer_before_eval and on_optimizer_after_eval works", {
     }
   )
 
-  rush::rush_plan(n_workers = 2)
+  mirai::daemons(2)
+  rush::rush_plan(n_workers = 2, worker_type = "remote")
+
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
@@ -131,6 +146,7 @@ test_that("on_optimizer_before_eval and on_optimizer_after_eval works", {
 
   expect_equal(unique(instance$archive$data$minsplit), 1)
   expect_equal(unique(instance$archive$data$classif.ce), 0)
+  expect_rush_reset(instance$rush, type = "kill")
 })
 
 # stages in $eval() ------------------------------------------------------------
@@ -145,7 +161,10 @@ test_that("on_eval_after_xs works", {
       context$xs_learner$minsplit = 1
     }
   )
-  rush::rush_plan(n_workers = 2)
+
+  mirai::daemons(2)
+  rush::rush_plan(n_workers = 2, worker_type = "remote")
+
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
@@ -156,6 +175,7 @@ test_that("on_eval_after_xs works", {
     callbacks = callback)
 
   expect_equal(instance$archive$benchmark_result$resample_result(1)$learner$param_set$values$minsplit, 1)
+  expect_rush_reset(instance$rush, type = "kill")
 })
 
 test_that("on_eval_after_resample works", {
@@ -173,7 +193,9 @@ test_that("on_eval_after_resample works", {
     }
   )
 
-  rush::rush_plan(n_workers = 2)
+  mirai::daemons(2)
+  rush::rush_plan(n_workers = 2, worker_type = "remote")
+
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
@@ -184,6 +206,7 @@ test_that("on_eval_after_resample works", {
     callbacks = callback)
 
   expect_names(names(instance$archive$data), must.include = c("classif.ce", "classif.acc"))
+  expect_rush_reset(instance$rush, type = "kill")
 })
 
 # stages in $assign_result() in TuningInstanceAsyncSingleCrit ------------------
@@ -200,7 +223,8 @@ test_that("on_tuning_result_begin in TuningInstanceSingleCrit works", {
     }
   )
 
-  rush::rush_plan(n_workers = 2)
+  mirai::daemons(2)
+  rush::rush_plan(n_workers = 2, worker_type = "remote")
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
@@ -213,6 +237,7 @@ test_that("on_tuning_result_begin in TuningInstanceSingleCrit works", {
   expect_class(instance$objective$context, "ContextAsyncTuning")
   expect_equal(instance$result$minsplit, 1)
   expect_equal(instance$result$classif.ce, 0.7)
+  expect_rush_reset(instance$rush, type = "kill")
 })
 
 test_that("on_result_end in TuningInstanceSingleCrit works", {
@@ -220,7 +245,9 @@ test_that("on_result_end in TuningInstanceSingleCrit works", {
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush::rush_plan(n_workers = 2)
+  mirai::daemons(2)
+  rush::rush_plan(n_workers = 2, worker_type = "remote")
+
   callback = callback_async_tuning(id = "test",
     on_result_end = function(callback, context) {
       context$result$classif.ce = 0.7
@@ -238,6 +265,7 @@ test_that("on_result_end in TuningInstanceSingleCrit works", {
 
   expect_class(instance$objective$context, "ContextAsyncTuning")
   expect_equal(instance$result$classif.ce, 0.7)
+  expect_rush_reset(instance$rush, type = "kill")
 })
 
 test_that("on_result in TuningInstanceSingleCrit works", {
@@ -251,7 +279,9 @@ test_that("on_result in TuningInstanceSingleCrit works", {
     }
   )}, "deprecated")
 
-  rush::rush_plan(n_workers = 2)
+  mirai::daemons(2)
+  rush::rush_plan(n_workers = 2, worker_type = "remote")
+
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
@@ -263,6 +293,7 @@ test_that("on_result in TuningInstanceSingleCrit works", {
 
   expect_class(instance$objective$context, "ContextAsyncTuning")
   expect_equal(instance$result$classif.ce, 0.7)
+  expect_rush_reset(instance$rush, type = "kill")
 })
 
 # stages in $assign_result() in TuningInstanceBatchMultiCrit -------------------
@@ -279,7 +310,9 @@ test_that("on_tuning_result_begin in TuningInstanceBatchMultiCrit works", {
     }
   )
 
-  rush::rush_plan(n_workers = 2)
+  mirai::daemons(2)
+  rush::rush_plan(n_workers = 2, worker_type = "remote")
+
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
@@ -292,6 +325,7 @@ test_that("on_tuning_result_begin in TuningInstanceBatchMultiCrit works", {
   expect_class(instance$objective$context, "ContextAsyncTuning")
   expect_equal(instance$result$minsplit, 1)
   expect_equal(instance$result$classif.ce, 0.7)
+  expect_rush_reset(instance$rush, type = "kill")
 })
 
 test_that("on_result_end in TuningInstanceBatchMultiCrit works", {
@@ -306,7 +340,9 @@ test_that("on_result_end in TuningInstanceBatchMultiCrit works", {
     }
   )
 
-  rush::rush_plan(n_workers = 2)
+  mirai::daemons(2)
+  rush::rush_plan(n_workers = 2, worker_type = "remote")
+
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
@@ -318,6 +354,7 @@ test_that("on_result_end in TuningInstanceBatchMultiCrit works", {
 
   expect_class(instance$objective$context, "ContextAsyncTuning")
   expect_equal(unique(instance$result$classif.ce), 0.7)
+  expect_rush_reset(instance$rush, type = "kill")
 })
 
 test_that("on_result in TuningInstanceBatchMultiCrit works", {
@@ -332,7 +369,9 @@ test_that("on_result in TuningInstanceBatchMultiCrit works", {
     }
   )}, "deprecated")
 
-  rush::rush_plan(n_workers = 2)
+  mirai::daemons(2)
+  rush::rush_plan(n_workers = 2, worker_type = "remote")
+
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
@@ -344,6 +383,7 @@ test_that("on_result in TuningInstanceBatchMultiCrit works", {
 
   expect_class(instance$objective$context, "ContextAsyncTuning")
   expect_equal(unique(instance$result$classif.ce), 0.7)
+  expect_rush_reset(instance$rush, type = "kill")
 })
 
 # stages in mlr3 workhorse -----------------------------------------------------
@@ -365,7 +405,9 @@ test_that("on_resample_begin works", {
     }
   )
 
-  rush::rush_plan(n_workers = 2)
+  mirai::daemons(2)
+  rush::rush_plan(n_workers = 2, worker_type = "remote")
+
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
@@ -380,6 +422,7 @@ test_that("on_resample_begin works", {
   walk(as.data.table(instance$archive$benchmark_result)$data_extra, function(data_extra) {
     expect_true(data_extra$success)
   })
+  expect_rush_reset(instance$rush, type = "kill")
 })
 
 test_that("on_resample_before_train works", {
@@ -398,7 +441,9 @@ test_that("on_resample_before_train works", {
     }
   )
 
-  rush::rush_plan(n_workers = 2)
+  mirai::daemons(2)
+  rush::rush_plan(n_workers = 2, worker_type = "remote")
+
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
@@ -413,6 +458,7 @@ test_that("on_resample_before_train works", {
   walk(as.data.table(instance$archive$benchmark_result)$data_extra, function(data_extra) {
     expect_true(data_extra$success)
   })
+  expect_rush_reset(instance$rush, type = "kill")
 })
 
 test_that("on_resample_before_predict works", {
@@ -430,7 +476,9 @@ test_that("on_resample_before_predict works", {
     }
   )
 
-  rush::rush_plan(n_workers = 2)
+  mirai::daemons(2)
+  rush::rush_plan(n_workers = 2, worker_type = "remote")
+
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
@@ -445,6 +493,7 @@ test_that("on_resample_before_predict works", {
   walk(as.data.table(instance$archive$benchmark_result)$data_extra, function(data_extra) {
     expect_true(data_extra$success)
   })
+  expect_rush_reset(instance$rush, type = "kill")
 })
 
 test_that("on_resample_end works", {
@@ -465,7 +514,9 @@ test_that("on_resample_end works", {
     }
   )
 
-  rush::rush_plan(n_workers = 2)
+  mirai::daemons(2)
+  rush::rush_plan(n_workers = 2, worker_type = "remote")
+
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
@@ -484,4 +535,5 @@ test_that("on_resample_end works", {
   walk(instance$archive$benchmark_result$score()$learner, function(learner, ...) {
     expect_true(learner$state$state_success)
   })
+  expect_rush_reset(instance$rush, type = "kill")
 })

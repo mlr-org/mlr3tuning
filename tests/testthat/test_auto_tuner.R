@@ -26,7 +26,8 @@ test_that("async auto tuner works", {
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush::rush_plan(n_workers = 2)
+  mirai::daemons(2)
+  rush::rush_plan(n_workers = 2, worker_type = "remote")
 
   at = auto_tuner(
     tuner = tnr("async_random_search"),
@@ -40,6 +41,7 @@ test_that("async auto tuner works", {
   at$train(tsk("pima"))
 
   expect_class(at$tuning_instance, "TuningInstanceAsyncSingleCrit")
+  expect_rush_reset(at$tuning_instance$rush)
 })
 
 test_that("async auto tuner works with rush controller", {
@@ -47,7 +49,8 @@ test_that("async auto tuner works with rush controller", {
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush::rush_plan(n_workers = 2)
+  mirai::daemons(2)
+  rush::rush_plan(n_workers = 2, worker_type = "remote")
   rush = rush::rsh(network_id = "tuning_network")
 
   at = auto_tuner(
@@ -64,4 +67,5 @@ test_that("async auto tuner works with rush controller", {
   at$train(tsk("pima"))
 
   expect_class(at$tuning_instance, "TuningInstanceAsyncSingleCrit")
+  expect_rush_reset(at$tuning_instance$rush)
 })

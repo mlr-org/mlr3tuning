@@ -3,7 +3,8 @@ test_that("initializing TuningInstanceAsyncSingleCrit works", {
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush::rush_plan(n_workers = 2)
+  mirai::daemons(2)
+  rush::rush_plan(n_workers = 2, worker_type = "remote")
 
   instance = ti_async(
     task = tsk("pima"),
@@ -29,6 +30,9 @@ test_that("rush controller can be passed to TuningInstanceAsyncSingleCrit", {
   skip_if_not_installed("rush")
   flush_redis()
 
+  mirai::daemons(2)
+  rush::rush_plan(n_workers = 2, worker_type = "remote")
+
   rush = rush::rsh(network_id = "remote_network")
 
   instance = ti_async(
@@ -52,7 +56,8 @@ test_that("TuningInstanceAsyncSingleCrit can be passed to a tuner", {
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush::rush_plan(n_workers = 2)
+  mirai::daemons(2)
+  rush::rush_plan(n_workers = 2, worker_type = "remote")
 
   instance = ti_async(
     task = tsk("pima"),
@@ -74,7 +79,8 @@ test_that("assigning a result to TuningInstanceAsyncSingleCrit works", {
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush::rush_plan(n_workers = 2)
+  mirai::daemons(2)
+  rush::rush_plan(n_workers = 2, worker_type = "remote")
 
   instance = ti_async(
     task = tsk("pima"),
@@ -89,6 +95,7 @@ test_that("assigning a result to TuningInstanceAsyncSingleCrit works", {
   result = instance$result
   expect_data_table(result, min.rows = 1)
   expect_names(names(result), must.include = c("cp", "learner_param_vals", "x_domain", "classif.ce", "classif.acc"))
+  expect_rush_reset(instance$rush)
 })
 
 test_that("saving the benchmark result with TuningInstanceRushSingleCrit works", {
@@ -96,7 +103,8 @@ test_that("saving the benchmark result with TuningInstanceRushSingleCrit works",
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush::rush_plan(n_workers = 2)
+  mirai::daemons(2)
+  rush::rush_plan(n_workers = 2, worker_type = "remote")
 
   instance = ti_async(
     task = tsk("pima"),
@@ -122,7 +130,8 @@ test_that("saving the models with TuningInstanceRushSingleCrit works", {
   skip_if_not_installed("rush")
   flush_redis()
 
-  rush::rush_plan(n_workers = 2)
+  mirai::daemons(2)
+  rush::rush_plan(n_workers = 2, worker_type = "remote")
 
   instance = ti_async(
     task = tsk("pima"),
@@ -187,7 +196,9 @@ test_that("Multi-crit internal tuning works", {
   m2 = msr("classif.acc", id = "classif.acc2")
   m2$minimize = TRUE
 
-  rush::rush_plan(n_workers = 2)
+  mirai::daemons(2)
+  rush::rush_plan(n_workers = 2, worker_type = "remote")
+
   instance = ti_async(
     learner = learner,
     task = tsk("sonar"),
