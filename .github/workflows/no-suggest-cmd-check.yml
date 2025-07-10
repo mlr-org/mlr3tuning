@@ -1,7 +1,14 @@
-# r cmd check workflow of the mlr3 ecosystem v0.2.0
+# r cmd check workflow without suggests of the mlr3 ecosystem v0.1.0 
 # https://github.com/mlr-org/actions
+# modified to use supercharge/redis-github-action@1.7.0
 on:
   workflow_dispatch:
+    inputs:
+      debug_enabled:
+        type: boolean
+        description: 'Run the build with tmate debugging enabled'
+        required: false
+        default: false
   push:
     branches:
       - main
@@ -12,7 +19,7 @@ on:
 name: no-suggest-cmd-check
 
 jobs:
-  r-cmd-check:
+  no-suggest-cmd-check:
     runs-on: ${{ matrix.config.os }}
 
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
@@ -41,14 +48,16 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: |
-            any::rcmdcheck
-            any::knitr
-            any::rmarkdown
+          extra-packages: any::rcmdcheck
           needs: check
+          error-on: '"note"'
           dependencies: '"hard"'
+
+      - uses: mxschmitt/action-tmate@v3
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
+        with:
+          limit-access-to-actor: true
 
       - uses: r-lib/actions/check-r-package@v2
         with:
-          args: 'c("--no-manual")' # "--as-cran" prevents to start external processes
-
+          args: 'c("--no-manual", "--as-cran")'
