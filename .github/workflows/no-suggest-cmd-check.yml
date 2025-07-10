@@ -41,10 +41,14 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::rcmdcheck
+          extra-packages: |
+            any::rcmdcheck
+            any::knitr
+            any::rmarkdown
           needs: check
           dependencies: '"hard"'
 
       - uses: r-lib/actions/check-r-package@v2
         with:
           args: 'c("--no-manual")' # "--as-cran" prevents to start external processes
+
