@@ -9,7 +9,6 @@ Package website: [release](https://mlr3tuning.mlr-org.com/) \|
 [![r-cmd-check](https://github.com/mlr-org/mlr3tuning/actions/workflows/r-cmd-check.yml/badge.svg)](https://github.com/mlr-org/mlr3tuning/actions/workflows/r-cmd-check.yml)
 [![CRAN
 Status](https://www.r-pkg.org/badges/version-ago/mlr3tuning)](https://cran.r-project.org/package=mlr3tuning)
-[![StackOverflow](https://img.shields.io/badge/stackoverflow-mlr3-orange.svg)](https://stackoverflow.com/questions/tagged/mlr3)
 [![Mattermost](https://img.shields.io/badge/chat-mattermost-orange.svg)](https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/)
 <!-- badges: end -->
 
@@ -62,6 +61,8 @@ There are several sections about hyperparameter optimization in the
 - Simultaneously optimize hyperparameters and use [early
   stopping](https://mlr3book.mlr-org.com/chapters/chapter15/predsets_valid_inttune.html)
   with XGBoost.
+- [Automate](https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-autotuner)
+  the tuning.
 
 The [gallery](https://mlr-org.com/gallery-all-optimization.html)
 features a collection of case studies and demos about optimization.
@@ -128,14 +129,15 @@ instance = ti(
 instance
 ```
 
-    ## <TuningInstanceBatchSingleCrit>
-    ## * State:  Not optimized
-    ## * Objective: <ObjectiveTuningBatch:classif.svm_on_sonar>
-    ## * Search Space:
+    ## 
+    ## ── <TuningInstanceBatchSingleCrit> ─────────────────────────────────────────────────────────────────
+    ## • State: Not optimized
+    ## • Objective: <ObjectiveTuningBatch>
+    ## • Search Space:
     ##       id    class     lower    upper nlevels
     ## 1:  cost ParamDbl -11.51293 11.51293     Inf
     ## 2: gamma ParamDbl -11.51293 11.51293     Inf
-    ## * Terminator: <TerminatorNone>
+    ## • Terminator: <TerminatorNone>
 
 We select a simple grid search as the optimization algorithm.
 
@@ -144,11 +146,12 @@ tuner = tnr("grid_search", resolution = 5)
 tuner
 ```
 
-    ## <TunerBatchGridSearch>: Grid Search
-    ## * Parameters: batch_size=1, resolution=5
-    ## * Parameter classes: ParamLgl, ParamInt, ParamDbl, ParamFct
-    ## * Properties: dependencies, single-crit, multi-crit
-    ## * Packages: mlr3tuning, bbotk
+    ## 
+    ## ── <TunerBatchGridSearch>: Grid Search ─────────────────────────────────────────────────────────────
+    ## • Parameters: batch_size=1, resolution=5
+    ## • Parameter classes: <ParamLgl>, <ParamInt>, <ParamDbl>, and <ParamFct>
+    ## • Properties: dependencies, single-crit, and multi-crit
+    ## • Packages: mlr3tuning and bbotk
 
 To start the tuning, we simply pass the tuning instance to the tuner.
 
