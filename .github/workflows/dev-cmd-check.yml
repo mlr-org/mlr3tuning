@@ -34,6 +34,7 @@ jobs:
           - {os: ubuntu-latest, r: 'release', dev-package: 'mlr-org/bbotk'}
           - {os: ubuntu-latest, r: 'release', dev-package: 'mlr-org/mlr3'}
           - {os: ubuntu-latest, r: 'release', dev-package: 'mlr-org/mlr3misc'}
+          - {os: ubuntu-latest, r: 'release', dev-package: 'mlr-org/paradox'}
 
     steps:
       - uses: actions/checkout@v3
@@ -57,7 +58,7 @@ jobs:
       - name: Install dev versions
         run: pak::pkg_install('${{ matrix.config.dev-package }}')
         shell: Rscript {0}
-      
+
       - uses: mxschmitt/action-tmate@v3
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
         with:
