@@ -15,7 +15,7 @@ The auto_tuner() function creates an AutoTuner object."><meta property="og:image
 
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.3.0.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.4.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -481,33 +481,37 @@ Additional parameters.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># predict with final model</span></span></span>
 <span class="r-in"><span><span class="va">at</span><span class="op">$</span><span class="fu">predict</span><span class="op">(</span><span class="va">task</span>, row_ids <span class="op">=</span> <span class="va">split</span><span class="op">$</span><span class="va">test</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;PredictionClassif&gt; for 69 observations:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="color: #0000BB; font-weight: bold;">&lt;PredictionClassif&gt;</span><span style="font-weight: bold;"> for </span><span style="color: #0000BB; font-weight: bold;">69</span><span style="font-weight: bold;"> observations:</span> <span style="color: #00BBBB;">────────────────────────────────────</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  row_ids     truth  response</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        1    Adelie    Adelie</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        2    Adelie    Adelie</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        9    Adelie    Adelie</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      ---       ---       ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      318 Chinstrap Chinstrap</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      334 Chinstrap Chinstrap</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      338 Chinstrap Chinstrap</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      319 Chinstrap Chinstrap</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      337 Chinstrap    Gentoo</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      339 Chinstrap Chinstrap</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># show tuning result</span></span></span>
 <span class="r-in"><span><span class="va">at</span><span class="op">$</span><span class="va">tuning_result</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           cp learner_param_vals  x_domain classif.ce</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;             &lt;list&gt;    &lt;list&gt;      &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -4.797088          &lt;list[2]&gt; &lt;list[1]&gt; 0.05434783</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          cp learner_param_vals  x_domain classif.ce</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;num&gt;             &lt;list&gt;    &lt;list&gt;      &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -2.52958          &lt;list[2]&gt; &lt;list[1]&gt; 0.05434783</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># model slot contains trained learner and tuning instance</span></span></span>
 <span class="r-in"><span><span class="va">at</span><span class="op">$</span><span class="va">model</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $learner</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;LearnerClassifRpart:classif.rpart&gt;: Classification Tree</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * Model: rpart</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * Parameters: cp=0.008254, xval=0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * Packages: mlr3, rpart</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * Predict Types:  [response], prob</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * Feature Types: logical, integer, numeric, factor, ordered</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * Properties: importance, missings, multiclass, selected_features,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   twoclass, weights</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="color: #0000BB; font-weight: bold;">&lt;LearnerClassifRpart&gt;</span><span style="font-weight: bold;"> (classif.rpart): Classification Tree</span> <span style="color: #00BBBB;">──────────────────</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> • Model: rpart</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> • Parameters: cp=0.07969, xval=0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> • Packages: <span style="color: #0000BB;">mlr3</span> and <span style="color: #0000BB;">rpart</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> • Predict Types: [response] and prob</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> • Feature Types: logical, integer, numeric, factor, and ordered</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> • Encapsulation: none (fallback: -)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> • Properties: importance, missings, multiclass, selected_features, twoclass,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> and weights</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> • Other settings: use_weights = 'use'</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $tuning_instance</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -520,15 +524,15 @@ Additional parameters.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:     cp ParamDbl -9.21034 -2.302585     Inf</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> • Terminator: <span style="color: #0000BB;">&lt;TerminatorEvals&gt;</span> (n_evals=4, k=0)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> • Result:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           cp classif.ce</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;      &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -4.797088 0.05434783</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          cp classif.ce</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;num&gt;      &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -2.52958 0.05434783</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> • Archive:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    classif.ce    cp</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;num&gt; &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:       0.09    -3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:       0.05    -3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:       0.05    -5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:       0.09    -2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:       0.05    -2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4:       0.05    -5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
@@ -536,14 +540,17 @@ Additional parameters.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># shortcut trained learner</span></span></span>
 <span class="r-in"><span><span class="va">at</span><span class="op">$</span><span class="va">learner</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;LearnerClassifRpart:classif.rpart&gt;: Classification Tree</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * Model: rpart</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * Parameters: cp=0.008254, xval=0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * Packages: mlr3, rpart</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * Predict Types:  [response], prob</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * Feature Types: logical, integer, numeric, factor, ordered</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * Properties: importance, missings, multiclass, selected_features,</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   twoclass, weights</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="color: #0000BB; font-weight: bold;">&lt;LearnerClassifRpart&gt;</span><span style="font-weight: bold;"> (classif.rpart): Classification Tree</span> <span style="color: #00BBBB;">──────────────────</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> • Model: rpart</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> • Parameters: cp=0.07969, xval=0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> • Packages: <span style="color: #0000BB;">mlr3</span> and <span style="color: #0000BB;">rpart</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> • Predict Types: [response] and prob</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> • Feature Types: logical, integer, numeric, factor, and ordered</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> • Encapsulation: none (fallback: -)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> • Properties: importance, missings, multiclass, selected_features, twoclass,</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> and weights</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> • Other settings: use_weights = 'use'</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># shortcut tuning instance</span></span></span>
 <span class="r-in"><span><span class="va">at</span><span class="op">$</span><span class="va">tuning_instance</span></span></span>
@@ -557,15 +564,15 @@ Additional parameters.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:     cp ParamDbl -9.21034 -2.302585     Inf</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> • Terminator: <span style="color: #0000BB;">&lt;TerminatorEvals&gt;</span> (n_evals=4, k=0)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> • Result:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           cp classif.ce</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;      &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -4.797088 0.05434783</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          cp classif.ce</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;num&gt;      &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -2.52958 0.05434783</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> • Archive:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    classif.ce    cp</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;num&gt; &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1:       0.09    -3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1:       0.05    -3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2:       0.05    -5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3:       0.09    -2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3:       0.05    -2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 4:       0.05    -5</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>

@@ -15,7 +15,7 @@ The function ti() creates a TuningInstanceBatchSingleCrit and the function tune(
 
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.3.0.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.4.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -326,7 +326,7 @@ ignored.</p></dd>
 <span class="r-in"><span><span class="va">tuner</span><span class="op">$</span><span class="fu">optimize</span><span class="op">(</span><span class="va">instance</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp learner_param_vals  x_domain classif.ce</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;             &lt;list&gt;    &lt;list&gt;      &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -3.036646          &lt;list[2]&gt; &lt;list[1]&gt; 0.06392067</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -7.255326          &lt;list[2]&gt; &lt;list[1]&gt; 0.05517417</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Set optimal hyperparameter configuration to learner</span></span></span>
 <span class="r-in"><span><span class="va">learner</span><span class="op">$</span><span class="va">param_set</span><span class="op">$</span><span class="va">values</span> <span class="op">=</span> <span class="va">instance</span><span class="op">$</span><span class="va">result_learner_param_vals</span></span></span>
@@ -338,10 +338,10 @@ ignored.</p></dd>
 <span class="r-in"><span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp classif.ce runtime_learners           timestamp warnings errors</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;      &lt;num&gt;            &lt;num&gt;              &lt;POSc&gt;    &lt;int&gt;  &lt;int&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -3.036646 0.06392067            0.019 2025-06-04 09:51:37        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -5.238604 0.06392067            0.016 2025-06-04 09:51:37        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -7.255326 0.06392067            0.016 2025-06-04 09:51:37        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -6.314690 0.06392067            0.018 2025-06-04 09:51:37        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -7.255326 0.05517417            0.018 2025-07-10 06:40:32        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -6.314690 0.05517417            0.016 2025-07-10 06:40:32        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -8.991870 0.05517417            0.017 2025-07-10 06:40:32        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -4.755440 0.05517417            0.034 2025-07-10 06:40:32        0      0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     x_domain batch_nr  resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;list&gt;    &lt;int&gt;           &lt;list&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1: &lt;list[1]&gt;        1 &lt;ResampleResult&gt;</span>

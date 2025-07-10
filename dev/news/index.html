@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.3.0.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.4.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,10 +49,15 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="mlr3tuning-development-version">mlr3tuning (development version)<a class="anchor" aria-label="anchor" href="#mlr3tuning-development-version"></a></h2>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.4.0" id="mlr3tuning-140">mlr3tuning 1.4.0<a class="anchor" aria-label="anchor" href="#mlr3tuning-140"></a></h2><p class="text-muted">CRAN release: 2025-06-04</p>
 <ul><li>feat: Resample stages from <code>CallbackResample</code> are now available in <code>CallbackBatchTuning</code> and <code>CallbackAsyncTuning</code>.</li>
 <li>fix: The <code>$predict_type</code> was written to the model even when the <code>AutoTuner</code> was not trained.</li>
 <li>feat: Internal tuned values are now visible in logs.</li>
 <li>BREAKING CHANGE: Remove internal search space argument.</li>
+<li>BREAKING CHANGE: The mlr3 ecosystem has a base logger now which is named <code>mlr3</code>. The <code>mlr3/bbotk</code> logger is a child of the <code>mlr3</code> logger and is used for logging messages from the <code>bbotk</code> and <code>mlr3tuning</code> package.</li>
+<li>feat: Classes are now printed with the <code>cli</code> package.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.3.0" id="mlr3tuning-130">mlr3tuning 1.3.0<a class="anchor" aria-label="anchor" href="#mlr3tuning-130"></a></h2><p class="text-muted">CRAN release: 2024-12-17</p>
