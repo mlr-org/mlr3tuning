@@ -5,6 +5,7 @@ template:
   light-switch: true
   math-rendering: mathjax
   package: mlr3pkgdowntemplate
+  citation: true
 
 development:
   mode: auto
