@@ -352,6 +352,10 @@ load_callback_async_one_se_rule = function() {
       data = as.data.table(archive)
 
       # standard error
+      if (!nrow(data)) {
+        stopf("No data in archive")
+      }
+
       y = data[[archive$cols_y]]
       se = sd(y) / sqrt(length(y))
 

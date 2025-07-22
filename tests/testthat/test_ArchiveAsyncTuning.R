@@ -2,6 +2,7 @@ test_that("ArchiveAsyncTuning access methods work", {
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
+  on.exit({mirai::daemons(0)})
 
   mirai::daemons(2)
   rush::rush_plan(n_workers = 2, worker_type = "remote")
@@ -60,6 +61,7 @@ test_that("ArchiveAsyncTuning as.data.table function works", {
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
+  on.exit({mirai::daemons(0)})
 
   mirai::daemons(2)
   rush::rush_plan(n_workers = 2, worker_type = "remote")
@@ -117,6 +119,7 @@ test_that("ArchiveAsyncTuning as.data.table function works without resample resu
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
+  on.exit({mirai::daemons(0)})
 
   mirai::daemons(2)
   rush::rush_plan(n_workers = 2, worker_type = "remote")
@@ -143,6 +146,7 @@ test_that("ArchiveAsyncTuning as.data.table function works with empty archive", 
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
+  on.exit({mirai::daemons(0)})
 
   mirai::daemons(2)
   rush::rush_plan(n_workers = 2, worker_type = "remote")
@@ -165,6 +169,7 @@ test_that("ArchiveAsyncTuning as.data.table function works with new ids in x_dom
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
+  on.exit({mirai::daemons(0)})
 
   search_space = ps(
     x1 = p_int(1, 12),
@@ -204,6 +209,7 @@ test_that("ArchiveAsyncTuning as.data.table function works with switched new ids
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
+  on.exit({mirai::daemons(0)})
 
   # new ids in x_domain switch
   search_space = ps(
@@ -245,9 +251,9 @@ test_that("Saving ArchiveAsyncTuning works", {
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
-
   on.exit({
     file.remove("instance.rds")
+    mirai::daemons(0)
   })
 
   mirai::daemons(2)
@@ -278,6 +284,7 @@ test_that("ArchiveAsyncTuning as.data.table function works internally tuned valu
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
+  on.exit({mirai::daemons(0)})
 
   mirai::daemons(2)
   rush::rush_plan(n_workers = 2, worker_type = "remote")

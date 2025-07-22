@@ -2,6 +2,7 @@ test_that("ArchiveAsyncTuningFrozen works", {
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
+  on.exit({mirai::daemons(0)})
 
   mirai::daemons(2)
   rush::rush_plan(n_workers = 2, worker_type = "remote")

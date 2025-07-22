@@ -4,6 +4,7 @@ test_that("on_optimization_begin works", {
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
+  on.exit({mirai::daemons(0)})
 
   callback = callback_async_tuning(id = "test",
     on_optimization_begin = function(callback, context) {
@@ -32,6 +33,7 @@ test_that("on_optimization_end works", {
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
+  on.exit({mirai::daemons(0)})
 
   callback = callback_async_tuning(id = "test",
     on_optimization_end = function(callback, context) {
@@ -62,6 +64,7 @@ test_that("on_worker_begin works", {
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
+  on.exit({mirai::daemons(0)})
 
   callback = callback_async_tuning(id = "test",
     on_worker_begin = function(callback, context) {
@@ -90,6 +93,7 @@ test_that("on_worker_end works", {
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
+  on.exit({mirai::daemons(0)})
 
   callback = callback_async_tuning(id = "test",
     on_worker_end = function(callback, context) {
@@ -120,6 +124,7 @@ test_that("on_optimizer_before_eval and on_optimizer_after_eval works", {
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
+  on.exit({mirai::daemons(0)})
 
   callback = callback_async_tuning(id = "test",
     on_optimizer_before_eval = function(callback, context) {
@@ -155,6 +160,7 @@ test_that("on_eval_after_xs works", {
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
+  on.exit({mirai::daemons(0)})
 
   callback = callback_async_tuning(id = "test",
     on_eval_after_xs = function(callback, context) {
@@ -182,6 +188,7 @@ test_that("on_eval_after_resample works", {
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
+  on.exit({mirai::daemons(0)})
 
   callback = callback_async_tuning(id = "test",
     on_eval_after_resample = function(callback, context) {
@@ -215,6 +222,7 @@ test_that("on_tuning_result_begin in TuningInstanceSingleCrit works", {
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
+  on.exit({mirai::daemons(0)})
 
   callback = callback_async_tuning(id = "test",
     on_tuning_result_begin = function(callback, context) {
@@ -244,6 +252,7 @@ test_that("on_result_end in TuningInstanceSingleCrit works", {
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
+  on.exit({mirai::daemons(0)})
 
   mirai::daemons(2)
   rush::rush_plan(n_workers = 2, worker_type = "remote")
@@ -272,6 +281,7 @@ test_that("on_result in TuningInstanceSingleCrit works", {
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
+  on.exit({mirai::daemons(0)})
 
   expect_warning({callback = callback_async_tuning(id = "test",
     on_result = function(callback, context) {
@@ -302,6 +312,7 @@ test_that("on_tuning_result_begin in TuningInstanceBatchMultiCrit works", {
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
+  on.exit({mirai::daemons(0)})
 
   callback = callback_async_tuning(id = "test",
     on_tuning_result_begin = function(callback, context) {
@@ -332,6 +343,7 @@ test_that("on_result_end in TuningInstanceBatchMultiCrit works", {
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
+  on.exit({mirai::daemons(0)})
 
 
   callback = callback_async_tuning(id = "test",
@@ -361,6 +373,7 @@ test_that("on_result in TuningInstanceBatchMultiCrit works", {
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
+  on.exit({mirai::daemons(0)})
 
 
   expect_warning({callback = callback_async_tuning(id = "test",
@@ -392,6 +405,7 @@ test_that("on_resample_begin works", {
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
+  on.exit({mirai::daemons(0)})
 
   callback = callback_async_tuning("test",
     on_resample_begin = function(callback, context) {
@@ -429,6 +443,7 @@ test_that("on_resample_before_train works", {
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
+  on.exit({mirai::daemons(0)})
 
   callback = callback_async_tuning("test",
     on_resample_before_train = function(callback, context) {
@@ -465,6 +480,7 @@ test_that("on_resample_before_predict works", {
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
+  on.exit({mirai::daemons(0)})
 
   callback = callback_async_tuning("test",
     on_resample_before_predict = function(callback, context) {
@@ -500,6 +516,7 @@ test_that("on_resample_end works", {
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
+  on.exit({mirai::daemons(0)})
 
   callback = callback_async_tuning("test",
     on_resample_end = function(callback, context) {

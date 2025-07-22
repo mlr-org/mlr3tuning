@@ -2,6 +2,7 @@ test_that("initializing TuningInstanceAsyncSingleCrit works", {
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
+  on.exit({mirai::daemons(0)})
 
   mirai::daemons(2)
   rush::rush_plan(n_workers = 2, worker_type = "remote")
@@ -28,6 +29,7 @@ test_that("rush controller can be passed to TuningInstanceAsyncSingleCrit", {
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
+  on.exit({mirai::daemons(0)})
 
   mirai::daemons(2)
   rush::rush_plan(n_workers = 2, worker_type = "remote")
@@ -52,6 +54,7 @@ test_that("TuningInstanceAsyncSingleCrit can be passed to a tuner", {
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
+  on.exit({mirai::daemons(0)})
 
   mirai::daemons(2)
   rush::rush_plan(n_workers = 2, worker_type = "remote")
@@ -75,6 +78,7 @@ test_that("assigning a result to TuningInstanceAsyncSingleCrit works", {
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
+  on.exit({mirai::daemons(0)})
 
   mirai::daemons(2)
   rush::rush_plan(n_workers = 2, worker_type = "remote")
@@ -100,6 +104,7 @@ test_that("saving the benchmark result with TuningInstanceRushSingleCrit works",
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
+  on.exit({mirai::daemons(0)})
 
   mirai::daemons(2)
   rush::rush_plan(n_workers = 2, worker_type = "remote")
@@ -126,6 +131,7 @@ test_that("saving the models with TuningInstanceRushSingleCrit works", {
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
+  on.exit({mirai::daemons(0)})
 
   mirai::daemons(2)
   rush::rush_plan(n_workers = 2, worker_type = "remote")
@@ -176,6 +182,7 @@ test_that("Async single-crit internal tuning works", {
   skip_on_cran()
   skip_if_not_installed("rush")
   flush_redis()
+  on.exit({mirai::daemons(0)})
 
   learner = lrn("classif.debug", validate = 0.2, early_stopping = TRUE, x = to_tune(0.2, 0.3),
     iter = to_tune(upper = 1000, internal = TRUE, aggr = function(x) 99))
