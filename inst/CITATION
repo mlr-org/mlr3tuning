@@ -1,8 +1,14 @@
 bibentry(
-  bibtype  = "Manual",
-  title    = "Hyperparameter Optimization for 'mlr3'",
-  author   = person("Marc", "Becker"),
-  year     = 2025,
-  url      = "https://doi.org/10.5281/zenodo.15852621"
+  bibtype = "Manual",
+  title = "mlr3tuning: Hyperparameter Optimization for mlr3",
+  url = "https://doi.org/10.5281/zenodo.15852621",
+  author = c(
+    person("Marc", "Becker"),
+    person("Michel", "Lang"),
+    person("Jakob", "Richter"),
+    person("Bernd", "Bischl")
+  ),
+  year = 2025,
+  doi = "10.5281/zenodo.15852621"
 )
 
