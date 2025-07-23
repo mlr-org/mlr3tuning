@@ -19,7 +19,7 @@ test_that("proper error if tuner cannot handle deps", {
   te = trm("evals", n_evals = 2)
   inst = TuningInstanceBatchSingleCrit$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), te, ps)
   tt = TunerBatchGenSA$new()
-  expect_error(tt$optimize(inst), "dependencies")
+  expect_resample_error(tt$optimize(inst), "dependencies")
 })
 
 test_that("we get a result when some subordinate params are not fulfilled", {
@@ -262,7 +262,7 @@ test_that("proper error when primary search space is empty", {
   )
 
   tuner = tnr("random_search", batch_size = 1)
-  expect_error(tuner$optimize(instance), "To only conduct")
+  expect_resample_error(tuner$optimize(instance), "To only conduct")
 })
 
 test_that("internal tuning: branching", {
@@ -304,7 +304,7 @@ test_that("internal tuning: branching", {
 })
 
 test_that("internal tuning: error is thrown on incorrect configuration", {
-  expect_error(tune(
+  expect_resample_error(tune(
     tuner = tnr("random_search"),
     learner = lrn("classif.debug", iter = to_tune(upper = 1000, internal = TRUE)),
     task = tsk("iris"),
@@ -313,7 +313,7 @@ test_that("internal tuning: error is thrown on incorrect configuration", {
 })
 
 test_that("internal tuning: error message when primary search space is empty", {
-  expect_error(tune(
+  expect_resample_error(tune(
     tuner = tnr("random_search"),
     learner = lrn("classif.debug", iter = to_tune(upper = 1000, internal = TRUE), early_stopping = TRUE, validate = 0.2),
     task = tsk("iris"),
@@ -361,7 +361,7 @@ test_that("tag internal tune token manually in primary search space", {
 test_that("Correct error when minimize is NA", {
   m = msr("classif.acc")
   m$minimize = NA
-  expect_error(tune(
+  expect_resample_error(tune(
     tuner = tnr("random_search"),
     task = tsk("iris"),
     learner = lrn("classif.debug", x = to_tune()),

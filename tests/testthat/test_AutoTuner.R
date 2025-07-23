@@ -505,7 +505,7 @@ test_that("AutoTuner errors when train set is not a subset of task ids", {
     test_sets = list(11:20)
   )
 
-  expect_error(resample(task, at, resampling_outer, store_models = TRUE), "Train set 1")
+  expect_resample_error(resample(task, at, resampling_outer, store_models = TRUE), "Train set 1")
 })
 
 test_that("AutoTuner errors when second train set is not a subset of task ids", {
@@ -532,7 +532,7 @@ test_that("AutoTuner errors when second train set is not a subset of task ids", 
     test_sets = list(21:40)
   )
 
-  expect_error(resample(task, at, resampling_outer, store_models = TRUE), "Train set 2")
+  expect_resample_error(resample(task, at, resampling_outer, store_models = TRUE), "Train set 2")
 })
 
 test_that("AutoTuner errors when test set is not a subset of task ids", {
@@ -559,7 +559,7 @@ test_that("AutoTuner errors when test set is not a subset of task ids", {
     test_sets = list(11:20)
   )
 
-  expect_error(resample(task, at, resampling_outer, store_models = TRUE), "Test set 1")
+  expect_resample_error(resample(task, at, resampling_outer, store_models = TRUE), "Test set 1")
 })
 
 test_that("AutoTuner errors when second test set is not a subset of task ids", {
@@ -586,7 +586,7 @@ test_that("AutoTuner errors when second test set is not a subset of task ids", {
     test_sets = list(21:40)
   )
 
-  expect_error(resample(task, at, resampling_outer, store_models = TRUE), "Test set 2")
+  expect_resample_error(resample(task, at, resampling_outer, store_models = TRUE), "Test set 2")
 })
 
 # Marshal ----------------------------------------------------------------------
