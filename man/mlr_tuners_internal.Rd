@@ -60,7 +60,7 @@ The \href{https://cheatsheets.mlr-org.com/mlr3tuning.pdf}{cheatsheet} summarizes
 }
 
 \examples{
-\dontshow{if (mlr3misc::require_namespaces("mlr3learners", "xgboost", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+\dontshow{if (mlr3misc::require_namespaces(c("mlr3learners", "xgboost"), quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 library(mlr3learners)
 
 # Retrieve task

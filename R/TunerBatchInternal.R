@@ -19,7 +19,7 @@
 #' @family Tuner
 #'
 #' @export
-#' @examplesIf mlr3misc::require_namespaces("mlr3learners", "xgboost", quietly = TRUE)
+#' @examplesIf mlr3misc::require_namespaces(c("mlr3learners", "xgboost"), quietly = TRUE)
 #' library(mlr3learners)
 #'
 #' # Retrieve task
