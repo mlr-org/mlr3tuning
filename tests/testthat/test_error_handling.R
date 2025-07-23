@@ -9,23 +9,16 @@ test_that("failing learner", {
 
   instance = TuningInstanceBatchSingleCrit$new(task = tsk("iris"), learner = learner, resampling = rsmp("holdout"),
     measure = msr("classif.ce"), search_space = param_set, terminator = trm("evals", n_evals = 10))
-  expect_error(tt$optimize(instance), "classif.debug->train")
+  expect_resample_error(tt$optimize(instance), "classif.debug->train")
 
-  # uncomment when evaluate 1.0.4 is released
+  learner$encapsulate("evaluate", lrn("classif.featureless"))
 
-  # if (packageVersion("mlr3") > "0.20.2") {
-  #   learner$encapsulate("evaluate", lrn("classif.featureless"))
-  # } else {
-  #   learner$fallback = lrn("classif.featureless")
-  #   learner$encapsulate = c(train = "evaluate", predict = "evaluate")
-  # }
-
-  # instance = TuningInstanceBatchSingleCrit$new(task = tsk("iris"), learner = learner, resampling = rsmp("holdout"),
-  #   measure = msr("classif.ce"), search_space = param_set, terminator = trm("evals", n_evals = 10))
-  # tt$optimize(instance)
-  # rc = expect_list(instance$result_x_domain)
-  # expect_list(rc, len = 1)
-  # expect_named(rc, c("x"))
+  instance = TuningInstanceBatchSingleCrit$new(task = tsk("iris"), learner = learner, resampling = rsmp("holdout"),
+    measure = msr("classif.ce"), search_space = param_set, terminator = trm("evals", n_evals = 10))
+  tt$optimize(instance)
+  rc = expect_list(instance$result_x_domain)
+  expect_list(rc, len = 1)
+  expect_named(rc, c("x"))
 })
 
 
@@ -40,5 +33,5 @@ test_that("predictions missing", {
 
   instance = TuningInstanceBatchSingleCrit$new(task = tsk("iris"), learner = learner, resampling = rsmp("holdout"),
     measure = msr("classif.ce"), search_space = param_set, terminator = trm("evals", n_evals = 10))
-  expect_error(tt$optimize(instance), "missing")
+  expect_resample_error(tt$optimize(instance), "missing")
 })
