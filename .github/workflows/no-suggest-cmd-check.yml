@@ -1,4 +1,4 @@
-# r cmd check workflow without suggests of the mlr3 ecosystem v0.1.0 
+# r cmd check workflow without suggests of the mlr3 ecosystem v0.1.0
 # https://github.com/mlr-org/actions
 # modified to use supercharge/redis-github-action@1.7.0
 on:
@@ -61,3 +61,4 @@ jobs:
       - uses: r-lib/actions/check-r-package@v2
         with:
           args: 'c("--no-manual", "--as-cran")'
+          error-on: '"note"'
