@@ -35,8 +35,7 @@ TunerBatchRandomSearch = R6Class("TunerBatchRandomSearch",
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function() {
       super$initialize(
-        optimizer = OptimizerBatchRandomSearch$new(),
-        man = "mlr3tuning::mlr_tuners_random_search"
+        optimizer = OptimizerBatchRandomSearch$new()
       )
     }
   )

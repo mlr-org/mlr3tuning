@@ -66,8 +66,7 @@ TunerBatchDesignPoints = R6Class("TunerBatchDesignPoints",
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function() {
       super$initialize(
-        optimizer = OptimizerBatchDesignPoints$new(),
-        man = "mlr3tuning::mlr_tuners_design_points"
+        optimizer = OptimizerBatchDesignPoints$new()
       )
     }
   )

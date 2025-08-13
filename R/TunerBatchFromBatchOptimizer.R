@@ -26,9 +26,7 @@ TunerBatchFromOptimizerBatch = R6Class("TunerBatchFromOptimizerBatch",
           param_set = optimizer$param_set,
           param_classes = optimizer$param_classes,
           properties = optimizer$properties,
-          packages = packages,
-          label = optimizer$label,
-          man = man
+          packages = packages
         )
       },
 
