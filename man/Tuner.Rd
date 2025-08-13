@@ -56,6 +56,9 @@ Other Tuner:
 \code{\link{mlr_tuners_random_search}}
 }
 \concept{Tuner}
+\section{Super class}{
+\code{\link[mlr3misc:Mlr3Component]{mlr3misc::Mlr3Component}} -> \code{Tuner}
+}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
@@ -68,27 +71,12 @@ Used in tables, plot and text output.}
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
-\item{\code{param_set}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
-Set of control parameters.}
+\item{\code{id}}{(\code{character(1)})\cr
+Identifier of the object.
+Used in tables, plot and text output.}
 
 \item{\code{param_classes}}{(\code{character()})\cr
 Supported parameter classes for learner hyperparameters that the tuner can optimize, as given in the \link[paradox:ParamSet]{paradox::ParamSet} \verb{$class} field.}
-
-\item{\code{properties}}{(\code{character()})\cr
-Set of properties of the tuner.
-Must be a subset of \code{\link[mlr3:mlr_reflections]{mlr_reflections$tuner_properties}}.}
-
-\item{\code{packages}}{(\code{character()})\cr
-Set of required packages.
-Note that these packages will be loaded via \code{\link[=requireNamespace]{requireNamespace()}}, and are not attached.}
-
-\item{\code{label}}{(\code{character(1)})\cr
-Label for this object.
-Can be used in tables, plot and text output instead of the ID.}
-
-\item{\code{man}}{(\code{character(1)})\cr
-String in the format \verb{[pkg]::[topic]} pointing to a manual page for this object.
-The referenced help package can be opened via method \verb{$help()}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -96,12 +84,21 @@ The referenced help package can be opened via method \verb{$help()}.}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-Tuner-new}{\code{Tuner$new()}}
-\item \href{#method-Tuner-format}{\code{Tuner$format()}}
 \item \href{#method-Tuner-print}{\code{Tuner$print()}}
 \item \href{#method-Tuner-help}{\code{Tuner$help()}}
 \item \href{#method-Tuner-clone}{\code{Tuner$clone()}}
 }
 }
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="mlr3misc" data-topic="Mlr3Component" data-id="configure"><a href='../../mlr3misc/html/Mlr3Component.html#method-Mlr3Component-configure'><code>mlr3misc::Mlr3Component$configure()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="mlr3misc" data-topic="Mlr3Component" data-id="format"><a href='../../mlr3misc/html/Mlr3Component.html#method-Mlr3Component-format'><code>mlr3misc::Mlr3Component$format()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="mlr3misc" data-topic="Mlr3Component" data-id="override_info"><a href='../../mlr3misc/html/Mlr3Component.html#method-Mlr3Component-override_info'><code>mlr3misc::Mlr3Component$override_info()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="mlr3misc" data-topic="Mlr3Component" data-id="require_namespaces"><a href='../../mlr3misc/html/Mlr3Component.html#method-Mlr3Component-require_namespaces'><code>mlr3misc::Mlr3Component$require_namespaces()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Tuner-new"></a>}}
 \if{latex}{\out{\hypertarget{method-Tuner-new}{}}}
@@ -109,13 +106,13 @@ The referenced help package can be opened via method \verb{$help()}.}
 Creates a new instance of this \link[R6:R6Class]{R6} class.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Tuner$new(
-  id = "tuner",
+  id,
   param_set,
   param_classes,
   properties,
-  packages = character(),
-  label = NA_character_,
-  man = NA_character_
+  packages = character(0),
+  label,
+  man
 )}\if{html}{\out{</div>}}
 }
 
@@ -148,26 +145,6 @@ String in the format \verb{[pkg]::[topic]} pointing to a manual page for this ob
 The referenced help package can be opened via method \verb{$help()}.}
 }
 \if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Tuner-format"></a>}}
-\if{latex}{\out{\hypertarget{method-Tuner-format}{}}}
-\subsection{Method \code{format()}}{
-Helper for print outputs.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Tuner$format(...)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{(ignored).}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-(\code{character()}).
 }
 }
 \if{html}{\out{<hr>}}
