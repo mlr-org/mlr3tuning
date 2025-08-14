@@ -57,7 +57,8 @@ VignetteBuilder:
 Remotes:
     mlr-org/mlr3misc@common_baseclass,
     mlr-org/mlr3@common_baseclass,
-    mlr-org/mlr3pipelines@common_baseclass
+    mlr-org/mlr3pipelines@common_baseclass,
+    mlr-org/bbotk@common_baseclass
 Config/testthat/edition: 3
 Config/testthat/parallel: false
 Encoding: UTF-8
