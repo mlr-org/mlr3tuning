@@ -41,8 +41,7 @@ TunerBatchGridSearch = R6Class("TunerBatchGridSearch",
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function() {
       super$initialize(
-        optimizer = OptimizerBatchGridSearch$new(),
-        man = "mlr3tuning::mlr_tuners_grid_search"
+        optimizer = OptimizerBatchGridSearch$new()
       )
     }
   )

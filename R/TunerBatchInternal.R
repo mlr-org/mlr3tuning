@@ -56,9 +56,7 @@ TunerBatchInternal = R6Class("TunerBatchInternal",
         id = "internal",
         param_set = ps(),
         param_classes = c("ParamLgl", "ParamInt", "ParamDbl", "ParamFct"),
-        properties = c("dependencies", "single-crit"),
-        label = "Internal Optimizer",
-        man = "mlr3tuning::mlr_tuners_internal"
+        properties = c("dependencies", "single-crit")
       )
     }
   ),
@@ -80,9 +78,7 @@ OptimizerBatchInternal = R6Class("OptimizerBatchInternal",
         id = "internal",
         param_set = ps(),
         param_classes = c("ParamLgl", "ParamInt", "ParamDbl", "ParamFct"),
-        properties = c("dependencies", "single-crit"),
-        label = "Internal Optimizer",
-        man = "bbotk::mlr_optimizers_internal"
+        properties = c("dependencies", "single-crit")
       )
     }
   ),
