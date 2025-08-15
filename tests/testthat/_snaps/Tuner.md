@@ -4,9 +4,9 @@
       tuner
     Output
       
-      -- <Tuner> ---------------------------------------------------------------------
+      -- <Tuner>: Tuner --------------------------------------------------------------
       * Parameters: p1=TRUE
       * Parameter classes: <ParamLgl>
       * Properties: single-crit
-      * Packages: mlr3tuning and GenSA
+      * Packages: GenSA and mlr3tuning
 
