@@ -21,7 +21,7 @@ TunerAsyncFromOptimizerAsync = R6Class("TunerAsyncFromOptimizerAsync",
         packages = union("mlr3tuning", optimizer$packages)
 
         if (!missing(man)) {
-          deprecated_component("man is deprecated for Tuner construction and will be removed in the future.")
+          mlr3component_deprecation_msg("man is deprecated for Tuner construction and will be removed in the future.")
         }
 
         super$initialize(
