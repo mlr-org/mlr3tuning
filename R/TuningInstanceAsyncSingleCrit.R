@@ -161,7 +161,7 @@ TuningInstanceAsyncSingleCrit = R6Class("TuningInstanceAsyncSingleCrit",
 
       # learner param values
       if (is.null(private$.result_learner_param_vals)) {
-        private$.result_learner_param_vals = self$objective$learner$param_set$values
+        private$.result_learner_param_vals = self$objective$default_values
       }
       opt_x = unlist(transform_xdt_to_xss(private$.result_xdt, self$search_space), recursive = FALSE)
       private$.result_learner_param_vals = insert_named(private$.result_learner_param_vals, opt_x)

@@ -140,7 +140,7 @@ TuningInstanceAsyncMultiCrit = R6Class("TuningInstanceAsyncMultiCrit",
 
       # set the column with the learner param_vals that were not optimized over but set implicitly
       if (is.null(private$.result_learner_param_vals)) {
-        private$.result_learner_param_vals = self$objective$learner$param_set$values
+        private$.result_learner_param_vals = self$objective$default_values
         if (length(private$.result_learner_param_vals) == 0) private$.result_learner_param_vals = list()
         private$.result_learner_param_vals = replicate(nrow(private$.result_ydt), list(private$.result_learner_param_vals))
       }
