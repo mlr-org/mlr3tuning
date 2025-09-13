@@ -84,12 +84,6 @@ TuningInstanceAsyncSingleCrit = R6Class("TuningInstanceAsyncSingleCrit",
       search_space = search_spaces$search_space
       self$internal_search_space = search_spaces$internal_search_space
 
-      if (!is.null(self$internal_search_space) && self$internal_search_space$has_trafo) {
-        stopf("Internal tuning and parameter transformations are currently not supported.
-          If you manually provided a search space that has a trafo and parameters tagged with 'internal_tuning',
-          please pass the latter separately via the argument `internal_search_space`.")
-      }
-
       # set internal search space
       if (!is.null(self$internal_search_space)) {
         # the learner dictates how to interpret the to_tune(..., inner)
