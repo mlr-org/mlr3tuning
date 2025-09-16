@@ -54,12 +54,14 @@ Suggests:
     xgboost
 VignetteBuilder:
     knitr
+Remotes:
+    mlr-org/bbotk
 Config/testthat/edition: 3
 Config/testthat/parallel: false
 Encoding: UTF-8
 NeedsCompilation: no
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Collate:
     'ArchiveAsyncTuning.R'
     'ArchiveAsyncTuningFrozen.R'
