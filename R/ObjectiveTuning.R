@@ -68,7 +68,6 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       self$store_benchmark_result = assert_flag(store_benchmark_result) || self$store_models
       self$callbacks = assert_callbacks(as_callbacks(callbacks))
       self$internal_search_space = if (!is.null(internal_search_space)) assert_param_set(internal_search_space)
-
       self$default_values = self$learner$param_set$values
 
       super$initialize(
@@ -77,6 +76,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
         domain = self$learner$param_set,
         codomain = measures_to_codomain(self$measures),
         constants = ps(resampling = p_uty()),
+        packages = mlr_reflections$loaded_packages,
         check_values = check_values)
 
       # set resamplings in constants
