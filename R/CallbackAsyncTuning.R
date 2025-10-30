@@ -69,7 +69,7 @@ CallbackAsyncTuning = R6Class("CallbackAsyncTuning",
 #'     Start Worker
 #'          - on_worker_begin
 #'          Start Optimization on Worker
-#'            - on_optimizer_before_eval
+#'            - on_optimizer_before_eval / on_optimizer_queue_before_eval
 #'              Start Evaluation
 #'                - on_eval_after_xs
 #'                  Start Resampling Iteration
@@ -81,7 +81,7 @@ CallbackAsyncTuning = R6Class("CallbackAsyncTuning",
 #'                - on_eval_after_resample
 #'                - on_eval_before_archive
 #'              End Evaluation
-#'           - on_optimizer_after_eval
+#'           - on_optimizer_after_eval / on_optimizer_queue_after_eval
 #'          End Optimization on Worker
 #'          - on_worker_end
 #'     End Worker
@@ -225,6 +225,7 @@ callback_async_tuning = function(
   stages = discard(set_names(list(
     on_optimization_begin,
     on_worker_begin,
+    on_optimizer_queue_before_eval,
     on_optimizer_before_eval,
     on_eval_after_xs,
     on_resample_begin,
@@ -234,6 +235,7 @@ callback_async_tuning = function(
     on_eval_after_resample,
     on_eval_before_archive,
     on_optimizer_after_eval,
+    on_optimizer_queue_after_eval,
     on_worker_end,
     on_tuning_result_begin,
     on_result_begin,
@@ -243,6 +245,7 @@ callback_async_tuning = function(
     c(
       "on_optimization_begin",
       "on_worker_begin",
+      "on_optimizer_queue_before_eval",
       "on_optimizer_before_eval",
       "on_eval_after_xs",
       "on_resample_begin",
@@ -252,6 +255,7 @@ callback_async_tuning = function(
       "on_eval_after_resample",
       "on_eval_before_archive",
       "on_optimizer_after_eval",
+      "on_optimizer_queue_after_eval",
       "on_worker_end",
       "on_tuning_result_begin",
       "on_result_begin",
