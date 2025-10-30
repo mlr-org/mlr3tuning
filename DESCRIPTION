@@ -55,7 +55,7 @@ Suggests:
 VignetteBuilder:
     knitr
 Remotes:
-    mlr-org/bbotk
+    mlr-org/bbotk@wait_worker
 Config/testthat/edition: 3
 Config/testthat/parallel: false
 Encoding: UTF-8

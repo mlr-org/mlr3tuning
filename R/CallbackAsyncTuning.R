@@ -116,6 +116,10 @@ CallbackAsyncTuning = R6Class("CallbackAsyncTuning",
 #'  Stage called at the beginning of the optimization on the worker.
 #'  Called in the worker loop.
 #'  The functions must have two arguments named `callback` and `context`.
+#' @param on_optimizer_queue_before_eval (`function()`)\cr
+#'  Stage called before the optimizer queue is evaluated.
+#'  Called in `OptimInstance$.eval_queue()`.
+#'  The functions must have two arguments named `callback` and `context`.
 #' @param on_optimizer_before_eval (`function()`)\cr
 #'  Stage called after the optimizer proposes points.
 #'  Called in `OptimInstance$.eval_point()`.
@@ -161,6 +165,10 @@ CallbackAsyncTuning = R6Class("CallbackAsyncTuning",
 #'  Stage called after points are evaluated.
 #'  Called in `OptimInstance$.eval_point()`.
 #'  The functions must have two arguments named `callback` and `context`.
+#' @param on_optimizer_queue_after_eval (`function()`)\cr
+#'  Stage called after the optimizer queue is evaluated.
+#'  Called in `OptimInstance$.eval_queue()`.
+#'  The functions must have two arguments named `callback` and `context`.
 #' @param on_worker_end (`function()`)\cr
 #'  Stage called at the end of the optimization on the worker.
 #'  Called in the worker loop.
@@ -194,6 +202,7 @@ callback_async_tuning = function(
   id,
   label = NA_character_,
   man = NA_character_,
+  on_optimizer_queue_before_eval = NULL,
   on_optimization_begin = NULL,
   on_worker_begin = NULL,
   on_optimizer_before_eval = NULL,
@@ -205,6 +214,7 @@ callback_async_tuning = function(
   on_eval_after_resample = NULL,
   on_eval_before_archive = NULL,
   on_optimizer_after_eval = NULL,
+  on_optimizer_queue_after_eval = NULL,
   on_worker_end = NULL,
   on_tuning_result_begin = NULL,
   on_result_begin = NULL,
