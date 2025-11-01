@@ -43,34 +43,23 @@ See also the documentation of \href{https://bbotk.mlr-org.com/}{bbotk}.
 
 
 \describe{
-\item{\code{algorithm}}{\code{character(1)}}
-\item{\code{eval_g_ineq}}{\verb{function()}}
-\item{\code{xtol_rel}}{\code{numeric(1)}}
-\item{\code{xtol_abs}}{\code{numeric(1)}}
-\item{\code{ftol_rel}}{\code{numeric(1)}}
-\item{\code{ftol_abs}}{\code{numeric(1)}}
+\item{\code{algorithm}}{\code{character(1)}\cr
+Algorithm to use.
+See \code{\link[nloptr:nloptr.print.options]{nloptr::nloptr.print.options()}} for available algorithms.}
+\item{\code{x0}}{\code{numeric()}\cr
+Initial parameter values.
+Use \code{start_values} parameter to create \code{"random"} or \code{"center"} start values.}
 \item{\code{start_values}}{\code{character(1)}\cr
 Create \code{"random"} start values or based on \code{"center"} of search space?
 In the latter case, it is the center of the parameters before a trafo is applied.
-If set to \code{"custom"}, the start values can be passed via the \code{start} parameter.}
-\item{\code{start}}{\code{numeric()}\cr
-Custom start values. Only applicable if \code{start_values} parameter is set to \code{"custom"}.}
+Custom start values can be passed via the \code{x0} parameter.}
 \item{\code{approximate_eval_grad_f}}{\code{logical(1)}\cr
 Should gradients be numerically approximated via finite differences (\link[nloptr:nl.grad]{nloptr::nl.grad}).
 Only required for certain algorithms.
-Note that function evaluations required for the numerical gradient approximation will be logged as usual
-and are not treated differently than regular function evaluations by, e.g., \link[bbotk]{Terminator}s.}
+Note that function evaluations required for the numerical gradient approximation will be logged as usual and are not treated differently than regular function evaluations by, e.g., \link[bbotk]{Terminator}s.}
 }
 
-For the meaning of the control parameters, see \code{\link[nloptr:nloptr]{nloptr::nloptr()}} and
-\code{\link[nloptr:nloptr.print.options]{nloptr::nloptr.print.options()}}.
-
-The termination conditions \code{stopval}, \code{maxtime} and \code{maxeval} of
-\code{\link[nloptr:nloptr]{nloptr::nloptr()}} are deactivated and replaced by the \link[bbotk]{Terminator}
-subclasses. The x and function value tolerance termination conditions
-(\code{xtol_rel = 10^-4}, \code{xtol_abs = rep(0.0, length(x0))}, \code{ftol_rel = 0.0} and
-\code{ftol_abs = 0.0}) are still available and implemented with their package
-defaults. To deactivate these conditions, set them to \code{-1}.
+For the meaning of other control parameters, see \code{\link[nloptr:nloptr]{nloptr::nloptr()}} and \code{\link[nloptr:nloptr.print.options]{nloptr::nloptr.print.options()}}.
 
 }
 

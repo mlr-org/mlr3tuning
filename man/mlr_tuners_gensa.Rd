@@ -60,21 +60,19 @@ See also the documentation of \href{https://bbotk.mlr-org.com/}{bbotk}.
 
 
 \describe{
-\item{\code{smooth}}{\code{logical(1)}}
-\item{\code{temperature}}{\code{numeric(1)}}
-\item{\code{acceptance.param}}{\code{numeric(1)}}
-\item{\code{verbose}}{\code{logical(1)}}
-\item{\code{trace.mat}}{\code{logical(1)}}
+\item{\code{par}}{\code{numeric()}\cr
+Initial parameter values.
+Default is \code{NULL}, in which case, default values will be generated automatically.}
+\item{\code{start_values}}{\code{character(1)}\cr
+Create \code{"random"} start values or based on \code{"center"} of search space?
+In the latter case, it is the center of the parameters before a trafo is applied.
+By default, \code{nloptr} will generate start values automatically.
+Custom start values can be passed via the \code{par} parameter.}
 }
 
-For the meaning of the control parameters, see \code{\link[GenSA:GenSA]{GenSA::GenSA()}}. Note that we
-have removed all control parameters which refer to the termination of the
-algorithm and where our terminators allow to obtain the same behavior.
-
-In contrast to the \code{\link[GenSA:GenSA]{GenSA::GenSA()}} defaults, we set \code{trace.mat = FALSE}.
+For the meaning of the control parameters, see \code{\link[GenSA:GenSA]{GenSA::GenSA()}}.
 Note that \code{\link[GenSA:GenSA]{GenSA::GenSA()}} uses \code{smooth = TRUE} as a default.
-In the case of using this optimizer for Hyperparameter Optimization you may
-want to set \code{smooth = FALSE}.
+In the case of using this optimizer for Hyperparameter Optimization you may want to set \code{smooth = FALSE}.
 
 }
 
