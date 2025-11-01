@@ -8,6 +8,7 @@ callback_async_tuning(
   id,
   label = NA_character_,
   man = NA_character_,
+  on_optimizer_queue_before_eval = NULL,
   on_optimization_begin = NULL,
   on_worker_begin = NULL,
   on_optimizer_before_eval = NULL,
@@ -19,6 +20,7 @@ callback_async_tuning(
   on_eval_after_resample = NULL,
   on_eval_before_archive = NULL,
   on_optimizer_after_eval = NULL,
+  on_optimizer_queue_after_eval = NULL,
   on_worker_end = NULL,
   on_tuning_result_begin = NULL,
   on_result_begin = NULL,
@@ -37,6 +39,11 @@ Label for the new instance.}
 \item{man}{(\code{character(1)})\cr
 String in the format \verb{[pkg]::[topic]} pointing to a manual page for this object.
 The referenced help package can be opened via method \verb{$help()}.}
+
+\item{on_optimizer_queue_before_eval}{(\verb{function()})\cr
+Stage called before the optimizer queue is evaluated.
+Called in \code{OptimInstance$.eval_queue()}.
+The functions must have two arguments named \code{callback} and \code{context}.}
 
 \item{on_optimization_begin}{(\verb{function()})\cr
 Stage called at the beginning of the optimization.
@@ -102,6 +109,11 @@ Stage called after points are evaluated.
 Called in \code{OptimInstance$.eval_point()}.
 The functions must have two arguments named \code{callback} and \code{context}.}
 
+\item{on_optimizer_queue_after_eval}{(\verb{function()})\cr
+Stage called after the optimizer queue is evaluated.
+Called in \code{OptimInstance$.eval_queue()}.
+The functions must have two arguments named \code{callback} and \code{context}.}
+
 \item{on_worker_end}{(\verb{function()})\cr
 Stage called at the end of the optimization on the worker.
 Called in the worker loop.
@@ -147,7 +159,7 @@ The stages are prefixed with \verb{on_*}.
     Start Worker
          - on_worker_begin
          Start Optimization on Worker
-           - on_optimizer_before_eval
+           - on_optimizer_before_eval / on_optimizer_queue_before_eval
              Start Evaluation
                - on_eval_after_xs
                  Start Resampling Iteration
@@ -159,7 +171,7 @@ The stages are prefixed with \verb{on_*}.
                - on_eval_after_resample
                - on_eval_before_archive
              End Evaluation
-          - on_optimizer_after_eval
+          - on_optimizer_after_eval / on_optimizer_queue_after_eval
          End Optimization on Worker
          - on_worker_end
     End Worker
