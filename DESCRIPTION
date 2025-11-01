@@ -47,7 +47,7 @@ Suggests:
     mlr3learners (>= 0.7.0),
     mlr3pipelines (>= 0.5.2),
     nloptr,
-    rush,
+    rush (>= 0.4.0.9000),
     rmarkdown,
     rpart,
     testthat (>= 3.0.0),
@@ -55,7 +55,8 @@ Suggests:
 VignetteBuilder:
     knitr
 Remotes:
-    mlr-org/bbotk@wait_worker
+    mlr-org/bbotk@wait_worker,
+    mlr-org/rush
 Config/testthat/edition: 3
 Config/testthat/parallel: false
 Encoding: UTF-8
