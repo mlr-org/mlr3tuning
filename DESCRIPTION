@@ -29,7 +29,7 @@ Depends:
     paradox (>= 1.0.1),
     R (>= 3.3.0)
 Imports:
-    bbotk (>= 1.6.0),
+    bbotk (>= 1.7.1.9000),
     checkmate (>= 2.0.0),
     cli,
     data.table,
@@ -55,7 +55,7 @@ Suggests:
 VignetteBuilder:
     knitr
 Remotes:
-    mlr-org/bbotk@wait_worker,
+    mlr-org/bbotk,
     mlr-org/rush
 Config/testthat/edition: 3
 Config/testthat/parallel: false
