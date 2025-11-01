@@ -14,7 +14,7 @@ Start Tuning
     Start Worker
          - on_worker_begin
          Start Optimization on Worker
-           - on_optimizer_before_eval
+           - on_optimizer_before_eval / on_optimizer_queue_before_eval
              Start Evaluation
                - on_eval_after_xs
                  Start Resampling Iteration
@@ -26,7 +26,7 @@ Start Tuning
                - on_eval_after_resample
                - on_eval_before_archive
              End Evaluation
-          - on_optimizer_after_eval
+          - on_optimizer_after_eval / on_optimizer_queue_after_eval
          End Optimization on Worker
          - on_worker_end
     End Worker
@@ -46,7 +46,7 @@ Start Tuning
     Start Worker
          - on_worker_begin
          Start Optimization on Worker
-           - on_optimizer_before_eval
+           - on_optimizer_before_eval / on_optimizer_queue_before_eval
              Start Evaluation
                - on_eval_after_xs
                  Start Resampling Iteration
@@ -58,7 +58,7 @@ Start Tuning
                - on_eval_after_resample
                - on_eval_before_archive
              End Evaluation
-          - on_optimizer_after_eval
+          - on_optimizer_after_eval / on_optimizer_queue_after_eval
          End Optimization on Worker
          - on_worker_end
     End Worker
@@ -122,7 +122,7 @@ The stages are prefixed with <code>on_*</code>.</p>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>    Start Worker</span>
 <span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>         <span class="sc">-</span> on_worker_begin</span>
 <span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>         Start Optimization on Worker</span>
-<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>           <span class="sc">-</span> on_optimizer_before_eval</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>           <span class="sc">-</span> on_optimizer_before_eval <span class="sc">/</span> on_optimizer_queue_before_eval</span>
 <span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>             Start Evaluation</span>
 <span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>               <span class="sc">-</span> on_eval_after_xs</span>
 <span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>                 Start Resampling Iteration</span>
@@ -134,7 +134,7 @@ The stages are prefixed with <code>on_*</code>.</p>
 <span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>               <span class="sc">-</span> on_eval_after_resample</span>
 <span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>               <span class="sc">-</span> on_eval_before_archive</span>
 <span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>             End Evaluation</span>
-<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a>          <span class="sc">-</span> on_optimizer_after_eval</span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a>          <span class="sc">-</span> on_optimizer_after_eval <span class="sc">/</span> on_optimizer_queue_after_eval</span>
 <span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a>         End Optimization on Worker</span>
 <span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a>         <span class="sc">-</span> on_worker_end</span>
 <span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a>    End Worker</span>
@@ -153,6 +153,7 @@ A tuning callback works with <a href="ContextAsyncTuning.html">ContextAsyncTunin
 <span>  <span class="va">id</span>,</span>
 <span>  label <span class="op">=</span> <span class="cn">NA_character_</span>,</span>
 <span>  man <span class="op">=</span> <span class="cn">NA_character_</span>,</span>
+<span>  on_optimizer_queue_before_eval <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  on_optimization_begin <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  on_worker_begin <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  on_optimizer_before_eval <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -164,6 +165,7 @@ A tuning callback works with <a href="ContextAsyncTuning.html">ContextAsyncTunin
 <span>  on_eval_after_resample <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  on_eval_before_archive <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  on_optimizer_after_eval <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  on_optimizer_queue_after_eval <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  on_worker_end <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  on_tuning_result_begin <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  on_result_begin <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -191,6 +193,13 @@ Label for the new instance.</p></dd>
 <dd><p>(<code>character(1)</code>)<br>
 String in the format <code>[pkg]::[topic]</code> pointing to a manual page for this object.
 The referenced help package can be opened via method <code>$help()</code>.</p></dd>
+
+
+<dt id="arg-on-optimizer-queue-before-eval">on_optimizer_queue_before_eval<a class="anchor" aria-label="anchor" href="#arg-on-optimizer-queue-before-eval"></a></dt>
+<dd><p>(<code>function()</code>)<br>
+Stage called before the optimizer queue is evaluated.
+Called in <code>OptimInstance$.eval_queue()</code>.
+The functions must have two arguments named <code>callback</code> and <code>context</code>.</p></dd>
 
 
 <dt id="arg-on-optimization-begin">on_optimization_begin<a class="anchor" aria-label="anchor" href="#arg-on-optimization-begin"></a></dt>
@@ -276,6 +285,13 @@ The <code>aggregated_performance</code> is available in <code>context</code>.</p
 <dd><p>(<code>function()</code>)<br>
 Stage called after points are evaluated.
 Called in <code>OptimInstance$.eval_point()</code>.
+The functions must have two arguments named <code>callback</code> and <code>context</code>.</p></dd>
+
+
+<dt id="arg-on-optimizer-queue-after-eval">on_optimizer_queue_after_eval<a class="anchor" aria-label="anchor" href="#arg-on-optimizer-queue-after-eval"></a></dt>
+<dd><p>(<code>function()</code>)<br>
+Stage called after the optimizer queue is evaluated.
+Called in <code>OptimInstance$.eval_queue()</code>.
 The functions must have two arguments named <code>callback</code> and <code>context</code>.</p></dd>
 
 

@@ -186,7 +186,7 @@ The default measure depends on the task type.</p><table class="table table"><tr>
 <span class="r-in"><span><span class="va">tuner</span><span class="op">$</span><span class="fu">optimize</span><span class="op">(</span><span class="va">instance</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp learner_param_vals  x_domain classif.ce</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;             &lt;list&gt;    &lt;list&gt;      &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -6.215182          &lt;list[2]&gt; &lt;list[1]&gt; 0.04947877</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -8.996999          &lt;list[2]&gt; &lt;list[1]&gt;  0.0610984</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Set optimal hyperparameter configuration to learner</span></span></span>
 <span class="r-in"><span><span class="va">learner</span><span class="op">$</span><span class="va">param_set</span><span class="op">$</span><span class="va">values</span> <span class="op">=</span> <span class="va">instance</span><span class="op">$</span><span class="va">result_learner_param_vals</span></span></span>
@@ -198,10 +198,10 @@ The default measure depends on the task type.</p><table class="table table"><tr>
 <span class="r-in"><span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp classif.ce runtime_learners           timestamp warnings errors</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;      &lt;num&gt;            &lt;num&gt;              &lt;POSc&gt;    &lt;int&gt;  &lt;int&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -6.215182 0.04947877            0.016 2025-09-20 18:43:10        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -6.568767 0.04947877            0.015 2025-09-20 18:43:10        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -4.775291 0.05527587            0.034 2025-09-20 18:43:10        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -7.339708 0.04947877            0.016 2025-09-20 18:43:10        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -8.996999  0.0610984            0.016 2025-11-01 09:51:28        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -3.731667  0.0610984            0.016 2025-11-01 09:51:28        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -7.108671  0.0610984            0.015 2025-11-01 09:51:28        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -5.376600  0.0610984            0.017 2025-11-01 09:51:28        0      0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     x_domain batch_nr  resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;list&gt;    &lt;int&gt;           &lt;list&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1: &lt;list[1]&gt;        1 &lt;ResampleResult&gt;</span>
