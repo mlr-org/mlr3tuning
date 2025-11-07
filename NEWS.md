@@ -1,5 +1,11 @@
 # mlr3tuning (development version)
 
+feat: Add `on_optimizer_queue_before_eval` and `on_optimizer_queue_after_eval` stages to `CallbackAsyncTuning`.
+fix: Add loaded packages to objective.
+feat: Add tiny logging.
+fix: Remove internal search space and trafo error.
+fix: Unsatisfied dependencies in results in debug mode.
+
 # mlr3tuning 1.4.0
 
 * feat: Resample stages from `CallbackResample` are now available in `CallbackBatchTuning` and `CallbackAsyncTuning`.
