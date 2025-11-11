@@ -59,9 +59,7 @@ TunerBatch = R6Class("TunerBatch",
         param_set = param_set,
         param_classes = param_classes,
         properties = properties,
-        packages = packages,
-        label = label,
-        man = man
+        packages = packages
       )
     },
 
