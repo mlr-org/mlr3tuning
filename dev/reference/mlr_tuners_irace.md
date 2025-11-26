@@ -248,7 +248,7 @@ instance = tune(
   measure = msr("classif.ce"),
   term_evals = 200
 )
-#> # 2025-11-07 11:34:10 UTC: Initialization
+#> # 2025-11-26 09:16:38 UTC: Initialization
 #> # Elitist race
 #> # Elitist new instances: 1
 #> # Elitist limit: 2
@@ -261,7 +261,7 @@ instance = tune(
 #> # mu: 5
 #> # deterministic: FALSE
 #> 
-#> # 2025-11-07 11:34:10 UTC: Iteration 1 of 2
+#> # 2025-11-26 09:16:38 UTC: Iteration 1 of 2
 #> # experimentsUsed: 0
 #> # remainingBudget: 200
 #> # currentBudget: 100
@@ -290,11 +290,11 @@ instance = tune(
 #>   .ID.                cp .PARENT.
 #> 5    5 -2.86582979189387       NA
 #> 
-#> # 2025-11-07 11:34:12 UTC: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+#> # 2025-11-26 09:16:41 UTC: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
 #>                  cp
 #> 5 -2.86582979189387
 #> 2 -3.72929920176664
-#> # 2025-11-07 11:34:12 UTC: Iteration 2 of 2
+#> # 2025-11-26 09:16:41 UTC: Iteration 2 of 2
 #> # experimentsUsed: 92
 #> # remainingBudget: 108
 #> # currentBudget: 108
@@ -324,11 +324,11 @@ instance = tune(
 #>    .ID.                cp .PARENT.
 #> 29   29 -2.96257259670328        5
 #> 
-#> # 2025-11-07 11:34:16 UTC: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+#> # 2025-11-26 09:16:44 UTC: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
 #>                   cp
 #> 29 -2.96257259670328
 #> 5  -2.86582979189387
-#> # 2025-11-07 11:34:16 UTC: Stopped because there is not enough budget left to race more than the minimum (2).
+#> # 2025-11-26 09:16:44 UTC: Stopped because there is not enough budget left to race more than the minimum (2).
 #> # You may either increase the budget or set 'minNbSurvival' to a lower value.
 #> # Iteration: 3
 #> # nbIterations: 3
@@ -338,11 +338,11 @@ instance = tune(
 #> # currentBudget: 2
 #> # number of elites: 2
 #> # nbConfigurations: 2
-#> # Total CPU user time: 6.082, CPU sys time: 0.107, Wall-clock time: 6.193
-#> # 2025-11-07 11:34:16 UTC: Starting post-selection:
+#> # Total CPU user time: 6.167, CPU sys time: 0.091, Wall-clock time: 6.261
+#> # 2025-11-26 09:16:44 UTC: Starting post-selection:
 #> # Configurations selected: 29, 5.
 #> # Pending instances: 0, 0.
-#> # 2025-11-07 11:34:16 UTC: seed: 1855097766
+#> # 2025-11-26 09:16:45 UTC: seed: 1855097766
 #> # Configurations: 2
 #> # Available experiments: 2
 #> # minSurvival: 1
@@ -372,10 +372,10 @@ instance = tune(
 #>    .ID.                cp .PARENT.
 #> 29   29 -2.96257259670328        5
 #> 
-#> # 2025-11-07 11:34:16 UTC: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
+#> # 2025-11-26 09:16:45 UTC: Elite configurations (first number is the configuration ID; listed from best to worst according to the sum of ranks):
 #>                   cp
 #> 29 -2.96257259670328
-#> # Total CPU user time: 6.193, CPU sys time: 0.109, Wall-clock time: 6.306
+#> # Total CPU user time: 6.282, CPU sys time: 0.093, Wall-clock time: 6.378
 
 # best performing hyperparameter configuration
 instance$result
@@ -387,17 +387,17 @@ instance$result
 as.data.table(instance$archive)
 #>             cp classif.ce runtime_learners           timestamp  race  step
 #>          <num>      <num>            <num>              <POSc> <int> <int>
-#>   1: -7.183177  0.3085938            0.008 2025-11-07 11:34:10     1     1
-#>   2: -3.729299  0.2460938            0.006 2025-11-07 11:34:10     1     1
-#>   3: -8.910116  0.3085938            0.008 2025-11-07 11:34:10     1     1
-#>   4: -5.456238  0.3085938            0.007 2025-11-07 11:34:10     1     1
-#>   5: -2.865830  0.2539062            0.007 2025-11-07 11:34:10     1     1
+#>   1: -7.183177  0.3085938            0.008 2025-11-26 09:16:39     1     1
+#>   2: -3.729299  0.2460938            0.007 2025-11-26 09:16:39     1     1
+#>   3: -8.910116  0.3085938            0.007 2025-11-26 09:16:39     1     1
+#>   4: -5.456238  0.3085938            0.006 2025-11-26 09:16:39     1     1
+#>   5: -2.865830  0.2539062            0.007 2025-11-26 09:16:39     1     1
 #>  ---                                                                      
-#> 196: -2.847277  0.2539062            0.006 2025-11-07 11:34:16     2     1
-#> 197: -2.716179  0.2812500            0.006 2025-11-07 11:34:16     2     1
-#> 198: -2.962573  0.2539062            0.007 2025-11-07 11:34:16     2     1
-#> 199: -2.865830  0.2656250            0.007 2025-11-07 11:34:16     3     1
-#> 200: -2.962573  0.2656250            0.007 2025-11-07 11:34:16     3     1
+#> 196: -2.847277  0.2539062            0.006 2025-11-26 09:16:44     2     1
+#> 197: -2.716179  0.2812500            0.006 2025-11-26 09:16:44     2     1
+#> 198: -2.962573  0.2539062            0.006 2025-11-26 09:16:44     2     1
+#> 199: -2.865830  0.2656250            0.007 2025-11-26 09:16:45     3     1
+#> 200: -2.962573  0.2656250            0.007 2025-11-26 09:16:45     3     1
 #>      instance configuration warnings errors  x_domain batch_nr  resample_result
 #>         <int>         <int>    <int>  <int>    <list>    <int>           <list>
 #>   1:       10             1        0      0 <list[1]>        1 <ResampleResult>
