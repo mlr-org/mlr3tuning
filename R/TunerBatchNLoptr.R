@@ -28,6 +28,8 @@
 #'
 #' @export
 #' @examples
+#' # example only runs if nloptr is available
+#' if (mlr3misc::require_namespaces("nloptr", quietly = TRUE)) {
 #' # Hyperparameter Optimization
 #' \donttest{
 #'
@@ -54,7 +56,7 @@
 #' # fit final model on complete data set
 #' learner$param_set$values = instance$result_learner_param_vals
 #' learner$train(tsk("penguins"))
-#' }
+#' }}
 TunerBatchNLoptr = R6Class("TunerBatchNLoptr",
   inherit = TunerBatchFromOptimizerBatch,
   public = list(

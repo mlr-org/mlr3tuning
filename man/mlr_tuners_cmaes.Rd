@@ -80,6 +80,8 @@ The \href{https://cheatsheets.mlr-org.com/mlr3tuning.pdf}{cheatsheet} summarizes
 }
 
 \examples{
+# example only runs if adagio is available
+if (mlr3misc::require_namespaces("adagio", quietly = TRUE)) {
 # Hyperparameter Optimization
 
 # load learner and set search space
@@ -107,6 +109,7 @@ as.data.table(instance$archive)
 # fit final model on complete data set
 learner$param_set$values = instance$result_learner_param_vals
 learner$train(tsk("penguins"))
+}
 }
 \seealso{
 Other Tuner: 

@@ -60,7 +60,8 @@ The \href{https://cheatsheets.mlr-org.com/mlr3tuning.pdf}{cheatsheet} summarizes
 }
 
 \examples{
-\dontshow{if (mlr3misc::require_namespaces(c("mlr3learners", "xgboost"), quietly = TRUE)) withAutoprint(\{ # examplesIf}
+# example only runs if mlr3learners and xgboost are available
+if (mlr3misc::require_namespaces(c("mlr3learners", "xgboost"), quietly = TRUE)) {
 library(mlr3learners)
 
 # Retrieve task
@@ -87,7 +88,7 @@ instance = tune(
 instance$result_learner_param_vals
 
 instance$result_learner_param_vals$internal_tuned_values
-\dontshow{\}) # examplesIf}
+}
 }
 \seealso{
 Other Tuner: 

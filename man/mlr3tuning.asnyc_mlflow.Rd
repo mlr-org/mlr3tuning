@@ -7,8 +7,8 @@
 This \link[mlr3misc:Callback]{mlr3misc::Callback} logs the hyperparameter configurations and the performance of the configurations to MLflow.
 }
 \examples{
-\dontshow{if (requireNamespace("mlflow")) withAutoprint(\{ # examplesIf}
-\dontshow{\}) # examplesIf}
+# example only runs if mlflow is available
+if (mlr3misc::require_namespaces("mlflow", quietly = TRUE)) {
 clbk("mlr3tuning.async_mlflow", tracking_uri = "http://localhost:5000")
 
 \dontrun{
@@ -30,5 +30,5 @@ instance = TuningInstanceAsyncSingleCrit$new(
 
 tuner = tnr("random_search_v2")
 tuner$optimize(instance)
-}
+}}
 }

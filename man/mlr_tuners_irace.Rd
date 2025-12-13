@@ -103,6 +103,8 @@ The \href{https://cheatsheets.mlr-org.com/mlr3tuning.pdf}{cheatsheet} summarizes
 }
 
 \examples{
+# example only runs if irace is available
+if (mlr3misc::require_namespaces("irace", quietly = TRUE)) {
 # retrieve task
 task = tsk("pima")
 
@@ -130,7 +132,7 @@ as.data.table(instance$archive)
 # fit final model on complete data set
 learner$param_set$values = instance$result_learner_param_vals
 learner$train(task)
-}
+}}
 }
 \seealso{
 Other Tuner: 

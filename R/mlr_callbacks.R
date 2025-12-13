@@ -114,8 +114,9 @@ load_callback_async_measures = function() {
 #' @description
 #' This [mlr3misc::Callback] logs the hyperparameter configurations and the performance of the configurations to MLflow.
 #'
-#' @examplesIf requireNamespace("mlflow")
 #' @examples
+#' # example only runs if mlflow is available
+#' if (mlr3misc::require_namespaces("mlflow", quietly = TRUE)) {
 #' clbk("mlr3tuning.async_mlflow", tracking_uri = "http://localhost:5000")
 #'
 #' \dontrun{
@@ -137,7 +138,7 @@ load_callback_async_measures = function() {
 #'
 #' tuner = tnr("random_search_v2")
 #' tuner$optimize(instance)
-#' }
+#' }}
 NULL
 
 load_callback_async_mlflow = function() {

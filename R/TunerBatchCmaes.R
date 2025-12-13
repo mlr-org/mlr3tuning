@@ -31,6 +31,8 @@
 #' @family Tuner
 #' @export
 #' @examples
+#' # example only runs if adagio is available
+#' if (mlr3misc::require_namespaces("adagio", quietly = TRUE)) {
 #' # Hyperparameter Optimization
 #'
 #' # load learner and set search space
@@ -58,6 +60,7 @@
 #' # fit final model on complete data set
 #' learner$param_set$values = instance$result_learner_param_vals
 #' learner$train(tsk("penguins"))
+#' }
 TunerBatchCmaes = R6Class("TunerBatchCmaes",
   inherit = TunerBatchFromOptimizerBatch,
   public = list(

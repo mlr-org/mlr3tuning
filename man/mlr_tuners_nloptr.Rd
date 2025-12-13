@@ -99,6 +99,8 @@ combined with a \link[bbotk]{Terminator}. Simply wrap the function in
 }
 
 \examples{
+# example only runs if nloptr is available
+if (mlr3misc::require_namespaces("nloptr", quietly = TRUE)) {
 # Hyperparameter Optimization
 \donttest{
 
@@ -125,7 +127,7 @@ as.data.table(instance$archive)
 # fit final model on complete data set
 learner$param_set$values = instance$result_learner_param_vals
 learner$train(tsk("penguins"))
-}
+}}
 }
 \seealso{
 Other Tuner: 

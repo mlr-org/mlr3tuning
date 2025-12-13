@@ -19,7 +19,9 @@
 #' @family Tuner
 #'
 #' @export
-#' @examplesIf mlr3misc::require_namespaces(c("mlr3learners", "xgboost"), quietly = TRUE)
+#' @examples
+#' # example only runs if mlr3learners and xgboost are available
+#' if (mlr3misc::require_namespaces(c("mlr3learners", "xgboost"), quietly = TRUE)) {
 #' library(mlr3learners)
 #'
 #' # Retrieve task
@@ -46,6 +48,7 @@
 #' instance$result_learner_param_vals
 #'
 #' instance$result_learner_param_vals$internal_tuned_values
+#' }
 TunerBatchInternal = R6Class("TunerBatchInternal",
   inherit = TunerBatch,
   public = list(
