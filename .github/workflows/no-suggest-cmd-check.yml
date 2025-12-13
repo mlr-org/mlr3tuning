@@ -1,4 +1,4 @@
-# r cmd check workflow without suggests of the mlr3 ecosystem v0.1.0
+# r cmd check workflow without suggests of the mlr3 ecosystem v0.3.1
 # https://github.com/mlr-org/actions
 # modified to use supercharge/redis-github-action@1.7.0
 on:
@@ -34,7 +34,7 @@ jobs:
           - {os: ubuntu-latest,   r: 'release'}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
 
       - uses: r-lib/actions/setup-pandoc@v2
 
@@ -49,11 +49,13 @@ jobs:
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: |
-           any::rcmdcheck
-           any::knitr
-           any::rmarkdown
+            any::rcmdcheck
+            any::testthat
+            any::knitr
+            any::rmarkdown
           needs: check
           dependencies: '"hard"'
+          cache: false
 
       - uses: mxschmitt/action-tmate@v3
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
@@ -63,4 +65,3 @@ jobs:
       - uses: r-lib/actions/check-r-package@v2
         with:
           args: 'c("--no-manual", "--as-cran")'
-          error-on: '"note"'
