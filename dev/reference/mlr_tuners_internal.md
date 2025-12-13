@@ -183,21 +183,5 @@ instance$result_learner_param_vals
 
 instance$result_learner_param_vals$internal_tuned_values
 }
-#> Warning: Passed invalid function arguments: eval_metric, nthread, num_class. These should be passed as a list to argument 'params'. Conversion from argument to 'params' entry will be done automatically, but this behavior will become an error in a future version.
-#> Warning: Parameter 'watchlist' has been renamed to 'evals'. This warning will become an error in a future version.
-#> Warning: Argument 'objective' is only for custom objectives. For built-in objectives, pass the objective under 'params'. This warning will become an error in a future version.
-#> Warning: Passed invalid function arguments: eval_metric, nthread, num_class. These should be passed as a list to argument 'params'. Conversion from argument to 'params' entry will be done automatically, but this behavior will become an error in a future version.
-#> Warning: Parameter 'watchlist' has been renamed to 'evals'. This warning will become an error in a future version.
-#> Warning: Argument 'objective' is only for custom objectives. For built-in objectives, pass the objective under 'params'. This warning will become an error in a future version.
-#> Warning: Passed invalid function arguments: eval_metric, nthread, num_class. These should be passed as a list to argument 'params'. Conversion from argument to 'params' entry will be done automatically, but this behavior will become an error in a future version.
-#> Warning: Parameter 'watchlist' has been renamed to 'evals'. This warning will become an error in a future version.
-#> Warning: Argument 'objective' is only for custom objectives. For built-in objectives, pass the objective under 'params'. This warning will become an error in a future version.
-#> Warning: Caught simpleError. Canceling all iterations ...
-#> Warning: Passed invalid function arguments: eval_metric, nthread, num_class. These should be passed as a list to argument 'params'. Conversion from argument to 'params' entry will be done automatically, but this behavior will become an error in a future version.
-#> Warning: Parameter 'watchlist' has been renamed to 'evals'. This warning will become an error in a future version.
-#> Warning: Argument 'objective' is only for custom objectives. For built-in objectives, pass the objective under 'params'. This warning will become an error in a future version.
-#> Warning: Passed invalid function arguments: eval_metric, nthread, num_class. These should be passed as a list to argument 'params'. Conversion from argument to 'params' entry will be done automatically, but this behavior will become an error in a future version.
-#> Warning: Parameter 'watchlist' has been renamed to 'evals'. This warning will become an error in a future version.
-#> Warning: Argument 'objective' is only for custom objectives. For built-in objectives, pass the objective under 'params'. This warning will become an error in a future version.
-#> Error in names(x) <- nm: attempt to set an attribute on NULL
+#> NULL
 ```

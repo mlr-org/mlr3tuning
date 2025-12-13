@@ -334,24 +334,24 @@ tuner = tnr("random_search", batch_size = 2)
 tuner$optimize(instance)
 #>           cp learner_param_vals  x_domain classif.ce  time_train
 #>        <num>             <list>    <list>      <num>       <num>
-#> 1: -3.044624          <list[2]> <list[1]> 0.07259090 0.003333333
-#> 2: -8.296400          <list[2]> <list[1]> 0.07843885 0.003000000
+#> 1: -3.044624          <list[2]> <list[1]> 0.07259090 0.003000000
+#> 2: -8.296400          <list[2]> <list[1]> 0.07843885 0.002666667
 
 # Optimal hyperparameter configurations
 instance$result
 #>           cp learner_param_vals  x_domain classif.ce  time_train
 #>        <num>             <list>    <list>      <num>       <num>
-#> 1: -3.044624          <list[2]> <list[1]> 0.07259090 0.003333333
-#> 2: -8.296400          <list[2]> <list[1]> 0.07843885 0.003000000
+#> 1: -3.044624          <list[2]> <list[1]> 0.07259090 0.003000000
+#> 2: -8.296400          <list[2]> <list[1]> 0.07843885 0.002666667
 
 # Inspect all evaluated configurations
 as.data.table(instance$archive)
 #>           cp classif.ce  time_train runtime_learners           timestamp
 #>        <num>      <num>       <num>            <num>              <POSc>
-#> 1: -3.044624 0.07259090 0.003333333            0.017 2025-12-13 11:16:44
-#> 2: -7.892169 0.07843885 0.003333333            0.019 2025-12-13 11:16:44
-#> 3: -5.830306 0.07843885 0.003333333            0.018 2025-12-13 11:16:44
-#> 4: -8.296400 0.07843885 0.003000000            0.016 2025-12-13 11:16:44
+#> 1: -3.044624 0.07259090 0.003000000            0.017 2025-12-13 17:49:09
+#> 2: -7.892169 0.07843885 0.003000000            0.017 2025-12-13 17:49:09
+#> 3: -5.830306 0.07843885 0.003333333            0.017 2025-12-13 17:49:09
+#> 4: -8.296400 0.07843885 0.002666667            0.015 2025-12-13 17:49:09
 #>    warnings errors  x_domain batch_nr  resample_result
 #>       <int>  <int>    <list>    <int>           <list>
 #> 1:        0      0 <list[1]>        1 <ResampleResult>
