@@ -183,7 +183,9 @@ See also the documentation of <a href="https://bbotk.mlr-org.com/" class="extern
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Hyperparameter Optimization</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># example only runs if adagio is available</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu">mlr3misc</span><span class="fu">::</span><span class="fu"><a href="https://mlr3misc.mlr-org.com/reference/require_namespaces.html" class="external-link">require_namespaces</a></span><span class="op">(</span><span class="st">"adagio"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="co"># Hyperparameter Optimization</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># load learner and set search space</span></span></span>
 <span class="r-in"><span><span class="va">learner</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"classif.rpart"</span>,</span></span>
@@ -203,40 +205,14 @@ See also the documentation of <a href="https://bbotk.mlr-org.com/" class="extern
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># best performing hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="va">instance</span><span class="op">$</span><span class="va">result</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          cp minbucket minsplit learner_param_vals  x_domain classif.ce</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;num&gt;     &lt;num&gt;    &lt;num&gt;             &lt;list&gt;    &lt;list&gt;      &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -9.21034         1 44.08528          &lt;list[4]&gt; &lt;list[3]&gt; 0.04347826</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># all evaluated hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            cp minbucket  minsplit classif.ce runtime_learners</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;num&gt;     &lt;num&gt;     &lt;num&gt;      &lt;num&gt;            &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -8.093058  1.000000   2.00000 0.05217391            0.005</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -9.210340 10.648145  46.54107 0.06086957            0.007</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -2.302585  1.000000 128.00000 0.06086957            0.006</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -8.146263 28.083484  90.18488 0.06086957            0.005</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -5.501698 11.868902  13.80173 0.06086957            0.025</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -7.999490  6.263489 122.64745 0.06086957            0.005</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -9.210340 64.000000  92.97889 0.11304348            0.006</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -9.210340  1.000000  44.08528 0.04347826            0.006</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -4.730547  1.000000  86.76723 0.04347826            0.006</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -9.210340  1.000000   2.00000 0.05217391            0.006</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               timestamp warnings errors  x_domain batch_nr  resample_result</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                  &lt;POSc&gt;    &lt;int&gt;  &lt;int&gt;    &lt;list&gt;    &lt;int&gt;           &lt;list&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: 2025-11-26 09:16:31        0      0 &lt;list[3]&gt;        1 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: 2025-11-26 09:16:31        0      0 &lt;list[3]&gt;        2 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: 2025-11-26 09:16:31        0      0 &lt;list[3]&gt;        3 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: 2025-11-26 09:16:31        0      0 &lt;list[3]&gt;        4 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: 2025-11-26 09:16:31        0      0 &lt;list[3]&gt;        5 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: 2025-11-26 09:16:31        0      0 &lt;list[3]&gt;        6 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: 2025-11-26 09:16:31        0      0 &lt;list[3]&gt;        7 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: 2025-11-26 09:16:31        0      0 &lt;list[3]&gt;        8 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: 2025-11-26 09:16:31        0      0 &lt;list[3]&gt;        9 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: 2025-11-26 09:16:31        0      0 &lt;list[3]&gt;       10 &lt;ResampleResult&gt;</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># fit final model on complete data set</span></span></span>
 <span class="r-in"><span><span class="va">learner</span><span class="op">$</span><span class="va">param_set</span><span class="op">$</span><span class="va">values</span> <span class="op">=</span> <span class="va">instance</span><span class="op">$</span><span class="va">result_learner_param_vals</span></span></span>
 <span class="r-in"><span><span class="va">learner</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">tsk</a></span><span class="op">(</span><span class="st">"penguins"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

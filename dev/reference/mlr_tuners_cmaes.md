@@ -176,6 +176,8 @@ The objects of this class are cloneable with this method.
 ## Examples
 
 ``` r
+# example only runs if adagio is available
+if (mlr3misc::require_namespaces("adagio", quietly = TRUE)) {
 # Hyperparameter Optimization
 
 # load learner and set search space
@@ -196,38 +198,12 @@ instance = tune(
 
 # best performing hyperparameter configuration
 instance$result
-#>          cp minbucket minsplit learner_param_vals  x_domain classif.ce
-#>       <num>     <num>    <num>             <list>    <list>      <num>
-#> 1: -9.21034         1 44.08528          <list[4]> <list[3]> 0.04347826
 
 # all evaluated hyperparameter configuration
 as.data.table(instance$archive)
-#>            cp minbucket  minsplit classif.ce runtime_learners
-#>         <num>     <num>     <num>      <num>            <num>
-#>  1: -8.093058  1.000000   2.00000 0.05217391            0.005
-#>  2: -9.210340 10.648145  46.54107 0.06086957            0.007
-#>  3: -2.302585  1.000000 128.00000 0.06086957            0.006
-#>  4: -8.146263 28.083484  90.18488 0.06086957            0.005
-#>  5: -5.501698 11.868902  13.80173 0.06086957            0.025
-#>  6: -7.999490  6.263489 122.64745 0.06086957            0.005
-#>  7: -9.210340 64.000000  92.97889 0.11304348            0.006
-#>  8: -9.210340  1.000000  44.08528 0.04347826            0.006
-#>  9: -4.730547  1.000000  86.76723 0.04347826            0.006
-#> 10: -9.210340  1.000000   2.00000 0.05217391            0.006
-#>               timestamp warnings errors  x_domain batch_nr  resample_result
-#>                  <POSc>    <int>  <int>    <list>    <int>           <list>
-#>  1: 2025-11-26 09:16:31        0      0 <list[3]>        1 <ResampleResult>
-#>  2: 2025-11-26 09:16:31        0      0 <list[3]>        2 <ResampleResult>
-#>  3: 2025-11-26 09:16:31        0      0 <list[3]>        3 <ResampleResult>
-#>  4: 2025-11-26 09:16:31        0      0 <list[3]>        4 <ResampleResult>
-#>  5: 2025-11-26 09:16:31        0      0 <list[3]>        5 <ResampleResult>
-#>  6: 2025-11-26 09:16:31        0      0 <list[3]>        6 <ResampleResult>
-#>  7: 2025-11-26 09:16:31        0      0 <list[3]>        7 <ResampleResult>
-#>  8: 2025-11-26 09:16:31        0      0 <list[3]>        8 <ResampleResult>
-#>  9: 2025-11-26 09:16:31        0      0 <list[3]>        9 <ResampleResult>
-#> 10: 2025-11-26 09:16:31        0      0 <list[3]>       10 <ResampleResult>
 
 # fit final model on complete data set
 learner$param_set$values = instance$result_learner_param_vals
 learner$train(tsk("penguins"))
+}
 ```

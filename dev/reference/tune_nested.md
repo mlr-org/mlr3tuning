@@ -135,12 +135,12 @@ rr = tune_nested(
 rr$score()
 #>     task_id          learner_id resampling_id iteration classif.ce
 #>      <char>              <char>        <char>     <int>      <num>
-#> 1: penguins classif.rpart.tuned            cv         1 0.04651163
+#> 1: penguins classif.rpart.tuned            cv         1 0.05813953
 #> 2: penguins classif.rpart.tuned            cv         2 0.07558140
 #> Hidden columns: task, learner, resampling, prediction_test
 
 # Unbiased performance of the final model trained on the full data set
 rr$aggregate()
 #> classif.ce 
-#> 0.06104651 
+#> 0.06686047 
 ```
