@@ -153,6 +153,8 @@ The objects of this class are cloneable with this method.
 ## Examples
 
 ``` r
+# example only runs if mlr3learners and xgboost are available
+if (mlr3misc::require_namespaces(c("mlr3learners", "xgboost"), quietly = TRUE)) {
 library(mlr3learners)
 
 # Retrieve task
@@ -177,19 +179,8 @@ instance = tune(
 
 # best performing hyperparameter configuration
 instance$result_learner_param_vals
-#> $eval_metric
-#> [1] "merror"
-#> 
-#> $nrounds
-#> [1] 1
-#> 
-#> $nthread
-#> [1] 1
-#> 
-#> $verbose
-#> [1] 0
-#> 
 
 instance$result_learner_param_vals$internal_tuned_values
+}
 #> NULL
 ```

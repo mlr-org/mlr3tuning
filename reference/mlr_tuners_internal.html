@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.5.0</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -159,7 +159,9 @@ Use <code>lgr::get_logger("bbotk")</code> to access and control the logger.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mlr3learners.mlr-org.com" class="external-link">mlr3learners</a></span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># example only runs if mlr3learners and xgboost are available</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu">mlr3misc</span><span class="fu">::</span><span class="fu"><a href="https://mlr3misc.mlr-org.com/reference/require_namespaces.html" class="external-link">require_namespaces</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mlr3learners"</span>, <span class="st">"xgboost"</span><span class="op">)</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mlr3learners.mlr-org.com" class="external-link">mlr3learners</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Retrieve task</span></span></span>
 <span class="r-in"><span><span class="va">task</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">tsk</a></span><span class="op">(</span><span class="st">"pima"</span><span class="op">)</span></span></span>
@@ -183,20 +185,9 @@ Use <code>lgr::get_logger("bbotk")</code> to access and control the logger.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># best performing hyperparameter configuration</span></span></span>
 <span class="r-in"><span><span class="va">instance</span><span class="op">$</span><span class="va">result_learner_param_vals</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $eval_metric</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "merror"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $nrounds</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $nthread</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $verbose</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">instance</span><span class="op">$</span><span class="va">result_learner_param_vals</span><span class="op">$</span><span class="va">internal_tuned_values</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 </code></pre></div>
     </div>

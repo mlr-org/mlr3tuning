@@ -15,7 +15,7 @@ Calls nloptr::nloptr from package nloptr."><meta property="og:image" content="ht
 
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.5.0</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.5.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -207,63 +207,7 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Hyperparameter Optimization</span></span></span>
-<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># load learner and set search space</span></span></span>
-<span class="r-in"><span><span class="va">learner</span> <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">lrn</a></span><span class="op">(</span><span class="st">"classif.rpart"</span>,</span></span>
-<span class="r-in"><span>  cp <span class="op">=</span> <span class="fu"><a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">to_tune</a></span><span class="op">(</span><span class="fl">1e-04</span>, <span class="fl">1e-1</span>, logscale <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># run hyperparameter tuning on the Palmer Penguins data set</span></span></span>
-<span class="r-in"><span><span class="va">instance</span> <span class="op">=</span> <span class="fu"><a href="tune.html">tune</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  tuner <span class="op">=</span> <span class="fu"><a href="tnr.html">tnr</a></span><span class="op">(</span><span class="st">"nloptr"</span>, algorithm <span class="op">=</span> <span class="st">"NLOPT_LN_BOBYQA"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  task <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">tsk</a></span><span class="op">(</span><span class="st">"penguins"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  learner <span class="op">=</span> <span class="va">learner</span>,</span></span>
-<span class="r-in"><span>  resampling <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">rsmp</a></span><span class="op">(</span><span class="st">"holdout"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  measure <span class="op">=</span> <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">msr</a></span><span class="op">(</span><span class="st">"classif.ce"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># best performing hyperparameter configuration</span></span></span>
-<span class="r-in"><span><span class="va">instance</span><span class="op">$</span><span class="va">result</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           cp learner_param_vals  x_domain classif.ce</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;             &lt;list&gt;    &lt;list&gt;      &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -3.792442          &lt;list[2]&gt; &lt;list[1]&gt; 0.03478261</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># all evaluated hyperparameter configuration</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             cp classif.ce runtime_learners           timestamp warnings errors</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          &lt;num&gt;      &lt;num&gt;            &lt;num&gt;              &lt;POSc&gt;    &lt;int&gt;  &lt;int&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1: -3.792442 0.03478261            0.006 2025-11-26 09:13:41        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2: -3.792442 0.03478261            0.005 2025-11-26 09:13:41        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   3: -3.792442 0.03478261            0.006 2025-11-26 09:13:41        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   4: -2.675049 0.04347826            0.005 2025-11-26 09:13:41        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   5: -4.909835 0.03478261            0.007 2025-11-26 09:13:41        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 256: -3.792442 0.03478261            0.006 2025-11-26 09:13:58        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 257: -3.792442 0.03478261            0.007 2025-11-26 09:13:58        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 258: -3.792442 0.03478261            0.007 2025-11-26 09:13:58        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 259: -3.792442 0.03478261            0.007 2025-11-26 09:13:58        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 260: -3.792442 0.03478261            0.007 2025-11-26 09:13:58        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       x_domain batch_nr  resample_result</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;list&gt;    &lt;int&gt;           &lt;list&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1: &lt;list[1]&gt;        1 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2: &lt;list[1]&gt;        2 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   3: &lt;list[1]&gt;        3 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   4: &lt;list[1]&gt;        4 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   5: &lt;list[1]&gt;        5 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 256: &lt;list[1]&gt;      256 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 257: &lt;list[1]&gt;      257 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 258: &lt;list[1]&gt;      258 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 259: &lt;list[1]&gt;      259 &lt;ResampleResult&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 260: &lt;list[1]&gt;      260 &lt;ResampleResult&gt;</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># fit final model on complete data set</span></span></span>
-<span class="r-in"><span><span class="va">learner</span><span class="op">$</span><span class="va">param_set</span><span class="op">$</span><span class="va">values</span> <span class="op">=</span> <span class="va">instance</span><span class="op">$</span><span class="va">result_learner_param_vals</span></span></span>
-<span class="r-in"><span><span class="va">learner</span><span class="op">$</span><span class="fu">train</span><span class="op">(</span><span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">tsk</a></span><span class="op">(</span><span class="st">"penguins"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
-</code></pre></div>
+
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>

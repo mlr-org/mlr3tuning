@@ -211,11 +211,15 @@ The objects of this class are cloneable with this method.
 ## Examples
 
 ``` r
+# example only runs if GenSA is available
+if (mlr3misc::require_namespaces("GenSA", quietly = TRUE)) {
 # Hyperparameter Optimization
 
 # load learner and set search space
 learner = lrn("classif.rpart",
-  cp = to_tune(1e-04, 1e-1, logscale = TRUE)
+  cp = to_tune(1e-04, 1e-1, logscale = TRUE),
+  minsplit = to_tune(p_dbl(2, 128, trafo = as.integer)),
+  minbucket = to_tune(p_dbl(1, 64, trafo = as.integer))
 )
 
 # run hyperparameter tuning on the Palmer Penguins data set
@@ -225,45 +229,16 @@ instance = tune(
   learner = learner,
   resampling = rsmp("holdout"),
   measure = msr("classif.ce"),
-  term_evals = 10
-)
-#> Warning: one-dimensional optimization by Nelder-Mead is unreliable:
-#> use "Brent" or optimize() directly
+  term_evals = 10)
 
 # best performing hyperparameter configuration
 instance$result
-#>          cp learner_param_vals  x_domain classif.ce
-#>       <num>             <list>    <list>      <num>
-#> 1: -4.96455          <list[2]> <list[1]> 0.06086957
 
 # all evaluated hyperparameter configuration
 as.data.table(instance$archive)
-#>            cp classif.ce runtime_learners           timestamp warnings errors
-#>         <num>      <num>            <num>              <POSc>    <int>  <int>
-#>  1: -4.964550 0.06086957            0.005 2025-11-26 09:13:28        0      0
-#>  2: -9.001977 0.06086957            0.008 2025-11-26 09:13:28        0      0
-#>  3: -6.812503 0.06086957            0.007 2025-11-26 09:13:28        0      0
-#>  4: -4.964550 0.06086957            0.005 2025-11-26 09:13:28        0      0
-#>  5: -4.964550 0.06086957            0.021 2025-11-26 09:13:28        0      0
-#>  6: -4.964550 0.06086957            0.006 2025-11-26 09:13:28        0      0
-#>  7: -4.468095 0.06086957            0.007 2025-11-26 09:13:28        0      0
-#>  8: -5.461005 0.06086957            0.007 2025-11-26 09:13:29        0      0
-#>  9: -5.212778 0.06086957            0.007 2025-11-26 09:13:29        0      0
-#> 10: -4.716323 0.06086957            0.005 2025-11-26 09:13:29        0      0
-#>      x_domain batch_nr  resample_result
-#>        <list>    <int>           <list>
-#>  1: <list[1]>        1 <ResampleResult>
-#>  2: <list[1]>        2 <ResampleResult>
-#>  3: <list[1]>        3 <ResampleResult>
-#>  4: <list[1]>        4 <ResampleResult>
-#>  5: <list[1]>        5 <ResampleResult>
-#>  6: <list[1]>        6 <ResampleResult>
-#>  7: <list[1]>        7 <ResampleResult>
-#>  8: <list[1]>        8 <ResampleResult>
-#>  9: <list[1]>        9 <ResampleResult>
-#> 10: <list[1]>       10 <ResampleResult>
 
 # fit final model on complete data set
 learner$param_set$values = instance$result_learner_param_vals
 learner$train(tsk("penguins"))
+}
 ```
