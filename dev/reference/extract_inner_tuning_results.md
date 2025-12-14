@@ -110,8 +110,8 @@ rr = resample(tsk("iris"), at, resampling_outer, store_models = TRUE)
 extract_inner_tuning_results(rr)
 #>    iteration        cp classif.ce learner_param_vals  x_domain task_id
 #>        <int>     <num>      <num>             <list>    <list>  <char>
-#> 1:         1 -3.259746       0.04          <list[2]> <list[1]>    iris
-#> 2:         2 -8.744416       0.00          <list[2]> <list[1]>    iris
+#> 1:         1 -8.744416       0.00          <list[2]> <list[1]>    iris
+#> 2:         2 -3.259746       0.04          <list[2]> <list[1]>    iris
 #>             learner_id resampling_id
 #>                 <char>        <char>
 #> 1: classif.rpart.tuned            cv
