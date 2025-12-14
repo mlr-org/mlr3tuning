@@ -1,12 +1,14 @@
-# mlr3tuning (development version)
+# mlr3tuning 1.5.1
+
+* compatibility: xgboost 3.1.2.1
 
 # mlr3tuning 1.5.0
 
-feat: Add `on_optimizer_queue_before_eval` and `on_optimizer_queue_after_eval` stages to `CallbackAsyncTuning`.
-fix: Add loaded packages to objective.
-feat: Add tiny logging.
-fix: Remove internal search space and trafo error.
-fix: Unsatisfied dependencies in results in debug mode.
+* feat: Add `on_optimizer_queue_before_eval` and `on_optimizer_queue_after_eval` stages to `CallbackAsyncTuning`.
+* fix: Add loaded packages to objective.
+* feat: Add tiny logging.
+* fix: Remove internal search space and trafo error.
+* fix: Unsatisfied dependencies in results in debug mode.
 
 # mlr3tuning 1.4.0
 
