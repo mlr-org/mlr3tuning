@@ -7,6 +7,7 @@
 #' The function [ti()] creates a [TuningInstanceBatchMultiCrit] and the function [tune()] creates an instance internally.
 #'
 #' @inherit TuningInstanceBatchSingleCrit details
+#' @inheritSection TuningInstanceBatchSingleCrit Search Space
 #' @inheritSection TuningInstanceBatchSingleCrit Resources
 #'
 #' @inheritSection ArchiveBatchTuning Analysis

@@ -51,6 +51,18 @@
 #'
 #' The [cheatsheet](https://cheatsheets.mlr-org.com/mlr3tuning.pdf) summarizes the most important functions of mlr3tuning.
 #'
+#' @section Search Space:
+#'
+#' The search space defines the hyperparameters to be tuned and their possible values.
+#' It can be specified in two ways:
+#'
+#' 1. Tune tokens: Set `to_tune()` tokens in the learner's parameter set and leave `search_space = NULL` (default).
+#'    The search space is automatically constructed from the tune tokens.
+#'    Dependencies are automatically handled.
+#'
+#' 2. Explicit search space: Pass a [paradox::ParamSet] to the `search_space` argument.
+#'    For search spaces with dependencies, use the `depends` argument in `p_*()`.
+#'
 #' @section Extension Packages:
 #'
 #' mlr3tuning is extended by the following packages.

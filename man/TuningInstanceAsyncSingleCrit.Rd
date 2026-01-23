@@ -32,6 +32,20 @@ The default measure depends on the task type.\tabular{lll}{
 }
 }
 
+\section{Search Space}{
+
+
+The search space defines the hyperparameters to be tuned and their possible values.
+It can be specified in two ways:
+\enumerate{
+\item Tune tokens: Set \code{to_tune()} tokens in the learner's parameter set and leave \code{search_space = NULL} (default).
+The search space is automatically constructed from the tune tokens.
+Dependencies are automatically handled.
+\item Explicit search space: Pass a \link[paradox:ParamSet]{paradox::ParamSet} to the \code{search_space} argument.
+For search spaces with dependencies, use the \code{depends} argument in \verb{p_*()}.
+}
+}
+
 \section{Analysis}{
 
 For analyzing the tuning results, it is recommended to pass the \link{ArchiveAsyncTuning} to \code{as.data.table()}.
@@ -155,9 +169,9 @@ Measure to optimize. If \code{NULL}, default measure is used.}
 Stop criterion of the tuning process.}
 
 \item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
-Hyperparameter search space. If \code{NULL} (default), the search space is
-constructed from the \link[paradox:to_tune]{paradox::TuneToken} of the learner's parameter set
-(learner$param_set).}
+Hyperparameter search space.
+If \code{NULL} (default), the search space is constructed from the \link[paradox:to_tune]{paradox::TuneToken} of the learner's parameter set (learner$param_set).
+When using \code{to_tune()} tokens, dependencies for hierarchical search spaces are automatically handled.}
 
 \item{\code{store_benchmark_result}}{(\code{logical(1)})\cr
 If \code{TRUE} (default), store resample result of evaluated hyperparameter

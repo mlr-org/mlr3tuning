@@ -20,6 +20,7 @@
 #' The search space is created from [paradox::TuneToken] or is supplied by `search_space`.
 #'
 #' @inheritSection TuningInstanceBatchSingleCrit Default Measures
+#' @inheritSection TuningInstanceBatchSingleCrit Search Space
 #' @inheritSection TuningInstanceBatchSingleCrit Resources
 #'
 #' @inheritSection ArchiveBatchTuning Analysis

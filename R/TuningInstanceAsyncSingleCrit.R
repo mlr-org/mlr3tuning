@@ -15,6 +15,7 @@
 #' The tuner is also supposed to store its final result, consisting of a selected hyperparameter configuration and associated estimated performance values, by calling the method `instance$.assign_result`.
 #'
 #' @inheritSection TuningInstanceBatchSingleCrit Default Measures
+#' @inheritSection TuningInstanceBatchSingleCrit Search Space
 #' @inheritSection ArchiveAsyncTuning Analysis
 #' @inheritSection TuningInstanceBatchSingleCrit Resources
 #' @inheritSection TuningInstanceBatchSingleCrit Extension Packages

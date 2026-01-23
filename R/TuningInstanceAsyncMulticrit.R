@@ -7,6 +7,7 @@
 #' The function [ti_async()] creates a [TuningInstanceAsyncMultiCrit] and the function [tune()] creates an instance internally.
 #'
 #' @inherit TuningInstanceAsyncSingleCrit details
+#' @inheritSection TuningInstanceBatchSingleCrit Search Space
 #' @inheritSection TuningInstanceBatchMultiCrit Resources
 #' @inheritSection ArchiveAsyncTuning Analysis
 #'
