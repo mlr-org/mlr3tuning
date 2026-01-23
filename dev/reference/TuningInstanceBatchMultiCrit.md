@@ -32,6 +32,23 @@ final result, consisting of a selected hyperparameter configuration and
 associated estimated performance values, by calling the method
 `instance$assign_result`.
 
+## Search Space
+
+The search space defines the hyperparameters to be tuned and their
+possible values. It can be specified in two ways:
+
+1.  Tune tokens: Set
+    [`to_tune()`](https://paradox.mlr-org.com/reference/to_tune.html)
+    tokens in the learner's parameter set and leave
+    `search_space = NULL` (default). The search space is automatically
+    constructed from the tune tokens. Dependencies are automatically
+    handled.
+
+2.  Explicit search space: Pass a
+    [paradox::ParamSet](https://paradox.mlr-org.com/reference/ParamSet.html)
+    to the `search_space` argument. For search spaces with dependencies,
+    use the `depends` argument in `p_*()`.
+
 ## Resources
 
 There are several sections about hyperparameter optimization in the
@@ -213,7 +230,10 @@ Creates a new instance of this
   Hyperparameter search space. If `NULL` (default), the search space is
   constructed from the
   [paradox::TuneToken](https://paradox.mlr-org.com/reference/to_tune.html)
-  of the learner's parameter set (learner\$param_set).
+  of the learner's parameter set (learner\$param_set). When using
+  [`to_tune()`](https://paradox.mlr-org.com/reference/to_tune.html)
+  tokens, dependencies for hierarchical search spaces are automatically
+  handled.
 
 - `store_benchmark_result`:
 
@@ -334,24 +354,24 @@ tuner = tnr("random_search", batch_size = 2)
 tuner$optimize(instance)
 #>           cp learner_param_vals  x_domain classif.ce  time_train
 #>        <num>             <list>    <list>      <num>       <num>
-#> 1: -3.044624          <list[2]> <list[1]> 0.07259090 0.004000000
-#> 2: -8.296400          <list[2]> <list[1]> 0.07843885 0.003666667
+#> 1: -3.044624          <list[2]> <list[1]> 0.07259090 0.003666667
+#> 2: -7.892169          <list[2]> <list[1]> 0.07843885 0.003333333
 
 # Optimal hyperparameter configurations
 instance$result
 #>           cp learner_param_vals  x_domain classif.ce  time_train
 #>        <num>             <list>    <list>      <num>       <num>
-#> 1: -3.044624          <list[2]> <list[1]> 0.07259090 0.004000000
-#> 2: -8.296400          <list[2]> <list[1]> 0.07843885 0.003666667
+#> 1: -3.044624          <list[2]> <list[1]> 0.07259090 0.003666667
+#> 2: -7.892169          <list[2]> <list[1]> 0.07843885 0.003333333
 
 # Inspect all evaluated configurations
 as.data.table(instance$archive)
 #>           cp classif.ce  time_train runtime_learners           timestamp
 #>        <num>      <num>       <num>            <num>              <POSc>
-#> 1: -3.044624 0.07259090 0.004000000            0.021 2026-01-23 07:18:15
-#> 2: -7.892169 0.07843885 0.004000000            0.022 2026-01-23 07:18:15
-#> 3: -5.830306 0.07843885 0.004000000            0.021 2026-01-23 07:18:15
-#> 4: -8.296400 0.07843885 0.003666667            0.021 2026-01-23 07:18:15
+#> 1: -3.044624 0.07259090 0.003666667            0.020 2026-01-23 07:26:12
+#> 2: -7.892169 0.07843885 0.003333333            0.018 2026-01-23 07:26:12
+#> 3: -5.830306 0.07843885 0.003666667            0.019 2026-01-23 07:26:12
+#> 4: -8.296400 0.07843885 0.003666667            0.018 2026-01-23 07:26:12
 #>    warnings errors  x_domain batch_nr  resample_result
 #>       <int>  <int>    <list>    <int>           <list>
 #> 1:        0      0 <list[1]>        1 <ResampleResult>

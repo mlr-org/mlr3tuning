@@ -105,9 +105,9 @@ Stop criterion of the tuning process.</p></dd>
 
 <dt id="arg-search-space">search_space<a class="anchor" aria-label="anchor" href="#arg-search-space"></a></dt>
 <dd><p>(<a href="https://paradox.mlr-org.com/reference/ParamSet.html" class="external-link">paradox::ParamSet</a>)<br>
-Hyperparameter search space. If <code>NULL</code> (default), the search space is
-constructed from the <a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">paradox::TuneToken</a> of the learner's parameter set
-(learner$param_set).</p></dd>
+Hyperparameter search space.
+If <code>NULL</code> (default), the search space is constructed from the <a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">paradox::TuneToken</a> of the learner's parameter set (learner$param_set).
+When using <code><a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">to_tune()</a></code> tokens, dependencies for hierarchical search spaces are automatically handled.</p></dd>
 
 
 <dt id="arg-store-benchmark-result">store_benchmark_result<a class="anchor" aria-label="anchor" href="#arg-store-benchmark-result"></a></dt>
@@ -204,10 +204,10 @@ The default measure depends on the task type.</p><table class="table table"><tr>
 <span class="r-in"><span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp classif.ce runtime_learners           timestamp warnings errors</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;      &lt;num&gt;            &lt;num&gt;              &lt;POSc&gt;    &lt;int&gt;  &lt;int&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -7.000441 0.05519959            0.020 2026-01-23 07:18:46        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -5.951476 0.05519959            0.021 2026-01-23 07:18:46        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -3.072426 0.05519959            0.019 2026-01-23 07:18:46        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -3.645136 0.05519959            0.019 2026-01-23 07:18:46        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -7.000441 0.05519959            0.020 2026-01-23 07:26:41        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -5.951476 0.05519959            0.018 2026-01-23 07:26:41        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -3.072426 0.05519959            0.018 2026-01-23 07:26:42        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -3.645136 0.05519959            0.017 2026-01-23 07:26:42        0      0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     x_domain batch_nr  resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;list&gt;    &lt;int&gt;           &lt;list&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1: &lt;list[1]&gt;        1 &lt;ResampleResult&gt;</span>

@@ -99,6 +99,23 @@ features a collection of case studies and demos about optimization.
 The [cheatsheet](https://cheatsheets.mlr-org.com/mlr3tuning.pdf)
 summarizes the most important functions of mlr3tuning.
 
+## Search Space
+
+The search space defines the hyperparameters to be tuned and their
+possible values. It can be specified in two ways:
+
+1.  Tune tokens: Set
+    [`to_tune()`](https://paradox.mlr-org.com/reference/to_tune.html)
+    tokens in the learner's parameter set and leave
+    `search_space = NULL` (default). The search space is automatically
+    constructed from the tune tokens. Dependencies are automatically
+    handled.
+
+2.  Explicit search space: Pass a
+    [paradox::ParamSet](https://paradox.mlr-org.com/reference/ParamSet.html)
+    to the `search_space` argument. For search spaces with dependencies,
+    use the `depends` argument in `p_*()`.
+
 ## Extension Packages
 
 mlr3tuning is extended by the following packages.
@@ -242,7 +259,10 @@ Creates a new instance of this
   Hyperparameter search space. If `NULL` (default), the search space is
   constructed from the
   [paradox::TuneToken](https://paradox.mlr-org.com/reference/to_tune.html)
-  of the learner's parameter set (learner\$param_set).
+  of the learner's parameter set (learner\$param_set). When using
+  [`to_tune()`](https://paradox.mlr-org.com/reference/to_tune.html)
+  tokens, dependencies for hierarchical search spaces are automatically
+  handled.
 
 - `store_benchmark_result`:
 
@@ -375,10 +395,10 @@ learner$train(task)
 as.data.table(instance$archive)
 #>           cp classif.ce runtime_learners           timestamp warnings errors
 #>        <num>      <num>            <num>              <POSc>    <int>  <int>
-#> 1: -7.255326 0.05517417            0.019 2026-01-23 07:18:16        0      0
-#> 2: -6.314690 0.05517417            0.021 2026-01-23 07:18:16        0      0
-#> 3: -8.991870 0.05517417            0.040 2026-01-23 07:18:16        0      0
-#> 4: -4.755440 0.05517417            0.020 2026-01-23 07:18:16        0      0
+#> 1: -7.255326 0.05517417            0.018 2026-01-23 07:26:13        0      0
+#> 2: -6.314690 0.05517417            0.018 2026-01-23 07:26:13        0      0
+#> 3: -8.991870 0.05517417            0.017 2026-01-23 07:26:13        0      0
+#> 4: -4.755440 0.05517417            0.032 2026-01-23 07:26:13        0      0
 #>     x_domain batch_nr  resample_result
 #>       <list>    <int>           <list>
 #> 1: <list[1]>        1 <ResampleResult>

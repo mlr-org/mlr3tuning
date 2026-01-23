@@ -137,9 +137,9 @@ Stop criterion of the tuning process.</p></dd>
 
 <dt id="arg-search-space">search_space<a class="anchor" aria-label="anchor" href="#arg-search-space"></a></dt>
 <dd><p>(<a href="https://paradox.mlr-org.com/reference/ParamSet.html" class="external-link">paradox::ParamSet</a>)<br>
-Hyperparameter search space. If <code>NULL</code> (default), the search space is
-constructed from the <a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">paradox::TuneToken</a> of the learner's parameter set
-(learner$param_set).</p></dd>
+Hyperparameter search space.
+If <code>NULL</code> (default), the search space is constructed from the <a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">paradox::TuneToken</a> of the learner's parameter set (learner$param_set).
+When using <code><a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">to_tune()</a></code> tokens, dependencies for hierarchical search spaces are automatically handled.</p></dd>
 
 
 <dt id="arg-store-benchmark-result">store_benchmark_result<a class="anchor" aria-label="anchor" href="#arg-store-benchmark-result"></a></dt>
@@ -193,6 +193,18 @@ The search space is created from <a href="https://paradox.mlr-org.com/reference/
 
 <p>If no measure is passed, the default measure is used.
 The default measure depends on the task type.</p><table class="table table"><tr><td>Task</td><td>Default Measure</td><td>Package</td></tr><tr><td><code>"classif"</code></td><td><code>"classif.ce"</code></td><td><a href="https://CRAN.R-project.org/package=mlr3" class="external-link"><span class="pkg">mlr3</span></a></td></tr><tr><td><code>"regr"</code></td><td><code>"regr.mse"</code></td><td><a href="https://CRAN.R-project.org/package=mlr3" class="external-link"><span class="pkg">mlr3</span></a></td></tr><tr><td><code>"surv"</code></td><td><code>"surv.cindex"</code></td><td><a href="https://CRAN.R-project.org/package=mlr3proba" class="external-link"><span class="pkg">mlr3proba</span></a></td></tr><tr><td><code>"dens"</code></td><td><code>"dens.logloss"</code></td><td><a href="https://CRAN.R-project.org/package=mlr3proba" class="external-link"><span class="pkg">mlr3proba</span></a></td></tr><tr><td><code>"classif_st"</code></td><td><code>"classif.ce"</code></td><td><a href="https://CRAN.R-project.org/package=mlr3spatial" class="external-link"><span class="pkg">mlr3spatial</span></a></td></tr><tr><td><code>"regr_st"</code></td><td><code>"regr.mse"</code></td><td><a href="https://CRAN.R-project.org/package=mlr3spatial" class="external-link"><span class="pkg">mlr3spatial</span></a></td></tr><tr><td><code>"clust"</code></td><td><code>"clust.dunn"</code></td><td><a href="https://CRAN.R-project.org/package=mlr3cluster" class="external-link"><span class="pkg">mlr3cluster</span></a></td></tr></table></div>
+    <div class="section level2">
+    <h2 id="search-space">Search Space<a class="anchor" aria-label="anchor" href="#search-space"></a></h2>
+
+
+
+<p>The search space defines the hyperparameters to be tuned and their possible values.
+It can be specified in two ways:</p><ol><li><p>Tune tokens: Set <code><a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">to_tune()</a></code> tokens in the learner's parameter set and leave <code>search_space = NULL</code> (default).
+The search space is automatically constructed from the tune tokens.
+Dependencies are automatically handled.</p></li>
+<li><p>Explicit search space: Pass a <a href="https://paradox.mlr-org.com/reference/ParamSet.html" class="external-link">paradox::ParamSet</a> to the <code>search_space</code> argument.
+For search spaces with dependencies, use the <code>depends</code> argument in <code>p_*()</code>.</p></li>
+</ol></div>
     <div class="section level2">
     <h2 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a></h2>
 
@@ -255,10 +267,10 @@ Alternatively, measures can be supplied to <code><a href="https://rdatatable.git
 <span class="r-in"><span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp classif.ce runtime_learners           timestamp warnings errors</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;      &lt;num&gt;            &lt;num&gt;              &lt;POSc&gt;    &lt;int&gt;  &lt;int&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -8.458173  0.2890625            0.009 2026-01-23 07:18:47        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -8.809285  0.2890625            0.010 2026-01-23 07:18:47        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -6.984893  0.2890625            0.009 2026-01-23 07:18:47        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -2.654367  0.2304688            0.007 2026-01-23 07:18:47        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -8.458173  0.2890625            0.008 2026-01-23 07:26:43        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -8.809285  0.2890625            0.009 2026-01-23 07:26:43        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -6.984893  0.2890625            0.009 2026-01-23 07:26:43        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -2.654367  0.2304688            0.008 2026-01-23 07:26:43        0      0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     x_domain batch_nr  resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;list&gt;    &lt;int&gt;           &lt;list&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1: &lt;list[1]&gt;        1 &lt;ResampleResult&gt;</span>

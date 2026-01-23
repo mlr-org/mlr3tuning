@@ -32,6 +32,23 @@ final result, consisting of a selected hyperparameter configuration and
 associated estimated performance values, by calling the method
 `instance$.assign_result`.
 
+## Search Space
+
+The search space defines the hyperparameters to be tuned and their
+possible values. It can be specified in two ways:
+
+1.  Tune tokens: Set
+    [`to_tune()`](https://paradox.mlr-org.com/reference/to_tune.html)
+    tokens in the learner's parameter set and leave
+    `search_space = NULL` (default). The search space is automatically
+    constructed from the tune tokens. Dependencies are automatically
+    handled.
+
+2.  Explicit search space: Pass a
+    [paradox::ParamSet](https://paradox.mlr-org.com/reference/ParamSet.html)
+    to the `search_space` argument. For search spaces with dependencies,
+    use the `depends` argument in `p_*()`.
+
 ## Resources
 
 There are several sections about hyperparameter optimization in the
@@ -200,7 +217,10 @@ Creates a new instance of this
   Hyperparameter search space. If `NULL` (default), the search space is
   constructed from the
   [paradox::TuneToken](https://paradox.mlr-org.com/reference/to_tune.html)
-  of the learner's parameter set (learner\$param_set).
+  of the learner's parameter set (learner\$param_set). When using
+  [`to_tune()`](https://paradox.mlr-org.com/reference/to_tune.html)
+  tokens, dependencies for hierarchical search spaces are automatically
+  handled.
 
 - `store_benchmark_result`:
 

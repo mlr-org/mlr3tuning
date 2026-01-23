@@ -74,6 +74,18 @@ The tuner is also supposed to store its final result, consisting of a selected h
 <p>If no measure is passed, the default measure is used.
 The default measure depends on the task type.</p><table class="table table"><tr><td>Task</td><td>Default Measure</td><td>Package</td></tr><tr><td><code>"classif"</code></td><td><code>"classif.ce"</code></td><td><a href="https://CRAN.R-project.org/package=mlr3" class="external-link"><span class="pkg">mlr3</span></a></td></tr><tr><td><code>"regr"</code></td><td><code>"regr.mse"</code></td><td><a href="https://CRAN.R-project.org/package=mlr3" class="external-link"><span class="pkg">mlr3</span></a></td></tr><tr><td><code>"surv"</code></td><td><code>"surv.cindex"</code></td><td><a href="https://CRAN.R-project.org/package=mlr3proba" class="external-link"><span class="pkg">mlr3proba</span></a></td></tr><tr><td><code>"dens"</code></td><td><code>"dens.logloss"</code></td><td><a href="https://CRAN.R-project.org/package=mlr3proba" class="external-link"><span class="pkg">mlr3proba</span></a></td></tr><tr><td><code>"classif_st"</code></td><td><code>"classif.ce"</code></td><td><a href="https://CRAN.R-project.org/package=mlr3spatial" class="external-link"><span class="pkg">mlr3spatial</span></a></td></tr><tr><td><code>"regr_st"</code></td><td><code>"regr.mse"</code></td><td><a href="https://CRAN.R-project.org/package=mlr3spatial" class="external-link"><span class="pkg">mlr3spatial</span></a></td></tr><tr><td><code>"clust"</code></td><td><code>"clust.dunn"</code></td><td><a href="https://CRAN.R-project.org/package=mlr3cluster" class="external-link"><span class="pkg">mlr3cluster</span></a></td></tr></table></div>
     <div class="section level2">
+    <h2 id="search-space">Search Space<a class="anchor" aria-label="anchor" href="#search-space"></a></h2>
+
+
+
+<p>The search space defines the hyperparameters to be tuned and their possible values.
+It can be specified in two ways:</p><ol><li><p>Tune tokens: Set <code><a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">to_tune()</a></code> tokens in the learner's parameter set and leave <code>search_space = NULL</code> (default).
+The search space is automatically constructed from the tune tokens.
+Dependencies are automatically handled.</p></li>
+<li><p>Explicit search space: Pass a <a href="https://paradox.mlr-org.com/reference/ParamSet.html" class="external-link">paradox::ParamSet</a> to the <code>search_space</code> argument.
+For search spaces with dependencies, use the <code>depends</code> argument in <code>p_*()</code>.</p></li>
+</ol></div>
+    <div class="section level2">
     <h2 id="analysis">Analysis<a class="anchor" aria-label="anchor" href="#analysis"></a></h2>
 
 
@@ -194,9 +206,9 @@ Stop criterion of the tuning process.</p></dd>
 
 <dt><code>search_space</code></dt>
 <dd><p>(<a href="https://paradox.mlr-org.com/reference/ParamSet.html" class="external-link">paradox::ParamSet</a>)<br>
-Hyperparameter search space. If <code>NULL</code> (default), the search space is
-constructed from the <a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">paradox::TuneToken</a> of the learner's parameter set
-(learner$param_set).</p></dd>
+Hyperparameter search space.
+If <code>NULL</code> (default), the search space is constructed from the <a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">paradox::TuneToken</a> of the learner's parameter set (learner$param_set).
+When using <code><a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">to_tune()</a></code> tokens, dependencies for hierarchical search spaces are automatically handled.</p></dd>
 
 
 <dt><code>store_benchmark_result</code></dt>

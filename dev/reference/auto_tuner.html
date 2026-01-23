@@ -123,9 +123,9 @@ Stop criterion of the tuning process.</p></dd>
 
 <dt id="arg-search-space">search_space<a class="anchor" aria-label="anchor" href="#arg-search-space"></a></dt>
 <dd><p>(<a href="https://paradox.mlr-org.com/reference/ParamSet.html" class="external-link">paradox::ParamSet</a>)<br>
-Hyperparameter search space. If <code>NULL</code> (default), the search space is
-constructed from the <a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">paradox::TuneToken</a> of the learner's parameter set
-(learner$param_set).</p></dd>
+Hyperparameter search space.
+If <code>NULL</code> (default), the search space is constructed from the <a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">paradox::TuneToken</a> of the learner's parameter set (learner$param_set).
+When using <code><a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">to_tune()</a></code> tokens, dependencies for hierarchical search spaces are automatically handled.</p></dd>
 
 
 <dt id="arg-store-tuning-instance">store_tuning_instance<a class="anchor" aria-label="anchor" href="#arg-store-tuning-instance"></a></dt>

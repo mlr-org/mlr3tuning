@@ -68,6 +68,18 @@ If the available budget is exhausted, an exception is raised, and no further eva
 The tuner is also supposed to store its final result, consisting of a selected hyperparameter configuration and associated estimated performance values, by calling the method <code>instance$.assign_result</code>.</p>
     </div>
     <div class="section level2">
+    <h2 id="search-space">Search Space<a class="anchor" aria-label="anchor" href="#search-space"></a></h2>
+
+
+
+<p>The search space defines the hyperparameters to be tuned and their possible values.
+It can be specified in two ways:</p><ol><li><p>Tune tokens: Set <code><a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">to_tune()</a></code> tokens in the learner's parameter set and leave <code>search_space = NULL</code> (default).
+The search space is automatically constructed from the tune tokens.
+Dependencies are automatically handled.</p></li>
+<li><p>Explicit search space: Pass a <a href="https://paradox.mlr-org.com/reference/ParamSet.html" class="external-link">paradox::ParamSet</a> to the <code>search_space</code> argument.
+For search spaces with dependencies, use the <code>depends</code> argument in <code>p_*()</code>.</p></li>
+</ol></div>
+    <div class="section level2">
     <h2 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a></h2>
 
 
@@ -179,9 +191,9 @@ Stop criterion of the tuning process.</p></dd>
 
 <dt><code>search_space</code></dt>
 <dd><p>(<a href="https://paradox.mlr-org.com/reference/ParamSet.html" class="external-link">paradox::ParamSet</a>)<br>
-Hyperparameter search space. If <code>NULL</code> (default), the search space is
-constructed from the <a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">paradox::TuneToken</a> of the learner's parameter set
-(learner$param_set).</p></dd>
+Hyperparameter search space.
+If <code>NULL</code> (default), the search space is constructed from the <a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">paradox::TuneToken</a> of the learner's parameter set (learner$param_set).
+When using <code><a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">to_tune()</a></code> tokens, dependencies for hierarchical search spaces are automatically handled.</p></dd>
 
 
 <dt><code>store_benchmark_result</code></dt>

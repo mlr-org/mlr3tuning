@@ -70,7 +70,10 @@ ti_async(
   Hyperparameter search space. If `NULL` (default), the search space is
   constructed from the
   [paradox::TuneToken](https://paradox.mlr-org.com/reference/to_tune.html)
-  of the learner's parameter set (learner\$param_set).
+  of the learner's parameter set (learner\$param_set). When using
+  [`to_tune()`](https://paradox.mlr-org.com/reference/to_tune.html)
+  tokens, dependencies for hierarchical search spaces are automatically
+  handled.
 
 - store_benchmark_result:
 
@@ -211,10 +214,10 @@ learner$train(task)
 as.data.table(instance$archive)
 #>           cp classif.ce runtime_learners           timestamp warnings errors
 #>        <num>      <num>            <num>              <POSc>    <int>  <int>
-#> 1: -7.000441 0.05519959            0.020 2026-01-23 07:18:46        0      0
-#> 2: -5.951476 0.05519959            0.021 2026-01-23 07:18:46        0      0
-#> 3: -3.072426 0.05519959            0.019 2026-01-23 07:18:46        0      0
-#> 4: -3.645136 0.05519959            0.019 2026-01-23 07:18:46        0      0
+#> 1: -7.000441 0.05519959            0.020 2026-01-23 07:26:41        0      0
+#> 2: -5.951476 0.05519959            0.018 2026-01-23 07:26:41        0      0
+#> 3: -3.072426 0.05519959            0.018 2026-01-23 07:26:42        0      0
+#> 4: -3.645136 0.05519959            0.017 2026-01-23 07:26:42        0      0
 #>     x_domain batch_nr  resample_result
 #>       <list>    <int>           <list>
 #> 1: <list[1]>        1 <ResampleResult>
