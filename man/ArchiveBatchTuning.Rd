@@ -133,9 +133,9 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
-Hyperparameter search space. If \code{NULL} (default), the search space is
-constructed from the \link[paradox:to_tune]{paradox::TuneToken} of the learner's parameter set
-(learner$param_set).}
+Hyperparameter search space.
+If \code{NULL} (default), the search space is constructed from the \link[paradox:to_tune]{paradox::TuneToken} of the learner's parameter set (learner$param_set).
+When using \code{to_tune()} tokens, dependencies for hierarchical search spaces are automatically handled.}
 
 \item{\code{codomain}}{(\link[bbotk:Codomain]{bbotk::Codomain})\cr
 Specifies codomain of objective function i.e. a set of performance measures.

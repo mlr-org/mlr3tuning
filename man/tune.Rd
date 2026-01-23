@@ -54,9 +54,9 @@ Ignored if \code{terminator} is passed.}
 Stop criterion of the tuning process.}
 
 \item{search_space}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
-Hyperparameter search space. If \code{NULL} (default), the search space is
-constructed from the \link[paradox:to_tune]{paradox::TuneToken} of the learner's parameter set
-(learner$param_set).}
+Hyperparameter search space.
+If \code{NULL} (default), the search space is constructed from the \link[paradox:to_tune]{paradox::TuneToken} of the learner's parameter set (learner$param_set).
+When using \code{to_tune()} tokens, dependencies for hierarchical search spaces are automatically handled.}
 
 \item{store_benchmark_result}{(\code{logical(1)})\cr
 If \code{TRUE} (default), store resample result of evaluated hyperparameter
@@ -111,6 +111,20 @@ The default measure depends on the task type.\tabular{lll}{
    \code{"classif_st"} \tab \code{"classif.ce"} \tab \CRANpkg{mlr3spatial} \cr
    \code{"regr_st"} \tab \code{"regr.mse"} \tab \CRANpkg{mlr3spatial} \cr
    \code{"clust"} \tab \code{"clust.dunn"} \tab \CRANpkg{mlr3cluster} \cr
+}
+}
+
+\section{Search Space}{
+
+
+The search space defines the hyperparameters to be tuned and their possible values.
+It can be specified in two ways:
+\enumerate{
+\item Tune tokens: Set \code{to_tune()} tokens in the learner's parameter set and leave \code{search_space = NULL} (default).
+The search space is automatically constructed from the tune tokens.
+Dependencies are automatically handled.
+\item Explicit search space: Pass a \link[paradox:ParamSet]{paradox::ParamSet} to the \code{search_space} argument.
+For search spaces with dependencies, use the \code{depends} argument in \verb{p_*()}.
 }
 }
 
