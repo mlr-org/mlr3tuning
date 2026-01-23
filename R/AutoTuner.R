@@ -173,7 +173,7 @@ AutoTuner = R6Class("AutoTuner",
         predict_types = learner$predict_types,
         properties = setdiff(learner$properties, c("internal_tuning", "validation"))
       )
-      self$predict_type = learner$predict_type
+      private$.predict_type = learner$predict_type
       self$predict_sets = learner$predict_sets
     },
 
