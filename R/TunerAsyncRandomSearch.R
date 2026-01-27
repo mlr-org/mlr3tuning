@@ -24,8 +24,7 @@ TunerAsyncRandomSearch = R6Class("TunerAsyncRandomSearch",
    #' Creates a new instance of this [R6][R6::R6Class] class.
    initialize = function() {
      super$initialize(
-       optimizer = bbotk::OptimizerAsyncRandomSearch$new(),
-       man = "mlr3tuning::mlr_tuners_async_random_search"
+       optimizer = bbotk::OptimizerAsyncRandomSearch$new()
      )
    }
   )
