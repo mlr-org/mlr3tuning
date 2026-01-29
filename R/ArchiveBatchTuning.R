@@ -212,6 +212,7 @@ as.data.table.ArchiveBatchTuning = function(x, ..., unnest = "internal_tuned_val
     setdiff(internal_tuned_values_ids, exclude_columns)
   }
 
-  setcolorder(tab, c(x$cols_x, x$cols_y, cols_y_extra, cols_internal_tuned_values, cols_x_domain, "runtime_learners", "timestamp"))
+  cns = intersect(c(x$cols_x, x$cols_y, cols_y_extra, cols_internal_tuned_values, cols_x_domain, "runtime_learners", "timestamp"), names(tab))
+  setcolorder(tab, cns)
   tab[, setdiff(names(tab), exclude_columns), with = FALSE]
 }
