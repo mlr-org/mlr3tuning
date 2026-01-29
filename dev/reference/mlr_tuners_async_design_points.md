@@ -14,7 +14,7 @@ be instantiated with the associated sugar function
 
 - `design`:
 
-  [data.table::data.table](https://rdatatable.gitlab.io/data.table/reference/data.table.html)  
+  [data.table::data.table](https://rdrr.io/pkg/data.table/man/data.table.html)  
   Design points to try in search, one per row.
 
 ## See also

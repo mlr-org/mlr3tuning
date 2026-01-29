@@ -70,7 +70,7 @@ possible values. It can be specified in two ways:
 For analyzing the tuning results, it is recommended to pass the
 [ArchiveAsyncTuning](https://mlr3tuning.mlr-org.com/dev/reference/ArchiveAsyncTuning.md)
 to
-[`as.data.table()`](https://rdatatable.gitlab.io/data.table/reference/as.data.table.html).
+[`as.data.table()`](https://rdrr.io/pkg/data.table/man/as.data.table.html).
 The returned data table contains the
 [mlr3::ResampleResult](https://mlr3.mlr-org.com/reference/ResampleResult.html)
 for each hyperparameter evaluation.
@@ -307,9 +307,9 @@ For internal use.
 
 - `xdt`:
 
-  ([`data.table::data.table()`](https://rdatatable.gitlab.io/data.table/reference/data.table.html))  
+  ([`data.table::data.table()`](https://rdrr.io/pkg/data.table/man/data.table.html))  
   Hyperparameter values as
-  [`data.table::data.table()`](https://rdatatable.gitlab.io/data.table/reference/data.table.html).
+  [`data.table::data.table()`](https://rdrr.io/pkg/data.table/man/data.table.html).
   Each row is one configuration. Contains values in the search space.
   Can contain additional columns for extra information.
 
@@ -325,7 +325,7 @@ For internal use.
 
 - `extra`:
 
-  ([`data.table::data.table()`](https://rdatatable.gitlab.io/data.table/reference/data.table.html))  
+  ([`data.table::data.table()`](https://rdrr.io/pkg/data.table/man/data.table.html))  
   Additional information.
 
 - `...`:

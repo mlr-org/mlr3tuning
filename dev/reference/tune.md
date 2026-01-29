@@ -260,7 +260,7 @@ summarizes the most important functions of mlr3tuning.
 For analyzing the tuning results, it is recommended to pass the
 [ArchiveBatchTuning](https://mlr3tuning.mlr-org.com/dev/reference/ArchiveBatchTuning.md)
 to
-[`as.data.table()`](https://rdatatable.gitlab.io/data.table/reference/as.data.table.html).
+[`as.data.table()`](https://rdrr.io/pkg/data.table/man/as.data.table.html).
 The returned data table is joined with the benchmark result which adds
 the
 [mlr3::ResampleResult](https://mlr3.mlr-org.com/reference/ResampleResult.html)
@@ -273,7 +273,7 @@ For a complete list of all getters see the methods section.
 The benchmark result (`$benchmark_result`) allows to score the
 hyperparameter configurations again on a different measure.
 Alternatively, measures can be supplied to
-[`as.data.table()`](https://rdatatable.gitlab.io/data.table/reference/as.data.table.html).
+[`as.data.table()`](https://rdrr.io/pkg/data.table/man/as.data.table.html).
 
 The [mlr3viz](https://CRAN.R-project.org/package=mlr3viz) package
 provides visualizations for tuning results.
@@ -309,10 +309,10 @@ learner$train(task)
 as.data.table(instance$archive)
 #>           cp classif.ce runtime_learners           timestamp warnings errors
 #>        <num>      <num>            <num>              <POSc>    <int>  <int>
-#> 1: -8.458173  0.2890625            0.008 2026-01-23 07:26:43        0      0
-#> 2: -8.809285  0.2890625            0.009 2026-01-23 07:26:43        0      0
-#> 3: -6.984893  0.2890625            0.009 2026-01-23 07:26:43        0      0
-#> 4: -2.654367  0.2304688            0.008 2026-01-23 07:26:43        0      0
+#> 1: -8.458173  0.2890625            0.026 2026-01-29 12:41:43        0      0
+#> 2: -8.809285  0.2890625            0.008 2026-01-29 12:41:43        0      0
+#> 3: -6.984893  0.2890625            0.008 2026-01-29 12:41:43        0      0
+#> 4: -2.654367  0.2304688            0.007 2026-01-29 12:41:43        0      0
 #>     x_domain batch_nr  resample_result
 #>       <list>    <int>           <list>
 #> 1: <list[1]>        1 <ResampleResult>

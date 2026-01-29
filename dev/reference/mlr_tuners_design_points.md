@@ -52,7 +52,7 @@ documentation of [bbotk](https://bbotk.mlr-org.com/).
 
 - `design`:
 
-  [data.table::data.table](https://rdatatable.gitlab.io/data.table/reference/data.table.html)  
+  [data.table::data.table](https://rdrr.io/pkg/data.table/man/data.table.html)  
   Design points to try in search, one per row.
 
 ## Resources
@@ -223,9 +223,9 @@ instance$result
 as.data.table(instance$archive)
 #>       cp minbucket minsplit classif.ce runtime_learners           timestamp
 #>    <num>     <num>    <num>      <num>            <num>              <POSc>
-#> 1: 0.100        64        2 0.09565217            0.005 2026-01-23 07:26:31
-#> 2: 0.010        32       64 0.06086957            0.005 2026-01-23 07:26:31
-#> 3: 0.001         1      128 0.06086957            0.005 2026-01-23 07:26:31
+#> 1: 0.100        64        2 0.09565217            0.007 2026-01-29 12:41:32
+#> 2: 0.010        32       64 0.06086957            0.006 2026-01-29 12:41:32
+#> 3: 0.001         1      128 0.06086957            0.006 2026-01-29 12:41:32
 #>    warnings errors  x_domain batch_nr  resample_result
 #>       <int>  <int>    <list>    <int>           <list>
 #> 1:        0      0 <list[3]>        1 <ResampleResult>

@@ -40,7 +40,7 @@ The table (`$data`) has the following columns:
 
 For analyzing the tuning results, it is recommended to pass the
 ArchiveAsyncTuning to
-[`as.data.table()`](https://rdatatable.gitlab.io/data.table/reference/as.data.table.html).
+[`as.data.table()`](https://rdrr.io/pkg/data.table/man/as.data.table.html).
 The returned data table contains the
 [mlr3::ResampleResult](https://mlr3.mlr-org.com/reference/ResampleResult.html)
 for each hyperparameter evaluation.
@@ -51,7 +51,7 @@ for each hyperparameter evaluation.
   Returns a tabular view of all evaluated hyperparameter
   configurations.  
   ArchiveAsyncTuning -\>
-  [`data.table::data.table()`](https://rdatatable.gitlab.io/data.table/reference/data.table.html)  
+  [`data.table::data.table()`](https://rdrr.io/pkg/data.table/man/data.table.html)  
 
   - `x` (ArchiveAsyncTuning)
 

@@ -105,7 +105,7 @@ summarizes the most important functions of mlr3tuning.
 For analyzing the tuning results, it is recommended to pass the
 [ArchiveBatchTuning](https://mlr3tuning.mlr-org.com/dev/reference/ArchiveBatchTuning.md)
 to
-[`as.data.table()`](https://rdatatable.gitlab.io/data.table/reference/as.data.table.html).
+[`as.data.table()`](https://rdrr.io/pkg/data.table/man/as.data.table.html).
 The returned data table is joined with the benchmark result which adds
 the
 [mlr3::ResampleResult](https://mlr3.mlr-org.com/reference/ResampleResult.html)
@@ -118,7 +118,7 @@ For a complete list of all getters see the methods section.
 The benchmark result (`$benchmark_result`) allows to score the
 hyperparameter configurations again on a different measure.
 Alternatively, measures can be supplied to
-[`as.data.table()`](https://rdatatable.gitlab.io/data.table/reference/as.data.table.html).
+[`as.data.table()`](https://rdrr.io/pkg/data.table/man/as.data.table.html).
 
 The [mlr3viz](https://CRAN.R-project.org/package=mlr3viz) package
 provides visualizations for tuning results.
@@ -285,15 +285,15 @@ here. For internal use.
 
 - `xdt`:
 
-  ([`data.table::data.table()`](https://rdatatable.gitlab.io/data.table/reference/data.table.html))  
+  ([`data.table::data.table()`](https://rdrr.io/pkg/data.table/man/data.table.html))  
   Hyperparameter values as
-  [`data.table::data.table()`](https://rdatatable.gitlab.io/data.table/reference/data.table.html).
+  [`data.table::data.table()`](https://rdrr.io/pkg/data.table/man/data.table.html).
   Each row is one configuration. Contains values in the search space.
   Can contain additional columns for extra information.
 
 - `ydt`:
 
-  ([`data.table::data.table()`](https://rdatatable.gitlab.io/data.table/reference/data.table.html))  
+  ([`data.table::data.table()`](https://rdrr.io/pkg/data.table/man/data.table.html))  
   Optimal outcomes, e.g. the Pareto front.
 
 - `learner_param_vals`:
@@ -303,7 +303,7 @@ here. For internal use.
 
 - `extra`:
 
-  ([`data.table::data.table()`](https://rdatatable.gitlab.io/data.table/reference/data.table.html))  
+  ([`data.table::data.table()`](https://rdrr.io/pkg/data.table/man/data.table.html))  
   Additional information.
 
 - `...`:
@@ -352,26 +352,24 @@ tuner = tnr("random_search", batch_size = 2)
 
 # Run tuning
 tuner$optimize(instance)
-#>           cp learner_param_vals  x_domain classif.ce  time_train
-#>        <num>             <list>    <list>      <num>       <num>
-#> 1: -3.044624          <list[2]> <list[1]> 0.07259090 0.003666667
-#> 2: -7.892169          <list[2]> <list[1]> 0.07843885 0.003333333
+#>           cp learner_param_vals  x_domain classif.ce time_train
+#>        <num>             <list>    <list>      <num>      <num>
+#> 1: -3.044624          <list[2]> <list[1]>  0.0725909      0.003
 
 # Optimal hyperparameter configurations
 instance$result
-#>           cp learner_param_vals  x_domain classif.ce  time_train
-#>        <num>             <list>    <list>      <num>       <num>
-#> 1: -3.044624          <list[2]> <list[1]> 0.07259090 0.003666667
-#> 2: -7.892169          <list[2]> <list[1]> 0.07843885 0.003333333
+#>           cp learner_param_vals  x_domain classif.ce time_train
+#>        <num>             <list>    <list>      <num>      <num>
+#> 1: -3.044624          <list[2]> <list[1]>  0.0725909      0.003
 
 # Inspect all evaluated configurations
 as.data.table(instance$archive)
 #>           cp classif.ce  time_train runtime_learners           timestamp
 #>        <num>      <num>       <num>            <num>              <POSc>
-#> 1: -3.044624 0.07259090 0.003666667            0.020 2026-01-23 07:26:12
-#> 2: -7.892169 0.07843885 0.003333333            0.018 2026-01-23 07:26:12
-#> 3: -5.830306 0.07843885 0.003666667            0.019 2026-01-23 07:26:12
-#> 4: -8.296400 0.07843885 0.003666667            0.018 2026-01-23 07:26:12
+#> 1: -3.044624 0.07259090 0.003000000            0.016 2026-01-29 12:41:14
+#> 2: -7.892169 0.07843885 0.003000000            0.016 2026-01-29 12:41:14
+#> 3: -5.830306 0.07843885 0.003666667            0.019 2026-01-29 12:41:14
+#> 4: -8.296400 0.07843885 0.003000000            0.034 2026-01-29 12:41:14
 #>    warnings errors  x_domain batch_nr  resample_result
 #>       <int>  <int>    <list>    <int>           <list>
 #> 1:        0      0 <list[1]>        1 <ResampleResult>

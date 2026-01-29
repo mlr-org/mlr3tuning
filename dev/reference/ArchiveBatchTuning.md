@@ -2,12 +2,12 @@
 
 The `ArchiveBatchTuning` stores all evaluated hyperparameter
 configurations and performance scores in a
-[`data.table::data.table()`](https://rdatatable.gitlab.io/data.table/reference/data.table.html).
+[`data.table::data.table()`](https://rdrr.io/pkg/data.table/man/data.table.html).
 
 ## Details
 
 The ArchiveBatchTuning is a container around a
-[`data.table::data.table()`](https://rdatatable.gitlab.io/data.table/reference/data.table.html).
+[`data.table::data.table()`](https://rdrr.io/pkg/data.table/man/data.table.html).
 Each row corresponds to a single evaluation of a hyperparameter
 configuration. See the section on Data Structure for more information.
 The archive stores additionally a
@@ -17,7 +17,7 @@ experiment corresponds to to a single evaluation of a hyperparameter
 configuration. The table (`$data`) and the benchmark result
 (`$benchmark_result`) are linked by the `uhash` column. If the archive
 is passed to
-[`as.data.table()`](https://rdatatable.gitlab.io/data.table/reference/as.data.table.html),
+[`as.data.table()`](https://rdrr.io/pkg/data.table/man/as.data.table.html),
 both are joined automatically.
 
 ## Data Structure
@@ -56,7 +56,7 @@ The table (`$data`) has the following columns:
 
 For analyzing the tuning results, it is recommended to pass the
 ArchiveBatchTuning to
-[`as.data.table()`](https://rdatatable.gitlab.io/data.table/reference/as.data.table.html).
+[`as.data.table()`](https://rdrr.io/pkg/data.table/man/as.data.table.html).
 The returned data table is joined with the benchmark result which adds
 the
 [mlr3::ResampleResult](https://mlr3.mlr-org.com/reference/ResampleResult.html)
@@ -69,7 +69,7 @@ For a complete list of all getters see the methods section.
 The benchmark result (`$benchmark_result`) allows to score the
 hyperparameter configurations again on a different measure.
 Alternatively, measures can be supplied to
-[`as.data.table()`](https://rdatatable.gitlab.io/data.table/reference/as.data.table.html).
+[`as.data.table()`](https://rdrr.io/pkg/data.table/man/as.data.table.html).
 
 The [mlr3viz](https://CRAN.R-project.org/package=mlr3viz) package
 provides visualizations for tuning results.
@@ -80,7 +80,7 @@ provides visualizations for tuning results.
   Returns a tabular view of all evaluated hyperparameter
   configurations.  
   ArchiveBatchTuning -\>
-  [`data.table::data.table()`](https://rdatatable.gitlab.io/data.table/reference/data.table.html)  
+  [`data.table::data.table()`](https://rdrr.io/pkg/data.table/man/data.table.html)  
 
   - `x` (ArchiveBatchTuning)
 

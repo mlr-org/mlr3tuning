@@ -80,7 +80,7 @@ Each batch has a unique batch number.</p></li>
     <h2 id="analysis">Analysis<a class="anchor" aria-label="anchor" href="#analysis"></a></h2>
 
 
-<p>For analyzing the tuning results, it is recommended to pass the ArchiveAsyncTuning to <code><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table()</a></code>.
+<p>For analyzing the tuning results, it is recommended to pass the ArchiveAsyncTuning to <code><a href="https://rdrr.io/pkg/data.table/man/as.data.table.html" class="external-link">as.data.table()</a></code>.
 The returned data table contains the <a href="https://mlr3.mlr-org.com/reference/ResampleResult.html" class="external-link">mlr3::ResampleResult</a> for each hyperparameter evaluation.</p>
     </div>
     <div class="section level2">
@@ -89,7 +89,7 @@ The returned data table contains the <a href="https://mlr3.mlr-org.com/reference
 
 <ul><li><p><code>as.data.table.ArchiveTuning(x, unnest = "x_domain", exclude_columns = "uhash", measures = NULL)</code><br>
 Returns a tabular view of all evaluated hyperparameter configurations.<br>
-ArchiveAsyncTuning -&gt; <code><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table::data.table()</a></code><br></p><ul><li><p><code>x</code> (ArchiveAsyncTuning)</p></li>
+ArchiveAsyncTuning -&gt; <code><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table::data.table()</a></code><br></p><ul><li><p><code>x</code> (ArchiveAsyncTuning)</p></li>
 <li><p><code>unnest</code> (<code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code>)<br>
 Transforms list columns to separate columns. Set to <code>NULL</code> if no column should be unnested.</p></li>
 <li><p><code>exclude_columns</code> (<code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code>)<br>

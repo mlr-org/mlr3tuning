@@ -173,7 +173,7 @@ summarizes the most important functions of mlr3tuning.
 
 - `tuning_result`:
 
-  ([data.table::data.table](https://rdatatable.gitlab.io/data.table/reference/data.table.html))  
+  ([data.table::data.table](https://rdrr.io/pkg/data.table/man/data.table.html))  
   Short-cut to `result` from tuning instance.
 
 - `predict_type`:

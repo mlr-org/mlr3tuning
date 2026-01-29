@@ -55,7 +55,7 @@ Use the callback mlr3tuning.async_freeze_archive to freeze the archive after the
     </div>
 
     <div class="ref-description section level2">
-    <p>Freezes the Redis data base of an <a href="ArchiveAsyncTuning.html">ArchiveAsyncTuning</a> to a  <code><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table::data.table()</a></code>.
+    <p>Freezes the Redis data base of an <a href="ArchiveAsyncTuning.html">ArchiveAsyncTuning</a> to a  <code><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table::data.table()</a></code>.
 No further points can be added to the archive but the data can be accessed and analyzed.
 Useful when the Redis data base is not permanently available.
 Use the callback <a href="mlr3tuning.async_freeze_archive.html">mlr3tuning.async_freeze_archive</a> to freeze the archive after the optimization has finished.</p>
@@ -67,7 +67,7 @@ Use the callback <a href="mlr3tuning.async_freeze_archive.html">mlr3tuning.async
 
 
 <ul><li><p><code>as.data.table(archive)</code><br>
-ArchiveAsyncTuningFrozen -&gt; <code><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table::data.table()</a></code><br>
+ArchiveAsyncTuningFrozen -&gt; <code><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table::data.table()</a></code><br>
 Returns a tabular view of all performed function calls of the Objective.
 The <code>x_domain</code> column is unnested to separate columns.</p></li>
 </ul></div>

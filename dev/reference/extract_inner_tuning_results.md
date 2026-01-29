@@ -37,14 +37,14 @@ extract_inner_tuning_results(x, tuning_instance = FALSE, ...)
 
 ## Value
 
-[`data.table::data.table()`](https://rdatatable.gitlab.io/data.table/reference/data.table.html).
+[`data.table::data.table()`](https://rdrr.io/pkg/data.table/man/data.table.html).
 
 ## Details
 
 The function iterates over the
 [AutoTuner](https://mlr3tuning.mlr-org.com/dev/reference/AutoTuner.md)
 objects and binds the tuning results to a
-[`data.table::data.table()`](https://rdatatable.gitlab.io/data.table/reference/data.table.html).
+[`data.table::data.table()`](https://rdrr.io/pkg/data.table/man/data.table.html).
 The
 [AutoTuner](https://mlr3tuning.mlr-org.com/dev/reference/AutoTuner.md)
 must be initialized with `store_tuning_instance = TRUE` and

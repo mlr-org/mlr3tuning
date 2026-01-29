@@ -135,7 +135,7 @@ mlr3tuning is extended by the following packages.
 For analyzing the tuning results, it is recommended to pass the
 [ArchiveBatchTuning](https://mlr3tuning.mlr-org.com/dev/reference/ArchiveBatchTuning.md)
 to
-[`as.data.table()`](https://rdatatable.gitlab.io/data.table/reference/as.data.table.html).
+[`as.data.table()`](https://rdrr.io/pkg/data.table/man/as.data.table.html).
 The returned data table is joined with the benchmark result which adds
 the
 [mlr3::ResampleResult](https://mlr3.mlr-org.com/reference/ResampleResult.html)
@@ -148,7 +148,7 @@ For a complete list of all getters see the methods section.
 The benchmark result (`$benchmark_result`) allows to score the
 hyperparameter configurations again on a different measure.
 Alternatively, measures can be supplied to
-[`as.data.table()`](https://rdatatable.gitlab.io/data.table/reference/as.data.table.html).
+[`as.data.table()`](https://rdrr.io/pkg/data.table/man/as.data.table.html).
 
 The [mlr3viz](https://CRAN.R-project.org/package=mlr3viz) package
 provides visualizations for tuning results.
@@ -314,9 +314,9 @@ For internal use.
 
 - `xdt`:
 
-  ([`data.table::data.table()`](https://rdatatable.gitlab.io/data.table/reference/data.table.html))  
+  ([`data.table::data.table()`](https://rdrr.io/pkg/data.table/man/data.table.html))  
   Hyperparameter values as
-  [`data.table::data.table()`](https://rdatatable.gitlab.io/data.table/reference/data.table.html).
+  [`data.table::data.table()`](https://rdrr.io/pkg/data.table/man/data.table.html).
   Each row is one configuration. Contains values in the search space.
   Can contain additional columns for extra information.
 
@@ -332,7 +332,7 @@ For internal use.
 
 - `extra`:
 
-  ([`data.table::data.table()`](https://rdatatable.gitlab.io/data.table/reference/data.table.html))  
+  ([`data.table::data.table()`](https://rdrr.io/pkg/data.table/man/data.table.html))  
   Additional information.
 
 - `...`:
@@ -395,10 +395,10 @@ learner$train(task)
 as.data.table(instance$archive)
 #>           cp classif.ce runtime_learners           timestamp warnings errors
 #>        <num>      <num>            <num>              <POSc>    <int>  <int>
-#> 1: -7.255326 0.05517417            0.018 2026-01-23 07:26:13        0      0
-#> 2: -6.314690 0.05517417            0.018 2026-01-23 07:26:13        0      0
-#> 3: -8.991870 0.05517417            0.017 2026-01-23 07:26:13        0      0
-#> 4: -4.755440 0.05517417            0.032 2026-01-23 07:26:13        0      0
+#> 1: -7.255326 0.05517417            0.016 2026-01-29 12:41:15        0      0
+#> 2: -6.314690 0.05517417            0.017 2026-01-29 12:41:15        0      0
+#> 3: -8.991870 0.05517417            0.019 2026-01-29 12:41:15        0      0
+#> 4: -4.755440 0.05517417            0.016 2026-01-29 12:41:15        0      0
 #>     x_domain batch_nr  resample_result
 #>       <list>    <int>           <list>
 #> 1: <list[1]>        1 <ResampleResult>

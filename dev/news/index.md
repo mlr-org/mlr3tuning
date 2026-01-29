@@ -247,7 +247,7 @@ CRAN release: 2022-04-06
   [`bbotk::Optimizer`](https://bbotk.mlr-org.com/reference/Optimizer.html).
 - feat: `Tuner` objects have the optional field `$label` now.
 - feat:
-  [`as.data.table()`](https://rdatatable.gitlab.io/data.table/reference/as.data.table.html)
+  [`as.data.table()`](https://rdrr.io/pkg/data.table/man/as.data.table.html)
   functions for objects of class `Dictionary` have been extended with
   additional columns.
 
