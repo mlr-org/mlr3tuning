@@ -94,8 +94,7 @@ TunerBatchIrace = R6Class("TunerBatchIrace",
       )
 
       super$initialize(
-        optimizer = optimizer,
-        man = "mlr3tuning::mlr_tuners_irace"
+        optimizer = optimizer
       )
 
       private$.optimizer$.__enclos_env__$private$.param_set = ParamSetCollection$new(list(

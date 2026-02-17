@@ -16,19 +16,20 @@ TunerBatchFromOptimizerBatch = R6Class("TunerBatchFromOptimizerBatch",
       #'
       #' @param optimizer [bbotk::Optimizer]\cr
       #' Optimizer that is called.
-      initialize = function(optimizer, man = NA_character_) {
+      initialize = function(optimizer, man) {
         private$.optimizer = assert_optimizer(optimizer)
         packages = union("mlr3tuning", optimizer$packages)
-        assert_string(man, na.ok = TRUE)
+
+        if (!missing(man)) {
+          mlr3component_deprecation_msg("man is deprecated for Tuner construction and will be removed in the future.")
+        }
 
         super$initialize(
           id = if ("id" %in% names(optimizer)) optimizer$id else "tuner",
           param_set = optimizer$param_set,
           param_classes = optimizer$param_classes,
           properties = optimizer$properties,
-          packages = packages,
-          label = optimizer$label,
-          man = man
+          packages = packages
         )
       },
 

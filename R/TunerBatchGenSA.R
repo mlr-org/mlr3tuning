@@ -66,8 +66,7 @@ TunerBatchGenSA = R6Class("TunerBatchGenSA",
       optimizer = OptimizerBatchGenSA$new()
       optimizer$param_set$values$smooth = FALSE
       super$initialize(
-        optimizer = optimizer,
-        man = "mlr3tuning::mlr_tuners_gensa"
+        optimizer = optimizer
       )
     }
   )

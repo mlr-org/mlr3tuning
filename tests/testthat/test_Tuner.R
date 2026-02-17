@@ -149,7 +149,7 @@ test_that("Tuner active bindings work", {
   expect_error({
     tuner$param_set = ps(p2 = p_lgl())
   },
-  regexp = "$param_set is read-only",
+  regexp = "param_set is read-only",
   fixed = TRUE)
 
   expect_error({
@@ -161,13 +161,13 @@ test_that("Tuner active bindings work", {
   expect_error({
     tuner$properties = "foo"
   },
-  regexp = "$properties is read-only",
+  regexp = "writing to properties is deprecated",
   fixed = TRUE)
 
   expect_error({
     tuner$packages = "foo"
   },
-  regexp = "$packages is read-only",
+  regexp = "packages is read-only",
   fixed = TRUE)
 })
 

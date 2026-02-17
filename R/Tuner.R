@@ -29,40 +29,29 @@
 #'
 #' @export
 Tuner = R6Class("Tuner",
+  inherit = Mlr3Component,
   public = list(
-
-    id = NULL,
-
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function(
-      id = "tuner",
+      id,
       param_set,
       param_classes,
       properties,
-      packages = character(),
-      label = NA_character_,
-      man = NA_character_
-      ) {
-      self$id = assert_string(id, min.chars = 1L)
-      private$.param_set = assert_param_set(param_set)
+      packages = character(0),
+      label,
+      man
+    ) {
+      if (!missing(label) || !missing(man)) {
+        mlr3component_deprecation_msg("label and man are deprecated for Tuner construction and will be removed in the future.")
+      }
+
+      super$initialize(dict_entry = id, dict_shortaccess = "tnr",
+        param_set = param_set, packages = packages, properties = properties
+      )
       private$.param_classes = assert_subset(param_classes, c("ParamLgl", "ParamInt", "ParamDbl", "ParamFct", "ParamUty"))
       # has to have at least multi-crit or single-crit property
-      private$.properties = assert_subset(properties, bbotk_reflections$optimizer_properties, empty.ok = FALSE)
-      private$.packages = union("mlr3tuning", assert_character(packages, any.missing = FALSE, min.chars = 1L))
-      private$.label = assert_string(label, na.ok = TRUE)
-      private$.man = assert_string(man, na.ok = TRUE)
-
-      check_packages_installed(self$packages, msg = sprintf("Package '%%s' required but not installed for Tuner '%s'", format(self)))
-    },
-
-    #' @description
-    #' Helper for print outputs.
-    #'
-    #' @return (`character()`).
-    #' @param ... (ignored).
-    format = function(...) {
-      sprintf("<%s>", class(self)[1L])
+      assert_subset(properties, bbotk_reflections$optimizer_properties, empty.ok = FALSE)
     },
 
     #' @description
@@ -90,16 +79,6 @@ Tuner = R6Class("Tuner",
   ),
 
   active = list(
-
-    #' @field param_set ([paradox::ParamSet])\cr
-    #' Set of control parameters.
-    param_set = function(rhs) {
-      if (!missing(rhs) && !identical(rhs, private$.param_set)) {
-        stop("$param_set is read-only.")
-      }
-      private$.param_set
-    },
-
     #' @field param_classes (`character()`)\cr
     #' Supported parameter classes for learner hyperparameters that the tuner can optimize, as given in the [paradox::ParamSet] `$class` field.
     param_classes = function(rhs) {
@@ -107,46 +86,6 @@ Tuner = R6Class("Tuner",
         stop("$param_classes is read-only.")
       }
       private$.param_classes
-    },
-
-    #' @field properties (`character()`)\cr
-    #' Set of properties of the tuner.
-    #' Must be a subset of [`mlr_reflections$tuner_properties`][mlr3::mlr_reflections].
-    properties = function(rhs) {
-      if (!missing(rhs) && !identical(rhs, private$.properties)) {
-        stop("$properties is read-only.")
-      }
-      private$.properties
-    },
-
-    #' @field packages (`character()`)\cr
-    #' Set of required packages.
-    #' Note that these packages will be loaded via [requireNamespace()], and are not attached.
-    packages = function(rhs) {
-      if (!missing(rhs) && !identical(rhs, private$.packages)) {
-        stop("$packages is read-only.")
-      }
-      private$.packages
-    },
-
-    #' @field label (`character(1)`)\cr
-    #' Label for this object.
-    #' Can be used in tables, plot and text output instead of the ID.
-    label = function(rhs) {
-      if (!missing(rhs) && !identical(rhs, private$.param_set)) {
-        stop("$label is read-only.")
-      }
-      private$.label
-    },
-
-    #' @field man (`character(1)`)\cr
-    #' String in the format `[pkg]::[topic]` pointing to a manual page for this object.
-    #' The referenced help package can be opened via method `$help()`.
-    man = function(rhs) {
-      if (!missing(rhs) && !identical(rhs, private$.man)) {
-        stop("$man is read-only.")
-      }
-      private$.man
     }
   ),
 
@@ -158,12 +97,7 @@ Tuner = R6Class("Tuner",
       assign_result_default(inst)
     },
 
-    .param_set = NULL,
-    .param_classes = NULL,
-    .properties = NULL,
-    .packages = NULL,
-    .label = NULL,
-    .man = NULL
+    .param_classes = NULL
   )
 )
 
