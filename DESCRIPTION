@@ -47,6 +47,8 @@ Suggests:
     mlr3learners (>= 0.14.0),
     mlr3pipelines (>= 0.5.2),
     nloptr,
+    processx,
+    redux,
     rush (>= 0.4.1),
     rmarkdown,
     rpart,
