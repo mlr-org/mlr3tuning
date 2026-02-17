@@ -24,3 +24,4 @@
 ^man/figures$
 .vscode
 ^benchmark$
+.claude

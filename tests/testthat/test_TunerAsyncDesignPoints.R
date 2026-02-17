@@ -1,23 +1,25 @@
-test_that("TunerAsyncDesignPoints works", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
-  on.exit({mirai::daemons(0)})
+skip_if_not_installed("rush")
+skip_if_no_redis()
 
-  mirai::daemons(2)
+test_that("TunerAsyncDesignPoints works", {
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   learner = lrn("classif.rpart",
     minsplit  = to_tune(2, 128),
     cp        = to_tune(1e-04, 1e-1))
 
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
   instance = ti_async(
     task = tsk("pima"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
     terminator = trm("none"),
-    store_benchmark_result = FALSE
+    store_benchmark_result = FALSE,
+    rush = rush
   )
 
   design = data.table(cp = c(0.01, 0.1), minsplit = c(2, 4))
@@ -25,5 +27,4 @@ test_that("TunerAsyncDesignPoints works", {
   expect_data_table(tuner$optimize(instance), nrows = 1)
 
   expect_data_table(instance$archive$data, nrows = 2)
-  expect_rush_reset(instance$rush, type = "kill")
 })

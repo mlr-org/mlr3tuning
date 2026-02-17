@@ -37,26 +37,27 @@ test_that("backup callback works with standalone tuner", {
 # async measure callback ------------------------------------------------------
 
 test_that("async measures callback works", {
-  skip_on_cran()
+  skip_if_no_redis()
   skip_if_not_installed("rush")
-  flush_redis()
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1), predict_sets = "test"),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 3),
-    callbacks = clbk("mlr3tuning.async_measures", measures = list(msr("classif.ce", predict_sets = "test", id = "classif.ce_holdout"))))
+    callbacks = clbk("mlr3tuning.async_measures", measures = list(msr("classif.ce", predict_sets = "test", id = "classif.ce_holdout"))),
+    rush = rush)
 
   tuner = tnr("async_random_search")
   tuner$optimize(instance)
 
   expect_numeric(instance$archive$data$classif.ce_holdout)
-
-  expect_rush_reset(instance$rush, type = "kill")
 })
 
 # async mlflow callback --------------------------------------------------------
@@ -90,19 +91,22 @@ test_that("async measures callback works", {
 # async default configuration callback -----------------------------------------
 
 test_that("default configuration callback works", {
-  skip_on_cran()
+  skip_if_no_redis()
   skip_if_not_installed("rush")
-  flush_redis()
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 5),
-    callbacks = clbk("mlr3tuning.async_default_configuration")
+    callbacks = clbk("mlr3tuning.async_default_configuration"),
+    rush = rush
   )
 
   tuner = tnr("async_random_search")
@@ -110,23 +114,25 @@ test_that("default configuration callback works", {
 
   expect_subset(0.01, round(map_dbl(instance$archive$data$x_domain, "cp"), 2))
   expect_subset(0.01, round(instance$archive$data$cp, 2))
-  expect_rush_reset(instance$rush)
 })
 
 test_that("default configuration callback works with logscale", {
-  skip_on_cran()
+  skip_if_no_redis()
   skip_if_not_installed("rush")
-  flush_redis()
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
-mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 5),
-    callbacks = clbk("mlr3tuning.async_default_configuration")
+    callbacks = clbk("mlr3tuning.async_default_configuration"),
+    rush = rush
   )
 
   tuner = tnr("async_random_search")
@@ -134,48 +140,52 @@ mirai::daemons(2)
 
   expect_subset(0.01, round(map_dbl(instance$archive$data$x_domain, "cp"), 2))
   expect_subset(log(0.01), instance$archive$data$cp)
-  expect_rush_reset(instance$rush)
 })
 
 test_that("default configuration callback errors with trafo", {
-  skip_on_cran()
+  skip_if_no_redis()
   skip_if_not_installed("rush")
-  flush_redis()
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
-mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(p_dbl(-10, 0, trafo = function(x) 10^x))),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 5),
-    callbacks = clbk("mlr3tuning.async_default_configuration")
+    callbacks = clbk("mlr3tuning.async_default_configuration"),
+    rush = rush
   )
 
   tuner = tnr("async_random_search")
   expect_error(tuner$optimize(instance), "Cannot evaluate default hyperparameter values")
-  expect_rush_reset(instance$rush)
 })
 
 test_that("default configuration callback works without transformation and with logscale", {
-  skip_on_cran()
+  skip_if_no_redis()
   skip_if_not_installed("rush")
-  flush_redis()
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   learner = lrn("classif.rpart",
     cp = to_tune(1e-3, 1, logscale = TRUE),
     minbucket = to_tune(1, 20))
 
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
   instance = ti_async(
     task = tsk("pima"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 5),
-    callbacks = clbk("mlr3tuning.async_default_configuration")
+    callbacks = clbk("mlr3tuning.async_default_configuration"),
+    rush = rush
   )
 
   tuner = tnr("async_random_search")
@@ -185,39 +195,44 @@ test_that("default configuration callback works without transformation and with 
   expect_subset(log(0.01), instance$archive$data$cp)
   expect_subset(7, map_dbl(instance$archive$data$x_domain, "minbucket"))
   expect_subset(7, instance$archive$data$minbucket)
-  expect_rush_reset(instance$rush)
 })
 
 test_that("default configuration callback errors without transformation and with logscale and trafo", {
-  skip_on_cran()
+  skip_if_no_redis()
   skip_if_not_installed("rush")
-  flush_redis()
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   learner = lrn("classif.rpart",
     cp = to_tune(1e-3, 1, logscale = TRUE),
     minbucket = to_tune(1, 20),
     minsplit = to_tune(p_int(0, 3, trafo = function(x) 2^x)))
 
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
   instance = ti_async(
     task = tsk("pima"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 5),
-    callbacks = clbk("mlr3tuning.async_default_configuration")
+    callbacks = clbk("mlr3tuning.async_default_configuration"),
+    rush = rush
   )
 
   tuner = tnr("async_random_search")
   expect_error(tuner$optimize(instance), "Cannot evaluate default hyperparameter values")
-  expect_rush_reset(instance$rush)
 })
 
 test_that("default configuration callback errors with extra trafo", {
-  skip_on_cran()
+  skip_if_no_redis()
   skip_if_not_installed("rush")
-  flush_redis()
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   learner = lrn("classif.rpart")
   search_space = ps(
@@ -230,8 +245,6 @@ test_that("default configuration callback errors with extra trafo", {
     }
   )
 
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
   instance = ti_async(
     task = tsk("pima"),
     learner = learner,
@@ -239,26 +252,28 @@ test_that("default configuration callback errors with extra trafo", {
     measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 5),
     search_space = search_space,
-    callbacks = clbk("mlr3tuning.async_default_configuration")
+    callbacks = clbk("mlr3tuning.async_default_configuration"),
+    rush = rush
   )
 
   tuner = tnr("async_random_search")
   expect_error(tuner$optimize(instance), "Cannot evaluate default hyperparameter values")
-  expect_rush_reset(instance$rush)
 })
 
 test_that("default configuration callback errors with old parameter set api", {
-  skip_on_cran()
+  skip_if_no_redis()
   skip_if_not_installed("rush")
-  flush_redis()
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   learner = lrn("classif.rpart")
   search_space = ps(
     cp = p_dbl(lower = -10, upper = 0, trafo = function(x) 10^x)
   )
 
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
   instance = ti_async(
     task = tsk("pima"),
     learner = learner,
@@ -266,12 +281,12 @@ test_that("default configuration callback errors with old parameter set api", {
     measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 5),
     search_space = search_space,
-    callbacks = clbk("mlr3tuning.async_default_configuration")
+    callbacks = clbk("mlr3tuning.async_default_configuration"),
+    rush = rush
   )
 
   tuner = tnr("async_random_search")
   expect_error(tuner$optimize(instance), "Cannot evaluate default hyperparameter values")
-  expect_rush_reset(instance$rush)
 })
 
 # batch default configuration callback -----------------------------------------
@@ -407,19 +422,22 @@ test_that("batch default configuration callback  errors with old parameter set a
 # async save logs callback -----------------------------------------------------
 
 test_that("async save logs callback works", {
-  skip_on_cran()
+  skip_if_no_redis()
   skip_if_not_installed("rush")
-  flush_redis()
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.debug", message_train = 1, x = to_tune()),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 5),
-    callbacks = clbk("mlr3tuning.async_save_logs")
+    callbacks = clbk("mlr3tuning.async_save_logs"),
+    rush = rush
   )
 
   tuner = tnr("async_random_search")
@@ -427,7 +445,6 @@ test_that("async save logs callback works", {
 
   expect_list(instance$archive$data$log)
   expect_data_table(instance$archive$data$log[[1]][[1]])
-  expect_rush_reset(instance$rush)
 })
 
 # one se rule callback --------------------------------------------------------
@@ -449,21 +466,22 @@ test_that("one se rule callback works", {
 })
 
 test_that("one se rule callback works", {
-  skip_on_cran()
+  skip_if_no_redis()
   skip_if_not_installed("rush")
-  flush_redis()
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
-  on.exit({mirai::daemons(0)})
-
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 5),
-    callbacks = clbk("mlr3tuning.async_one_se_rule")
+    callbacks = clbk("mlr3tuning.async_one_se_rule"),
+    rush = rush
   )
 
   tuner = tnr("async_random_search")
@@ -471,18 +489,19 @@ test_that("one se rule callback works", {
 
   expect_numeric(instance$archive$data$n_features)
   expect_numeric(instance$result$n_features)
-  expect_rush_reset(instance$rush)
 })
 
 # async freeze archive callback ------------------------------------------------
 
 test_that("async freeze archive callback works", {
-  skip_on_cran()
+  skip_if_no_redis()
   skip_if_not_installed("rush")
-  flush_redis()
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
@@ -490,7 +509,8 @@ test_that("async freeze archive callback works", {
     measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 20),
     store_benchmark_result = TRUE,
-    callbacks = clbk("mlr3tuning.async_freeze_archive")
+    callbacks = clbk("mlr3tuning.async_freeze_archive"),
+    rush = rush
   )
   tuner = tnr("async_random_search")
   tuner$optimize(instance)
@@ -510,5 +530,4 @@ test_that("async freeze archive callback works", {
   expect_number(frozen_archive$n_evals)
 
   expect_data_table(as.data.table(frozen_archive))
-  expect_rush_reset(instance$rush)
 })
