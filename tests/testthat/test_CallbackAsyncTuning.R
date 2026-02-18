@@ -1,10 +1,14 @@
+skip_if_not_installed("rush")
+skip_if_no_redis()
+
 # stages in $optimize() --------------------------------------------------------
 
 test_that("on_optimization_begin works", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
-  on.exit({mirai::daemons(0)})
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   callback = callback_async_tuning(id = "test",
     on_optimization_begin = function(callback, context) {
@@ -12,9 +16,6 @@ test_that("on_optimization_begin works", {
     }
   )
 
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
-
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
@@ -22,18 +23,19 @@ test_that("on_optimization_begin works", {
     resampling = rsmp ("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
-    callbacks = callback)
+    callbacks = callback,
+    rush = rush)
 
   expect_class(instance$objective$context, "ContextAsyncTuning")
   expect_equal(instance$terminator$param_set$values$n_evals, 20)
-  expect_rush_reset(instance$rush, type = "kill")
 })
 
 test_that("on_optimization_end works", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
-  on.exit({mirai::daemons(0)})
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   callback = callback_async_tuning(id = "test",
     on_optimization_end = function(callback, context) {
@@ -41,9 +43,6 @@ test_that("on_optimization_end works", {
     }
   )
 
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
-
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
@@ -51,20 +50,21 @@ test_that("on_optimization_end works", {
     resampling = rsmp ("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
-    callbacks = callback)
+    callbacks = callback,
+    rush = rush)
 
   expect_class(instance$objective$context, "ContextAsyncTuning")
   expect_equal(instance$terminator$param_set$values$n_evals, 20)
-  expect_rush_reset(instance$rush, type = "kill")
 })
 
 # stager in worker_loop() ------------------------------------------------------
 
 test_that("on_worker_begin works", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
-  on.exit({mirai::daemons(0)})
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   callback = callback_async_tuning(id = "test",
     on_worker_begin = function(callback, context) {
@@ -73,9 +73,6 @@ test_that("on_worker_begin works", {
     }
   )
 
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
-
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
@@ -83,17 +80,18 @@ test_that("on_worker_begin works", {
     resampling = rsmp ("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
-    callbacks = callback)
+    callbacks = callback,
+    rush = rush)
 
   expect_subset(1, instance$archive$data$minsplit)
-  expect_rush_reset(instance$rush, type = "kill")
 })
 
 test_that("on_worker_end works", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
-  on.exit({mirai::daemons(0)})
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   callback = callback_async_tuning(id = "test",
     on_worker_end = function(callback, context) {
@@ -102,9 +100,6 @@ test_that("on_worker_end works", {
     }
   )
 
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
-
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
@@ -112,19 +107,20 @@ test_that("on_worker_end works", {
     resampling = rsmp ("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
-    callbacks = callback)
+    callbacks = callback,
+    rush = rush)
 
   expect_subset(1, instance$archive$data$minsplit)
-  expect_rush_reset(instance$rush, type = "kill")
 })
 
 # stages in $.eval_point() -----------------------------------------------------
 
 test_that("on_optimizer_before_eval and on_optimizer_after_eval works", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
-  on.exit({mirai::daemons(0)})
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   callback = callback_async_tuning(id = "test",
     on_optimizer_before_eval = function(callback, context) {
@@ -137,9 +133,6 @@ test_that("on_optimizer_before_eval and on_optimizer_after_eval works", {
     }
   )
 
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
-
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
@@ -147,20 +140,21 @@ test_that("on_optimizer_before_eval and on_optimizer_after_eval works", {
     resampling = rsmp ("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
-    callbacks = callback)
+    callbacks = callback,
+    rush = rush)
 
   expect_equal(unique(instance$archive$data$minsplit), 1)
   expect_equal(unique(instance$archive$data$classif.ce), 0)
-  expect_rush_reset(instance$rush, type = "kill")
 })
 
 # stages in $eval() ------------------------------------------------------------
 
 test_that("on_eval_after_xs works", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
-  on.exit({mirai::daemons(0)})
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   callback = callback_async_tuning(id = "test",
     on_eval_after_xs = function(callback, context) {
@@ -168,9 +162,6 @@ test_that("on_eval_after_xs works", {
     }
   )
 
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
-
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
@@ -178,17 +169,18 @@ test_that("on_eval_after_xs works", {
     resampling = rsmp ("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
-    callbacks = callback)
+    callbacks = callback,
+    rush = rush)
 
   expect_equal(instance$archive$benchmark_result$resample_result(1)$learner$param_set$values$minsplit, 1)
-  expect_rush_reset(instance$rush, type = "kill")
 })
 
 test_that("on_eval_after_resample works", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
-  on.exit({mirai::daemons(0)})
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   callback = callback_async_tuning(id = "test",
     on_eval_after_resample = function(callback, context) {
@@ -200,9 +192,6 @@ test_that("on_eval_after_resample works", {
     }
   )
 
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
-
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
@@ -210,19 +199,20 @@ test_that("on_eval_after_resample works", {
     resampling = rsmp ("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
-    callbacks = callback)
+    callbacks = callback,
+    rush = rush)
 
   expect_names(names(instance$archive$data), must.include = c("classif.ce", "classif.acc"))
-  expect_rush_reset(instance$rush, type = "kill")
 })
 
 # stages in $assign_result() in TuningInstanceAsyncSingleCrit ------------------
 
 test_that("on_tuning_result_begin in TuningInstanceSingleCrit works", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
-  on.exit({mirai::daemons(0)})
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   callback = callback_async_tuning(id = "test",
     on_tuning_result_begin = function(callback, context) {
@@ -231,8 +221,6 @@ test_that("on_tuning_result_begin in TuningInstanceSingleCrit works", {
     }
   )
 
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
@@ -240,22 +228,20 @@ test_that("on_tuning_result_begin in TuningInstanceSingleCrit works", {
     resampling = rsmp ("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
-    callbacks = callback)
+    callbacks = callback,
+    rush = rush)
 
   expect_class(instance$objective$context, "ContextAsyncTuning")
   expect_equal(instance$result$minsplit, 1)
   expect_equal(instance$result$classif.ce, 0.7)
-  expect_rush_reset(instance$rush, type = "kill")
 })
 
 test_that("on_result_end in TuningInstanceSingleCrit works", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
-  on.exit({mirai::daemons(0)})
-
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   callback = callback_async_tuning(id = "test",
     on_result_end = function(callback, context) {
@@ -270,27 +256,25 @@ test_that("on_result_end in TuningInstanceSingleCrit works", {
     resampling = rsmp ("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
-    callbacks = callback)
+    callbacks = callback,
+    rush = rush)
 
   expect_class(instance$objective$context, "ContextAsyncTuning")
   expect_equal(instance$result$classif.ce, 0.7)
-  expect_rush_reset(instance$rush, type = "kill")
 })
 
 test_that("on_result in TuningInstanceSingleCrit works", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
-  on.exit({mirai::daemons(0)})
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   expect_warning({callback = callback_async_tuning(id = "test",
     on_result = function(callback, context) {
       context$result$classif.ce = 0.7
     }
   )}, "deprecated")
-
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
 
   instance = tune(
     tuner = tnr("async_random_search"),
@@ -299,20 +283,21 @@ test_that("on_result in TuningInstanceSingleCrit works", {
     resampling = rsmp ("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
-    callbacks = callback)
+    callbacks = callback,
+    rush = rush)
 
   expect_class(instance$objective$context, "ContextAsyncTuning")
   expect_equal(instance$result$classif.ce, 0.7)
-  expect_rush_reset(instance$rush, type = "kill")
 })
 
 # stages in $assign_result() in TuningInstanceBatchMultiCrit -------------------
 
 test_that("on_tuning_result_begin in TuningInstanceBatchMultiCrit works", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
-  on.exit({mirai::daemons(0)})
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   callback = callback_async_tuning(id = "test",
     on_tuning_result_begin = function(callback, context) {
@@ -321,9 +306,6 @@ test_that("on_tuning_result_begin in TuningInstanceBatchMultiCrit works", {
     }
   )
 
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
-
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
@@ -331,20 +313,20 @@ test_that("on_tuning_result_begin in TuningInstanceBatchMultiCrit works", {
     resampling = rsmp ("holdout"),
     measures = msrs(c("classif.ce", "classif.acc")),
     term_evals = 2,
-    callbacks = callback)
+    callbacks = callback,
+    rush = rush)
 
   expect_class(instance$objective$context, "ContextAsyncTuning")
   expect_equal(instance$result$minsplit, 1)
   expect_equal(instance$result$classif.ce, 0.7)
-  expect_rush_reset(instance$rush, type = "kill")
 })
 
 test_that("on_result_end in TuningInstanceBatchMultiCrit works", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
-  on.exit({mirai::daemons(0)})
-
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   callback = callback_async_tuning(id = "test",
     on_result_end = function(callback, context) {
@@ -352,9 +334,6 @@ test_that("on_result_end in TuningInstanceBatchMultiCrit works", {
     }
   )
 
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
-
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
@@ -362,19 +341,19 @@ test_that("on_result_end in TuningInstanceBatchMultiCrit works", {
     resampling = rsmp ("holdout"),
     measures = msrs(c("classif.ce", "classif.acc")),
     term_evals = 2,
-    callbacks = callback)
+    callbacks = callback,
+    rush = rush)
 
   expect_class(instance$objective$context, "ContextAsyncTuning")
   expect_equal(unique(instance$result$classif.ce), 0.7)
-  expect_rush_reset(instance$rush, type = "kill")
 })
 
 test_that("on_result in TuningInstanceBatchMultiCrit works", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
-  on.exit({mirai::daemons(0)})
-
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   expect_warning({callback = callback_async_tuning(id = "test",
     on_result = function(callback, context) {
@@ -382,9 +361,6 @@ test_that("on_result in TuningInstanceBatchMultiCrit works", {
     }
   )}, "deprecated")
 
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
-
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
@@ -392,20 +368,21 @@ test_that("on_result in TuningInstanceBatchMultiCrit works", {
     resampling = rsmp ("holdout"),
     measures = msrs(c("classif.ce", "classif.acc")),
     term_evals = 2,
-    callbacks = callback)
+    callbacks = callback,
+    rush = rush)
 
   expect_class(instance$objective$context, "ContextAsyncTuning")
   expect_equal(unique(instance$result$classif.ce), 0.7)
-  expect_rush_reset(instance$rush, type = "kill")
 })
 
 # stages in mlr3 workhorse -----------------------------------------------------
 
 test_that("on_resample_begin works", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
-  on.exit({mirai::daemons(0)})
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   callback = callback_async_tuning("test",
     on_resample_begin = function(callback, context) {
@@ -419,9 +396,6 @@ test_that("on_resample_begin works", {
     }
   )
 
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
-
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
@@ -429,21 +403,22 @@ test_that("on_resample_begin works", {
     resampling = rsmp ("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
-    callbacks = callback)
+    callbacks = callback,
+    rush = rush)
 
   expect_class(instance$objective$context, "ContextAsyncTuning")
 
   walk(as.data.table(instance$archive$benchmark_result)$data_extra, function(data_extra) {
     expect_true(data_extra$success)
   })
-  expect_rush_reset(instance$rush, type = "kill")
 })
 
 test_that("on_resample_before_train works", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
-  on.exit({mirai::daemons(0)})
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   callback = callback_async_tuning("test",
     on_resample_before_train = function(callback, context) {
@@ -456,9 +431,6 @@ test_that("on_resample_before_train works", {
     }
   )
 
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
-
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
@@ -466,21 +438,22 @@ test_that("on_resample_before_train works", {
     resampling = rsmp ("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
-    callbacks = callback)
+    callbacks = callback,
+    rush = rush)
 
   expect_class(instance$objective$context, "ContextAsyncTuning")
 
   walk(as.data.table(instance$archive$benchmark_result)$data_extra, function(data_extra) {
     expect_true(data_extra$success)
   })
-  expect_rush_reset(instance$rush, type = "kill")
 })
 
 test_that("on_resample_before_predict works", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
-  on.exit({mirai::daemons(0)})
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   callback = callback_async_tuning("test",
     on_resample_before_predict = function(callback, context) {
@@ -492,9 +465,6 @@ test_that("on_resample_before_predict works", {
     }
   )
 
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
-
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
@@ -502,21 +472,22 @@ test_that("on_resample_before_predict works", {
     resampling = rsmp ("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
-    callbacks = callback)
+    callbacks = callback,
+    rush = rush)
 
   expect_class(instance$objective$context, "ContextAsyncTuning")
 
   walk(as.data.table(instance$archive$benchmark_result)$data_extra, function(data_extra) {
     expect_true(data_extra$success)
   })
-  expect_rush_reset(instance$rush, type = "kill")
 })
 
 test_that("on_resample_end works", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
-  on.exit({mirai::daemons(0)})
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   callback = callback_async_tuning("test",
     on_resample_end = function(callback, context) {
@@ -531,9 +502,6 @@ test_that("on_resample_end works", {
     }
   )
 
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
-
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
@@ -541,7 +509,8 @@ test_that("on_resample_end works", {
     resampling = rsmp ("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
-    callbacks = callback)
+    callbacks = callback,
+    rush = rush)
 
   expect_class(instance$objective$context, "ContextAsyncTuning")
 
@@ -552,5 +521,4 @@ test_that("on_resample_end works", {
   walk(instance$archive$benchmark_result$score()$learner, function(learner, ...) {
     expect_true(learner$state$state_success)
   })
-  expect_rush_reset(instance$rush, type = "kill")
 })

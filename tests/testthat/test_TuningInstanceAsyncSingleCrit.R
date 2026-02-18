@@ -1,40 +1,12 @@
+skip_if_not_installed("rush")
+skip_if_no_redis()
+
 test_that("initializing TuningInstanceAsyncSingleCrit works", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
-  on.exit({mirai::daemons(0)})
-
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
-
-  instance = ti_async(
-    task = tsk("pima"),
-    learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
-    resampling = rsmp("cv", folds = 3),
-    measures = msr("classif.ce"),
-    terminator = trm("evals", n_evals = 3)
-  )
-
-  expect_r6(instance$archive, "ArchiveAsyncTuning")
-  expect_r6(instance$objective, "Objective")
-  expect_r6(instance$search_space, "ParamSet")
-  expect_r6(instance$terminator, "Terminator")
-  expect_r6(instance$rush, "Rush")
-  expect_null(instance$result)
-
-  expect_rush_reset(instance$rush, type = "kill")
-})
-
-test_that("rush controller can be passed to TuningInstanceAsyncSingleCrit", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
-  on.exit({mirai::daemons(0)})
-
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
-
-  rush = rush::rsh(network_id = "remote_network")
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   instance = ti_async(
     task = tsk("pima"),
@@ -45,50 +17,50 @@ test_that("rush controller can be passed to TuningInstanceAsyncSingleCrit", {
     rush = rush
   )
 
-  expect_class(instance$rush, "Rush")
-  expect_equal(instance$rush$network_id, "remote_network")
-  expect_rush_reset(instance$rush, type = "kill")
+  expect_r6(instance$archive, "ArchiveAsyncTuning")
+  expect_r6(instance$objective, "Objective")
+  expect_r6(instance$search_space, "ParamSet")
+  expect_r6(instance$terminator, "Terminator")
+  expect_r6(instance$rush, "Rush")
+  expect_null(instance$result)
 })
 
 test_that("TuningInstanceAsyncSingleCrit can be passed to a tuner", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
-  on.exit({mirai::daemons(0)})
-
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
-    terminator = trm("evals", n_evals = 3)
+    terminator = trm("evals", n_evals = 3),
+    rush = rush
   )
 
   tuner = tnr("async_random_search")
   tuner$optimize(instance)
 
   expect_data_table(instance$archive$data, min.rows = 3L)
-  expect_rush_reset(instance$rush, type = "kill")
 })
 
 test_that("assigning a result to TuningInstanceAsyncSingleCrit works", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
-  on.exit({mirai::daemons(0)})
-
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
-    terminator = trm("evals", n_evals = 3)
+    terminator = trm("evals", n_evals = 3),
+    rush = rush
   )
 
   tuner = tnr("async_random_search")
@@ -97,44 +69,14 @@ test_that("assigning a result to TuningInstanceAsyncSingleCrit works", {
   result = instance$result
   expect_data_table(result, nrows = 1)
   expect_names(names(result), must.include = c("cp", "learner_param_vals", "x_domain", "classif.ce"))
-  expect_rush_reset(instance$rush, type = "kill")
 })
 
 test_that("saving the benchmark result with TuningInstanceRushSingleCrit works", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
-  on.exit({mirai::daemons(0)})
-
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
-
-  instance = ti_async(
-    task = tsk("pima"),
-    learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
-    resampling = rsmp("cv", folds = 3),
-    measures = msr("classif.ce"),
-    terminator = trm("evals", n_evals = 3),
-    store_benchmark_result = TRUE
-  )
-
-  tuner = tnr("async_random_search")
-  tuner$optimize(instance)
-
-  expect_benchmark_result(instance$archive$benchmark_result)
-  expect_gte(instance$archive$benchmark_result$n_resample_results, 3L)
-  expect_null(instance$archive$resample_result(1)$learners[[1]]$model)
-  expect_rush_reset(instance$rush, type = "kill")
-})
-
-test_that("saving the models with TuningInstanceRushSingleCrit works", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
-  on.exit({mirai::daemons(0)})
-
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   instance = ti_async(
     task = tsk("pima"),
@@ -143,7 +85,33 @@ test_that("saving the models with TuningInstanceRushSingleCrit works", {
     measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 3),
     store_benchmark_result = TRUE,
-    store_models = TRUE
+    rush = rush
+  )
+
+  tuner = tnr("async_random_search")
+  tuner$optimize(instance)
+
+  expect_benchmark_result(instance$archive$benchmark_result)
+  expect_gte(instance$archive$benchmark_result$n_resample_results, 3L)
+  expect_null(instance$archive$resample_result(1)$learners[[1]]$model)
+})
+
+test_that("saving the models with TuningInstanceRushSingleCrit works", {
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
+
+  instance = ti_async(
+    task = tsk("pima"),
+    learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
+    resampling = rsmp("cv", folds = 3),
+    measures = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 3),
+    store_benchmark_result = TRUE,
+    store_models = TRUE,
+    rush = rush
   )
 
   tuner = tnr("async_random_search")
@@ -152,7 +120,6 @@ test_that("saving the models with TuningInstanceRushSingleCrit works", {
   expect_benchmark_result(instance$archive$benchmark_result)
   expect_gte(instance$archive$benchmark_result$n_resample_results, 3L)
   expect_class(instance$archive$resample_result(1)$learners[[1]]$model, "rpart")
-  expect_rush_reset(instance$rush, type = "kill")
 })
 
 # test_that("crashing workers are detected", {
@@ -179,16 +146,14 @@ test_that("saving the models with TuningInstanceRushSingleCrit works", {
 # Internal Tuning --------------------------------------------------------------
 
 test_that("Async single-crit internal tuning works", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
-  on.exit({mirai::daemons(0)})
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   learner = lrn("classif.debug", validate = 0.2, early_stopping = TRUE, x = to_tune(0.2, 0.3),
     iter = to_tune(upper = 1000, internal = TRUE, aggr = function(x) 99))
-
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
 
   instance = ti_async(
     task = tsk("pima"),
@@ -196,7 +161,8 @@ test_that("Async single-crit internal tuning works", {
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 20),
-    store_benchmark_result = TRUE
+    store_benchmark_result = TRUE,
+    rush = rush
   )
 
   tuner = tnr("async_random_search")
@@ -206,7 +172,6 @@ test_that("Async single-crit internal tuning works", {
   expect_equal(instance$archive$finished_data$internal_tuned_values[[1]], set_class(list(iter = 99L), "internal_tuned_values"))
   expect_false(instance$result_learner_param_vals$early_stopping)
   expect_equal(instance$result_learner_param_vals$iter, 99)
-  expect_rush_reset(instance$rush, type = "kill")
 })
 
 test_that("Internal tuning throws an error on incorrect configuration", {
@@ -237,41 +202,38 @@ test_that("Internal tuning throws an error message when primary search space is 
 
 
 test_that("tiny logging works", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   old_opts = options(bbotk.tiny_logging = TRUE)
-  on.exit(options(old_opts))
-
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
+  on.exit(options(old_opts), add = TRUE)
 
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
-    terminator = trm("evals", n_evals = 3)
+    terminator = trm("evals", n_evals = 3),
+    rush = rush
   )
 
   optimizer = tnr("async_random_search")
   expect_data_table(optimizer$optimize(instance))
-
-  expect_rush_reset(instance$rush)
 })
 
 
 test_that("tiny logging work with internal tuning", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   old_opts = options(bbotk.tiny_logging = TRUE)
-  on.exit(options(old_opts))
-
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
+  on.exit(options(old_opts), add = TRUE)
 
   learner = lrn("classif.debug", validate = 0.2, early_stopping = TRUE, x = to_tune(0.2, 0.3),
     iter = to_tune(upper = 1000, internal = TRUE, aggr = function(x) 99))
@@ -281,11 +243,10 @@ test_that("tiny logging work with internal tuning", {
     learner = learner,
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
-    terminator = trm("evals", n_evals = 3)
+    terminator = trm("evals", n_evals = 3),
+    rush = rush
   )
 
   optimizer = tnr("async_random_search")
   expect_data_table(optimizer$optimize(instance))
-
-  expect_rush_reset(instance$rush)
 })

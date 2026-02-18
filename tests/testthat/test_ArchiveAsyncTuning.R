@@ -1,11 +1,12 @@
-test_that("ArchiveAsyncTuning access methods work", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
-  on.exit({mirai::daemons(0)})
+skip_if_not_installed("rush")
+skip_if_no_redis()
 
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
+test_that("ArchiveAsyncTuning access methods work", {
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   instance = ti_async(
     task = tsk("pima"),
@@ -13,7 +14,8 @@ test_that("ArchiveAsyncTuning access methods work", {
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 20),
-    store_benchmark_result = TRUE
+    store_benchmark_result = TRUE,
+    rush = rush
   )
 
   expect_benchmark_result(instance$archive$benchmark_result)
@@ -53,18 +55,14 @@ test_that("ArchiveAsyncTuning access methods work", {
   walk(seq(instance$rush$n_finished_tasks), function(i) {
     expect_resample_result(instance$archive$resample_result(i))
   })
-
-  expect_rush_reset(instance$rush, type = "kill")
 })
 
 test_that("ArchiveAsyncTuning as.data.table function works", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
-  on.exit({mirai::daemons(0)})
-
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
+  rush = start_rush()
+  on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   instance = ti_async(
     task = tsk("pima"),
@@ -72,7 +70,8 @@ test_that("ArchiveAsyncTuning as.data.table function works", {
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 20),
-    store_benchmark_result = TRUE
+    store_benchmark_result = TRUE,
+    rush = rush
   )
   tuner = tnr("async_random_search")
   tuner$optimize(instance)
@@ -111,18 +110,14 @@ test_that("ArchiveAsyncTuning as.data.table function works", {
   tab = as.data.table(instance$archive, unnest = NULL)
   expect_data_table(tab, min.rows = 20)
   expect_names(names(tab), permutation.of = c("state", "cp", "classif.ce", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "x_domain", "keys", "warnings", "errors"))
-
-  expect_rush_reset(instance$rush)
 })
 
 test_that("ArchiveAsyncTuning as.data.table function works without resample result", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
-  on.exit({mirai::daemons(0)})
-
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
+  rush = start_rush()
+  on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   instance = ti_async(
     task = tsk("pima"),
@@ -130,7 +125,8 @@ test_that("ArchiveAsyncTuning as.data.table function works without resample resu
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 20),
-    store_benchmark_result = FALSE
+    store_benchmark_result = FALSE,
+    rush = rush
   )
   tuner = tnr("async_random_search")
   tuner$optimize(instance)
@@ -138,18 +134,14 @@ test_that("ArchiveAsyncTuning as.data.table function works without resample resu
   tab = as.data.table(instance$archive)
   expect_data_table(tab, min.rows = 20)
   expect_names(names(tab), permutation.of = c("state", "cp", "classif.ce", "x_domain", "runtime_learners", "worker_id", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors"))
-
-  expect_rush_reset(instance$rush)
 })
 
 test_that("ArchiveAsyncTuning as.data.table function works with empty archive", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
-  on.exit({mirai::daemons(0)})
-
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
+  rush = start_rush()
+  on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   instance = ti_async(
     task = tsk("pima"),
@@ -157,19 +149,19 @@ test_that("ArchiveAsyncTuning as.data.table function works with empty archive", 
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 20),
-    store_benchmark_result = FALSE
+    store_benchmark_result = FALSE,
+    rush = rush
   )
 
   expect_data_table(as.data.table(instance$archive), nrows = 0, ncols = 0)
-
-  expect_rush_reset(instance$rush)
 })
 
 test_that("ArchiveAsyncTuning as.data.table function works with new ids in x_domain", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
-  on.exit({mirai::daemons(0)})
+  rush = start_rush()
+  on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   search_space = ps(
     x1 = p_int(1, 12),
@@ -183,9 +175,6 @@ test_that("ArchiveAsyncTuning as.data.table function works with new ids in x_dom
     }
   )
 
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
-
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.rpart"),
@@ -193,7 +182,8 @@ test_that("ArchiveAsyncTuning as.data.table function works with new ids in x_dom
     measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 20),
     store_benchmark_result = TRUE,
-    search_space = search_space
+    search_space = search_space,
+    rush = rush
   )
   tuner = tnr("async_random_search")
   tuner$optimize(instance)
@@ -201,15 +191,14 @@ test_that("ArchiveAsyncTuning as.data.table function works with new ids in x_dom
   tab = as.data.table(instance$archive)
   expect_data_table(tab, min.rows = 20)
   expect_names(names(tab), permutation.of = c("state", "x1", "x2", "classif.ce", "x_domain", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors"))
-
-  expect_rush_reset(instance$rush)
 })
 
 test_that("ArchiveAsyncTuning as.data.table function works with switched new ids in x_domain", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
-  on.exit({mirai::daemons(0)})
+  rush = start_rush()
+  on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   # new ids in x_domain switch
   search_space = ps(
@@ -225,9 +214,6 @@ test_that("ArchiveAsyncTuning as.data.table function works with switched new ids
     }
   )
 
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
-
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.rpart"),
@@ -235,7 +221,8 @@ test_that("ArchiveAsyncTuning as.data.table function works with switched new ids
     measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 20),
     store_benchmark_result = TRUE,
-    search_space = search_space
+    search_space = search_space,
+    rush = rush
   )
   tuner = tnr("async_random_search")
   tuner$optimize(instance)
@@ -243,28 +230,24 @@ test_that("ArchiveAsyncTuning as.data.table function works with switched new ids
   tab = as.data.table(instance$archive)
   expect_data_table(tab, min.rows = 20)
   expect_names(names(tab), permutation.of = c("state", "x1", "x2", "classif.ce", "x_domain", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors"))
-
-  expect_rush_reset(instance$rush)
 })
 
 test_that("Saving ArchiveAsyncTuning works", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
+  rush = start_rush()
   on.exit({
     file.remove("instance.rds")
+    rush$reset()
     mirai::daemons(0)
   })
 
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 20),
-    store_benchmark_result = TRUE
+    store_benchmark_result = TRUE,
+    rush = rush
   )
   tuner = tnr("async_random_search")
   tuner$optimize(instance)
@@ -275,19 +258,16 @@ test_that("Saving ArchiveAsyncTuning works", {
 
   loaded_instance$reconnect()
   expect_class(loaded_instance, "TuningInstanceAsyncSingleCrit")
-  expect_rush_reset(instance$rush)
 })
 
 # Internal Tuning --------------------------------------------------------------
 
 test_that("ArchiveAsyncTuning as.data.table function works internally tuned values", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
-  on.exit({mirai::daemons(0)})
-
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
+  rush = start_rush()
+  on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   instance = ti_async(
     task = tsk("pima"),
@@ -295,7 +275,8 @@ test_that("ArchiveAsyncTuning as.data.table function works internally tuned valu
       x = to_tune(0.1, 0.3)),
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
-    terminator = trm("evals", n_evals = 2)
+    terminator = trm("evals", n_evals = 2),
+    rush = rush
   )
 
   tuner = tnr("async_random_search")
@@ -308,6 +289,4 @@ test_that("ArchiveAsyncTuning as.data.table function works internally tuned valu
   tab = as.data.table(instance$archive)
   expect_names(names(tab), must.include = "internal_tuned_values_iter")
   expect_equal(tab$internal_tuned_values_iter[1], 99)
-  expect_rush_reset(instance$rush)
 })
-

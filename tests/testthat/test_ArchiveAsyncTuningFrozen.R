@@ -1,11 +1,12 @@
-test_that("ArchiveAsyncTuningFrozen works", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
-  on.exit({mirai::daemons(0)})
+skip_if_not_installed("rush")
+skip_if_no_redis()
 
-  mirai::daemons(2)
-  rush::rush_plan(n_workers = 2, worker_type = "remote")
+test_that("ArchiveAsyncTuningFrozen works", {
+  rush = start_rush()
+  on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   instance = ti_async(
     task = tsk("pima"),
@@ -13,7 +14,8 @@ test_that("ArchiveAsyncTuningFrozen works", {
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 20),
-    store_benchmark_result = TRUE
+    store_benchmark_result = TRUE,
+    rush = rush
   )
   tuner = tnr("async_random_search")
   tuner$optimize(instance)
@@ -34,5 +36,4 @@ test_that("ArchiveAsyncTuningFrozen works", {
   expect_benchmark_result(frozen_archive$benchmark_result)
 
   expect_data_table(as.data.table(frozen_archive))
-  expect_rush_reset(instance$rush)
 })
