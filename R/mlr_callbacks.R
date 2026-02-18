@@ -109,7 +109,7 @@ load_callback_async_measures = function() {
 #' @title MLflow Connector Callback
 #'
 #' @include CallbackAsyncTuning.R CallbackBatchTuning.R
-#' @name mlr3tuning.asnyc_mlflow
+#' @name mlr3tuning.async_mlflow
 #'
 #' @description
 #' This [mlr3misc::Callback] logs the hyperparameter configurations and the performance of the configurations to MLflow.
@@ -361,10 +361,10 @@ load_callback_async_one_se_rule = function() {
       se = sd(y) / sqrt(length(y))
 
       if (se == 0) {
-        # select smallest future set when all scores are the same
+        # select smallest feature set when all scores are the same
         best = data[which.min(get("n_features"))]
       } else {
-        # select smallest future set within one standard error of the best
+        # select smallest feature set within one standard error of the best
         best_y = context$result_y
         best = data[y > best_y - se & y < best_y + se, ][which.min(get("n_features"))]
       }
@@ -412,10 +412,10 @@ load_callback_one_se_rule = function() {
       se = sd(y) / sqrt(length(y))
 
       if (se == 0) {
-        # select smallest future set when all scores are the same
+        # select smallest feature set when all scores are the same
         best = data[which.min(get("n_features"))]
       } else {
-        # select smallest future set within one standard error of the best
+        # select smallest feature set within one standard error of the best
         best_y = context$result_y
         best = data[y > best_y - se & y < best_y + se, ][which.min(get("n_features"))]
       }

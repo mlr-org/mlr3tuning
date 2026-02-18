@@ -4,7 +4,7 @@
 \alias{ArchiveAsyncTuning}
 \title{Rush Data Storage}
 \description{
-The `ArchiveAsyncTuning`` stores all evaluated hyperparameter configurations and performance scores in a \link[rush:Rush]{rush::Rush} database.
+The \code{ArchiveAsyncTuning} stores all evaluated hyperparameter configurations and performance scores in a \link[rush:Rush]{rush::Rush} database.
 }
 \details{
 The \link{ArchiveAsyncTuning} is a connector to a \link[rush:Rush]{rush::Rush} database.
@@ -131,7 +131,7 @@ If a rush instance is supplied, the tuning runs without batches.}
 The internal search space.}
 
 \item{\code{check_values}}{(\code{logical(1)})\cr
-If \code{TRUE} (default), hyperparameter configurations are check for validity.}
+If \code{TRUE} (default), hyperparameter configurations are checked for validity.}
 }
 \if{html}{\out{</div>}}
 }

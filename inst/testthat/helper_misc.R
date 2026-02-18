@@ -64,16 +64,16 @@ make_dummy_cp_measure = function(type, minimize = TRUE) {
   if (type == "classif") {
     id = "dummy.cp.classif"
     inh = MeasureClassif
-    cl = "MeaureDummyCPClassif"
+    cl = "MeasureDummyCPClassif"
   } else {
     id = "dummy.cp.regr"
     inh = MeasureRegr
-    cl = "MeaureDummyCPRegr"
+    cl = "MeasureDummyCPRegr"
   }
   m = R6Class(cl,
     inherit = inh,
     public = list(
-      # allow a fun to transform cp to score, this allows further shenenigans
+      # allow a fun to transform cp to score, this allows further shenanigans
       # to disentangle cp value and score
       fun = NULL,
 

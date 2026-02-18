@@ -8,7 +8,7 @@
 #' Each row corresponds to a single evaluation of a hyperparameter configuration.
 #' See the section on Data Structure for more information.
 #' The archive stores additionally a [mlr3::BenchmarkResult] (`$benchmark_result`) that records the resampling experiments.
-#' Each experiment corresponds to to a single evaluation of a hyperparameter configuration.
+#' Each experiment corresponds to a single evaluation of a hyperparameter configuration.
 #' The table (`$data`) and the benchmark result (`$benchmark_result`) are linked by the `uhash` column.
 #' If the archive is passed to `as.data.table()`, both are joined automatically.
 #'
@@ -74,7 +74,7 @@ ArchiveBatchTuning = R6Class("ArchiveBatchTuning",
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #'
     #' @param check_values (`logical(1)`)\cr
-    #'   If `TRUE` (default), hyperparameter configurations are check for validity.
+    #'   If `TRUE` (default), hyperparameter configurations are checked for validity.
     initialize = function(
       search_space,
       codomain,

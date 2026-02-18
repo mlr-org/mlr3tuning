@@ -14,7 +14,7 @@ The autotuner for which to enable validation.}
 How to configure the validation during the hyperparameter tuning.}
 
 \item{...}{(any)\cr
-Passed when calling \code{set_validate()} on the wrapped leaerner.}
+Passed when calling \code{set_validate()} on the wrapped learner.}
 }
 \description{
 Configure validation data for the learner that is tuned by the \code{AutoTuner}.

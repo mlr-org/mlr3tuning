@@ -195,7 +195,7 @@ AutoTuner = R6Class("AutoTuner",
     #' @return Named `numeric()`.
     importance = function() {
       if ("importance" %nin% self$instance_args$learner$properties) {
-        stopf("Learner ''%s' cannot calculate important scores.", self$instance_args$learner$id)
+        stopf("Learner '%s' cannot calculate importance scores.", self$instance_args$learner$id)
       }
       if (is.null(self$model$learner$model)) {
         self$instance_args$learner$importance()
@@ -210,7 +210,7 @@ AutoTuner = R6Class("AutoTuner",
     #' @return `character()`.
     selected_features = function() {
       if ("selected_features" %nin% self$instance_args$learner$properties) {
-        stopf("Learner ''%s' cannot select features.", self$instance_args$learner$id)
+        stopf("Learner '%s' cannot select features.", self$instance_args$learner$id)
       }
       if (is.null(self$model$learner$model)) {
         self$instance_args$learner$selected_features()
@@ -421,7 +421,7 @@ marshal_model.auto_tuner_model = function(model, inplace = FALSE, ...) {
 
   marshaled = list(learner = learner_clone)
   # note that we don't clone the tuning instance even when inplace is FALSE
-  # For our use-case, this is not necessary and would cause unnecessary overhead in the the mlr3 workhorse function
+  # For our use-case, this is not necessary and would cause unnecessary overhead in the mlr3 workhorse function
   marshaled$tuning_instance = model$tuning_instance
 
   structure(list(
@@ -461,7 +461,7 @@ unmarshal_model.auto_tuner_model_marshaled = function(model, inplace = FALSE, ..
 #' @param validate (`numeric(1)`, `"predefined"`, `"test"`, or `NULL`)\cr
 #'   How to configure the validation during the hyperparameter tuning.
 #' @param ... (any)\cr
-#'   Passed when calling `set_validate()` on the wrapped leaerner.
+#'   Passed when calling `set_validate()` on the wrapped learner.
 #' @export
 #' @examples
 #' at = auto_tuner(
