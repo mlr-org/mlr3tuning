@@ -1,6 +1,7 @@
 # soon replaced by import from rush package
 skip_if_no_redis = function() {
   testthat::skip_on_cran()
+  testthat::skip_if_not_installed("redux")
 
   if (identical(Sys.getenv("RUSH_TEST_USE_REDIS"), "true") && redux::redis_available()) {
     return(invisible())

@@ -175,31 +175,36 @@ test_that("Async single-crit internal tuning works", {
 })
 
 test_that("Internal tuning throws an error on incorrect configuration", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   expect_error(tune(
     tuner = tnr("async_random_search"),
     learner = lrn("classif.debug", iter = to_tune(upper = 1000, internal = TRUE)),
     task = tsk("iris"),
-    resampling = rsmp("holdout")
+    resampling = rsmp("holdout"),
+    rush = rush
   ), "early_stopping")
 })
 
 test_that("Internal tuning throws an error message when primary search space is empty", {
-  skip_on_cran()
-  skip_if_not_installed("rush")
-  flush_redis()
+  rush = start_rush()
+    on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
 
   expect_error(tune(
     tuner = tnr("async_random_search"),
     learner = lrn("classif.debug", iter = to_tune(upper = 1000, internal = TRUE), early_stopping = TRUE, validate = 0.2),
     task = tsk("iris"),
-    resampling = rsmp("holdout")
+    resampling = rsmp("holdout"),
+    rush = rush
   ), "tnr('internal')", fixed = TRUE)
 })
-
 
 test_that("tiny logging works", {
   rush = start_rush()
@@ -223,7 +228,6 @@ test_that("tiny logging works", {
   optimizer = tnr("async_random_search")
   expect_data_table(optimizer$optimize(instance))
 })
-
 
 test_that("tiny logging work with internal tuning", {
   rush = start_rush()
