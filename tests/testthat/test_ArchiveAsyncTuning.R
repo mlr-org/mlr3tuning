@@ -79,37 +79,37 @@ test_that("ArchiveAsyncTuning as.data.table function works", {
   # default
   tab = as.data.table(instance$archive)
   expect_data_table(tab, min.rows = 20)
-  expect_names(names(tab), permutation.of = c("state", "cp", "classif.ce", "x_domain", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors"))
+  expect_names(names(tab), subset.of = c("state", "cp", "classif.ce", "x_domain", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors")) # FIXME: remove pid and change to permutation.of after rush 1.0.0 is released
 
   # extra measure
   tab = as.data.table(instance$archive, measures = msr("classif.acc"))
   expect_data_table(tab, min.rows = 20)
-  expect_names(names(tab), permutation.of = c("state", "cp", "classif.ce", "x_domain", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors", "classif.acc"))
+  expect_names(names(tab), subset.of = c("state", "cp", "classif.ce", "x_domain", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors", "classif.acc"))
 
   # extra measures
   tab = as.data.table(instance$archive, measures = msrs(c("classif.acc", "classif.mcc")))
   expect_data_table(tab, min.rows = 20)
-  expect_names(names(tab), permutation.of = c("state", "cp", "classif.ce", "x_domain", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors", "classif.acc", "classif.mcc"))
+  expect_names(names(tab), subset.of = c("state", "cp", "classif.ce", "x_domain", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors", "classif.acc", "classif.mcc"))
 
   # exclude column
   tab = as.data.table(instance$archive, exclude_columns = "timestamp_xs")
   expect_data_table(tab, min.rows = 20)
-  expect_names(names(tab), permutation.of = c("state", "cp", "classif.ce", "x_domain", "runtime_learners", "worker_id", "resample_result", "timestamp_ys", "pid", "keys", "warnings", "errors"))
+  expect_names(names(tab), subset.of = c("state", "cp", "classif.ce", "x_domain", "runtime_learners", "worker_id", "resample_result", "timestamp_ys", "pid", "keys", "warnings", "errors"))
 
   # exclude columns
   tab = as.data.table(instance$archive, exclude_columns = c("timestamp_xs", "resample_result"))
   expect_data_table(tab, min.rows = 20)
-  expect_names(names(tab), permutation.of = c("state", "cp", "classif.ce", "x_domain", "runtime_learners", "worker_id", "timestamp_ys", "pid", "keys", "warnings", "errors"))
+  expect_names(names(tab), subset.of = c("state", "cp", "classif.ce", "x_domain", "runtime_learners", "worker_id", "timestamp_ys", "pid", "keys", "warnings", "errors"))
 
   # no exclude
   tab = as.data.table(instance$archive, exclude_columns = NULL)
   expect_data_table(tab, min.rows = 20)
-  expect_names(names(tab), permutation.of = c("state", "cp", "classif.ce", "x_domain", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors"))
+  expect_names(names(tab), subset.of = c("state", "cp", "classif.ce", "x_domain", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors"))
 
   # no unnest
   tab = as.data.table(instance$archive, unnest = NULL)
   expect_data_table(tab, min.rows = 20)
-  expect_names(names(tab), permutation.of = c("state", "cp", "classif.ce", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "x_domain", "keys", "warnings", "errors"))
+  expect_names(names(tab), subset.of = c("state", "cp", "classif.ce", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "x_domain", "keys", "warnings", "errors"))
 })
 
 test_that("ArchiveAsyncTuning as.data.table function works without resample result", {
@@ -133,7 +133,7 @@ test_that("ArchiveAsyncTuning as.data.table function works without resample resu
 
   tab = as.data.table(instance$archive)
   expect_data_table(tab, min.rows = 20)
-  expect_names(names(tab), permutation.of = c("state", "cp", "classif.ce", "x_domain", "runtime_learners", "worker_id", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors"))
+  expect_names(names(tab), subset.of = c("state", "cp", "classif.ce", "x_domain", "runtime_learners", "worker_id", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors"))
 })
 
 test_that("ArchiveAsyncTuning as.data.table function works with empty archive", {
@@ -190,7 +190,7 @@ test_that("ArchiveAsyncTuning as.data.table function works with new ids in x_dom
 
   tab = as.data.table(instance$archive)
   expect_data_table(tab, min.rows = 20)
-  expect_names(names(tab), permutation.of = c("state", "x1", "x2", "classif.ce", "x_domain", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors"))
+  expect_names(names(tab), subset.of = c("state", "x1", "x2", "classif.ce", "x_domain", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors"))
 })
 
 test_that("ArchiveAsyncTuning as.data.table function works with switched new ids in x_domain", {
@@ -229,7 +229,7 @@ test_that("ArchiveAsyncTuning as.data.table function works with switched new ids
 
   tab = as.data.table(instance$archive)
   expect_data_table(tab, min.rows = 20)
-  expect_names(names(tab), permutation.of = c("state", "x1", "x2", "classif.ce", "x_domain", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors"))
+  expect_names(names(tab), subset.of = c("state", "x1", "x2", "classif.ce", "x_domain", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "pid", "keys", "warnings", "errors"))
 })
 
 test_that("Saving ArchiveAsyncTuning works", {
