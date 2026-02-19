@@ -353,28 +353,28 @@ tuner = tnr("random_search", batch_size = 2)
 
 # Run tuning
 tuner$optimize(instance)
-#>           cp learner_param_vals  x_domain classif.ce  time_train
-#>        <num>             <list>    <list>      <num>       <num>
-#> 1: -3.044624          <list[2]> <list[1]> 0.07259090 0.003666667
-#> 2: -5.830306          <list[2]> <list[1]> 0.07843885 0.003000000
-#> 3: -8.296400          <list[2]> <list[1]> 0.07843885 0.003000000
+#>           cp learner_param_vals  x_domain classif.ce time_train
+#>        <num>             <list>    <list>      <num>      <num>
+#> 1: -3.044624          <list[2]> <list[1]> 0.07259090      0.009
+#> 2: -5.830306          <list[2]> <list[1]> 0.07843885      0.003
+#> 3: -8.296400          <list[2]> <list[1]> 0.07843885      0.003
 
 # Optimal hyperparameter configurations
 instance$result
-#>           cp learner_param_vals  x_domain classif.ce  time_train
-#>        <num>             <list>    <list>      <num>       <num>
-#> 1: -3.044624          <list[2]> <list[1]> 0.07259090 0.003666667
-#> 2: -5.830306          <list[2]> <list[1]> 0.07843885 0.003000000
-#> 3: -8.296400          <list[2]> <list[1]> 0.07843885 0.003000000
+#>           cp learner_param_vals  x_domain classif.ce time_train
+#>        <num>             <list>    <list>      <num>      <num>
+#> 1: -3.044624          <list[2]> <list[1]> 0.07259090      0.009
+#> 2: -5.830306          <list[2]> <list[1]> 0.07843885      0.003
+#> 3: -8.296400          <list[2]> <list[1]> 0.07843885      0.003
 
 # Inspect all evaluated configurations
 as.data.table(instance$archive)
-#>           cp classif.ce  time_train runtime_learners           timestamp
-#>        <num>      <num>       <num>            <num>              <POSc>
-#> 1: -3.044624 0.07259090 0.003666667            0.037 2026-02-19 14:34:55
-#> 2: -7.892169 0.07843885 0.003333333            0.019 2026-02-19 14:34:55
-#> 3: -5.830306 0.07843885 0.003000000            0.018 2026-02-19 14:34:55
-#> 4: -8.296400 0.07843885 0.003000000            0.017 2026-02-19 14:34:55
+#>           cp classif.ce time_train runtime_learners           timestamp
+#>        <num>      <num>      <num>            <num>              <POSc>
+#> 1: -3.044624 0.07259090      0.009            0.036 2026-02-19 14:51:18
+#> 2: -7.892169 0.07843885      0.003            0.017 2026-02-19 14:51:18
+#> 3: -5.830306 0.07843885      0.003            0.017 2026-02-19 14:51:18
+#> 4: -8.296400 0.07843885      0.003            0.017 2026-02-19 14:51:18
 #>    warnings errors  x_domain batch_nr  resample_result
 #>       <int>  <int>    <list>    <int>           <list>
 #> 1:        0      0 <list[1]>        1 <ResampleResult>
