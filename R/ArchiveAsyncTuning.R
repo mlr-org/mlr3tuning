@@ -1,7 +1,7 @@
 #' @title Rush Data Storage
 #'
 #' @description
-#' The `ArchiveAsyncTuning`` stores all evaluated hyperparameter configurations and performance scores in a [rush::Rush] database.
+#' The `ArchiveAsyncTuning` stores all evaluated hyperparameter configurations and performance scores in a [rush::Rush] database.
 #'
 #' @details
 #' The [ArchiveAsyncTuning] is a connector to a [rush::Rush] database.
@@ -54,7 +54,7 @@ ArchiveAsyncTuning = R6Class("ArchiveAsyncTuning",
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #'
     #' @param check_values (`logical(1)`)\cr
-    #'   If `TRUE` (default), hyperparameter configurations are check for validity.
+    #'   If `TRUE` (default), hyperparameter configurations are checked for validity.
     initialize = function(
       search_space,
       codomain,

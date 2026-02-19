@@ -33,7 +33,7 @@
 
 # mlr3tuning 1.2.0
 
-* feat: Add new callback `clbk("mlr3tuning.one_se_rule")` that selects the the hyperparameter configuration with the smallest feature set within one standard error of the best.
+* feat: Add new callback `clbk("mlr3tuning.one_se_rule")` that selects the hyperparameter configuration with the smallest feature set within one standard error of the best.
 * feat: Add new stages `on_tuning_result_begin` and `on_result_begin` to `CallbackAsyncTuning` and `CallbackBatchTuning`.
 * refactor: Rename stage `on_result` to `on_result_end` in `CallbackAsyncTuning` and `CallbackBatchTuning`.
 * docs: Extend the `CallbackAsyncTuning` and `CallbackBatchTuning` documentation.
@@ -42,8 +42,8 @@
 
 # mlr3tuning 1.1.0
 
-* fix: The `as_data_table()` functions do not unnest the `x_domain` colum anymore by default.
-* fix: `to_tune(internal = TRUE)` now also works if non-internal tuning parameters require have an `.extra_trafo`.
+* fix: The `as_data_table()` functions do not unnest the `x_domain` column anymore by default.
+* fix: `to_tune(internal = TRUE)` now also works if non-internal tuning parameters have an `.extra_trafo`.
 * feat: It is now possible to pass an `internal_search_space` manually.
   This allows to use parameter transformations on the primary search space in combination with internal hyperparameter tuning.
 * refactor: The `Tuner` pass extra information of the result in the `extra` parameter now.
@@ -61,7 +61,7 @@
 
 * feat: Introduce asynchronous optimization with the `TunerAsync` and `TuningInstanceAsync*` classes.
 * BREAKING CHANGE: The `Tuner` class is `TunerBatch` now.
-* BREAKING CHANGE: THe `TuningInstanceSingleCrit` and `TuningInstanceMultiCrit` classes are `TuningInstanceBatchSingleCrit` and `TuningInstanceBatchMultiCrit` now.
+* BREAKING CHANGE: The `TuningInstanceSingleCrit` and `TuningInstanceMultiCrit` classes are `TuningInstanceBatchSingleCrit` and `TuningInstanceBatchMultiCrit` now.
 * BREAKING CHANGE: The `CallbackTuning` class is `CallbackBatchTuning` now.
 * BREAKING CHANGE: The `ContextEval` class is `ContextBatchTuning` now.
 * refactor: Remove hotstarting from batch optimization due to low performance.
@@ -86,7 +86,7 @@
 # mlr3tuning 0.19.0
 
 * fix: Add `$phash()` method to `AutoTuner`.
-* fix: Include `Tuner` in hash of  `AutoTuner`.
+* fix: Include `Tuner` in hash of `AutoTuner`.
 * feat: Add new callback that scores the configurations on additional measures while tuning.
 * feat: Add vignette about adding new tuners which was previously part of the mlr3book.
 

@@ -235,7 +235,8 @@ columns for extra information.}
 Optimal outcomes, e.g. the Pareto front.}
 
 \item{\code{learner_param_vals}}{(List of named \verb{list()s})\cr
-Fixed parameter values of the learner that are neither part of the}
+Fixed parameter values of the learner that are neither part of the
+search space nor the domain.}
 
 \item{\code{extra}}{(\code{data.table::data.table()})\cr
 Additional information.}
