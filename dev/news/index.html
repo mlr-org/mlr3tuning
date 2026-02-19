@@ -82,7 +82,7 @@
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.2.0" id="mlr3tuning-120">mlr3tuning 1.2.0<a class="anchor" aria-label="anchor" href="#mlr3tuning-120"></a></h2><p class="text-muted">CRAN release: 2024-11-08</p>
-<ul><li>feat: Add new callback <code>clbk("mlr3tuning.one_se_rule")</code> that selects the the hyperparameter configuration with the smallest feature set within one standard error of the best.</li>
+<ul><li>feat: Add new callback <code>clbk("mlr3tuning.one_se_rule")</code> that selects the hyperparameter configuration with the smallest feature set within one standard error of the best.</li>
 <li>feat: Add new stages <code>on_tuning_result_begin</code> and <code>on_result_begin</code> to <code>CallbackAsyncTuning</code> and <code>CallbackBatchTuning</code>.</li>
 <li>refactor: Rename stage <code>on_result</code> to <code>on_result_end</code> in <code>CallbackAsyncTuning</code> and <code>CallbackBatchTuning</code>.</li>
 <li>docs: Extend the <code>CallbackAsyncTuning</code> and <code>CallbackBatchTuning</code> documentation.</li>
@@ -91,8 +91,8 @@
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.1.0" id="mlr3tuning-110">mlr3tuning 1.1.0<a class="anchor" aria-label="anchor" href="#mlr3tuning-110"></a></h2><p class="text-muted">CRAN release: 2024-10-27</p>
-<ul><li>fix: The <code>as_data_table()</code> functions do not unnest the <code>x_domain</code> colum anymore by default.</li>
-<li>fix: <code>to_tune(internal = TRUE)</code> now also works if non-internal tuning parameters require have an <code>.extra_trafo</code>.</li>
+<ul><li>fix: The <code>as_data_table()</code> functions do not unnest the <code>x_domain</code> column anymore by default.</li>
+<li>fix: <code>to_tune(internal = TRUE)</code> now also works if non-internal tuning parameters have an <code>.extra_trafo</code>.</li>
 <li>feat: It is now possible to pass an <code>internal_search_space</code> manually. This allows to use parameter transformations on the primary search space in combination with internal hyperparameter tuning.</li>
 <li>refactor: The <code>Tuner</code> pass extra information of the result in the <code>extra</code> parameter now.</li>
 </ul></div>
@@ -109,7 +109,7 @@
 <h2 class="pkg-version" data-toc-text="1.0.0" id="mlr3tuning-100">mlr3tuning 1.0.0<a class="anchor" aria-label="anchor" href="#mlr3tuning-100"></a></h2><p class="text-muted">CRAN release: 2024-06-29</p>
 <ul><li>feat: Introduce asynchronous optimization with the <code>TunerAsync</code> and <code>TuningInstanceAsync*</code> classes.</li>
 <li>BREAKING CHANGE: The <code>Tuner</code> class is <code>TunerBatch</code> now.</li>
-<li>BREAKING CHANGE: THe <code>TuningInstanceSingleCrit</code> and <code>TuningInstanceMultiCrit</code> classes are <code>TuningInstanceBatchSingleCrit</code> and <code>TuningInstanceBatchMultiCrit</code> now.</li>
+<li>BREAKING CHANGE: The <code>TuningInstanceSingleCrit</code> and <code>TuningInstanceMultiCrit</code> classes are <code>TuningInstanceBatchSingleCrit</code> and <code>TuningInstanceBatchMultiCrit</code> now.</li>
 <li>BREAKING CHANGE: The <code>CallbackTuning</code> class is <code>CallbackBatchTuning</code> now.</li>
 <li>BREAKING CHANGE: The <code>ContextEval</code> class is <code>ContextBatchTuning</code> now.</li>
 <li>refactor: Remove hotstarting from batch optimization due to low performance.</li>

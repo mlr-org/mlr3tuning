@@ -329,6 +329,7 @@ For internal use.
 
   (List of named `list()s`)  
   Fixed parameter values of the learner that are neither part of the
+  search space nor the domain.
 
 - `extra`:
 
@@ -395,10 +396,10 @@ learner$train(task)
 as.data.table(instance$archive)
 #>           cp classif.ce runtime_learners           timestamp warnings errors
 #>        <num>      <num>            <num>              <POSc>    <int>  <int>
-#> 1: -7.255326 0.05517417            0.021 2026-02-18 13:34:20        0      0
-#> 2: -6.314690 0.05517417            0.022 2026-02-18 13:34:20        0      0
-#> 3: -8.991870 0.05517417            0.021 2026-02-18 13:34:20        0      0
-#> 4: -4.755440 0.05517417            0.021 2026-02-18 13:34:20        0      0
+#> 1: -7.255326 0.05517417            0.018 2026-02-19 14:34:56        0      0
+#> 2: -6.314690 0.05517417            0.017 2026-02-19 14:34:56        0      0
+#> 3: -8.991870 0.05517417            0.018 2026-02-19 14:34:56        0      0
+#> 4: -4.755440 0.05517417            0.018 2026-02-19 14:34:56        0      0
 #>     x_domain batch_nr  resample_result
 #>       <list>    <int>           <list>
 #> 1: <list[1]>        1 <ResampleResult>

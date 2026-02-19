@@ -1,6 +1,6 @@
 # Rush Data Storage
 
-The \`ArchiveAsyncTuning“ stores all evaluated hyperparameter
+The `ArchiveAsyncTuning` stores all evaluated hyperparameter
 configurations and performance scores in a
 [rush::Rush](https://rush.mlr-org.com/reference/Rush.html) database.
 
@@ -172,7 +172,7 @@ Creates a new instance of this
 - `check_values`:
 
   (`logical(1)`)  
-  If `TRUE` (default), hyperparameter configurations are check for
+  If `TRUE` (default), hyperparameter configurations are checked for
   validity.
 
 ------------------------------------------------------------------------

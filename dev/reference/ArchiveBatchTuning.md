@@ -13,7 +13,7 @@ configuration. See the section on Data Structure for more information.
 The archive stores additionally a
 [mlr3::BenchmarkResult](https://mlr3.mlr-org.com/reference/BenchmarkResult.html)
 (`$benchmark_result`) that records the resampling experiments. Each
-experiment corresponds to to a single evaluation of a hyperparameter
+experiment corresponds to a single evaluation of a hyperparameter
 configuration. The table (`$data`) and the benchmark result
 (`$benchmark_result`) are linked by the `uhash` column. If the archive
 is passed to
@@ -187,7 +187,7 @@ Creates a new instance of this
 - `check_values`:
 
   (`logical(1)`)  
-  If `TRUE` (default), hyperparameter configurations are check for
+  If `TRUE` (default), hyperparameter configurations are checked for
   validity.
 
 - `internal_search_space`:

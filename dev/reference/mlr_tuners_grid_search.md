@@ -55,7 +55,7 @@ enable with `progressr::handlers("progress")`.
 In order to support general termination criteria and parallelization, we
 evaluate points in a batch-fashion of size `batch_size`. Larger batches
 mean we can parallelize more, smaller batches imply a more fine-grained
-checking of termination criteria. A batch contains of `batch_size` times
+checking of termination criteria. A batch consists of `batch_size` times
 `resampling$iters` jobs. E.g., if you set a batch size of 10 points and
 do a 5-fold cross validation, you can utilize up to 50 cores.
 
@@ -225,16 +225,16 @@ instance$result
 as.data.table(instance$archive)
 #>            cp classif.ce runtime_learners           timestamp warnings errors
 #>         <num>      <num>            <num>              <POSc>    <int>  <int>
-#>  1: -4.605170 0.08695652            0.007 2026-02-18 13:34:40        0      0
-#>  2: -7.675284 0.08695652            0.008 2026-02-18 13:34:40        0      0
-#>  3: -9.210340 0.08695652            0.006 2026-02-18 13:34:41        0      0
-#>  4: -6.907755 0.08695652            0.007 2026-02-18 13:34:41        0      0
-#>  5: -3.070113 0.08695652            0.007 2026-02-18 13:34:41        0      0
-#>  6: -2.302585 0.08695652            0.007 2026-02-18 13:34:41        0      0
-#>  7: -5.372699 0.08695652            0.007 2026-02-18 13:34:41        0      0
-#>  8: -6.140227 0.08695652            0.006 2026-02-18 13:34:41        0      0
-#>  9: -3.837642 0.08695652            0.007 2026-02-18 13:34:41        0      0
-#> 10: -8.442812 0.08695652            0.007 2026-02-18 13:34:41        0      0
+#>  1: -4.605170 0.08695652            0.005 2026-02-19 14:35:16        0      0
+#>  2: -7.675284 0.08695652            0.006 2026-02-19 14:35:17        0      0
+#>  3: -9.210340 0.08695652            0.005 2026-02-19 14:35:17        0      0
+#>  4: -6.907755 0.08695652            0.008 2026-02-19 14:35:17        0      0
+#>  5: -3.070113 0.08695652            0.006 2026-02-19 14:35:17        0      0
+#>  6: -2.302585 0.08695652            0.006 2026-02-19 14:35:17        0      0
+#>  7: -5.372699 0.08695652            0.006 2026-02-19 14:35:17        0      0
+#>  8: -6.140227 0.08695652            0.006 2026-02-19 14:35:17        0      0
+#>  9: -3.837642 0.08695652            0.005 2026-02-19 14:35:17        0      0
+#> 10: -8.442812 0.08695652            0.007 2026-02-19 14:35:17        0      0
 #>      x_domain batch_nr  resample_result
 #>        <list>    <int>           <list>
 #>  1: <list[1]>        1 <ResampleResult>

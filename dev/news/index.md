@@ -55,8 +55,8 @@ CRAN release: 2024-11-26
 CRAN release: 2024-11-08
 
 - feat: Add new callback `clbk("mlr3tuning.one_se_rule")` that selects
-  the the hyperparameter configuration with the smallest feature set
-  within one standard error of the best.
+  the hyperparameter configuration with the smallest feature set within
+  one standard error of the best.
 - feat: Add new stages `on_tuning_result_begin` and `on_result_begin` to
   `CallbackAsyncTuning` and `CallbackBatchTuning`.
 - refactor: Rename stage `on_result` to `on_result_end` in
@@ -71,9 +71,9 @@ CRAN release: 2024-11-08
 CRAN release: 2024-10-27
 
 - fix: The `as_data_table()` functions do not unnest the `x_domain`
-  colum anymore by default.
+  column anymore by default.
 - fix: `to_tune(internal = TRUE)` now also works if non-internal tuning
-  parameters require have an `.extra_trafo`.
+  parameters have an `.extra_trafo`.
 - feat: It is now possible to pass an `internal_search_space` manually.
   This allows to use parameter transformations on the primary search
   space in combination with internal hyperparameter tuning.
@@ -101,7 +101,7 @@ CRAN release: 2024-06-29
 - feat: Introduce asynchronous optimization with the `TunerAsync` and
   `TuningInstanceAsync*` classes.
 - BREAKING CHANGE: The `Tuner` class is `TunerBatch` now.
-- BREAKING CHANGE: THe `TuningInstanceSingleCrit` and
+- BREAKING CHANGE: The `TuningInstanceSingleCrit` and
   `TuningInstanceMultiCrit` classes are `TuningInstanceBatchSingleCrit`
   and `TuningInstanceBatchMultiCrit` now.
 - BREAKING CHANGE: The `CallbackTuning` class is `CallbackBatchTuning`

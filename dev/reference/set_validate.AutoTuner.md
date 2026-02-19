@@ -27,7 +27,7 @@ set_validate(learner, validate, ...)
   (any)  
   Passed when calling
   [`set_validate()`](https://mlr3.mlr-org.com/reference/mlr_sugar.html)
-  on the wrapped leaerner.
+  on the wrapped learner.
 
 ## Examples
 

@@ -17,9 +17,9 @@ before-mentioned default process of determining the result.
 Before you start with the implementation make yourself familiar with the
 main R6-Objects in `bbotk` (Black-Box Optimization Toolkit). This
 package does not only provide basic black box optimization algorithms
-and but also the objects that represent the optimization problem
+but also the objects that represent the optimization problem
 (`OptimInstance`) and the log of all evaluated configurations
-(`Archive`). d There are two ways to implement a new tuner: a ) If your
+(`Archive`). There are two ways to implement a new tuner: a ) If your
 new tuner can be applied to any kind of optimization problem it should
 be implemented as a `Optimizer`. Any `Optimizer` can be easily
 transformed to a `Tuner`. b) If the new custom tuner is only usable for
@@ -50,7 +50,7 @@ only required if the new tuner is added via `bbotk`.
 7.  Open a new pull request for the
     [`Tuner`](https://github.com/mlr-org/mlr3tuning/pulls) and
     optionally a second one for the
-    [\`Optimizer](https://github.com/mlr-org/bbotk/pulls).
+    [`Optimizer`](https://github.com/mlr-org/bbotk/pulls).
 
 ### Template
 
@@ -89,7 +89,7 @@ you have to implement. Please consider the following points:
 
 - You can evaluate one or multiple points per iteration
 - You don’t have to care about termination, as `$eval_batch()` won’t
-  allow more evaluations then allowed by the
+  allow more evaluations than allowed by the
   [`bbotk::Terminator`](https://bbotk.mlr-org.com/reference/Terminator.html).
   This implies, that code after the `repeat`-loop will not be executed.
 - You don’t have to care about keeping track of the evaluations as every

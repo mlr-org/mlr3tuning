@@ -330,12 +330,12 @@ learner$train(tsk("sonar"))
 - [`mlr3tuning`](https://mlr3tuning.mlr-org.com/dev/reference/mlr3tuning-package.md)
   [`mlr3tuning-package`](https://mlr3tuning.mlr-org.com/dev/reference/mlr3tuning-package.md)
   : mlr3tuning: Hyperparameter Optimization for 'mlr3'
-- [`mlr3tuning.asnyc_mlflow`](https://mlr3tuning.mlr-org.com/dev/reference/mlr3tuning.asnyc_mlflow.md)
-  : MLflow Connector Callback
 - [`mlr3tuning.async_default_configuration`](https://mlr3tuning.mlr-org.com/dev/reference/mlr3tuning.async_default_configuration.md)
   : Default Configuration Callback
 - [`mlr3tuning.async_freeze_archive`](https://mlr3tuning.mlr-org.com/dev/reference/mlr3tuning.async_freeze_archive.md)
   : Freeze Archive Callback
+- [`mlr3tuning.async_mlflow`](https://mlr3tuning.mlr-org.com/dev/reference/mlr3tuning.async_mlflow.md)
+  : MLflow Connector Callback
 - [`mlr3tuning.async_save_logs`](https://mlr3tuning.mlr-org.com/dev/reference/mlr3tuning.async_save_logs.md)
   : Save Logs Callback
 - [`mlr3tuning.backup`](https://mlr3tuning.mlr-org.com/dev/reference/mlr3tuning.backup.md)

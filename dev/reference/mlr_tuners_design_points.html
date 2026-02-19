@@ -73,7 +73,7 @@ The points in the design are evaluated in order as given.</p>
 <p>In order to support general termination criteria and parallelization, we
 evaluate points in a batch-fashion of size <code>batch_size</code>. Larger batches mean
 we can parallelize more, smaller batches imply a more fine-grained checking
-of termination criteria. A batch contains of <code>batch_size</code> times <code>resampling$iters</code> jobs.
+of termination criteria. A batch consists of <code>batch_size</code> times <code>resampling$iters</code> jobs.
 E.g., if you set a batch size of 10 points and do a 5-fold cross validation, you can
 utilize up to 50 cores.</p>
 <p>Parallelization is supported via package <a href="https://CRAN.R-project.org/package=future" class="external-link"><span class="pkg">future</span></a> (see <code><a href="https://mlr3.mlr-org.com/reference/benchmark.html" class="external-link">mlr3::benchmark()</a></code>'s
@@ -233,9 +233,9 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       cp minbucket minsplit classif.ce runtime_learners           timestamp</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    &lt;num&gt;     &lt;num&gt;    &lt;num&gt;      &lt;num&gt;            &lt;num&gt;              &lt;POSc&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 0.100        64        2 0.09565217            0.006 2026-02-18 13:34:38</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 0.010        32       64 0.06086957            0.008 2026-02-18 13:34:38</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 0.001         1      128 0.06086957            0.009 2026-02-18 13:34:38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: 0.100        64        2 0.09565217            0.006 2026-02-19 14:35:14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: 0.010        32       64 0.06086957            0.006 2026-02-19 14:35:14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: 0.001         1      128 0.06086957            0.007 2026-02-19 14:35:14</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    warnings errors  x_domain batch_nr  resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;int&gt;  &lt;int&gt;    &lt;list&gt;    &lt;int&gt;           &lt;list&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1:        0      0 &lt;list[3]&gt;        1 &lt;ResampleResult&gt;</span>

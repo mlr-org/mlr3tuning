@@ -57,7 +57,7 @@
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The grid is constructed as a Cartesian product over discretized values per parameter, see <code><a href="https://paradox.mlr-org.com/reference/generate_design_grid.html" class="external-link">paradox::generate_design_grid()</a></code>.
 If the learner supports hotstarting, the grid is sorted by the hotstart parameter (see also <a href="https://mlr3.mlr-org.com/reference/HotstartStack.html" class="external-link">mlr3::HotstartStack</a>).
-If not, the points of the grid are evaluated in a  random order.</p>
+If not, the points of the grid are evaluated in a random order.</p>
     </div>
     <div class="section level2">
     <h2 id="dictionary">Dictionary<a class="anchor" aria-label="anchor" href="#dictionary"></a></h2>
@@ -100,7 +100,7 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 <p>In order to support general termination criteria and parallelization, we
 evaluate points in a batch-fashion of size <code>batch_size</code>. Larger batches mean
 we can parallelize more, smaller batches imply a more fine-grained checking
-of termination criteria. A batch contains of <code>batch_size</code> times <code>resampling$iters</code> jobs.
+of termination criteria. A batch consists of <code>batch_size</code> times <code>resampling$iters</code> jobs.
 E.g., if you set a batch size of 10 points and do a 5-fold cross validation, you can
 utilize up to 50 cores.</p>
 <p>Parallelization is supported via package <a href="https://CRAN.R-project.org/package=future" class="external-link"><span class="pkg">future</span></a> (see <code><a href="https://mlr3.mlr-org.com/reference/benchmark.html" class="external-link">mlr3::benchmark()</a></code>'s
@@ -225,16 +225,16 @@ See also the documentation of <a href="https://bbotk.mlr-org.com/" class="extern
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            cp classif.ce runtime_learners           timestamp warnings errors</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;num&gt;      &lt;num&gt;            &lt;num&gt;              &lt;POSc&gt;    &lt;int&gt;  &lt;int&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -4.605170 0.08695652            0.007 2026-02-18 13:34:40        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -7.675284 0.08695652            0.008 2026-02-18 13:34:40        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -9.210340 0.08695652            0.006 2026-02-18 13:34:41        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -6.907755 0.08695652            0.007 2026-02-18 13:34:41        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -3.070113 0.08695652            0.007 2026-02-18 13:34:41        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -2.302585 0.08695652            0.007 2026-02-18 13:34:41        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -5.372699 0.08695652            0.007 2026-02-18 13:34:41        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -6.140227 0.08695652            0.006 2026-02-18 13:34:41        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -3.837642 0.08695652            0.007 2026-02-18 13:34:41        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -8.442812 0.08695652            0.007 2026-02-18 13:34:41        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -4.605170 0.08695652            0.005 2026-02-19 14:35:16        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -7.675284 0.08695652            0.006 2026-02-19 14:35:17        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -9.210340 0.08695652            0.005 2026-02-19 14:35:17        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -6.907755 0.08695652            0.008 2026-02-19 14:35:17        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -3.070113 0.08695652            0.006 2026-02-19 14:35:17        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -2.302585 0.08695652            0.006 2026-02-19 14:35:17        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -5.372699 0.08695652            0.006 2026-02-19 14:35:17        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -6.140227 0.08695652            0.006 2026-02-19 14:35:17        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -3.837642 0.08695652            0.005 2026-02-19 14:35:17        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -8.442812 0.08695652            0.007 2026-02-19 14:35:17        0      0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      x_domain batch_nr  resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;list&gt;    &lt;int&gt;           &lt;list&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1: &lt;list[1]&gt;        1 &lt;ResampleResult&gt;</span>

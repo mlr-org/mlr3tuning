@@ -38,9 +38,9 @@
 <url><loc>https://mlr3tuning.mlr-org.com/dev/reference/extract_inner_tuning_results.html</loc></url>
 <url><loc>https://mlr3tuning.mlr-org.com/dev/reference/index.html</loc></url>
 <url><loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr3tuning-package.html</loc></url>
-<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr3tuning.asnyc_mlflow.html</loc></url>
 <url><loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr3tuning.async_default_configuration.html</loc></url>
 <url><loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr3tuning.async_freeze_archive.html</loc></url>
+<url><loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr3tuning.async_mlflow.html</loc></url>
 <url><loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr3tuning.async_save_logs.html</loc></url>
 <url><loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr3tuning.backup.html</loc></url>
 <url><loc>https://mlr3tuning.mlr-org.com/dev/reference/mlr3tuning.measures.html</loc></url>

@@ -293,6 +293,7 @@ writes the best found points and estimated performance values here
 
   (List of named `list()s`)  
   Fixed parameter values of the learner that are neither part of the
+  search space nor the domain.
 
 - `extra`:
 
