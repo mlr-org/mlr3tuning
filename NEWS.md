@@ -1,4 +1,8 @@
-# mlr3tuning (development version)
+# mlr3tuning 1.6.0
+
+* compatibility: rush 1.0.0.
+* feat: `ArchiveAsyncTuning`, `ArchiveAsyncTuningFrozen`, and `ArchiveBatchTuning` save the archive to a `data.table` with a consistent column order.
+* fix: `AutoTuner` correctly assigns the learner predict type to the private field (#516).
 
 # mlr3tuning 1.5.1
 
