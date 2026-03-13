@@ -1,7 +1,7 @@
 skip_if_not_installed("irace")
 
 test_that("TunerIrace", {
-  z = test_tuner("irace", term_evals = 42)
+  suppressMessages(capture.output(z <- test_tuner("irace", term_evals = 42)))
   instance = z$inst
   archive = instance$archive$data
   tuner = z$tuner
