@@ -355,26 +355,24 @@ tuner = tnr("random_search", batch_size = 2)
 tuner$optimize(instance)
 #>           cp learner_param_vals  x_domain classif.ce time_train
 #>        <num>             <list>    <list>      <num>      <num>
-#> 1: -3.044624          <list[2]> <list[1]> 0.07259090      0.009
-#> 2: -5.830306          <list[2]> <list[1]> 0.07843885      0.003
-#> 3: -8.296400          <list[2]> <list[1]> 0.07843885      0.003
+#> 1: -3.759791          <list[2]> <list[1]> 0.09583016      0.003
+#> 2: -3.080830          <list[2]> <list[1]> 0.09583016      0.003
 
 # Optimal hyperparameter configurations
 instance$result
 #>           cp learner_param_vals  x_domain classif.ce time_train
 #>        <num>             <list>    <list>      <num>      <num>
-#> 1: -3.044624          <list[2]> <list[1]> 0.07259090      0.009
-#> 2: -5.830306          <list[2]> <list[1]> 0.07843885      0.003
-#> 3: -8.296400          <list[2]> <list[1]> 0.07843885      0.003
+#> 1: -3.759791          <list[2]> <list[1]> 0.09583016      0.003
+#> 2: -3.080830          <list[2]> <list[1]> 0.09583016      0.003
 
 # Inspect all evaluated configurations
 as.data.table(instance$archive)
-#>           cp classif.ce time_train runtime_learners           timestamp
-#>        <num>      <num>      <num>            <num>              <POSc>
-#> 1: -3.044624 0.07259090      0.009            0.036 2026-02-19 14:51:18
-#> 2: -7.892169 0.07843885      0.003            0.017 2026-02-19 14:51:18
-#> 3: -5.830306 0.07843885      0.003            0.017 2026-02-19 14:51:18
-#> 4: -8.296400 0.07843885      0.003            0.017 2026-02-19 14:51:18
+#>           cp classif.ce  time_train runtime_learners           timestamp
+#>        <num>      <num>       <num>            <num>              <POSc>
+#> 1: -3.259804 0.09583016 0.003666667            0.020 2026-03-13 07:43:07
+#> 2: -3.759791 0.09583016 0.003000000            0.017 2026-03-13 07:43:07
+#> 3: -2.565382 0.09583016 0.004000000            0.021 2026-03-13 07:43:08
+#> 4: -3.080830 0.09583016 0.003000000            0.018 2026-03-13 07:43:08
 #>    warnings errors  x_domain batch_nr  resample_result
 #>       <int>  <int>    <list>    <int>           <list>
 #> 1:        0      0 <list[1]>        1 <ResampleResult>

@@ -36,7 +36,7 @@ instance = tune(
 
 # Hyperparameter configuration with the smallest feature set within one standard error of the best
 instance$result
-#>          cp n_features learner_param_vals  x_domain classif.ce
-#>       <num>      <num>             <list>    <list>      <num>
-#> 1: -4.78003   5.666667          <list[2]> <list[1]>  0.2252604
+#>           cp n_features learner_param_vals  x_domain classif.ce
+#>        <num>      <num>             <list>    <list>      <num>
+#> 1: -4.216525          4          <list[2]> <list[1]>  0.2317708
 ```
