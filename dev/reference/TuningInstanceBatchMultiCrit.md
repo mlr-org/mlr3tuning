@@ -125,6 +125,8 @@ provides visualizations for tuning results.
 
 ## Super classes
 
+[`bbotk::EvalInstance`](https://bbotk.mlr-org.com/reference/EvalInstance.html)
+-\>
 [`bbotk::OptimInstance`](https://bbotk.mlr-org.com/reference/OptimInstance.html)
 -\>
 [`bbotk::OptimInstanceBatch`](https://bbotk.mlr-org.com/reference/OptimInstanceBatch.html)
@@ -160,8 +162,8 @@ provides visualizations for tuning results.
 
 Inherited methods
 
+- [`bbotk::EvalInstance$format()`](https://bbotk.mlr-org.com/reference/EvalInstance.html#method-format)
 - [`bbotk::OptimInstance$clear()`](https://bbotk.mlr-org.com/reference/OptimInstance.html#method-clear)
-- [`bbotk::OptimInstance$format()`](https://bbotk.mlr-org.com/reference/OptimInstance.html#method-format)
 - [`bbotk::OptimInstance$print()`](https://bbotk.mlr-org.com/reference/OptimInstance.html#method-print)
 - [`bbotk::OptimInstanceBatch$eval_batch()`](https://bbotk.mlr-org.com/reference/OptimInstanceBatch.html#method-eval_batch)
 - [`bbotk::OptimInstanceBatch$objective_function()`](https://bbotk.mlr-org.com/reference/OptimInstanceBatch.html#method-objective_function)
@@ -355,22 +357,22 @@ tuner = tnr("random_search", batch_size = 2)
 tuner$optimize(instance)
 #>           cp learner_param_vals  x_domain classif.ce  time_train
 #>        <num>             <list>    <list>      <num>       <num>
-#> 1: -2.565382          <list[2]> <list[1]> 0.09583016 0.003333333
+#> 1: -2.565382          <list[2]> <list[1]> 0.09583016 0.003666667
 
 # Optimal hyperparameter configurations
 instance$result
 #>           cp learner_param_vals  x_domain classif.ce  time_train
 #>        <num>             <list>    <list>      <num>       <num>
-#> 1: -2.565382          <list[2]> <list[1]> 0.09583016 0.003333333
+#> 1: -2.565382          <list[2]> <list[1]> 0.09583016 0.003666667
 
 # Inspect all evaluated configurations
 as.data.table(instance$archive)
 #>           cp classif.ce  time_train runtime_learners           timestamp
 #>        <num>      <num>       <num>            <num>              <POSc>
-#> 1: -3.259804 0.09583016 0.003666667            0.021 2026-03-13 08:44:41
-#> 2: -3.759791 0.09583016 0.003666667            0.018 2026-03-13 08:44:41
-#> 3: -2.565382 0.09583016 0.003333333            0.019 2026-03-13 08:44:41
-#> 4: -3.080830 0.09583016 0.003333333            0.017 2026-03-13 08:44:41
+#> 1: -3.259804 0.09583016 0.009333333            0.039 2026-03-17 07:33:12
+#> 2: -3.759791 0.09583016 0.004000000            0.022 2026-03-17 07:33:12
+#> 3: -2.565382 0.09583016 0.003666667            0.036 2026-03-17 07:33:12
+#> 4: -3.080830 0.09583016 0.004000000            0.021 2026-03-17 07:33:12
 #>    warnings errors  x_domain batch_nr  resample_result
 #>       <int>  <int>    <list>    <int>           <list>
 #> 1:        0      0 <list[1]>        1 <ResampleResult>

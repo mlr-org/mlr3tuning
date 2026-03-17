@@ -15,7 +15,7 @@ The function ti() creates a TuningInstanceBatchSingleCrit and the function tune(
 
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.5.1.9000</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.6.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -127,7 +127,7 @@ Alternatively, measures can be supplied to <code><a href="https://rdrr.io/pkg/da
     </div>
     <div class="section level2">
     <h2 id="super-classes">Super classes<a class="anchor" aria-label="anchor" href="#super-classes"></a></h2>
-    <p><code><a href="https://bbotk.mlr-org.com/reference/OptimInstance.html" class="external-link">bbotk::OptimInstance</a></code> -&gt; <code><a href="https://bbotk.mlr-org.com/reference/OptimInstanceBatch.html" class="external-link">bbotk::OptimInstanceBatch</a></code> -&gt; <code><a href="https://bbotk.mlr-org.com/reference/OptimInstanceBatchSingleCrit.html" class="external-link">bbotk::OptimInstanceBatchSingleCrit</a></code> -&gt; <code>TuningInstanceBatchSingleCrit</code></p>
+    <p><code><a href="https://bbotk.mlr-org.com/reference/EvalInstance.html" class="external-link">bbotk::EvalInstance</a></code> -&gt; <code><a href="https://bbotk.mlr-org.com/reference/OptimInstance.html" class="external-link">bbotk::OptimInstance</a></code> -&gt; <code><a href="https://bbotk.mlr-org.com/reference/OptimInstanceBatch.html" class="external-link">bbotk::OptimInstanceBatch</a></code> -&gt; <code><a href="https://bbotk.mlr-org.com/reference/OptimInstanceBatchSingleCrit.html" class="external-link">bbotk::OptimInstanceBatchSingleCrit</a></code> -&gt; <code>TuningInstanceBatchSingleCrit</code></p>
     </div>
     <div class="section level2">
     <h2 id="public-fields">Public fields<a class="anchor" aria-label="anchor" href="#public-fields"></a></h2>
@@ -156,8 +156,8 @@ Param values for the optimal learner call.</p></dd>
 <ul><li><p><a href="#method-TuningInstanceBatchSingleCrit-new"><code>TuningInstanceBatchSingleCrit$new()</code></a></p></li>
 <li><p><a href="#method-TuningInstanceBatchSingleCrit-assign_result"><code>TuningInstanceBatchSingleCrit$assign_result()</code></a></p></li>
 <li><p><a href="#method-TuningInstanceBatchSingleCrit-clone"><code>TuningInstanceBatchSingleCrit$clone()</code></a></p></li>
-</ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="clear"><a href="https://bbotk.mlr-org.com/reference/OptimInstance.html#method-clear"><code>bbotk::OptimInstance$clear()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="format"><a href="https://bbotk.mlr-org.com/reference/OptimInstance.html#method-format"><code>bbotk::OptimInstance$format()</code></a></span></li>
+</ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="bbotk" data-topic="EvalInstance" data-id="format"><a href="https://bbotk.mlr-org.com/reference/EvalInstance.html#method-format"><code>bbotk::EvalInstance$format()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="clear"><a href="https://bbotk.mlr-org.com/reference/OptimInstance.html#method-clear"><code>bbotk::OptimInstance$clear()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstance" data-id="print"><a href="https://bbotk.mlr-org.com/reference/OptimInstance.html#method-print"><code>bbotk::OptimInstance$print()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstanceBatch" data-id="eval_batch"><a href="https://bbotk.mlr-org.com/reference/OptimInstanceBatch.html#method-eval_batch"><code>bbotk::OptimInstanceBatch$eval_batch()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstanceBatch" data-id="objective_function"><a href="https://bbotk.mlr-org.com/reference/OptimInstanceBatch.html#method-objective_function"><code>bbotk::OptimInstanceBatch$objective_function()</code></a></span></li>
@@ -351,10 +351,10 @@ ignored.</p></dd>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp classif.ce runtime_learners           timestamp warnings errors</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;      &lt;num&gt;            &lt;num&gt;              &lt;POSc&gt;    &lt;int&gt;  &lt;int&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -3.036646 0.06392067            0.019 2026-03-13 08:44:42        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -5.238604 0.06392067            0.017 2026-03-13 08:44:42        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -7.255326 0.06392067            0.019 2026-03-13 08:44:42        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -6.314690 0.06392067            0.017 2026-03-13 08:44:42        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -3.036646 0.06392067            0.038 2026-03-17 07:33:13        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: -5.238604 0.06392067            0.020 2026-03-17 07:33:13        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3: -7.255326 0.06392067            0.021 2026-03-17 07:33:14        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4: -6.314690 0.06392067            0.039 2026-03-17 07:33:14        0      0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     x_domain batch_nr  resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;list&gt;    &lt;int&gt;           &lt;list&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1: &lt;list[1]&gt;        1 &lt;ResampleResult&gt;</span>

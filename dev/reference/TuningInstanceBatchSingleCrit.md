@@ -155,6 +155,8 @@ provides visualizations for tuning results.
 
 ## Super classes
 
+[`bbotk::EvalInstance`](https://bbotk.mlr-org.com/reference/EvalInstance.html)
+-\>
 [`bbotk::OptimInstance`](https://bbotk.mlr-org.com/reference/OptimInstance.html)
 -\>
 [`bbotk::OptimInstanceBatch`](https://bbotk.mlr-org.com/reference/OptimInstanceBatch.html)
@@ -190,8 +192,8 @@ provides visualizations for tuning results.
 
 Inherited methods
 
+- [`bbotk::EvalInstance$format()`](https://bbotk.mlr-org.com/reference/EvalInstance.html#method-format)
 - [`bbotk::OptimInstance$clear()`](https://bbotk.mlr-org.com/reference/OptimInstance.html#method-clear)
-- [`bbotk::OptimInstance$format()`](https://bbotk.mlr-org.com/reference/OptimInstance.html#method-format)
 - [`bbotk::OptimInstance$print()`](https://bbotk.mlr-org.com/reference/OptimInstance.html#method-print)
 - [`bbotk::OptimInstanceBatch$eval_batch()`](https://bbotk.mlr-org.com/reference/OptimInstanceBatch.html#method-eval_batch)
 - [`bbotk::OptimInstanceBatch$objective_function()`](https://bbotk.mlr-org.com/reference/OptimInstanceBatch.html#method-objective_function)
@@ -396,10 +398,10 @@ learner$train(task)
 as.data.table(instance$archive)
 #>           cp classif.ce runtime_learners           timestamp warnings errors
 #>        <num>      <num>            <num>              <POSc>    <int>  <int>
-#> 1: -3.036646 0.06392067            0.019 2026-03-13 08:44:42        0      0
-#> 2: -5.238604 0.06392067            0.017 2026-03-13 08:44:42        0      0
-#> 3: -7.255326 0.06392067            0.019 2026-03-13 08:44:42        0      0
-#> 4: -6.314690 0.06392067            0.017 2026-03-13 08:44:42        0      0
+#> 1: -3.036646 0.06392067            0.038 2026-03-17 07:33:13        0      0
+#> 2: -5.238604 0.06392067            0.020 2026-03-17 07:33:13        0      0
+#> 3: -7.255326 0.06392067            0.021 2026-03-17 07:33:14        0      0
+#> 4: -6.314690 0.06392067            0.039 2026-03-17 07:33:14        0      0
 #>     x_domain batch_nr  resample_result
 #>       <list>    <int>           <list>
 #> 1: <list[1]>        1 <ResampleResult>
