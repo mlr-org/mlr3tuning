@@ -47,12 +47,29 @@ measure depends on the task type.
 | `"regr_st"`    | `"regr.mse"`     | [mlr3spatial](https://CRAN.R-project.org/package=mlr3spatial) |
 | `"clust"`      | `"clust.dunn"`   | [mlr3cluster](https://CRAN.R-project.org/package=mlr3cluster) |
 
+## Search Space
+
+The search space defines the hyperparameters to be tuned and their
+possible values. It can be specified in two ways:
+
+1.  Tune tokens: Set
+    [`to_tune()`](https://paradox.mlr-org.com/reference/to_tune.html)
+    tokens in the learner's parameter set and leave
+    `search_space = NULL` (default). The search space is automatically
+    constructed from the tune tokens. Dependencies are automatically
+    handled.
+
+2.  Explicit search space: Pass a
+    [paradox::ParamSet](https://paradox.mlr-org.com/reference/ParamSet.html)
+    to the `search_space` argument. For search spaces with dependencies,
+    use the `depends` argument in `p_*()`.
+
 ## Analysis
 
 For analyzing the tuning results, it is recommended to pass the
 [ArchiveAsyncTuning](https://mlr3tuning.mlr-org.com/reference/ArchiveAsyncTuning.md)
 to
-[`as.data.table()`](https://rdatatable.gitlab.io/data.table/reference/as.data.table.html).
+[`as.data.table()`](https://rdrr.io/pkg/data.table/man/as.data.table.html).
 The returned data table contains the
 [mlr3::ResampleResult](https://mlr3.mlr-org.com/reference/ResampleResult.html)
 for each hyperparameter evaluation.
@@ -228,7 +245,10 @@ Creates a new instance of this
   Hyperparameter search space. If `NULL` (default), the search space is
   constructed from the
   [paradox::TuneToken](https://paradox.mlr-org.com/reference/to_tune.html)
-  of the learner's parameter set (learner\$param_set).
+  of the learner's parameter set (learner\$param_set). When using
+  [`to_tune()`](https://paradox.mlr-org.com/reference/to_tune.html)
+  tokens, dependencies for hierarchical search spaces are automatically
+  handled.
 
 - `store_benchmark_result`:
 
@@ -285,9 +305,9 @@ For internal use.
 
 - `xdt`:
 
-  ([`data.table::data.table()`](https://rdatatable.gitlab.io/data.table/reference/data.table.html))  
+  ([`data.table::data.table()`](https://rdrr.io/pkg/data.table/man/data.table.html))  
   Hyperparameter values as
-  [`data.table::data.table()`](https://rdatatable.gitlab.io/data.table/reference/data.table.html).
+  [`data.table::data.table()`](https://rdrr.io/pkg/data.table/man/data.table.html).
   Each row is one configuration. Contains values in the search space.
   Can contain additional columns for extra information.
 
@@ -300,10 +320,11 @@ For internal use.
 
   (List of named `list()s`)  
   Fixed parameter values of the learner that are neither part of the
+  search space nor the domain.
 
 - `extra`:
 
-  ([`data.table::data.table()`](https://rdatatable.gitlab.io/data.table/reference/data.table.html))  
+  ([`data.table::data.table()`](https://rdrr.io/pkg/data.table/man/data.table.html))  
   Additional information.
 
 - `...`:

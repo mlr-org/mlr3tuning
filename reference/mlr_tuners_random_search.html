@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.5.1</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.6.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -78,7 +78,7 @@
 <p>In order to support general termination criteria and parallelization, we
 evaluate points in a batch-fashion of size <code>batch_size</code>. Larger batches mean
 we can parallelize more, smaller batches imply a more fine-grained checking
-of termination criteria. A batch contains of <code>batch_size</code> times <code>resampling$iters</code> jobs.
+of termination criteria. A batch consists of <code>batch_size</code> times <code>resampling$iters</code> jobs.
 E.g., if you set a batch size of 10 points and do a 5-fold cross validation, you can
 utilize up to 50 cores.</p>
 <p>Parallelization is supported via package <a href="https://CRAN.R-project.org/package=future" class="external-link"><span class="pkg">future</span></a> (see <code><a href="https://mlr3.mlr-org.com/reference/benchmark.html" class="external-link">mlr3::benchmark()</a></code>'s
@@ -219,22 +219,22 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 <span class="r-in"><span><span class="va">instance</span><span class="op">$</span><span class="va">result</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           cp learner_param_vals  x_domain classif.ce</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;num&gt;             &lt;list&gt;    &lt;list&gt;      &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -4.257432          &lt;list[2]&gt; &lt;list[1]&gt; 0.07826087</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: -2.675162          &lt;list[2]&gt; &lt;list[1]&gt; 0.07826087</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># all evaluated hyperparameter configuration</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            cp classif.ce runtime_learners           timestamp warnings errors</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;num&gt;      &lt;num&gt;            &lt;num&gt;              &lt;POSc&gt;    &lt;int&gt;  &lt;int&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -4.257432 0.07826087            0.006 2025-12-14 15:21:44        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -9.014868 0.07826087            0.005 2025-12-14 15:21:44        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -5.508992 0.07826087            0.005 2025-12-14 15:21:44        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -7.574787 0.07826087            0.007 2025-12-14 15:21:44        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -4.089654 0.07826087            0.005 2025-12-14 15:21:44        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -8.164328 0.07826087            0.007 2025-12-14 15:21:44        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -6.891851 0.07826087            0.005 2025-12-14 15:21:44        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -7.572740 0.07826087            0.006 2025-12-14 15:21:44        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -7.492268 0.07826087            0.007 2025-12-14 15:21:44        0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -6.837758 0.07826087            0.024 2025-12-14 15:21:44        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1: -8.400473 0.09565217            0.007 2026-03-17 07:30:33        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2: -2.675162 0.07826087            0.006 2026-03-17 07:30:33        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3: -8.524615 0.09565217            0.007 2026-03-17 07:30:33        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4: -3.455505 0.07826087            0.007 2026-03-17 07:30:33        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5: -3.432214 0.07826087            0.007 2026-03-17 07:30:33        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6: -8.600166 0.09565217            0.007 2026-03-17 07:30:33        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7: -2.743474 0.07826087            0.007 2026-03-17 07:30:33        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8: -2.915375 0.07826087            0.005 2026-03-17 07:30:34        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9: -8.320890 0.09565217            0.006 2026-03-17 07:30:34        0      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10: -4.257432 0.09565217            0.006 2026-03-17 07:30:34        0      0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      x_domain batch_nr  resample_result</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        &lt;list&gt;    &lt;int&gt;           &lt;list&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  1: &lt;list[1]&gt;        1 &lt;ResampleResult&gt;</span>

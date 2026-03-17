@@ -173,7 +173,7 @@ summarizes the most important functions of mlr3tuning.
 
 - `tuning_result`:
 
-  ([data.table::data.table](https://rdatatable.gitlab.io/data.table/reference/data.table.html))  
+  ([data.table::data.table](https://rdrr.io/pkg/data.table/man/data.table.html))  
   Short-cut to `result` from tuning instance.
 
 - `predict_type`:
@@ -300,7 +300,10 @@ Creates a new instance of this
   Hyperparameter search space. If `NULL` (default), the search space is
   constructed from the
   [paradox::TuneToken](https://paradox.mlr-org.com/reference/to_tune.html)
-  of the learner's parameter set (learner\$param_set).
+  of the learner's parameter set (learner\$param_set). When using
+  [`to_tune()`](https://paradox.mlr-org.com/reference/to_tune.html)
+  tokens, dependencies for hierarchical search spaces are automatically
+  handled.
 
 - `store_tuning_instance`:
 
@@ -543,15 +546,15 @@ at$predict(task, row_ids = split$test)
 #>        2    Adelie    Adelie
 #>        9    Adelie    Adelie
 #>      ---       ---       ---
-#>      319 Chinstrap Chinstrap
-#>      337 Chinstrap    Gentoo
-#>      339 Chinstrap Chinstrap
+#>      318 Chinstrap Chinstrap
+#>      334 Chinstrap Chinstrap
+#>      338 Chinstrap Chinstrap
 
 # show tuning result
 at$tuning_result
-#>          cp learner_param_vals  x_domain classif.ce
-#>       <num>             <list>    <list>      <num>
-#> 1: -2.52958          <list[2]> <list[1]> 0.05434783
+#>           cp learner_param_vals  x_domain classif.ce
+#>        <num>             <list>    <list>      <num>
+#> 1: -4.797088          <list[2]> <list[1]> 0.05434783
 
 # model slot contains trained learner and tuning instance
 at$model
@@ -559,7 +562,7 @@ at$model
 #> 
 #> ── <LearnerClassifRpart> (classif.rpart): Classification Tree ──────────────────
 #> • Model: rpart
-#> • Parameters: cp=0.07969, xval=0
+#> • Parameters: cp=0.008254, xval=0
 #> • Packages: mlr3 and rpart
 #> • Predict Types: [response] and prob
 #> • Feature Types: logical, integer, numeric, factor, and ordered
@@ -579,15 +582,15 @@ at$model
 #> 1:     cp ParamDbl -9.21034 -2.302585     Inf
 #> • Terminator: <TerminatorEvals> (n_evals=4, k=0)
 #> • Result:
-#>          cp classif.ce
-#>       <num>      <num>
-#> 1: -2.52958 0.05434783
+#>           cp classif.ce
+#>        <num>      <num>
+#> 1: -4.797088 0.05434783
 #> • Archive:
 #>    classif.ce    cp
 #>         <num> <num>
-#> 1:       0.05    -3
+#> 1:       0.09    -3
 #> 2:       0.05    -5
-#> 3:       0.05    -2
+#> 3:       0.09    -2
 #> 4:       0.05    -5
 #> 
 #> attr(,"class")
@@ -598,7 +601,7 @@ at$learner
 #> 
 #> ── <LearnerClassifRpart> (classif.rpart): Classification Tree ──────────────────
 #> • Model: rpart
-#> • Parameters: cp=0.07969, xval=0
+#> • Parameters: cp=0.008254, xval=0
 #> • Packages: mlr3 and rpart
 #> • Predict Types: [response] and prob
 #> • Feature Types: logical, integer, numeric, factor, and ordered
@@ -619,15 +622,15 @@ at$tuning_instance
 #> 1:     cp ParamDbl -9.21034 -2.302585     Inf
 #> • Terminator: <TerminatorEvals> (n_evals=4, k=0)
 #> • Result:
-#>          cp classif.ce
-#>       <num>      <num>
-#> 1: -2.52958 0.05434783
+#>           cp classif.ce
+#>        <num>      <num>
+#> 1: -4.797088 0.05434783
 #> • Archive:
 #>    classif.ce    cp
 #>         <num> <num>
-#> 1:       0.05    -3
+#> 1:       0.09    -3
 #> 2:       0.05    -5
-#> 3:       0.05    -2
+#> 3:       0.09    -2
 #> 4:       0.05    -5
 
 

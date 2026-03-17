@@ -18,7 +18,7 @@ instantiated with the associated sugar function
 In order to support general termination criteria and parallelization, we
 evaluate points in a batch-fashion of size `batch_size`. Larger batches
 mean we can parallelize more, smaller batches imply a more fine-grained
-checking of termination criteria. A batch contains of `batch_size` times
+checking of termination criteria. A batch consists of `batch_size` times
 `resampling$iters` jobs. E.g., if you set a batch size of 10 points and
 do a 5-fold cross validation, you can utilize up to 50 cores.
 
@@ -51,7 +51,7 @@ documentation of [bbotk](https://bbotk.mlr-org.com/).
 
 - `design`:
 
-  [data.table::data.table](https://rdatatable.gitlab.io/data.table/reference/data.table.html)  
+  [data.table::data.table](https://rdrr.io/pkg/data.table/man/data.table.html)  
   Design points to try in search, one per row.
 
 ## Resources
@@ -216,15 +216,15 @@ instance = tune(
 instance$result
 #>       cp minbucket minsplit learner_param_vals  x_domain classif.ce
 #>    <num>     <num>    <num>             <list>    <list>      <num>
-#> 1:  0.01        32       64          <list[4]> <list[3]> 0.06086957
+#> 1:  0.01        32       64          <list[4]> <list[3]> 0.07826087
 
 # all evaluated hyperparameter configuration
 as.data.table(instance$archive)
 #>       cp minbucket minsplit classif.ce runtime_learners           timestamp
 #>    <num>     <num>    <num>      <num>            <num>              <POSc>
-#> 1: 0.100        64        2 0.09565217            0.005 2025-12-14 15:21:36
-#> 2: 0.010        32       64 0.06086957            0.006 2025-12-14 15:21:36
-#> 3: 0.001         1      128 0.06086957            0.007 2025-12-14 15:21:36
+#> 1: 0.100        64        2 0.09565217            0.005 2026-03-17 07:30:25
+#> 2: 0.010        32       64 0.07826087            0.005 2026-03-17 07:30:25
+#> 3: 0.001         1      128 0.07826087            0.007 2026-03-17 07:30:25
 #>    warnings errors  x_domain batch_nr  resample_result
 #>       <int>  <int>    <list>    <int>           <list>
 #> 1:        0      0 <list[3]>        1 <ResampleResult>

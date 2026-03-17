@@ -77,7 +77,10 @@ tune_nested(
   Hyperparameter search space. If `NULL` (default), the search space is
   constructed from the
   [paradox::TuneToken](https://paradox.mlr-org.com/reference/to_tune.html)
-  of the learner's parameter set (learner\$param_set).
+  of the learner's parameter set (learner\$param_set). When using
+  [`to_tune()`](https://paradox.mlr-org.com/reference/to_tune.html)
+  tokens, dependencies for hierarchical search spaces are automatically
+  handled.
 
 - store_tuning_instance:
 
@@ -135,12 +138,12 @@ rr = tune_nested(
 rr$score()
 #>     task_id          learner_id resampling_id iteration classif.ce
 #>      <char>              <char>        <char>     <int>      <num>
-#> 1: penguins classif.rpart.tuned            cv         1 0.05813953
-#> 2: penguins classif.rpart.tuned            cv         2 0.07558140
+#> 1: penguins classif.rpart.tuned            cv         1 0.09883721
+#> 2: penguins classif.rpart.tuned            cv         2 0.06395349
 #> Hidden columns: task, learner, resampling, prediction_test
 
 # Unbiased performance of the final model trained on the full data set
 rr$aggregate()
 #> classif.ce 
-#> 0.06686047 
+#> 0.08139535 
 ```

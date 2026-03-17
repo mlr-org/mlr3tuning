@@ -1,6 +1,6 @@
 # Rush Data Storage
 
-The \`ArchiveAsyncTuning“ stores all evaluated hyperparameter
+The `ArchiveAsyncTuning` stores all evaluated hyperparameter
 configurations and performance scores in a
 [rush::Rush](https://rush.mlr-org.com/reference/Rush.html) database.
 
@@ -40,7 +40,7 @@ The table (`$data`) has the following columns:
 
 For analyzing the tuning results, it is recommended to pass the
 ArchiveAsyncTuning to
-[`as.data.table()`](https://rdatatable.gitlab.io/data.table/reference/as.data.table.html).
+[`as.data.table()`](https://rdrr.io/pkg/data.table/man/as.data.table.html).
 The returned data table contains the
 [mlr3::ResampleResult](https://mlr3.mlr-org.com/reference/ResampleResult.html)
 for each hyperparameter evaluation.
@@ -51,7 +51,7 @@ for each hyperparameter evaluation.
   Returns a tabular view of all evaluated hyperparameter
   configurations.  
   ArchiveAsyncTuning -\>
-  [`data.table::data.table()`](https://rdatatable.gitlab.io/data.table/reference/data.table.html)  
+  [`data.table::data.table()`](https://rdrr.io/pkg/data.table/man/data.table.html)  
 
   - `x` (ArchiveAsyncTuning)
 
@@ -146,7 +146,10 @@ Creates a new instance of this
   Hyperparameter search space. If `NULL` (default), the search space is
   constructed from the
   [paradox::TuneToken](https://paradox.mlr-org.com/reference/to_tune.html)
-  of the learner's parameter set (learner\$param_set).
+  of the learner's parameter set (learner\$param_set). When using
+  [`to_tune()`](https://paradox.mlr-org.com/reference/to_tune.html)
+  tokens, dependencies for hierarchical search spaces are automatically
+  handled.
 
 - `codomain`:
 
@@ -169,7 +172,7 @@ Creates a new instance of this
 - `check_values`:
 
   (`logical(1)`)  
-  If `TRUE` (default), hyperparameter configurations are check for
+  If `TRUE` (default), hyperparameter configurations are checked for
   validity.
 
 ------------------------------------------------------------------------

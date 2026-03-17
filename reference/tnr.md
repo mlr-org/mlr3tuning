@@ -77,5 +77,4 @@ trm("run_time", secs = 20)
 #> 
 #> ── <TerminatorRunTime> - Run Time ──────────────────────────────────────────────
 #> • Parameters: secs=20
-#> • Terminators:
 ```

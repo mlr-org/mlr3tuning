@@ -15,7 +15,7 @@ The function ti_async() creates a TuningInstanceAsyncMultiCrit and the function 
 
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.5.1</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.6.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -68,6 +68,18 @@ If the available budget is exhausted, an exception is raised, and no further eva
 The tuner is also supposed to store its final result, consisting of a selected hyperparameter configuration and associated estimated performance values, by calling the method <code>instance$.assign_result</code>.</p>
     </div>
     <div class="section level2">
+    <h2 id="search-space">Search Space<a class="anchor" aria-label="anchor" href="#search-space"></a></h2>
+
+
+
+<p>The search space defines the hyperparameters to be tuned and their possible values.
+It can be specified in two ways:</p><ol><li><p>Tune tokens: Set <code><a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">to_tune()</a></code> tokens in the learner's parameter set and leave <code>search_space = NULL</code> (default).
+The search space is automatically constructed from the tune tokens.
+Dependencies are automatically handled.</p></li>
+<li><p>Explicit search space: Pass a <a href="https://paradox.mlr-org.com/reference/ParamSet.html" class="external-link">paradox::ParamSet</a> to the <code>search_space</code> argument.
+For search spaces with dependencies, use the <code>depends</code> argument in <code>p_*()</code>.</p></li>
+</ol></div>
+    <div class="section level2">
     <h2 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a></h2>
 
 
@@ -89,7 +101,7 @@ The tuner is also supposed to store its final result, consisting of a selected h
     <h2 id="analysis">Analysis<a class="anchor" aria-label="anchor" href="#analysis"></a></h2>
 
 
-<p>For analyzing the tuning results, it is recommended to pass the <a href="ArchiveAsyncTuning.html">ArchiveAsyncTuning</a> to <code><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table()</a></code>.
+<p>For analyzing the tuning results, it is recommended to pass the <a href="ArchiveAsyncTuning.html">ArchiveAsyncTuning</a> to <code><a href="https://rdrr.io/pkg/data.table/man/as.data.table.html" class="external-link">as.data.table()</a></code>.
 The returned data table contains the <a href="https://mlr3.mlr-org.com/reference/ResampleResult.html" class="external-link">mlr3::ResampleResult</a> for each hyperparameter evaluation.</p>
     </div>
     <div class="section level2">
@@ -179,9 +191,9 @@ Stop criterion of the tuning process.</p></dd>
 
 <dt><code>search_space</code></dt>
 <dd><p>(<a href="https://paradox.mlr-org.com/reference/ParamSet.html" class="external-link">paradox::ParamSet</a>)<br>
-Hyperparameter search space. If <code>NULL</code> (default), the search space is
-constructed from the <a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">paradox::TuneToken</a> of the learner's parameter set
-(learner$param_set).</p></dd>
+Hyperparameter search space.
+If <code>NULL</code> (default), the search space is constructed from the <a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">paradox::TuneToken</a> of the learner's parameter set (learner$param_set).
+When using <code><a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">to_tune()</a></code> tokens, dependencies for hierarchical search spaces are automatically handled.</p></dd>
 
 
 <dt><code>store_benchmark_result</code></dt>
@@ -235,8 +247,8 @@ For internal use.</p><div class="section">
 <div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>xdt</code></dt>
-<dd><p>(<code><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table::data.table()</a></code>)<br>
-Hyperparameter values as <code><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table::data.table()</a></code>. Each row is one
+<dd><p>(<code><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table::data.table()</a></code>)<br>
+Hyperparameter values as <code><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table::data.table()</a></code>. Each row is one
 configuration. Contains values in the search space. Can contain additional
 columns for extra information.</p></dd>
 
@@ -248,11 +260,12 @@ Optimal outcomes, e.g. the Pareto front.</p></dd>
 
 <dt><code>learner_param_vals</code></dt>
 <dd><p>(List of named <code>list()s</code>)<br>
-Fixed parameter values of the learner that are neither part of the</p></dd>
+Fixed parameter values of the learner that are neither part of the
+search space nor the domain.</p></dd>
 
 
 <dt><code>extra</code></dt>
-<dd><p>(<code><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table::data.table()</a></code>)<br>
+<dd><p>(<code><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table::data.table()</a></code>)<br>
 Additional information.</p></dd>
 
 

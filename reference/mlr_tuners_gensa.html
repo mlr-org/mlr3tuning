@@ -15,7 +15,7 @@ Calls GenSA::GenSA() from package GenSA."><meta property="og:image" content="htt
 
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.5.1</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.6.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -87,7 +87,7 @@ Calls <code><a href="https://rdrr.io/pkg/GenSA/man/GenSA.html" class="external-l
 <p>In order to support general termination criteria and parallelization, we
 evaluate points in a batch-fashion of size <code>batch_size</code>. Larger batches mean
 we can parallelize more, smaller batches imply a more fine-grained checking
-of termination criteria. A batch contains of <code>batch_size</code> times <code>resampling$iters</code> jobs.
+of termination criteria. A batch consists of <code>batch_size</code> times <code>resampling$iters</code> jobs.
 E.g., if you set a batch size of 10 points and do a 5-fold cross validation, you can
 utilize up to 50 cores.</p>
 <p>Parallelization is supported via package <a href="https://CRAN.R-project.org/package=future" class="external-link"><span class="pkg">future</span></a> (see <code><a href="https://mlr3.mlr-org.com/reference/benchmark.html" class="external-link">mlr3::benchmark()</a></code>'s
@@ -241,7 +241,7 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 <span class="r-in"><span><span class="va">instance</span><span class="op">$</span><span class="va">result</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># all evaluated hyperparameter configuration</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">instance</span><span class="op">$</span><span class="va">archive</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># fit final model on complete data set</span></span></span>
 <span class="r-in"><span><span class="va">learner</span><span class="op">$</span><span class="va">param_set</span><span class="op">$</span><span class="va">values</span> <span class="op">=</span> <span class="va">instance</span><span class="op">$</span><span class="va">result_learner_param_vals</span></span></span>

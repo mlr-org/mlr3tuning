@@ -26,7 +26,7 @@ for a list of stages that access `ContextBatchTuning`.
 
 - `design`:
 
-  ([data.table::data.table](https://rdatatable.gitlab.io/data.table/reference/data.table.html))  
+  ([data.table::data.table](https://rdrr.io/pkg/data.table/man/data.table.html))  
   The benchmark design of the latest batch.
 
 - `benchmark_result`:
@@ -36,7 +36,7 @@ for a list of stages that access `ContextBatchTuning`.
 
 - `aggregated_performance`:
 
-  ([data.table::data.table](https://rdatatable.gitlab.io/data.table/reference/data.table.html))  
+  ([data.table::data.table](https://rdrr.io/pkg/data.table/man/data.table.html))  
   Aggregated performance scores and training time of the latest batch.
   This data table is passed to the archive. A callback can add
   additional columns which are also written to the archive.

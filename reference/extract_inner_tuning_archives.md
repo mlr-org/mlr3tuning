@@ -7,7 +7,7 @@ and
 The function iterates over the
 [AutoTuner](https://mlr3tuning.mlr-org.com/reference/AutoTuner.md)
 objects and binds the tuning archives to a
-[`data.table::data.table()`](https://rdatatable.gitlab.io/data.table/reference/data.table.html).
+[`data.table::data.table()`](https://rdrr.io/pkg/data.table/man/data.table.html).
 [AutoTuner](https://mlr3tuning.mlr-org.com/reference/AutoTuner.md) must
 be initialized with `store_tuning_instance = TRUE` and
 [`mlr3::resample()`](https://mlr3.mlr-org.com/reference/resample.html)
@@ -47,7 +47,7 @@ extract_inner_tuning_archives(
 
 ## Value
 
-[`data.table::data.table()`](https://rdatatable.gitlab.io/data.table/reference/data.table.html).
+[`data.table::data.table()`](https://rdrr.io/pkg/data.table/man/data.table.html).
 
 ## Data structure
 
@@ -113,26 +113,26 @@ rr = resample(tsk("iris"), at, resampling_outer, store_models = TRUE)
 
 # extract inner archives
 extract_inner_tuning_archives(rr)
-#>    iteration        cp classif.ce  x_domain_cp runtime_learners
-#>        <int>     <num>      <num>        <num>            <num>
-#> 1:         1 -4.604232       0.24 0.0100093854            0.005
-#> 2:         1 -2.661451       0.24 0.0698467737            0.007
-#> 3:         1 -5.003197       0.24 0.0067164406            0.005
-#> 4:         1 -4.517196       0.24 0.0109195967            0.005
-#> 5:         2 -7.445684       0.04 0.0005839564            0.005
-#> 6:         2 -8.450607       0.04 0.0002137707            0.006
-#> 7:         2 -5.097860       0.04 0.0061098084            0.005
-#> 8:         2 -5.960192       0.04 0.0025794179            0.008
+#>    iteration        cp classif.ce x_domain_cp runtime_learners
+#>        <int>     <num>      <num>       <num>            <num>
+#> 1:         1 -6.819407       0.04 0.001092369            0.005
+#> 2:         1 -6.361894       0.04 0.001726095            0.006
+#> 3:         1 -5.017906       0.04 0.006618373            0.005
+#> 4:         1 -4.487537       0.04 0.011248315            0.006
+#> 5:         2 -2.771268       0.08 0.062582599            0.006
+#> 6:         2 -5.852816       0.08 0.002871801            0.006
+#> 7:         2 -6.365882       0.08 0.001719224            0.005
+#> 8:         2 -3.185002       0.08 0.041378177            0.005
 #>              timestamp warnings errors batch_nr  resample_result task_id
 #>                 <POSc>    <int>  <int>    <int>           <list>  <char>
-#> 1: 2025-12-14 15:21:24        0      0        1 <ResampleResult>    iris
-#> 2: 2025-12-14 15:21:24        0      0        2 <ResampleResult>    iris
-#> 3: 2025-12-14 15:21:24        0      0        3 <ResampleResult>    iris
-#> 4: 2025-12-14 15:21:24        0      0        4 <ResampleResult>    iris
-#> 5: 2025-12-14 15:21:24        0      0        1 <ResampleResult>    iris
-#> 6: 2025-12-14 15:21:24        0      0        2 <ResampleResult>    iris
-#> 7: 2025-12-14 15:21:24        0      0        3 <ResampleResult>    iris
-#> 8: 2025-12-14 15:21:24        0      0        4 <ResampleResult>    iris
+#> 1: 2026-03-17 07:30:12        0      0        1 <ResampleResult>    iris
+#> 2: 2026-03-17 07:30:12        0      0        2 <ResampleResult>    iris
+#> 3: 2026-03-17 07:30:12        0      0        3 <ResampleResult>    iris
+#> 4: 2026-03-17 07:30:12        0      0        4 <ResampleResult>    iris
+#> 5: 2026-03-17 07:30:12        0      0        1 <ResampleResult>    iris
+#> 6: 2026-03-17 07:30:12        0      0        2 <ResampleResult>    iris
+#> 7: 2026-03-17 07:30:12        0      0        3 <ResampleResult>    iris
+#> 8: 2026-03-17 07:30:13        0      0        4 <ResampleResult>    iris
 #>             learner_id resampling_id
 #>                 <char>        <char>
 #> 1: classif.rpart.tuned            cv

@@ -101,7 +101,10 @@ tune(
   Hyperparameter search space. If `NULL` (default), the search space is
   constructed from the
   [paradox::TuneToken](https://paradox.mlr-org.com/reference/to_tune.html)
-  of the learner's parameter set (learner\$param_set).
+  of the learner's parameter set (learner\$param_set). When using
+  [`to_tune()`](https://paradox.mlr-org.com/reference/to_tune.html)
+  tokens, dependencies for hierarchical search spaces are automatically
+  handled.
 
 - store_benchmark_result:
 
@@ -184,6 +187,23 @@ measure depends on the task type.
 | `"regr_st"`    | `"regr.mse"`     | [mlr3spatial](https://CRAN.R-project.org/package=mlr3spatial) |
 | `"clust"`      | `"clust.dunn"`   | [mlr3cluster](https://CRAN.R-project.org/package=mlr3cluster) |
 
+## Search Space
+
+The search space defines the hyperparameters to be tuned and their
+possible values. It can be specified in two ways:
+
+1.  Tune tokens: Set
+    [`to_tune()`](https://paradox.mlr-org.com/reference/to_tune.html)
+    tokens in the learner's parameter set and leave
+    `search_space = NULL` (default). The search space is automatically
+    constructed from the tune tokens. Dependencies are automatically
+    handled.
+
+2.  Explicit search space: Pass a
+    [paradox::ParamSet](https://paradox.mlr-org.com/reference/ParamSet.html)
+    to the `search_space` argument. For search spaces with dependencies,
+    use the `depends` argument in `p_*()`.
+
 ## Resources
 
 There are several sections about hyperparameter optimization in the
@@ -240,7 +260,7 @@ summarizes the most important functions of mlr3tuning.
 For analyzing the tuning results, it is recommended to pass the
 [ArchiveBatchTuning](https://mlr3tuning.mlr-org.com/reference/ArchiveBatchTuning.md)
 to
-[`as.data.table()`](https://rdatatable.gitlab.io/data.table/reference/as.data.table.html).
+[`as.data.table()`](https://rdrr.io/pkg/data.table/man/as.data.table.html).
 The returned data table is joined with the benchmark result which adds
 the
 [mlr3::ResampleResult](https://mlr3.mlr-org.com/reference/ResampleResult.html)
@@ -253,7 +273,7 @@ For a complete list of all getters see the methods section.
 The benchmark result (`$benchmark_result`) allows to score the
 hyperparameter configurations again on a different measure.
 Alternatively, measures can be supplied to
-[`as.data.table()`](https://rdatatable.gitlab.io/data.table/reference/as.data.table.html).
+[`as.data.table()`](https://rdrr.io/pkg/data.table/man/as.data.table.html).
 
 The [mlr3viz](https://CRAN.R-project.org/package=mlr3viz) package
 provides visualizations for tuning results.
@@ -289,10 +309,10 @@ learner$train(task)
 as.data.table(instance$archive)
 #>           cp classif.ce runtime_learners           timestamp warnings errors
 #>        <num>      <num>            <num>              <POSc>    <int>  <int>
-#> 1: -8.458173  0.2890625            0.008 2025-12-14 15:21:48        0      0
-#> 2: -8.809285  0.2890625            0.008 2025-12-14 15:21:48        0      0
-#> 3: -6.984893  0.2890625            0.008 2025-12-14 15:21:48        0      0
-#> 4: -2.654367  0.2304688            0.007 2025-12-14 15:21:48        0      0
+#> 1: -3.464204  0.2187500            0.009 2026-03-17 07:30:37        0      0
+#> 2: -9.210164  0.2421875            0.009 2026-03-17 07:30:37        0      0
+#> 3: -7.001822  0.2421875            0.009 2026-03-17 07:30:37        0      0
+#> 4: -8.476411  0.2421875            0.007 2026-03-17 07:30:37        0      0
 #>     x_domain batch_nr  resample_result
 #>       <list>    <int>           <list>
 #> 1: <list[1]>        1 <ResampleResult>

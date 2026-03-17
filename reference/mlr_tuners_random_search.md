@@ -26,7 +26,7 @@ instantiated with the associated sugar function
 In order to support general termination criteria and parallelization, we
 evaluate points in a batch-fashion of size `batch_size`. Larger batches
 mean we can parallelize more, smaller batches imply a more fine-grained
-checking of termination criteria. A batch contains of `batch_size` times
+checking of termination criteria. A batch consists of `batch_size` times
 `resampling$iters` jobs. E.g., if you set a batch size of 10 points and
 do a 5-fold cross validation, you can utilize up to 50 cores.
 
@@ -210,22 +210,22 @@ instance = tune(
 instance$result
 #>           cp learner_param_vals  x_domain classif.ce
 #>        <num>             <list>    <list>      <num>
-#> 1: -4.257432          <list[2]> <list[1]> 0.07826087
+#> 1: -2.675162          <list[2]> <list[1]> 0.07826087
 
 # all evaluated hyperparameter configuration
 as.data.table(instance$archive)
 #>            cp classif.ce runtime_learners           timestamp warnings errors
 #>         <num>      <num>            <num>              <POSc>    <int>  <int>
-#>  1: -4.257432 0.07826087            0.006 2025-12-14 15:21:44        0      0
-#>  2: -9.014868 0.07826087            0.005 2025-12-14 15:21:44        0      0
-#>  3: -5.508992 0.07826087            0.005 2025-12-14 15:21:44        0      0
-#>  4: -7.574787 0.07826087            0.007 2025-12-14 15:21:44        0      0
-#>  5: -4.089654 0.07826087            0.005 2025-12-14 15:21:44        0      0
-#>  6: -8.164328 0.07826087            0.007 2025-12-14 15:21:44        0      0
-#>  7: -6.891851 0.07826087            0.005 2025-12-14 15:21:44        0      0
-#>  8: -7.572740 0.07826087            0.006 2025-12-14 15:21:44        0      0
-#>  9: -7.492268 0.07826087            0.007 2025-12-14 15:21:44        0      0
-#> 10: -6.837758 0.07826087            0.024 2025-12-14 15:21:44        0      0
+#>  1: -8.400473 0.09565217            0.007 2026-03-17 07:30:33        0      0
+#>  2: -2.675162 0.07826087            0.006 2026-03-17 07:30:33        0      0
+#>  3: -8.524615 0.09565217            0.007 2026-03-17 07:30:33        0      0
+#>  4: -3.455505 0.07826087            0.007 2026-03-17 07:30:33        0      0
+#>  5: -3.432214 0.07826087            0.007 2026-03-17 07:30:33        0      0
+#>  6: -8.600166 0.09565217            0.007 2026-03-17 07:30:33        0      0
+#>  7: -2.743474 0.07826087            0.007 2026-03-17 07:30:33        0      0
+#>  8: -2.915375 0.07826087            0.005 2026-03-17 07:30:34        0      0
+#>  9: -8.320890 0.09565217            0.006 2026-03-17 07:30:34        0      0
+#> 10: -4.257432 0.09565217            0.006 2026-03-17 07:30:34        0      0
 #>      x_domain batch_nr  resample_result
 #>        <list>    <int>           <list>
 #>  1: <list[1]>        1 <ResampleResult>

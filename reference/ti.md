@@ -69,7 +69,10 @@ ti(
   Hyperparameter search space. If `NULL` (default), the search space is
   constructed from the
   [paradox::TuneToken](https://paradox.mlr-org.com/reference/to_tune.html)
-  of the learner's parameter set (learner\$param_set).
+  of the learner's parameter set (learner\$param_set). When using
+  [`to_tune()`](https://paradox.mlr-org.com/reference/to_tune.html)
+  tokens, dependencies for hierarchical search spaces are automatically
+  handled.
 
 - store_benchmark_result:
 
@@ -191,9 +194,9 @@ tuner = tnr("random_search", batch_size = 2)
 
 # Run tuning
 tuner$optimize(instance)
-#>           cp learner_param_vals  x_domain classif.ce
-#>        <num>             <list>    <list>      <num>
-#> 1: -7.560752          <list[2]> <list[1]> 0.06102212
+#>          cp learner_param_vals  x_domain classif.ce
+#>       <num>             <list>    <list>      <num>
+#> 1: -7.66021          <list[2]> <list[1]> 0.06389525
 
 # Set optimal hyperparameter configuration to learner
 learner$param_set$values = instance$result_learner_param_vals
@@ -205,10 +208,10 @@ learner$train(task)
 as.data.table(instance$archive)
 #>           cp classif.ce runtime_learners           timestamp warnings errors
 #>        <num>      <num>            <num>              <POSc>    <int>  <int>
-#> 1: -2.653229 0.07271803            0.017 2025-12-14 15:21:46        0      0
-#> 2: -7.560752 0.06102212            0.017 2025-12-14 15:21:46        0      0
-#> 3: -4.769985 0.07271803            0.017 2025-12-14 15:21:46        0      0
-#> 4: -8.697647 0.06102212            0.017 2025-12-14 15:21:46        0      0
+#> 1: -2.604407 0.06684465            0.020 2026-03-17 07:30:35        0      0
+#> 2: -7.660210 0.06389525            0.020 2026-03-17 07:30:35        0      0
+#> 3: -7.939846 0.06389525            0.017 2026-03-17 07:30:35        0      0
+#> 4: -7.255071 0.06389525            0.017 2026-03-17 07:30:35        0      0
 #>     x_domain batch_nr  resample_result
 #>       <list>    <int>           <list>
 #> 1: <list[1]>        1 <ResampleResult>

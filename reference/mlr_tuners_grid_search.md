@@ -55,7 +55,7 @@ enable with `progressr::handlers("progress")`.
 In order to support general termination criteria and parallelization, we
 evaluate points in a batch-fashion of size `batch_size`. Larger batches
 mean we can parallelize more, smaller batches imply a more fine-grained
-checking of termination criteria. A batch contains of `batch_size` times
+checking of termination criteria. A batch consists of `batch_size` times
 `resampling$iters` jobs. E.g., if you set a batch size of 10 points and
 do a 5-fold cross validation, you can utilize up to 50 cores.
 
@@ -216,24 +216,24 @@ instance = tune(
 
 # best performing hyperparameter configuration
 instance$result
-#>          cp learner_param_vals  x_domain classif.ce
-#>       <num>             <list>    <list>      <num>
-#> 1: -4.60517          <list[2]> <list[1]> 0.08695652
+#>           cp learner_param_vals  x_domain classif.ce
+#>        <num>             <list>    <list>      <num>
+#> 1: -2.302585          <list[2]> <list[1]> 0.05217391
 
 # all evaluated hyperparameter configuration
 as.data.table(instance$archive)
 #>            cp classif.ce runtime_learners           timestamp warnings errors
 #>         <num>      <num>            <num>              <POSc>    <int>  <int>
-#>  1: -4.605170 0.08695652            0.006 2025-12-14 15:21:39        0      0
-#>  2: -7.675284 0.08695652            0.007 2025-12-14 15:21:39        0      0
-#>  3: -9.210340 0.08695652            0.006 2025-12-14 15:21:39        0      0
-#>  4: -6.907755 0.08695652            0.026 2025-12-14 15:21:39        0      0
-#>  5: -3.070113 0.08695652            0.006 2025-12-14 15:21:39        0      0
-#>  6: -2.302585 0.08695652            0.006 2025-12-14 15:21:39        0      0
-#>  7: -5.372699 0.08695652            0.006 2025-12-14 15:21:39        0      0
-#>  8: -6.140227 0.08695652            0.006 2025-12-14 15:21:39        0      0
-#>  9: -3.837642 0.08695652            0.006 2025-12-14 15:21:39        0      0
-#> 10: -8.442812 0.08695652            0.007 2025-12-14 15:21:39        0      0
+#>  1: -5.372699 0.06086957            0.006 2026-03-17 07:30:28        0      0
+#>  2: -2.302585 0.05217391            0.007 2026-03-17 07:30:28        0      0
+#>  3: -6.907755 0.06086957            0.007 2026-03-17 07:30:28        0      0
+#>  4: -8.442812 0.06086957            0.006 2026-03-17 07:30:28        0      0
+#>  5: -3.070113 0.05217391            0.006 2026-03-17 07:30:28        0      0
+#>  6: -4.605170 0.06086957            0.009 2026-03-17 07:30:28        0      0
+#>  7: -6.140227 0.06086957            0.006 2026-03-17 07:30:28        0      0
+#>  8: -7.675284 0.06086957            0.007 2026-03-17 07:30:28        0      0
+#>  9: -9.210340 0.06086957            0.005 2026-03-17 07:30:28        0      0
+#> 10: -3.837642 0.06086957            0.005 2026-03-17 07:30:28        0      0
 #>      x_domain batch_nr  resample_result
 #>        <list>    <int>           <list>
 #>  1: <list[1]>        1 <ResampleResult>
