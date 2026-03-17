@@ -1,4 +1,7 @@
-# mlr3tuning (development version)
+# mlr3tuning 1.6.0
+
+* compatibility: rush 1.0.0.
+* fix: `ArchiveAsyncTuning`, `ArchiveAsyncTuningFrozen`, and `ArchiveBatchTuning` convert the archive to a `data.table` with a consistent column order.
 
 # mlr3tuning 1.5.1
 
