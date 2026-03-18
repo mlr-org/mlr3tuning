@@ -37,8 +37,8 @@ test_that("backup callback works with standalone tuner", {
 # async measure callback ------------------------------------------------------
 
 test_that("async measures callback works", {
-  skip_if_no_redis()
   skip_if_not_installed("rush")
+  skip_if_no_redis()
   rush = start_rush()
     on.exit({
     rush$reset()
@@ -66,14 +66,16 @@ test_that("async measures callback works", {
 #   # mlflow server must be running
 #   skip_on_ci()
 #   skip_if_not_installed("rush")
-#   flush_redis()
+#   rush = start_rush()
+#   on.exit({
+#     rush$reset()
+#     mirai::daemons(0)
+#   })
 
 #   learner = lrn("classif.rpart",
 #     minsplit  = to_tune(2, 128),
 #     cp        = to_tune(1e-04, 1e-1))
 
-#   mirai::daemons(2)
-#   rush::rush_plan(n_workers = 2, worker_type = "remote")
 #   instance = ti_async(
 #     task = tsk("pima"),
 #     learner = learner,
@@ -81,7 +83,8 @@ test_that("async measures callback works", {
 #     measures = msr("classif.ce"),
 #     terminator = trm("evals", n_evals = 20),
 #     store_benchmark_result = FALSE,
-#     callbacks = clbk("mlr3tuning.async_mlflow", tracking_uri = "http://localhost:8080")
+#     callbacks = clbk("mlr3tuning.async_mlflow", tracking_uri = "http://localhost:8080"),
+#     rush = rush
 #   )
 
 #   optimizer = tnr("async_random_search")
@@ -91,8 +94,8 @@ test_that("async measures callback works", {
 # async default configuration callback -----------------------------------------
 
 test_that("default configuration callback works", {
-  skip_if_no_redis()
   skip_if_not_installed("rush")
+  skip_if_no_redis()
   rush = start_rush()
     on.exit({
     rush$reset()
@@ -117,8 +120,8 @@ test_that("default configuration callback works", {
 })
 
 test_that("default configuration callback works with logscale", {
-  skip_if_no_redis()
   skip_if_not_installed("rush")
+  skip_if_no_redis()
   rush = start_rush()
     on.exit({
     rush$reset()
@@ -143,8 +146,8 @@ test_that("default configuration callback works with logscale", {
 })
 
 test_that("default configuration callback errors with trafo", {
-  skip_if_no_redis()
   skip_if_not_installed("rush")
+  skip_if_no_redis()
   rush = start_rush()
     on.exit({
     rush$reset()
@@ -166,8 +169,8 @@ test_that("default configuration callback errors with trafo", {
 })
 
 test_that("default configuration callback works without transformation and with logscale", {
-  skip_if_no_redis()
   skip_if_not_installed("rush")
+  skip_if_no_redis()
   rush = start_rush()
     on.exit({
     rush$reset()
@@ -198,8 +201,8 @@ test_that("default configuration callback works without transformation and with 
 })
 
 test_that("default configuration callback errors without transformation and with logscale and trafo", {
-  skip_if_no_redis()
   skip_if_not_installed("rush")
+  skip_if_no_redis()
   rush = start_rush()
     on.exit({
     rush$reset()
@@ -226,8 +229,8 @@ test_that("default configuration callback errors without transformation and with
 })
 
 test_that("default configuration callback errors with extra trafo", {
-  skip_if_no_redis()
   skip_if_not_installed("rush")
+  skip_if_no_redis()
   rush = start_rush()
     on.exit({
     rush$reset()
@@ -261,8 +264,8 @@ test_that("default configuration callback errors with extra trafo", {
 })
 
 test_that("default configuration callback errors with old parameter set api", {
-  skip_if_no_redis()
   skip_if_not_installed("rush")
+  skip_if_no_redis()
   rush = start_rush()
     on.exit({
     rush$reset()
@@ -422,8 +425,8 @@ test_that("batch default configuration callback  errors with old parameter set a
 # async save logs callback -----------------------------------------------------
 
 test_that("async save logs callback works", {
-  skip_if_no_redis()
   skip_if_not_installed("rush")
+  skip_if_no_redis()
   rush = start_rush()
     on.exit({
     rush$reset()
@@ -466,8 +469,8 @@ test_that("one se rule callback works", {
 })
 
 test_that("one se rule callback works", {
-  skip_if_no_redis()
   skip_if_not_installed("rush")
+  skip_if_no_redis()
   rush = start_rush()
     on.exit({
     rush$reset()
@@ -494,8 +497,8 @@ test_that("one se rule callback works", {
 # async freeze archive callback ------------------------------------------------
 
 test_that("async freeze archive callback works", {
-  skip_if_no_redis()
   skip_if_not_installed("rush")
+  skip_if_no_redis()
   rush = start_rush()
     on.exit({
     rush$reset()

@@ -22,8 +22,8 @@ test_that("auto_tuner function works", {
 })
 
 test_that("async auto tuner works", {
-  skip_if_no_redis()
   skip_if_not_installed("rush")
+  skip_if_no_redis()
   rush = start_rush()
     on.exit({
     rush$reset()
@@ -46,8 +46,8 @@ test_that("async auto tuner works", {
 })
 
 test_that("async auto tuner works with rush controller", {
-  skip_if_no_redis()
   skip_if_not_installed("rush")
+  skip_if_no_redis()
   rush = start_rush()
     on.exit({
     rush$reset()

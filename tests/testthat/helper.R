@@ -5,7 +5,11 @@ library(paradox)
 library(R6)
 
 lapply(list.files(system.file("testthat", package = "mlr3"), pattern = "^helper.*\\.[rR]", full.names = TRUE), source)
-lapply(list.files(system.file("testthat", package = "mlr3tuning"), pattern = "^helper.*\\.[rR]", full.names = TRUE), source)
+lapply(
+  list.files(system.file("testthat", package = "mlr3tuning"), pattern = "^helper.*\\.[rR]", full.names = TRUE),
+  source
+)
+lapply(list.files(system.file("testthat", package = "rush"), pattern = "^helper.*\\.[rR]$", full.names = TRUE), source)
 
 sortnames = function(x) {
   if (!is.null(names(x))) {
@@ -15,14 +19,7 @@ sortnames = function(x) {
 }
 
 # suppress warning "Canceling all iterations" from future.apply
-expect_resample_error = function(object,
-  regexp = NULL,
-  class = NULL,
-  ...,
-  inherit = TRUE,
-  info = NULL,
-  label = NULL
-  ) {
+expect_resample_error = function(object, regexp = NULL, class = NULL, ..., inherit = TRUE, info = NULL, label = NULL) {
   withCallingHandlers(
     expect_error(object, regexp, class, ..., inherit = inherit, info = info, label = label),
     warning = function(w) {

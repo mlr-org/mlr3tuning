@@ -49,7 +49,7 @@ Suggests:
     nloptr,
     processx,
     redux,
-    rush (>= 0.4.1),
+    rush (>= 1.0.0),
     rmarkdown,
     rpart,
     testthat (>= 3.0.0),
