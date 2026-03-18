@@ -115,24 +115,24 @@ rr = resample(tsk("iris"), at, resampling_outer, store_models = TRUE)
 extract_inner_tuning_archives(rr)
 #>    iteration        cp classif.ce x_domain_cp runtime_learners
 #>        <int>     <num>      <num>       <num>            <num>
-#> 1:         1 -2.771268       0.08 0.062582599            0.007
+#> 1:         1 -2.771268       0.08 0.062582599            0.005
 #> 2:         1 -5.852816       0.08 0.002871801            0.005
-#> 3:         1 -6.365882       0.08 0.001719224            0.007
-#> 4:         1 -3.185002       0.08 0.041378177            0.007
-#> 5:         2 -6.819407       0.04 0.001092369            0.006
+#> 3:         1 -6.365882       0.08 0.001719224            0.005
+#> 4:         1 -3.185002       0.08 0.041378177            0.006
+#> 5:         2 -6.819407       0.04 0.001092369            0.005
 #> 6:         2 -6.361894       0.04 0.001726095            0.005
 #> 7:         2 -5.017906       0.04 0.006618373            0.006
 #> 8:         2 -4.487537       0.04 0.011248315            0.006
 #>              timestamp warnings errors batch_nr  resample_result task_id
 #>                 <POSc>    <int>  <int>    <int>           <list>  <char>
-#> 1: 2026-03-17 07:33:19        0      0        1 <ResampleResult>    iris
-#> 2: 2026-03-17 07:33:19        0      0        2 <ResampleResult>    iris
-#> 3: 2026-03-17 07:33:19        0      0        3 <ResampleResult>    iris
-#> 4: 2026-03-17 07:33:19        0      0        4 <ResampleResult>    iris
-#> 5: 2026-03-17 07:33:18        0      0        1 <ResampleResult>    iris
-#> 6: 2026-03-17 07:33:19        0      0        2 <ResampleResult>    iris
-#> 7: 2026-03-17 07:33:19        0      0        3 <ResampleResult>    iris
-#> 8: 2026-03-17 07:33:19        0      0        4 <ResampleResult>    iris
+#> 1: 2026-03-18 13:57:02        0      0        1 <ResampleResult>    iris
+#> 2: 2026-03-18 13:57:02        0      0        2 <ResampleResult>    iris
+#> 3: 2026-03-18 13:57:02        0      0        3 <ResampleResult>    iris
+#> 4: 2026-03-18 13:57:02        0      0        4 <ResampleResult>    iris
+#> 5: 2026-03-18 13:57:01        0      0        1 <ResampleResult>    iris
+#> 6: 2026-03-18 13:57:01        0      0        2 <ResampleResult>    iris
+#> 7: 2026-03-18 13:57:02        0      0        3 <ResampleResult>    iris
+#> 8: 2026-03-18 13:57:02        0      0        4 <ResampleResult>    iris
 #>             learner_id resampling_id
 #>                 <char>        <char>
 #> 1: classif.rpart.tuned            cv

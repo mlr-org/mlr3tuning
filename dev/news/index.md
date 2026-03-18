@@ -2,6 +2,9 @@
 
 ## mlr3tuning (development version)
 
+- Minimum required version of `rush` is now 1.0.0. Removed all
+  compatibility workarounds for older versions.
+
 ## mlr3tuning 1.6.0
 
 CRAN release: 2026-03-16
