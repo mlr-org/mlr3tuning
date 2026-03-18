@@ -14,7 +14,7 @@ test_that("ObjectiveTuningBatch", {
   z = obj$eval_many(xss)
   expect_data_table(z, nrows = 2, ncols = 5)
   expect_equal(obj$archive$benchmark_result$resample_result(1)$learners[[1]]$param_set$values$cp, 0.01)
-  expect_equal(obj$archive$benchmark_result$resample_result(2)$learners[[1]]$param_set$values$cp,  0.02)
+  expect_equal(obj$archive$benchmark_result$resample_result(2)$learners[[1]]$param_set$values$cp, 0.02)
 
   xss = list(list("cp" = 0.01, minsplit = 3), list("cp" = 0.02, minsplit = 4))
   z = obj$eval_many(xss)
@@ -58,7 +58,7 @@ test_that("runtime of learners is added", {
   # cv
   task = tsk("iris")
   learner = lrn("classif.rpart")
-  resampling = rsmp("cv", folds =3)
+  resampling = rsmp("cv", folds = 3)
   measures = msr("classif.ce")
 
   archive = ArchiveBatchTuning$new(search_space = learner$param_set, codomain = measures_to_codomain(measures))
@@ -76,7 +76,7 @@ test_that("runtime of learners is added", {
   expect_equal(z[2, runtime_learners], t2)
 
   # repeated cv
-  resampling = rsmp("repeated_cv", repeats = 3, folds =3)
+  resampling = rsmp("repeated_cv", repeats = 3, folds = 3)
 
   archive = ArchiveBatchTuning$new(search_space = learner$param_set, codomain = measures_to_codomain(measures))
   obj = ObjectiveTuningBatch$new(task, learner, resampling, measures, archive = archive)
@@ -97,7 +97,7 @@ test_that("tuner can modify resampling", {
   instance = TuningInstanceBatchSingleCrit$new(
     task = tsk("iris"),
     learner = lrn("classif.rpart", cp = to_tune(0.001, 0.1)),
-    resampling = rsmp("cv", folds =3),
+    resampling = rsmp("cv", folds = 3),
     measure = msr("classif.ce"),
     terminator = trm("none")
   )

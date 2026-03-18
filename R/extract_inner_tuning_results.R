@@ -6,7 +6,8 @@
 #'
 #' @details
 #' The function iterates over the [AutoTuner] objects and binds the tuning results to a [data.table::data.table()].
-#' The [AutoTuner] must be initialized with `store_tuning_instance = TRUE` and [mlr3::resample()] or [mlr3::benchmark()] must be called with `store_models = TRUE`.
+#' The [AutoTuner] must be initialized with `store_tuning_instance = TRUE` and [mlr3::resample()] or
+#' [mlr3::benchmark()] must be called with `store_models = TRUE`.
 #' Optionally, the tuning instance can be added for each iteration.
 #'
 #' @section Data structure:
@@ -59,7 +60,7 @@
 #' # extract inner results
 #' extract_inner_tuning_results(rr)
 extract_inner_tuning_results = function(x, tuning_instance, ...) {
-   UseMethod("extract_inner_tuning_results", x)
+  UseMethod("extract_inner_tuning_results", x)
 }
 
 #' @export
@@ -72,7 +73,9 @@ extract_inner_tuning_results.ResampleResult = function(x, tuning_instance = FALS
   tab = imap_dtr(rr$learners, function(learner, i) {
     data = setalloccol(learner$tuning_result)
     set(data, j = "iteration", value = i)
-    if (tuning_instance) set(data, j = "tuning_instance", value = list(learner$tuning_instance))
+    if (tuning_instance) {
+      set(data, j = "tuning_instance", value = list(learner$tuning_instance))
+    }
     data
   })
   tab[, "task_id" := rr$task$id]
@@ -88,15 +91,32 @@ extract_inner_tuning_results.ResampleResult = function(x, tuning_instance = FALS
 #' @rdname extract_inner_tuning_results
 extract_inner_tuning_results.BenchmarkResult = function(x, tuning_instance = FALSE, ...) {
   bmr = assert_benchmark_result(x)
-  tab = imap_dtr(bmr$resample_results$resample_result, function(rr, i) {
-     data = extract_inner_tuning_results(rr, tuning_instance = tuning_instance)
-     if (nrow(data) > 0) set(data, j = "experiment", value = i)
-  }, .fill = TRUE)
+  tab = imap_dtr(
+    bmr$resample_results$resample_result,
+    function(rr, i) {
+      data = extract_inner_tuning_results(rr, tuning_instance = tuning_instance)
+      if (nrow(data) > 0) set(data, j = "experiment", value = i)
+    },
+    .fill = TRUE
+  )
   # reorder dt
   if (nrow(tab) > 0) {
-    cols_x = unique(unlist(map(unique(tab$experiment), function(i) bmr$resample_results$resample_result[[i]]$learners[[1]]$archive$cols_x)))
-    cols_y = unique(unlist(map(unique(tab$experiment), function(i) bmr$resample_results$resample_result[[i]]$learners[[1]]$archive$cols_y)))
-    setcolorder(tab, unique(c("experiment", "iteration", if (!is.null(tab$internal_tuned_values)) "internal_tuned_values", cols_x, cols_y)))
+    cols_x = unique(unlist(map(unique(tab$experiment), function(i) {
+      bmr$resample_results$resample_result[[i]]$learners[[1]]$archive$cols_x
+    })))
+    cols_y = unique(unlist(map(unique(tab$experiment), function(i) {
+      bmr$resample_results$resample_result[[i]]$learners[[1]]$archive$cols_y
+    })))
+    setcolorder(
+      tab,
+      unique(c(
+        "experiment",
+        "iteration",
+        if (!is.null(tab$internal_tuned_values)) "internal_tuned_values",
+        cols_x,
+        cols_y
+      ))
+    )
   }
   tab
 }

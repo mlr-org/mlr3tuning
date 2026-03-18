@@ -4,7 +4,8 @@
 #' Extract inner tuning archives of nested resampling.
 #' Implemented for [mlr3::ResampleResult] and [mlr3::BenchmarkResult].
 #' The function iterates over the [AutoTuner] objects and binds the tuning archives to a [data.table::data.table()].
-#' [AutoTuner] must be initialized with `store_tuning_instance = TRUE` and [mlr3::resample()] or [mlr3::benchmark()] must be called with `store_models = TRUE`.
+#' [AutoTuner] must be initialized with `store_tuning_instance = TRUE` and [mlr3::resample()] or [mlr3::benchmark()]
+#' must be called with `store_models = TRUE`.
 #'
 #' @section Data structure:
 #'
@@ -66,8 +67,8 @@
 #'
 #' # extract inner archives
 #' extract_inner_tuning_archives(rr)
-extract_inner_tuning_archives = function (x, unnest = "x_domain", exclude_columns = "uhash") {
-   UseMethod("extract_inner_tuning_archives")
+extract_inner_tuning_archives = function(x, unnest = "x_domain", exclude_columns = "uhash") {
+  UseMethod("extract_inner_tuning_archives")
 }
 
 #' @export
@@ -92,17 +93,34 @@ extract_inner_tuning_archives.ResampleResult = function(x, unnest = "x_domain", 
 #' @export
 extract_inner_tuning_archives.BenchmarkResult = function(x, unnest = "x_domain", exclude_columns = "uhash") {
   bmr = assert_benchmark_result(x)
-  tab = imap_dtr(bmr$resample_results$resample_result, function(rr, i) {
-     data = extract_inner_tuning_archives(rr, unnest = unnest, exclude_columns = exclude_columns)
-     if (nrow(data) > 0) set(data, j = "experiment", value = i)
-  }, .fill = TRUE)
+  tab = imap_dtr(
+    bmr$resample_results$resample_result,
+    function(rr, i) {
+      data = extract_inner_tuning_archives(rr, unnest = unnest, exclude_columns = exclude_columns)
+      if (nrow(data) > 0) set(data, j = "experiment", value = i)
+    },
+    .fill = TRUE
+  )
 
   if (nrow(tab) > 0) {
     # reorder dt
-    cols_x = unique(unlist(map(unique(tab$experiment), function(i) bmr$resample_results$resample_result[[i]]$learners[[1]]$archive$cols_x)))
-    cols_y = unique(unlist(map(unique(tab$experiment), function(i) bmr$resample_results$resample_result[[i]]$learners[[1]]$archive$cols_y)))
-    cols_x_domain =  if ("x_domain" %in% unnest) names(tab)[grepl("^x_domain_.*", names(tab))] else NULL
-    setcolorder(tab, c("experiment", "iteration", unique(c(cols_x, cols_y)), if(!is.null(tab$internal_tuned_values)) "internal_tuned_values", cols_x_domain))
+    cols_x = unique(unlist(map(unique(tab$experiment), function(i) {
+      bmr$resample_results$resample_result[[i]]$learners[[1]]$archive$cols_x
+    })))
+    cols_y = unique(unlist(map(unique(tab$experiment), function(i) {
+      bmr$resample_results$resample_result[[i]]$learners[[1]]$archive$cols_y
+    })))
+    cols_x_domain = if ("x_domain" %in% unnest) names(tab)[grepl("^x_domain_.*", names(tab))] else NULL
+    setcolorder(
+      tab,
+      c(
+        "experiment",
+        "iteration",
+        unique(c(cols_x, cols_y)),
+        if (!is.null(tab$internal_tuned_values)) "internal_tuned_values",
+        cols_x_domain
+      )
+    )
   }
   tab
 }

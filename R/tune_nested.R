@@ -57,7 +57,7 @@ tune_nested = function(
   store_models = FALSE,
   check_values = FALSE,
   callbacks = NULL
-  ) {
+) {
   assert_task(task)
   assert_resampling(inner_resampling)
   assert_resampling(outer_resampling)
@@ -75,7 +75,8 @@ tune_nested = function(
     store_benchmark_result = store_benchmark_result,
     store_models = store_models,
     check_values = check_values,
-    callbacks = callbacks)
+    callbacks = callbacks
+  )
 
   resample(task, at, outer_resampling, store_models = TRUE)
 }

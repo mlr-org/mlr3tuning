@@ -15,10 +15,10 @@
 #' @template param_callbacks
 #'
 #' @export
-TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
+TuningInstanceSingleCrit = R6Class(
+  "TuningInstanceSingleCrit",
   inherit = TuningInstanceBatchSingleCrit,
   public = list(
-
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function(
@@ -32,8 +32,7 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
       store_models = FALSE,
       check_values = FALSE,
       callbacks = NULL
-      ) {
-
+    ) {
       message("TuningInstanceSingleCrit is deprecated. Use TuningInstanceBatchSingleCrit instead.")
 
       super$initialize(
@@ -46,9 +45,8 @@ TuningInstanceSingleCrit = R6Class("TuningInstanceSingleCrit",
         store_benchmark_result = store_benchmark_result,
         store_models = store_models,
         check_values = check_values,
-        callbacks = callbacks)
+        callbacks = callbacks
+      )
     }
   )
 )
-
-

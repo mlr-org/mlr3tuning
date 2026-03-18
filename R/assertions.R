@@ -36,31 +36,43 @@ assert_tuner_batch = function(tuner) {
 }
 
 #' @export
-#' @param inst ([TuningInstanceBatchSingleCrit] | [TuningInstanceBatchMultiCrit] | [TuningInstanceAsyncSingleCrit] | [TuningInstanceAsyncMultiCrit]).
+#' @param inst ([TuningInstanceBatchSingleCrit] | [TuningInstanceBatchMultiCrit] |
+#'   [TuningInstanceAsyncSingleCrit] | [TuningInstanceAsyncMultiCrit]).
 #' @rdname mlr3tuning_assertions
 assert_tuning_instance = function(inst) {
-  assert_multi_class(inst, c(
-    "TuningInstanceBatchSingleCrit",
-    "TuningInstanceBatchMultiCrit",
-    "TuningInstanceAsyncSingleCrit",
-    "TuningInstanceAsyncMultiCrit"))
+  assert_multi_class(
+    inst,
+    c(
+      "TuningInstanceBatchSingleCrit",
+      "TuningInstanceBatchMultiCrit",
+      "TuningInstanceAsyncSingleCrit",
+      "TuningInstanceAsyncMultiCrit"
+    )
+  )
 }
 
 #' @export
 #' @param inst ([TuningInstanceAsyncSingleCrit] | [TuningInstanceAsyncMultiCrit]).
 #' @rdname mlr3tuning_assertions
 assert_tuning_instance_async = function(inst) {
-  assert_multi_class(inst, c(
-    "TuningInstanceAsyncSingleCrit",
-    "TuningInstanceAsyncMultiCrit"))
+  assert_multi_class(
+    inst,
+    c(
+      "TuningInstanceAsyncSingleCrit",
+      "TuningInstanceAsyncMultiCrit"
+    )
+  )
 }
 
 #' @export
 #' @param inst ([TuningInstanceBatchSingleCrit] | [TuningInstanceBatchMultiCrit]).
 #' @rdname mlr3tuning_assertions
 assert_tuning_instance_batch = function(inst) {
-  assert_multi_class(inst, c(
-    "TuningInstanceBatchSingleCrit",
-    "TuningInstanceBatchMultiCrit"))
+  assert_multi_class(
+    inst,
+    c(
+      "TuningInstanceBatchSingleCrit",
+      "TuningInstanceBatchMultiCrit"
+    )
+  )
 }
-

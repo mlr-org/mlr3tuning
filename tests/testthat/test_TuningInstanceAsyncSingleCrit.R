@@ -3,7 +3,7 @@ skip_if_no_redis()
 
 test_that("initializing TuningInstanceAsyncSingleCrit works", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
@@ -27,7 +27,7 @@ test_that("initializing TuningInstanceAsyncSingleCrit works", {
 
 test_that("TuningInstanceAsyncSingleCrit can be passed to a tuner", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
@@ -49,7 +49,7 @@ test_that("TuningInstanceAsyncSingleCrit can be passed to a tuner", {
 
 test_that("assigning a result to TuningInstanceAsyncSingleCrit works", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
@@ -73,7 +73,7 @@ test_that("assigning a result to TuningInstanceAsyncSingleCrit works", {
 
 test_that("saving the benchmark result with TuningInstanceRushSingleCrit works", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
@@ -98,7 +98,7 @@ test_that("saving the benchmark result with TuningInstanceRushSingleCrit works",
 
 test_that("saving the models with TuningInstanceRushSingleCrit works", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
@@ -147,13 +147,18 @@ test_that("saving the models with TuningInstanceRushSingleCrit works", {
 
 test_that("Async single-crit internal tuning works", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
 
-  learner = lrn("classif.debug", validate = 0.2, early_stopping = TRUE, x = to_tune(0.2, 0.3),
-    iter = to_tune(upper = 1000, internal = TRUE, aggr = function(x) 99))
+  learner = lrn(
+    "classif.debug",
+    validate = 0.2,
+    early_stopping = TRUE,
+    x = to_tune(0.2, 0.3),
+    iter = to_tune(upper = 1000, internal = TRUE, aggr = function(x) 99)
+  )
 
   instance = ti_async(
     task = tsk("pima"),
@@ -169,46 +174,61 @@ test_that("Async single-crit internal tuning works", {
   expect_data_table(tuner$optimize(instance), nrows = 1)
 
   expect_list(instance$archive$finished_data$internal_tuned_values, min.len = 20, types = "list")
-  expect_equal(instance$archive$finished_data$internal_tuned_values[[1]], set_class(list(iter = 99L), "internal_tuned_values"))
+  expect_equal(
+    instance$archive$finished_data$internal_tuned_values[[1]],
+    set_class(list(iter = 99L), "internal_tuned_values")
+  )
   expect_false(instance$result_learner_param_vals$early_stopping)
   expect_equal(instance$result_learner_param_vals$iter, 99)
 })
 
 test_that("Internal tuning throws an error on incorrect configuration", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
 
-  expect_error(tune(
-    tuner = tnr("async_random_search"),
-    learner = lrn("classif.debug", iter = to_tune(upper = 1000, internal = TRUE)),
-    task = tsk("iris"),
-    resampling = rsmp("holdout"),
-    rush = rush
-  ), "early_stopping")
+  expect_error(
+    tune(
+      tuner = tnr("async_random_search"),
+      learner = lrn("classif.debug", iter = to_tune(upper = 1000, internal = TRUE)),
+      task = tsk("iris"),
+      resampling = rsmp("holdout"),
+      rush = rush
+    ),
+    "early_stopping"
+  )
 })
 
 test_that("Internal tuning throws an error message when primary search space is empty", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
 
-  expect_error(tune(
-    tuner = tnr("async_random_search"),
-    learner = lrn("classif.debug", iter = to_tune(upper = 1000, internal = TRUE), early_stopping = TRUE, validate = 0.2),
-    task = tsk("iris"),
-    resampling = rsmp("holdout"),
-    rush = rush
-  ), "tnr('internal')", fixed = TRUE)
+  expect_error(
+    tune(
+      tuner = tnr("async_random_search"),
+      learner = lrn(
+        "classif.debug",
+        iter = to_tune(upper = 1000, internal = TRUE),
+        early_stopping = TRUE,
+        validate = 0.2
+      ),
+      task = tsk("iris"),
+      resampling = rsmp("holdout"),
+      rush = rush
+    ),
+    "tnr('internal')",
+    fixed = TRUE
+  )
 })
 
 test_that("tiny logging works", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
@@ -231,7 +251,7 @@ test_that("tiny logging works", {
 
 test_that("tiny logging work with internal tuning", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
@@ -239,8 +259,13 @@ test_that("tiny logging work with internal tuning", {
   old_opts = options(bbotk.tiny_logging = TRUE)
   on.exit(options(old_opts), add = TRUE)
 
-  learner = lrn("classif.debug", validate = 0.2, early_stopping = TRUE, x = to_tune(0.2, 0.3),
-    iter = to_tune(upper = 1000, internal = TRUE, aggr = function(x) 99))
+  learner = lrn(
+    "classif.debug",
+    validate = 0.2,
+    early_stopping = TRUE,
+    x = to_tune(0.2, 0.3),
+    iter = to_tune(upper = 1000, internal = TRUE, aggr = function(x) 99)
+  )
 
   instance = ti_async(
     task = tsk("pima"),

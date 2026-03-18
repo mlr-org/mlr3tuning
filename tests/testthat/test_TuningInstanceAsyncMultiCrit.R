@@ -3,7 +3,7 @@ skip_if_no_redis()
 
 test_that("initializing TuningInstanceAsyncSingleCrit works", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
@@ -28,7 +28,7 @@ test_that("initializing TuningInstanceAsyncSingleCrit works", {
 
 test_that("TuningInstanceAsyncSingleCrit can be passed to a tuner", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
@@ -50,7 +50,7 @@ test_that("TuningInstanceAsyncSingleCrit can be passed to a tuner", {
 
 test_that("assigning a result to TuningInstanceAsyncSingleCrit works", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
@@ -73,7 +73,7 @@ test_that("assigning a result to TuningInstanceAsyncSingleCrit works", {
 
 test_that("saving the benchmark result with TuningInstanceRushSingleCrit works", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
@@ -98,7 +98,7 @@ test_that("saving the benchmark result with TuningInstanceRushSingleCrit works",
 
 test_that("saving the models with TuningInstanceRushSingleCrit works", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
@@ -146,17 +146,17 @@ test_that("saving the models with TuningInstanceRushSingleCrit works", {
 #   tuner$optimize(instance)
 # })
 
-
 # Internal Tuning --------------------------------------------------------------
 
 test_that("Multi-crit internal tuning works", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
 
-  learner = lrn("classif.debug",
+  learner = lrn(
+    "classif.debug",
     iter = to_tune(upper = 1000L, internal = TRUE, aggr = function(x) as.integer(ceiling(mean(unlist(x))) + 2000L)),
     x = to_tune(0.2, 0.3),
     predict_type = "prob",
@@ -195,7 +195,7 @@ test_that("Multi-crit internal tuning works", {
 
 test_that("tiny logging works", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
@@ -218,7 +218,7 @@ test_that("tiny logging works", {
 
 test_that("tiny logging work with internal tuning", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
@@ -226,8 +226,13 @@ test_that("tiny logging work with internal tuning", {
   old_opts = options(bbotk.tiny_logging = TRUE)
   on.exit(options(old_opts), add = TRUE)
 
-  learner = lrn("classif.debug", validate = 0.2, early_stopping = TRUE, x = to_tune(0.2, 0.3),
-    iter = to_tune(upper = 1000, internal = TRUE, aggr = function(x) 99))
+  learner = lrn(
+    "classif.debug",
+    validate = 0.2,
+    early_stopping = TRUE,
+    x = to_tune(0.2, 0.3),
+    iter = to_tune(upper = 1000, internal = TRUE, aggr = function(x) 99)
+  )
 
   instance = ti_async(
     task = tsk("pima"),

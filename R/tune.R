@@ -4,14 +4,17 @@
 #'
 #' @description
 #' Function to tune a [mlr3::Learner].
-#' The function internally creates a [TuningInstanceBatchSingleCrit] or [TuningInstanceBatchMultiCrit] which describes the tuning problem.
+#' The function internally creates a [TuningInstanceBatchSingleCrit] or [TuningInstanceBatchMultiCrit] which describes
+#' the tuning problem.
 #' It executes the tuning with the [Tuner] (`tuner`) and returns the result with the tuning instance (`$result`).
-#' The [ArchiveBatchTuning] and [ArchiveAsyncTuning] (`$archive`) stores all evaluated hyperparameter configurations and performance scores.
+#' The [ArchiveBatchTuning] and [ArchiveAsyncTuning] (`$archive`) stores all evaluated hyperparameter configurations
+#' and performance scores.
 #'
 #' You can find an overview of all tuners on our [website](https://mlr-org.com/tuners.html).
 #'
 #' @details
-#' The [mlr3::Task], [mlr3::Learner], [mlr3::Resampling], [mlr3::Measure] and [bbotk::Terminator] are used to construct a [TuningInstanceBatchSingleCrit].
+#' The [mlr3::Task], [mlr3::Learner], [mlr3::Resampling], [mlr3::Measure] and [bbotk::Terminator] are used to construct
+#' a [TuningInstanceBatchSingleCrit].
 #' If multiple performance [mlr3::Measure]s are supplied, a [TuningInstanceBatchMultiCrit] is created.
 #' The parameter `term_evals` and `term_time` are shortcuts to create a [bbotk::Terminator].
 #' If both parameters are passed, a [bbotk::TerminatorCombo] is constructed.
@@ -92,12 +95,16 @@ tune = function(
   check_values = FALSE,
   callbacks = NULL,
   rush = NULL
-  ) {
+) {
   assert_tuner(tuner)
   terminator = terminator %??% terminator_selection(term_evals, term_time)
 
-  instance =  if (inherits(tuner, "TunerAsync")) {
-    TuningInstance = if (is.null(measures) || inherits(measures, "Measure")) TuningInstanceAsyncSingleCrit else TuningInstanceAsyncMultiCrit
+  instance = if (inherits(tuner, "TunerAsync")) {
+    TuningInstance = if (is.null(measures) || inherits(measures, "Measure")) {
+      TuningInstanceAsyncSingleCrit
+    } else {
+      TuningInstanceAsyncMultiCrit
+    }
     TuningInstance$new(
       task = task,
       learner = learner,
@@ -110,9 +117,13 @@ tune = function(
       check_values = check_values,
       callbacks = callbacks,
       rush = rush
-      )
+    )
   } else {
-    TuningInstance = if (is.null(measures) || inherits(measures, "Measure")) TuningInstanceBatchSingleCrit else TuningInstanceBatchMultiCrit
+    TuningInstance = if (is.null(measures) || inherits(measures, "Measure")) {
+      TuningInstanceBatchSingleCrit
+    } else {
+      TuningInstanceBatchMultiCrit
+    }
     TuningInstance$new(
       task = task,
       learner = learner,
@@ -123,7 +134,8 @@ tune = function(
       store_benchmark_result = store_benchmark_result,
       store_models = store_models,
       check_values = check_values,
-      callbacks = callbacks)
+      callbacks = callbacks
+    )
   }
 
   tuner$optimize(instance)

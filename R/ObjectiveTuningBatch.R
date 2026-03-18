@@ -2,7 +2,8 @@
 #'
 #' @description
 #' Stores the objective function that estimates the performance of hyperparameter configurations.
-#' This class is usually constructed internally by the [TuningInstanceBatchSingleCrit] or [TuningInstanceBatchMultiCrit].
+#' This class is usually constructed internally by the [TuningInstanceBatchSingleCrit] or
+#' [TuningInstanceBatchMultiCrit].
 #'
 #' @template param_task
 #' @template param_learner
@@ -15,10 +16,10 @@
 #' @template param_internal_search_space
 #'
 #' @export
-ObjectiveTuningBatch = R6Class("ObjectiveTuningBatch",
+ObjectiveTuningBatch = R6Class(
+  "ObjectiveTuningBatch",
   inherit = ObjectiveTuning,
   public = list(
-
     #' @field archive ([ArchiveBatchTuning]).
     archive = NULL,
 
@@ -39,9 +40,11 @@ ObjectiveTuningBatch = R6Class("ObjectiveTuningBatch",
       archive = NULL,
       callbacks = NULL,
       internal_search_space = NULL
-      ) {
+    ) {
       self$archive = assert_r6(archive, "ArchiveBatchTuning", null.ok = TRUE)
-      if (is.null(self$archive)) store_benchmark_result = store_models = FALSE
+      if (is.null(self$archive)) {
+        store_benchmark_result = store_models = FALSE
+      }
 
       super$initialize(
         task = task,
@@ -61,9 +64,14 @@ ObjectiveTuningBatch = R6Class("ObjectiveTuningBatch",
     .eval_many = function(xss, resampling) {
       private$.xss = xss
 
-     private$.design = if (length(resampling) > 1) {
+      private$.design = if (length(resampling) > 1) {
         param_values = map(xss, function(xs) list(xs))
-        data.table(task = list(self$task), learner = list(self$learner), resampling = resampling, param_values = param_values)
+        data.table(
+          task = list(self$task),
+          learner = list(self$learner),
+          resampling = resampling,
+          param_values = param_values
+        )
       } else {
         benchmark_grid(self$task, self$learner, resampling, param_values = list(xss))
       }
@@ -75,11 +83,15 @@ ObjectiveTuningBatch = R6Class("ObjectiveTuningBatch",
         design = private$.design,
         store_models = self$store_models,
         clone = character(0),
-        callbacks = self$callbacks)
+        callbacks = self$callbacks
+      )
       call_back("on_eval_after_benchmark", self$callbacks, self$context)
 
       # aggregate performance scores
-      private$.aggregated_performance = private$.benchmark_result$aggregate(self$measures, conditions = TRUE)[, c(self$codomain$target_ids, "warnings", "errors"), with = FALSE]
+      private$.aggregated_performance = private$.benchmark_result$aggregate(self$measures, conditions = TRUE)[,
+        c(self$codomain$target_ids, "warnings", "errors"),
+        with = FALSE
+      ]
 
       # add runtime to evaluations
       time = map_dbl(private$.benchmark_result$resample_results$resample_result, function(rr) {
@@ -90,9 +102,12 @@ ObjectiveTuningBatch = R6Class("ObjectiveTuningBatch",
 
       # add internal tuned values
       if (!is.null(self$internal_search_space)) {
-        internal_tuned_values = map(private$.benchmark_result$resample_results$resample_result, function(resample_result) {
-          extract_inner_tuned_values(resample_result, self$internal_search_space)
-        })
+        internal_tuned_values = map(
+          private$.benchmark_result$resample_results$resample_result,
+          function(resample_result) {
+            extract_inner_tuned_values(resample_result, self$internal_search_space)
+          }
+        )
 
         set(private$.aggregated_performance, j = "internal_tuned_values", value = list(internal_tuned_values))
       }

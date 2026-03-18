@@ -21,7 +21,7 @@ sortnames = function(x) {
 # suppress warning "Canceling all iterations" from future.apply
 expect_resample_error = function(object, regexp = NULL, class = NULL, ..., inherit = TRUE, info = NULL, label = NULL) {
   withCallingHandlers(
-    expect_error(object, regexp, class, ..., inherit = inherit, info = info, label = label),
+    testthat::expect_error(object, regexp, class, ..., inherit = inherit, info = info, label = label),
     warning = function(w) {
       if (grepl("Canceling all iterations", conditionMessage(w))) {
         invokeRestart("muffleWarning")

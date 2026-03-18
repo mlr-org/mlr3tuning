@@ -1,40 +1,38 @@
 # stages in $optimize() --------------------------------------------------------
 
 test_that("on_optimization_begin works", {
-  callback = callback_batch_tuning(id = "test",
-    on_optimization_begin = function(callback, context) {
-      context$instance$terminator$param_set$values$n_evals = 20
-    }
-  )
+  callback = callback_batch_tuning(id = "test", on_optimization_begin = function(callback, context) {
+    context$instance$terminator$param_set$values$n_evals = 20
+  })
 
   instance = tune(
     tuner = tnr("random_search", batch_size = 1),
     task = tsk("pima"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
-    callbacks = callback)
+    callbacks = callback
+  )
 
   expect_class(instance$objective$context, "ContextBatchTuning")
   expect_equal(instance$terminator$param_set$values$n_evals, 20)
 })
 
 test_that("on_optimization_end works", {
-  callback = callback_batch_tuning(id = "test",
-    on_optimization_end = function(callback, context) {
-      context$instance$terminator$param_set$values$n_evals = 20
-    }
-  )
+  callback = callback_batch_tuning(id = "test", on_optimization_end = function(callback, context) {
+    context$instance$terminator$param_set$values$n_evals = 20
+  })
 
   instance = tune(
     tuner = tnr("random_search", batch_size = 1),
     task = tsk("pima"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
-    callbacks = callback)
+    callbacks = callback
+  )
 
   expect_class(instance$objective$context, "ContextBatchTuning")
   expect_equal(instance$terminator$param_set$values$n_evals, 20)
@@ -43,42 +41,38 @@ test_that("on_optimization_end works", {
 # stages in $eval_batch() ------------------------------------------------------
 
 test_that("on_optimizer_after_eval works", {
-  callback = callback_batch_tuning(id = "test",
-    on_optimizer_before_eval = function(callback, context) {
-      set(context$xdt, j = "minsplit", value = 1)
-    }
-  )
+  callback = callback_batch_tuning(id = "test", on_optimizer_before_eval = function(callback, context) {
+    set(context$xdt, j = "minsplit", value = 1)
+  })
 
   instance = tune(
     tuner = tnr("random_search", batch_size = 1),
     task = tsk("pima"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
-    callbacks = callback)
-
+    callbacks = callback
+  )
 
   expect_class(instance$objective$context, "ContextBatchTuning")
   expect_equal(unique(instance$archive$data$minsplit), 1)
 })
 
 test_that("on_optimizer_after_eval works", {
-  callback = callback_batch_tuning(id = "test",
-    on_optimizer_after_eval = function(callback, context) {
-      set(context$instance$archive$data, j = "classif.ce", value = 0.5)
-    }
-  )
+  callback = callback_batch_tuning(id = "test", on_optimizer_after_eval = function(callback, context) {
+    set(context$instance$archive$data, j = "classif.ce", value = 0.5)
+  })
 
   instance = tune(
     tuner = tnr("random_search", batch_size = 1),
     task = tsk("pima"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
-    callbacks = callback)
-
+    callbacks = callback
+  )
 
   expect_class(instance$objective$context, "ContextBatchTuning")
   expect_equal(unique(instance$archive$data$classif.ce), 0.5)
@@ -87,29 +81,32 @@ test_that("on_optimizer_after_eval works", {
 # stages in $eval_many() -------------------------------------------------------
 
 test_that("on_eval_after_design works", {
-  callback = callback_batch_tuning(id = "test",
-    on_eval_after_design = function(callback, context) {
-      context$design$param_values[[1]][[1]] = list(list(minsplit = 1))
-    }
-  )
+  callback = callback_batch_tuning(id = "test", on_eval_after_design = function(callback, context) {
+    context$design$param_values[[1]][[1]] = list(list(minsplit = 1))
+  })
 
   instance = tune(
     tuner = tnr("random_search", batch_size = 1),
     task = tsk("pima"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
-    callbacks = callback)
+    callbacks = callback
+  )
 
   expect_class(instance$objective$context, "ContextBatchTuning")
   expect_equal(instance$archive$benchmark_result$resample_result(1)$learner$param_set$values$minsplit, 1)
 })
 
 test_that("on_eval_after_benchmark and on_eval_before_archive works", {
-  callback = callback_batch_tuning(id = "test",
+  callback = callback_batch_tuning(
+    id = "test",
     on_eval_after_benchmark = function(callback, context) {
-      callback$state$extra_performance = context$benchmark_result$aggregate(msr("classif.acc"))[, "classif.acc", with = FALSE]
+      callback$state$extra_performance = context$benchmark_result$aggregate(msr("classif.acc"))[,
+        "classif.acc",
+        with = FALSE
+      ]
     },
 
     on_eval_before_archive = function(callback, context) {
@@ -121,10 +118,11 @@ test_that("on_eval_after_benchmark and on_eval_before_archive works", {
     tuner = tnr("random_search", batch_size = 1),
     task = tsk("pima"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
-    callbacks = callback)
+    callbacks = callback
+  )
 
   expect_class(instance$objective$context, "ContextBatchTuning")
   expect_names(names(instance$archive$data), must.include = c("classif.ce", "classif.acc"))
@@ -133,21 +131,20 @@ test_that("on_eval_after_benchmark and on_eval_before_archive works", {
 # stages in $assign_result() in TuningInstanceBatchSingleCrit ------------------
 
 test_that("on_tuning_result_begin in TuningInstanceSingleCrit works", {
-  callback = callback_batch_tuning(id = "test",
-    on_tuning_result_begin = function(callback, context) {
-      context$result_xdt = data.table(minsplit = 1)
-      context$result_y = c(classif.ce = 0.7)
-    }
-  )
+  callback = callback_batch_tuning(id = "test", on_tuning_result_begin = function(callback, context) {
+    context$result_xdt = data.table(minsplit = 1)
+    context$result_y = c(classif.ce = 0.7)
+  })
 
   instance = tune(
     tuner = tnr("random_search", batch_size = 1),
     task = tsk("pima"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
-    callbacks = callback)
+    callbacks = callback
+  )
 
   expect_class(instance$objective$context, "ContextBatchTuning")
   expect_equal(instance$result$minsplit, 1)
@@ -155,40 +152,43 @@ test_that("on_tuning_result_begin in TuningInstanceSingleCrit works", {
 })
 
 test_that("on_result_end in TuningInstanceSingleCrit works", {
-  callback = callback_batch_tuning(id = "test",
-    on_result_end = function(callback, context) {
-      context$result$classif.ce = 0.7
-    }
-  )
+  callback = callback_batch_tuning(id = "test", on_result_end = function(callback, context) {
+    context$result$classif.ce = 0.7
+  })
 
   instance = tune(
     tuner = tnr("random_search", batch_size = 1),
     task = tsk("pima"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
-    callbacks = callback)
+    callbacks = callback
+  )
 
   expect_class(instance$objective$context, "ContextBatchTuning")
   expect_equal(instance$result$classif.ce, 0.7)
 })
 
 test_that("on_result in TuningInstanceSingleCrit works", {
-  expect_warning({callback = callback_batch_tuning(id = "test",
-    on_result = function(callback, context) {
-      context$result$classif.ce = 0.7
-    }
-  )}, "deprecated")
+  expect_warning(
+    {
+      callback = callback_batch_tuning(id = "test", on_result = function(callback, context) {
+        context$result$classif.ce = 0.7
+      })
+    },
+    "deprecated"
+  )
 
   instance = tune(
     tuner = tnr("random_search", batch_size = 1),
     task = tsk("pima"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
-    callbacks = callback)
+    callbacks = callback
+  )
 
   expect_class(instance$objective$context, "ContextBatchTuning")
   expect_equal(instance$result$classif.ce, 0.7)
@@ -197,21 +197,20 @@ test_that("on_result in TuningInstanceSingleCrit works", {
 # stages in $assign_result() in TuningInstanceBatchMultiCrit -------------------
 
 test_that("on_tuning_result_begin in TuningInstanceBatchMultiCrit works", {
-  callback = callback_batch_tuning(id = "test",
-    on_tuning_result_begin = function(callback, context) {
-      context$result_xdt = data.table(minsplit = 1)
-      context$result_ydt = data.table(classif.ce = 0.7, classif.acc = 0.8)
-    }
-  )
+  callback = callback_batch_tuning(id = "test", on_tuning_result_begin = function(callback, context) {
+    context$result_xdt = data.table(minsplit = 1)
+    context$result_ydt = data.table(classif.ce = 0.7, classif.acc = 0.8)
+  })
 
   instance = tune(
     tuner = tnr("random_search", batch_size = 1),
     task = tsk("pima"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msrs(c("classif.ce", "classif.acc")),
     term_evals = 2,
-    callbacks = callback)
+    callbacks = callback
+  )
 
   expect_class(instance$objective$context, "ContextBatchTuning")
   expect_equal(instance$result$minsplit, 1)
@@ -219,40 +218,43 @@ test_that("on_tuning_result_begin in TuningInstanceBatchMultiCrit works", {
 })
 
 test_that("on_result_end in TuningInstanceBatchMultiCrit works", {
-  expect_warning({callback = callback_batch_tuning(id = "test",
-    on_result = function(callback, context) {
-      set(context$result, j = "classif.ce", value = 0.7)
-    }
-  )}, "deprecated")
-
-  instance = tune(
-    tuner = tnr("random_search", batch_size = 1),
-    task = tsk("pima"),
-    learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp ("holdout"),
-    measures = msrs(c("classif.ce", "classif.acc")),
-    term_evals = 2,
-    callbacks = callback)
-
-  expect_class(instance$objective$context, "ContextBatchTuning")
-  expect_equal(unique(instance$result$classif.ce), 0.7)
-})
-
-test_that("on_result in TuningInstanceBatchMultiCrit works", {
-  callback = callback_batch_tuning(id = "test",
-    on_result_end = function(callback, context) {
-      set(context$result, j = "classif.ce", value = 0.7)
-    }
+  expect_warning(
+    {
+      callback = callback_batch_tuning(id = "test", on_result = function(callback, context) {
+        set(context$result, j = "classif.ce", value = 0.7)
+      })
+    },
+    "deprecated"
   )
 
   instance = tune(
     tuner = tnr("random_search", batch_size = 1),
     task = tsk("pima"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msrs(c("classif.ce", "classif.acc")),
     term_evals = 2,
-    callbacks = callback)
+    callbacks = callback
+  )
+
+  expect_class(instance$objective$context, "ContextBatchTuning")
+  expect_equal(unique(instance$result$classif.ce), 0.7)
+})
+
+test_that("on_result in TuningInstanceBatchMultiCrit works", {
+  callback = callback_batch_tuning(id = "test", on_result_end = function(callback, context) {
+    set(context$result, j = "classif.ce", value = 0.7)
+  })
+
+  instance = tune(
+    tuner = tnr("random_search", batch_size = 1),
+    task = tsk("pima"),
+    learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
+    resampling = rsmp("holdout"),
+    measures = msrs(c("classif.ce", "classif.acc")),
+    term_evals = 2,
+    callbacks = callback
+  )
 
   expect_class(instance$objective$context, "ContextBatchTuning")
   expect_equal(unique(instance$result$classif.ce), 0.7)
@@ -261,29 +263,27 @@ test_that("on_result in TuningInstanceBatchMultiCrit works", {
 # stages in mlr3 workhorse -----------------------------------------------------
 
 test_that("on_resample_begin works", {
-
-  callback = callback_batch_tuning("test",
-    on_resample_begin = function(callback, context) {
-      # expect_* does not work
-      assert_task(context$task)
-      assert_learner(context$learner)
-      assert_resampling(context$resampling)
-      checkmate::assert_number(context$iteration)
-      checkmate::assert_null(context$pdatas)
-      context$data_extra = list(success = TRUE)
-    }
-  )
+  callback = callback_batch_tuning("test", on_resample_begin = function(callback, context) {
+    # expect_* does not work
+    assert_task(context$task)
+    assert_learner(context$learner)
+    assert_resampling(context$resampling)
+    checkmate::assert_number(context$iteration)
+    checkmate::assert_null(context$pdatas)
+    context$data_extra = list(success = TRUE)
+  })
 
   instance = tune(
     tuner = tnr("random_search", batch_size = 1),
     task = tsk("pima"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msrs(c("classif.ce", "classif.acc")),
     term_evals = 2,
-    callbacks = callback)
+    callbacks = callback
+  )
 
-   expect_class(instance$objective$context, "ContextBatchTuning")
+  expect_class(instance$objective$context, "ContextBatchTuning")
 
   walk(as.data.table(instance$archive$benchmark_result)$data_extra, function(data_extra) {
     expect_true(data_extra$success)
@@ -291,25 +291,24 @@ test_that("on_resample_begin works", {
 })
 
 test_that("on_resample_before_train works", {
-  callback = callback_batch_tuning("test",
-    on_resample_before_train = function(callback, context) {
-      assert_task(context$task)
-      assert_learner(context$learner)
-      assert_resampling(context$resampling)
-      checkmate::assert_number(context$iteration)
-      checkmate::assert_null(context$pdatas)
-      context$data_extra = list(success = TRUE)
-    }
-  )
+  callback = callback_batch_tuning("test", on_resample_before_train = function(callback, context) {
+    assert_task(context$task)
+    assert_learner(context$learner)
+    assert_resampling(context$resampling)
+    checkmate::assert_number(context$iteration)
+    checkmate::assert_null(context$pdatas)
+    context$data_extra = list(success = TRUE)
+  })
 
   instance = tune(
     tuner = tnr("random_search", batch_size = 1),
     task = tsk("pima"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msrs(c("classif.ce", "classif.acc")),
     term_evals = 2,
-    callbacks = callback)
+    callbacks = callback
+  )
 
   expect_class(instance$objective$context, "ContextBatchTuning")
 
@@ -319,24 +318,23 @@ test_that("on_resample_before_train works", {
 })
 
 test_that("on_resample_before_predict works", {
-  callback = callback_batch_tuning("test",
-    on_resample_before_predict = function(callback, context) {
-      assert_task(context$task)
-      assert_learner(context$learner)
-      assert_resampling(context$resampling)
-      checkmate::assert_null(context$pdatas)
-      context$data_extra = list(success = TRUE)
-    }
-  )
+  callback = callback_batch_tuning("test", on_resample_before_predict = function(callback, context) {
+    assert_task(context$task)
+    assert_learner(context$learner)
+    assert_resampling(context$resampling)
+    checkmate::assert_null(context$pdatas)
+    context$data_extra = list(success = TRUE)
+  })
 
   instance = tune(
     tuner = tnr("random_search", batch_size = 1),
     task = tsk("pima"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msrs(c("classif.ce", "classif.acc")),
     term_evals = 2,
-    callbacks = callback)
+    callbacks = callback
+  )
 
   expect_class(instance$objective$context, "ContextBatchTuning")
 
@@ -346,25 +344,24 @@ test_that("on_resample_before_predict works", {
 })
 
 test_that("on_resample_end works", {
-  callback = callback_batch_tuning("test",
-    on_resample_end = function(callback, context) {
-      assert_task(context$task)
-      assert_learner(context$learner)
-      assert_resampling(context$resampling)
-      checkmate::assert_number(context$iteration)
-      checkmate::assert_class(context$pdatas$test, "PredictionData")
-      context$data_extra = list(success = TRUE)
-    }
-  )
+  callback = callback_batch_tuning("test", on_resample_end = function(callback, context) {
+    assert_task(context$task)
+    assert_learner(context$learner)
+    assert_resampling(context$resampling)
+    checkmate::assert_number(context$iteration)
+    checkmate::assert_class(context$pdatas$test, "PredictionData")
+    context$data_extra = list(success = TRUE)
+  })
 
   instance = tune(
     tuner = tnr("random_search", batch_size = 1),
     task = tsk("pima"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msrs(c("classif.ce", "classif.acc")),
     term_evals = 2,
-    callbacks = callback)
+    callbacks = callback
+  )
 
   expect_class(instance$objective$context, "ContextBatchTuning")
 

@@ -1,7 +1,8 @@
 #' @title Rush Data Storage
 #'
 #' @description
-#' The `ArchiveAsyncTuning` stores all evaluated hyperparameter configurations and performance scores in a [rush::Rush] database.
+#' The `ArchiveAsyncTuning` stores all evaluated hyperparameter configurations
+#' and performance scores in a [rush::Rush] database.
 #'
 #' @details
 #' The [ArchiveAsyncTuning] is a connector to a [rush::Rush] database.
@@ -46,10 +47,10 @@
 #' @template param_internal_search_space
 #'
 #' @export
-ArchiveAsyncTuning = R6Class("ArchiveAsyncTuning",
+ArchiveAsyncTuning = R6Class(
+  "ArchiveAsyncTuning",
   inherit = bbotk::ArchiveAsync,
   public = list(
-
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #'
@@ -60,13 +61,16 @@ ArchiveAsyncTuning = R6Class("ArchiveAsyncTuning",
       codomain,
       rush,
       internal_search_space = NULL
-      ) {
-      if (!is.null(internal_search_space)) private$.internal_search_space = assert_param_set(internal_search_space)
+    ) {
+      if (!is.null(internal_search_space)) {
+        private$.internal_search_space = assert_param_set(internal_search_space)
+      }
 
       super$initialize(
         search_space = search_space,
         codomain = codomain,
-        rush = rush)
+        rush = rush
+      )
 
       private$.benchmark_result = BenchmarkResult$new()
     },
@@ -143,16 +147,24 @@ ArchiveAsyncTuning = R6Class("ArchiveAsyncTuning",
     #' @param ... (ignored).
     print = function() {
       cat_cli(cli_h1("{format(self)} with {.val {self$n_evals}} evaluations"))
-      print(as.data.table(self, unnest = NULL, exclude_columns = c(
-        "x_domain",
-        "timestamp_xs",
-        "timestamp_ys",
-        "runtime_learners",
-        "resample_result",
-        "worker_id",
-        "keys",
-        "pid",
-        "state")), digits = 2)
+      print(
+        as.data.table(
+          self,
+          unnest = NULL,
+          exclude_columns = c(
+            "x_domain",
+            "timestamp_xs",
+            "timestamp_ys",
+            "runtime_learners",
+            "resample_result",
+            "worker_id",
+            "keys",
+            "pid",
+            "state"
+          )
+        ),
+        digits = 2
+      )
     }
   ),
 
@@ -183,9 +195,17 @@ ArchiveAsyncTuning = R6Class("ArchiveAsyncTuning",
 )
 
 #' @export
-as.data.table.ArchiveAsyncTuning = function(x, ..., unnest = "internal_tuned_values", exclude_columns = NULL, measures = NULL) {
+as.data.table.ArchiveAsyncTuning = function(
+  x,
+  ...,
+  unnest = "internal_tuned_values",
+  exclude_columns = NULL,
+  measures = NULL
+) {
   data = x$data_with_state()
-  if (!nrow(data)) return(data.table())
+  if (!nrow(data)) {
+    return(data.table())
+  }
 
   # unnest columns
   cols = intersect(unnest, names(data))
@@ -200,19 +220,34 @@ as.data.table.ArchiveAsyncTuning = function(x, ..., unnest = "internal_tuned_val
     tab = cbind(tab, scores)
   }
 
-  cols_x_domain =  if ("x_domain" %in% cols) {
+  cols_x_domain = if ("x_domain" %in% cols) {
     # get all ids of x_domain
     # trafo could add unknown ids
     x_domain_ids = paste0("x_domain_", unique(unlist(map(x$data$x_domain, names))))
     setdiff(x_domain_ids, exclude_columns)
   }
 
-  cols_internal_tuned_values =  if ("internal_tuned_values" %in% cols) {
-    internal_tuned_values_ids = paste0("internal_tuned_values_", unique(unlist(map(x$data$internal_tuned_values, names))))
+  cols_internal_tuned_values = if ("internal_tuned_values" %in% cols) {
+    internal_tuned_values_ids = paste0(
+      "internal_tuned_values_",
+      unique(unlist(map(x$data$internal_tuned_values, names)))
+    )
     setdiff(internal_tuned_values_ids, exclude_columns)
   }
 
-  cns = intersect(c(x$cols_x, x$cols_y, cols_y_extra, cols_internal_tuned_values, cols_x_domain, "runtime_learners", "timestamp_xs", "timestamp_ys"), names(tab))
+  cns = intersect(
+    c(
+      x$cols_x,
+      x$cols_y,
+      cols_y_extra,
+      cols_internal_tuned_values,
+      cols_x_domain,
+      "runtime_learners",
+      "timestamp_xs",
+      "timestamp_ys"
+    ),
+    names(tab)
+  )
   setcolorder(tab, cns)
   tab[, setdiff(names(tab), exclude_columns), with = FALSE]
 }

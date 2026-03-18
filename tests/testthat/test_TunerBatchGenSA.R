@@ -7,7 +7,14 @@ test_that("TunerBatchGenSA", {
     save_tasks = p_lgl()
   )
   te = trm("evals", n_evals = 2)
-  inst = TuningInstanceBatchSingleCrit$new(tsk("iris"), lrn("classif.debug"), rsmp("holdout"), msr("classif.ce"), te, ps)
+  inst = TuningInstanceBatchSingleCrit$new(
+    tsk("iris"),
+    lrn("classif.debug"),
+    rsmp("holdout"),
+    msr("classif.ce"),
+    te,
+    ps
+  )
   tt = TunerBatchGenSA$new()
   expect_error(tt$optimize(inst), "support")
 })
@@ -18,7 +25,14 @@ test_that("TunerBatchGenSA with int params and trafo", {
     minsplit = p_dbl(lower = 1, upper = 10, trafo = function(x) as.integer(round(x)))
   )
   te = trm("evals", n_evals = 2)
-  inst = TuningInstanceBatchSingleCrit$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), te, ps)
+  inst = TuningInstanceBatchSingleCrit$new(
+    tsk("iris"),
+    lrn("classif.rpart"),
+    rsmp("holdout"),
+    msr("classif.ce"),
+    te,
+    ps
+  )
   tt = TunerBatchGenSA$new()
   tt$optimize(inst)
   d = inst$archive$data
@@ -26,7 +40,7 @@ test_that("TunerBatchGenSA with int params and trafo", {
 })
 
 test_that("TunerBatchGenSA - Optimize wrapper with maximize measure", {
-  inst = TEST_MAKE_INST1(measure = msr("dummy.cp.maximize.classif", function(pv)  pv$cp), n_dim = 1)
+  inst = TEST_MAKE_INST1(measure = msr("dummy.cp.maximize.classif", function(pv) pv$cp), n_dim = 1)
   tt = tnr("gensa", smooth = TRUE)
   tt$optimize(inst)
 

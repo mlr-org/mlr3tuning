@@ -4,7 +4,8 @@
 #'
 #' @description
 #' The [TuningInstanceAsyncMultiCrit] specifies a tuning problem for a [Tuner].
-#' The function [ti_async()] creates a [TuningInstanceAsyncMultiCrit] and the function [tune()] creates an instance internally.
+#' The function [ti_async()] creates a [TuningInstanceAsyncMultiCrit] and the function [tune()] creates an instance
+#' internally.
 #'
 #' @inherit TuningInstanceAsyncSingleCrit details
 #' @inheritSection TuningInstanceBatchSingleCrit Search Space
@@ -31,7 +32,8 @@
 #' @template field_internal_search_space
 #'
 #' @export
-TuningInstanceAsyncMultiCrit = R6Class("TuningInstanceAsyncMultiCrit",
+TuningInstanceAsyncMultiCrit = R6Class(
+  "TuningInstanceAsyncMultiCrit",
   inherit = OptimInstanceAsyncMultiCrit,
   public = list(
     internal_search_space = NULL,
@@ -50,7 +52,7 @@ TuningInstanceAsyncMultiCrit = R6Class("TuningInstanceAsyncMultiCrit",
       check_values = FALSE,
       callbacks = NULL,
       rush = NULL
-      ) {
+    ) {
       require_namespaces("rush")
       learner = assert_learner(as_learner(learner, clone = TRUE))
       callbacks = assert_async_tuning_callbacks(as_callbacks(callbacks))
@@ -76,7 +78,9 @@ TuningInstanceAsyncMultiCrit = R6Class("TuningInstanceAsyncMultiCrit",
       # set internal search space
       if (!is.null(self$internal_search_space)) {
         # the learner dictates how to interpret the to_tune(..., inner)
-        learner$param_set$set_values(.values = learner$param_set$convert_internal_search_space(self$internal_search_space))
+        learner$param_set$set_values(
+          .values = learner$param_set$convert_internal_search_space(self$internal_search_space)
+        )
       }
 
       # set learner parameter values
@@ -84,7 +88,9 @@ TuningInstanceAsyncMultiCrit = R6Class("TuningInstanceAsyncMultiCrit",
         learner$param_set$values = learner$param_set$get_values(type = "without_token")
       }
 
-      if (is.null(rush)) rush = rush::rsh()
+      if (is.null(rush)) {
+        rush = rush::rsh()
+      }
 
       # create codomain from measure
       measures = assert_measures(as_measures(measures, task_type = task$task_type), task = task, learner = learner)
@@ -106,7 +112,8 @@ TuningInstanceAsyncMultiCrit = R6Class("TuningInstanceAsyncMultiCrit",
         store_models = store_models,
         check_values = check_values,
         callbacks = callbacks,
-        internal_search_space = self$internal_search_space)
+        internal_search_space = self$internal_search_space
+      )
 
       super$initialize(
         objective = objective,
@@ -114,11 +121,13 @@ TuningInstanceAsyncMultiCrit = R6Class("TuningInstanceAsyncMultiCrit",
         terminator = terminator,
         callbacks = callbacks,
         archive = archive,
-        rush = rush)
+        rush = rush
+      )
     },
 
     #' @description
-    #' The [TunerAsync] writes the best found points and estimated performance values here (probably the Pareto set / front).
+    #' The [TunerAsync] writes the best found points and estimated performance values here
+    #' (probably the Pareto set / front).
     #' For internal use.
     #'
     #' @param ydt (`numeric(1)`)\cr
@@ -136,29 +145,43 @@ TuningInstanceAsyncMultiCrit = R6Class("TuningInstanceAsyncMultiCrit",
 
       # extract internal tuned values
       if ("internal_tuned_values" %in% names(private$.result_extra)) {
-        set(private$.result_xdt, j = "internal_tuned_values", value = list(private$.result_extra[["internal_tuned_values"]]))
+        set(
+          private$.result_xdt,
+          j = "internal_tuned_values",
+          value = list(private$.result_extra[["internal_tuned_values"]])
+        )
       }
 
       # set the column with the learner param_vals that were not optimized over but set implicitly
       if (is.null(private$.result_learner_param_vals)) {
         private$.result_learner_param_vals = self$objective$default_values
-        if (length(private$.result_learner_param_vals) == 0) private$.result_learner_param_vals = list()
-        private$.result_learner_param_vals = replicate(nrow(private$.result_ydt), list(private$.result_learner_param_vals))
+        if (length(private$.result_learner_param_vals) == 0) {
+          private$.result_learner_param_vals = list()
+        }
+        private$.result_learner_param_vals = replicate(
+          nrow(private$.result_ydt),
+          list(private$.result_learner_param_vals)
+        )
       }
 
       opt_x = transform_xdt_to_xss(private$.result_xdt, self$search_space)
-      if (length(opt_x) == 0) opt_x = replicate(length(private$.result_ydt), list())
+      if (length(opt_x) == 0) {
+        opt_x = replicate(length(private$.result_ydt), list())
+      }
       private$.result_learner_param_vals = Map(insert_named, private$.result_learner_param_vals, opt_x)
 
       # disable internal tuning
       if (!is.null(private$.result_xdt$internal_tuned_values)) {
         learner = self$objective$learner$clone(deep = TRUE)
-        private$.result_learner_param_vals = pmap(list(private$.result_learner_param_vals, private$.result_xdt$internal_tuned_values), function(lpv, itv) {
-          values = insert_named(lpv, itv)
-          learner$param_set$set_values(.values = values, .insert = FALSE)
-          learner$param_set$disable_internal_tuning(self$internal_search_space$ids())
-          learner$param_set$values
-        })
+        private$.result_learner_param_vals = pmap(
+          list(private$.result_learner_param_vals, private$.result_xdt$internal_tuned_values),
+          function(lpv, itv) {
+            values = insert_named(lpv, itv)
+            learner$param_set$set_values(.values = values, .insert = FALSE)
+            learner$param_set$disable_internal_tuning(self$internal_search_space$ids())
+            learner$param_set$values
+          }
+        )
       }
 
       set(private$.result_xdt, j = "learner_param_vals", value = list(private$.result_learner_param_vals))
@@ -168,7 +191,6 @@ TuningInstanceAsyncMultiCrit = R6Class("TuningInstanceAsyncMultiCrit",
   ),
 
   active = list(
-
     #' @field result_learner_param_vals (`list()`)\cr
     #'   List of param values for the optimal learner call.
     result_learner_param_vals = function() {
@@ -198,7 +220,10 @@ tiny_logging.TuningInstanceAsyncMultiCrit = function(instance, optimizer) {
     best = instance$archive$best()
     best_ids = which(task_keys %in% best$keys)
 
-    cns = intersect(c(instance$archive$cols_y, instance$archive$cols_x, "runtime_learners", "warnings", "errors"), colnames(new_results))
+    cns = intersect(
+      c(instance$archive$cols_y, instance$archive$cols_x, "runtime_learners", "warnings", "errors"),
+      colnames(new_results)
+    )
 
     # unnest internal_tuned_values
     if ("internal_tuned_values" %in% colnames(new_results)) {
@@ -207,11 +232,17 @@ tiny_logging.TuningInstanceAsyncMultiCrit = function(instance, optimizer) {
     }
 
     for (i in seq_row(new_results)) {
-      lg$info("Evaluation %i: %s (Current best %s: %s)",
+      lg$info(
+        "Evaluation %i: %s (Current best %s: %s)",
         ids[i],
         as_short_string(keep(as.list(new_results[i, cns, with = FALSE]), function(x) !is.na(x))),
         as_short_string(best_ids),
-        paste0(map_chr(seq_row(best), function(i) as_short_string(keep(as.list(best[i, instance$archive$cols_y, with = FALSE]), function(x) !is.na(x)))), collapse = " & ")
+        paste0(
+          map_chr(seq_row(best), function(i) {
+            as_short_string(keep(as.list(best[i, instance$archive$cols_y, with = FALSE]), function(x) !is.na(x)))
+          }),
+          collapse = " & "
+        )
       )
     }
   }

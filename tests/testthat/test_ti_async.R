@@ -5,9 +5,10 @@ test_that("ti_async function creates a TuningInstanceAsyncSingleCrit", {
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune()),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
-    terminator = trm("evals", n_evals = 2))
+    terminator = trm("evals", n_evals = 2)
+  )
   expect_class(instance, "TuningInstanceAsyncSingleCrit")
 })
 
@@ -15,9 +16,10 @@ test_that("ti_async function creates a TuningInstanceAsyncMultiCrit", {
   instance = ti_async(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune()),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msrs(c("classif.ce", "classif.acc")),
-    terminator = trm("evals", n_evals = 2))
+    terminator = trm("evals", n_evals = 2)
+  )
   expect_class(instance, "TuningInstanceAsyncMultiCrit")
 })
 

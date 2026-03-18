@@ -11,8 +11,7 @@ TEST_MAKE_PS1 = function(n_dim = 1L) {
     )
   }
 }
-TEST_MAKE_INST1 = function(values = NULL, folds = 2L,
-  measure = msr("classif.ce"), n_dim = 1L, term_evals = 5L, ...) {
+TEST_MAKE_INST1 = function(values = NULL, folds = 2L, measure = msr("classif.ce"), n_dim = 1L, term_evals = 5L, ...) {
   ps = TEST_MAKE_PS1(n_dim = n_dim)
   lrn = mlr_learners$get("classif.rpart")
   if (!is.null(values)) {
@@ -24,9 +23,14 @@ TEST_MAKE_INST1 = function(values = NULL, folds = 2L,
   return(inst)
 }
 
-TEST_MAKE_INST1_2D = function(values = NULL, folds = 2L,
-  measures = msrs(c("classif.ce", "classif.acc")),  n_dim = 1L, term_evals = 5L,
-  ...) {
+TEST_MAKE_INST1_2D = function(
+  values = NULL,
+  folds = 2L,
+  measures = msrs(c("classif.ce", "classif.acc")),
+  n_dim = 1L,
+  term_evals = 5L,
+  ...
+) {
   ps = TEST_MAKE_PS1(n_dim = n_dim)
   lrn = mlr_learners$get("classif.rpart")
   if (!is.null(values)) {
@@ -34,8 +38,7 @@ TEST_MAKE_INST1_2D = function(values = NULL, folds = 2L,
   }
   rs = rsmp("cv", folds = folds)
   term = trm("evals", n_evals = term_evals)
-  inst = TuningInstanceBatchMultiCrit$new(tsk("iris"), lrn, rs, measures, term, ps,
-    ...)
+  inst = TuningInstanceBatchMultiCrit$new(tsk("iris"), lrn, rs, measures, term, ps, ...)
   return(inst)
 }
 
@@ -47,7 +50,7 @@ TEST_MAKE_PS2 = function() {
     cp = p_dbl(lower = 0, upper = 1)
   )
   ps$add_dep("yy", on = "xx", cond = CondEqual$new("a"))
-  return(ps)
+  ps
 }
 TEST_MAKE_INST2 = function(measure = msr("dummy.cp.regr"), term_evals = 5L) {
   ps = TEST_MAKE_PS2()
@@ -70,7 +73,8 @@ make_dummy_cp_measure = function(type, minimize = TRUE) {
     inh = MeasureRegr
     cl = "MeasureDummyCPRegr"
   }
-  m = R6Class(cl,
+  m = R6Class(
+    cl,
     inherit = inh,
     public = list(
       # allow a fun to transform cp to score, this allows further shenanigans
@@ -102,7 +106,9 @@ mlr_measures$add("dummy.cp.regr", MeasureDummyCPRegr)
 MeasureDummyCPMaximizeClassif = make_dummy_cp_measure("classif", minimize = FALSE)
 mlr_measures$add("dummy.cp.maximize.classif", MeasureDummyCPMaximizeClassif)
 
-LearnerRegrDepParams = R6Class("LearnerRegrDepParams", inherit = LearnerRegr,
+LearnerRegrDepParams = R6Class(
+  "LearnerRegrDepParams",
+  inherit = LearnerRegr,
   public = list(
     initialize = function(id = "regr.depparams") {
       param_set = TEST_MAKE_PS2()
@@ -119,7 +125,7 @@ LearnerRegrDepParams = R6Class("LearnerRegrDepParams", inherit = LearnerRegr,
   private = list(
     .train = function(task) {
       tn = task$target_names
-      return(list())
+      list()
     },
 
     .predict = function(task) {
@@ -139,4 +145,3 @@ MAKE_GL = function() {
   g$add_edge("subsample", "classif.rpart")
   mlr3pipelines::GraphLearner$new(g)
 }
-

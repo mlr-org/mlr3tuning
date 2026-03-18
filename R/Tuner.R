@@ -28,9 +28,9 @@
 #' @template param_man
 #'
 #' @export
-Tuner = R6Class("Tuner",
+Tuner = R6Class(
+  "Tuner",
   public = list(
-
     id = NULL,
 
     #' @description
@@ -43,17 +43,23 @@ Tuner = R6Class("Tuner",
       packages = character(),
       label = NA_character_,
       man = NA_character_
-      ) {
+    ) {
       self$id = assert_string(id, min.chars = 1L)
       private$.param_set = assert_param_set(param_set)
-      private$.param_classes = assert_subset(param_classes, c("ParamLgl", "ParamInt", "ParamDbl", "ParamFct", "ParamUty"))
+      private$.param_classes = assert_subset(
+        param_classes,
+        c("ParamLgl", "ParamInt", "ParamDbl", "ParamFct", "ParamUty")
+      )
       # has to have at least multi-crit or single-crit property
       private$.properties = assert_subset(properties, bbotk_reflections$optimizer_properties, empty.ok = FALSE)
       private$.packages = union("mlr3tuning", assert_character(packages, any.missing = FALSE, min.chars = 1L))
       private$.label = assert_string(label, na.ok = TRUE)
       private$.man = assert_string(man, na.ok = TRUE)
 
-      check_packages_installed(self$packages, msg = sprintf("Package '%%s' required but not installed for Tuner '%s'", format(self)))
+      check_packages_installed(
+        self$packages,
+        msg = sprintf("Package '%%s' required but not installed for Tuner '%s'", format(self))
+      )
     },
 
     #' @description
@@ -71,8 +77,10 @@ Tuner = R6Class("Tuner",
     #' @return (`character()`).
     print = function() {
       msg_h = if (is.na(self$label)) "" else paste0(": ", self$label)
-      msg_params = cli_vec(map_chr(self$param_classes, function(p) format_inline('{.cls {p}}')),
-                           style = list(last = ' and ', sep = ', '))
+      msg_params = cli_vec(
+        map_chr(self$param_classes, function(p) format_inline("{.cls {p}}")),
+        style = list(last = " and ", sep = ", ")
+      )
       cat_cli({
         cli_h1("{.cls {class(self)[1]}}{msg_h}")
         cli_li("Parameters: {as_short_string(self$param_set$values)}")
@@ -90,7 +98,6 @@ Tuner = R6Class("Tuner",
   ),
 
   active = list(
-
     #' @field param_set ([paradox::ParamSet])\cr
     #' Set of control parameters.
     param_set = function(rhs) {
@@ -101,7 +108,8 @@ Tuner = R6Class("Tuner",
     },
 
     #' @field param_classes (`character()`)\cr
-    #' Supported parameter classes for learner hyperparameters that the tuner can optimize, as given in the [paradox::ParamSet] `$class` field.
+    #' Supported parameter classes for learner hyperparameters that the tuner can optimize,
+    #' as given in the [paradox::ParamSet] `$class` field.
     param_classes = function(rhs) {
       if (!missing(rhs) && !identical(rhs, private$.param_classes)) {
         stop("$param_classes is read-only.")
@@ -166,4 +174,3 @@ Tuner = R6Class("Tuner",
     .man = NULL
   )
 )
-

@@ -6,7 +6,8 @@
 #' Subclass for grid search tuning.
 #'
 #' @details
-#' The grid is constructed as a Cartesian product over discretized values per parameter, see [paradox::generate_design_grid()].
+#' The grid is constructed as a Cartesian product over discretized values per parameter,
+#' see [paradox::generate_design_grid()].
 #' If the learner supports hotstarting, the grid is sorted by the hotstart parameter (see also [mlr3::HotstartStack]).
 #' If not, the points of the grid are evaluated in a random order.
 #'
@@ -33,10 +34,10 @@
 #' @family Tuner
 #' @export
 #' @template example
-TunerBatchGridSearch = R6Class("TunerBatchGridSearch",
+TunerBatchGridSearch = R6Class(
+  "TunerBatchGridSearch",
   inherit = TunerBatchFromOptimizerBatch,
   public = list(
-
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function() {

@@ -58,10 +58,10 @@
 #' # fit final model on complete data set
 #' learner$param_set$values = instance$result_learner_param_vals
 #' learner$train(tsk("penguins"))
-TunerBatchDesignPoints = R6Class("TunerBatchDesignPoints",
+TunerBatchDesignPoints = R6Class(
+  "TunerBatchDesignPoints",
   inherit = TunerBatchFromOptimizerBatch,
   public = list(
-
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function() {

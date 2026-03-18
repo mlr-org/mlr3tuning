@@ -1,4 +1,6 @@
 #' @importFrom utils bibentry
+# fmt: skip
+# nolint start
 bibentries = c(
   xiang_2013 = bibentry("article",
     title        = "Generalized Simulated Annealing for Global Optimization: The {GenSA} Package",
@@ -73,3 +75,4 @@ bibentries = c(
     isbn      = "978-1-4614-6849-3"
   )
 )
+# nolint end

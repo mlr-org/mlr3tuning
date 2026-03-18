@@ -3,14 +3,12 @@ skip_if_no_redis()
 
 test_that("TunerAsyncGridSearch works", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
 
-  learner = lrn("classif.rpart",
-    minsplit  = to_tune(2, 128),
-    cp        = to_tune(1e-04, 1e-1))
+  learner = lrn("classif.rpart", minsplit = to_tune(2, 128), cp = to_tune(1e-04, 1e-1))
 
   instance = ti_async(
     task = tsk("pima"),

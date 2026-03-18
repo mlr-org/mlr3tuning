@@ -1,4 +1,3 @@
-
 #' @title Multi Criteria Tuning Instance for Batch Tuning
 #'
 #' @description
@@ -16,10 +15,10 @@
 #' @template param_callbacks
 #'
 #' @export
-TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
+TuningInstanceMultiCrit = R6Class(
+  "TuningInstanceMultiCrit",
   inherit = TuningInstanceBatchMultiCrit,
   public = list(
-
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function(
@@ -33,8 +32,7 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
       store_models = FALSE,
       check_values = FALSE,
       callbacks = NULL
-      ) {
-
+    ) {
       message("TuningInstanceMultiCrit is deprecated. Use TuningInstanceBatchMultiCrit instead.")
 
       super$initialize(
@@ -47,7 +45,8 @@ TuningInstanceMultiCrit = R6Class("TuningInstanceMultiCrit",
         store_benchmark_result = store_benchmark_result,
         store_models = store_models,
         check_values = check_values,
-        callbacks = callbacks)
+        callbacks = callbacks
+      )
     }
   )
 )

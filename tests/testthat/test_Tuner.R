@@ -17,13 +17,21 @@ test_that("proper error if tuner cannot handle deps", {
   )
   ps$add_dep("minsplit", on = "cp", cond = CondEqual$new(0.1))
   te = trm("evals", n_evals = 2)
-  inst = TuningInstanceBatchSingleCrit$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), te, ps)
+  inst = TuningInstanceBatchSingleCrit$new(
+    tsk("iris"),
+    lrn("classif.rpart"),
+    rsmp("holdout"),
+    msr("classif.ce"),
+    te,
+    ps
+  )
   tt = TunerBatchGenSA$new()
   expect_resample_error(tt$optimize(inst), "dependencies")
 })
 
 test_that("we get a result when some subordinate params are not fulfilled", {
-  TunerManual = R6Class("TunerManual",
+  TunerManual = R6Class(
+    "TunerManual",
     inherit = TunerBatch,
     public = list(
       initialize = function() {
@@ -36,8 +44,7 @@ test_that("we get a result when some subordinate params are not fulfilled", {
       }
     ),
     private = list(
-      .optimize = function(inst) {
-      }
+      .optimize = function(inst) {}
     )
   )
   tuner_manual = TunerManual$new()
@@ -64,7 +71,8 @@ test_that("print method workds", {
     param_set = param_set,
     param_classes = param_classes,
     properties = "single-crit",
-    packages = packages)
+    packages = packages
+  )
   expect_snapshot(tuner)
 })
 
@@ -84,7 +92,8 @@ test_that("Tuner works with graphlearner", {
     resampling = rsmp("holdout"),
     measure = ms,
     search_space = ps,
-    terminator = te)
+    terminator = te
+  )
 
   tuner = tnr("grid_search", resolution = 3)
   tuner$optimize(inst)
@@ -115,7 +124,8 @@ test_that("Tuner works with instantiated resampling", {
     resampling = resampling,
     measure = msr("classif.ce"),
     search_space = ps,
-    terminator = te)
+    terminator = te
+  )
 
   rs = TunerBatchRandomSearch$new()
   rs$optimize(inst)
@@ -139,41 +149,51 @@ test_that("Tuner active bindings work", {
     param_set = param_set,
     param_classes = param_classes,
     properties = "single-crit",
-    packages = packages)
+    packages = packages
+  )
 
   expect_equal(tuner$param_set, param_set)
   expect_equal(tuner$param_classes, param_classes)
   expect_equal(tuner$properties, properties)
   expect_subset(packages, tuner$packages)
 
-  expect_error({
-    tuner$param_set = ps(p2 = p_lgl())
-  },
-  regexp = "$param_set is read-only",
-  fixed = TRUE)
+  expect_error(
+    {
+      tuner$param_set = ps(p2 = p_lgl())
+    },
+    regexp = "$param_set is read-only",
+    fixed = TRUE
+  )
 
-  expect_error({
-    tuner$param_classes = "foo"
-  },
-  regexp = "$param_classes is read-only",
-  fixed = TRUE)
+  expect_error(
+    {
+      tuner$param_classes = "foo"
+    },
+    regexp = "$param_classes is read-only",
+    fixed = TRUE
+  )
 
-  expect_error({
-    tuner$properties = "foo"
-  },
-  regexp = "$properties is read-only",
-  fixed = TRUE)
+  expect_error(
+    {
+      tuner$properties = "foo"
+    },
+    regexp = "$properties is read-only",
+    fixed = TRUE
+  )
 
-  expect_error({
-    tuner$packages = "foo"
-  },
-  regexp = "$packages is read-only",
-  fixed = TRUE)
+  expect_error(
+    {
+      tuner$packages = "foo"
+    },
+    regexp = "$packages is read-only",
+    fixed = TRUE
+  )
 })
 
 test_that("internal single crit", {
   aggr = function(x) 99
-  learner = lrn("classif.debug",
+  learner = lrn(
+    "classif.debug",
     iter = to_tune(upper = 1000L, internal = TRUE, aggr = aggr),
     x = to_tune(0.2, 0.3),
     validate = 0.3,
@@ -187,16 +207,19 @@ test_that("internal single crit", {
     term_evals = 4
   )
   expect_equal(
-    ti$archive$data$internal_tuned_values, replicate(list(set_class(list(iter = 99L), "internal_tuned_values")), n = 4L)
+    ti$archive$data$internal_tuned_values,
+    replicate(list(set_class(list(iter = 99L), "internal_tuned_values")), n = 4L)
   )
   expect_equal(
-    ti$result_learner_param_vals$iter, 99L
+    ti$result_learner_param_vals$iter,
+    99L
   )
 })
 
 test_that("internal single crit without benchmark_result", {
   aggr = function(x) 99
-  learner = lrn("classif.debug",
+  learner = lrn(
+    "classif.debug",
     iter = to_tune(upper = 1000L, internal = TRUE, aggr = aggr),
     x = to_tune(0.2, 0.3),
     validate = 0.3,
@@ -211,16 +234,19 @@ test_that("internal single crit without benchmark_result", {
     store_benchmark_result = FALSE
   )
   expect_equal(
-    ti$archive$data$internal_tuned_values, replicate(list(set_class(list(iter = 99L), "internal_tuned_values")), n = 4L)
+    ti$archive$data$internal_tuned_values,
+    replicate(list(set_class(list(iter = 99L), "internal_tuned_values")), n = 4L)
   )
   expect_equal(
-    ti$result_learner_param_vals$iter, 99L
+    ti$result_learner_param_vals$iter,
+    99L
   )
 })
 
 
 test_that("internal multi crit", {
-  learner = lrn("classif.debug",
+  learner = lrn(
+    "classif.debug",
     iter = to_tune(upper = 1000L, internal = TRUE, aggr = function(x) as.integer(ceiling(mean(unlist(x))) + 2000L)),
     x = to_tune(0.2, 0.3),
     predict_type = "prob",
@@ -255,7 +281,12 @@ test_that("internal multi crit", {
 test_that("proper error when primary search space is empty", {
   instance = ti(
     task = tsk("pima"),
-    learner = lrn("classif.debug", validate = 0.2, early_stopping = TRUE, iter = to_tune(upper = 1000, internal = TRUE, aggr = function(x) 99)),
+    learner = lrn(
+      "classif.debug",
+      validate = 0.2,
+      early_stopping = TRUE,
+      iter = to_tune(upper = 1000, internal = TRUE, aggr = function(x) 99)
+    ),
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 10)
@@ -269,10 +300,23 @@ test_that("internal tuning: branching", {
   skip_if_not_installed("mlr3pipelines", "0.5.3")
   # this case is special, because not all internally tuned parameters are present in every iteration, only those that
   # are in the active branch are
-  glrn = mlr3pipelines::ppl("branch", graphs = list(
-    lrn("classif.debug", id = "lrn1", iter = to_tune(upper = 500, internal = TRUE, aggr = function(x) 1L), early_stopping = TRUE),
-    lrn("classif.debug", id = "lrn2", iter = to_tune(upper = 1000, internal = TRUE, aggr = function(x) 2L), early_stopping = TRUE)
-  ))
+  glrn = mlr3pipelines::ppl(
+    "branch",
+    graphs = list(
+      lrn(
+        "classif.debug",
+        id = "lrn1",
+        iter = to_tune(upper = 500, internal = TRUE, aggr = function(x) 1L),
+        early_stopping = TRUE
+      ),
+      lrn(
+        "classif.debug",
+        id = "lrn2",
+        iter = to_tune(upper = 1000, internal = TRUE, aggr = function(x) 2L),
+        early_stopping = TRUE
+      )
+    )
+  )
 
   learner = as_learner(glrn)
   set_validate(learner, 0.2, ids = c("lrn1", "lrn2"))
@@ -304,32 +348,47 @@ test_that("internal tuning: branching", {
 })
 
 test_that("internal tuning: error is thrown on incorrect configuration", {
-  expect_resample_error(tune(
-    tuner = tnr("random_search"),
-    learner = lrn("classif.debug", iter = to_tune(upper = 1000, internal = TRUE)),
-    task = tsk("iris"),
-    resampling = rsmp("holdout")
-  ), "early_stopping")
+  expect_resample_error(
+    tune(
+      tuner = tnr("random_search"),
+      learner = lrn("classif.debug", iter = to_tune(upper = 1000, internal = TRUE)),
+      task = tsk("iris"),
+      resampling = rsmp("holdout")
+    ),
+    "early_stopping"
+  )
 })
 
 test_that("internal tuning: error message when primary search space is empty", {
-  expect_resample_error(tune(
-    tuner = tnr("random_search"),
-    learner = lrn("classif.debug", iter = to_tune(upper = 1000, internal = TRUE), early_stopping = TRUE, validate = 0.2),
-    task = tsk("iris"),
-    resampling = rsmp("holdout")
-  ), "tnr('internal')", fixed = TRUE)
+  expect_resample_error(
+    tune(
+      tuner = tnr("random_search"),
+      learner = lrn(
+        "classif.debug",
+        iter = to_tune(upper = 1000, internal = TRUE),
+        early_stopping = TRUE,
+        validate = 0.2
+      ),
+      task = tsk("iris"),
+      resampling = rsmp("holdout")
+    ),
+    "tnr('internal')",
+    fixed = TRUE
+  )
 })
 
 test_that("parameter transformations can be used with internal tuning", {
   ti = tune(
     tuner = tnr("random_search"),
-    learner = lrn("classif.debug",
+    learner = lrn(
+      "classif.debug",
       iter = to_tune(upper = 1000, internal = TRUE),
       x = to_tune(ps(a = p_dbl(0, 0.5), b = p_dbl(0, 0.5), .extra_trafo = function(x, param_set) {
         list(x = x$a + x$b)
       })),
-      early_stopping = TRUE, validate = 0.2),
+      early_stopping = TRUE,
+      validate = 0.2
+    ),
     task = tsk("iris"),
     resampling = rsmp("holdout"),
     term_evals = 2
@@ -361,11 +420,14 @@ test_that("tag internal tune token manually in primary search space", {
 test_that("Correct error when minimize is NA", {
   m = msr("classif.acc")
   m$minimize = NA
-  expect_resample_error(tune(
-    tuner = tnr("random_search"),
-    task = tsk("iris"),
-    learner = lrn("classif.debug", x = to_tune()),
-    resampling = rsmp("holdout"),
-    measures = m
-  ), "`minimize`")
+  expect_resample_error(
+    tune(
+      tuner = tnr("random_search"),
+      task = tsk("iris"),
+      learner = lrn("classif.debug", x = to_tune()),
+      resampling = rsmp("holdout"),
+      measures = m
+    ),
+    "`minimize`"
+  )
 })

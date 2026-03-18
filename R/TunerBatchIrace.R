@@ -78,10 +78,10 @@
 #' learner$param_set$values = instance$result_learner_param_vals
 #' learner$train(task)
 #' }}
-TunerBatchIrace = R6Class("TunerBatchIrace",
+TunerBatchIrace = R6Class(
+  "TunerBatchIrace",
   inherit = TunerBatchFromOptimizerBatch,
   public = list(
-
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function() {
@@ -131,12 +131,13 @@ TunerBatchIrace = R6Class("TunerBatchIrace",
 
       private$.optimizer$optimize(inst)
 
-      return(inst$result)
+      inst$result
     }
   )
 )
 
-target_runner_tuning = function(experiment, exec_target_runner, scenario, target_runner) {# nolint
+target_runner_tuning = function(experiment, exec_target_runner, scenario, target_runner) {
+  # nolint
   tuning_instance = scenario$targetRunnerData$inst
 
   xdt = map_dtr(experiment, function(e) {
@@ -148,7 +149,9 @@ target_runner_tuning = function(experiment, exec_target_runner, scenario, target
   })
   # fix logicals
   lgl_params = as.data.table(tuning_instance$search_space)[class == "ParamLgl", "id"][[1]]
-  if (length(lgl_params)) xdt[, (lgl_params) := lapply(.SD, as.logical), .SDcols = lgl_params]
+  if (length(lgl_params)) {
+    xdt[, (lgl_params) := lapply(.SD, as.logical), .SDcols = lgl_params]
+  }
 
   # provide experiment instances to objective
   tuning_instance$objective$constants$values$resampling = map(experiment, function(e) e$instance)

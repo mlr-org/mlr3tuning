@@ -11,6 +11,7 @@ test_that("TunerIrace", {
 
   # check optimization direction
   # first elite of the first race should have the lowest average performance
+  #nolint next
   iraceResults = irace::read_logfile(tuner$param_set$values$logFile)
   elites = iraceResults$allElites
   aggr = archive[race == 1, .(classif.ce = mean(classif.ce)), by = configuration]
@@ -32,9 +33,12 @@ test_that("TunerIrace works with dependencies", {
     resampling = rsmp("holdout"),
     measures = msr("regr.mse"),
     terminator = trm("evals", n_evals = 200),
-    search_space = search_space)
+    search_space = search_space
+  )
   tuner = tnr("irace")
-  suppressMessages(capture.output({tuner$optimize(instance)}))
+  suppressMessages(capture.output({
+    tuner$optimize(instance)
+  }))
 
   archive = instance$archive$data
   expect_true(all(is.na(archive[cp != 0.005, minsplit])))
@@ -43,17 +47,21 @@ test_that("TunerIrace works with dependencies", {
 
 test_that("TunerIrace works with logical parameters", {
   search_space = ps(
-     cp = p_dbl(lower = 0.001, upper = 0.1),
-    keep_model = p_lgl())
+    cp = p_dbl(lower = 0.001, upper = 0.1),
+    keep_model = p_lgl()
+  )
   instance = ti(
     task = tsk("mtcars"),
     learner = lrn("regr.rpart"),
     resampling = rsmp("holdout"),
     measures = msr("regr.mse"),
     terminator = trm("evals", n_evals = 200),
-    search_space = search_space)
+    search_space = search_space
+  )
   tuner = tnr("irace")
-  suppressMessages(capture.output({tuner$optimize(instance)}))
+  suppressMessages(capture.output({
+    tuner$optimize(instance)
+  }))
   expect_logical(instance$archive$best()$keep_model)
 })
 
@@ -65,9 +73,12 @@ test_that("TunerIrace uses digits", {
     resampling = rsmp("holdout"),
     measures = msr("regr.mse"),
     terminator = trm("evals", n_evals = 96),
-    search_space = search_space)
+    search_space = search_space
+  )
   tuner = tnr("irace", nbIterations = 1L, minNbSurvival = 1)
-  suppressMessages(capture.output({expect_data_table(tuner$optimize(instance))}))
+  suppressMessages(capture.output({
+    expect_data_table(tuner$optimize(instance))
+  }))
 })
 
 test_that("TunerIrace works with unnamed discrete values", {
@@ -79,7 +90,10 @@ test_that("TunerIrace works with unnamed discrete values", {
     resampling = rsmp("holdout"),
     measures = msr("regr.mse"),
     terminator = trm("evals", n_evals = 200),
-    search_space = search_space)
+    search_space = search_space
+  )
   tuner = tnr("irace")
-  suppressMessages(capture.output({expect_data_table(tuner$optimize(instance))}))
+  suppressMessages(capture.output({
+    expect_data_table(tuner$optimize(instance))
+  }))
 })

@@ -12,16 +12,16 @@
 #' @template param_tuner
 #'
 #' @export
-ContextAsyncTuning = R6Class("ContextAsyncTuning",
+ContextAsyncTuning = R6Class(
+  "ContextAsyncTuning",
   inherit = ContextAsync,
   active = list(
-
     #' @field xs_learner (list())\cr
     #' The hyperparameter configuration currently evaluated.
     #' Contains the values on the learner scale i.e. transformations are applied.
     xs_learner = function(rhs) {
       if (missing(rhs)) {
-        return(get_private(self$instance$objective)$.xs)
+        get_private(self$instance$objective)$.xs
       } else {
         self$instance$objective$.__enclos_env__$private$.xs = rhs
       }
@@ -31,7 +31,7 @@ ContextAsyncTuning = R6Class("ContextAsyncTuning",
     #' The resample result of the hyperparameter configuration currently evaluated.
     resample_result = function(rhs) {
       if (missing(rhs)) {
-        return(get_private(self$instance$objective)$.resample_result)
+        get_private(self$instance$objective)$.resample_result
       } else {
         self$instance$objective$.__enclos_env__$private$.resample_result = rhs
       }
@@ -43,7 +43,7 @@ ContextAsyncTuning = R6Class("ContextAsyncTuning",
     #' A callback can add additional elements which are also written to the archive.
     aggregated_performance = function(rhs) {
       if (missing(rhs)) {
-        return(get_private(self$instance$objective)$.aggregated_performance)
+        get_private(self$instance$objective)$.aggregated_performance
       } else {
         self$instance$objective$.__enclos_env__$private$.aggregated_performance = rhs
       }
@@ -53,7 +53,7 @@ ContextAsyncTuning = R6Class("ContextAsyncTuning",
     #' The learner parameter values passed to `instance$assign_result()`.
     result_learner_param_vals = function(rhs) {
       if (missing(rhs)) {
-        return(get_private(self$instance)$.result_learner_param_vals)
+        get_private(self$instance)$.result_learner_param_vals
       } else {
         self$instance$.__enclos_env__$private$.result_learner_param_vals = rhs
       }

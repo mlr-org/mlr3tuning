@@ -2,7 +2,8 @@
 #'
 #' @description
 #'
-#' The [AutoTuner] wraps a [mlr3::Learner] and augments it with an automatic tuning process for a given set of hyperparameters.
+#' The [AutoTuner] wraps a [mlr3::Learner]
+#' and augments it with an automatic tuning process for a given set of hyperparameters.
 #' The [auto_tuner()] function creates an [AutoTuner] object.
 #'
 #' @section Validation:
@@ -11,11 +12,14 @@
 #' This is also possible via `set_validate()`.
 #'
 #' @details
-#' The [AutoTuner] is a [mlr3::Learner] which wraps another [mlr3::Learner] and performs the following steps during `$train()`:
+#' The [AutoTuner] is a [mlr3::Learner] which wraps another [mlr3::Learner]
+#' and performs the following steps during `$train()`:
 #'
 #' 1. The hyperparameters of the wrapped (inner) learner are trained on the training data via resampling.
-#'    The tuning can be specified by providing a [Tuner], a [bbotk::Terminator], a search space as [paradox::ParamSet], a [mlr3::Resampling] and a [mlr3::Measure].
-#' 2. The best found hyperparameter configuration is set as hyperparameters for the wrapped (inner) learner stored in `at$learner`.
+#'    The tuning can be specified by providing a [Tuner], a [bbotk::Terminator],
+#'    a search space as [paradox::ParamSet], a [mlr3::Resampling] and a [mlr3::Measure].
+#' 2. The best found hyperparameter configuration is set as hyperparameters
+#'    for the wrapped (inner) learner stored in `at$learner`.
 #'    Access the tuned hyperparameters via `at$tuning_result`.
 #' 3. A final model is fit on the complete training data using the now parametrized wrapped learner.
 #'    The respective model is available via field `at$learner$model`.
@@ -28,10 +32,13 @@
 #'
 #' @section Nested Resampling:
 #' Nested resampling is performed by passing an [AutoTuner] to [mlr3::resample()] or [mlr3::benchmark()].
-#' To access the inner resampling results, set `store_tuning_instance = TRUE` and execute [mlr3::resample()] or [mlr3::benchmark()] with `store_models = TRUE` (see examples).
-#' The [mlr3::Resampling] passed to the [AutoTuner] is meant to be the inner resampling, operating on the training set of an arbitrary outer resampling.
+#' To access the inner resampling results, set `store_tuning_instance = TRUE` and execute [mlr3::resample()] or
+#' [mlr3::benchmark()] with `store_models = TRUE` (see examples).
+#' The [mlr3::Resampling] passed to the [AutoTuner] is meant to be the inner resampling,
+#' operating on the training set of an arbitrary outer resampling.
 #' For this reason, the inner resampling should be not instantiated.
-#' If an instantiated resampling is passed, the [AutoTuner] fails when a row id of the inner resampling is not present in the training set of the outer resampling.
+#' If an instantiated resampling is passed, the [AutoTuner] fails when a row id of the inner resampling is not present
+#' in the training set of the outer resampling.
 #'
 #'
 #' @template param_learner
@@ -107,10 +114,10 @@
 #'
 #' # unbiased performance of the final model trained on the full data set
 #' rr$aggregate()
-AutoTuner = R6Class("AutoTuner",
+AutoTuner = R6Class(
+  "AutoTuner",
   inherit = Learner,
   public = list(
-
     #' @field instance_args (`list()`)\cr
     #' All arguments from construction to create the [TuningInstanceBatchSingleCrit].
     instance_args = NULL,
@@ -138,20 +145,25 @@ AutoTuner = R6Class("AutoTuner",
       callbacks = NULL,
       rush = NULL,
       id = NULL
-      ) {
+    ) {
       learner = assert_learner(as_learner(learner, clone = TRUE))
 
-      if (!is.null(search_space) && length(learner$param_set$get_values(type = "only_token", check_required = FALSE)) > 0) {
+      if (
+        !is.null(search_space) && length(learner$param_set$get_values(type = "only_token", check_required = FALSE)) > 0
+      ) {
         stop("If the values of the ParamSet of the Learner contain TuneTokens you cannot supply a search_space.")
       }
-
 
       ia = list()
       self$tuner = assert_tuner(tuner)
       ia$learner = learner
       ia$resampling = assert_resampling(resampling)$clone()
-      if (!is.null(measure)) ia$measure = assert_measure(as_measure(measure), learner = learner)
-      if (!is.null(search_space)) ia$search_space = as_search_space(search_space)
+      if (!is.null(measure)) {
+        ia$measure = assert_measure(as_measure(measure), learner = learner)
+      }
+      if (!is.null(search_space)) {
+        ia$search_space = as_search_space(search_space)
+      }
       ia$terminator = assert_terminator(terminator)$clone()
 
       ia$store_models = assert_flag(store_models)
@@ -160,7 +172,9 @@ AutoTuner = R6Class("AutoTuner",
 
       ia$check_values = assert_flag(check_values)
       ia$callbacks = assert_callbacks(as_callbacks(callbacks))
-      if (!is.null(rush)) ia$rush = assert_class(rush, "Rush")
+      if (!is.null(rush)) {
+        ia$rush = assert_class(rush, "Rush")
+      }
       self$instance_args = ia
 
       id = assert_string(id, null.ok = TRUE) %??% paste0(learner$id, ".tuned")
@@ -313,7 +327,8 @@ AutoTuner = R6Class("AutoTuner",
     #' Stores the currently active predict type, e.g. `"response"`.
     #' Must be an element of `$predict_types`.
     #' A few learners already use the predict type during training.
-    #' So there is no guarantee that changing the predict type after tuning and training will have any effect or does not lead to errors.
+    #' So there is no guarantee that changing the predict type after tuning and training
+    #' will have any effect or does not lead to errors.
     predict_type = function(rhs) {
       if (missing(rhs)) {
         return(private$.predict_type)
@@ -323,7 +338,6 @@ AutoTuner = R6Class("AutoTuner",
       }
 
       self$instance_args$learner$predict_type = rhs
-
 
       if (!is.null(self$model)) {
         self$model$learner$predict_type = rhs
@@ -336,11 +350,23 @@ AutoTuner = R6Class("AutoTuner",
     #' Hash (unique identifier) for this object.
     hash = function(rhs) {
       assert_ro_binding(rhs)
-      calculate_hash(class(self), self$id, self$param_set$values, private$.predict_type, self$fallback$hash, self$parallel_predict, self$tuner, self$instance_args, private$.store_tuning_instance)
+      calculate_hash(
+        class(self),
+        self$id,
+        self$param_set$values,
+        private$.predict_type,
+        self$fallback$hash,
+        self$parallel_predict,
+        self$tuner,
+        self$instance_args,
+        private$.store_tuning_instance
+      )
     },
 
     #' @field phash (`character(1)`)\cr
-    #' Hash (unique identifier) for this partial object, excluding some components which are varied systematically during tuning (parameter values) or feature selection (feature names).
+    #' Hash (unique identifier) for this partial object,
+    #' excluding some components which are varied systematically
+    #' during tuning (parameter values) or feature selection (feature names).
     phash = function(rhs) {
       assert_ro_binding(rhs)
       self$hash
@@ -359,18 +385,34 @@ AutoTuner = R6Class("AutoTuner",
       if (ia$resampling$is_instantiated) {
         imap(ia$resampling$instance$train, function(x, i) {
           if (!test_subset(x, task$row_ids)) {
-            stopf("Train set %i of inner resampling '%s' contains row ids not present in task '%s': {%s}", i, ia$resampling$id, task$id, paste(setdiff(x, task$row_ids), collapse = ", "))
+            stopf(
+              "Train set %i of inner resampling '%s' contains row ids not present in task '%s': {%s}",
+              i,
+              ia$resampling$id,
+              task$id,
+              paste(setdiff(x, task$row_ids), collapse = ", ")
+            )
           }
         })
 
         imap(ia$resampling$instance$test, function(x, i) {
           if (!test_subset(x, task$row_ids)) {
-            stopf("Test set %i of inner resampling '%s' contains row ids not present in task '%s': {%s}", i, ia$resampling$id, task$id, paste(setdiff(x, task$row_ids), collapse = ", "))
+            stopf(
+              "Test set %i of inner resampling '%s' contains row ids not present in task '%s': {%s}",
+              i,
+              ia$resampling$id,
+              task$id,
+              paste(setdiff(x, task$row_ids), collapse = ", ")
+            )
           }
         })
       }
 
-      TuningInstance = if (inherits(self$tuner, "TunerBatch")) TuningInstanceBatchSingleCrit else TuningInstanceAsyncSingleCrit
+      TuningInstance = if (inherits(self$tuner, "TunerBatch")) {
+        TuningInstanceBatchSingleCrit
+      } else {
+        TuningInstanceAsyncSingleCrit
+      }
       instance = do.call(TuningInstance$new, ia)
       self$tuner$optimize(instance)
 
@@ -388,7 +430,9 @@ AutoTuner = R6Class("AutoTuner",
 
       # the return model is a list of "learner" and "tuning_instance"
       result_model = list(learner = learner)
-      if (private$.store_tuning_instance) result_model$tuning_instance = instance
+      if (private$.store_tuning_instance) {
+        result_model$tuning_instance = instance
+      }
       structure(result_model, class = c("auto_tuner_model", "list"))
     },
     .predict = function(task) {
@@ -405,16 +449,24 @@ AutoTuner = R6Class("AutoTuner",
 marshal_model.auto_tuner_model = function(model, inplace = FALSE, ...) {
   if (inplace) {
     model$learner$model = marshal_model(model$learner$model, inplace = TRUE)
-    x = structure(list(
-      marshaled = model,
-      packages = "mlr3tuning"
-    ), class = c("auto_tuner_model_marshaled", "list_marshaled", "marshaled"))
+    x = structure(
+      list(
+        marshaled = model,
+        packages = "mlr3tuning"
+      ),
+      class = c("auto_tuner_model_marshaled", "list_marshaled", "marshaled")
+    )
     return(x)
   }
   # we clone the learner without its model
   learner = model$learner
   learner_model = learner$model
-  on.exit({learner$model = learner_model}, add = TRUE)
+  on.exit(
+    {
+      learner$model = learner_model
+    },
+    add = TRUE
+  )
   learner$model = NULL
   learner_clone = learner$clone(deep = TRUE)
   learner_clone$model = marshal_model(learner_model, inplace = FALSE)
@@ -424,9 +476,12 @@ marshal_model.auto_tuner_model = function(model, inplace = FALSE, ...) {
   # For our use-case, this is not necessary and would cause unnecessary overhead in the mlr3 workhorse function
   marshaled$tuning_instance = model$tuning_instance
 
-  structure(list(
-    marshaled = marshaled
-    ), class = c("auto_tuner_model_marshaled", "list_marshaled", "marshaled"))
+  structure(
+    list(
+      marshaled = marshaled
+    ),
+    class = c("auto_tuner_model_marshaled", "list_marshaled", "marshaled")
+  )
 }
 
 
@@ -443,7 +498,12 @@ unmarshal_model.auto_tuner_model_marshaled = function(model, inplace = FALSE, ..
   prev_learner = at_model$learner
   prev_model = prev_learner$model
   prev_learner$model = NULL
-  on.exit({prev_learner$model = prev_model}, add = TRUE)
+  on.exit(
+    {
+      prev_learner$model = prev_model
+    },
+    add = TRUE
+  )
 
   at_model$learner = prev_learner$clone(deep = TRUE)
   at_model$learner$model = unmarshal_model(prev_model, inplace = FALSE)

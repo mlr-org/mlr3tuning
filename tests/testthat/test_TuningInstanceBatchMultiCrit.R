@@ -59,25 +59,40 @@ test_that("check_values flag with parameter set dependencies", {
   tuner = tnr("random_search")
 
   inst = TuningInstanceBatchMultiCrit$new(
-    tsk("mtcars"), learner,
-    rsmp("holdout"), msrs(c("regr.mse", "regr.rmse")), terminator, search_space, check_values = FALSE)
+    tsk("mtcars"),
+    learner,
+    rsmp("holdout"),
+    msrs(c("regr.mse", "regr.rmse")),
+    terminator,
+    search_space,
+    check_values = FALSE
+  )
   tuner$optimize(inst)
   expect_named(inst$result_learner_param_vals[[1]], c("xx", "cp", "yy"))
 
-  inst = TuningInstanceBatchMultiCrit$new(tsk("mtcars"), learner,
-    rsmp("holdout"), msr("regr.mse"), terminator, search_space,
-    check_values = TRUE)
-  expect_error(tuner$optimize(inst),
-    regexp = "yy.* can only be set")
+  inst = TuningInstanceBatchMultiCrit$new(
+    tsk("mtcars"),
+    learner,
+    rsmp("holdout"),
+    msr("regr.mse"),
+    terminator,
+    search_space,
+    check_values = TRUE
+  )
+  expect_error(tuner$optimize(inst), regexp = "yy.* can only be set")
 })
 
 test_that("search space from TuneToken works", {
   learner = lrn("classif.rpart")
   learner$param_set$values$cp = to_tune(0.1, 0.3)
 
-  instance = TuningInstanceBatchMultiCrit$new(task = tsk("iris"), learner = learner,
-    resampling = rsmp("holdout"), measures = msrs(c("classif.acc", "classif.ce")),
-    terminator = trm("evals", n_evals = 1))
+  instance = TuningInstanceBatchMultiCrit$new(
+    task = tsk("iris"),
+    learner = learner,
+    resampling = rsmp("holdout"),
+    measures = msrs(c("classif.acc", "classif.ce")),
+    terminator = trm("evals", n_evals = 1)
+  )
 
   expect_r6(instance$search_space, "ParamSet")
   expect_equal(instance$search_space$ids(), "cp")
@@ -86,16 +101,27 @@ test_that("search space from TuneToken works", {
     cp = p_dbl(lower = 0.1, upper = 0.3)
   )
 
-  expect_error(TuningInstanceBatchMultiCrit$new(task = tsk("iris"), learner = learner,
-    resampling = rsmp("holdout"), measures = msrs(c("classif.acc", "classif.ce")),
-    search_space = ps, terminator = trm("evals", n_evals = 1)),
+  expect_error(
+    TuningInstanceBatchMultiCrit$new(
+      task = tsk("iris"),
+      learner = learner,
+      resampling = rsmp("holdout"),
+      measures = msrs(c("classif.acc", "classif.ce")),
+      search_space = ps,
+      terminator = trm("evals", n_evals = 1)
+    ),
     regexp = "If the values of the ParamSet of the Learner contain TuneTokens you cannot supply a search_space.",
-    fixed = TRUE)
+    fixed = TRUE
+  )
 
-  instance = TuningInstanceBatchMultiCrit$new(task = tsk("iris"),
-    learner = lrn("classif.rpart"), resampling = rsmp("holdout"),
-    measures = msrs(c("classif.acc", "classif.ce")), search_space = ps,
-    terminator = trm("evals", n_evals = 1))
+  instance = TuningInstanceBatchMultiCrit$new(
+    task = tsk("iris"),
+    learner = lrn("classif.rpart"),
+    resampling = rsmp("holdout"),
+    measures = msrs(c("classif.acc", "classif.ce")),
+    search_space = ps,
+    terminator = trm("evals", n_evals = 1)
+  )
 
   expect_r6(instance$search_space, "ParamSet")
   expect_equal(instance$search_space$ids(), "cp")
@@ -105,9 +131,13 @@ test_that("TuneToken and result_learner_param_vals works", {
   learner = lrn("classif.rpart", xval = 0)
   learner$param_set$values$cp = to_tune(0.1, 0.3)
 
-  instance = TuningInstanceBatchMultiCrit$new(task = tsk("iris"), learner = learner,
-    resampling = rsmp("holdout"), measures = msrs(c("classif.ce", "classif.acc")),
-    terminator = trm("evals", n_evals = 1))
+  instance = TuningInstanceBatchMultiCrit$new(
+    task = tsk("iris"),
+    learner = learner,
+    resampling = rsmp("holdout"),
+    measures = msrs(c("classif.ce", "classif.acc")),
+    terminator = trm("evals", n_evals = 1)
+  )
 
   xdt = data.table(cp = 0.1)
   tuner = tnr("design_points", design = xdt)
@@ -167,11 +197,13 @@ test_that("TuningInstanceBatchMultiCrit and empty search space works", {
 # Internal Tuning --------------------------------------------------------------
 
 test_that("Batch multi-crit internal tuning works", {
-  learner = lrn("classif.debug",
+  learner = lrn(
+    "classif.debug",
     validate = 0.2,
     early_stopping = TRUE,
     x = to_tune(0.2, 0.3),
-    iter = to_tune(upper = 1000, internal = TRUE, aggr = function(x) 99))
+    iter = to_tune(upper = 1000, internal = TRUE, aggr = function(x) 99)
+  )
 
   instance = ti(
     task = tsk("pima"),

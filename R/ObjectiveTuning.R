@@ -2,7 +2,8 @@
 #'
 #' @description
 #' Stores the objective function that estimates the performance of hyperparameter configurations.
-#' This class is usually constructed internally by the [TuningInstanceBatchSingleCrit] or [TuningInstanceBatchMultiCrit].
+#' This class is usually constructed internally by the [TuningInstanceBatchSingleCrit] or
+#' [TuningInstanceBatchMultiCrit].
 #'
 #' @template param_task
 #' @template param_learner
@@ -15,17 +16,17 @@
 #' @template param_internal_search_space
 #'
 #' @export
-ObjectiveTuning = R6Class("ObjectiveTuning",
+ObjectiveTuning = R6Class(
+  "ObjectiveTuning",
   inherit = Objective,
   public = list(
-
     #' @field task ([mlr3::Task]).
     task = NULL,
 
     #' @field learner ([mlr3::Learner]).
     learner = NULL,
 
-     #' @field resampling ([mlr3::Resampling]).
+    #' @field resampling ([mlr3::Resampling]).
     resampling = NULL,
 
     #' @field measures (list of [mlr3::Measure]).
@@ -59,7 +60,7 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
       check_values = FALSE,
       callbacks = NULL,
       internal_search_space = NULL
-      ) {
+    ) {
       self$task = assert_task(as_task(task, clone = TRUE))
       self$learner = assert_learner(as_learner(learner, clone = TRUE))
       self$learner$param_set$assert_values = FALSE
@@ -77,11 +78,14 @@ ObjectiveTuning = R6Class("ObjectiveTuning",
         codomain = measures_to_codomain(self$measures),
         constants = ps(resampling = p_uty()),
         packages = mlr_reflections$loaded_packages,
-        check_values = check_values)
+        check_values = check_values
+      )
 
       # set resamplings in constants
       resampling = assert_resampling(as_resampling(resampling, clone = TRUE))
-      if (!resampling$is_instantiated) resampling$instantiate(task)
+      if (!resampling$is_instantiated) {
+        resampling$instantiate(task)
+      }
       self$resampling = resampling
       self$constants$values$resampling = list(resampling)
     }

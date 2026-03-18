@@ -4,7 +4,8 @@
 #'
 #' @description
 #' The [TuningInstanceBatchMultiCrit] specifies a tuning problem for a [Tuner].
-#' The function [ti()] creates a [TuningInstanceBatchMultiCrit] and the function [tune()] creates an instance internally.
+#' The function [ti()] creates a [TuningInstanceBatchMultiCrit] and the function [tune()] creates an instance
+#' internally.
 #'
 #' @inherit TuningInstanceBatchSingleCrit details
 #' @inheritSection TuningInstanceBatchSingleCrit Search Space
@@ -61,11 +62,11 @@
 #'
 #' # Inspect all evaluated configurations
 #' as.data.table(instance$archive)
-TuningInstanceBatchMultiCrit = R6Class("TuningInstanceBatchMultiCrit",
+TuningInstanceBatchMultiCrit = R6Class(
+  "TuningInstanceBatchMultiCrit",
   inherit = OptimInstanceBatchMultiCrit,
 
   public = list(
-
     internal_search_space = NULL,
 
     #' @description
@@ -81,7 +82,7 @@ TuningInstanceBatchMultiCrit = R6Class("TuningInstanceBatchMultiCrit",
       store_models = FALSE,
       check_values = FALSE,
       callbacks = NULL
-      ) {
+    ) {
       learner = assert_learner(as_learner(learner, clone = TRUE))
       callbacks = assert_batch_tuning_callbacks(as_callbacks(callbacks))
 
@@ -107,7 +108,9 @@ TuningInstanceBatchMultiCrit = R6Class("TuningInstanceBatchMultiCrit",
       # set internal search space
       if (!is.null(self$internal_search_space)) {
         # the learner dictates how to interpret the to_tune(..., inner)
-        learner$param_set$set_values(.values = learner$param_set$convert_internal_search_space(self$internal_search_space))
+        learner$param_set$set_values(
+          .values = learner$param_set$convert_internal_search_space(self$internal_search_space)
+        )
       }
 
       # set learner parameter values
@@ -134,17 +137,19 @@ TuningInstanceBatchMultiCrit = R6Class("TuningInstanceBatchMultiCrit",
         measures = measures,
         store_benchmark_result = store_benchmark_result,
         store_models = store_models,
-        check_values =  check_values,
+        check_values = check_values,
         archive = archive,
         callbacks = callbacks,
-        internal_search_space = self$internal_search_space)
+        internal_search_space = self$internal_search_space
+      )
 
       super$initialize(
         objective = objective,
         search_space = search_space,
         terminator = terminator,
         callbacks = callbacks,
-        archive = archive)
+        archive = archive
+      )
     },
 
     #' @description
@@ -166,29 +171,43 @@ TuningInstanceBatchMultiCrit = R6Class("TuningInstanceBatchMultiCrit",
 
       # extract internal tuned values
       if ("internal_tuned_values" %in% names(private$.result_extra)) {
-        set(private$.result_xdt, j = "internal_tuned_values", value = list(private$.result_extra[["internal_tuned_values"]]))
+        set(
+          private$.result_xdt,
+          j = "internal_tuned_values",
+          value = list(private$.result_extra[["internal_tuned_values"]])
+        )
       }
 
       # set the column with the learner param_vals that were not optimized over but set implicitly
       if (is.null(private$.result_learner_param_vals)) {
         private$.result_learner_param_vals = self$objective$learner$param_set$values
-        if (length(private$.result_learner_param_vals) == 0) private$.result_learner_param_vals = list()
-        private$.result_learner_param_vals = replicate(nrow(private$.result_ydt), list(private$.result_learner_param_vals))
+        if (length(private$.result_learner_param_vals) == 0) {
+          private$.result_learner_param_vals = list()
+        }
+        private$.result_learner_param_vals = replicate(
+          nrow(private$.result_ydt),
+          list(private$.result_learner_param_vals)
+        )
       }
 
       opt_x = transform_xdt_to_xss(private$.result_xdt, self$search_space)
-      if (length(opt_x) == 0) opt_x = replicate(length(private$.result_ydt), list())
+      if (length(opt_x) == 0) {
+        opt_x = replicate(length(private$.result_ydt), list())
+      }
       private$.result_learner_param_vals = Map(insert_named, private$.result_learner_param_vals, opt_x)
 
       # disable internal tuning
       if (!is.null(private$.result_xdt$internal_tuned_values)) {
         learner = self$objective$learner$clone(deep = TRUE)
-        private$.result_learner_param_vals = pmap(list(private$.result_learner_param_vals, private$.result_xdt$internal_tuned_values), function(lpv, itv) {
-          values = insert_named(lpv, itv)
-          learner$param_set$set_values(.values = values, .insert = FALSE)
-          learner$param_set$disable_internal_tuning(self$internal_search_space$ids())
-          learner$param_set$values
-        })
+        private$.result_learner_param_vals = pmap(
+          list(private$.result_learner_param_vals, private$.result_xdt$internal_tuned_values),
+          function(lpv, itv) {
+            values = insert_named(lpv, itv)
+            learner$param_set$set_values(.values = values, .insert = FALSE)
+            learner$param_set$disable_internal_tuning(self$internal_search_space$ids())
+            learner$param_set$values
+          }
+        )
       }
 
       set(private$.result_xdt, j = "learner_param_vals", value = list(private$.result_learner_param_vals))
@@ -202,7 +221,6 @@ TuningInstanceBatchMultiCrit = R6Class("TuningInstanceBatchMultiCrit",
     #'   List of param values for the optimal learner call.
     result_learner_param_vals = function() {
       private$.result$learner_param_vals
-
     }
   ),
 
