@@ -37,8 +37,8 @@ test_that("backup callback works with standalone tuner", {
 # async measure callback ------------------------------------------------------
 
 test_that("async measures callback works", {
-  skip_if_no_redis()
   skip_if_not_installed("rush")
+  skip_if_no_redis()
   rush = start_rush()
     on.exit({
     rush$reset()
@@ -94,8 +94,8 @@ test_that("async measures callback works", {
 # async default configuration callback -----------------------------------------
 
 test_that("default configuration callback works", {
-  skip_if_no_redis()
   skip_if_not_installed("rush")
+  skip_if_no_redis()
   rush = start_rush()
     on.exit({
     rush$reset()
@@ -120,8 +120,8 @@ test_that("default configuration callback works", {
 })
 
 test_that("default configuration callback works with logscale", {
-  skip_if_no_redis()
   skip_if_not_installed("rush")
+  skip_if_no_redis()
   rush = start_rush()
     on.exit({
     rush$reset()
@@ -146,8 +146,8 @@ test_that("default configuration callback works with logscale", {
 })
 
 test_that("default configuration callback errors with trafo", {
-  skip_if_no_redis()
   skip_if_not_installed("rush")
+  skip_if_no_redis()
   rush = start_rush()
     on.exit({
     rush$reset()
@@ -169,8 +169,8 @@ test_that("default configuration callback errors with trafo", {
 })
 
 test_that("default configuration callback works without transformation and with logscale", {
-  skip_if_no_redis()
   skip_if_not_installed("rush")
+  skip_if_no_redis()
   rush = start_rush()
     on.exit({
     rush$reset()
@@ -201,8 +201,8 @@ test_that("default configuration callback works without transformation and with 
 })
 
 test_that("default configuration callback errors without transformation and with logscale and trafo", {
-  skip_if_no_redis()
   skip_if_not_installed("rush")
+  skip_if_no_redis()
   rush = start_rush()
     on.exit({
     rush$reset()
@@ -229,8 +229,8 @@ test_that("default configuration callback errors without transformation and with
 })
 
 test_that("default configuration callback errors with extra trafo", {
-  skip_if_no_redis()
   skip_if_not_installed("rush")
+  skip_if_no_redis()
   rush = start_rush()
     on.exit({
     rush$reset()
@@ -264,8 +264,8 @@ test_that("default configuration callback errors with extra trafo", {
 })
 
 test_that("default configuration callback errors with old parameter set api", {
-  skip_if_no_redis()
   skip_if_not_installed("rush")
+  skip_if_no_redis()
   rush = start_rush()
     on.exit({
     rush$reset()
@@ -425,8 +425,8 @@ test_that("batch default configuration callback  errors with old parameter set a
 # async save logs callback -----------------------------------------------------
 
 test_that("async save logs callback works", {
-  skip_if_no_redis()
   skip_if_not_installed("rush")
+  skip_if_no_redis()
   rush = start_rush()
     on.exit({
     rush$reset()
@@ -469,8 +469,8 @@ test_that("one se rule callback works", {
 })
 
 test_that("one se rule callback works", {
-  skip_if_no_redis()
   skip_if_not_installed("rush")
+  skip_if_no_redis()
   rush = start_rush()
     on.exit({
     rush$reset()
@@ -497,8 +497,8 @@ test_that("one se rule callback works", {
 # async freeze archive callback ------------------------------------------------
 
 test_that("async freeze archive callback works", {
-  skip_if_no_redis()
   skip_if_not_installed("rush")
+  skip_if_no_redis()
   rush = start_rush()
     on.exit({
     rush$reset()

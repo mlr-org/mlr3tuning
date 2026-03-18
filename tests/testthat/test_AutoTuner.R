@@ -637,8 +637,8 @@ test_that("marshal", {
 # Async ------------------------------------------------------------------------
 
 test_that("AutoTuner works with async tuner", {
-  skip_if_no_redis()
   skip_if_not_installed("rush")
+  skip_if_no_redis()
   rush = start_rush()
     on.exit({
     rush$reset()
