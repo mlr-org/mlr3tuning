@@ -11,14 +11,22 @@
 #'  * Inherit from Tuner.
 #'  * Specify the private abstract method `$.optimize()` and use it to call into your optimizer.
 #'  * You need to call `instance$eval_batch()` to evaluate design points.
-#'  * The batch evaluation is requested at the [TuningInstanceBatchSingleCrit]/[TuningInstanceBatchMultiCrit] object `instance`, so each batch is possibly executed in parallel via [mlr3::benchmark()], and all evaluations are stored inside of `instance$archive`.
-#'  * Before the batch evaluation, the [bbotk::Terminator] is checked, and if it is positive, an exception of class `"terminated_error"` is generated.
-#'    In the  later case the current batch of evaluations is still stored in `instance`, but the numeric scores are not sent back to the handling optimizer as it has lost execution control.
+#'  * The batch evaluation is requested at the
+#'    [TuningInstanceBatchSingleCrit]/[TuningInstanceBatchMultiCrit] object `instance`,
+#'    so each batch is possibly executed in parallel via [mlr3::benchmark()],
+#'    and all evaluations are stored inside of `instance$archive`.
+#'  * Before the batch evaluation, the [bbotk::Terminator] is checked, and if it is positive,
+#'    an exception of class `"terminated_error"` is generated.
+#'    In the later case the current batch of evaluations is still stored in `instance`,
+#'    but the numeric scores are not sent back to the handling optimizer as it has lost execution control.
 #'  * After such an exception was caught we select the best configuration from `instance$archive` and return it.
-#'  * Note that therefore more points than specified by the [bbotk::Terminator] may be evaluated, as the Terminator is only checked before a batch evaluation, and not in-between evaluation in a batch.
+#'  * Note that therefore more points than specified by the [bbotk::Terminator] may be evaluated,
+#'    as the Terminator is only checked before a batch evaluation, and not in-between evaluation in a batch.
 #'    How many more depends on the setting of the batch size.
-#'  * Overwrite the private super-method `.assign_result()` if you want to decide yourself how to estimate the final configuration in the instance and its estimated performance.
-#'    The default behavior is: We pick the best resample-experiment, regarding the given measure, then assign its configuration and aggregated performance to the instance.
+#'  * Overwrite the private super-method `.assign_result()` if you want to decide yourself how to estimate
+#'    the final configuration in the instance and its estimated performance.
+#'    The default behavior is: We pick the best resample-experiment, regarding the given measure,
+#'    then assign its configuration and aggregated performance to the instance.
 #'
 #' @section Private Methods:
 #' * `.optimize(instance)` -> `NULL`\cr
@@ -39,10 +47,10 @@
 #' @template param_man
 #'
 #' @export
-TunerBatch = R6Class("TunerBatch",
+TunerBatch = R6Class(
+  "TunerBatch",
   inherit = Tuner,
   public = list(
-
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function(
@@ -53,7 +61,7 @@ TunerBatch = R6Class("TunerBatch",
       packages = character(),
       label = NA_character_,
       man = NA_character_
-      ) {
+    ) {
       super$initialize(
         id = id,
         param_set = param_set,
@@ -67,7 +75,8 @@ TunerBatch = R6Class("TunerBatch",
 
     #' @description
     #' Performs the tuning on a [TuningInstanceBatchSingleCrit] or [TuningInstanceBatchMultiCrit] until termination.
-    #' The single evaluations will be written into the [ArchiveBatchTuning] that resides in the [TuningInstanceBatchSingleCrit]/[TuningInstanceBatchMultiCrit].
+    #' The single evaluations will be written into the [ArchiveBatchTuning] that resides in the
+    #' [TuningInstanceBatchSingleCrit]/[TuningInstanceBatchMultiCrit].
     #' The result will be written into the instance object.
     #'
     #' @param inst ([TuningInstanceBatchSingleCrit] | [TuningInstanceBatchMultiCrit]).
@@ -80,8 +89,7 @@ TunerBatch = R6Class("TunerBatch",
       inst$objective$.__enclos_env__$private$.design = NULL
       inst$objective$.__enclos_env__$private$.benchmark_result = NULL
       inst$objective$.__enclos_env__$private$.aggregated_performance = NULL
-      return(result)
+      result
     }
   )
 )
-

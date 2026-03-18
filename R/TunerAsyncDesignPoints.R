@@ -12,10 +12,10 @@
 #'
 #' @family TunerAsync
 #' @export
-TunerAsyncDesignPoints = R6Class("TunerAsyncDesignPoints",
+TunerAsyncDesignPoints = R6Class(
+  "TunerAsyncDesignPoints",
   inherit = TunerAsyncFromOptimizerAsync,
   public = list(
-
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function() {

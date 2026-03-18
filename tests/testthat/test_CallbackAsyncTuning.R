@@ -5,26 +5,25 @@ skip_if_no_redis()
 
 test_that("on_optimization_begin works", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
 
-  callback = callback_async_tuning(id = "test",
-    on_optimization_begin = function(callback, context) {
-      context$instance$terminator$param_set$values$n_evals = 20
-    }
-  )
+  callback = callback_async_tuning(id = "test", on_optimization_begin = function(callback, context) {
+    context$instance$terminator$param_set$values$n_evals = 20
+  })
 
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
     callbacks = callback,
-    rush = rush)
+    rush = rush
+  )
 
   expect_class(instance$objective$context, "ContextAsyncTuning")
   expect_equal(instance$terminator$param_set$values$n_evals, 20)
@@ -32,26 +31,25 @@ test_that("on_optimization_begin works", {
 
 test_that("on_optimization_end works", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
 
-  callback = callback_async_tuning(id = "test",
-    on_optimization_end = function(callback, context) {
-      context$instance$terminator$param_set$values$n_evals = 20
-    }
-  )
+  callback = callback_async_tuning(id = "test", on_optimization_end = function(callback, context) {
+    context$instance$terminator$param_set$values$n_evals = 20
+  })
 
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
     callbacks = callback,
-    rush = rush)
+    rush = rush
+  )
 
   expect_class(instance$objective$context, "ContextAsyncTuning")
   expect_equal(instance$terminator$param_set$values$n_evals, 20)
@@ -61,54 +59,52 @@ test_that("on_optimization_end works", {
 
 test_that("on_worker_begin works", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
 
-  callback = callback_async_tuning(id = "test",
-    on_worker_begin = function(callback, context) {
-      instance = context$instance
-      mlr3misc::get_private(instance)$.eval_point(list(minsplit = 1))
-    }
-  )
+  callback = callback_async_tuning(id = "test", on_worker_begin = function(callback, context) {
+    instance = context$instance
+    mlr3misc::get_private(instance)$.eval_point(list(minsplit = 1))
+  })
 
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
     callbacks = callback,
-    rush = rush)
+    rush = rush
+  )
 
   expect_subset(1, instance$archive$data$minsplit)
 })
 
 test_that("on_worker_end works", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
 
-  callback = callback_async_tuning(id = "test",
-    on_worker_end = function(callback, context) {
-      instance = context$instance
-      mlr3misc::get_private(instance)$.eval_point(list(minsplit = 1))
-    }
-  )
+  callback = callback_async_tuning(id = "test", on_worker_end = function(callback, context) {
+    instance = context$instance
+    mlr3misc::get_private(instance)$.eval_point(list(minsplit = 1))
+  })
 
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
     callbacks = callback,
-    rush = rush)
+    rush = rush
+  )
 
   expect_subset(1, instance$archive$data$minsplit)
 })
@@ -117,12 +113,13 @@ test_that("on_worker_end works", {
 
 test_that("on_optimizer_before_eval and on_optimizer_after_eval works", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
 
-  callback = callback_async_tuning(id = "test",
+  callback = callback_async_tuning(
+    id = "test",
     on_optimizer_before_eval = function(callback, context) {
       context$xs = list(minsplit = 1)
       context$xs_trafoed = list(minsplit = 0)
@@ -137,11 +134,12 @@ test_that("on_optimizer_before_eval and on_optimizer_after_eval works", {
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
     callbacks = callback,
-    rush = rush)
+    rush = rush
+  )
 
   expect_equal(unique(instance$archive$data$minsplit), 1)
   expect_equal(unique(instance$archive$data$classif.ce), 0)
@@ -151,38 +149,38 @@ test_that("on_optimizer_before_eval and on_optimizer_after_eval works", {
 
 test_that("on_eval_after_xs works", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
 
-  callback = callback_async_tuning(id = "test",
-    on_eval_after_xs = function(callback, context) {
-      context$xs_learner$minsplit = 1
-    }
-  )
+  callback = callback_async_tuning(id = "test", on_eval_after_xs = function(callback, context) {
+    context$xs_learner$minsplit = 1
+  })
 
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
     callbacks = callback,
-    rush = rush)
+    rush = rush
+  )
 
   expect_equal(instance$archive$benchmark_result$resample_result(1)$learner$param_set$values$minsplit, 1)
 })
 
 test_that("on_eval_after_resample works", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
 
-  callback = callback_async_tuning(id = "test",
+  callback = callback_async_tuning(
+    id = "test",
     on_eval_after_resample = function(callback, context) {
       callback$state$extra_performance = context$resample_result$aggregate(msr("classif.acc"))
     },
@@ -196,11 +194,12 @@ test_that("on_eval_after_resample works", {
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
     callbacks = callback,
-    rush = rush)
+    rush = rush
+  )
 
   expect_names(names(instance$archive$data), must.include = c("classif.ce", "classif.acc"))
 })
@@ -209,27 +208,26 @@ test_that("on_eval_after_resample works", {
 
 test_that("on_tuning_result_begin in TuningInstanceSingleCrit works", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
 
-  callback = callback_async_tuning(id = "test",
-    on_tuning_result_begin = function(callback, context) {
-      context$result_xdt = data.table(minsplit = 1)
-      context$result_y = c(classif.ce = 0.7)
-    }
-  )
+  callback = callback_async_tuning(id = "test", on_tuning_result_begin = function(callback, context) {
+    context$result_xdt = data.table(minsplit = 1)
+    context$result_y = c(classif.ce = 0.7)
+  })
 
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
     callbacks = callback,
-    rush = rush)
+    rush = rush
+  )
 
   expect_class(instance$objective$context, "ContextAsyncTuning")
   expect_equal(instance$result$minsplit, 1)
@@ -238,26 +236,25 @@ test_that("on_tuning_result_begin in TuningInstanceSingleCrit works", {
 
 test_that("on_result_end in TuningInstanceSingleCrit works", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
 
-  callback = callback_async_tuning(id = "test",
-    on_result_end = function(callback, context) {
-      context$result$classif.ce = 0.7
-    }
-  )
+  callback = callback_async_tuning(id = "test", on_result_end = function(callback, context) {
+    context$result$classif.ce = 0.7
+  })
 
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
     callbacks = callback,
-    rush = rush)
+    rush = rush
+  )
 
   expect_class(instance$objective$context, "ContextAsyncTuning")
   expect_equal(instance$result$classif.ce, 0.7)
@@ -265,26 +262,30 @@ test_that("on_result_end in TuningInstanceSingleCrit works", {
 
 test_that("on_result in TuningInstanceSingleCrit works", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
 
-  expect_warning({callback = callback_async_tuning(id = "test",
-    on_result = function(callback, context) {
-      context$result$classif.ce = 0.7
-    }
-  )}, "deprecated")
+  expect_warning(
+    {
+      callback = callback_async_tuning(id = "test", on_result = function(callback, context) {
+        context$result$classif.ce = 0.7
+      })
+    },
+    "deprecated"
+  )
 
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
     callbacks = callback,
-    rush = rush)
+    rush = rush
+  )
 
   expect_class(instance$objective$context, "ContextAsyncTuning")
   expect_equal(instance$result$classif.ce, 0.7)
@@ -294,27 +295,26 @@ test_that("on_result in TuningInstanceSingleCrit works", {
 
 test_that("on_tuning_result_begin in TuningInstanceBatchMultiCrit works", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
 
-  callback = callback_async_tuning(id = "test",
-    on_tuning_result_begin = function(callback, context) {
-      context$result_xdt = data.table(minsplit = 1)
-      context$result_ydt = data.table(classif.ce = 0.7, classif.acc = 0.8)
-    }
-  )
+  callback = callback_async_tuning(id = "test", on_tuning_result_begin = function(callback, context) {
+    context$result_xdt = data.table(minsplit = 1)
+    context$result_ydt = data.table(classif.ce = 0.7, classif.acc = 0.8)
+  })
 
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msrs(c("classif.ce", "classif.acc")),
     term_evals = 2,
     callbacks = callback,
-    rush = rush)
+    rush = rush
+  )
 
   expect_class(instance$objective$context, "ContextAsyncTuning")
   expect_equal(instance$result$minsplit, 1)
@@ -323,26 +323,25 @@ test_that("on_tuning_result_begin in TuningInstanceBatchMultiCrit works", {
 
 test_that("on_result_end in TuningInstanceBatchMultiCrit works", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
 
-  callback = callback_async_tuning(id = "test",
-    on_result_end = function(callback, context) {
-      set(context$result, j = "classif.ce", value = 0.7)
-    }
-  )
+  callback = callback_async_tuning(id = "test", on_result_end = function(callback, context) {
+    set(context$result, j = "classif.ce", value = 0.7)
+  })
 
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msrs(c("classif.ce", "classif.acc")),
     term_evals = 2,
     callbacks = callback,
-    rush = rush)
+    rush = rush
+  )
 
   expect_class(instance$objective$context, "ContextAsyncTuning")
   expect_equal(unique(instance$result$classif.ce), 0.7)
@@ -350,26 +349,30 @@ test_that("on_result_end in TuningInstanceBatchMultiCrit works", {
 
 test_that("on_result in TuningInstanceBatchMultiCrit works", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
 
-  expect_warning({callback = callback_async_tuning(id = "test",
-    on_result = function(callback, context) {
-      set(context$result, j = "classif.ce", value = 0.7)
-    }
-  )}, "deprecated")
+  expect_warning(
+    {
+      callback = callback_async_tuning(id = "test", on_result = function(callback, context) {
+        set(context$result, j = "classif.ce", value = 0.7)
+      })
+    },
+    "deprecated"
+  )
 
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msrs(c("classif.ce", "classif.acc")),
     term_evals = 2,
     callbacks = callback,
-    rush = rush)
+    rush = rush
+  )
 
   expect_class(instance$objective$context, "ContextAsyncTuning")
   expect_equal(unique(instance$result$classif.ce), 0.7)
@@ -379,32 +382,31 @@ test_that("on_result in TuningInstanceBatchMultiCrit works", {
 
 test_that("on_resample_begin works", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
 
-  callback = callback_async_tuning("test",
-    on_resample_begin = function(callback, context) {
-      # expect_* does not work
-      assert_task(context$task)
-      assert_learner(context$learner)
-      assert_resampling(context$resampling)
-      checkmate::assert_number(context$iteration)
-      checkmate::assert_null(context$pdatas)
-      context$data_extra = list(success = TRUE)
-    }
-  )
+  callback = callback_async_tuning("test", on_resample_begin = function(callback, context) {
+    # expect_* does not work
+    assert_task(context$task)
+    assert_learner(context$learner)
+    assert_resampling(context$resampling)
+    checkmate::assert_number(context$iteration)
+    checkmate::assert_null(context$pdatas)
+    context$data_extra = list(success = TRUE)
+  })
 
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
     callbacks = callback,
-    rush = rush)
+    rush = rush
+  )
 
   expect_class(instance$objective$context, "ContextAsyncTuning")
 
@@ -415,31 +417,30 @@ test_that("on_resample_begin works", {
 
 test_that("on_resample_before_train works", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
 
-  callback = callback_async_tuning("test",
-    on_resample_before_train = function(callback, context) {
-      assert_task(context$task)
-      assert_learner(context$learner)
-      assert_resampling(context$resampling)
-      checkmate::assert_number(context$iteration)
-      checkmate::assert_null(context$pdatas)
-      context$data_extra = list(success = TRUE)
-    }
-  )
+  callback = callback_async_tuning("test", on_resample_before_train = function(callback, context) {
+    assert_task(context$task)
+    assert_learner(context$learner)
+    assert_resampling(context$resampling)
+    checkmate::assert_number(context$iteration)
+    checkmate::assert_null(context$pdatas)
+    context$data_extra = list(success = TRUE)
+  })
 
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
     callbacks = callback,
-    rush = rush)
+    rush = rush
+  )
 
   expect_class(instance$objective$context, "ContextAsyncTuning")
 
@@ -450,30 +451,29 @@ test_that("on_resample_before_train works", {
 
 test_that("on_resample_before_predict works", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
 
-  callback = callback_async_tuning("test",
-    on_resample_before_predict = function(callback, context) {
-      assert_task(context$task)
-      assert_learner(context$learner)
-      assert_resampling(context$resampling)
-      checkmate::assert_null(context$pdatas)
-      context$data_extra = list(success = TRUE)
-    }
-  )
+  callback = callback_async_tuning("test", on_resample_before_predict = function(callback, context) {
+    assert_task(context$task)
+    assert_learner(context$learner)
+    assert_resampling(context$resampling)
+    checkmate::assert_null(context$pdatas)
+    context$data_extra = list(success = TRUE)
+  })
 
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
     callbacks = callback,
-    rush = rush)
+    rush = rush
+  )
 
   expect_class(instance$objective$context, "ContextAsyncTuning")
 
@@ -484,33 +484,32 @@ test_that("on_resample_before_predict works", {
 
 test_that("on_resample_end works", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
 
-  callback = callback_async_tuning("test",
-    on_resample_end = function(callback, context) {
-      # expect_* does not work
-      assert_task(context$task)
-      assert_learner(context$learner)
-      assert_resampling(context$resampling)
-      checkmate::assert_number(context$iteration)
-      checkmate::assert_class(context$pdatas$test, "PredictionData")
-      context$learner$state = mlr3misc::insert_named(context$learner$state, list(state_success = TRUE))
-      context$data_extra = list(success = TRUE)
-    }
-  )
+  callback = callback_async_tuning("test", on_resample_end = function(callback, context) {
+    # expect_* does not work
+    assert_task(context$task)
+    assert_learner(context$learner)
+    assert_resampling(context$resampling)
+    checkmate::assert_number(context$iteration)
+    checkmate::assert_class(context$pdatas$test, "PredictionData")
+    context$learner$state = mlr3misc::insert_named(context$learner$state, list(state_success = TRUE))
+    context$data_extra = list(success = TRUE)
+  })
 
   instance = tune(
     tuner = tnr("async_random_search"),
     task = tsk("pima"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
     term_evals = 2,
     callbacks = callback,
-    rush = rush)
+    rush = rush
+  )
 
   expect_class(instance$objective$context, "ContextAsyncTuning")
 

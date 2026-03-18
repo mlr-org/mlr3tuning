@@ -15,7 +15,14 @@ test_tuner = function(key, ..., n_dim = 1L, term_evals = 2L, real_evals = term_e
     )
   }
   term = trm("evals", n_evals = term_evals)
-  inst = TuningInstanceBatchSingleCrit$new(tsk("iris"), lrn("classif.rpart"), rsmp("holdout"), msr("classif.ce"), term, search_space)
+  inst = TuningInstanceBatchSingleCrit$new(
+    tsk("iris"),
+    lrn("classif.rpart"),
+    rsmp("holdout"),
+    msr("classif.ce"),
+    term,
+    search_space
+  )
   tuner = tnr(key, ...)
   expect_tuner(tuner)
   expect_man_exists(tuner$man)

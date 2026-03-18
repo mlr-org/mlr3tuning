@@ -2,9 +2,10 @@ test_that("ti function creates a TuningInstanceBatchSingleCrit", {
   instance = ti(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune()),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
-    terminator = trm("evals", n_evals = 2))
+    terminator = trm("evals", n_evals = 2)
+  )
   expect_class(instance, "TuningInstanceBatchSingleCrit")
 })
 
@@ -12,9 +13,10 @@ test_that("ti function creates a TuningInstanceBatchMultiCrit", {
   instance = ti(
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune()),
-    resampling = rsmp ("holdout"),
+    resampling = rsmp("holdout"),
     measures = msrs(c("classif.ce", "classif.acc")),
-    terminator = trm("evals", n_evals = 2))
+    terminator = trm("evals", n_evals = 2)
+  )
   expect_class(instance, "TuningInstanceBatchMultiCrit")
 })
 

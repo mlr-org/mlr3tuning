@@ -9,7 +9,8 @@
 #'   Additional arguments.
 #'
 #' @export
-as_tuner = function(x, ...) { # nolint
+as_tuner = function(x, ...) {
+  # nolint
   UseMethod("as_tuner")
 }
 
@@ -17,24 +18,28 @@ as_tuner = function(x, ...) { # nolint
 #' @param clone (`logical(1)`)\cr
 #'  Whether to clone the object.
 #' @rdname as_tuner
-as_tuner.Tuner = function(x, clone = FALSE, ...) { # nolint
+as_tuner.Tuner = function(x, clone = FALSE, ...) {
+  # nolint
   if (isTRUE(clone)) x$clone() else x
 }
 
 #' @export
 #' @rdname as_tuner
-as_tuners = function(x, ...) { # nolint
+as_tuners = function(x, ...) {
+  # nolint
   UseMethod("as_tuners")
 }
 
 #' @export
 #' @rdname as_tuner
-as_tuners.default = function(x, ...) { # nolint
+as_tuners.default = function(x, ...) {
+  # nolint
   list(as_tuner(x, ...))
 }
 
 #' @export
 #' @rdname as_tuner
-as_tuners.list = function(x, ...) { # nolint
+as_tuners.list = function(x, ...) {
+  # nolint
   lapply(x, as_tuner, ...)
 }

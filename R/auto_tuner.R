@@ -50,7 +50,7 @@ auto_tuner = function(
   callbacks = NULL,
   rush = NULL,
   id = NULL
-  ) {
+) {
   terminator = terminator %??% terminator_selection(term_evals, term_time)
 
   AutoTuner$new(
@@ -66,5 +66,6 @@ auto_tuner = function(
     check_values = check_values,
     callbacks = callbacks,
     rush = rush,
-    id = id)
+    id = id
+  )
 }

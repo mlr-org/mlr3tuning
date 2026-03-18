@@ -4,7 +4,8 @@
 #' Specialized [bbotk::CallbackBatch] for batch tuning.
 #' Callbacks allow to customize the behavior of processes in mlr3tuning.
 #' The [callback_batch_tuning()] function creates a [CallbackBatchTuning].
-#' Predefined callbacks are stored in the [dictionary][mlr3misc::Dictionary] [mlr_callbacks] and can be retrieved with [clbk()].
+#' Predefined callbacks are stored in the [dictionary][mlr3misc::Dictionary] [mlr_callbacks]
+#' and can be retrieved with [clbk()].
 #' For more information on tuning callbacks see [callback_batch_tuning()].
 #'
 #' @export
@@ -15,16 +16,16 @@
 #'     saveRDS(context$instance$archive, "archive.rds")
 #'   }
 #' )
-CallbackBatchTuning= R6Class("CallbackBatchTuning",
+CallbackBatchTuning = R6Class(
+  "CallbackBatchTuning",
   inherit = CallbackBatch,
   public = list(
-
     #' @field on_eval_after_design (`function()`)\cr
     #' Stage called after design is created.
     #' Called in `ObjectiveTuningBatch$eval_many()`.
     on_eval_after_design = NULL,
 
-   #' @field on_resample_begin (`function()`)\cr
+    #' @field on_resample_begin (`function()`)\cr
     #' Stage called at the beginning of an evaluation.
     #' Called in `workhorse()` (internal).
     on_resample_begin = NULL,
@@ -65,7 +66,8 @@ CallbackBatchTuning= R6Class("CallbackBatchTuning",
 #'
 #' @description
 #' Function to create a [CallbackBatchTuning].
-#' Predefined callbacks are stored in the [dictionary][mlr3misc::Dictionary] [mlr_callbacks] and can be retrieved with [clbk()].
+#' Predefined callbacks are stored in the [dictionary][mlr3misc::Dictionary] [mlr_callbacks]
+#' and can be retrieved with [clbk()].
 #'
 #' Tuning callbacks can be called from different stages of the tuning process.
 #' The stages are prefixed with `on_*`.
@@ -208,39 +210,46 @@ callback_batch_tuning = function(
   on_result_end = NULL,
   on_result = NULL,
   on_optimization_end = NULL
-  ) {
-  stages = discard(set_names(list(
-    on_optimization_begin,
-    on_optimizer_before_eval,
-    on_eval_after_design,
-    on_resample_begin,
-    on_resample_before_train,
-    on_resample_before_predict,
-    on_resample_end,
-    on_eval_after_benchmark,
-    on_eval_before_archive,
-    on_optimizer_after_eval,
-    on_tuning_result_begin,
-    on_result_begin,
-    on_result_end,
-    on_result,
-    on_optimization_end),
-    c(
-      "on_optimization_begin",
-      "on_optimizer_before_eval",
-      "on_eval_after_design",
-      "on_resample_begin",
-      "on_resample_before_train",
-      "on_resample_before_predict",
-      "on_resample_end",
-      "on_eval_after_benchmark",
-      "on_eval_before_archive",
-      "on_optimizer_after_eval",
-      "on_tuning_result_begin",
-      "on_result_begin",
-      "on_result_end",
-      "on_result",
-      "on_optimization_end")), is.null)
+) {
+  stages = discard(
+    set_names(
+      list(
+        on_optimization_begin,
+        on_optimizer_before_eval,
+        on_eval_after_design,
+        on_resample_begin,
+        on_resample_before_train,
+        on_resample_before_predict,
+        on_resample_end,
+        on_eval_after_benchmark,
+        on_eval_before_archive,
+        on_optimizer_after_eval,
+        on_tuning_result_begin,
+        on_result_begin,
+        on_result_end,
+        on_result,
+        on_optimization_end
+      ),
+      c(
+        "on_optimization_begin",
+        "on_optimizer_before_eval",
+        "on_eval_after_design",
+        "on_resample_begin",
+        "on_resample_before_train",
+        "on_resample_before_predict",
+        "on_resample_end",
+        "on_eval_after_benchmark",
+        "on_eval_before_archive",
+        "on_optimizer_after_eval",
+        "on_tuning_result_begin",
+        "on_result_begin",
+        "on_result_end",
+        "on_result",
+        "on_optimization_end"
+      )
+    ),
+    is.null
+  )
 
   if ("on_result" %in% names(stages)) {
     .Deprecated(old = "on_result", new = "on_result_end")
@@ -266,7 +275,9 @@ callback_batch_tuning = function(
 #' @return [CallbackBatchTuning | List of [CallbackBatchTuning]s.
 #' @export
 assert_batch_tuning_callback = function(callback, null_ok = FALSE) {
-  if (null_ok && is.null(callback)) return(invisible(NULL))
+  if (null_ok && is.null(callback)) {
+    return(invisible(NULL))
+  }
   assert_class(callback, "CallbackBatchTuning")
   invisible(callback)
 }

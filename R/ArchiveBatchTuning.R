@@ -1,13 +1,15 @@
 #' @title Class for Logging Evaluated Hyperparameter Configurations
 #'
 #' @description
-#' The `ArchiveBatchTuning` stores all evaluated hyperparameter configurations and performance scores in a [data.table::data.table()].
+#' The `ArchiveBatchTuning` stores all evaluated hyperparameter configurations
+#' and performance scores in a [data.table::data.table()].
 #'
 #' @details
 #' The [ArchiveBatchTuning] is a container around a [data.table::data.table()].
 #' Each row corresponds to a single evaluation of a hyperparameter configuration.
 #' See the section on Data Structure for more information.
-#' The archive stores additionally a [mlr3::BenchmarkResult] (`$benchmark_result`) that records the resampling experiments.
+#' The archive stores additionally a [mlr3::BenchmarkResult] (`$benchmark_result`)
+#' that records the resampling experiments.
 #' Each experiment corresponds to a single evaluation of a hyperparameter configuration.
 #' The table (`$data`) and the benchmark result (`$benchmark_result`) are linked by the `uhash` column.
 #' If the archive is passed to `as.data.table()`, both are joined automatically.
@@ -34,13 +36,15 @@
 #'
 #' @section Analysis:
 #' For analyzing the tuning results, it is recommended to pass the [ArchiveBatchTuning] to `as.data.table()`.
-#' The returned data table is joined with the benchmark result which adds the [mlr3::ResampleResult] for each hyperparameter evaluation.
+#' The returned data table is joined with the benchmark result
+#' which adds the [mlr3::ResampleResult] for each hyperparameter evaluation.
 #'
 #' The archive provides various getters (e.g. `$learners()`) to ease the access.
 #' All getters extract by position (`i`) or unique hash (`uhash`).
 #' For a complete list of all getters see the methods section.
 #'
-#' The benchmark result (`$benchmark_result`) allows to score the hyperparameter configurations again on a different measure.
+#' The benchmark result (`$benchmark_result`) allows to score
+#' the hyperparameter configurations again on a different measure.
 #' Alternatively, measures can be supplied to `as.data.table()`.
 #'
 #' The \CRANpkg{mlr3viz} package provides visualizations for tuning results.
@@ -62,10 +66,10 @@
 #' @template param_internal_search_space
 #'
 #' @export
-ArchiveBatchTuning = R6Class("ArchiveBatchTuning",
+ArchiveBatchTuning = R6Class(
+  "ArchiveBatchTuning",
   inherit = bbotk::ArchiveBatch,
   public = list(
-
     #' @field benchmark_result ([mlr3::BenchmarkResult])\cr
     #' Benchmark result.
     benchmark_result = NULL,
@@ -80,8 +84,10 @@ ArchiveBatchTuning = R6Class("ArchiveBatchTuning",
       codomain,
       check_values = FALSE,
       internal_search_space = NULL
-      ) {
-      if (!is.null(internal_search_space)) private$.internal_search_space = assert_param_set(internal_search_space)
+    ) {
+      if (!is.null(internal_search_space)) {
+        private$.internal_search_space = assert_param_set(internal_search_space)
+      }
       super$initialize(search_space, codomain, check_values)
 
       # initialize empty benchmark result
@@ -160,10 +166,22 @@ ArchiveBatchTuning = R6Class("ArchiveBatchTuning",
     #' @param ... (ignored).
     print = function() {
       cat_cli(cli_h1("{.cls {class(self)[1L]}} with {.val {self$n_evals}} evaluations"))
-      print(as.data.table(self, unnest = NULL, exclude_columns = c("x_domain", "uhash", "timestamp", "runtime_learners", "resample_result")), digits = 2)
-      print(as.data.table(self, unnest = "x_domain",
-        exclude_columns = c("uhash", "timestamp", "runtime_learners", "resample_result")),
-        digits = 2)
+      print(
+        as.data.table(
+          self,
+          unnest = NULL,
+          exclude_columns = c("x_domain", "uhash", "timestamp", "runtime_learners", "resample_result")
+        ),
+        digits = 2
+      )
+      print(
+        as.data.table(
+          self,
+          unnest = "x_domain",
+          exclude_columns = c("uhash", "timestamp", "runtime_learners", "resample_result")
+        ),
+        digits = 2
+      )
     }
   ),
   active = list(
@@ -180,8 +198,16 @@ ArchiveBatchTuning = R6Class("ArchiveBatchTuning",
 )
 
 #' @export
-as.data.table.ArchiveBatchTuning = function(x, ..., unnest = "internal_tuned_values", exclude_columns = "uhash", measures = NULL) {
-  if (!nrow(x$data)) return(data.table())
+as.data.table.ArchiveBatchTuning = function(
+  x,
+  ...,
+  unnest = "internal_tuned_values",
+  exclude_columns = "uhash",
+  measures = NULL
+) {
+  if (!nrow(x$data)) {
+    return(data.table())
+  }
   data = copy(x$data)
 
   # unnest columns
@@ -197,22 +223,33 @@ as.data.table.ArchiveBatchTuning = function(x, ..., unnest = "internal_tuned_val
       tab = cbind(tab, x$benchmark_result$aggregate(measures)[, cols_y_extra, with = FALSE])
     }
     # add resample results
-    tab = merge(tab, x$benchmark_result$resample_results[, c("uhash", "resample_result"), with = FALSE], by = "uhash", sort = FALSE)
+    tab = merge(
+      tab,
+      x$benchmark_result$resample_results[, c("uhash", "resample_result"), with = FALSE],
+      by = "uhash",
+      sort = FALSE
+    )
   }
 
-  cols_x_domain =  if ("x_domain" %in% cols) {
+  cols_x_domain = if ("x_domain" %in% cols) {
     # get all ids of x_domain
     # trafo could add unknown ids
     x_domain_ids = paste0("x_domain_", unique(unlist(map(x$data$x_domain, names))))
     setdiff(x_domain_ids, exclude_columns)
   }
 
-  cols_internal_tuned_values =  if ("internal_tuned_values" %in% cols) {
-    internal_tuned_values_ids = paste0("internal_tuned_values_", unique(unlist(map(x$data$internal_tuned_values, names))))
+  cols_internal_tuned_values = if ("internal_tuned_values" %in% cols) {
+    internal_tuned_values_ids = paste0(
+      "internal_tuned_values_",
+      unique(unlist(map(x$data$internal_tuned_values, names)))
+    )
     setdiff(internal_tuned_values_ids, exclude_columns)
   }
 
-  cns = intersect(c(x$cols_x, x$cols_y, cols_y_extra, cols_internal_tuned_values, cols_x_domain, "runtime_learners", "timestamp"), names(tab))
+  cns = intersect(
+    c(x$cols_x, x$cols_y, cols_y_extra, cols_internal_tuned_values, cols_x_domain, "runtime_learners", "timestamp"),
+    names(tab)
+  )
   setcolorder(tab, cns)
   tab[, setdiff(names(tab), exclude_columns), with = FALSE]
 }

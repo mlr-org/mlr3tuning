@@ -4,7 +4,7 @@ test_that("backup callback works", {
   file = tempfile(fileext = ".rds")
 
   instance = tune(
-    tuner =  tnr("random_search", batch_size = 2),
+    tuner = tnr("random_search", batch_size = 2),
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
     resampling = rsmp("cv", folds = 3),
@@ -21,7 +21,7 @@ test_that("backup callback works with standalone tuner", {
   file = tempfile(fileext = ".rds")
 
   instance = tune(
-    tuner =  tnr("grid_search", batch_size = 2),
+    tuner = tnr("grid_search", batch_size = 2),
     task = tsk("pima"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
     resampling = rsmp("cv", folds = 3),
@@ -40,7 +40,7 @@ test_that("async measures callback works", {
   skip_if_not_installed("rush")
   skip_if_no_redis()
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
@@ -51,8 +51,12 @@ test_that("async measures callback works", {
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 3),
-    callbacks = clbk("mlr3tuning.async_measures", measures = list(msr("classif.ce", predict_sets = "test", id = "classif.ce_holdout"))),
-    rush = rush)
+    callbacks = clbk(
+      "mlr3tuning.async_measures",
+      measures = list(msr("classif.ce", predict_sets = "test", id = "classif.ce_holdout"))
+    ),
+    rush = rush
+  )
 
   tuner = tnr("async_random_search")
   tuner$optimize(instance)
@@ -97,7 +101,7 @@ test_that("default configuration callback works", {
   skip_if_not_installed("rush")
   skip_if_no_redis()
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
@@ -123,7 +127,7 @@ test_that("default configuration callback works with logscale", {
   skip_if_not_installed("rush")
   skip_if_no_redis()
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
@@ -149,7 +153,7 @@ test_that("default configuration callback errors with trafo", {
   skip_if_not_installed("rush")
   skip_if_no_redis()
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
@@ -172,14 +176,12 @@ test_that("default configuration callback works without transformation and with 
   skip_if_not_installed("rush")
   skip_if_no_redis()
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
 
-  learner = lrn("classif.rpart",
-    cp = to_tune(1e-3, 1, logscale = TRUE),
-    minbucket = to_tune(1, 20))
+  learner = lrn("classif.rpart", cp = to_tune(1e-3, 1, logscale = TRUE), minbucket = to_tune(1, 20))
 
   instance = ti_async(
     task = tsk("pima"),
@@ -204,15 +206,17 @@ test_that("default configuration callback errors without transformation and with
   skip_if_not_installed("rush")
   skip_if_no_redis()
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
 
-  learner = lrn("classif.rpart",
+  learner = lrn(
+    "classif.rpart",
     cp = to_tune(1e-3, 1, logscale = TRUE),
     minbucket = to_tune(1, 20),
-    minsplit = to_tune(p_int(0, 3, trafo = function(x) 2^x)))
+    minsplit = to_tune(p_int(0, 3, trafo = function(x) 2^x))
+  )
 
   instance = ti_async(
     task = tsk("pima"),
@@ -232,7 +236,7 @@ test_that("default configuration callback errors with extra trafo", {
   skip_if_not_installed("rush")
   skip_if_no_redis()
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
@@ -267,7 +271,7 @@ test_that("default configuration callback errors with old parameter set api", {
   skip_if_not_installed("rush")
   skip_if_no_redis()
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
@@ -331,21 +335,22 @@ test_that("batch default configuration callback  works with logscale", {
 test_that("batch default configuration callback  errors with trafo", {
   learner = lrn("classif.rpart", cp = to_tune(p_dbl(-10, 0, trafo = function(x) 10^x)))
 
-  expect_error(tune(
-    tuner = tnr("random_search"),
-    task = tsk("iris"),
-    learner = learner,
-    resampling = rsmp("cv", folds = 3),
-    measures = msr("classif.ce"),
-    term_evals = 2,
-    callbacks = clbk("mlr3tuning.default_configuration")
-  ), "Cannot evaluate default hyperparameter values")
+  expect_error(
+    tune(
+      tuner = tnr("random_search"),
+      task = tsk("iris"),
+      learner = learner,
+      resampling = rsmp("cv", folds = 3),
+      measures = msr("classif.ce"),
+      term_evals = 2,
+      callbacks = clbk("mlr3tuning.default_configuration")
+    ),
+    "Cannot evaluate default hyperparameter values"
+  )
 })
 
 test_that("batch default configuration callback  works without transformation and with logscale", {
-  learner = lrn("classif.rpart",
-    cp = to_tune(1e-3, 1, logscale = TRUE),
-    minbucket = to_tune(1, 20))
+  learner = lrn("classif.rpart", cp = to_tune(1e-3, 1, logscale = TRUE), minbucket = to_tune(1, 20))
 
   instance = tune(
     tuner = tnr("random_search"),
@@ -364,20 +369,25 @@ test_that("batch default configuration callback  works without transformation an
 })
 
 test_that("batch default configuration callback  errors without transformation and with logscale and trafo", {
-  learner = lrn("classif.rpart",
+  learner = lrn(
+    "classif.rpart",
     cp = to_tune(1e-3, 1, logscale = TRUE),
     minbucket = to_tune(1, 20),
-    minsplit = to_tune(p_int(0, 3, trafo = function(x) 2^x)))
+    minsplit = to_tune(p_int(0, 3, trafo = function(x) 2^x))
+  )
 
-  expect_error(tune(
-    tuner = tnr("random_search"),
-    task = tsk("iris"),
-    learner = learner,
-    resampling = rsmp("cv", folds = 3),
-    measures = msr("classif.ce"),
-    term_evals = 2,
-    callbacks = clbk("mlr3tuning.default_configuration")
-  ), "Cannot evaluate default hyperparameter values")
+  expect_error(
+    tune(
+      tuner = tnr("random_search"),
+      task = tsk("iris"),
+      learner = learner,
+      resampling = rsmp("cv", folds = 3),
+      measures = msr("classif.ce"),
+      term_evals = 2,
+      callbacks = clbk("mlr3tuning.default_configuration")
+    ),
+    "Cannot evaluate default hyperparameter values"
+  )
 })
 
 test_that("batch default configuration callback  errors with extra trafo", {
@@ -392,16 +402,19 @@ test_that("batch default configuration callback  errors with extra trafo", {
     }
   )
 
-  expect_error(tune(
-    tuner = tnr("random_search"),
-    task = tsk("iris"),
-    learner = learner,
-    resampling = rsmp("cv", folds = 3),
-    measures = msr("classif.ce"),
-    search_space = search_space,
-    term_evals = 2,
-    callbacks = clbk("mlr3tuning.default_configuration")
-  ), "Cannot evaluate default hyperparameter values")
+  expect_error(
+    tune(
+      tuner = tnr("random_search"),
+      task = tsk("iris"),
+      learner = learner,
+      resampling = rsmp("cv", folds = 3),
+      measures = msr("classif.ce"),
+      search_space = search_space,
+      term_evals = 2,
+      callbacks = clbk("mlr3tuning.default_configuration")
+    ),
+    "Cannot evaluate default hyperparameter values"
+  )
 })
 
 test_that("batch default configuration callback  errors with old parameter set api", {
@@ -410,16 +423,19 @@ test_that("batch default configuration callback  errors with old parameter set a
     cp = p_dbl(lower = -10, upper = 0, trafo = function(x) 10^x)
   )
 
-  expect_error(tune(
-    tuner = tnr("random_search"),
-    task = tsk("iris"),
-    learner = learner,
-    resampling = rsmp("cv", folds = 3),
-    measures = msr("classif.ce"),
-    search_space = search_space,
-    term_evals = 2,
-    callbacks = clbk("mlr3tuning.default_configuration")
-  ), "Cannot evaluate default hyperparameter values")
+  expect_error(
+    tune(
+      tuner = tnr("random_search"),
+      task = tsk("iris"),
+      learner = learner,
+      resampling = rsmp("cv", folds = 3),
+      measures = msr("classif.ce"),
+      search_space = search_space,
+      term_evals = 2,
+      callbacks = clbk("mlr3tuning.default_configuration")
+    ),
+    "Cannot evaluate default hyperparameter values"
+  )
 })
 
 # async save logs callback -----------------------------------------------------
@@ -428,7 +444,7 @@ test_that("async save logs callback works", {
   skip_if_not_installed("rush")
   skip_if_no_redis()
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
@@ -453,7 +469,6 @@ test_that("async save logs callback works", {
 # one se rule callback --------------------------------------------------------
 
 test_that("one se rule callback works", {
-
   instance = tune(
     tuner = tnr("random_search", batch_size = 15),
     task = tsk("pima"),
@@ -472,7 +487,7 @@ test_that("one se rule callback works", {
   skip_if_not_installed("rush")
   skip_if_no_redis()
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
@@ -500,7 +515,7 @@ test_that("async freeze archive callback works", {
   skip_if_not_installed("rush")
   skip_if_no_redis()
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })

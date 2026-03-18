@@ -3,7 +3,7 @@ skip_if_no_redis()
 
 test_that("ArchiveAsyncTuning access methods work", {
   rush = start_rush()
-    on.exit({
+  on.exit({
     rush$reset()
     mirai::daemons(0)
   })
@@ -79,37 +79,149 @@ test_that("ArchiveAsyncTuning as.data.table function works", {
   # default
   tab = as.data.table(instance$archive)
   expect_data_table(tab, min.rows = 20)
-  expect_names(names(tab), permutation.of = c("state", "cp", "classif.ce", "x_domain", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "keys", "warnings", "errors"))
+  expect_names(
+    names(tab),
+    permutation.of = c(
+      "state",
+      "cp",
+      "classif.ce",
+      "x_domain",
+      "runtime_learners",
+      "worker_id",
+      "resample_result",
+      "timestamp_xs",
+      "timestamp_ys",
+      "keys",
+      "warnings",
+      "errors"
+    )
+  )
 
   # extra measure
   tab = as.data.table(instance$archive, measures = msr("classif.acc"))
   expect_data_table(tab, min.rows = 20)
-  expect_names(names(tab), subset.of = c("state", "cp", "classif.ce", "x_domain", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "keys", "warnings", "errors", "classif.acc"))
+  expect_names(
+    names(tab),
+    subset.of = c(
+      "state",
+      "cp",
+      "classif.ce",
+      "x_domain",
+      "runtime_learners",
+      "worker_id",
+      "resample_result",
+      "timestamp_xs",
+      "timestamp_ys",
+      "keys",
+      "warnings",
+      "errors",
+      "classif.acc"
+    )
+  )
 
   # extra measures
   tab = as.data.table(instance$archive, measures = msrs(c("classif.acc", "classif.mcc")))
   expect_data_table(tab, min.rows = 20)
-  expect_names(names(tab), subset.of = c("state", "cp", "classif.ce", "x_domain", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "keys", "warnings", "errors", "classif.acc", "classif.mcc"))
+  expect_names(
+    names(tab),
+    subset.of = c(
+      "state",
+      "cp",
+      "classif.ce",
+      "x_domain",
+      "runtime_learners",
+      "worker_id",
+      "resample_result",
+      "timestamp_xs",
+      "timestamp_ys",
+      "keys",
+      "warnings",
+      "errors",
+      "classif.acc",
+      "classif.mcc"
+    )
+  )
 
   # exclude column
   tab = as.data.table(instance$archive, exclude_columns = "timestamp_xs")
   expect_data_table(tab, min.rows = 20)
-  expect_names(names(tab), subset.of = c("state", "cp", "classif.ce", "x_domain", "runtime_learners", "worker_id", "resample_result", "timestamp_ys", "keys", "warnings", "errors"))
+  expect_names(
+    names(tab),
+    subset.of = c(
+      "state",
+      "cp",
+      "classif.ce",
+      "x_domain",
+      "runtime_learners",
+      "worker_id",
+      "resample_result",
+      "timestamp_ys",
+      "keys",
+      "warnings",
+      "errors"
+    )
+  )
 
   # exclude columns
   tab = as.data.table(instance$archive, exclude_columns = c("timestamp_xs", "resample_result"))
   expect_data_table(tab, min.rows = 20)
-  expect_names(names(tab), subset.of = c("state", "cp", "classif.ce", "x_domain", "runtime_learners", "worker_id", "timestamp_ys", "keys", "warnings", "errors"))
+  expect_names(
+    names(tab),
+    subset.of = c(
+      "state",
+      "cp",
+      "classif.ce",
+      "x_domain",
+      "runtime_learners",
+      "worker_id",
+      "timestamp_ys",
+      "keys",
+      "warnings",
+      "errors"
+    )
+  )
 
   # no exclude
   tab = as.data.table(instance$archive, exclude_columns = NULL)
   expect_data_table(tab, min.rows = 20)
-  expect_names(names(tab), subset.of = c("state", "cp", "classif.ce", "x_domain", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "keys", "warnings", "errors"))
+  expect_names(
+    names(tab),
+    subset.of = c(
+      "state",
+      "cp",
+      "classif.ce",
+      "x_domain",
+      "runtime_learners",
+      "worker_id",
+      "resample_result",
+      "timestamp_xs",
+      "timestamp_ys",
+      "keys",
+      "warnings",
+      "errors"
+    )
+  )
 
   # no unnest
   tab = as.data.table(instance$archive, unnest = NULL)
   expect_data_table(tab, min.rows = 20)
-  expect_names(names(tab), subset.of = c("state", "cp", "classif.ce", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "x_domain", "keys", "warnings", "errors"))
+  expect_names(
+    names(tab),
+    subset.of = c(
+      "state",
+      "cp",
+      "classif.ce",
+      "runtime_learners",
+      "worker_id",
+      "resample_result",
+      "timestamp_xs",
+      "timestamp_ys",
+      "x_domain",
+      "keys",
+      "warnings",
+      "errors"
+    )
+  )
 })
 
 test_that("ArchiveAsyncTuning as.data.table function works without resample result", {
@@ -133,7 +245,22 @@ test_that("ArchiveAsyncTuning as.data.table function works without resample resu
 
   tab = as.data.table(instance$archive)
   expect_data_table(tab, min.rows = 20)
-  expect_names(names(tab), subset.of = c("state", "cp", "classif.ce", "x_domain", "runtime_learners", "worker_id", "timestamp_xs", "timestamp_ys", "keys", "warnings", "errors"))
+  expect_names(
+    names(tab),
+    subset.of = c(
+      "state",
+      "cp",
+      "classif.ce",
+      "x_domain",
+      "runtime_learners",
+      "worker_id",
+      "timestamp_xs",
+      "timestamp_ys",
+      "keys",
+      "warnings",
+      "errors"
+    )
+  )
 })
 
 test_that("ArchiveAsyncTuning as.data.table function works with empty archive", {
@@ -190,7 +317,24 @@ test_that("ArchiveAsyncTuning as.data.table function works with new ids in x_dom
 
   tab = as.data.table(instance$archive)
   expect_data_table(tab, min.rows = 20)
-  expect_names(names(tab), subset.of = c("state", "x1", "x2", "classif.ce", "x_domain", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "keys", "warnings", "errors"))
+  expect_names(
+    names(tab),
+    subset.of = c(
+      "state",
+      "x1",
+      "x2",
+      "classif.ce",
+      "x_domain",
+      "runtime_learners",
+      "worker_id",
+      "resample_result",
+      "timestamp_xs",
+      "timestamp_ys",
+      "keys",
+      "warnings",
+      "errors"
+    )
+  )
 })
 
 test_that("ArchiveAsyncTuning as.data.table function works with switched new ids in x_domain", {
@@ -205,8 +349,9 @@ test_that("ArchiveAsyncTuning as.data.table function works with switched new ids
     x1 = p_int(1, 12),
     x2 = p_dbl(0.01, 0.1),
     .extra_trafo = function(x, param_set) {
-
-      if (x$x1 > 3) x$minsplit = x$x1
+      if (x$x1 > 3) {
+        x$minsplit = x$x1
+      }
       x$cp = x$x2
       x$x1 = NULL
       x$x2 = NULL
@@ -229,7 +374,24 @@ test_that("ArchiveAsyncTuning as.data.table function works with switched new ids
 
   tab = as.data.table(instance$archive)
   expect_data_table(tab, min.rows = 20)
-  expect_names(names(tab), subset.of = c("state", "x1", "x2", "classif.ce", "x_domain", "runtime_learners", "worker_id", "resample_result", "timestamp_xs", "timestamp_ys", "keys", "warnings", "errors"))
+  expect_names(
+    names(tab),
+    subset.of = c(
+      "state",
+      "x1",
+      "x2",
+      "classif.ce",
+      "x_domain",
+      "runtime_learners",
+      "worker_id",
+      "resample_result",
+      "timestamp_xs",
+      "timestamp_ys",
+      "keys",
+      "warnings",
+      "errors"
+    )
+  )
 })
 
 test_that("Saving ArchiveAsyncTuning works", {
@@ -271,8 +433,13 @@ test_that("ArchiveAsyncTuning as.data.table function works internally tuned valu
 
   instance = ti_async(
     task = tsk("pima"),
-    learner = lrn("classif.debug", validate = 0.2, early_stopping = TRUE, iter = to_tune(upper = 1000, internal = TRUE, aggr = function(x) 99),
-      x = to_tune(0.1, 0.3)),
+    learner = lrn(
+      "classif.debug",
+      validate = 0.2,
+      early_stopping = TRUE,
+      iter = to_tune(upper = 1000, internal = TRUE, aggr = function(x) 99),
+      x = to_tune(0.1, 0.3)
+    ),
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 2),

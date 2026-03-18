@@ -13,10 +13,10 @@
 #'   The `x_domain` column is unnested to separate columns.
 #'
 #' @export
-ArchiveAsyncTuningFrozen = R6Class("ArchiveAsyncTuningFrozen",
+ArchiveAsyncTuningFrozen = R6Class(
+  "ArchiveAsyncTuningFrozen",
   inherit = bbotk::ArchiveAsyncFrozen,
   public = list(
-
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #'
@@ -100,16 +100,24 @@ ArchiveAsyncTuningFrozen = R6Class("ArchiveAsyncTuningFrozen",
     #' @param ... (ignored).
     print = function() {
       cat_cli(cli_h1("{.cls {class(self)[1L]}} with {.val {self$n_evals}} evaluations"))
-      print(as.data.table(self, unnest = NULL, exclude_columns = c(
-        "x_domain",
-        "timestamp_xs",
-        "timestamp_ys",
-        "runtime_learners",
-        "resample_result",
-        "worker_id",
-        "keys",
-        "pid",
-        "state")), digits = 2)
+      print(
+        as.data.table(
+          self,
+          unnest = NULL,
+          exclude_columns = c(
+            "x_domain",
+            "timestamp_xs",
+            "timestamp_ys",
+            "runtime_learners",
+            "resample_result",
+            "worker_id",
+            "keys",
+            "pid",
+            "state"
+          )
+        ),
+        digits = 2
+      )
     }
   ),
 
@@ -135,9 +143,17 @@ ArchiveAsyncTuningFrozen = R6Class("ArchiveAsyncTuningFrozen",
 )
 
 #' @export
-as.data.table.ArchiveAsyncTuningFrozen = function(x, ..., unnest = "internal_tuned_values", exclude_columns = NULL, measures = NULL) {
+as.data.table.ArchiveAsyncTuningFrozen = function(
+  x,
+  ...,
+  unnest = "internal_tuned_values",
+  exclude_columns = NULL,
+  measures = NULL
+) {
   data = copy(x$data)
-  if (!nrow(data)) return(data.table())
+  if (!nrow(data)) {
+    return(data.table())
+  }
 
   # unnest columns
   cols = intersect(unnest, names(data))
@@ -152,19 +168,34 @@ as.data.table.ArchiveAsyncTuningFrozen = function(x, ..., unnest = "internal_tun
     tab = cbind(tab, scores)
   }
 
-  cols_x_domain =  if ("x_domain" %in% cols) {
+  cols_x_domain = if ("x_domain" %in% cols) {
     # get all ids of x_domain
     # trafo could add unknown ids
     x_domain_ids = paste0("x_domain_", unique(unlist(map(x$data$x_domain, names))))
     setdiff(x_domain_ids, exclude_columns)
   }
 
-  cols_internal_tuned_values =  if ("internal_tuned_values" %in% cols) {
-    internal_tuned_values_ids = paste0("internal_tuned_values_", unique(unlist(map(x$data$internal_tuned_values, names))))
+  cols_internal_tuned_values = if ("internal_tuned_values" %in% cols) {
+    internal_tuned_values_ids = paste0(
+      "internal_tuned_values_",
+      unique(unlist(map(x$data$internal_tuned_values, names)))
+    )
     setdiff(internal_tuned_values_ids, exclude_columns)
   }
 
-  cns = intersect(c(x$cols_x, x$cols_y, cols_y_extra, cols_internal_tuned_values, cols_x_domain, "runtime_learners", "timestamp_xs", "timestamp_ys"), names(tab))
+  cns = intersect(
+    c(
+      x$cols_x,
+      x$cols_y,
+      cols_y_extra,
+      cols_internal_tuned_values,
+      cols_x_domain,
+      "runtime_learners",
+      "timestamp_xs",
+      "timestamp_ys"
+    ),
+    names(tab)
+  )
   setcolorder(tab, cns)
   tab[, setdiff(names(tab), exclude_columns), with = FALSE]
 }

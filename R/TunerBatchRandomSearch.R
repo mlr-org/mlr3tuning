@@ -27,10 +27,10 @@
 #' @seealso Package \CRANpkg{mlr3hyperband} for hyperband tuning.
 #' @export
 #' @template example
-TunerBatchRandomSearch = R6Class("TunerBatchRandomSearch",
+TunerBatchRandomSearch = R6Class(
+  "TunerBatchRandomSearch",
   inherit = TunerBatchFromOptimizerBatch,
   public = list(
-
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function() {

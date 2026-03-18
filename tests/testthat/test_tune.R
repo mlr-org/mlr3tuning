@@ -1,7 +1,13 @@
 test_that("tune function works with one measure", {
-  learner = lrn("classif.rpart", minsplit =  to_tune(1, 10))
-  instance = tune(tuner = tnr("random_search", batch_size = 1), task = tsk("pima"), learner = learner, resampling = rsmp ("holdout"),
-    measures = msr("classif.ce"), term_evals = 2)
+  learner = lrn("classif.rpart", minsplit = to_tune(1, 10))
+  instance = tune(
+    tuner = tnr("random_search", batch_size = 1),
+    task = tsk("pima"),
+    learner = learner,
+    resampling = rsmp("holdout"),
+    measures = msr("classif.ce"),
+    term_evals = 2
+  )
 
   expect_class(instance, "TuningInstanceBatchSingleCrit")
   expect_data_table(instance$archive$data, nrows = 2)
@@ -9,9 +15,15 @@ test_that("tune function works with one measure", {
 })
 
 test_that("tune function works with multiple measures", {
-  learner = lrn("classif.rpart", minsplit =  to_tune(1, 10))
-  instance = tune(tuner = tnr("random_search", batch_size = 1), task = tsk("pima"), learner = learner, resampling = rsmp ("holdout"),
-    measures = msrs(c("classif.ce", "classif.acc")), term_evals = 2)
+  learner = lrn("classif.rpart", minsplit = to_tune(1, 10))
+  instance = tune(
+    tuner = tnr("random_search", batch_size = 1),
+    task = tsk("pima"),
+    learner = learner,
+    resampling = rsmp("holdout"),
+    measures = msrs(c("classif.ce", "classif.acc")),
+    term_evals = 2
+  )
 
   expect_class(instance, "TuningInstanceBatchMultiCrit")
   expect_data_table(instance$archive$data, nrows = 2)
@@ -19,9 +31,14 @@ test_that("tune function works with multiple measures", {
 })
 
 test_that("tune function works without measure", {
-  learner = lrn("classif.rpart", minsplit =  to_tune(1, 10))
-  instance = tune(tuner = tnr("random_search"), task = tsk("pima"),
-    learner = learner, resampling = rsmp ("holdout"), term_evals = 2)
+  learner = lrn("classif.rpart", minsplit = to_tune(1, 10))
+  instance = tune(
+    tuner = tnr("random_search"),
+    task = tsk("pima"),
+    learner = learner,
+    resampling = rsmp("holdout"),
+    term_evals = 2
+  )
 
   expect_measure(instance$objective$measures[[1]])
 })

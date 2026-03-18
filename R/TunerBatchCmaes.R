@@ -17,7 +17,8 @@
 #' }
 #'
 #' For the meaning of the control parameters, see [adagio::pureCMAES()].
-#' Note that we have removed all control parameters which refer to the termination of the algorithm and where our terminators allow to obtain the same behavior.
+#' Note that we have removed all control parameters which refer to the termination of the algorithm and where our
+#' terminators allow to obtain the same behavior.
 #'
 #' @inheritSection Tuner Resources
 #' @template section_progress_bars
@@ -61,18 +62,18 @@
 #' learner$param_set$values = instance$result_learner_param_vals
 #' learner$train(tsk("penguins"))
 #' }
-TunerBatchCmaes = R6Class("TunerBatchCmaes",
+TunerBatchCmaes = R6Class(
+  "TunerBatchCmaes",
   inherit = TunerBatchFromOptimizerBatch,
   public = list(
-
-   #' @description
-   #' Creates a new instance of this [R6][R6::R6Class] class.
-   initialize = function() {
-     super$initialize(
-       optimizer = OptimizerBatchCmaes$new(),
-       man = "mlr3tuning::mlr_tuners_cmaes"
-     )
-   }
+    #' @description
+    #' Creates a new instance of this [R6][R6::R6Class] class.
+    initialize = function() {
+      super$initialize(
+        optimizer = OptimizerBatchCmaes$new(),
+        man = "mlr3tuning::mlr_tuners_cmaes"
+      )
+    }
   )
 )
 

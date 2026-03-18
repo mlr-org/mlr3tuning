@@ -65,8 +65,12 @@ ti = function(
   store_models = FALSE,
   check_values = FALSE,
   callbacks = NULL
-  ) {
-  TuningInstance = if (is.null(measures) || inherits(measures, "Measure")) TuningInstanceBatchSingleCrit else TuningInstanceBatchMultiCrit
+) {
+  TuningInstance = if (is.null(measures) || inherits(measures, "Measure")) {
+    TuningInstanceBatchSingleCrit
+  } else {
+    TuningInstanceBatchMultiCrit
+  }
 
   TuningInstance$new(
     task = task,
@@ -78,7 +82,8 @@ ti = function(
     store_benchmark_result = store_benchmark_result,
     store_models = store_models,
     check_values = check_values,
-    callbacks = callbacks)
+    callbacks = callbacks
+  )
 }
 
 #' @title Syntactic Sugar for Asynchronous Tuning Instance Construction
@@ -118,8 +123,12 @@ ti_async = function(
   check_values = FALSE,
   callbacks = NULL,
   rush = NULL
-  ) {
-  TuningInstance = if (is.null(measures) || inherits(measures, "Measure")) TuningInstanceAsyncSingleCrit else TuningInstanceAsyncMultiCrit
+) {
+  TuningInstance = if (is.null(measures) || inherits(measures, "Measure")) {
+    TuningInstanceAsyncSingleCrit
+  } else {
+    TuningInstanceAsyncMultiCrit
+  }
 
   TuningInstance$new(
     task = task,
@@ -132,5 +141,6 @@ ti_async = function(
     store_models = store_models,
     check_values = check_values,
     callbacks = callbacks,
-    rush = rush)
+    rush = rush
+  )
 }

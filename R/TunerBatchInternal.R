@@ -8,7 +8,8 @@
 #'
 #' @note
 #' The selected [mlr3::Measure] does not influence the tuning result.
-#' To change the loss-function for the internal tuning, consult the hyperparameter documentation of the tuned [mlr3::Learner].
+#' To change the loss-function for the internal tuning, consult the hyperparameter documentation of the tuned
+#' [mlr3::Learner].
 #'
 #' @templateVar id internal
 #' @template section_dictionary_tuners
@@ -49,7 +50,8 @@
 #'
 #' instance$result_learner_param_vals$internal_tuned_values
 #' }
-TunerBatchInternal = R6Class("TunerBatchInternal",
+TunerBatchInternal = R6Class(
+  "TunerBatchInternal",
   inherit = TunerBatch,
   public = list(
     #' @description
@@ -75,7 +77,8 @@ TunerBatchInternal = R6Class("TunerBatchInternal",
 
 mlr_tuners$add("internal", TunerBatchInternal)
 
-OptimizerBatchInternal = R6Class("OptimizerBatchInternal",
+OptimizerBatchInternal = R6Class(
+  "OptimizerBatchInternal",
   inherit = bbotk::OptimizerBatch,
   public = list(
     initialize = function() {
@@ -95,4 +98,3 @@ OptimizerBatchInternal = R6Class("OptimizerBatchInternal",
     }
   )
 )
-

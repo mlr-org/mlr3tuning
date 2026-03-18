@@ -22,16 +22,21 @@
 NULL
 
 load_callback_backup = function() {
-  callback_batch_tuning("mlr3tuning.backup",
+  callback_batch_tuning(
+    "mlr3tuning.backup",
     label = "Backup Benchmark Result Callback",
     man = "mlr3tuning::mlr3tuning.backup",
     on_optimization_begin = function(callback, context) {
-      if (is.null(callback$state$path)) callback$state$path = "bmr.rds"
+      if (is.null(callback$state$path)) {
+        callback$state$path = "bmr.rds"
+      }
       assert_path_for_output(callback$state$path)
     },
 
     on_optimizer_after_eval = function(callback, context) {
-      if (file.exists(callback$state$path)) unlink(callback$state$path)
+      if (file.exists(callback$state$path)) {
+        unlink(callback$state$path)
+      }
       saveRDS(context$instance$archive$benchmark_result, callback$state$path)
     }
   )
@@ -46,7 +51,8 @@ load_callback_backup = function() {
 #' @description
 #' This [mlr3misc::Callback] scores the hyperparameter configurations on additional measures while tuning.
 #' Usually, the configurations can be scored on additional measures after tuning (see [ArchiveBatchTuning]).
-#' However, if the memory is not sufficient to store the [mlr3::BenchmarkResult], it is necessary to score the additional measures while tuning.
+#' However, if the memory is not sufficient to store the [mlr3::BenchmarkResult],
+#' it is necessary to score the additional measures while tuning.
 #' The measures are not taken into account by the tuner.
 #'
 #' @examples
@@ -66,7 +72,8 @@ load_callback_backup = function() {
 NULL
 
 load_callback_measures = function() {
-  callback_batch_tuning("mlr3tuning.measures",
+  callback_batch_tuning(
+    "mlr3tuning.measures",
     label = "Additional Measures Callback",
     man = "mlr3tuning::mlr3tuning.measures",
     on_optimization_begin = function(callback, context) {
@@ -74,18 +81,26 @@ load_callback_measures = function() {
       callback$state$ids = map_chr(callback$state$measures, "id")
       assert_names(callback$state$ids, type = "unique", .var.name = "measures")
       if (any(callback$state$ids %in% map_chr(context$instance$objective$measures, "id"))) {
-        stopf("The measure id(s) '%s' are already used by the instance. Please pass the measures with a different id.", as_short_string(callback$state$ids))
+        stopf(
+          "The measure id(s) '%s' are already used by the instance. Please pass the measures with a different id.",
+          as_short_string(callback$state$ids)
+        )
       }
     },
 
     on_eval_before_archive = function(callback, context) {
-      set(context$aggregated_performance, j = callback$state$ids, value = context$benchmark_result$aggregate(callback$state$measures)[, callback$state$ids, with = FALSE])
+      set(
+        context$aggregated_performance,
+        j = callback$state$ids,
+        value = context$benchmark_result$aggregate(callback$state$measures)[, callback$state$ids, with = FALSE]
+      )
     }
   )
 }
 
 load_callback_async_measures = function() {
-  callback_async_tuning("mlr3tuning.async_measures",
+  callback_async_tuning(
+    "mlr3tuning.async_measures",
     label = "Additional Rush Measures Callback",
     man = "mlr3tuning::mlr3tuning.measures",
 
@@ -94,12 +109,14 @@ load_callback_async_measures = function() {
       ids = map_chr(callback$state$measures, "id")
       assert_names(ids, type = "unique", .var.name = "measures")
       if (any(ids %in% map_chr(context$instance$objective$measures, "id"))) {
-        stopf("The measure id(s) '%s' are already used by the instance. Please pass the measures with a different id.", as_short_string(ids))
+        stopf(
+          "The measure id(s) '%s' are already used by the instance. Please pass the measures with a different id.",
+          as_short_string(ids)
+        )
       }
     },
 
     on_eval_before_archive = function(callback, context) {
-      ids = map_chr(callback$state$measures, "id")
       scores = as.list(context$resample_result$aggregate(callback$state$measures))
       context$aggregated_performance = c(context$aggregated_performance, scores)
     }
@@ -142,7 +159,8 @@ load_callback_async_measures = function() {
 NULL
 
 load_callback_async_mlflow = function() {
-  callback_async_tuning("mlr3tuning.async_mlflow",
+  callback_async_tuning(
+    "mlr3tuning.async_mlflow",
     label = "MLflow Connector",
     man = "mlr3tuning::mlr3tuning.async_mlflow",
 
@@ -156,7 +174,8 @@ load_callback_async_mlflow = function() {
       name = sprintf("%s_%s_%s", context$optimizer$id, context$instance$objective$id, context$instance$rush$network_id)
       callback$state$experiment_id = mlflow::mlflow_create_experiment(
         name = name,
-        client = callback$state$client)
+        client = callback$state$client
+      )
 
       callback$state$measure_ids = context$instance$archive$cols_y
     },
@@ -170,14 +189,16 @@ load_callback_async_mlflow = function() {
       # start run
       callback$state$run_uuid = mlflow::mlflow_start_run(
         experiment_id = experiment_id,
-        client = client)$run_uuid
+        client = client
+      )$run_uuid
 
       iwalk(context$xs, function(value, id) {
         mlflow::mlflow_log_param(
           key = id,
           value = value,
           run = callback$state$run_uuid,
-          client = client)
+          client = client
+        )
       })
     },
 
@@ -190,7 +211,8 @@ load_callback_async_mlflow = function() {
           key = id,
           value = context$aggregated_performance[[id]],
           run = run_uuid,
-          client = client)
+          client = client
+        )
       })
 
       mlflow::mlflow_end_run(
@@ -211,8 +233,10 @@ load_callback_async_mlflow = function() {
 #' These [CallbackAsyncTuning] and [CallbackBatchTuning] evaluate the default hyperparameter values of a learner.
 NULL
 
+#nolint next
 load_callback_async_default_configuration = function() {
-  callback_async_tuning("mlr3tuning.async_default_configuration",
+  callback_async_tuning(
+    "mlr3tuning.async_default_configuration",
     label = "Default Configuration",
     man = "mlr3tuning::mlr3tuning.default_configuration",
 
@@ -228,9 +252,11 @@ load_callback_async_default_configuration = function() {
       has_trafo = map_lgl(instance$search_space$params$.trafo, function(x) !is.null(x) && !identical(x, exp))
       has_extra_trafo = !is.null(instance$search_space$extra_trafo)
 
-
       if (any(has_trafo) || has_extra_trafo) {
-        stop("Cannot evaluate default hyperparameter values. Search space contains transformation functions with unknown inverse function.")
+        stop(
+          "Cannot evaluate default hyperparameter values.",
+          " Search space contains transformation functions with unknown inverse function."
+        )
       }
 
       # inverse parameter with exp transformation
@@ -241,8 +267,10 @@ load_callback_async_default_configuration = function() {
   )
 }
 
+#nolint next
 load_callback_default_configuration = function() {
-  callback_batch_tuning("mlr3tuning.default_configuration",
+  callback_batch_tuning(
+    "mlr3tuning.default_configuration",
     label = "Default Configuration",
     man = "mlr3tuning::mlr3tuning.default_configuration",
 
@@ -259,7 +287,10 @@ load_callback_default_configuration = function() {
       has_extra_trafo = !is.null(instance$search_space$extra_trafo)
 
       if (any(has_trafo) || has_extra_trafo) {
-        stop("Cannot evaluate default hyperparameter values. Search space contains transformation functions with unknown inverse function.")
+        stop(
+          "Cannot evaluate default hyperparameter values.",
+          " Search space contains transformation functions with unknown inverse function."
+        )
       }
 
       # inverse parameter with exp transformation
@@ -280,7 +311,8 @@ load_callback_default_configuration = function() {
 NULL
 
 load_callback_async_save_logs = function() {
-  callback_async_tuning("mlr3tuning.async_save_logs",
+  callback_async_tuning(
+    "mlr3tuning.async_save_logs",
     label = "Save Logs Callback",
     man = "mlr3tuning::mlr3tuning.async_save_logs",
 
@@ -301,9 +333,11 @@ load_callback_async_save_logs = function() {
 #' @name mlr3tuning.one_se_rule
 #'
 #' @description
-#' The one standard error rule takes the number of features into account when selecting the best hyperparameter configuration.
+#' The one standard error rule takes the number of features into account
+#' when selecting the best hyperparameter configuration.
 #' Many learners support internal feature selection, which can be accessed via `$selected_features()`.
-#' The callback selects the hyperparameter configuration with the smallest feature set within one standard error of the best performing configuration.
+#' The callback selects the hyperparameter configuration with the smallest feature set
+#' within one standard error of the best performing configuration.
 #' If there are multiple such hyperparameter configurations with the same number of features, the first one is selected.
 #'
 #' @source
@@ -327,8 +361,10 @@ load_callback_async_save_logs = function() {
 #' instance$result
 NULL
 
+#nolint next
 load_callback_async_one_se_rule = function() {
-  callback_async_tuning("mlr3tuning.async_one_se_rule",
+  callback_async_tuning(
+    "mlr3tuning.async_one_se_rule",
     label = "One Standard Error Rule Callback",
     man = "mlr3tuning::mlr3tuning.one_se_rule",
 
@@ -383,7 +419,8 @@ load_callback_async_one_se_rule = function() {
 
 
 load_callback_one_se_rule = function() {
-  callback_batch_tuning("mlr3tuning.one_se_rule",
+  callback_batch_tuning(
+    "mlr3tuning.one_se_rule",
     label = "One Standard Error Rule Callback",
     man = "mlr3tuning::mlr3tuning.one_se_rule",
 
@@ -438,14 +475,16 @@ load_callback_one_se_rule = function() {
 #' @name mlr3tuning.async_freeze_archive
 #'
 #' @description
-#' This [CallbackAsyncTuning] freezes the [ArchiveAsyncTuning] to [ArchiveAsyncTuningFrozen] after the optimization has finished.
+#' This [CallbackAsyncTuning] freezes the [ArchiveAsyncTuning] to [ArchiveAsyncTuningFrozen] after the optimization
+#' has finished.
 #'
 #' @examples
 #' clbk("mlr3tuning.async_freeze_archive")
 NULL
 
 load_callback_freeze_archive = function() {
-  callback_async_tuning("mlr3tuning.async_freeze_archive",
+  callback_async_tuning(
+    "mlr3tuning.async_freeze_archive",
     label = "Archive Freeze Callback",
     man = "mlr3tuning::mlr3tuning.async_freeze_archive",
     on_optimization_end = function(callback, context) {

@@ -3,7 +3,8 @@ test_that("TunerBatchCmaes", {
 
   expect_tuner(tnr("cmaes"))
 
-  learner = lrn("classif.rpart",
+  learner = lrn(
+    "classif.rpart",
     cp = to_tune(1e-04, 1e-1, logscale = TRUE),
     minsplit = to_tune(p_dbl(2, 128, trafo = as.integer)),
     minbucket = to_tune(p_dbl(1, 64, trafo = as.integer))

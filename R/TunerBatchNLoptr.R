@@ -8,8 +8,11 @@
 #' Calls [nloptr::nloptr] from package \CRANpkg{nloptr}.
 #'
 #' @details
-#' The termination conditions `stopval`, `maxtime` and `maxeval` of [nloptr::nloptr()] are deactivated and replaced by the [bbotk::Terminator] subclasses.
-#' The x and function value tolerance termination conditions (`xtol_rel = 10^-4`, `xtol_abs = rep(0.0, length(x0))`, `ftol_rel = 0.0` and `ftol_abs = 0.0`) are still available and implemented with their package defaults.
+#' The termination conditions `stopval`, `maxtime` and `maxeval` of [nloptr::nloptr()] are deactivated
+#' and replaced by the [bbotk::Terminator] subclasses.
+#' The x and function value tolerance termination conditions (`xtol_rel = 10^-4`,
+#' `xtol_abs = rep(0.0, length(x0))`, `ftol_rel = 0.0` and `ftol_abs = 0.0`)
+#' are still available and implemented with their package defaults.
 #' To deactivate these conditions, set them to `-1`.
 #'
 #' @templateVar id nloptr
@@ -57,10 +60,10 @@
 #' learner$param_set$values = instance$result_learner_param_vals
 #' learner$train(tsk("penguins"))
 #' }}
-TunerBatchNLoptr = R6Class("TunerBatchNLoptr",
+TunerBatchNLoptr = R6Class(
+  "TunerBatchNLoptr",
   inherit = TunerBatchFromOptimizerBatch,
   public = list(
-
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function() {

@@ -10,6 +10,7 @@ measures_to_codomain = function(measures) {
   Codomain$new(domains)
 }
 
+#nolint next
 extract_benchmark_result_learners = function(bmr) {
   unlist(map(seq_len(bmr$n_resample_results), function(n) {
     bmr$resample_result(n)$learners
@@ -17,14 +18,20 @@ extract_benchmark_result_learners = function(bmr) {
 }
 
 extract_runtime = function(resample_result) {
-  runtimes = map_dbl(get_private(resample_result)$.data$learner_states(get_private(resample_result)$.view), function(state) {
-    state$train_time + state$predict_time
-  })
+  runtimes = map_dbl(
+    get_private(resample_result)$.data$learner_states(get_private(resample_result)$.view),
+    function(state) {
+      state$train_time + state$predict_time
+    }
+  )
   sum(runtimes)
 }
 
 extract_inner_tuned_values = function(resample_result, internal_search_space) {
-  internal_tuned_values = transpose_list(map(get_private(resample_result)$.data$learner_states(get_private(resample_result)$.view), "internal_tuned_values"))
+  internal_tuned_values = transpose_list(map(
+    get_private(resample_result)$.data$learner_states(get_private(resample_result)$.view),
+    "internal_tuned_values"
+  ))
   set_class(internal_search_space$aggr_internal_tuned_values(internal_tuned_values), "internal_tuned_values")
 }
 

@@ -9,19 +9,19 @@
 #' @template param_tuner
 #'
 #' @export
-ContextBatchTuning = R6Class("ContextBatchTuning",
+ContextBatchTuning = R6Class(
+  "ContextBatchTuning",
   inherit = ContextBatch,
   active = list(
-
     #' @field xss (list())\cr
     #' The hyperparameter configurations of the latest batch.
     #' Contains the values on the learner scale i.e. transformations are applied.
     #' See `$xdt` for the untransformed values.
     xss = function(rhs) {
       if (missing(rhs)) {
-        return(get_private(self$instance$objective)$.xss)
+        get_private(self$instance$objective)$.xss
       } else {
-       self$instance$objective$.__enclos_env__$private$.xss = rhs
+        self$instance$objective$.__enclos_env__$private$.xss = rhs
       }
     },
 
@@ -29,7 +29,7 @@ ContextBatchTuning = R6Class("ContextBatchTuning",
     #' The benchmark design of the latest batch.
     design = function(rhs) {
       if (missing(rhs)) {
-        return(get_private(self$instance$objective)$.design)
+        get_private(self$instance$objective)$.design
       } else {
         self$instance$objective$.__enclos_env__$private$.design = rhs
       }
@@ -39,7 +39,7 @@ ContextBatchTuning = R6Class("ContextBatchTuning",
     #' The benchmark result of the latest batch.
     benchmark_result = function(rhs) {
       if (missing(rhs)) {
-        return(get_private(self$instance$objective)$.benchmark_result)
+        get_private(self$instance$objective)$.benchmark_result
       } else {
         self$instance$objective$.__enclos_env__$private$.benchmark_result = rhs
       }
@@ -51,7 +51,7 @@ ContextBatchTuning = R6Class("ContextBatchTuning",
     #' A callback can add additional columns which are also written to the archive.
     aggregated_performance = function(rhs) {
       if (missing(rhs)) {
-        return(get_private(self$instance$objective)$.aggregated_performance)
+        get_private(self$instance$objective)$.aggregated_performance
       } else {
         self$instance$objective$.__enclos_env__$private$.aggregated_performance = rhs
       }
@@ -61,7 +61,7 @@ ContextBatchTuning = R6Class("ContextBatchTuning",
     #' The learner parameter values passed to `instance$assign_result()`.
     result_learner_param_vals = function(rhs) {
       if (missing(rhs)) {
-        return(get_private(self$instance)$.result_learner_param_vals)
+        get_private(self$instance)$.result_learner_param_vals
       } else {
         self$instance$.__enclos_env__$private$.result_learner_param_vals = rhs
       }

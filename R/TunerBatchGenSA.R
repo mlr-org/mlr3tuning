@@ -56,10 +56,10 @@
 #' learner$param_set$values = instance$result_learner_param_vals
 #' learner$train(tsk("penguins"))
 #' }
-TunerBatchGenSA = R6Class("TunerBatchGenSA",
+TunerBatchGenSA = R6Class(
+  "TunerBatchGenSA",
   inherit = TunerBatchFromOptimizerBatch,
   public = list(
-
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function() {
