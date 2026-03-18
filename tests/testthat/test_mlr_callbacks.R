@@ -66,14 +66,16 @@ test_that("async measures callback works", {
 #   # mlflow server must be running
 #   skip_on_ci()
 #   skip_if_not_installed("rush")
-#   flush_redis()
+#   rush = start_rush()
+#   on.exit({
+#     rush$reset()
+#     mirai::daemons(0)
+#   })
 
 #   learner = lrn("classif.rpart",
 #     minsplit  = to_tune(2, 128),
 #     cp        = to_tune(1e-04, 1e-1))
 
-#   mirai::daemons(2)
-#   rush::rush_plan(n_workers = 2, worker_type = "remote")
 #   instance = ti_async(
 #     task = tsk("pima"),
 #     learner = learner,
@@ -81,7 +83,8 @@ test_that("async measures callback works", {
 #     measures = msr("classif.ce"),
 #     terminator = trm("evals", n_evals = 20),
 #     store_benchmark_result = FALSE,
-#     callbacks = clbk("mlr3tuning.async_mlflow", tracking_uri = "http://localhost:8080")
+#     callbacks = clbk("mlr3tuning.async_mlflow", tracking_uri = "http://localhost:8080"),
+#     rush = rush
 #   )
 
 #   optimizer = tnr("async_random_search")

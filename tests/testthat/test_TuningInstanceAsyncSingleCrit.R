@@ -123,19 +123,19 @@ test_that("saving the models with TuningInstanceRushSingleCrit works", {
 })
 
 # test_that("crashing workers are detected", {
-#   skip_on_cran()
-#   skip_if_not_installed("rush")
-#   flush_redis()
-
-#   mirai::daemons(2)
-#   rush::rush_plan(n_workers = 2, worker_type = "remote")
+#   rush = start_rush()
+#   on.exit({
+#     rush$reset()
+#     mirai::daemons(0)
+#   })
 
 #   instance = ti_async(
 #     task = tsk("pima"),
 #     learner = lrn("classif.debug", segfault_train = 1, x = to_tune()),
 #     resampling = rsmp("cv", folds = 3),
 #     measures = msr("classif.ce"),
-#     terminator = trm("evals", n_evals = 10)
+#     terminator = trm("evals", n_evals = 10),
+#     rush = rush
 #   )
 
 #   tuner = tnr("async_random_search")
