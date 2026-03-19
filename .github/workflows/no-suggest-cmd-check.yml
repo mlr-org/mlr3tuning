@@ -1,4 +1,6 @@
-# r cmd check workflow without suggests of the mlr3 ecosystem v0.3.1
+# R CMD check workflow without suggested packages v0.4.0
+# Without `cache: false` packages can leak from the cache of the previous workflow runs
+# You can remove the `services.redis` section if the package does not require `rush` for the tests
 # https://github.com/mlr-org/actions
 on:
   workflow_dispatch:
@@ -44,7 +46,7 @@ jobs:
           - {os: ubuntu-latest,   r: 'release'}
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - uses: r-lib/actions/setup-pandoc@v2
 
