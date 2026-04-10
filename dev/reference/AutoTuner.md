@@ -569,7 +569,7 @@ at$model
 #> • Encapsulation: none (fallback: -)
 #> • Properties: importance, missings, multiclass, selected_features, twoclass,
 #> and weights
-#> • Other settings: use_weights = 'use'
+#> • Other settings: use_weights = 'use', predict_raw = 'FALSE'
 #> 
 #> $tuning_instance
 #> 
@@ -608,7 +608,7 @@ at$learner
 #> • Encapsulation: none (fallback: -)
 #> • Properties: importance, missings, multiclass, selected_features, twoclass,
 #> and weights
-#> • Other settings: use_weights = 'use'
+#> • Other settings: use_weights = 'use', predict_raw = 'FALSE'
 
 # shortcut tuning instance
 at$tuning_instance
@@ -650,9 +650,9 @@ rr = resample(task, at, resampling_outer, store_models = TRUE)
 extract_inner_tuning_results(rr)
 #>    iteration        cp classif.ce learner_param_vals  x_domain  task_id
 #>        <int>     <num>      <num>             <list>    <list>   <char>
-#> 1:         1 -2.421343 0.06578947          <list[2]> <list[1]> penguins
-#> 2:         2 -7.917442 0.06493506          <list[2]> <list[1]> penguins
-#> 3:         3 -8.698664 0.03947368          <list[2]> <list[1]> penguins
+#> 1:         1 -8.698664 0.03947368          <list[2]> <list[1]> penguins
+#> 2:         2 -2.421343 0.06578947          <list[2]> <list[1]> penguins
+#> 3:         3 -7.917442 0.06493506          <list[2]> <list[1]> penguins
 #>             learner_id resampling_id
 #>                 <char>        <char>
 #> 1: classif.rpart.tuned            cv
