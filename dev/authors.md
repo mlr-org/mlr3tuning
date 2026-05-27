@@ -20,7 +20,7 @@ Source:
 
 Becker M, Lang M, Richter J, Bischl B (2025). *mlr3tuning:
 Hyperparameter Optimization for mlr3*.
-[doi:10.5281/zenodo.15852621](https://doi.org/10.5281/zenodo.15852621),
+[doi:10.5281/zenodo.15852621](https://doi.org/10.5281/zenodo.15852621).
 <https://doi.org/10.5281/zenodo.15852621>.
 
     @Manual{,

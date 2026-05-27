@@ -78,12 +78,14 @@ summarizes the most important functions of mlr3tuning.
 Install the last release from CRAN:
 
 ``` r
+
 install.packages("mlr3tuning")
 ```
 
 Install the development version from GitHub:
 
 ``` r
+
 # install.packages("pak")
 pak::pak("mlr-org/mlr3tuning")
 ```
@@ -96,6 +98,7 @@ machine on the
 set.
 
 ``` r
+
 library("mlr3learners")
 library("mlr3tuning")
 
@@ -112,6 +115,7 @@ We construct a tuning instance with the
 The tuning instance describes the tuning problem.
 
 ``` r
+
 instance = ti(
   task = tsk("sonar"),
   learner = learner,
@@ -137,6 +141,7 @@ instance
 We select a simple grid search as the optimization algorithm.
 
 ``` r
+
 tuner = tnr("grid_search", resolution = 5)
 tuner
 ```
@@ -153,6 +158,7 @@ tuner
 To start the tuning, we simply pass the tuning instance to the tuner.
 
 ``` r
+
 tuner$optimize(instance)
 ```
 
@@ -167,6 +173,7 @@ corresponding measured performance.
 The archive contains all evaluated hyperparameter configurations.
 
 ``` r
+
 as.data.table(instance$archive)[, .(cost, gamma, classif.ce, batch_nr, resample_result)]
 ```
 
@@ -189,6 +196,7 @@ The [mlr3viz](https://mlr3viz.mlr-org.com/) package visualizes tuning
 results.
 
 ``` r
+
 library(mlr3viz)
 
 autoplot(instance, type = "surface")
@@ -200,6 +208,7 @@ We fit a final model with optimized hyperparameters to make predictions
 on new data.
 
 ``` r
+
 learner$param_set$values = instance$result_learner_param_vals
 learner$train(tsk("sonar"))
 ```
