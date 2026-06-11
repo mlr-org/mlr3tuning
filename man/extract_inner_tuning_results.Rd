@@ -30,7 +30,8 @@ Implemented for \link[mlr3:ResampleResult]{mlr3::ResampleResult} and \link[mlr3:
 }
 \details{
 The function iterates over the \link{AutoTuner} objects and binds the tuning results to a \code{\link[data.table:data.table]{data.table::data.table()}}.
-The \link{AutoTuner} must be initialized with \code{store_tuning_instance = TRUE} and \code{\link[mlr3:resample]{mlr3::resample()}} or \code{\link[mlr3:benchmark]{mlr3::benchmark()}} must be called with \code{store_models = TRUE}.
+The \link{AutoTuner} must be initialized with \code{store_tuning_instance = TRUE} and \code{\link[mlr3:resample]{mlr3::resample()}} or
+\code{\link[mlr3:benchmark]{mlr3::benchmark()}} must be called with \code{store_models = TRUE}.
 Optionally, the tuning instance can be added for each iteration.
 }
 \section{Data structure}{

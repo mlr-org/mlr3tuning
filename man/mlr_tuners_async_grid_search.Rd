@@ -26,56 +26,58 @@ Maximum number of points to try in a batch.}
 }
 
 \seealso{
-Other TunerAsync: 
+Other TunerAsync:
 \code{\link{mlr_tuners_async_design_points}},
 \code{\link{mlr_tuners_async_random_search}}
 }
 \concept{TunerAsync}
 \section{Super classes}{
-\code{\link[mlr3tuning:Tuner]{mlr3tuning::Tuner}} -> \code{\link[mlr3tuning:TunerAsync]{mlr3tuning::TunerAsync}} -> \code{\link[mlr3tuning:TunerAsyncFromOptimizerAsync]{mlr3tuning::TunerAsyncFromOptimizerAsync}} -> \code{TunerAsyncGridSearch}
+\code{\link[mlr3tuning:Tuner]{Tuner}} -> \code{\link[mlr3tuning:TunerAsync]{TunerAsync}} -> \code{\link[mlr3tuning:TunerAsyncFromOptimizerAsync]{TunerAsyncFromOptimizerAsync}} -> \code{TunerAsyncGridSearch}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-TunerAsyncGridSearch-new}{\code{TunerAsyncGridSearch$new()}}
-\item \href{#method-TunerAsyncGridSearch-clone}{\code{TunerAsyncGridSearch$clone()}}
+  \itemize{
+    \item \href{#method-TunerAsyncGridSearch-initialize}{\code{TunerAsyncGridSearch$new()}}
+    \item \href{#method-TunerAsyncGridSearch-clone}{\code{TunerAsyncGridSearch$clone()}}
+  }
 }
-}
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="format"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-format'><code>mlr3tuning::Tuner$format()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="help"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-help'><code>mlr3tuning::Tuner$help()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="print"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-print'><code>mlr3tuning::Tuner$print()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="TunerAsyncFromOptimizerAsync" data-id="optimize"><a href='../../mlr3tuning/html/TunerAsyncFromOptimizerAsync.html#method-TunerAsyncFromOptimizerAsync-optimize'><code>mlr3tuning::TunerAsyncFromOptimizerAsync$optimize()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="format"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-format'><code>Tuner$format()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="help"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-help'><code>Tuner$help()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="print"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-print'><code>Tuner$print()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="TunerAsyncFromOptimizerAsync" data-id="optimize"><a href='../../mlr3tuning/html/TunerAsyncFromOptimizerAsync.html#method-TunerAsyncFromOptimizerAsync-optimize'><code>TunerAsyncFromOptimizerAsync$optimize()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TunerAsyncGridSearch-new"></a>}}
-\if{latex}{\out{\hypertarget{method-TunerAsyncGridSearch-new}{}}}
-\subsection{Method \code{new()}}{
-Creates a new instance of this \link[R6:R6Class]{R6} class.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TunerAsyncGridSearch$new()}\if{html}{\out{</div>}}
+\if{html}{\out{<a id="method-TunerAsyncGridSearch-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-TunerAsyncGridSearch-initialize}{}}}
+\subsection{\code{TunerAsyncGridSearch$new()}}{
+  Creates a new instance of this \link[R6:R6Class]{R6} class.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{TunerAsyncGridSearch$new()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TunerAsyncGridSearch-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-TunerAsyncGridSearch-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TunerAsyncGridSearch$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{TunerAsyncGridSearch$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{TunerAsyncGridSearch$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

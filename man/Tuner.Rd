@@ -22,29 +22,38 @@ Additional tuners are provided by the following packages.
 
 There are several sections about hyperparameter optimization in the \href{https://mlr3book.mlr-org.com}{mlr3book}.
 \itemize{
-\item Getting started with \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html}{hyperparameter optimization}.
+\item Getting started with
+\href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html}{hyperparameter optimization}.
 \item An overview of all tuners can be found on our \href{https://mlr-org.com/tuners.html}{website}.
-\item \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-model-tuning}{Tune} a support vector machine on the Sonar data set.
+\item \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-model-tuning}{Tune}
+a support vector machine on the Sonar data set.
 \item Learn about \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-defining-search-spaces}{tuning spaces}.
 \item Estimate the model performance with \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-nested-resampling}{nested resampling}.
 \item Learn about \href{https://mlr3book.mlr-org.com/chapters/chapter5/advanced_tuning_methods_and_black_box_optimization.html#sec-multi-metrics-tuning}{multi-objective optimization}.
-\item Simultaneously optimize hyperparameters and use \href{https://mlr3book.mlr-org.com/chapters/chapter15/predsets_valid_inttune.html}{early stopping} with XGBoost.
-\item \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-autotuner}{Automate} the tuning.
+\item Simultaneously optimize hyperparameters and use
+\href{https://mlr3book.mlr-org.com/chapters/chapter15/predsets_valid_inttune.html}{early stopping} with XGBoost.
+\item \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-autotuner}{Automate}
+the tuning.
 }
 
-The \href{https://mlr-org.com/gallery-all-optimization.html}{gallery} features a collection of case studies and demos about optimization.
+The \href{https://mlr-org.com/gallery-all-optimization.html}{gallery} features a collection of case studies and demos
+about optimization.
 \itemize{
 \item Learn more advanced methods with the \href{https://mlr-org.com/gallery/series/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/}{Practical Tuning Series}.
 \item Learn about \href{https://mlr-org.com/gallery/optimization/2023-01-16-hotstart/}{hotstarting} models.
-\item Run the \href{https://mlr-org.com/gallery/optimization/2023-01-31-default-configuration/}{default hyperparameter configuration} of learners as a baseline.
-\item Use the \href{https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/}{Hyperband} optimizer with different budget parameters.
+\item Run the
+\href{https://mlr-org.com/gallery/optimization/2023-01-31-default-configuration/}{default hyperparameter configuration}
+of learners as a baseline.
+\item Use the \href{https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/}{Hyperband} optimizer with different
+budget parameters.
 }
 
-The \href{https://cheatsheets.mlr-org.com/mlr3tuning.pdf}{cheatsheet} summarizes the most important functions of mlr3tuning.
+The \href{https://cheatsheets.mlr-org.com/mlr3tuning.pdf}{cheatsheet} summarizes
+the most important functions of mlr3tuning.
 }
 
 \seealso{
-Other Tuner: 
+Other Tuner:
 \code{\link{mlr_tuners}},
 \code{\link{mlr_tuners_cmaes}},
 \code{\link{mlr_tuners_design_points}},
@@ -57,58 +66,60 @@ Other Tuner:
 }
 \concept{Tuner}
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{id}}{(\code{character(1)})\cr
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{id}}{(\code{character(1)})\cr
 Identifier of the object.
 Used in tables, plot and text output.}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{param_set}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{param_set}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
 Set of control parameters.}
 
-\item{\code{param_classes}}{(\code{character()})\cr
-Supported parameter classes for learner hyperparameters that the tuner can optimize, as given in the \link[paradox:ParamSet]{paradox::ParamSet} \verb{$class} field.}
+    \item{\code{param_classes}}{(\code{character()})\cr
+Supported parameter classes for learner hyperparameters that the tuner can optimize,
+as given in the \link[paradox:ParamSet]{paradox::ParamSet} \verb{$class} field.}
 
-\item{\code{properties}}{(\code{character()})\cr
+    \item{\code{properties}}{(\code{character()})\cr
 Set of properties of the tuner.
 Must be a subset of \code{\link[mlr3:mlr_reflections]{mlr_reflections$tuner_properties}}.}
 
-\item{\code{packages}}{(\code{character()})\cr
+    \item{\code{packages}}{(\code{character()})\cr
 Set of required packages.
 Note that these packages will be loaded via \code{\link[=requireNamespace]{requireNamespace()}}, and are not attached.}
 
-\item{\code{label}}{(\code{character(1)})\cr
+    \item{\code{label}}{(\code{character(1)})\cr
 Label for this object.
 Can be used in tables, plot and text output instead of the ID.}
 
-\item{\code{man}}{(\code{character(1)})\cr
+    \item{\code{man}}{(\code{character(1)})\cr
 String in the format \verb{[pkg]::[topic]} pointing to a manual page for this object.
 The referenced help package can be opened via method \verb{$help()}.}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-Tuner-new}{\code{Tuner$new()}}
-\item \href{#method-Tuner-format}{\code{Tuner$format()}}
-\item \href{#method-Tuner-print}{\code{Tuner$print()}}
-\item \href{#method-Tuner-help}{\code{Tuner$help()}}
-\item \href{#method-Tuner-clone}{\code{Tuner$clone()}}
-}
+  \itemize{
+    \item \href{#method-Tuner-initialize}{\code{Tuner$new()}}
+    \item \href{#method-Tuner-format}{\code{Tuner$format()}}
+    \item \href{#method-Tuner-print}{\code{Tuner$print()}}
+    \item \href{#method-Tuner-help}{\code{Tuner$help()}}
+    \item \href{#method-Tuner-clone}{\code{Tuner$clone()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Tuner-new"></a>}}
-\if{latex}{\out{\hypertarget{method-Tuner-new}{}}}
-\subsection{Method \code{new()}}{
-Creates a new instance of this \link[R6:R6Class]{R6} class.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Tuner$new(
+\if{html}{\out{<a id="method-Tuner-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-Tuner-initialize}{}}}
+\subsection{\code{Tuner$new()}}{
+  Creates a new instance of this \link[R6:R6Class]{R6} class.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Tuner$new(
   id = "tuner",
   param_set,
   param_classes,
@@ -116,98 +127,101 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   packages = character(),
   label = NA_character_,
   man = NA_character_
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{id}}{(\code{character(1)})\cr
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{id}}{(\code{character(1)})\cr
 Identifier for the new instance.}
-
-\item{\code{param_set}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
+      \item{\code{param_set}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
 Set of control parameters.}
-
-\item{\code{param_classes}}{(\code{character()})\cr
+      \item{\code{param_classes}}{(\code{character()})\cr
 Supported parameter classes for learner hyperparameters that the tuner can optimize, as given in the \link[paradox:ParamSet]{paradox::ParamSet} \verb{$class} field.}
-
-\item{\code{properties}}{(\code{character()})\cr
+      \item{\code{properties}}{(\code{character()})\cr
 Set of properties of the tuner.
 Must be a subset of \code{\link[mlr3:mlr_reflections]{mlr_reflections$tuner_properties}}.}
-
-\item{\code{packages}}{(\code{character()})\cr
+      \item{\code{packages}}{(\code{character()})\cr
 Set of required packages.
 Note that these packages will be loaded via \code{\link[=requireNamespace]{requireNamespace()}}, and are not attached.}
-
-\item{\code{label}}{(\code{character(1)})\cr
+      \item{\code{label}}{(\code{character(1)})\cr
 Label for this object.
 Can be used in tables, plot and text output instead of the ID.}
-
-\item{\code{man}}{(\code{character(1)})\cr
+      \item{\code{man}}{(\code{character(1)})\cr
 String in the format \verb{[pkg]::[topic]} pointing to a manual page for this object.
 The referenced help package can be opened via method \verb{$help()}.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Tuner-format"></a>}}
 \if{latex}{\out{\hypertarget{method-Tuner-format}{}}}
-\subsection{Method \code{format()}}{
-Helper for print outputs.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Tuner$format(...)}\if{html}{\out{</div>}}
+\subsection{\code{Tuner$format()}}{
+  Helper for print outputs.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Tuner$format(...)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{...}}{(ignored).}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    (\code{character()}).
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{(ignored).}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-(\code{character()}).
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Tuner-print"></a>}}
 \if{latex}{\out{\hypertarget{method-Tuner-print}{}}}
-\subsection{Method \code{print()}}{
-Print method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Tuner$print()}\if{html}{\out{</div>}}
+\subsection{\code{Tuner$print()}}{
+  Print method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Tuner$print()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    (\code{character()}).
+  }
 }
 
-\subsection{Returns}{
-(\code{character()}).
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Tuner-help"></a>}}
 \if{latex}{\out{\hypertarget{method-Tuner-help}{}}}
-\subsection{Method \code{help()}}{
-Opens the corresponding help page referenced by field \verb{$man}.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Tuner$help()}\if{html}{\out{</div>}}
+\subsection{\code{Tuner$help()}}{
+  Opens the corresponding help page referenced by field \verb{$man}.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Tuner$help()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Tuner-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-Tuner-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Tuner$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{Tuner$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Tuner$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

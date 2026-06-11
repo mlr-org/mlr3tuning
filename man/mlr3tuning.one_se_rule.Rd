@@ -11,9 +11,11 @@ Springer New York, New York, NY.
 ISBN 978-1-4614-6849-3.
 }
 \description{
-The one standard error rule takes the number of features into account when selecting the best hyperparameter configuration.
+The one standard error rule takes the number of features into account
+when selecting the best hyperparameter configuration.
 Many learners support internal feature selection, which can be accessed via \verb{$selected_features()}.
-The callback selects the hyperparameter configuration with the smallest feature set within one standard error of the best performing configuration.
+The callback selects the hyperparameter configuration with the smallest feature set
+within one standard error of the best performing configuration.
 If there are multiple such hyperparameter configurations with the same number of features, the first one is selected.
 }
 \examples{

@@ -4,13 +4,15 @@
 \alias{ArchiveBatchTuning}
 \title{Class for Logging Evaluated Hyperparameter Configurations}
 \description{
-The \code{ArchiveBatchTuning} stores all evaluated hyperparameter configurations and performance scores in a \code{\link[data.table:data.table]{data.table::data.table()}}.
+The \code{ArchiveBatchTuning} stores all evaluated hyperparameter configurations
+and performance scores in a \code{\link[data.table:data.table]{data.table::data.table()}}.
 }
 \details{
 The \link{ArchiveBatchTuning} is a container around a \code{\link[data.table:data.table]{data.table::data.table()}}.
 Each row corresponds to a single evaluation of a hyperparameter configuration.
 See the section on Data Structure for more information.
-The archive stores additionally a \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} (\verb{$benchmark_result}) that records the resampling experiments.
+The archive stores additionally a \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult} (\verb{$benchmark_result})
+that records the resampling experiments.
 Each experiment corresponds to a single evaluation of a hyperparameter configuration.
 The table (\verb{$data}) and the benchmark result (\verb{$benchmark_result}) are linked by the \code{uhash} column.
 If the archive is passed to \code{as.data.table()}, both are joined automatically.
@@ -41,13 +43,15 @@ Connects each hyperparameter configuration to the resampling experiment stored i
 \section{Analysis}{
 
 For analyzing the tuning results, it is recommended to pass the \link{ArchiveBatchTuning} to \code{as.data.table()}.
-The returned data table is joined with the benchmark result which adds the \link[mlr3:ResampleResult]{mlr3::ResampleResult} for each hyperparameter evaluation.
+The returned data table is joined with the benchmark result
+which adds the \link[mlr3:ResampleResult]{mlr3::ResampleResult} for each hyperparameter evaluation.
 
 The archive provides various getters (e.g. \verb{$learners()}) to ease the access.
 All getters extract by position (\code{i}) or unique hash (\code{uhash}).
 For a complete list of all getters see the methods section.
 
-The benchmark result (\verb{$benchmark_result}) allows to score the hyperparameter configurations again on a different measure.
+The benchmark result (\verb{$benchmark_result}) allows to score
+the hyperparameter configurations again on a different measure.
 Alternatively, measures can be supplied to \code{as.data.table()}.
 
 The \CRANpkg{mlr3viz} package provides visualizations for tuning results.
@@ -75,224 +79,223 @@ Score hyperparameter configurations on additional measures.
 \code{\link[bbotk:Archive]{bbotk::Archive}} -> \code{\link[bbotk:ArchiveBatch]{bbotk::ArchiveBatch}} -> \code{ArchiveBatchTuning}
 }
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{benchmark_result}}{(\link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult})\cr
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{benchmark_result}}{(\link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult})\cr
 Benchmark result.}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{internal_search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{internal_search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
 The search space containing those parameters that are internally optimized by the \code{\link[mlr3:Learner]{mlr3::Learner}}.}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-ArchiveBatchTuning-new}{\code{ArchiveBatchTuning$new()}}
-\item \href{#method-ArchiveBatchTuning-learner}{\code{ArchiveBatchTuning$learner()}}
-\item \href{#method-ArchiveBatchTuning-learners}{\code{ArchiveBatchTuning$learners()}}
-\item \href{#method-ArchiveBatchTuning-learner_param_vals}{\code{ArchiveBatchTuning$learner_param_vals()}}
-\item \href{#method-ArchiveBatchTuning-predictions}{\code{ArchiveBatchTuning$predictions()}}
-\item \href{#method-ArchiveBatchTuning-resample_result}{\code{ArchiveBatchTuning$resample_result()}}
-\item \href{#method-ArchiveBatchTuning-print}{\code{ArchiveBatchTuning$print()}}
-\item \href{#method-ArchiveBatchTuning-clone}{\code{ArchiveBatchTuning$clone()}}
+  \itemize{
+    \item \href{#method-ArchiveBatchTuning-initialize}{\code{ArchiveBatchTuning$new()}}
+    \item \href{#method-ArchiveBatchTuning-learner}{\code{ArchiveBatchTuning$learner()}}
+    \item \href{#method-ArchiveBatchTuning-learners}{\code{ArchiveBatchTuning$learners()}}
+    \item \href{#method-ArchiveBatchTuning-learner_param_vals}{\code{ArchiveBatchTuning$learner_param_vals()}}
+    \item \href{#method-ArchiveBatchTuning-predictions}{\code{ArchiveBatchTuning$predictions()}}
+    \item \href{#method-ArchiveBatchTuning-resample_result}{\code{ArchiveBatchTuning$resample_result()}}
+    \item \href{#method-ArchiveBatchTuning-print}{\code{ArchiveBatchTuning$print()}}
+    \item \href{#method-ArchiveBatchTuning-clone}{\code{ArchiveBatchTuning$clone()}}
+  }
 }
-}
-\if{html}{\out{
-<details><summary>Inherited methods</summary>
+\if{html}{\out{<details><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="format"><a href='../../bbotk/html/Archive.html#method-Archive-format'><code>bbotk::Archive$format()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="help"><a href='../../bbotk/html/Archive.html#method-Archive-help'><code>bbotk::Archive$help()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveBatch" data-id="add_evals"><a href='../../bbotk/html/ArchiveBatch.html#method-ArchiveBatch-add_evals'><code>bbotk::ArchiveBatch$add_evals()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveBatch" data-id="best"><a href='../../bbotk/html/ArchiveBatch.html#method-ArchiveBatch-best'><code>bbotk::ArchiveBatch$best()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveBatch" data-id="clear"><a href='../../bbotk/html/ArchiveBatch.html#method-ArchiveBatch-clear'><code>bbotk::ArchiveBatch$clear()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveBatch" data-id="nds_selection"><a href='../../bbotk/html/ArchiveBatch.html#method-ArchiveBatch-nds_selection'><code>bbotk::ArchiveBatch$nds_selection()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="format"><a href='../../bbotk/html/Archive.html#method-Archive-format'><code>bbotk::Archive$format()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="Archive" data-id="help"><a href='../../bbotk/html/Archive.html#method-Archive-help'><code>bbotk::Archive$help()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveBatch" data-id="add_evals"><a href='../../bbotk/html/ArchiveBatch.html#method-ArchiveBatch-add_evals'><code>bbotk::ArchiveBatch$add_evals()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveBatch" data-id="best"><a href='../../bbotk/html/ArchiveBatch.html#method-ArchiveBatch-best'><code>bbotk::ArchiveBatch$best()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveBatch" data-id="clear"><a href='../../bbotk/html/ArchiveBatch.html#method-ArchiveBatch-clear'><code>bbotk::ArchiveBatch$clear()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveBatch" data-id="nds_selection"><a href='../../bbotk/html/ArchiveBatch.html#method-ArchiveBatch-nds_selection'><code>bbotk::ArchiveBatch$nds_selection()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ArchiveBatchTuning-new"></a>}}
-\if{latex}{\out{\hypertarget{method-ArchiveBatchTuning-new}{}}}
-\subsection{Method \code{new()}}{
-Creates a new instance of this \link[R6:R6Class]{R6} class.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ArchiveBatchTuning$new(
+\if{html}{\out{<a id="method-ArchiveBatchTuning-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-ArchiveBatchTuning-initialize}{}}}
+\subsection{\code{ArchiveBatchTuning$new()}}{
+  Creates a new instance of this \link[R6:R6Class]{R6} class.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ArchiveBatchTuning$new(
   search_space,
   codomain,
   check_values = FALSE,
   internal_search_space = NULL
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
 Hyperparameter search space.
-If \code{NULL} (default), the search space is constructed from the \link[paradox:to_tune]{paradox::TuneToken} of the learner's parameter set (learner$param_set).
+If \code{NULL} (default), the search space is constructed from the \link[paradox:TuneToken]{paradox::TuneToken} of the learner's parameter set (learner$param_set).
 When using \code{to_tune()} tokens, dependencies for hierarchical search spaces are automatically handled.}
-
-\item{\code{codomain}}{(\link[bbotk:Codomain]{bbotk::Codomain})\cr
+      \item{\code{codomain}}{(\link[bbotk:Codomain]{bbotk::Codomain})\cr
 Specifies codomain of objective function i.e. a set of performance measures.
 Internally created from provided \link[mlr3:Measure]{mlr3::Measure}s.}
-
-\item{\code{check_values}}{(\code{logical(1)})\cr
+      \item{\code{check_values}}{(\code{logical(1)})\cr
 If \code{TRUE} (default), hyperparameter configurations are checked for validity.}
-
-\item{\code{internal_search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet} or \code{NULL})\cr
+      \item{\code{internal_search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet} or \code{NULL})\cr
 The internal search space.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ArchiveBatchTuning-learner"></a>}}
 \if{latex}{\out{\hypertarget{method-ArchiveBatchTuning-learner}{}}}
-\subsection{Method \code{learner()}}{
-Retrieve \link[mlr3:Learner]{mlr3::Learner} of the i-th evaluation, by position or by unique hash \code{uhash}.
+\subsection{\code{ArchiveBatchTuning$learner()}}{
+  Retrieve \link[mlr3:Learner]{mlr3::Learner} of the i-th evaluation, by position or by unique hash \code{uhash}.
 \code{i} and \code{uhash} are mutually exclusive.
 Learner does not contain a model. Use \verb{$learners()} to get learners with models.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ArchiveBatchTuning$learner(i = NULL, uhash = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{i}}{(\code{integer(1)})\cr
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ArchiveBatchTuning$learner(i = NULL, uhash = NULL)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{i}}{(\code{integer(1)})\cr
 The iteration value to filter for.}
-
-\item{\code{uhash}}{(\code{logical(1)})\cr
+      \item{\code{uhash}}{(\code{logical(1)})\cr
 The \code{uhash} value to filter for.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ArchiveBatchTuning-learners"></a>}}
 \if{latex}{\out{\hypertarget{method-ArchiveBatchTuning-learners}{}}}
-\subsection{Method \code{learners()}}{
-Retrieve list of trained \link[mlr3:Learner]{mlr3::Learner} objects of the i-th evaluation, by position or by unique hash \code{uhash}.
+\subsection{\code{ArchiveBatchTuning$learners()}}{
+  Retrieve list of trained \link[mlr3:Learner]{mlr3::Learner} objects of the i-th evaluation, by position or by unique hash \code{uhash}.
 \code{i} and \code{uhash} are mutually exclusive.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ArchiveBatchTuning$learners(i = NULL, uhash = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{i}}{(\code{integer(1)})\cr
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ArchiveBatchTuning$learners(i = NULL, uhash = NULL)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{i}}{(\code{integer(1)})\cr
 The iteration value to filter for.}
-
-\item{\code{uhash}}{(\code{logical(1)})\cr
+      \item{\code{uhash}}{(\code{logical(1)})\cr
 The \code{uhash} value to filter for.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ArchiveBatchTuning-learner_param_vals"></a>}}
 \if{latex}{\out{\hypertarget{method-ArchiveBatchTuning-learner_param_vals}{}}}
-\subsection{Method \code{learner_param_vals()}}{
-Retrieve param values of the i-th evaluation, by position or by unique hash \code{uhash}.
+\subsection{\code{ArchiveBatchTuning$learner_param_vals()}}{
+  Retrieve param values of the i-th evaluation, by position or by unique hash \code{uhash}.
 \code{i} and \code{uhash} are mutually exclusive.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ArchiveBatchTuning$learner_param_vals(i = NULL, uhash = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{i}}{(\code{integer(1)})\cr
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ArchiveBatchTuning$learner_param_vals(i = NULL, uhash = NULL)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{i}}{(\code{integer(1)})\cr
 The iteration value to filter for.}
-
-\item{\code{uhash}}{(\code{logical(1)})\cr
+      \item{\code{uhash}}{(\code{logical(1)})\cr
 The \code{uhash} value to filter for.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ArchiveBatchTuning-predictions"></a>}}
 \if{latex}{\out{\hypertarget{method-ArchiveBatchTuning-predictions}{}}}
-\subsection{Method \code{predictions()}}{
-Retrieve list of \link[mlr3:Prediction]{mlr3::Prediction} objects of the i-th evaluation, by position or by unique hash \code{uhash}.
+\subsection{\code{ArchiveBatchTuning$predictions()}}{
+  Retrieve list of \link[mlr3:Prediction]{mlr3::Prediction} objects of the i-th evaluation, by position or by unique hash \code{uhash}.
 \code{i} and \code{uhash} are mutually exclusive.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ArchiveBatchTuning$predictions(i = NULL, uhash = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{i}}{(\code{integer(1)})\cr
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ArchiveBatchTuning$predictions(i = NULL, uhash = NULL)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{i}}{(\code{integer(1)})\cr
 The iteration value to filter for.}
-
-\item{\code{uhash}}{(\code{logical(1)})\cr
+      \item{\code{uhash}}{(\code{logical(1)})\cr
 The \code{uhash} value to filter for.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ArchiveBatchTuning-resample_result"></a>}}
 \if{latex}{\out{\hypertarget{method-ArchiveBatchTuning-resample_result}{}}}
-\subsection{Method \code{resample_result()}}{
-Retrieve \link[mlr3:ResampleResult]{mlr3::ResampleResult} of the i-th evaluation, by position or by unique hash \code{uhash}.
+\subsection{\code{ArchiveBatchTuning$resample_result()}}{
+  Retrieve \link[mlr3:ResampleResult]{mlr3::ResampleResult} of the i-th evaluation, by position or by unique hash \code{uhash}.
 \code{i} and \code{uhash} are mutually exclusive.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ArchiveBatchTuning$resample_result(i = NULL, uhash = NULL)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{i}}{(\code{integer(1)})\cr
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ArchiveBatchTuning$resample_result(i = NULL, uhash = NULL)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{i}}{(\code{integer(1)})\cr
 The iteration value to filter for.}
-
-\item{\code{uhash}}{(\code{logical(1)})\cr
+      \item{\code{uhash}}{(\code{logical(1)})\cr
 The \code{uhash} value to filter for.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ArchiveBatchTuning-print"></a>}}
 \if{latex}{\out{\hypertarget{method-ArchiveBatchTuning-print}{}}}
-\subsection{Method \code{print()}}{
-Printer.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ArchiveBatchTuning$print()}\if{html}{\out{</div>}}
+\subsection{\code{ArchiveBatchTuning$print()}}{
+  Printer.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ArchiveBatchTuning$print()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{(ignored).}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ArchiveBatchTuning-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-ArchiveBatchTuning-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ArchiveBatchTuning$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{ArchiveBatchTuning$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ArchiveBatchTuning$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

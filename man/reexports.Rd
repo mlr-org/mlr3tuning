@@ -16,8 +16,8 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{bbotk}{\code{\link[bbotk]{mlr_terminators}}, \code{\link[bbotk]{trm}}, \code{\link[bbotk:trm]{trms}}}
+  \item{bbotk}{\code{\link[bbotk:mlr_terminators]{mlr_terminators}}, \code{\link[bbotk:trm]{trm()}}, \code{\link[bbotk:trms]{trms()}}}
 
-  \item{mlr3misc}{\code{\link[mlr3misc]{clbk}}, \code{\link[mlr3misc:clbk]{clbks}}, \code{\link[mlr3misc]{mlr_callbacks}}}
+  \item{mlr3misc}{\code{\link[mlr3misc:clbk]{clbk()}}, \code{\link[mlr3misc:clbks]{clbks()}}, \code{\link[mlr3misc:mlr_callbacks]{mlr_callbacks}}}
 }}
 

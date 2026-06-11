@@ -8,92 +8,96 @@ Internally used to transform \link[bbotk:Optimizer]{bbotk::Optimizer} to \link{T
 }
 \keyword{internal}
 \section{Super classes}{
-\code{\link[mlr3tuning:Tuner]{mlr3tuning::Tuner}} -> \code{\link[mlr3tuning:TunerBatch]{mlr3tuning::TunerBatch}} -> \code{TunerBatchFromOptimizerBatch}
+\code{\link[mlr3tuning:Tuner]{Tuner}} -> \code{\link[mlr3tuning:TunerBatch]{TunerBatch}} -> \code{TunerBatchFromOptimizerBatch}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{param_set}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{param_set}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
 Set of control parameters.}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-TunerBatchFromOptimizerBatch-new}{\code{TunerBatchFromOptimizerBatch$new()}}
-\item \href{#method-TunerBatchFromOptimizerBatch-optimize}{\code{TunerBatchFromOptimizerBatch$optimize()}}
-\item \href{#method-TunerBatchFromOptimizerBatch-clone}{\code{TunerBatchFromOptimizerBatch$clone()}}
+  \itemize{
+    \item \href{#method-TunerBatchFromOptimizerBatch-initialize}{\code{TunerBatchFromOptimizerBatch$new()}}
+    \item \href{#method-TunerBatchFromOptimizerBatch-optimize}{\code{TunerBatchFromOptimizerBatch$optimize()}}
+    \item \href{#method-TunerBatchFromOptimizerBatch-clone}{\code{TunerBatchFromOptimizerBatch$clone()}}
+  }
 }
-}
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="format"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-format'><code>mlr3tuning::Tuner$format()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="help"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-help'><code>mlr3tuning::Tuner$help()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="print"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-print'><code>mlr3tuning::Tuner$print()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="format"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-format'><code>Tuner$format()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="help"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-help'><code>Tuner$help()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="print"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-print'><code>Tuner$print()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TunerBatchFromOptimizerBatch-new"></a>}}
-\if{latex}{\out{\hypertarget{method-TunerBatchFromOptimizerBatch-new}{}}}
-\subsection{Method \code{new()}}{
-Creates a new instance of this \link[R6:R6Class]{R6} class.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TunerBatchFromOptimizerBatch$new(optimizer, man = NA_character_)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{optimizer}}{\link[bbotk:Optimizer]{bbotk::Optimizer}\cr
+\if{html}{\out{<a id="method-TunerBatchFromOptimizerBatch-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-TunerBatchFromOptimizerBatch-initialize}{}}}
+\subsection{\code{TunerBatchFromOptimizerBatch$new()}}{
+  Creates a new instance of this \link[R6:R6Class]{R6} class.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{TunerBatchFromOptimizerBatch$new(optimizer, man = NA_character_)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{optimizer}}{\link[bbotk:Optimizer]{bbotk::Optimizer}\cr
 Optimizer that is called.}
-
-\item{\code{man}}{(\code{character(1)})\cr
+      \item{\code{man}}{(\code{character(1)})\cr
 String in the format \verb{[pkg]::[topic]} pointing to a manual page for this object.
 The referenced help package can be opened via method \verb{$help()}.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TunerBatchFromOptimizerBatch-optimize"></a>}}
 \if{latex}{\out{\hypertarget{method-TunerBatchFromOptimizerBatch-optimize}{}}}
-\subsection{Method \code{optimize()}}{
-Performs the tuning on a \link{TuningInstanceBatchSingleCrit} / \link{TuningInstanceBatchMultiCrit} until termination.
-The single evaluations and the final results will be written into the \link{ArchiveBatchTuning} that resides in the \link{TuningInstanceBatchSingleCrit}/\link{TuningInstanceBatchMultiCrit}.
+\subsection{\code{TunerBatchFromOptimizerBatch$optimize()}}{
+  Performs the tuning on a \link{TuningInstanceBatchSingleCrit} / \link{TuningInstanceBatchMultiCrit} until termination.
+The single evaluations and the final results will be written into the \link{ArchiveBatchTuning} that resides in the
+\link{TuningInstanceBatchSingleCrit}/\link{TuningInstanceBatchMultiCrit}.
 The final result is returned.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TunerBatchFromOptimizerBatch$optimize(inst)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{TunerBatchFromOptimizerBatch$optimize(inst)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{inst}}{(\link{TuningInstanceBatchSingleCrit} | \link{TuningInstanceBatchMultiCrit}).}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    \link[data.table:data.table]{data.table::data.table}.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{inst}}{(\link{TuningInstanceBatchSingleCrit} | \link{TuningInstanceBatchMultiCrit}).}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-\link[data.table:data.table]{data.table::data.table}.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TunerBatchFromOptimizerBatch-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-TunerBatchFromOptimizerBatch-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TunerBatchFromOptimizerBatch$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{TunerBatchFromOptimizerBatch$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{TunerBatchFromOptimizerBatch$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

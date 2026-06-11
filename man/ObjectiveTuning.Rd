@@ -5,61 +5,61 @@
 \title{Class for Tuning Objective}
 \description{
 Stores the objective function that estimates the performance of hyperparameter configurations.
-This class is usually constructed internally by the \link{TuningInstanceBatchSingleCrit} or \link{TuningInstanceBatchMultiCrit}.
+This class is usually constructed internally by the \link{TuningInstanceBatchSingleCrit} or
+\link{TuningInstanceBatchMultiCrit}.
 }
 \section{Super class}{
 \code{\link[bbotk:Objective]{bbotk::Objective}} -> \code{ObjectiveTuning}
 }
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{task}}{(\link[mlr3:Task]{mlr3::Task}).}
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{task}}{(\link[mlr3:Task]{mlr3::Task}).}
 
-\item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner}).}
+    \item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner}).}
 
-\item{\code{resampling}}{(\link[mlr3:Resampling]{mlr3::Resampling}).}
+    \item{\code{resampling}}{(\link[mlr3:Resampling]{mlr3::Resampling}).}
 
-\item{\code{measures}}{(list of \link[mlr3:Measure]{mlr3::Measure}).}
+    \item{\code{measures}}{(list of \link[mlr3:Measure]{mlr3::Measure}).}
 
-\item{\code{store_models}}{(\code{logical(1)}).}
+    \item{\code{store_models}}{(\code{logical(1)}).}
 
-\item{\code{store_benchmark_result}}{(\code{logical(1)}).}
+    \item{\code{store_benchmark_result}}{(\code{logical(1)}).}
 
-\item{\code{callbacks}}{(List of \link[mlr3misc:Callback]{mlr3misc::Callback}).}
+    \item{\code{callbacks}}{(List of \link[mlr3misc:Callback]{mlr3misc::Callback}).}
 
-\item{\code{default_values}}{(named \code{list()}).}
+    \item{\code{default_values}}{(named \code{list()}).}
 
-\item{\code{internal_search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet}).
+    \item{\code{internal_search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet}).
 Internal search space for internal tuning.}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-ObjectiveTuning-new}{\code{ObjectiveTuning$new()}}
-\item \href{#method-ObjectiveTuning-clone}{\code{ObjectiveTuning$clone()}}
+  \itemize{
+    \item \href{#method-ObjectiveTuning-initialize}{\code{ObjectiveTuning$new()}}
+    \item \href{#method-ObjectiveTuning-clone}{\code{ObjectiveTuning$clone()}}
+  }
 }
-}
-\if{html}{\out{
-<details><summary>Inherited methods</summary>
+\if{html}{\out{<details><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="eval"><a href='../../bbotk/html/Objective.html#method-Objective-eval'><code>bbotk::Objective$eval()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="eval_dt"><a href='../../bbotk/html/Objective.html#method-Objective-eval_dt'><code>bbotk::Objective$eval_dt()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="eval_many"><a href='../../bbotk/html/Objective.html#method-Objective-eval_many'><code>bbotk::Objective$eval_many()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="format"><a href='../../bbotk/html/Objective.html#method-Objective-format'><code>bbotk::Objective$format()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="help"><a href='../../bbotk/html/Objective.html#method-Objective-help'><code>bbotk::Objective$help()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="print"><a href='../../bbotk/html/Objective.html#method-Objective-print'><code>bbotk::Objective$print()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="eval"><a href='../../bbotk/html/Objective.html#method-Objective-eval'><code>bbotk::Objective$eval()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="eval_dt"><a href='../../bbotk/html/Objective.html#method-Objective-eval_dt'><code>bbotk::Objective$eval_dt()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="eval_many"><a href='../../bbotk/html/Objective.html#method-Objective-eval_many'><code>bbotk::Objective$eval_many()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="format"><a href='../../bbotk/html/Objective.html#method-Objective-format'><code>bbotk::Objective$format()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="help"><a href='../../bbotk/html/Objective.html#method-Objective-help'><code>bbotk::Objective$help()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="print"><a href='../../bbotk/html/Objective.html#method-Objective-print'><code>bbotk::Objective$print()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ObjectiveTuning-new"></a>}}
-\if{latex}{\out{\hypertarget{method-ObjectiveTuning-new}{}}}
-\subsection{Method \code{new()}}{
-Creates a new instance of this \link[R6:R6Class]{R6} class.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ObjectiveTuning$new(
+\if{html}{\out{<a id="method-ObjectiveTuning-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-ObjectiveTuning-initialize}{}}}
+\subsection{\code{ObjectiveTuning$new()}}{
+  Creates a new instance of this \link[R6:R6Class]{R6} class.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ObjectiveTuning$new(
   task,
   learner,
   resampling,
@@ -69,67 +69,62 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   check_values = FALSE,
   callbacks = NULL,
   internal_search_space = NULL
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{task}}{(\link[mlr3:Task]{mlr3::Task})\cr
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{task}}{(\link[mlr3:Task]{mlr3::Task})\cr
 Task to operate on.}
-
-\item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner})\cr
+      \item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner})\cr
 Learner to tune.}
-
-\item{\code{resampling}}{(\link[mlr3:Resampling]{mlr3::Resampling})\cr
+      \item{\code{resampling}}{(\link[mlr3:Resampling]{mlr3::Resampling})\cr
 Resampling that is used to evaluate the performance of the hyperparameter configurations.
 Uninstantiated resamplings are instantiated during construction so that all configurations are evaluated on the same data splits.
 Already instantiated resamplings are kept unchanged.
 Specialized \link{Tuner} change the resampling e.g. to evaluate a hyperparameter configuration on different data splits.
 This field, however, always returns the resampling passed in construction.}
-
-\item{\code{measures}}{(list of \link[mlr3:Measure]{mlr3::Measure})\cr
+      \item{\code{measures}}{(list of \link[mlr3:Measure]{mlr3::Measure})\cr
 Measures to optimize.}
-
-\item{\code{store_benchmark_result}}{(\code{logical(1)})\cr
+      \item{\code{store_benchmark_result}}{(\code{logical(1)})\cr
 If \code{TRUE} (default), store resample result of evaluated hyperparameter
 configurations in archive as \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}.}
-
-\item{\code{store_models}}{(\code{logical(1)})\cr
+      \item{\code{store_models}}{(\code{logical(1)})\cr
 If \code{TRUE}, fitted models are stored in the benchmark result
 (\code{archive$benchmark_result}). If \code{store_benchmark_result = FALSE}, models
 are only stored temporarily and not accessible after the tuning. This
 combination is needed for measures that require a model.}
-
-\item{\code{check_values}}{(\code{logical(1)})\cr
+      \item{\code{check_values}}{(\code{logical(1)})\cr
 If \code{TRUE}, hyperparameter values are checked before evaluation and
 performance scores after. If \code{FALSE} (default), values are unchecked but
 computational overhead is reduced.}
-
-\item{\code{callbacks}}{(list of \link[mlr3misc:Callback]{mlr3misc::Callback})\cr
+      \item{\code{callbacks}}{(list of \link[mlr3misc:Callback]{mlr3misc::Callback})\cr
 List of callbacks.}
-
-\item{\code{internal_search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet} or \code{NULL})\cr
+      \item{\code{internal_search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet} or \code{NULL})\cr
 The internal search space.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ObjectiveTuning-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-ObjectiveTuning-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ObjectiveTuning$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{ObjectiveTuning$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ObjectiveTuning$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

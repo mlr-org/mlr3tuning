@@ -5,17 +5,21 @@
 \title{Single Criterion Tuning with Rush}
 \description{
 The \code{TuningInstanceAsyncSingleCrit} specifies a tuning problem for a \link{TunerAsync}.
-The function \code{\link[=ti_async]{ti_async()}} creates a \link{TuningInstanceAsyncSingleCrit} and the function \code{\link[=tune]{tune()}} creates an instance internally.
+The function \code{\link[=ti_async]{ti_async()}} creates a \link{TuningInstanceAsyncSingleCrit} and the function \code{\link[=tune]{tune()}} creates an instance
+internally.
 }
 \details{
-The instance contains an \link{ObjectiveTuningAsync} object that encodes the black box objective function a \link{Tuner} has to optimize.
+The instance contains an \link{ObjectiveTuningAsync} object that encodes the black box objective function a \link{Tuner} has
+to optimize.
 The instance allows the basic operations of querying the objective at design points (\verb{$eval_async()}).
 This operation is usually done by the \link{Tuner}.
 Hyperparameter configurations are asynchronously sent to workers and evaluated by calling \code{\link[mlr3:resample]{mlr3::resample()}}.
 The evaluated hyperparameter configurations are stored in the \link{ArchiveAsyncTuning} (\verb{$archive}).
 Before a batch is evaluated, the \link[bbotk:Terminator]{bbotk::Terminator} is queried for the remaining budget.
-If the available budget is exhausted, an exception is raised, and no further evaluations can be performed from this point on.
-The tuner is also supposed to store its final result, consisting of a selected hyperparameter configuration and associated estimated performance values, by calling the method \code{instance$.assign_result}.
+If the available budget is exhausted, an exception is raised,
+and no further evaluations can be performed from this point on.
+The tuner is also supposed to store its final result, consisting of a selected hyperparameter configuration and
+associated estimated performance values, by calling the method \code{instance$.assign_result}.
 }
 \section{Default Measures}{
 
@@ -56,25 +60,34 @@ The returned data table contains the \link[mlr3:ResampleResult]{mlr3::ResampleRe
 
 There are several sections about hyperparameter optimization in the \href{https://mlr3book.mlr-org.com}{mlr3book}.
 \itemize{
-\item Getting started with \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html}{hyperparameter optimization}.
+\item Getting started with
+\href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html}{hyperparameter optimization}.
 \item An overview of all tuners can be found on our \href{https://mlr-org.com/tuners.html}{website}.
-\item \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-model-tuning}{Tune} a support vector machine on the Sonar data set.
+\item \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-model-tuning}{Tune}
+a support vector machine on the Sonar data set.
 \item Learn about \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-defining-search-spaces}{tuning spaces}.
 \item Estimate the model performance with \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-nested-resampling}{nested resampling}.
 \item Learn about \href{https://mlr3book.mlr-org.com/chapters/chapter5/advanced_tuning_methods_and_black_box_optimization.html#sec-multi-metrics-tuning}{multi-objective optimization}.
-\item Simultaneously optimize hyperparameters and use \href{https://mlr3book.mlr-org.com/chapters/chapter15/predsets_valid_inttune.html}{early stopping} with XGBoost.
-\item \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-autotuner}{Automate} the tuning.
+\item Simultaneously optimize hyperparameters and use
+\href{https://mlr3book.mlr-org.com/chapters/chapter15/predsets_valid_inttune.html}{early stopping} with XGBoost.
+\item \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-autotuner}{Automate}
+the tuning.
 }
 
-The \href{https://mlr-org.com/gallery-all-optimization.html}{gallery} features a collection of case studies and demos about optimization.
+The \href{https://mlr-org.com/gallery-all-optimization.html}{gallery} features a collection of case studies and demos
+about optimization.
 \itemize{
 \item Learn more advanced methods with the \href{https://mlr-org.com/gallery/series/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/}{Practical Tuning Series}.
 \item Learn about \href{https://mlr-org.com/gallery/optimization/2023-01-16-hotstart/}{hotstarting} models.
-\item Run the \href{https://mlr-org.com/gallery/optimization/2023-01-31-default-configuration/}{default hyperparameter configuration} of learners as a baseline.
-\item Use the \href{https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/}{Hyperband} optimizer with different budget parameters.
+\item Run the
+\href{https://mlr-org.com/gallery/optimization/2023-01-31-default-configuration/}{default hyperparameter configuration}
+of learners as a baseline.
+\item Use the \href{https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/}{Hyperband} optimizer with different
+budget parameters.
 }
 
-The \href{https://cheatsheets.mlr-org.com/mlr3tuning.pdf}{cheatsheet} summarizes the most important functions of mlr3tuning.
+The \href{https://cheatsheets.mlr-org.com/mlr3tuning.pdf}{cheatsheet} summarizes
+the most important functions of mlr3tuning.
 }
 
 \section{Extension Packages}{
@@ -82,7 +95,8 @@ The \href{https://cheatsheets.mlr-org.com/mlr3tuning.pdf}{cheatsheet} summarizes
 
 mlr3tuning is extended by the following packages.
 \itemize{
-\item \href{https://github.com/mlr-org/mlr3tuningspaces}{mlr3tuningspaces} is a collection of search spaces from scientific articles for commonly used learners.
+\item \href{https://github.com/mlr-org/mlr3tuningspaces}{mlr3tuningspaces} is a collection of search spaces from scientific
+articles for commonly used learners.
 \item \href{https://github.com/mlr-org/mlr3hyperband}{mlr3hyperband} adds the Hyperband and Successive Halving algorithm.
 \item \href{https://github.com/mlr-org/mlr3mbo}{mlr3mbo} adds Bayesian optimization methods.
 }
@@ -92,46 +106,45 @@ mlr3tuning is extended by the following packages.
 \code{\link[bbotk:EvalInstance]{bbotk::EvalInstance}} -> \code{\link[bbotk:OptimInstance]{bbotk::OptimInstance}} -> \code{\link[bbotk:OptimInstanceAsync]{bbotk::OptimInstanceAsync}} -> \code{\link[bbotk:OptimInstanceAsyncSingleCrit]{bbotk::OptimInstanceAsyncSingleCrit}} -> \code{TuningInstanceAsyncSingleCrit}
 }
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{internal_search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{internal_search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
 The search space containing those parameters that are internally optimized by the \link[mlr3:Learner]{mlr3::Learner}.}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{result_learner_param_vals}}{(\code{list()})\cr
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{result_learner_param_vals}}{(\code{list()})\cr
 Param values for the optimal learner call.}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-TuningInstanceAsyncSingleCrit-new}{\code{TuningInstanceAsyncSingleCrit$new()}}
-\item \href{#method-TuningInstanceAsyncSingleCrit-assign_result}{\code{TuningInstanceAsyncSingleCrit$assign_result()}}
-\item \href{#method-TuningInstanceAsyncSingleCrit-clone}{\code{TuningInstanceAsyncSingleCrit$clone()}}
+  \itemize{
+    \item \href{#method-TuningInstanceAsyncSingleCrit-initialize}{\code{TuningInstanceAsyncSingleCrit$new()}}
+    \item \href{#method-TuningInstanceAsyncSingleCrit-assign_result}{\code{TuningInstanceAsyncSingleCrit$assign_result()}}
+    \item \href{#method-TuningInstanceAsyncSingleCrit-clone}{\code{TuningInstanceAsyncSingleCrit$clone()}}
+  }
 }
-}
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="bbotk" data-topic="EvalInstance" data-id="format"><a href='../../bbotk/html/EvalInstance.html#method-EvalInstance-format'><code>bbotk::EvalInstance$format()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstanceAsync" data-id="clear"><a href='../../bbotk/html/OptimInstanceAsync.html#method-OptimInstanceAsync-clear'><code>bbotk::OptimInstanceAsync$clear()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstanceAsync" data-id="print"><a href='../../bbotk/html/OptimInstanceAsync.html#method-OptimInstanceAsync-print'><code>bbotk::OptimInstanceAsync$print()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstanceAsync" data-id="reconnect"><a href='../../bbotk/html/OptimInstanceAsync.html#method-OptimInstanceAsync-reconnect'><code>bbotk::OptimInstanceAsync$reconnect()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="EvalInstance" data-id="format"><a href='../../bbotk/html/EvalInstance.html#method-EvalInstance-format'><code>bbotk::EvalInstance$format()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstanceAsync" data-id="clear"><a href='../../bbotk/html/OptimInstanceAsync.html#method-OptimInstanceAsync-clear'><code>bbotk::OptimInstanceAsync$clear()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstanceAsync" data-id="print"><a href='../../bbotk/html/OptimInstanceAsync.html#method-OptimInstanceAsync-print'><code>bbotk::OptimInstanceAsync$print()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="OptimInstanceAsync" data-id="reconnect"><a href='../../bbotk/html/OptimInstanceAsync.html#method-OptimInstanceAsync-reconnect'><code>bbotk::OptimInstanceAsync$reconnect()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TuningInstanceAsyncSingleCrit-new"></a>}}
-\if{latex}{\out{\hypertarget{method-TuningInstanceAsyncSingleCrit-new}{}}}
-\subsection{Method \code{new()}}{
-Creates a new instance of this \link[R6:R6Class]{R6} class.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TuningInstanceAsyncSingleCrit$new(
+\if{html}{\out{<a id="method-TuningInstanceAsyncSingleCrit-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-TuningInstanceAsyncSingleCrit-initialize}{}}}
+\subsection{\code{TuningInstanceAsyncSingleCrit$new()}}{
+  Creates a new instance of this \link[R6:R6Class]{R6} class.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{TuningInstanceAsyncSingleCrit$new(
   task,
   learner,
   resampling,
@@ -143,115 +156,106 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   check_values = FALSE,
   callbacks = NULL,
   rush = NULL
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{task}}{(\link[mlr3:Task]{mlr3::Task})\cr
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{task}}{(\link[mlr3:Task]{mlr3::Task})\cr
 Task to operate on.}
-
-\item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner})\cr
+      \item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner})\cr
 Learner to tune.}
-
-\item{\code{resampling}}{(\link[mlr3:Resampling]{mlr3::Resampling})\cr
+      \item{\code{resampling}}{(\link[mlr3:Resampling]{mlr3::Resampling})\cr
 Resampling that is used to evaluate the performance of the hyperparameter configurations.
 Uninstantiated resamplings are instantiated during construction so that all configurations are evaluated on the same data splits.
 Already instantiated resamplings are kept unchanged.
 Specialized \link{Tuner} change the resampling e.g. to evaluate a hyperparameter configuration on different data splits.
 This field, however, always returns the resampling passed in construction.}
-
-\item{\code{measure}}{(\link[mlr3:Measure]{mlr3::Measure})\cr
+      \item{\code{measure}}{(\link[mlr3:Measure]{mlr3::Measure})\cr
 Measure to optimize. If \code{NULL}, default measure is used.}
-
-\item{\code{terminator}}{(\link[bbotk:Terminator]{bbotk::Terminator})\cr
+      \item{\code{terminator}}{(\link[bbotk:Terminator]{bbotk::Terminator})\cr
 Stop criterion of the tuning process.}
-
-\item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
+      \item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
 Hyperparameter search space.
-If \code{NULL} (default), the search space is constructed from the \link[paradox:to_tune]{paradox::TuneToken} of the learner's parameter set (learner$param_set).
+If \code{NULL} (default), the search space is constructed from the \link[paradox:TuneToken]{paradox::TuneToken} of the learner's parameter set (learner$param_set).
 When using \code{to_tune()} tokens, dependencies for hierarchical search spaces are automatically handled.}
-
-\item{\code{store_benchmark_result}}{(\code{logical(1)})\cr
+      \item{\code{store_benchmark_result}}{(\code{logical(1)})\cr
 If \code{TRUE} (default), store resample result of evaluated hyperparameter
 configurations in archive as \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}.}
-
-\item{\code{store_models}}{(\code{logical(1)})\cr
+      \item{\code{store_models}}{(\code{logical(1)})\cr
 If \code{TRUE}, fitted models are stored in the benchmark result
 (\code{archive$benchmark_result}). If \code{store_benchmark_result = FALSE}, models
 are only stored temporarily and not accessible after the tuning. This
 combination is needed for measures that require a model.}
-
-\item{\code{check_values}}{(\code{logical(1)})\cr
+      \item{\code{check_values}}{(\code{logical(1)})\cr
 If \code{TRUE}, hyperparameter values are checked before evaluation and
 performance scores after. If \code{FALSE} (default), values are unchecked but
 computational overhead is reduced.}
-
-\item{\code{callbacks}}{(list of \link[mlr3misc:Callback]{mlr3misc::Callback})\cr
+      \item{\code{callbacks}}{(list of \link[mlr3misc:Callback]{mlr3misc::Callback})\cr
 List of callbacks.}
-
-\item{\code{rush}}{(\code{Rush})\cr
+      \item{\code{rush}}{(\code{Rush})\cr
 If a rush instance is supplied, the tuning runs without batches.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TuningInstanceAsyncSingleCrit-assign_result"></a>}}
 \if{latex}{\out{\hypertarget{method-TuningInstanceAsyncSingleCrit-assign_result}{}}}
-\subsection{Method \code{assign_result()}}{
-The \link{TunerAsync} object writes the best found point and estimated performance value here.
+\subsection{\code{TuningInstanceAsyncSingleCrit$assign_result()}}{
+  The \link{TunerAsync} object writes the best found point and estimated performance value here.
 For internal use.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TuningInstanceAsyncSingleCrit$assign_result(
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{TuningInstanceAsyncSingleCrit$assign_result(
   xdt,
   y,
   learner_param_vals = NULL,
   extra = NULL,
   ...
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{xdt}}{(\code{data.table::data.table()})\cr
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{xdt}}{(\code{data.table::data.table()})\cr
 Hyperparameter values as \code{data.table::data.table()}. Each row is one
 configuration. Contains values in the search space. Can contain additional
 columns for extra information.}
-
-\item{\code{y}}{(\code{numeric(1)})\cr
+      \item{\code{y}}{(\code{numeric(1)})\cr
 Optimal outcome.}
-
-\item{\code{learner_param_vals}}{(List of named \verb{list()s})\cr
+      \item{\code{learner_param_vals}}{(List of named \verb{list()s})\cr
 Fixed parameter values of the learner that are neither part of the
 search space nor the domain.}
-
-\item{\code{extra}}{(\code{data.table::data.table()})\cr
+      \item{\code{extra}}{(\code{data.table::data.table()})\cr
 Additional information.}
-
-\item{\code{...}}{(\code{any})\cr
+      \item{\code{...}}{(\code{any})\cr
 ignored.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TuningInstanceAsyncSingleCrit-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-TuningInstanceAsyncSingleCrit-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TuningInstanceAsyncSingleCrit$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{TuningInstanceAsyncSingleCrit$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{TuningInstanceAsyncSingleCrit$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

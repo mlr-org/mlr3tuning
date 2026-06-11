@@ -4,15 +4,19 @@
 \alias{AutoTuner}
 \title{Class for Automatic Tuning}
 \description{
-The \link{AutoTuner} wraps a \link[mlr3:Learner]{mlr3::Learner} and augments it with an automatic tuning process for a given set of hyperparameters.
+The \link{AutoTuner} wraps a \link[mlr3:Learner]{mlr3::Learner}
+and augments it with an automatic tuning process for a given set of hyperparameters.
 The \code{\link[=auto_tuner]{auto_tuner()}} function creates an \link{AutoTuner} object.
 }
 \details{
-The \link{AutoTuner} is a \link[mlr3:Learner]{mlr3::Learner} which wraps another \link[mlr3:Learner]{mlr3::Learner} and performs the following steps during \verb{$train()}:
+The \link{AutoTuner} is a \link[mlr3:Learner]{mlr3::Learner} which wraps another \link[mlr3:Learner]{mlr3::Learner}
+and performs the following steps during \verb{$train()}:
 \enumerate{
 \item The hyperparameters of the wrapped (inner) learner are trained on the training data via resampling.
-The tuning can be specified by providing a \link{Tuner}, a \link[bbotk:Terminator]{bbotk::Terminator}, a search space as \link[paradox:ParamSet]{paradox::ParamSet}, a \link[mlr3:Resampling]{mlr3::Resampling} and a \link[mlr3:Measure]{mlr3::Measure}.
-\item The best found hyperparameter configuration is set as hyperparameters for the wrapped (inner) learner stored in \code{at$learner}.
+The tuning can be specified by providing a \link{Tuner}, a \link[bbotk:Terminator]{bbotk::Terminator},
+a search space as \link[paradox:ParamSet]{paradox::ParamSet}, a \link[mlr3:Resampling]{mlr3::Resampling} and a \link[mlr3:Measure]{mlr3::Measure}.
+\item The best found hyperparameter configuration is set as hyperparameters
+for the wrapped (inner) learner stored in \code{at$learner}.
 Access the tuned hyperparameters via \code{at$tuning_result}.
 \item A final model is fit on the complete training data using the now parametrized wrapped learner.
 The respective model is available via field \code{at$learner$model}.
@@ -31,10 +35,13 @@ This is also possible via \code{set_validate()}.
 \section{Nested Resampling}{
 
 Nested resampling is performed by passing an \link{AutoTuner} to \code{\link[mlr3:resample]{mlr3::resample()}} or \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
-To access the inner resampling results, set \code{store_tuning_instance = TRUE} and execute \code{\link[mlr3:resample]{mlr3::resample()}} or \code{\link[mlr3:benchmark]{mlr3::benchmark()}} with \code{store_models = TRUE} (see examples).
-The \link[mlr3:Resampling]{mlr3::Resampling} passed to the \link{AutoTuner} is meant to be the inner resampling, operating on the training set of an arbitrary outer resampling.
+To access the inner resampling results, set \code{store_tuning_instance = TRUE} and execute \code{\link[mlr3:resample]{mlr3::resample()}} or
+\code{\link[mlr3:benchmark]{mlr3::benchmark()}} with \code{store_models = TRUE} (see examples).
+The \link[mlr3:Resampling]{mlr3::Resampling} passed to the \link{AutoTuner} is meant to be the inner resampling,
+operating on the training set of an arbitrary outer resampling.
 For this reason, the inner resampling should be not instantiated.
-If an instantiated resampling is passed, the \link{AutoTuner} fails when a row id of the inner resampling is not present in the training set of the outer resampling.
+If an instantiated resampling is passed, the \link{AutoTuner} fails when a row id of the inner resampling is not present
+in the training set of the outer resampling.
 }
 
 \section{Default Measures}{
@@ -56,25 +63,34 @@ The default measure depends on the task type.\tabular{lll}{
 
 There are several sections about hyperparameter optimization in the \href{https://mlr3book.mlr-org.com}{mlr3book}.
 \itemize{
-\item Getting started with \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html}{hyperparameter optimization}.
+\item Getting started with
+\href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html}{hyperparameter optimization}.
 \item An overview of all tuners can be found on our \href{https://mlr-org.com/tuners.html}{website}.
-\item \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-model-tuning}{Tune} a support vector machine on the Sonar data set.
+\item \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-model-tuning}{Tune}
+a support vector machine on the Sonar data set.
 \item Learn about \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-defining-search-spaces}{tuning spaces}.
 \item Estimate the model performance with \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-nested-resampling}{nested resampling}.
 \item Learn about \href{https://mlr3book.mlr-org.com/chapters/chapter5/advanced_tuning_methods_and_black_box_optimization.html#sec-multi-metrics-tuning}{multi-objective optimization}.
-\item Simultaneously optimize hyperparameters and use \href{https://mlr3book.mlr-org.com/chapters/chapter15/predsets_valid_inttune.html}{early stopping} with XGBoost.
-\item \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-autotuner}{Automate} the tuning.
+\item Simultaneously optimize hyperparameters and use
+\href{https://mlr3book.mlr-org.com/chapters/chapter15/predsets_valid_inttune.html}{early stopping} with XGBoost.
+\item \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-autotuner}{Automate}
+the tuning.
 }
 
-The \href{https://mlr-org.com/gallery-all-optimization.html}{gallery} features a collection of case studies and demos about optimization.
+The \href{https://mlr-org.com/gallery-all-optimization.html}{gallery} features a collection of case studies and demos
+about optimization.
 \itemize{
 \item Learn more advanced methods with the \href{https://mlr-org.com/gallery/series/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/}{Practical Tuning Series}.
 \item Learn about \href{https://mlr-org.com/gallery/optimization/2023-01-16-hotstart/}{hotstarting} models.
-\item Run the \href{https://mlr-org.com/gallery/optimization/2023-01-31-default-configuration/}{default hyperparameter configuration} of learners as a baseline.
-\item Use the \href{https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/}{Hyperband} optimizer with different budget parameters.
+\item Run the
+\href{https://mlr-org.com/gallery/optimization/2023-01-31-default-configuration/}{default hyperparameter configuration}
+of learners as a baseline.
+\item Use the \href{https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/}{Hyperband} optimizer with different
+budget parameters.
 }
 
-The \href{https://cheatsheets.mlr-org.com/mlr3tuning.pdf}{cheatsheet} summarizes the most important functions of mlr3tuning.
+The \href{https://cheatsheets.mlr-org.com/mlr3tuning.pdf}{cheatsheet} summarizes
+the most important functions of mlr3tuning.
 }
 
 \examples{
@@ -141,82 +157,84 @@ rr$aggregate()
 \code{\link[mlr3:Learner]{mlr3::Learner}} -> \code{AutoTuner}
 }
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{instance_args}}{(\code{list()})\cr
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{instance_args}}{(\code{list()})\cr
 All arguments from construction to create the \link{TuningInstanceBatchSingleCrit}.}
 
-\item{\code{tuner}}{(\link{Tuner})\cr
+    \item{\code{tuner}}{(\link{Tuner})\cr
 Optimization algorithm.}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{archive}}{\link{ArchiveBatchTuning}\cr
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{archive}}{\link{ArchiveBatchTuning}\cr
 Archive of the \link{TuningInstanceBatchSingleCrit}.}
 
-\item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner})\cr
+    \item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner})\cr
 Trained learner}
 
-\item{\code{tuning_instance}}{(\link{TuningInstanceAsyncSingleCrit} | \link{TuningInstanceBatchSingleCrit})\cr
+    \item{\code{tuning_instance}}{(\link{TuningInstanceAsyncSingleCrit} | \link{TuningInstanceBatchSingleCrit})\cr
 Internally created tuning instance with all intermediate results.}
 
-\item{\code{tuning_result}}{(\link[data.table:data.table]{data.table::data.table})\cr
+    \item{\code{tuning_result}}{(\link[data.table:data.table]{data.table::data.table})\cr
 Short-cut to \code{result} from  tuning instance.}
 
-\item{\code{predict_type}}{(\code{character(1)})\cr
+    \item{\code{predict_type}}{(\code{character(1)})\cr
 Stores the currently active predict type, e.g. \code{"response"}.
 Must be an element of \verb{$predict_types}.
 A few learners already use the predict type during training.
-So there is no guarantee that changing the predict type after tuning and training will have any effect or does not lead to errors.}
+So there is no guarantee that changing the predict type after tuning and training
+will have any effect or does not lead to errors.}
 
-\item{\code{hash}}{(\code{character(1)})\cr
+    \item{\code{hash}}{(\code{character(1)})\cr
 Hash (unique identifier) for this object.}
 
-\item{\code{phash}}{(\code{character(1)})\cr
-Hash (unique identifier) for this partial object, excluding some components which are varied systematically during tuning (parameter values) or feature selection (feature names).}
-}
-\if{html}{\out{</div>}}
+    \item{\code{phash}}{(\code{character(1)})\cr
+Hash (unique identifier) for this partial object,
+excluding some components which are varied systematically
+during tuning (parameter values) or feature selection (feature names).}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-AutoTuner-new}{\code{AutoTuner$new()}}
-\item \href{#method-AutoTuner-base_learner}{\code{AutoTuner$base_learner()}}
-\item \href{#method-AutoTuner-importance}{\code{AutoTuner$importance()}}
-\item \href{#method-AutoTuner-selected_features}{\code{AutoTuner$selected_features()}}
-\item \href{#method-AutoTuner-oob_error}{\code{AutoTuner$oob_error()}}
-\item \href{#method-AutoTuner-loglik}{\code{AutoTuner$loglik()}}
-\item \href{#method-AutoTuner-print}{\code{AutoTuner$print()}}
-\item \href{#method-AutoTuner-marshal}{\code{AutoTuner$marshal()}}
-\item \href{#method-AutoTuner-unmarshal}{\code{AutoTuner$unmarshal()}}
-\item \href{#method-AutoTuner-marshaled}{\code{AutoTuner$marshaled()}}
-\item \href{#method-AutoTuner-clone}{\code{AutoTuner$clone()}}
+  \itemize{
+    \item \href{#method-AutoTuner-initialize}{\code{AutoTuner$new()}}
+    \item \href{#method-AutoTuner-base_learner}{\code{AutoTuner$base_learner()}}
+    \item \href{#method-AutoTuner-importance}{\code{AutoTuner$importance()}}
+    \item \href{#method-AutoTuner-selected_features}{\code{AutoTuner$selected_features()}}
+    \item \href{#method-AutoTuner-oob_error}{\code{AutoTuner$oob_error()}}
+    \item \href{#method-AutoTuner-loglik}{\code{AutoTuner$loglik()}}
+    \item \href{#method-AutoTuner-print}{\code{AutoTuner$print()}}
+    \item \href{#method-AutoTuner-marshal}{\code{AutoTuner$marshal()}}
+    \item \href{#method-AutoTuner-unmarshal}{\code{AutoTuner$unmarshal()}}
+    \item \href{#method-AutoTuner-marshaled}{\code{AutoTuner$marshaled()}}
+    \item \href{#method-AutoTuner-clone}{\code{AutoTuner$clone()}}
+  }
 }
-}
-\if{html}{\out{
-<details><summary>Inherited methods</summary>
+\if{html}{\out{<details><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="configure"><a href='../../mlr3/html/Learner.html#method-Learner-configure'><code>mlr3::Learner$configure()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="encapsulate"><a href='../../mlr3/html/Learner.html#method-Learner-encapsulate'><code>mlr3::Learner$encapsulate()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="format"><a href='../../mlr3/html/Learner.html#method-Learner-format'><code>mlr3::Learner$format()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="help"><a href='../../mlr3/html/Learner.html#method-Learner-help'><code>mlr3::Learner$help()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="predict"><a href='../../mlr3/html/Learner.html#method-Learner-predict'><code>mlr3::Learner$predict()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="predict_newdata"><a href='../../mlr3/html/Learner.html#method-Learner-predict_newdata'><code>mlr3::Learner$predict_newdata()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="reset"><a href='../../mlr3/html/Learner.html#method-Learner-reset'><code>mlr3::Learner$reset()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="train"><a href='../../mlr3/html/Learner.html#method-Learner-train'><code>mlr3::Learner$train()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="configure"><a href='../../mlr3/html/Learner.html#method-Learner-configure'><code>mlr3::Learner$configure()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="encapsulate"><a href='../../mlr3/html/Learner.html#method-Learner-encapsulate'><code>mlr3::Learner$encapsulate()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="format"><a href='../../mlr3/html/Learner.html#method-Learner-format'><code>mlr3::Learner$format()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="help"><a href='../../mlr3/html/Learner.html#method-Learner-help'><code>mlr3::Learner$help()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="predict"><a href='../../mlr3/html/Learner.html#method-Learner-predict'><code>mlr3::Learner$predict()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="predict_newdata"><a href='../../mlr3/html/Learner.html#method-Learner-predict_newdata'><code>mlr3::Learner$predict_newdata()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="reset"><a href='../../mlr3/html/Learner.html#method-Learner-reset'><code>mlr3::Learner$reset()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="train"><a href='../../mlr3/html/Learner.html#method-Learner-train'><code>mlr3::Learner$train()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AutoTuner-new"></a>}}
-\if{latex}{\out{\hypertarget{method-AutoTuner-new}{}}}
-\subsection{Method \code{new()}}{
-Creates a new instance of this \link[R6:R6Class]{R6} class.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AutoTuner$new(
+\if{html}{\out{<a id="method-AutoTuner-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-AutoTuner-initialize}{}}}
+\subsection{\code{AutoTuner$new()}}{
+  Creates a new instance of this \link[R6:R6Class]{R6} class.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AutoTuner$new(
   tuner,
   learner,
   resampling,
@@ -230,224 +248,226 @@ Creates a new instance of this \link[R6:R6Class]{R6} class.
   callbacks = NULL,
   rush = NULL,
   id = NULL
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{tuner}}{(\link{Tuner})\cr
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{tuner}}{(\link{Tuner})\cr
 Optimization algorithm.}
-
-\item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner})\cr
+      \item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner})\cr
 Learner to tune.}
-
-\item{\code{resampling}}{(\link[mlr3:Resampling]{mlr3::Resampling})\cr
+      \item{\code{resampling}}{(\link[mlr3:Resampling]{mlr3::Resampling})\cr
 Resampling that is used to evaluate the performance of the hyperparameter configurations.
 Uninstantiated resamplings are instantiated during construction so that all configurations are evaluated on the same data splits.
 Already instantiated resamplings are kept unchanged.
 Specialized \link{Tuner} change the resampling e.g. to evaluate a hyperparameter configuration on different data splits.
 This field, however, always returns the resampling passed in construction.}
-
-\item{\code{measure}}{(\link[mlr3:Measure]{mlr3::Measure})\cr
+      \item{\code{measure}}{(\link[mlr3:Measure]{mlr3::Measure})\cr
 Measure to optimize. If \code{NULL}, default measure is used.}
-
-\item{\code{terminator}}{(\link[bbotk:Terminator]{bbotk::Terminator})\cr
+      \item{\code{terminator}}{(\link[bbotk:Terminator]{bbotk::Terminator})\cr
 Stop criterion of the tuning process.}
-
-\item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
+      \item{\code{search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
 Hyperparameter search space.
-If \code{NULL} (default), the search space is constructed from the \link[paradox:to_tune]{paradox::TuneToken} of the learner's parameter set (learner$param_set).
+If \code{NULL} (default), the search space is constructed from the \link[paradox:TuneToken]{paradox::TuneToken} of the learner's parameter set (learner$param_set).
 When using \code{to_tune()} tokens, dependencies for hierarchical search spaces are automatically handled.}
-
-\item{\code{store_tuning_instance}}{(\code{logical(1)})\cr
+      \item{\code{store_tuning_instance}}{(\code{logical(1)})\cr
 If \code{TRUE} (default), stores the internally created \link{TuningInstanceBatchSingleCrit} with all intermediate results in slot \verb{$tuning_instance}.}
-
-\item{\code{store_benchmark_result}}{(\code{logical(1)})\cr
+      \item{\code{store_benchmark_result}}{(\code{logical(1)})\cr
 If \code{TRUE} (default), store resample result of evaluated hyperparameter
 configurations in archive as \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}.}
-
-\item{\code{store_models}}{(\code{logical(1)})\cr
+      \item{\code{store_models}}{(\code{logical(1)})\cr
 If \code{TRUE}, fitted models are stored in the benchmark result
 (\code{archive$benchmark_result}). If \code{store_benchmark_result = FALSE}, models
 are only stored temporarily and not accessible after the tuning. This
 combination is needed for measures that require a model.}
-
-\item{\code{check_values}}{(\code{logical(1)})\cr
+      \item{\code{check_values}}{(\code{logical(1)})\cr
 If \code{TRUE}, hyperparameter values are checked before evaluation and
 performance scores after. If \code{FALSE} (default), values are unchecked but
 computational overhead is reduced.}
-
-\item{\code{callbacks}}{(list of \link[mlr3misc:Callback]{mlr3misc::Callback})\cr
+      \item{\code{callbacks}}{(list of \link[mlr3misc:Callback]{mlr3misc::Callback})\cr
 List of callbacks.}
-
-\item{\code{rush}}{(\code{Rush})\cr
+      \item{\code{rush}}{(\code{Rush})\cr
 If a rush instance is supplied, the tuning runs without batches.}
-
-\item{\code{id}}{(\code{character(1)})\cr
+      \item{\code{id}}{(\code{character(1)})\cr
 Identifier for the new instance.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
-\if{html}{\out{</div>}}
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AutoTuner-base_learner"></a>}}
 \if{latex}{\out{\hypertarget{method-AutoTuner-base_learner}{}}}
-\subsection{Method \code{base_learner()}}{
-Extracts the base learner from nested learner objects like \code{GraphLearner} in \CRANpkg{mlr3pipelines}.
+\subsection{\code{AutoTuner$base_learner()}}{
+  Extracts the base learner from nested learner objects like \code{GraphLearner} in \CRANpkg{mlr3pipelines}.
 If \code{recursive = 0}, the (tuned) learner is returned.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AutoTuner$base_learner(recursive = Inf)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AutoTuner$base_learner(recursive = Inf)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{recursive}}{(\code{integer(1)})\cr
+Depth of recursion for multiple nested objects.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    \link[mlr3:Learner]{mlr3::Learner}.
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{recursive}}{(\code{integer(1)})\cr
-Depth of recursion for multiple nested objects.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-\link[mlr3:Learner]{mlr3::Learner}.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AutoTuner-importance"></a>}}
 \if{latex}{\out{\hypertarget{method-AutoTuner-importance}{}}}
-\subsection{Method \code{importance()}}{
-The importance scores of the final model.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AutoTuner$importance()}\if{html}{\out{</div>}}
+\subsection{\code{AutoTuner$importance()}}{
+  The importance scores of the final model.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AutoTuner$importance()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    Named \code{numeric()}.
+  }
 }
 
-\subsection{Returns}{
-Named \code{numeric()}.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AutoTuner-selected_features"></a>}}
 \if{latex}{\out{\hypertarget{method-AutoTuner-selected_features}{}}}
-\subsection{Method \code{selected_features()}}{
-The selected features of the final model.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AutoTuner$selected_features()}\if{html}{\out{</div>}}
+\subsection{\code{AutoTuner$selected_features()}}{
+  The selected features of the final model.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AutoTuner$selected_features()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    \code{character()}.
+  }
 }
 
-\subsection{Returns}{
-\code{character()}.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AutoTuner-oob_error"></a>}}
 \if{latex}{\out{\hypertarget{method-AutoTuner-oob_error}{}}}
-\subsection{Method \code{oob_error()}}{
-The out-of-bag error of the final model.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AutoTuner$oob_error()}\if{html}{\out{</div>}}
+\subsection{\code{AutoTuner$oob_error()}}{
+  The out-of-bag error of the final model.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AutoTuner$oob_error()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    \code{numeric(1)}.
+  }
 }
 
-\subsection{Returns}{
-\code{numeric(1)}.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AutoTuner-loglik"></a>}}
 \if{latex}{\out{\hypertarget{method-AutoTuner-loglik}{}}}
-\subsection{Method \code{loglik()}}{
-The log-likelihood of the final model.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AutoTuner$loglik()}\if{html}{\out{</div>}}
+\subsection{\code{AutoTuner$loglik()}}{
+  The log-likelihood of the final model.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AutoTuner$loglik()}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    \code{logLik}.
+Printer.
+  }
 }
 
-\subsection{Returns}{
-\code{logLik}.
-Printer.
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AutoTuner-print"></a>}}
 \if{latex}{\out{\hypertarget{method-AutoTuner-print}{}}}
-\subsection{Method \code{print()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AutoTuner$print()}\if{html}{\out{</div>}}
+\subsection{\code{AutoTuner$print()}}{
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AutoTuner$print()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{(ignored).}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AutoTuner-marshal"></a>}}
 \if{latex}{\out{\hypertarget{method-AutoTuner-marshal}{}}}
-\subsection{Method \code{marshal()}}{
-Marshal the learner.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AutoTuner$marshal(...)}\if{html}{\out{</div>}}
+\subsection{\code{AutoTuner$marshal()}}{
+  Marshal the learner.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AutoTuner$marshal(...)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{...}}{(any)\cr
+Additional parameters.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    self
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{(any)\cr
-Additional parameters.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-self
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AutoTuner-unmarshal"></a>}}
 \if{latex}{\out{\hypertarget{method-AutoTuner-unmarshal}{}}}
-\subsection{Method \code{unmarshal()}}{
-Unmarshal the learner.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AutoTuner$unmarshal(...)}\if{html}{\out{</div>}}
+\subsection{\code{AutoTuner$unmarshal()}}{
+  Unmarshal the learner.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AutoTuner$unmarshal(...)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{...}}{(any)\cr
+Additional parameters.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    self
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{...}}{(any)\cr
-Additional parameters.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-self
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AutoTuner-marshaled"></a>}}
 \if{latex}{\out{\hypertarget{method-AutoTuner-marshaled}{}}}
-\subsection{Method \code{marshaled()}}{
-Whether the learner is marshaled.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AutoTuner$marshaled()}\if{html}{\out{</div>}}
+\subsection{\code{AutoTuner$marshaled()}}{
+  Whether the learner is marshaled.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AutoTuner$marshaled()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-AutoTuner-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-AutoTuner-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{AutoTuner$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{AutoTuner$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{AutoTuner$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }
