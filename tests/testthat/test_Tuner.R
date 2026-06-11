@@ -57,7 +57,7 @@ test_that("we get a result when some subordinate params are not fulfilled", {
   expect_equal(inst$result_x_domain, inst$result_learner_param_vals)
 })
 
-test_that("print method workds", {
+test_that("print method works", {
   skip_if_not_installed("GenSA")
 
   param_set = ps(p1 = p_lgl())
