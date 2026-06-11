@@ -358,21 +358,23 @@ tuner$optimize(instance)
 #>           cp learner_param_vals  x_domain classif.ce time_train
 #>        <num>             <list>    <list>      <num>      <num>
 #> 1: -2.565382          <list[2]> <list[1]> 0.09583016      0.003
+#> 2: -3.080830          <list[2]> <list[1]> 0.09583016      0.003
 
 # Optimal hyperparameter configurations
 instance$result
 #>           cp learner_param_vals  x_domain classif.ce time_train
 #>        <num>             <list>    <list>      <num>      <num>
 #> 1: -2.565382          <list[2]> <list[1]> 0.09583016      0.003
+#> 2: -3.080830          <list[2]> <list[1]> 0.09583016      0.003
 
 # Inspect all evaluated configurations
 as.data.table(instance$archive)
 #>           cp classif.ce  time_train runtime_learners           timestamp
 #>        <num>      <num>       <num>            <num>              <POSc>
-#> 1: -3.259804 0.09583016 0.003666667            0.020 2026-06-11 06:35:14
-#> 2: -3.759791 0.09583016 0.003666667            0.020 2026-06-11 06:35:14
-#> 3: -2.565382 0.09583016 0.003000000            0.018 2026-06-11 06:35:14
-#> 4: -3.080830 0.09583016 0.003666667            0.020 2026-06-11 06:35:14
+#> 1: -3.259804 0.09583016 0.003333333            0.019 2026-06-11 09:54:40
+#> 2: -3.759791 0.09583016 0.003666667            0.020 2026-06-11 09:54:40
+#> 3: -2.565382 0.09583016 0.003000000            0.018 2026-06-11 09:54:40
+#> 4: -3.080830 0.09583016 0.003000000            0.018 2026-06-11 09:54:40
 #>    warnings errors  x_domain batch_nr  resample_result
 #>       <int>  <int>    <list>    <int>           <list>
 #> 1:        0      0 <list[1]>        1 <ResampleResult>
