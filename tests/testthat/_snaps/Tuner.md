@@ -1,4 +1,4 @@
-# print method workds
+# print method works
 
     Code
       tuner
