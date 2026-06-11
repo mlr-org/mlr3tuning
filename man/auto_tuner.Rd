@@ -52,7 +52,7 @@ Stop criterion of the tuning process.}
 
 \item{search_space}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
 Hyperparameter search space.
-If \code{NULL} (default), the search space is constructed from the \link[paradox:to_tune]{paradox::TuneToken} of the learner's parameter set (learner$param_set).
+If \code{NULL} (default), the search space is constructed from the \link[paradox:TuneToken]{paradox::TuneToken} of the learner's parameter set (learner$param_set).
 When using \code{to_tune()} tokens, dependencies for hierarchical search spaces are automatically handled.}
 
 \item{store_tuning_instance}{(\code{logical(1)})\cr
@@ -86,15 +86,19 @@ Identifier for the new instance.}
 \link{AutoTuner}.
 }
 \description{
-The \link{AutoTuner} wraps a \link[mlr3:Learner]{mlr3::Learner} and augments it with an automatic tuning process for a given set of hyperparameters.
+The \link{AutoTuner} wraps a \link[mlr3:Learner]{mlr3::Learner}
+and augments it with an automatic tuning process for a given set of hyperparameters.
 The \code{\link[=auto_tuner]{auto_tuner()}} function creates an \link{AutoTuner} object.
 }
 \details{
-The \link{AutoTuner} is a \link[mlr3:Learner]{mlr3::Learner} which wraps another \link[mlr3:Learner]{mlr3::Learner} and performs the following steps during \verb{$train()}:
+The \link{AutoTuner} is a \link[mlr3:Learner]{mlr3::Learner} which wraps another \link[mlr3:Learner]{mlr3::Learner}
+and performs the following steps during \verb{$train()}:
 \enumerate{
 \item The hyperparameters of the wrapped (inner) learner are trained on the training data via resampling.
-The tuning can be specified by providing a \link{Tuner}, a \link[bbotk:Terminator]{bbotk::Terminator}, a search space as \link[paradox:ParamSet]{paradox::ParamSet}, a \link[mlr3:Resampling]{mlr3::Resampling} and a \link[mlr3:Measure]{mlr3::Measure}.
-\item The best found hyperparameter configuration is set as hyperparameters for the wrapped (inner) learner stored in \code{at$learner}.
+The tuning can be specified by providing a \link{Tuner}, a \link[bbotk:Terminator]{bbotk::Terminator},
+a search space as \link[paradox:ParamSet]{paradox::ParamSet}, a \link[mlr3:Resampling]{mlr3::Resampling} and a \link[mlr3:Measure]{mlr3::Measure}.
+\item The best found hyperparameter configuration is set as hyperparameters
+for the wrapped (inner) learner stored in \code{at$learner}.
 Access the tuned hyperparameters via \code{at$tuning_result}.
 \item A final model is fit on the complete training data using the now parametrized wrapped learner.
 The respective model is available via field \code{at$learner$model}.
@@ -122,34 +126,46 @@ The default measure depends on the task type.\tabular{lll}{
 
 There are several sections about hyperparameter optimization in the \href{https://mlr3book.mlr-org.com}{mlr3book}.
 \itemize{
-\item Getting started with \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html}{hyperparameter optimization}.
+\item Getting started with
+\href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html}{hyperparameter optimization}.
 \item An overview of all tuners can be found on our \href{https://mlr-org.com/tuners.html}{website}.
-\item \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-model-tuning}{Tune} a support vector machine on the Sonar data set.
+\item \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-model-tuning}{Tune}
+a support vector machine on the Sonar data set.
 \item Learn about \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-defining-search-spaces}{tuning spaces}.
 \item Estimate the model performance with \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-nested-resampling}{nested resampling}.
 \item Learn about \href{https://mlr3book.mlr-org.com/chapters/chapter5/advanced_tuning_methods_and_black_box_optimization.html#sec-multi-metrics-tuning}{multi-objective optimization}.
-\item Simultaneously optimize hyperparameters and use \href{https://mlr3book.mlr-org.com/chapters/chapter15/predsets_valid_inttune.html}{early stopping} with XGBoost.
-\item \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-autotuner}{Automate} the tuning.
+\item Simultaneously optimize hyperparameters and use
+\href{https://mlr3book.mlr-org.com/chapters/chapter15/predsets_valid_inttune.html}{early stopping} with XGBoost.
+\item \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-autotuner}{Automate}
+the tuning.
 }
 
-The \href{https://mlr-org.com/gallery-all-optimization.html}{gallery} features a collection of case studies and demos about optimization.
+The \href{https://mlr-org.com/gallery-all-optimization.html}{gallery} features a collection of case studies and demos
+about optimization.
 \itemize{
 \item Learn more advanced methods with the \href{https://mlr-org.com/gallery/series/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/}{Practical Tuning Series}.
 \item Learn about \href{https://mlr-org.com/gallery/optimization/2023-01-16-hotstart/}{hotstarting} models.
-\item Run the \href{https://mlr-org.com/gallery/optimization/2023-01-31-default-configuration/}{default hyperparameter configuration} of learners as a baseline.
-\item Use the \href{https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/}{Hyperband} optimizer with different budget parameters.
+\item Run the
+\href{https://mlr-org.com/gallery/optimization/2023-01-31-default-configuration/}{default hyperparameter configuration}
+of learners as a baseline.
+\item Use the \href{https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/}{Hyperband} optimizer with different
+budget parameters.
 }
 
-The \href{https://cheatsheets.mlr-org.com/mlr3tuning.pdf}{cheatsheet} summarizes the most important functions of mlr3tuning.
+The \href{https://cheatsheets.mlr-org.com/mlr3tuning.pdf}{cheatsheet} summarizes
+the most important functions of mlr3tuning.
 }
 
 \section{Nested Resampling}{
 
 Nested resampling is performed by passing an \link{AutoTuner} to \code{\link[mlr3:resample]{mlr3::resample()}} or \code{\link[mlr3:benchmark]{mlr3::benchmark()}}.
-To access the inner resampling results, set \code{store_tuning_instance = TRUE} and execute \code{\link[mlr3:resample]{mlr3::resample()}} or \code{\link[mlr3:benchmark]{mlr3::benchmark()}} with \code{store_models = TRUE} (see examples).
-The \link[mlr3:Resampling]{mlr3::Resampling} passed to the \link{AutoTuner} is meant to be the inner resampling, operating on the training set of an arbitrary outer resampling.
+To access the inner resampling results, set \code{store_tuning_instance = TRUE} and execute \code{\link[mlr3:resample]{mlr3::resample()}} or
+\code{\link[mlr3:benchmark]{mlr3::benchmark()}} with \code{store_models = TRUE} (see examples).
+The \link[mlr3:Resampling]{mlr3::Resampling} passed to the \link{AutoTuner} is meant to be the inner resampling,
+operating on the training set of an arbitrary outer resampling.
 For this reason, the inner resampling should be not instantiated.
-If an instantiated resampling is passed, the \link{AutoTuner} fails when a row id of the inner resampling is not present in the training set of the outer resampling.
+If an instantiated resampling is passed, the \link{AutoTuner} fails when a row id of the inner resampling is not present
+in the training set of the outer resampling.
 }
 
 \examples{

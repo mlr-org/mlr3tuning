@@ -11,7 +11,7 @@ Hansen N (2016).
 }
 \description{
 Subclass for Covariance Matrix Adaptation Evolution Strategy (CMA-ES).
-Calls \code{\link[adagio:cmaes]{adagio::pureCMAES()}} from package \CRANpkg{adagio}.
+Calls \code{\link[adagio:pureCMAES]{adagio::pureCMAES()}} from package \CRANpkg{adagio}.
 }
 \section{Dictionary}{
 
@@ -29,8 +29,9 @@ Create \code{random} start values or based on \code{center} of search space?
 In the latter case, it is the center of the parameters before a trafo is applied.}
 }
 
-For the meaning of the control parameters, see \code{\link[adagio:cmaes]{adagio::pureCMAES()}}.
-Note that we have removed all control parameters which refer to the termination of the algorithm and where our terminators allow to obtain the same behavior.
+For the meaning of the control parameters, see \code{\link[adagio:pureCMAES]{adagio::pureCMAES()}}.
+Note that we have removed all control parameters which refer to the termination of the algorithm and where our
+terminators allow to obtain the same behavior.
 }
 
 \section{Progress Bars}{
@@ -50,7 +51,7 @@ Use \code{lgr::get_logger("bbotk")} to access and control the logger.
 
 \section{Optimizer}{
 
-This \link{Tuner} is based on \link[bbotk:mlr_optimizers_cmaes]{bbotk::OptimizerBatchCmaes} which can be applied on any black box optimization problem.
+This \link{Tuner} is based on \link[bbotk:OptimizerBatchCmaes]{bbotk::OptimizerBatchCmaes} which can be applied on any black box optimization problem.
 See also the documentation of \href{https://bbotk.mlr-org.com/}{bbotk}.
 }
 
@@ -58,25 +59,34 @@ See also the documentation of \href{https://bbotk.mlr-org.com/}{bbotk}.
 
 There are several sections about hyperparameter optimization in the \href{https://mlr3book.mlr-org.com}{mlr3book}.
 \itemize{
-\item Getting started with \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html}{hyperparameter optimization}.
+\item Getting started with
+\href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html}{hyperparameter optimization}.
 \item An overview of all tuners can be found on our \href{https://mlr-org.com/tuners.html}{website}.
-\item \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-model-tuning}{Tune} a support vector machine on the Sonar data set.
+\item \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-model-tuning}{Tune}
+a support vector machine on the Sonar data set.
 \item Learn about \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-defining-search-spaces}{tuning spaces}.
 \item Estimate the model performance with \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-nested-resampling}{nested resampling}.
 \item Learn about \href{https://mlr3book.mlr-org.com/chapters/chapter5/advanced_tuning_methods_and_black_box_optimization.html#sec-multi-metrics-tuning}{multi-objective optimization}.
-\item Simultaneously optimize hyperparameters and use \href{https://mlr3book.mlr-org.com/chapters/chapter15/predsets_valid_inttune.html}{early stopping} with XGBoost.
-\item \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-autotuner}{Automate} the tuning.
+\item Simultaneously optimize hyperparameters and use
+\href{https://mlr3book.mlr-org.com/chapters/chapter15/predsets_valid_inttune.html}{early stopping} with XGBoost.
+\item \href{https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-autotuner}{Automate}
+the tuning.
 }
 
-The \href{https://mlr-org.com/gallery-all-optimization.html}{gallery} features a collection of case studies and demos about optimization.
+The \href{https://mlr-org.com/gallery-all-optimization.html}{gallery} features a collection of case studies and demos
+about optimization.
 \itemize{
 \item Learn more advanced methods with the \href{https://mlr-org.com/gallery/series/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/}{Practical Tuning Series}.
 \item Learn about \href{https://mlr-org.com/gallery/optimization/2023-01-16-hotstart/}{hotstarting} models.
-\item Run the \href{https://mlr-org.com/gallery/optimization/2023-01-31-default-configuration/}{default hyperparameter configuration} of learners as a baseline.
-\item Use the \href{https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/}{Hyperband} optimizer with different budget parameters.
+\item Run the
+\href{https://mlr-org.com/gallery/optimization/2023-01-31-default-configuration/}{default hyperparameter configuration}
+of learners as a baseline.
+\item Use the \href{https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/}{Hyperband} optimizer with different
+budget parameters.
 }
 
-The \href{https://cheatsheets.mlr-org.com/mlr3tuning.pdf}{cheatsheet} summarizes the most important functions of mlr3tuning.
+The \href{https://cheatsheets.mlr-org.com/mlr3tuning.pdf}{cheatsheet} summarizes
+the most important functions of mlr3tuning.
 }
 
 \examples{
@@ -112,7 +122,7 @@ learner$train(tsk("penguins"))
 }
 }
 \seealso{
-Other Tuner: 
+Other Tuner:
 \code{\link{Tuner}},
 \code{\link{mlr_tuners}},
 \code{\link{mlr_tuners_design_points}},
@@ -125,50 +135,52 @@ Other Tuner:
 }
 \concept{Tuner}
 \section{Super classes}{
-\code{\link[mlr3tuning:Tuner]{mlr3tuning::Tuner}} -> \code{\link[mlr3tuning:TunerBatch]{mlr3tuning::TunerBatch}} -> \code{\link[mlr3tuning:TunerBatchFromOptimizerBatch]{mlr3tuning::TunerBatchFromOptimizerBatch}} -> \code{TunerBatchCmaes}
+\code{\link[mlr3tuning:Tuner]{Tuner}} -> \code{\link[mlr3tuning:TunerBatch]{TunerBatch}} -> \code{\link[mlr3tuning:TunerBatchFromOptimizerBatch]{TunerBatchFromOptimizerBatch}} -> \code{TunerBatchCmaes}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-TunerBatchCmaes-new}{\code{TunerBatchCmaes$new()}}
-\item \href{#method-TunerBatchCmaes-clone}{\code{TunerBatchCmaes$clone()}}
+  \itemize{
+    \item \href{#method-TunerBatchCmaes-initialize}{\code{TunerBatchCmaes$new()}}
+    \item \href{#method-TunerBatchCmaes-clone}{\code{TunerBatchCmaes$clone()}}
+  }
 }
-}
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="format"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-format'><code>mlr3tuning::Tuner$format()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="help"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-help'><code>mlr3tuning::Tuner$help()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="print"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-print'><code>mlr3tuning::Tuner$print()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="TunerBatchFromOptimizerBatch" data-id="optimize"><a href='../../mlr3tuning/html/TunerBatchFromOptimizerBatch.html#method-TunerBatchFromOptimizerBatch-optimize'><code>mlr3tuning::TunerBatchFromOptimizerBatch$optimize()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="format"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-format'><code>Tuner$format()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="help"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-help'><code>Tuner$help()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="print"><a href='../../mlr3tuning/html/Tuner.html#method-Tuner-print'><code>Tuner$print()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="TunerBatchFromOptimizerBatch" data-id="optimize"><a href='../../mlr3tuning/html/TunerBatchFromOptimizerBatch.html#method-TunerBatchFromOptimizerBatch-optimize'><code>TunerBatchFromOptimizerBatch$optimize()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TunerBatchCmaes-new"></a>}}
-\if{latex}{\out{\hypertarget{method-TunerBatchCmaes-new}{}}}
-\subsection{Method \code{new()}}{
-Creates a new instance of this \link[R6:R6Class]{R6} class.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TunerBatchCmaes$new()}\if{html}{\out{</div>}}
+\if{html}{\out{<a id="method-TunerBatchCmaes-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-TunerBatchCmaes-initialize}{}}}
+\subsection{\code{TunerBatchCmaes$new()}}{
+  Creates a new instance of this \link[R6:R6Class]{R6} class.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{TunerBatchCmaes$new()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TunerBatchCmaes-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-TunerBatchCmaes-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TunerBatchCmaes$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{TunerBatchCmaes$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{TunerBatchCmaes$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

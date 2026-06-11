@@ -29,7 +29,8 @@ Set to \code{NULL} if no column should be excluded.}
 Extract inner tuning archives of nested resampling.
 Implemented for \link[mlr3:ResampleResult]{mlr3::ResampleResult} and \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}.
 The function iterates over the \link{AutoTuner} objects and binds the tuning archives to a \code{\link[data.table:data.table]{data.table::data.table()}}.
-\link{AutoTuner} must be initialized with \code{store_tuning_instance = TRUE} and \code{\link[mlr3:resample]{mlr3::resample()}} or \code{\link[mlr3:benchmark]{mlr3::benchmark()}} must be called with \code{store_models = TRUE}.
+\link{AutoTuner} must be initialized with \code{store_tuning_instance = TRUE} and \code{\link[mlr3:resample]{mlr3::resample()}} or \code{\link[mlr3:benchmark]{mlr3::benchmark()}}
+must be called with \code{store_models = TRUE}.
 }
 \section{Data structure}{
 

@@ -15,55 +15,55 @@ Changes to \verb{$instance} and \verb{$optimizer} in the stages executed on the 
 \code{\link[mlr3misc:Context]{mlr3misc::Context}} -> \code{\link[bbotk:ContextAsync]{bbotk::ContextAsync}} -> \code{ContextAsyncTuning}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{xs_learner}}{(list())\cr
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{xs_learner}}{(list())\cr
 The hyperparameter configuration currently evaluated.
 Contains the values on the learner scale i.e. transformations are applied.}
 
-\item{\code{resample_result}}{(\link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult})\cr
+    \item{\code{resample_result}}{(\link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult})\cr
 The resample result of the hyperparameter configuration currently evaluated.}
 
-\item{\code{aggregated_performance}}{(\code{list()})\cr
+    \item{\code{aggregated_performance}}{(\code{list()})\cr
 Aggregated performance scores and training time of the evaluated hyperparameter configuration.
 This list is passed to the archive.
 A callback can add additional elements which are also written to the archive.}
 
-\item{\code{result_learner_param_vals}}{(list())\cr
+    \item{\code{result_learner_param_vals}}{(list())\cr
 The learner parameter values passed to \code{instance$assign_result()}.}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-ContextAsyncTuning-clone}{\code{ContextAsyncTuning$clone()}}
+  \itemize{
+    \item \href{#method-ContextAsyncTuning-clone}{\code{ContextAsyncTuning$clone()}}
+  }
 }
-}
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="mlr3misc" data-topic="Context" data-id="format"><a href='../../mlr3misc/html/Context.html#method-Context-format'><code>mlr3misc::Context$format()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3misc" data-topic="Context" data-id="print"><a href='../../mlr3misc/html/Context.html#method-Context-print'><code>mlr3misc::Context$print()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="bbotk" data-topic="ContextAsync" data-id="initialize"><a href='../../bbotk/html/ContextAsync.html#method-ContextAsync-initialize'><code>bbotk::ContextAsync$initialize()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3misc" data-topic="Context" data-id="format"><a href='../../mlr3misc/html/Context.html#method-Context-format'><code>mlr3misc::Context$format()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3misc" data-topic="Context" data-id="print"><a href='../../mlr3misc/html/Context.html#method-Context-print'><code>mlr3misc::Context$print()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="ContextAsync" data-id="initialize"><a href='../../bbotk/html/ContextAsync.html#method-ContextAsync-initialize'><code>bbotk::ContextAsync$initialize()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ContextAsyncTuning-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-ContextAsyncTuning-clone}{}}}
-\subsection{Method \code{clone()}}{
-The objects of this class are cloneable with this method.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{ContextAsyncTuning$clone(deep = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{ContextAsyncTuning$clone()}}{
+  The objects of this class are cloneable with this method.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{ContextAsyncTuning$clone(deep = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{deep}}{Whether to make a deep clone.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{deep}}{Whether to make a deep clone.}
-}
-\if{html}{\out{</div>}}
-}
-}
 }

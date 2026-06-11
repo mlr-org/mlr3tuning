@@ -4,7 +4,8 @@
 \alias{mlr3tuning.async_freeze_archive}
 \title{Freeze Archive Callback}
 \description{
-This \link{CallbackAsyncTuning} freezes the \link{ArchiveAsyncTuning} to \link{ArchiveAsyncTuningFrozen} after the optimization has finished.
+This \link{CallbackAsyncTuning} freezes the \link{ArchiveAsyncTuning} to \link{ArchiveAsyncTuningFrozen} after the optimization
+has finished.
 }
 \examples{
 clbk("mlr3tuning.async_freeze_archive")
