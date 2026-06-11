@@ -86,7 +86,7 @@ Inherited methods
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `CallbackBatchTuning$clone()`
 
 The objects of this class are cloneable with this method.
 

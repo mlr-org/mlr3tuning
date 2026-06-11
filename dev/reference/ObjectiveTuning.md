@@ -57,7 +57,7 @@ or
 
 ### Public methods
 
-- [`ObjectiveTuning$new()`](#method-ObjectiveTuning-new)
+- [`ObjectiveTuning$new()`](#method-ObjectiveTuning-initialize)
 
 - [`ObjectiveTuning$clone()`](#method-ObjectiveTuning-clone)
 
@@ -72,7 +72,7 @@ Inherited methods
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `ObjectiveTuning$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class.
@@ -158,7 +158,7 @@ Creates a new instance of this
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `ObjectiveTuning$clone()`
 
 The objects of this class are cloneable with this method.
 

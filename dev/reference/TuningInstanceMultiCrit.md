@@ -14,14 +14,14 @@ around
 -\>
 [`bbotk::OptimInstanceBatchMultiCrit`](https://bbotk.mlr-org.com/reference/OptimInstanceBatchMultiCrit.html)
 -\>
-[`mlr3tuning::TuningInstanceBatchMultiCrit`](https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceBatchMultiCrit.md)
+[`TuningInstanceBatchMultiCrit`](https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceBatchMultiCrit.md)
 -\> `TuningInstanceMultiCrit`
 
 ## Methods
 
 ### Public methods
 
-- [`TuningInstanceMultiCrit$new()`](#method-TuningInstanceMultiCrit-new)
+- [`TuningInstanceMultiCrit$new()`](#method-TuningInstanceMultiCrit-initialize)
 
 - [`TuningInstanceMultiCrit$clone()`](#method-TuningInstanceMultiCrit-clone)
 
@@ -32,11 +32,11 @@ Inherited methods
 - [`bbotk::OptimInstance$print()`](https://bbotk.mlr-org.com/reference/OptimInstance.html#method-print)
 - [`bbotk::OptimInstanceBatch$eval_batch()`](https://bbotk.mlr-org.com/reference/OptimInstanceBatch.html#method-eval_batch)
 - [`bbotk::OptimInstanceBatch$objective_function()`](https://bbotk.mlr-org.com/reference/OptimInstanceBatch.html#method-objective_function)
-- [`mlr3tuning::TuningInstanceBatchMultiCrit$assign_result()`](https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceBatchMultiCrit.html#method-assign_result)
+- [`TuningInstanceBatchMultiCrit$assign_result()`](https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceBatchMultiCrit.html#method-assign_result)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `TuningInstanceMultiCrit$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class.
@@ -133,7 +133,7 @@ Creates a new instance of this
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `TuningInstanceMultiCrit$clone()`
 
 The objects of this class are cloneable with this method.
 

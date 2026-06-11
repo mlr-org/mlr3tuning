@@ -171,7 +171,7 @@ mlr3tuning is extended by the following packages.
 
 ### Public methods
 
-- [`TuningInstanceAsyncSingleCrit$new()`](#method-TuningInstanceAsyncSingleCrit-new)
+- [`TuningInstanceAsyncSingleCrit$new()`](#method-TuningInstanceAsyncSingleCrit-initialize)
 
 - [`TuningInstanceAsyncSingleCrit$assign_result()`](#method-TuningInstanceAsyncSingleCrit-assign_result)
 
@@ -186,7 +186,7 @@ Inherited methods
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `TuningInstanceAsyncSingleCrit$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class.
@@ -288,7 +288,7 @@ Creates a new instance of this
 
 ------------------------------------------------------------------------
 
-### Method `assign_result()`
+### `TuningInstanceAsyncSingleCrit$assign_result()`
 
 The
 [TunerAsync](https://mlr3tuning.mlr-org.com/dev/reference/TunerAsync.md)
@@ -338,7 +338,7 @@ For internal use.
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `TuningInstanceAsyncSingleCrit$clone()`
 
 The objects of this class are cloneable with this method.
 

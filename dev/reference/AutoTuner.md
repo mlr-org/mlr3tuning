@@ -201,7 +201,7 @@ summarizes the most important functions of mlr3tuning.
 
 ### Public methods
 
-- [`AutoTuner$new()`](#method-AutoTuner-new)
+- [`AutoTuner$new()`](#method-AutoTuner-initialize)
 
 - [`AutoTuner$base_learner()`](#method-AutoTuner-base_learner)
 
@@ -236,7 +236,7 @@ Inherited methods
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `AutoTuner$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class.
@@ -352,7 +352,7 @@ Creates a new instance of this
 
 ------------------------------------------------------------------------
 
-### Method `base_learner()`
+### `AutoTuner$base_learner()`
 
 Extracts the base learner from nested learner objects like
 `GraphLearner` in
@@ -376,7 +376,7 @@ Extracts the base learner from nested learner objects like
 
 ------------------------------------------------------------------------
 
-### Method `importance()`
+### `AutoTuner$importance()`
 
 The importance scores of the final model.
 
@@ -390,7 +390,7 @@ Named [`numeric()`](https://rdrr.io/r/base/numeric.html).
 
 ------------------------------------------------------------------------
 
-### Method `selected_features()`
+### `AutoTuner$selected_features()`
 
 The selected features of the final model.
 
@@ -404,7 +404,7 @@ The selected features of the final model.
 
 ------------------------------------------------------------------------
 
-### Method `oob_error()`
+### `AutoTuner$oob_error()`
 
 The out-of-bag error of the final model.
 
@@ -418,7 +418,7 @@ The out-of-bag error of the final model.
 
 ------------------------------------------------------------------------
 
-### Method `loglik()`
+### `AutoTuner$loglik()`
 
 The log-likelihood of the final model.
 
@@ -432,21 +432,15 @@ The log-likelihood of the final model.
 
 ------------------------------------------------------------------------
 
-### Method [`print()`](https://rdrr.io/r/base/print.html)
+### `AutoTuner$print()`
 
 #### Usage
 
     AutoTuner$print()
 
-#### Arguments
-
-- `...`:
-
-  (ignored).
-
 ------------------------------------------------------------------------
 
-### Method `marshal()`
+### `AutoTuner$marshal()`
 
 Marshal the learner.
 
@@ -467,7 +461,7 @@ self
 
 ------------------------------------------------------------------------
 
-### Method `unmarshal()`
+### `AutoTuner$unmarshal()`
 
 Unmarshal the learner.
 
@@ -488,7 +482,7 @@ self
 
 ------------------------------------------------------------------------
 
-### Method `marshaled()`
+### `AutoTuner$marshaled()`
 
 Whether the learner is marshaled.
 
@@ -498,7 +492,7 @@ Whether the learner is marshaled.
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `AutoTuner$clone()`
 
 The objects of this class are cloneable with this method.
 

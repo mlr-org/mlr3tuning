@@ -141,7 +141,7 @@ for each hyperparameter evaluation.
 
 ### Public methods
 
-- [`TuningInstanceAsyncMultiCrit$new()`](#method-TuningInstanceAsyncMultiCrit-new)
+- [`TuningInstanceAsyncMultiCrit$new()`](#method-TuningInstanceAsyncMultiCrit-initialize)
 
 - [`TuningInstanceAsyncMultiCrit$assign_result()`](#method-TuningInstanceAsyncMultiCrit-assign_result)
 
@@ -156,7 +156,7 @@ Inherited methods
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `TuningInstanceAsyncMultiCrit$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class.
@@ -259,7 +259,7 @@ Creates a new instance of this
 
 ------------------------------------------------------------------------
 
-### Method `assign_result()`
+### `TuningInstanceAsyncMultiCrit$assign_result()`
 
 The
 [TunerAsync](https://mlr3tuning.mlr-org.com/dev/reference/TunerAsync.md)
@@ -309,7 +309,7 @@ writes the best found points and estimated performance values here
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `TuningInstanceAsyncMultiCrit$clone()`
 
 The objects of this class are cloneable with this method.
 

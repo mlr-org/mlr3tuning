@@ -60,8 +60,8 @@ summarizes the most important functions of mlr3tuning.
 
 ## Super class
 
-[`mlr3tuning::Tuner`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.md)
--\> `TunerAsync`
+[`Tuner`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.md) -\>
+`TunerAsync`
 
 ## Methods
 
@@ -73,14 +73,14 @@ summarizes the most important functions of mlr3tuning.
 
 Inherited methods
 
-- [`mlr3tuning::Tuner$format()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-format)
-- [`mlr3tuning::Tuner$help()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-help)
-- [`mlr3tuning::Tuner$initialize()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-initialize)
-- [`mlr3tuning::Tuner$print()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-print)
+- [`Tuner$format()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-format)
+- [`Tuner$help()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-help)
+- [`Tuner$initialize()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-initialize)
+- [`Tuner$print()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-print)
 
 ------------------------------------------------------------------------
 
-### Method [`optimize()`](https://rdrr.io/r/stats/optimize.html)
+### `TunerAsync$optimize()`
 
 Performs the tuning on a
 [TuningInstanceAsyncSingleCrit](https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceAsyncSingleCrit.md)
@@ -110,7 +110,7 @@ The result will be written into the instance object.
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `TunerAsync$clone()`
 
 The objects of this class are cloneable with this method.
 

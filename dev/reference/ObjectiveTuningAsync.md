@@ -11,7 +11,7 @@ or
 
 [`bbotk::Objective`](https://bbotk.mlr-org.com/reference/Objective.html)
 -\>
-[`mlr3tuning::ObjectiveTuning`](https://mlr3tuning.mlr-org.com/dev/reference/ObjectiveTuning.md)
+[`ObjectiveTuning`](https://mlr3tuning.mlr-org.com/dev/reference/ObjectiveTuning.md)
 -\> `ObjectiveTuningAsync`
 
 ## Methods
@@ -28,11 +28,11 @@ Inherited methods
 - [`bbotk::Objective$format()`](https://bbotk.mlr-org.com/reference/Objective.html#method-format)
 - [`bbotk::Objective$help()`](https://bbotk.mlr-org.com/reference/Objective.html#method-help)
 - [`bbotk::Objective$print()`](https://bbotk.mlr-org.com/reference/Objective.html#method-print)
-- [`mlr3tuning::ObjectiveTuning$initialize()`](https://mlr3tuning.mlr-org.com/dev/reference/ObjectiveTuning.html#method-initialize)
+- [`ObjectiveTuning$initialize()`](https://mlr3tuning.mlr-org.com/dev/reference/ObjectiveTuning.html#method-initialize)
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `ObjectiveTuningAsync$clone()`
 
 The objects of this class are cloneable with this method.
 

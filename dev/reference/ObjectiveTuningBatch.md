@@ -11,7 +11,7 @@ or
 
 [`bbotk::Objective`](https://bbotk.mlr-org.com/reference/Objective.html)
 -\>
-[`mlr3tuning::ObjectiveTuning`](https://mlr3tuning.mlr-org.com/dev/reference/ObjectiveTuning.md)
+[`ObjectiveTuning`](https://mlr3tuning.mlr-org.com/dev/reference/ObjectiveTuning.md)
 -\> `ObjectiveTuningBatch`
 
 ## Public fields
@@ -24,7 +24,7 @@ or
 
 ### Public methods
 
-- [`ObjectiveTuningBatch$new()`](#method-ObjectiveTuningBatch-new)
+- [`ObjectiveTuningBatch$new()`](#method-ObjectiveTuningBatch-initialize)
 
 - [`ObjectiveTuningBatch$clone()`](#method-ObjectiveTuningBatch-clone)
 
@@ -39,7 +39,7 @@ Inherited methods
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `ObjectiveTuningBatch$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class.
@@ -135,7 +135,7 @@ Creates a new instance of this
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `ObjectiveTuningBatch$clone()`
 
 The objects of this class are cloneable with this method.
 

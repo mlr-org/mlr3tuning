@@ -75,19 +75,19 @@ The hyperparameter configuration currently evaluated.
 Contains the values on the learner scale i.e. transformations are applied.</p></dd>
 
 
-<dt><code>resample_result</code></dt>
+    <dt><code>resample_result</code></dt>
 <dd><p>(<a href="https://mlr3.mlr-org.com/reference/BenchmarkResult.html" class="external-link">mlr3::BenchmarkResult</a>)<br>
 The resample result of the hyperparameter configuration currently evaluated.</p></dd>
 
 
-<dt><code>aggregated_performance</code></dt>
+    <dt><code>aggregated_performance</code></dt>
 <dd><p>(<code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code>)<br>
 Aggregated performance scores and training time of the evaluated hyperparameter configuration.
 This list is passed to the archive.
 A callback can add additional elements which are also written to the archive.</p></dd>
 
 
-<dt><code>result_learner_param_vals</code></dt>
+    <dt><code>result_learner_param_vals</code></dt>
 <dd><p>(list())<br>
 The learner parameter values passed to <code>instance$assign_result()</code>.</p></dd>
 
@@ -99,19 +99,16 @@ The learner parameter values passed to <code>instance$assign_result()</code>.</p
 
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
-
-<ul><li><p><a href="#method-ContextAsyncTuning-clone"><code>ContextAsyncTuning$clone()</code></a></p></li>
+<p></p><ul><li><p><a href="#method-ContextAsyncTuning-clone"><code>ContextAsyncTuning$clone()</code></a></p></li>
 </ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="mlr3misc" data-topic="Context" data-id="format"><a href="https://mlr3misc.mlr-org.com/reference/Context.html#method-format"><code>mlr3misc::Context$format()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3misc" data-topic="Context" data-id="print"><a href="https://mlr3misc.mlr-org.com/reference/Context.html#method-print"><code>mlr3misc::Context$print()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="bbotk" data-topic="ContextAsync" data-id="initialize"><a href="https://bbotk.mlr-org.com/reference/ContextAsync.html#method-initialize"><code>bbotk::ContextAsync$initialize()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3misc" data-topic="Context" data-id="print"><a href="https://mlr3misc.mlr-org.com/reference/Context.html#method-print"><code>mlr3misc::Context$print()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="ContextAsync" data-id="initialize"><a href="https://bbotk.mlr-org.com/reference/ContextAsync.html#method-initialize"><code>bbotk::ContextAsync$initialize()</code></a></span></li>
 </ul></details></p><hr><a id="method-ContextAsyncTuning-clone"></a><div class="section">
-<h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
+<h3 id="contextasynctuning-clone-"><code>ContextAsyncTuning$clone()</code><a class="anchor" aria-label="anchor" href="#contextasynctuning-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ContextAsyncTuning</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
@@ -121,6 +118,7 @@ The learner parameter values passed to <code>instance$assign_result()</code>.</p
 </div>
 
 </div>
+
 
     </div>
 

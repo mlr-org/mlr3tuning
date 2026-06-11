@@ -68,19 +68,28 @@
     <h2 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a></h2>
 
 
-<p>There are several sections about hyperparameter optimization in the <a href="https://mlr3book.mlr-org.com" class="external-link">mlr3book</a>.</p><ul><li><p>Getting started with <a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html" class="external-link">hyperparameter optimization</a>.</p></li>
+<p>There are several sections about hyperparameter optimization in the <a href="https://mlr3book.mlr-org.com" class="external-link">mlr3book</a>.</p><ul><li><p>Getting started with
+<a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html" class="external-link">hyperparameter optimization</a>.</p></li>
 <li><p>An overview of all tuners can be found on our <a href="https://mlr-org.com/tuners.html" class="external-link">website</a>.</p></li>
-<li><p><a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-model-tuning" class="external-link">Tune</a> a support vector machine on the Sonar data set.</p></li>
+<li><p><a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-model-tuning" class="external-link">Tune</a>
+a support vector machine on the Sonar data set.</p></li>
 <li><p>Learn about <a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-defining-search-spaces" class="external-link">tuning spaces</a>.</p></li>
 <li><p>Estimate the model performance with <a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-nested-resampling" class="external-link">nested resampling</a>.</p></li>
 <li><p>Learn about <a href="https://mlr3book.mlr-org.com/chapters/chapter5/advanced_tuning_methods_and_black_box_optimization.html#sec-multi-metrics-tuning" class="external-link">multi-objective optimization</a>.</p></li>
-<li><p>Simultaneously optimize hyperparameters and use <a href="https://mlr3book.mlr-org.com/chapters/chapter15/predsets_valid_inttune.html" class="external-link">early stopping</a> with XGBoost.</p></li>
-<li><p><a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-autotuner" class="external-link">Automate</a> the tuning.</p></li>
-</ul><p>The <a href="https://mlr-org.com/gallery-all-optimization.html" class="external-link">gallery</a> features a collection of case studies and demos about optimization.</p><ul><li><p>Learn more advanced methods with the <a href="https://mlr-org.com/gallery/series/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/" class="external-link">Practical Tuning Series</a>.</p></li>
+<li><p>Simultaneously optimize hyperparameters and use
+<a href="https://mlr3book.mlr-org.com/chapters/chapter15/predsets_valid_inttune.html" class="external-link">early stopping</a> with XGBoost.</p></li>
+<li><p><a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-autotuner" class="external-link">Automate</a>
+the tuning.</p></li>
+</ul><p>The <a href="https://mlr-org.com/gallery-all-optimization.html" class="external-link">gallery</a> features a collection of case studies and demos
+about optimization.</p><ul><li><p>Learn more advanced methods with the <a href="https://mlr-org.com/gallery/series/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/" class="external-link">Practical Tuning Series</a>.</p></li>
 <li><p>Learn about <a href="https://mlr-org.com/gallery/optimization/2023-01-16-hotstart/" class="external-link">hotstarting</a> models.</p></li>
-<li><p>Run the <a href="https://mlr-org.com/gallery/optimization/2023-01-31-default-configuration/" class="external-link">default hyperparameter configuration</a> of learners as a baseline.</p></li>
-<li><p>Use the <a href="https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/" class="external-link">Hyperband</a> optimizer with different budget parameters.</p></li>
-</ul><p>The <a href="https://cheatsheets.mlr-org.com/mlr3tuning.pdf" class="external-link">cheatsheet</a> summarizes the most important functions of mlr3tuning.</p>
+<li><p>Run the
+<a href="https://mlr-org.com/gallery/optimization/2023-01-31-default-configuration/" class="external-link">default hyperparameter configuration</a>
+of learners as a baseline.</p></li>
+<li><p>Use the <a href="https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/" class="external-link">Hyperband</a> optimizer with different
+budget parameters.</p></li>
+</ul><p>The <a href="https://cheatsheets.mlr-org.com/mlr3tuning.pdf" class="external-link">cheatsheet</a> summarizes
+the most important functions of mlr3tuning.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -112,30 +121,31 @@ Used in tables, plot and text output.</p></dd>
 Set of control parameters.</p></dd>
 
 
-<dt><code>param_classes</code></dt>
+    <dt><code>param_classes</code></dt>
 <dd><p>(<code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code>)<br>
-Supported parameter classes for learner hyperparameters that the tuner can optimize, as given in the <a href="https://paradox.mlr-org.com/reference/ParamSet.html" class="external-link">paradox::ParamSet</a> <code>$class</code> field.</p></dd>
+Supported parameter classes for learner hyperparameters that the tuner can optimize,
+as given in the <a href="https://paradox.mlr-org.com/reference/ParamSet.html" class="external-link">paradox::ParamSet</a> <code>$class</code> field.</p></dd>
 
 
-<dt><code>properties</code></dt>
+    <dt><code>properties</code></dt>
 <dd><p>(<code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code>)<br>
 Set of properties of the tuner.
 Must be a subset of <code><a href="https://mlr3.mlr-org.com/reference/mlr_reflections.html" class="external-link">mlr_reflections$tuner_properties</a></code>.</p></dd>
 
 
-<dt><code>packages</code></dt>
+    <dt><code>packages</code></dt>
 <dd><p>(<code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code>)<br>
 Set of required packages.
 Note that these packages will be loaded via <code><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace()</a></code>, and are not attached.</p></dd>
 
 
-<dt><code>label</code></dt>
+    <dt><code>label</code></dt>
 <dd><p>(<code>character(1)</code>)<br>
 Label for this object.
 Can be used in tables, plot and text output instead of the ID.</p></dd>
 
 
-<dt><code>man</code></dt>
+    <dt><code>man</code></dt>
 <dd><p>(<code>character(1)</code>)<br>
 String in the format <code>[pkg]::[topic]</code> pointing to a manual page for this object.
 The referenced help package can be opened via method <code>$help()</code>.</p></dd>
@@ -148,14 +158,13 @@ The referenced help package can be opened via method <code>$help()</code>.</p></
 
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
-
-<ul><li><p><a href="#method-Tuner-new"><code>Tuner$new()</code></a></p></li>
+<p></p><ul><li><p><a href="#method-Tuner-initialize"><code>Tuner$new()</code></a></p></li>
 <li><p><a href="#method-Tuner-format"><code>Tuner$format()</code></a></p></li>
 <li><p><a href="#method-Tuner-print"><code>Tuner$print()</code></a></p></li>
 <li><p><a href="#method-Tuner-help"><code>Tuner$help()</code></a></p></li>
 <li><p><a href="#method-Tuner-clone"><code>Tuner$clone()</code></a></p></li>
-</ul></div><p></p><hr><a id="method-Tuner-new"></a><div class="section">
-<h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
+</ul></div><p></p><hr><a id="method-Tuner-initialize"></a><div class="section">
+<h3 id="tuner-new-"><code>Tuner$new()</code><a class="anchor" aria-label="anchor" href="#tuner-new-"></a></h3>
 <p>Creates a new instance of this <a href="https://r6.r-lib.org/reference/R6Class.html" class="external-link">R6</a> class.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/Tuner.html">Tuner</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
@@ -167,44 +176,36 @@ The referenced help package can be opened via method <code>$help()</code>.</p></
 <span>  label <span class="op">=</span> <span class="cn">NA_character_</span>,</span>
 <span>  man <span class="op">=</span> <span class="cn">NA_character_</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>id</code></dt>
 <dd><p>(<code>character(1)</code>)<br>
 Identifier for the new instance.</p></dd>
 
-
-<dt><code>param_set</code></dt>
+      <dt><code>param_set</code></dt>
 <dd><p>(<a href="https://paradox.mlr-org.com/reference/ParamSet.html" class="external-link">paradox::ParamSet</a>)<br>
 Set of control parameters.</p></dd>
 
-
-<dt><code>param_classes</code></dt>
+      <dt><code>param_classes</code></dt>
 <dd><p>(<code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code>)<br>
 Supported parameter classes for learner hyperparameters that the tuner can optimize, as given in the <a href="https://paradox.mlr-org.com/reference/ParamSet.html" class="external-link">paradox::ParamSet</a> <code>$class</code> field.</p></dd>
 
-
-<dt><code>properties</code></dt>
+      <dt><code>properties</code></dt>
 <dd><p>(<code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code>)<br>
 Set of properties of the tuner.
 Must be a subset of <code><a href="https://mlr3.mlr-org.com/reference/mlr_reflections.html" class="external-link">mlr_reflections$tuner_properties</a></code>.</p></dd>
 
-
-<dt><code>packages</code></dt>
+      <dt><code>packages</code></dt>
 <dd><p>(<code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code>)<br>
 Set of required packages.
 Note that these packages will be loaded via <code><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace()</a></code>, and are not attached.</p></dd>
 
-
-<dt><code>label</code></dt>
+      <dt><code>label</code></dt>
 <dd><p>(<code>character(1)</code>)<br>
 Label for this object.
 Can be used in tables, plot and text output instead of the ID.</p></dd>
 
-
-<dt><code>man</code></dt>
+      <dt><code>man</code></dt>
 <dd><p>(<code>character(1)</code>)<br>
 String in the format <code>[pkg]::[topic]</code> pointing to a manual page for this object.
 The referenced help package can be opened via method <code>$help()</code>.</p></dd>
@@ -213,54 +214,54 @@ The referenced help package can be opened via method <code>$help()</code>.</p></
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-Tuner-format"></a><div class="section">
-<h3 id="method-format-">Method <code><a href="https://rdrr.io/r/base/format.html" class="external-link">format()</a></code><a class="anchor" aria-label="anchor" href="#method-format-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-Tuner-format"></a><div class="section">
+<h3 id="tuner-format-"><code>Tuner$format()</code><a class="anchor" aria-label="anchor" href="#tuner-format-"></a></h3>
 <p>Helper for print outputs.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Tuner</span><span class="op">$</span><span class="fu">format</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>...</code></dt>
 <dd><p>(ignored).</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
 <p>(<code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code>).</p>
 </div>
 
-</div><p></p><hr><a id="method-Tuner-print"></a><div class="section">
-<h3 id="method-print-">Method <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code><a class="anchor" aria-label="anchor" href="#method-print-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-Tuner-print"></a><div class="section">
+<h3 id="tuner-print-"><code>Tuner$print()</code><a class="anchor" aria-label="anchor" href="#tuner-print-"></a></h3>
 <p>Print method.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Tuner</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
 <p>(<code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code>).</p>
 </div>
 
-</div><p></p><hr><a id="method-Tuner-help"></a><div class="section">
-<h3 id="method-help-">Method <code><a href="https://rdrr.io/r/utils/help.html" class="external-link">help()</a></code><a class="anchor" aria-label="anchor" href="#method-help-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-Tuner-help"></a><div class="section">
+<h3 id="tuner-help-"><code>Tuner$help()</code><a class="anchor" aria-label="anchor" href="#tuner-help-"></a></h3>
 <p>Opens the corresponding help page referenced by field <code>$man</code>.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Tuner</span><span class="op">$</span><span class="fu">help</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+</div>
 
-</div><p></p><hr><a id="method-Tuner-clone"></a><div class="section">
-<h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
+<p></p><hr><a id="method-Tuner-clone"></a><div class="section">
+<h3 id="tuner-clone-"><code>Tuner$clone()</code><a class="anchor" aria-label="anchor" href="#tuner-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">Tuner</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
@@ -270,6 +271,7 @@ The referenced help package can be opened via method <code>$help()</code>.</p></
 </div>
 
 </div>
+
 
     </div>
 

@@ -6,9 +6,8 @@ to [Tuner](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.md).
 
 ## Super classes
 
-[`mlr3tuning::Tuner`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.md)
--\>
-[`mlr3tuning::TunerAsync`](https://mlr3tuning.mlr-org.com/dev/reference/TunerAsync.md)
+[`Tuner`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.md) -\>
+[`TunerAsync`](https://mlr3tuning.mlr-org.com/dev/reference/TunerAsync.md)
 -\> `TunerAsyncFromOptimizerAsync`
 
 ## Active bindings
@@ -22,7 +21,7 @@ to [Tuner](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.md).
 
 ### Public methods
 
-- [`TunerAsyncFromOptimizerAsync$new()`](#method-TunerAsyncFromOptimizerAsync-new)
+- [`TunerAsyncFromOptimizerAsync$new()`](#method-TunerAsyncFromOptimizerAsync-initialize)
 
 - [`TunerAsyncFromOptimizerAsync$optimize()`](#method-TunerAsyncFromOptimizerAsync-optimize)
 
@@ -30,13 +29,13 @@ to [Tuner](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.md).
 
 Inherited methods
 
-- [`mlr3tuning::Tuner$format()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-format)
-- [`mlr3tuning::Tuner$help()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-help)
-- [`mlr3tuning::Tuner$print()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-print)
+- [`Tuner$format()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-format)
+- [`Tuner$help()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-help)
+- [`Tuner$print()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-print)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `TunerAsyncFromOptimizerAsync$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class.
@@ -61,7 +60,7 @@ Creates a new instance of this
 
 ------------------------------------------------------------------------
 
-### Method [`optimize()`](https://rdrr.io/r/stats/optimize.html)
+### `TunerAsyncFromOptimizerAsync$optimize()`
 
 Performs the tuning on a
 [TuningInstanceBatchSingleCrit](https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceBatchSingleCrit.md)
@@ -92,7 +91,7 @@ The final result is returned.
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `TunerAsyncFromOptimizerAsync$clone()`
 
 The objects of this class are cloneable with this method.
 

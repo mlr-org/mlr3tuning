@@ -92,7 +92,7 @@ for each hyperparameter evaluation.
 
 ### Public methods
 
-- [`ArchiveAsyncTuning$new()`](#method-ArchiveAsyncTuning-new)
+- [`ArchiveAsyncTuning$new()`](#method-ArchiveAsyncTuning-initialize)
 
 - [`ArchiveAsyncTuning$learner()`](#method-ArchiveAsyncTuning-learner)
 
@@ -124,7 +124,7 @@ Inherited methods
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `ArchiveAsyncTuning$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class.
@@ -177,7 +177,7 @@ Creates a new instance of this
 
 ------------------------------------------------------------------------
 
-### Method `learner()`
+### `ArchiveAsyncTuning$learner()`
 
 Retrieve
 [mlr3::Learner](https://mlr3.mlr-org.com/reference/Learner.html) of the
@@ -203,7 +203,7 @@ are mutually exclusive. Learner does not contain a model. Use
 
 ------------------------------------------------------------------------
 
-### Method `learners()`
+### `ArchiveAsyncTuning$learners()`
 
 Retrieve list of trained
 [mlr3::Learner](https://mlr3.mlr-org.com/reference/Learner.html) objects
@@ -228,7 +228,7 @@ of the i-th evaluation, by position or by unique hash `uhash`. `i` and
 
 ------------------------------------------------------------------------
 
-### Method `learner_param_vals()`
+### `ArchiveAsyncTuning$learner_param_vals()`
 
 Retrieve param values of the i-th evaluation, by position or by unique
 hash `uhash`. `i` and `uhash` are mutually exclusive.
@@ -251,7 +251,7 @@ hash `uhash`. `i` and `uhash` are mutually exclusive.
 
 ------------------------------------------------------------------------
 
-### Method `predictions()`
+### `ArchiveAsyncTuning$predictions()`
 
 Retrieve list of
 [mlr3::Prediction](https://mlr3.mlr-org.com/reference/Prediction.html)
@@ -276,7 +276,7 @@ objects of the i-th evaluation, by position or by unique hash `uhash`.
 
 ------------------------------------------------------------------------
 
-### Method `resample_result()`
+### `ArchiveAsyncTuning$resample_result()`
 
 Retrieve
 [mlr3::ResampleResult](https://mlr3.mlr-org.com/reference/ResampleResult.html)
@@ -301,7 +301,7 @@ of the i-th evaluation, by position or by unique hash `uhash`. `i` and
 
 ------------------------------------------------------------------------
 
-### Method [`print()`](https://rdrr.io/r/base/print.html)
+### `ArchiveAsyncTuning$print()`
 
 Printer.
 
@@ -309,15 +309,9 @@ Printer.
 
     ArchiveAsyncTuning$print()
 
-#### Arguments
-
-- `...`:
-
-  (ignored).
-
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `ArchiveAsyncTuning$clone()`
 
 The objects of this class are cloneable with this method.
 

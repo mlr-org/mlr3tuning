@@ -6,8 +6,10 @@
     }
   };
 </script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/Roboto-0.4.10/font.css" rel="stylesheet"><link href="../deps/JetBrains_Mono-0.4.10/font.css" rel="stylesheet"><link href="../deps/Roboto_Slab-0.4.10/font.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Class for Tuning Objective — ObjectiveTuningBatch"><meta name="description" content="Stores the objective function that estimates the performance of hyperparameter configurations.
-This class is usually constructed internally by the TuningInstanceBatchSingleCrit or TuningInstanceBatchMultiCrit."><meta property="og:description" content="Stores the objective function that estimates the performance of hyperparameter configurations.
-This class is usually constructed internally by the TuningInstanceBatchSingleCrit or TuningInstanceBatchMultiCrit."><meta property="og:image" content="https://mlr3tuning.mlr-org.com/logo.png"><meta name="robots" content="noindex"></head><body>
+This class is usually constructed internally by the TuningInstanceBatchSingleCrit or
+TuningInstanceBatchMultiCrit."><meta property="og:description" content="Stores the objective function that estimates the performance of hyperparameter configurations.
+This class is usually constructed internally by the TuningInstanceBatchSingleCrit or
+TuningInstanceBatchMultiCrit."><meta property="og:image" content="https://mlr3tuning.mlr-org.com/logo.png"><meta name="robots" content="noindex"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -52,13 +54,14 @@ This class is usually constructed internally by the TuningInstanceBatchSingleCri
 
     <div class="ref-description section level2">
     <p>Stores the objective function that estimates the performance of hyperparameter configurations.
-This class is usually constructed internally by the <a href="TuningInstanceBatchSingleCrit.html">TuningInstanceBatchSingleCrit</a> or <a href="TuningInstanceBatchMultiCrit.html">TuningInstanceBatchMultiCrit</a>.</p>
+This class is usually constructed internally by the <a href="TuningInstanceBatchSingleCrit.html">TuningInstanceBatchSingleCrit</a> or
+<a href="TuningInstanceBatchMultiCrit.html">TuningInstanceBatchMultiCrit</a>.</p>
     </div>
 
 
     <div class="section level2">
     <h2 id="super-classes">Super classes<a class="anchor" aria-label="anchor" href="#super-classes"></a></h2>
-    <p><code><a href="https://bbotk.mlr-org.com/reference/Objective.html" class="external-link">bbotk::Objective</a></code> -&gt; <code><a href="ObjectiveTuning.html">mlr3tuning::ObjectiveTuning</a></code> -&gt; <code>ObjectiveTuningBatch</code></p>
+    <p><code><a href="https://bbotk.mlr-org.com/reference/Objective.html" class="external-link">bbotk::Objective</a></code> -&gt; <code><a href="ObjectiveTuning.html">ObjectiveTuning</a></code> -&gt; <code>ObjectiveTuningBatch</code></p>
     </div>
     <div class="section level2">
     <h2 id="public-fields">Public fields<a class="anchor" aria-label="anchor" href="#public-fields"></a></h2>
@@ -73,17 +76,16 @@ This class is usually constructed internally by the <a href="TuningInstanceBatch
 
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
-
-<ul><li><p><a href="#method-ObjectiveTuningBatch-new"><code>ObjectiveTuningBatch$new()</code></a></p></li>
+<p></p><ul><li><p><a href="#method-ObjectiveTuningBatch-initialize"><code>ObjectiveTuningBatch$new()</code></a></p></li>
 <li><p><a href="#method-ObjectiveTuningBatch-clone"><code>ObjectiveTuningBatch$clone()</code></a></p></li>
 </ul></div><p><details><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="eval"><a href="https://bbotk.mlr-org.com/reference/Objective.html#method-eval"><code>bbotk::Objective$eval()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="eval_dt"><a href="https://bbotk.mlr-org.com/reference/Objective.html#method-eval_dt"><code>bbotk::Objective$eval_dt()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="eval_many"><a href="https://bbotk.mlr-org.com/reference/Objective.html#method-eval_many"><code>bbotk::Objective$eval_many()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="format"><a href="https://bbotk.mlr-org.com/reference/Objective.html#method-format"><code>bbotk::Objective$format()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="help"><a href="https://bbotk.mlr-org.com/reference/Objective.html#method-help"><code>bbotk::Objective$help()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="print"><a href="https://bbotk.mlr-org.com/reference/Objective.html#method-print"><code>bbotk::Objective$print()</code></a></span></li>
-</ul></details></p><hr><a id="method-ObjectiveTuningBatch-new"></a><div class="section">
-<h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="eval_dt"><a href="https://bbotk.mlr-org.com/reference/Objective.html#method-eval_dt"><code>bbotk::Objective$eval_dt()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="eval_many"><a href="https://bbotk.mlr-org.com/reference/Objective.html#method-eval_many"><code>bbotk::Objective$eval_many()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="format"><a href="https://bbotk.mlr-org.com/reference/Objective.html#method-format"><code>bbotk::Objective$format()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="help"><a href="https://bbotk.mlr-org.com/reference/Objective.html#method-help"><code>bbotk::Objective$help()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="Objective" data-id="print"><a href="https://bbotk.mlr-org.com/reference/Objective.html#method-print"><code>bbotk::Objective$print()</code></a></span></li>
+</ul></details></p><hr><a id="method-ObjectiveTuningBatch-initialize"></a><div class="section">
+<h3 id="objectivetuningbatch-new-"><code>ObjectiveTuningBatch$new()</code><a class="anchor" aria-label="anchor" href="#objectivetuningbatch-new-"></a></h3>
 <p>Creates a new instance of this <a href="https://r6.r-lib.org/reference/R6Class.html" class="external-link">R6</a> class.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/ObjectiveTuningBatch.html">ObjectiveTuningBatch</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
@@ -98,21 +100,17 @@ This class is usually constructed internally by the <a href="TuningInstanceBatch
 <span>  callbacks <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  internal_search_space <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>task</code></dt>
 <dd><p>(<a href="https://mlr3.mlr-org.com/reference/Task.html" class="external-link">mlr3::Task</a>)<br>
 Task to operate on.</p></dd>
 
-
-<dt><code>learner</code></dt>
+      <dt><code>learner</code></dt>
 <dd><p>(<a href="https://mlr3.mlr-org.com/reference/Learner.html" class="external-link">mlr3::Learner</a>)<br>
 Learner to tune.</p></dd>
 
-
-<dt><code>resampling</code></dt>
+      <dt><code>resampling</code></dt>
 <dd><p>(<a href="https://mlr3.mlr-org.com/reference/Resampling.html" class="external-link">mlr3::Resampling</a>)<br>
 Resampling that is used to evaluate the performance of the hyperparameter configurations.
 Uninstantiated resamplings are instantiated during construction so that all configurations are evaluated on the same data splits.
@@ -120,45 +118,38 @@ Already instantiated resamplings are kept unchanged.
 Specialized <a href="Tuner.html">Tuner</a> change the resampling e.g. to evaluate a hyperparameter configuration on different data splits.
 This field, however, always returns the resampling passed in construction.</p></dd>
 
-
-<dt><code>measures</code></dt>
+      <dt><code>measures</code></dt>
 <dd><p>(list of <a href="https://mlr3.mlr-org.com/reference/Measure.html" class="external-link">mlr3::Measure</a>)<br>
 Measures to optimize.</p></dd>
 
-
-<dt><code>store_benchmark_result</code></dt>
+      <dt><code>store_benchmark_result</code></dt>
 <dd><p>(<code>logical(1)</code>)<br>
 If <code>TRUE</code> (default), store resample result of evaluated hyperparameter
 configurations in archive as <a href="https://mlr3.mlr-org.com/reference/BenchmarkResult.html" class="external-link">mlr3::BenchmarkResult</a>.</p></dd>
 
-
-<dt><code>store_models</code></dt>
+      <dt><code>store_models</code></dt>
 <dd><p>(<code>logical(1)</code>)<br>
 If <code>TRUE</code>, fitted models are stored in the benchmark result
 (<code>archive$benchmark_result</code>). If <code>store_benchmark_result = FALSE</code>, models
 are only stored temporarily and not accessible after the tuning. This
 combination is needed for measures that require a model.</p></dd>
 
-
-<dt><code>check_values</code></dt>
+      <dt><code>check_values</code></dt>
 <dd><p>(<code>logical(1)</code>)<br>
 If <code>TRUE</code>, hyperparameter values are checked before evaluation and
 performance scores after. If <code>FALSE</code> (default), values are unchecked but
 computational overhead is reduced.</p></dd>
 
-
-<dt><code>archive</code></dt>
+      <dt><code>archive</code></dt>
 <dd><p>(<a href="ArchiveBatchTuning.html">ArchiveBatchTuning</a>)<br>
 Reference to archive of <a href="TuningInstanceBatchSingleCrit.html">TuningInstanceBatchSingleCrit</a> | <a href="TuningInstanceBatchMultiCrit.html">TuningInstanceBatchMultiCrit</a>.
 If <code>NULL</code> (default), benchmark result and models cannot be stored.</p></dd>
 
-
-<dt><code>callbacks</code></dt>
+      <dt><code>callbacks</code></dt>
 <dd><p>(list of <a href="https://mlr3misc.mlr-org.com/reference/Callback.html" class="external-link">mlr3misc::Callback</a>)<br>
 List of callbacks.</p></dd>
 
-
-<dt><code>internal_search_space</code></dt>
+      <dt><code>internal_search_space</code></dt>
 <dd><p>(<a href="https://paradox.mlr-org.com/reference/ParamSet.html" class="external-link">paradox::ParamSet</a> or <code>NULL</code>)<br>
 The internal search space.</p></dd>
 
@@ -166,14 +157,14 @@ The internal search space.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-ObjectiveTuningBatch-clone"></a><div class="section">
-<h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-ObjectiveTuningBatch-clone"></a><div class="section">
+<h3 id="objectivetuningbatch-clone-"><code>ObjectiveTuningBatch$clone()</code><a class="anchor" aria-label="anchor" href="#objectivetuningbatch-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">ObjectiveTuningBatch</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
@@ -183,6 +174,7 @@ The internal search space.</p></dd>
 </div>
 
 </div>
+
 
     </div>
 

@@ -5,8 +5,10 @@
       fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
     }
   };
-</script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/Roboto-0.4.10/font.css" rel="stylesheet"><link href="../deps/JetBrains_Mono-0.4.10/font.css" rel="stylesheet"><link href="../deps/Roboto_Slab-0.4.10/font.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Function for Automatic Tuning — auto_tuner"><meta name="description" content="The AutoTuner wraps a mlr3::Learner and augments it with an automatic tuning process for a given set of hyperparameters.
-The auto_tuner() function creates an AutoTuner object."><meta property="og:description" content="The AutoTuner wraps a mlr3::Learner and augments it with an automatic tuning process for a given set of hyperparameters.
+</script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/Roboto-0.4.10/font.css" rel="stylesheet"><link href="../deps/JetBrains_Mono-0.4.10/font.css" rel="stylesheet"><link href="../deps/Roboto_Slab-0.4.10/font.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Function for Automatic Tuning — auto_tuner"><meta name="description" content="The AutoTuner wraps a mlr3::Learner
+and augments it with an automatic tuning process for a given set of hyperparameters.
+The auto_tuner() function creates an AutoTuner object."><meta property="og:description" content="The AutoTuner wraps a mlr3::Learner
+and augments it with an automatic tuning process for a given set of hyperparameters.
 The auto_tuner() function creates an AutoTuner object."><meta property="og:image" content="https://mlr3tuning.mlr-org.com/logo.png"><meta name="robots" content="noindex"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
@@ -51,7 +53,8 @@ The auto_tuner() function creates an AutoTuner object."><meta property="og:image
     </div>
 
     <div class="ref-description section level2">
-    <p>The <a href="AutoTuner.html">AutoTuner</a> wraps a <a href="https://mlr3.mlr-org.com/reference/Learner.html" class="external-link">mlr3::Learner</a> and augments it with an automatic tuning process for a given set of hyperparameters.
+    <p>The <a href="AutoTuner.html">AutoTuner</a> wraps a <a href="https://mlr3.mlr-org.com/reference/Learner.html" class="external-link">mlr3::Learner</a>
+and augments it with an automatic tuning process for a given set of hyperparameters.
 The <code>auto_tuner()</code> function creates an <a href="AutoTuner.html">AutoTuner</a> object.</p>
     </div>
 
@@ -175,9 +178,12 @@ Identifier for the new instance.</p></dd>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The <a href="AutoTuner.html">AutoTuner</a> is a <a href="https://mlr3.mlr-org.com/reference/Learner.html" class="external-link">mlr3::Learner</a> which wraps another <a href="https://mlr3.mlr-org.com/reference/Learner.html" class="external-link">mlr3::Learner</a> and performs the following steps during <code>$train()</code>:</p><ol><li><p>The hyperparameters of the wrapped (inner) learner are trained on the training data via resampling.
-The tuning can be specified by providing a <a href="Tuner.html">Tuner</a>, a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" class="external-link">bbotk::Terminator</a>, a search space as <a href="https://paradox.mlr-org.com/reference/ParamSet.html" class="external-link">paradox::ParamSet</a>, a <a href="https://mlr3.mlr-org.com/reference/Resampling.html" class="external-link">mlr3::Resampling</a> and a <a href="https://mlr3.mlr-org.com/reference/Measure.html" class="external-link">mlr3::Measure</a>.</p></li>
-<li><p>The best found hyperparameter configuration is set as hyperparameters for the wrapped (inner) learner stored in <code>at$learner</code>.
+    <p>The <a href="AutoTuner.html">AutoTuner</a> is a <a href="https://mlr3.mlr-org.com/reference/Learner.html" class="external-link">mlr3::Learner</a> which wraps another <a href="https://mlr3.mlr-org.com/reference/Learner.html" class="external-link">mlr3::Learner</a>
+and performs the following steps during <code>$train()</code>:</p><ol><li><p>The hyperparameters of the wrapped (inner) learner are trained on the training data via resampling.
+The tuning can be specified by providing a <a href="Tuner.html">Tuner</a>, a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" class="external-link">bbotk::Terminator</a>,
+a search space as <a href="https://paradox.mlr-org.com/reference/ParamSet.html" class="external-link">paradox::ParamSet</a>, a <a href="https://mlr3.mlr-org.com/reference/Resampling.html" class="external-link">mlr3::Resampling</a> and a <a href="https://mlr3.mlr-org.com/reference/Measure.html" class="external-link">mlr3::Measure</a>.</p></li>
+<li><p>The best found hyperparameter configuration is set as hyperparameters
+for the wrapped (inner) learner stored in <code>at$learner</code>.
 Access the tuned hyperparameters via <code>at$tuning_result</code>.</p></li>
 <li><p>A final model is fit on the complete training data using the now parametrized wrapped learner.
 The respective model is available via field <code>at$learner$model</code>.</p></li>
@@ -194,29 +200,41 @@ The default measure depends on the task type.</p><table class="table table"><tr>
     <h2 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a></h2>
 
 
-<p>There are several sections about hyperparameter optimization in the <a href="https://mlr3book.mlr-org.com" class="external-link">mlr3book</a>.</p><ul><li><p>Getting started with <a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html" class="external-link">hyperparameter optimization</a>.</p></li>
+<p>There are several sections about hyperparameter optimization in the <a href="https://mlr3book.mlr-org.com" class="external-link">mlr3book</a>.</p><ul><li><p>Getting started with
+<a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html" class="external-link">hyperparameter optimization</a>.</p></li>
 <li><p>An overview of all tuners can be found on our <a href="https://mlr-org.com/tuners.html" class="external-link">website</a>.</p></li>
-<li><p><a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-model-tuning" class="external-link">Tune</a> a support vector machine on the Sonar data set.</p></li>
+<li><p><a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-model-tuning" class="external-link">Tune</a>
+a support vector machine on the Sonar data set.</p></li>
 <li><p>Learn about <a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-defining-search-spaces" class="external-link">tuning spaces</a>.</p></li>
 <li><p>Estimate the model performance with <a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-nested-resampling" class="external-link">nested resampling</a>.</p></li>
 <li><p>Learn about <a href="https://mlr3book.mlr-org.com/chapters/chapter5/advanced_tuning_methods_and_black_box_optimization.html#sec-multi-metrics-tuning" class="external-link">multi-objective optimization</a>.</p></li>
-<li><p>Simultaneously optimize hyperparameters and use <a href="https://mlr3book.mlr-org.com/chapters/chapter15/predsets_valid_inttune.html" class="external-link">early stopping</a> with XGBoost.</p></li>
-<li><p><a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-autotuner" class="external-link">Automate</a> the tuning.</p></li>
-</ul><p>The <a href="https://mlr-org.com/gallery-all-optimization.html" class="external-link">gallery</a> features a collection of case studies and demos about optimization.</p><ul><li><p>Learn more advanced methods with the <a href="https://mlr-org.com/gallery/series/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/" class="external-link">Practical Tuning Series</a>.</p></li>
+<li><p>Simultaneously optimize hyperparameters and use
+<a href="https://mlr3book.mlr-org.com/chapters/chapter15/predsets_valid_inttune.html" class="external-link">early stopping</a> with XGBoost.</p></li>
+<li><p><a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-autotuner" class="external-link">Automate</a>
+the tuning.</p></li>
+</ul><p>The <a href="https://mlr-org.com/gallery-all-optimization.html" class="external-link">gallery</a> features a collection of case studies and demos
+about optimization.</p><ul><li><p>Learn more advanced methods with the <a href="https://mlr-org.com/gallery/series/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/" class="external-link">Practical Tuning Series</a>.</p></li>
 <li><p>Learn about <a href="https://mlr-org.com/gallery/optimization/2023-01-16-hotstart/" class="external-link">hotstarting</a> models.</p></li>
-<li><p>Run the <a href="https://mlr-org.com/gallery/optimization/2023-01-31-default-configuration/" class="external-link">default hyperparameter configuration</a> of learners as a baseline.</p></li>
-<li><p>Use the <a href="https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/" class="external-link">Hyperband</a> optimizer with different budget parameters.</p></li>
-</ul><p>The <a href="https://cheatsheets.mlr-org.com/mlr3tuning.pdf" class="external-link">cheatsheet</a> summarizes the most important functions of mlr3tuning.</p>
+<li><p>Run the
+<a href="https://mlr-org.com/gallery/optimization/2023-01-31-default-configuration/" class="external-link">default hyperparameter configuration</a>
+of learners as a baseline.</p></li>
+<li><p>Use the <a href="https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/" class="external-link">Hyperband</a> optimizer with different
+budget parameters.</p></li>
+</ul><p>The <a href="https://cheatsheets.mlr-org.com/mlr3tuning.pdf" class="external-link">cheatsheet</a> summarizes
+the most important functions of mlr3tuning.</p>
     </div>
     <div class="section level2">
     <h2 id="nested-resampling">Nested Resampling<a class="anchor" aria-label="anchor" href="#nested-resampling"></a></h2>
 
 
 <p>Nested resampling is performed by passing an <a href="AutoTuner.html">AutoTuner</a> to <code><a href="https://mlr3.mlr-org.com/reference/resample.html" class="external-link">mlr3::resample()</a></code> or <code><a href="https://mlr3.mlr-org.com/reference/benchmark.html" class="external-link">mlr3::benchmark()</a></code>.
-To access the inner resampling results, set <code>store_tuning_instance = TRUE</code> and execute <code><a href="https://mlr3.mlr-org.com/reference/resample.html" class="external-link">mlr3::resample()</a></code> or <code><a href="https://mlr3.mlr-org.com/reference/benchmark.html" class="external-link">mlr3::benchmark()</a></code> with <code>store_models = TRUE</code> (see examples).
-The <a href="https://mlr3.mlr-org.com/reference/Resampling.html" class="external-link">mlr3::Resampling</a> passed to the <a href="AutoTuner.html">AutoTuner</a> is meant to be the inner resampling, operating on the training set of an arbitrary outer resampling.
+To access the inner resampling results, set <code>store_tuning_instance = TRUE</code> and execute <code><a href="https://mlr3.mlr-org.com/reference/resample.html" class="external-link">mlr3::resample()</a></code> or
+<code><a href="https://mlr3.mlr-org.com/reference/benchmark.html" class="external-link">mlr3::benchmark()</a></code> with <code>store_models = TRUE</code> (see examples).
+The <a href="https://mlr3.mlr-org.com/reference/Resampling.html" class="external-link">mlr3::Resampling</a> passed to the <a href="AutoTuner.html">AutoTuner</a> is meant to be the inner resampling,
+operating on the training set of an arbitrary outer resampling.
 For this reason, the inner resampling should be not instantiated.
-If an instantiated resampling is passed, the <a href="AutoTuner.html">AutoTuner</a> fails when a row id of the inner resampling is not present in the training set of the outer resampling.</p>
+If an instantiated resampling is passed, the <a href="AutoTuner.html">AutoTuner</a> fails when a row id of the inner resampling is not present
+in the training set of the outer resampling.</p>
     </div>
 
     <div class="section level2">

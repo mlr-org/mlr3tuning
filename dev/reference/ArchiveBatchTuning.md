@@ -123,7 +123,7 @@ provides visualizations for tuning results.
 
 ### Public methods
 
-- [`ArchiveBatchTuning$new()`](#method-ArchiveBatchTuning-new)
+- [`ArchiveBatchTuning$new()`](#method-ArchiveBatchTuning-initialize)
 
 - [`ArchiveBatchTuning$learner()`](#method-ArchiveBatchTuning-learner)
 
@@ -150,7 +150,7 @@ Inherited methods
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `ArchiveBatchTuning$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class.
@@ -198,7 +198,7 @@ Creates a new instance of this
 
 ------------------------------------------------------------------------
 
-### Method `learner()`
+### `ArchiveBatchTuning$learner()`
 
 Retrieve
 [mlr3::Learner](https://mlr3.mlr-org.com/reference/Learner.html) of the
@@ -224,7 +224,7 @@ are mutually exclusive. Learner does not contain a model. Use
 
 ------------------------------------------------------------------------
 
-### Method `learners()`
+### `ArchiveBatchTuning$learners()`
 
 Retrieve list of trained
 [mlr3::Learner](https://mlr3.mlr-org.com/reference/Learner.html) objects
@@ -249,7 +249,7 @@ of the i-th evaluation, by position or by unique hash `uhash`. `i` and
 
 ------------------------------------------------------------------------
 
-### Method `learner_param_vals()`
+### `ArchiveBatchTuning$learner_param_vals()`
 
 Retrieve param values of the i-th evaluation, by position or by unique
 hash `uhash`. `i` and `uhash` are mutually exclusive.
@@ -272,7 +272,7 @@ hash `uhash`. `i` and `uhash` are mutually exclusive.
 
 ------------------------------------------------------------------------
 
-### Method `predictions()`
+### `ArchiveBatchTuning$predictions()`
 
 Retrieve list of
 [mlr3::Prediction](https://mlr3.mlr-org.com/reference/Prediction.html)
@@ -297,7 +297,7 @@ objects of the i-th evaluation, by position or by unique hash `uhash`.
 
 ------------------------------------------------------------------------
 
-### Method `resample_result()`
+### `ArchiveBatchTuning$resample_result()`
 
 Retrieve
 [mlr3::ResampleResult](https://mlr3.mlr-org.com/reference/ResampleResult.html)
@@ -322,7 +322,7 @@ of the i-th evaluation, by position or by unique hash `uhash`. `i` and
 
 ------------------------------------------------------------------------
 
-### Method [`print()`](https://rdrr.io/r/base/print.html)
+### `ArchiveBatchTuning$print()`
 
 Printer.
 
@@ -330,15 +330,9 @@ Printer.
 
     ArchiveBatchTuning$print()
 
-#### Arguments
-
-- `...`:
-
-  (ignored).
-
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `ArchiveBatchTuning$clone()`
 
 The objects of this class are cloneable with this method.
 

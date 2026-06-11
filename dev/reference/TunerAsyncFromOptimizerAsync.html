@@ -55,7 +55,7 @@
 
     <div class="section level2">
     <h2 id="super-classes">Super classes<a class="anchor" aria-label="anchor" href="#super-classes"></a></h2>
-    <p><code><a href="Tuner.html">mlr3tuning::Tuner</a></code> -&gt; <code><a href="TunerAsync.html">mlr3tuning::TunerAsync</a></code> -&gt; <code>TunerAsyncFromOptimizerAsync</code></p>
+    <p><code><a href="Tuner.html">Tuner</a></code> -&gt; <code><a href="TunerAsync.html">TunerAsync</a></code> -&gt; <code>TunerAsyncFromOptimizerAsync</code></p>
     </div>
     <div class="section level2">
     <h2 id="active-bindings">Active bindings<a class="anchor" aria-label="anchor" href="#active-bindings"></a></h2>
@@ -71,28 +71,24 @@ Set of control parameters.</p></dd>
 
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
-
-<ul><li><p><a href="#method-TunerAsyncFromOptimizerAsync-new"><code>TunerAsyncFromOptimizerAsync$new()</code></a></p></li>
+<p></p><ul><li><p><a href="#method-TunerAsyncFromOptimizerAsync-initialize"><code>TunerAsyncFromOptimizerAsync$new()</code></a></p></li>
 <li><p><a href="#method-TunerAsyncFromOptimizerAsync-optimize"><code>TunerAsyncFromOptimizerAsync$optimize()</code></a></p></li>
 <li><p><a href="#method-TunerAsyncFromOptimizerAsync-clone"><code>TunerAsyncFromOptimizerAsync$clone()</code></a></p></li>
-</ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="format"><a href="Tuner.html#method-format"><code>mlr3tuning::Tuner$format()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="help"><a href="Tuner.html#method-help"><code>mlr3tuning::Tuner$help()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="print"><a href="Tuner.html#method-print"><code>mlr3tuning::Tuner$print()</code></a></span></li>
-</ul></details></p><hr><a id="method-TunerAsyncFromOptimizerAsync-new"></a><div class="section">
-<h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
+</ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="format"><a href="Tuner.html#method-format"><code>Tuner$format()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="help"><a href="Tuner.html#method-help"><code>Tuner$help()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="print"><a href="Tuner.html#method-print"><code>Tuner$print()</code></a></span></li>
+</ul></details></p><hr><a id="method-TunerAsyncFromOptimizerAsync-initialize"></a><div class="section">
+<h3 id="tunerasyncfromoptimizerasync-new-"><code>TunerAsyncFromOptimizerAsync$new()</code><a class="anchor" aria-label="anchor" href="#tunerasyncfromoptimizerasync-new-"></a></h3>
 <p>Creates a new instance of this <a href="https://r6.r-lib.org/reference/R6Class.html" class="external-link">R6</a> class.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/TunerAsyncFromOptimizerAsync.html">TunerAsyncFromOptimizerAsync</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="va">optimizer</span>, man <span class="op">=</span> <span class="cn">NA_character_</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>optimizer</code></dt>
 <dd><p><a href="https://bbotk.mlr-org.com/reference/Optimizer.html" class="external-link">bbotk::Optimizer</a><br>
 Optimizer that is called.</p></dd>
 
-
-<dt><code>man</code></dt>
+      <dt><code>man</code></dt>
 <dd><p>(<code>character(1)</code>)<br>
 String in the format <code>[pkg]::[topic]</code> pointing to a manual page for this object.
 The referenced help package can be opened via method <code>$help()</code>.</p></dd>
@@ -101,8 +97,10 @@ The referenced help package can be opened via method <code>$help()</code>.</p></
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-TunerAsyncFromOptimizerAsync-optimize"></a><div class="section">
-<h3 id="method-optimize-">Method <code><a href="https://rdrr.io/r/stats/optimize.html" class="external-link">optimize()</a></code><a class="anchor" aria-label="anchor" href="#method-optimize-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-TunerAsyncFromOptimizerAsync-optimize"></a><div class="section">
+<h3 id="tunerasyncfromoptimizerasync-optimize-"><code>TunerAsyncFromOptimizerAsync$optimize()</code><a class="anchor" aria-label="anchor" href="#tunerasyncfromoptimizerasync-optimize-"></a></h3>
 <p>Performs the tuning on a <a href="TuningInstanceBatchSingleCrit.html">TuningInstanceBatchSingleCrit</a> /
 <a href="TuningInstanceBatchMultiCrit.html">TuningInstanceBatchMultiCrit</a> until termination. The single evaluations and
 the final results will be written into the <a href="ArchiveAsyncTuning.html">ArchiveAsyncTuning</a> that
@@ -110,29 +108,26 @@ resides in the <a href="TuningInstanceBatchSingleCrit.html">TuningInstanceBatchS
 The final result is returned.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">TunerAsyncFromOptimizerAsync</span><span class="op">$</span><span class="fu">optimize</span><span class="op">(</span><span class="va">inst</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>inst</code></dt>
 <dd><p>(<a href="TuningInstanceBatchSingleCrit.html">TuningInstanceBatchSingleCrit</a> | <a href="TuningInstanceBatchMultiCrit.html">TuningInstanceBatchMultiCrit</a>).</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
 <p><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table::data.table</a>.</p>
 </div>
 
-</div><p></p><hr><a id="method-TunerAsyncFromOptimizerAsync-clone"></a><div class="section">
-<h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-TunerAsyncFromOptimizerAsync-clone"></a><div class="section">
+<h3 id="tunerasyncfromoptimizerasync-clone-"><code>TunerAsyncFromOptimizerAsync$clone()</code><a class="anchor" aria-label="anchor" href="#tunerasyncfromoptimizerasync-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">TunerAsyncFromOptimizerAsync</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
@@ -142,6 +137,7 @@ The final result is returned.</p><div class="section">
 </div>
 
 </div>
+
 
     </div>
 

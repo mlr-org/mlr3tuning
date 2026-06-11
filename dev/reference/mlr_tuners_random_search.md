@@ -138,31 +138,30 @@ Other Tuner:
 
 ## Super classes
 
-[`mlr3tuning::Tuner`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.md)
+[`Tuner`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.md) -\>
+[`TunerBatch`](https://mlr3tuning.mlr-org.com/dev/reference/TunerBatch.md)
 -\>
-[`mlr3tuning::TunerBatch`](https://mlr3tuning.mlr-org.com/dev/reference/TunerBatch.md)
--\>
-[`mlr3tuning::TunerBatchFromOptimizerBatch`](https://mlr3tuning.mlr-org.com/dev/reference/TunerBatchFromOptimizerBatch.md)
+[`TunerBatchFromOptimizerBatch`](https://mlr3tuning.mlr-org.com/dev/reference/TunerBatchFromOptimizerBatch.md)
 -\> `TunerBatchRandomSearch`
 
 ## Methods
 
 ### Public methods
 
-- [`TunerBatchRandomSearch$new()`](#method-TunerBatchRandomSearch-new)
+- [`TunerBatchRandomSearch$new()`](#method-TunerBatchRandomSearch-initialize)
 
 - [`TunerBatchRandomSearch$clone()`](#method-TunerBatchRandomSearch-clone)
 
 Inherited methods
 
-- [`mlr3tuning::Tuner$format()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-format)
-- [`mlr3tuning::Tuner$help()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-help)
-- [`mlr3tuning::Tuner$print()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-print)
-- [`mlr3tuning::TunerBatchFromOptimizerBatch$optimize()`](https://mlr3tuning.mlr-org.com/dev/reference/TunerBatchFromOptimizerBatch.html#method-optimize)
+- [`Tuner$format()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-format)
+- [`Tuner$help()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-help)
+- [`Tuner$print()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-print)
+- [`TunerBatchFromOptimizerBatch$optimize()`](https://mlr3tuning.mlr-org.com/dev/reference/TunerBatchFromOptimizerBatch.html#method-optimize)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `TunerBatchRandomSearch$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class.
@@ -173,7 +172,7 @@ Creates a new instance of this
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `TunerBatchRandomSearch$clone()`
 
 The objects of this class are cloneable with this method.
 
@@ -217,16 +216,16 @@ instance$result
 as.data.table(instance$archive)
 #>            cp classif.ce runtime_learners           timestamp warnings errors
 #>         <num>      <num>            <num>              <POSc>    <int>  <int>
-#>  1: -8.400473 0.09565217            0.007 2026-06-11 09:55:06        0      0
-#>  2: -2.675162 0.07826087            0.006 2026-06-11 09:55:07        0      0
-#>  3: -8.524615 0.09565217            0.007 2026-06-11 09:55:07        0      0
-#>  4: -3.455505 0.07826087            0.007 2026-06-11 09:55:07        0      0
-#>  5: -3.432214 0.07826087            0.006 2026-06-11 09:55:07        0      0
-#>  6: -8.600166 0.09565217            0.006 2026-06-11 09:55:07        0      0
-#>  7: -2.743474 0.07826087            0.006 2026-06-11 09:55:07        0      0
-#>  8: -2.915375 0.07826087            0.007 2026-06-11 09:55:07        0      0
-#>  9: -8.320890 0.09565217            0.005 2026-06-11 09:55:07        0      0
-#> 10: -4.257432 0.09565217            0.006 2026-06-11 09:55:07        0      0
+#>  1: -8.400473 0.09565217            0.006 2026-06-11 10:53:05        0      0
+#>  2: -2.675162 0.07826087            0.006 2026-06-11 10:53:05        0      0
+#>  3: -8.524615 0.09565217            0.007 2026-06-11 10:53:05        0      0
+#>  4: -3.455505 0.07826087            0.008 2026-06-11 10:53:06        0      0
+#>  5: -3.432214 0.07826087            0.007 2026-06-11 10:53:06        0      0
+#>  6: -8.600166 0.09565217            0.007 2026-06-11 10:53:06        0      0
+#>  7: -2.743474 0.07826087            0.007 2026-06-11 10:53:06        0      0
+#>  8: -2.915375 0.07826087            0.007 2026-06-11 10:53:06        0      0
+#>  9: -8.320890 0.09565217            0.007 2026-06-11 10:53:06        0      0
+#> 10: -4.257432 0.09565217            0.007 2026-06-11 10:53:06        0      0
 #>      x_domain batch_nr  resample_result
 #>        <list>    <int>           <list>
 #>  1: <list[1]>        1 <ResampleResult>

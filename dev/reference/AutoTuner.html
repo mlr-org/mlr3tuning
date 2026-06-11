@@ -5,8 +5,10 @@
       fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
     }
   };
-</script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/Roboto-0.4.10/font.css" rel="stylesheet"><link href="../deps/JetBrains_Mono-0.4.10/font.css" rel="stylesheet"><link href="../deps/Roboto_Slab-0.4.10/font.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Class for Automatic Tuning — AutoTuner"><meta name="description" content="The AutoTuner wraps a mlr3::Learner and augments it with an automatic tuning process for a given set of hyperparameters.
-The auto_tuner() function creates an AutoTuner object."><meta property="og:description" content="The AutoTuner wraps a mlr3::Learner and augments it with an automatic tuning process for a given set of hyperparameters.
+</script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/Roboto-0.4.10/font.css" rel="stylesheet"><link href="../deps/JetBrains_Mono-0.4.10/font.css" rel="stylesheet"><link href="../deps/Roboto_Slab-0.4.10/font.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Class for Automatic Tuning — AutoTuner"><meta name="description" content="The AutoTuner wraps a mlr3::Learner
+and augments it with an automatic tuning process for a given set of hyperparameters.
+The auto_tuner() function creates an AutoTuner object."><meta property="og:description" content="The AutoTuner wraps a mlr3::Learner
+and augments it with an automatic tuning process for a given set of hyperparameters.
 The auto_tuner() function creates an AutoTuner object."><meta property="og:image" content="https://mlr3tuning.mlr-org.com/logo.png"><meta name="robots" content="noindex"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
@@ -51,16 +53,20 @@ The auto_tuner() function creates an AutoTuner object."><meta property="og:image
     </div>
 
     <div class="ref-description section level2">
-    <p>The AutoTuner wraps a <a href="https://mlr3.mlr-org.com/reference/Learner.html" class="external-link">mlr3::Learner</a> and augments it with an automatic tuning process for a given set of hyperparameters.
+    <p>The AutoTuner wraps a <a href="https://mlr3.mlr-org.com/reference/Learner.html" class="external-link">mlr3::Learner</a>
+and augments it with an automatic tuning process for a given set of hyperparameters.
 The <code><a href="auto_tuner.html">auto_tuner()</a></code> function creates an AutoTuner object.</p>
     </div>
 
 
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The AutoTuner is a <a href="https://mlr3.mlr-org.com/reference/Learner.html" class="external-link">mlr3::Learner</a> which wraps another <a href="https://mlr3.mlr-org.com/reference/Learner.html" class="external-link">mlr3::Learner</a> and performs the following steps during <code>$train()</code>:</p><ol><li><p>The hyperparameters of the wrapped (inner) learner are trained on the training data via resampling.
-The tuning can be specified by providing a <a href="Tuner.html">Tuner</a>, a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" class="external-link">bbotk::Terminator</a>, a search space as <a href="https://paradox.mlr-org.com/reference/ParamSet.html" class="external-link">paradox::ParamSet</a>, a <a href="https://mlr3.mlr-org.com/reference/Resampling.html" class="external-link">mlr3::Resampling</a> and a <a href="https://mlr3.mlr-org.com/reference/Measure.html" class="external-link">mlr3::Measure</a>.</p></li>
-<li><p>The best found hyperparameter configuration is set as hyperparameters for the wrapped (inner) learner stored in <code>at$learner</code>.
+    <p>The AutoTuner is a <a href="https://mlr3.mlr-org.com/reference/Learner.html" class="external-link">mlr3::Learner</a> which wraps another <a href="https://mlr3.mlr-org.com/reference/Learner.html" class="external-link">mlr3::Learner</a>
+and performs the following steps during <code>$train()</code>:</p><ol><li><p>The hyperparameters of the wrapped (inner) learner are trained on the training data via resampling.
+The tuning can be specified by providing a <a href="Tuner.html">Tuner</a>, a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" class="external-link">bbotk::Terminator</a>,
+a search space as <a href="https://paradox.mlr-org.com/reference/ParamSet.html" class="external-link">paradox::ParamSet</a>, a <a href="https://mlr3.mlr-org.com/reference/Resampling.html" class="external-link">mlr3::Resampling</a> and a <a href="https://mlr3.mlr-org.com/reference/Measure.html" class="external-link">mlr3::Measure</a>.</p></li>
+<li><p>The best found hyperparameter configuration is set as hyperparameters
+for the wrapped (inner) learner stored in <code>at$learner</code>.
 Access the tuned hyperparameters via <code>at$tuning_result</code>.</p></li>
 <li><p>A final model is fit on the complete training data using the now parametrized wrapped learner.
 The respective model is available via field <code>at$learner$model</code>.</p></li>
@@ -80,10 +86,13 @@ This is also possible via <code><a href="https://mlr3.mlr-org.com/reference/mlr_
 
 
 <p>Nested resampling is performed by passing an AutoTuner to <code><a href="https://mlr3.mlr-org.com/reference/resample.html" class="external-link">mlr3::resample()</a></code> or <code><a href="https://mlr3.mlr-org.com/reference/benchmark.html" class="external-link">mlr3::benchmark()</a></code>.
-To access the inner resampling results, set <code>store_tuning_instance = TRUE</code> and execute <code><a href="https://mlr3.mlr-org.com/reference/resample.html" class="external-link">mlr3::resample()</a></code> or <code><a href="https://mlr3.mlr-org.com/reference/benchmark.html" class="external-link">mlr3::benchmark()</a></code> with <code>store_models = TRUE</code> (see examples).
-The <a href="https://mlr3.mlr-org.com/reference/Resampling.html" class="external-link">mlr3::Resampling</a> passed to the AutoTuner is meant to be the inner resampling, operating on the training set of an arbitrary outer resampling.
+To access the inner resampling results, set <code>store_tuning_instance = TRUE</code> and execute <code><a href="https://mlr3.mlr-org.com/reference/resample.html" class="external-link">mlr3::resample()</a></code> or
+<code><a href="https://mlr3.mlr-org.com/reference/benchmark.html" class="external-link">mlr3::benchmark()</a></code> with <code>store_models = TRUE</code> (see examples).
+The <a href="https://mlr3.mlr-org.com/reference/Resampling.html" class="external-link">mlr3::Resampling</a> passed to the AutoTuner is meant to be the inner resampling,
+operating on the training set of an arbitrary outer resampling.
 For this reason, the inner resampling should be not instantiated.
-If an instantiated resampling is passed, the AutoTuner fails when a row id of the inner resampling is not present in the training set of the outer resampling.</p>
+If an instantiated resampling is passed, the AutoTuner fails when a row id of the inner resampling is not present
+in the training set of the outer resampling.</p>
     </div>
     <div class="section level2">
     <h2 id="default-measures">Default Measures<a class="anchor" aria-label="anchor" href="#default-measures"></a></h2>
@@ -95,19 +104,28 @@ The default measure depends on the task type.</p><table class="table table"><tr>
     <h2 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a></h2>
 
 
-<p>There are several sections about hyperparameter optimization in the <a href="https://mlr3book.mlr-org.com" class="external-link">mlr3book</a>.</p><ul><li><p>Getting started with <a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html" class="external-link">hyperparameter optimization</a>.</p></li>
+<p>There are several sections about hyperparameter optimization in the <a href="https://mlr3book.mlr-org.com" class="external-link">mlr3book</a>.</p><ul><li><p>Getting started with
+<a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html" class="external-link">hyperparameter optimization</a>.</p></li>
 <li><p>An overview of all tuners can be found on our <a href="https://mlr-org.com/tuners.html" class="external-link">website</a>.</p></li>
-<li><p><a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-model-tuning" class="external-link">Tune</a> a support vector machine on the Sonar data set.</p></li>
+<li><p><a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-model-tuning" class="external-link">Tune</a>
+a support vector machine on the Sonar data set.</p></li>
 <li><p>Learn about <a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-defining-search-spaces" class="external-link">tuning spaces</a>.</p></li>
 <li><p>Estimate the model performance with <a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-nested-resampling" class="external-link">nested resampling</a>.</p></li>
 <li><p>Learn about <a href="https://mlr3book.mlr-org.com/chapters/chapter5/advanced_tuning_methods_and_black_box_optimization.html#sec-multi-metrics-tuning" class="external-link">multi-objective optimization</a>.</p></li>
-<li><p>Simultaneously optimize hyperparameters and use <a href="https://mlr3book.mlr-org.com/chapters/chapter15/predsets_valid_inttune.html" class="external-link">early stopping</a> with XGBoost.</p></li>
-<li><p><a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-autotuner" class="external-link">Automate</a> the tuning.</p></li>
-</ul><p>The <a href="https://mlr-org.com/gallery-all-optimization.html" class="external-link">gallery</a> features a collection of case studies and demos about optimization.</p><ul><li><p>Learn more advanced methods with the <a href="https://mlr-org.com/gallery/series/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/" class="external-link">Practical Tuning Series</a>.</p></li>
+<li><p>Simultaneously optimize hyperparameters and use
+<a href="https://mlr3book.mlr-org.com/chapters/chapter15/predsets_valid_inttune.html" class="external-link">early stopping</a> with XGBoost.</p></li>
+<li><p><a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-autotuner" class="external-link">Automate</a>
+the tuning.</p></li>
+</ul><p>The <a href="https://mlr-org.com/gallery-all-optimization.html" class="external-link">gallery</a> features a collection of case studies and demos
+about optimization.</p><ul><li><p>Learn more advanced methods with the <a href="https://mlr-org.com/gallery/series/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/" class="external-link">Practical Tuning Series</a>.</p></li>
 <li><p>Learn about <a href="https://mlr-org.com/gallery/optimization/2023-01-16-hotstart/" class="external-link">hotstarting</a> models.</p></li>
-<li><p>Run the <a href="https://mlr-org.com/gallery/optimization/2023-01-31-default-configuration/" class="external-link">default hyperparameter configuration</a> of learners as a baseline.</p></li>
-<li><p>Use the <a href="https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/" class="external-link">Hyperband</a> optimizer with different budget parameters.</p></li>
-</ul><p>The <a href="https://cheatsheets.mlr-org.com/mlr3tuning.pdf" class="external-link">cheatsheet</a> summarizes the most important functions of mlr3tuning.</p>
+<li><p>Run the
+<a href="https://mlr-org.com/gallery/optimization/2023-01-31-default-configuration/" class="external-link">default hyperparameter configuration</a>
+of learners as a baseline.</p></li>
+<li><p>Use the <a href="https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/" class="external-link">Hyperband</a> optimizer with different
+budget parameters.</p></li>
+</ul><p>The <a href="https://cheatsheets.mlr-org.com/mlr3tuning.pdf" class="external-link">cheatsheet</a> summarizes
+the most important functions of mlr3tuning.</p>
     </div>
     <div class="section level2">
     <h2 id="super-class">Super class<a class="anchor" aria-label="anchor" href="#super-class"></a></h2>
@@ -120,7 +138,7 @@ The default measure depends on the task type.</p><table class="table table"><tr>
 All arguments from construction to create the <a href="TuningInstanceBatchSingleCrit.html">TuningInstanceBatchSingleCrit</a>.</p></dd>
 
 
-<dt><code>tuner</code></dt>
+    <dt><code>tuner</code></dt>
 <dd><p>(<a href="Tuner.html">Tuner</a>)<br>
 Optimization algorithm.</p></dd>
 
@@ -134,37 +152,40 @@ Optimization algorithm.</p></dd>
 Archive of the <a href="TuningInstanceBatchSingleCrit.html">TuningInstanceBatchSingleCrit</a>.</p></dd>
 
 
-<dt><code>learner</code></dt>
+    <dt><code>learner</code></dt>
 <dd><p>(<a href="https://mlr3.mlr-org.com/reference/Learner.html" class="external-link">mlr3::Learner</a>)<br>
 Trained learner</p></dd>
 
 
-<dt><code>tuning_instance</code></dt>
+    <dt><code>tuning_instance</code></dt>
 <dd><p>(<a href="TuningInstanceAsyncSingleCrit.html">TuningInstanceAsyncSingleCrit</a> | <a href="TuningInstanceBatchSingleCrit.html">TuningInstanceBatchSingleCrit</a>)<br>
 Internally created tuning instance with all intermediate results.</p></dd>
 
 
-<dt><code>tuning_result</code></dt>
+    <dt><code>tuning_result</code></dt>
 <dd><p>(<a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table::data.table</a>)<br>
 Short-cut to <code>result</code> from  tuning instance.</p></dd>
 
 
-<dt><code>predict_type</code></dt>
+    <dt><code>predict_type</code></dt>
 <dd><p>(<code>character(1)</code>)<br>
 Stores the currently active predict type, e.g. <code>"response"</code>.
 Must be an element of <code>$predict_types</code>.
 A few learners already use the predict type during training.
-So there is no guarantee that changing the predict type after tuning and training will have any effect or does not lead to errors.</p></dd>
+So there is no guarantee that changing the predict type after tuning and training
+will have any effect or does not lead to errors.</p></dd>
 
 
-<dt><code>hash</code></dt>
+    <dt><code>hash</code></dt>
 <dd><p>(<code>character(1)</code>)<br>
 Hash (unique identifier) for this object.</p></dd>
 
 
-<dt><code>phash</code></dt>
+    <dt><code>phash</code></dt>
 <dd><p>(<code>character(1)</code>)<br>
-Hash (unique identifier) for this partial object, excluding some components which are varied systematically during tuning (parameter values) or feature selection (feature names).</p></dd>
+Hash (unique identifier) for this partial object,
+excluding some components which are varied systematically
+during tuning (parameter values) or feature selection (feature names).</p></dd>
 
 
 </dl><p></p></div>
@@ -174,8 +195,7 @@ Hash (unique identifier) for this partial object, excluding some components whic
 
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
-
-<ul><li><p><a href="#method-AutoTuner-new"><code>AutoTuner$new()</code></a></p></li>
+<p></p><ul><li><p><a href="#method-AutoTuner-initialize"><code>AutoTuner$new()</code></a></p></li>
 <li><p><a href="#method-AutoTuner-base_learner"><code>AutoTuner$base_learner()</code></a></p></li>
 <li><p><a href="#method-AutoTuner-importance"><code>AutoTuner$importance()</code></a></p></li>
 <li><p><a href="#method-AutoTuner-selected_features"><code>AutoTuner$selected_features()</code></a></p></li>
@@ -187,15 +207,15 @@ Hash (unique identifier) for this partial object, excluding some components whic
 <li><p><a href="#method-AutoTuner-marshaled"><code>AutoTuner$marshaled()</code></a></p></li>
 <li><p><a href="#method-AutoTuner-clone"><code>AutoTuner$clone()</code></a></p></li>
 </ul></div><p><details><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="configure"><a href="https://mlr3.mlr-org.com/reference/Learner.html#method-configure"><code>mlr3::Learner$configure()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="encapsulate"><a href="https://mlr3.mlr-org.com/reference/Learner.html#method-encapsulate"><code>mlr3::Learner$encapsulate()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="format"><a href="https://mlr3.mlr-org.com/reference/Learner.html#method-format"><code>mlr3::Learner$format()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="help"><a href="https://mlr3.mlr-org.com/reference/Learner.html#method-help"><code>mlr3::Learner$help()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="predict"><a href="https://mlr3.mlr-org.com/reference/Learner.html#method-predict"><code>mlr3::Learner$predict()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="predict_newdata"><a href="https://mlr3.mlr-org.com/reference/Learner.html#method-predict_newdata"><code>mlr3::Learner$predict_newdata()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="reset"><a href="https://mlr3.mlr-org.com/reference/Learner.html#method-reset"><code>mlr3::Learner$reset()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="train"><a href="https://mlr3.mlr-org.com/reference/Learner.html#method-train"><code>mlr3::Learner$train()</code></a></span></li>
-</ul></details></p><hr><a id="method-AutoTuner-new"></a><div class="section">
-<h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="encapsulate"><a href="https://mlr3.mlr-org.com/reference/Learner.html#method-encapsulate"><code>mlr3::Learner$encapsulate()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="format"><a href="https://mlr3.mlr-org.com/reference/Learner.html#method-format"><code>mlr3::Learner$format()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="help"><a href="https://mlr3.mlr-org.com/reference/Learner.html#method-help"><code>mlr3::Learner$help()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="predict"><a href="https://mlr3.mlr-org.com/reference/Learner.html#method-predict"><code>mlr3::Learner$predict()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="predict_newdata"><a href="https://mlr3.mlr-org.com/reference/Learner.html#method-predict_newdata"><code>mlr3::Learner$predict_newdata()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="reset"><a href="https://mlr3.mlr-org.com/reference/Learner.html#method-reset"><code>mlr3::Learner$reset()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3" data-topic="Learner" data-id="train"><a href="https://mlr3.mlr-org.com/reference/Learner.html#method-train"><code>mlr3::Learner$train()</code></a></span></li>
+</ul></details></p><hr><a id="method-AutoTuner-initialize"></a><div class="section">
+<h3 id="autotuner-new-"><code>AutoTuner$new()</code><a class="anchor" aria-label="anchor" href="#autotuner-new-"></a></h3>
 <p>Creates a new instance of this <a href="https://r6.r-lib.org/reference/R6Class.html" class="external-link">R6</a> class.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/AutoTuner.html">AutoTuner</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span></span>
@@ -213,21 +233,17 @@ Hash (unique identifier) for this partial object, excluding some components whic
 <span>  rush <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  id <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>tuner</code></dt>
 <dd><p>(<a href="Tuner.html">Tuner</a>)<br>
 Optimization algorithm.</p></dd>
 
-
-<dt><code>learner</code></dt>
+      <dt><code>learner</code></dt>
 <dd><p>(<a href="https://mlr3.mlr-org.com/reference/Learner.html" class="external-link">mlr3::Learner</a>)<br>
 Learner to tune.</p></dd>
 
-
-<dt><code>resampling</code></dt>
+      <dt><code>resampling</code></dt>
 <dd><p>(<a href="https://mlr3.mlr-org.com/reference/Resampling.html" class="external-link">mlr3::Resampling</a>)<br>
 Resampling that is used to evaluate the performance of the hyperparameter configurations.
 Uninstantiated resamplings are instantiated during construction so that all configurations are evaluated on the same data splits.
@@ -235,61 +251,51 @@ Already instantiated resamplings are kept unchanged.
 Specialized <a href="Tuner.html">Tuner</a> change the resampling e.g. to evaluate a hyperparameter configuration on different data splits.
 This field, however, always returns the resampling passed in construction.</p></dd>
 
-
-<dt><code>measure</code></dt>
+      <dt><code>measure</code></dt>
 <dd><p>(<a href="https://mlr3.mlr-org.com/reference/Measure.html" class="external-link">mlr3::Measure</a>)<br>
 Measure to optimize. If <code>NULL</code>, default measure is used.</p></dd>
 
-
-<dt><code>terminator</code></dt>
+      <dt><code>terminator</code></dt>
 <dd><p>(<a href="https://bbotk.mlr-org.com/reference/Terminator.html" class="external-link">bbotk::Terminator</a>)<br>
 Stop criterion of the tuning process.</p></dd>
 
-
-<dt><code>search_space</code></dt>
+      <dt><code>search_space</code></dt>
 <dd><p>(<a href="https://paradox.mlr-org.com/reference/ParamSet.html" class="external-link">paradox::ParamSet</a>)<br>
 Hyperparameter search space.
 If <code>NULL</code> (default), the search space is constructed from the <a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">paradox::TuneToken</a> of the learner's parameter set (learner$param_set).
 When using <code><a href="https://paradox.mlr-org.com/reference/to_tune.html" class="external-link">to_tune()</a></code> tokens, dependencies for hierarchical search spaces are automatically handled.</p></dd>
 
-
-<dt><code>store_tuning_instance</code></dt>
+      <dt><code>store_tuning_instance</code></dt>
 <dd><p>(<code>logical(1)</code>)<br>
 If <code>TRUE</code> (default), stores the internally created <a href="TuningInstanceBatchSingleCrit.html">TuningInstanceBatchSingleCrit</a> with all intermediate results in slot <code>$tuning_instance</code>.</p></dd>
 
-
-<dt><code>store_benchmark_result</code></dt>
+      <dt><code>store_benchmark_result</code></dt>
 <dd><p>(<code>logical(1)</code>)<br>
 If <code>TRUE</code> (default), store resample result of evaluated hyperparameter
 configurations in archive as <a href="https://mlr3.mlr-org.com/reference/BenchmarkResult.html" class="external-link">mlr3::BenchmarkResult</a>.</p></dd>
 
-
-<dt><code>store_models</code></dt>
+      <dt><code>store_models</code></dt>
 <dd><p>(<code>logical(1)</code>)<br>
 If <code>TRUE</code>, fitted models are stored in the benchmark result
 (<code>archive$benchmark_result</code>). If <code>store_benchmark_result = FALSE</code>, models
 are only stored temporarily and not accessible after the tuning. This
 combination is needed for measures that require a model.</p></dd>
 
-
-<dt><code>check_values</code></dt>
+      <dt><code>check_values</code></dt>
 <dd><p>(<code>logical(1)</code>)<br>
 If <code>TRUE</code>, hyperparameter values are checked before evaluation and
 performance scores after. If <code>FALSE</code> (default), values are unchecked but
 computational overhead is reduced.</p></dd>
 
-
-<dt><code>callbacks</code></dt>
+      <dt><code>callbacks</code></dt>
 <dd><p>(list of <a href="https://mlr3misc.mlr-org.com/reference/Callback.html" class="external-link">mlr3misc::Callback</a>)<br>
 List of callbacks.</p></dd>
 
-
-<dt><code>rush</code></dt>
+      <dt><code>rush</code></dt>
 <dd><p>(<code>Rush</code>)<br>
 If a rush instance is supplied, the tuning runs without batches.</p></dd>
 
-
-<dt><code>id</code></dt>
+      <dt><code>id</code></dt>
 <dd><p>(<code>character(1)</code>)<br>
 Identifier for the new instance.</p></dd>
 
@@ -297,15 +303,15 @@ Identifier for the new instance.</p></dd>
 </dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-AutoTuner-base_learner"></a><div class="section">
-<h3 id="method-base-learner-">Method <code>base_learner()</code><a class="anchor" aria-label="anchor" href="#method-base-learner-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-AutoTuner-base_learner"></a><div class="section">
+<h3 id="autotuner-base-learner-"><code>AutoTuner$base_learner()</code><a class="anchor" aria-label="anchor" href="#autotuner-base-learner-"></a></h3>
 <p>Extracts the base learner from nested learner objects like <code>GraphLearner</code> in <a href="https://CRAN.R-project.org/package=mlr3pipelines" class="external-link"><span class="pkg">mlr3pipelines</span></a>.
 If <code>recursive = 0</code>, the (tuned) learner is returned.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AutoTuner</span><span class="op">$</span><span class="fu">base_learner</span><span class="op">(</span>recursive <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments-1">Arguments<a class="anchor" aria-label="anchor" href="#arguments-1"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>recursive</code></dt>
 <dd><p>(<code>integer(1)</code>)<br>
@@ -313,86 +319,97 @@ Depth of recursion for multiple nested objects.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns">Returns<a class="anchor" aria-label="anchor" href="#returns"></a></h4>
 <p><a href="https://mlr3.mlr-org.com/reference/Learner.html" class="external-link">mlr3::Learner</a>.</p>
 </div>
 
-</div><p></p><hr><a id="method-AutoTuner-importance"></a><div class="section">
-<h3 id="method-importance-">Method <code>importance()</code><a class="anchor" aria-label="anchor" href="#method-importance-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-AutoTuner-importance"></a><div class="section">
+<h3 id="autotuner-importance-"><code>AutoTuner$importance()</code><a class="anchor" aria-label="anchor" href="#autotuner-importance-"></a></h3>
 <p>The importance scores of the final model.</p><div class="section">
 <h4 id="usage-2">Usage<a class="anchor" aria-label="anchor" href="#usage-2"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AutoTuner</span><span class="op">$</span><span class="fu">importance</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-1">Returns<a class="anchor" aria-label="anchor" href="#returns-1"></a></h4>
 <p>Named <code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric()</a></code>.</p>
 </div>
 
-</div><p></p><hr><a id="method-AutoTuner-selected_features"></a><div class="section">
-<h3 id="method-selected-features-">Method <code>selected_features()</code><a class="anchor" aria-label="anchor" href="#method-selected-features-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-AutoTuner-selected_features"></a><div class="section">
+<h3 id="autotuner-selected-features-"><code>AutoTuner$selected_features()</code><a class="anchor" aria-label="anchor" href="#autotuner-selected-features-"></a></h3>
 <p>The selected features of the final model.</p><div class="section">
 <h4 id="usage-3">Usage<a class="anchor" aria-label="anchor" href="#usage-3"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AutoTuner</span><span class="op">$</span><span class="fu">selected_features</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-2">Returns<a class="anchor" aria-label="anchor" href="#returns-2"></a></h4>
 <p><code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code>.</p>
 </div>
 
-</div><p></p><hr><a id="method-AutoTuner-oob_error"></a><div class="section">
-<h3 id="method-oob-error-">Method <code>oob_error()</code><a class="anchor" aria-label="anchor" href="#method-oob-error-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-AutoTuner-oob_error"></a><div class="section">
+<h3 id="autotuner-oob-error-"><code>AutoTuner$oob_error()</code><a class="anchor" aria-label="anchor" href="#autotuner-oob-error-"></a></h3>
 <p>The out-of-bag error of the final model.</p><div class="section">
 <h4 id="usage-4">Usage<a class="anchor" aria-label="anchor" href="#usage-4"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AutoTuner</span><span class="op">$</span><span class="fu">oob_error</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-3">Returns<a class="anchor" aria-label="anchor" href="#returns-3"></a></h4>
 <p><code>numeric(1)</code>.</p>
 </div>
 
-</div><p></p><hr><a id="method-AutoTuner-loglik"></a><div class="section">
-<h3 id="method-loglik-">Method <code>loglik()</code><a class="anchor" aria-label="anchor" href="#method-loglik-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-AutoTuner-loglik"></a><div class="section">
+<h3 id="autotuner-loglik-"><code>AutoTuner$loglik()</code><a class="anchor" aria-label="anchor" href="#autotuner-loglik-"></a></h3>
 <p>The log-likelihood of the final model.</p><div class="section">
 <h4 id="usage-5">Usage<a class="anchor" aria-label="anchor" href="#usage-5"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AutoTuner</span><span class="op">$</span><span class="fu">loglik</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-4">Returns<a class="anchor" aria-label="anchor" href="#returns-4"></a></h4>
 <p><code>logLik</code>.
 Printer.</p>
 </div>
 
-</div><p></p><hr><a id="method-AutoTuner-print"></a><div class="section">
-<h3 id="method-print-">Method <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code><a class="anchor" aria-label="anchor" href="#method-print-"></a></h3>
+</div>
 
-<div class="section">
+<p></p><hr><a id="method-AutoTuner-print"></a><div class="section">
+<h3 id="autotuner-print-"><code>AutoTuner$print()</code><a class="anchor" aria-label="anchor" href="#autotuner-print-"></a></h3>
+<p></p><div class="section">
 <h4 id="usage-6">Usage<a class="anchor" aria-label="anchor" href="#usage-6"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AutoTuner</span><span class="op">$</span><span class="fu">print</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
-<div class="section">
-<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>...</code></dt>
-<dd><p>(ignored).</p></dd>
-
-
-</dl><p></p></div>
 </div>
 
-</div><p></p><hr><a id="method-AutoTuner-marshal"></a><div class="section">
-<h3 id="method-marshal-">Method <code>marshal()</code><a class="anchor" aria-label="anchor" href="#method-marshal-"></a></h3>
+<p></p><hr><a id="method-AutoTuner-marshal"></a><div class="section">
+<h3 id="autotuner-marshal-"><code>AutoTuner$marshal()</code><a class="anchor" aria-label="anchor" href="#autotuner-marshal-"></a></h3>
 <p>Marshal the learner.</p><div class="section">
 <h4 id="usage-7">Usage<a class="anchor" aria-label="anchor" href="#usage-7"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AutoTuner</span><span class="op">$</span><span class="fu">marshal</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
+<h4 id="arguments-2">Arguments<a class="anchor" aria-label="anchor" href="#arguments-2"></a></h4>
+<p></p><div class="arguments"><dl><dt><code>...</code></dt>
+<dd><p>(any)<br>
+Additional parameters.</p></dd>
+
+
+</dl><p></p></div>
+</div><p></p><div class="section">
+<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
+<p>self</p>
 </div>
 
-<div class="section">
+</div>
+
+<p></p><hr><a id="method-AutoTuner-unmarshal"></a><div class="section">
+<h3 id="autotuner-unmarshal-"><code>AutoTuner$unmarshal()</code><a class="anchor" aria-label="anchor" href="#autotuner-unmarshal-"></a></h3>
+<p>Unmarshal the learner.</p><div class="section">
+<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
+<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AutoTuner</span><span class="op">$</span><span class="fu">unmarshal</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
+</div><p></p><div class="section">
 <h4 id="arguments-3">Arguments<a class="anchor" aria-label="anchor" href="#arguments-3"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>...</code></dt>
 <dd><p>(any)<br>
@@ -400,50 +417,29 @@ Additional parameters.</p></dd>
 
 
 </dl><p></p></div>
-</div>
-<div class="section">
-<h4 id="returns-5">Returns<a class="anchor" aria-label="anchor" href="#returns-5"></a></h4>
-<p>self</p>
-</div>
-
-</div><p></p><hr><a id="method-AutoTuner-unmarshal"></a><div class="section">
-<h3 id="method-unmarshal-">Method <code>unmarshal()</code><a class="anchor" aria-label="anchor" href="#method-unmarshal-"></a></h3>
-<p>Unmarshal the learner.</p><div class="section">
-<h4 id="usage-8">Usage<a class="anchor" aria-label="anchor" href="#usage-8"></a></h4>
-<p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AutoTuner</span><span class="op">$</span><span class="fu">unmarshal</span><span class="op">(</span><span class="va">...</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
-<p></p><div class="arguments"><dl><dt><code>...</code></dt>
-<dd><p>(any)<br>
-Additional parameters.</p></dd>
-
-
-</dl><p></p></div>
-</div>
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="returns-6">Returns<a class="anchor" aria-label="anchor" href="#returns-6"></a></h4>
 <p>self</p>
 </div>
 
-</div><p></p><hr><a id="method-AutoTuner-marshaled"></a><div class="section">
-<h3 id="method-marshaled-">Method <code>marshaled()</code><a class="anchor" aria-label="anchor" href="#method-marshaled-"></a></h3>
+</div>
+
+<p></p><hr><a id="method-AutoTuner-marshaled"></a><div class="section">
+<h3 id="autotuner-marshaled-"><code>AutoTuner$marshaled()</code><a class="anchor" aria-label="anchor" href="#autotuner-marshaled-"></a></h3>
 <p>Whether the learner is marshaled.</p><div class="section">
 <h4 id="usage-9">Usage<a class="anchor" aria-label="anchor" href="#usage-9"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AutoTuner</span><span class="op">$</span><span class="fu">marshaled</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+</div>
 
-</div><p></p><hr><a id="method-AutoTuner-clone"></a><div class="section">
-<h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
+<p></p><hr><a id="method-AutoTuner-clone"></a><div class="section">
+<h3 id="autotuner-clone-"><code>AutoTuner$clone()</code><a class="anchor" aria-label="anchor" href="#autotuner-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-10">Usage<a class="anchor" aria-label="anchor" href="#usage-10"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">AutoTuner</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
-<h4 id="arguments-5">Arguments<a class="anchor" aria-label="anchor" href="#arguments-5"></a></h4>
+</div><p></p><div class="section">
+<h4 id="arguments-4">Arguments<a class="anchor" aria-label="anchor" href="#arguments-4"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
 
@@ -452,6 +448,7 @@ Additional parameters.</p></dd>
 </div>
 
 </div>
+
 
     </div>
 

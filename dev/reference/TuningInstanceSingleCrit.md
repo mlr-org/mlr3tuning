@@ -14,14 +14,14 @@ around
 -\>
 [`bbotk::OptimInstanceBatchSingleCrit`](https://bbotk.mlr-org.com/reference/OptimInstanceBatchSingleCrit.html)
 -\>
-[`mlr3tuning::TuningInstanceBatchSingleCrit`](https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceBatchSingleCrit.md)
+[`TuningInstanceBatchSingleCrit`](https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceBatchSingleCrit.md)
 -\> `TuningInstanceSingleCrit`
 
 ## Methods
 
 ### Public methods
 
-- [`TuningInstanceSingleCrit$new()`](#method-TuningInstanceSingleCrit-new)
+- [`TuningInstanceSingleCrit$new()`](#method-TuningInstanceSingleCrit-initialize)
 
 - [`TuningInstanceSingleCrit$clone()`](#method-TuningInstanceSingleCrit-clone)
 
@@ -32,11 +32,11 @@ Inherited methods
 - [`bbotk::OptimInstance$print()`](https://bbotk.mlr-org.com/reference/OptimInstance.html#method-print)
 - [`bbotk::OptimInstanceBatch$eval_batch()`](https://bbotk.mlr-org.com/reference/OptimInstanceBatch.html#method-eval_batch)
 - [`bbotk::OptimInstanceBatch$objective_function()`](https://bbotk.mlr-org.com/reference/OptimInstanceBatch.html#method-objective_function)
-- [`mlr3tuning::TuningInstanceBatchSingleCrit$assign_result()`](https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceBatchSingleCrit.html#method-assign_result)
+- [`TuningInstanceBatchSingleCrit$assign_result()`](https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceBatchSingleCrit.html#method-assign_result)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `TuningInstanceSingleCrit$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class.
@@ -132,7 +132,7 @@ Creates a new instance of this
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `TuningInstanceSingleCrit$clone()`
 
 The objects of this class are cloneable with this method.
 

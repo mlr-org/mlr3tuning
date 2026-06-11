@@ -64,8 +64,11 @@ Calls <a href="https://astamm.github.io/nloptr/reference/nloptr.html" class="ext
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The termination conditions <code>stopval</code>, <code>maxtime</code> and <code>maxeval</code> of <code><a href="https://astamm.github.io/nloptr/reference/nloptr.html" class="external-link">nloptr::nloptr()</a></code> are deactivated and replaced by the <a href="https://bbotk.mlr-org.com/reference/Terminator.html" class="external-link">bbotk::Terminator</a> subclasses.
-The x and function value tolerance termination conditions (<code>xtol_rel = 10^-4</code>, <code>xtol_abs = rep(0.0, length(x0))</code>, <code>ftol_rel = 0.0</code> and <code>ftol_abs = 0.0</code>) are still available and implemented with their package defaults.
+    <p>The termination conditions <code>stopval</code>, <code>maxtime</code> and <code>maxeval</code> of <code><a href="https://astamm.github.io/nloptr/reference/nloptr.html" class="external-link">nloptr::nloptr()</a></code> are deactivated
+and replaced by the <a href="https://bbotk.mlr-org.com/reference/Terminator.html" class="external-link">bbotk::Terminator</a> subclasses.
+The x and function value tolerance termination conditions (<code>xtol_rel = 10^-4</code>,
+<code>xtol_abs = rep(0.0, length(x0))</code>, <code>ftol_rel = 0.0</code> and <code>ftol_abs = 0.0</code>)
+are still available and implemented with their package defaults.
 To deactivate these conditions, set them to <code>-1</code>.</p>
     </div>
     <div class="section level2">
@@ -124,19 +127,28 @@ Note that function evaluations required for the numerical gradient approximation
     <h2 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a></h2>
 
 
-<p>There are several sections about hyperparameter optimization in the <a href="https://mlr3book.mlr-org.com" class="external-link">mlr3book</a>.</p><ul><li><p>Getting started with <a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html" class="external-link">hyperparameter optimization</a>.</p></li>
+<p>There are several sections about hyperparameter optimization in the <a href="https://mlr3book.mlr-org.com" class="external-link">mlr3book</a>.</p><ul><li><p>Getting started with
+<a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html" class="external-link">hyperparameter optimization</a>.</p></li>
 <li><p>An overview of all tuners can be found on our <a href="https://mlr-org.com/tuners.html" class="external-link">website</a>.</p></li>
-<li><p><a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-model-tuning" class="external-link">Tune</a> a support vector machine on the Sonar data set.</p></li>
+<li><p><a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-model-tuning" class="external-link">Tune</a>
+a support vector machine on the Sonar data set.</p></li>
 <li><p>Learn about <a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-defining-search-spaces" class="external-link">tuning spaces</a>.</p></li>
 <li><p>Estimate the model performance with <a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-nested-resampling" class="external-link">nested resampling</a>.</p></li>
 <li><p>Learn about <a href="https://mlr3book.mlr-org.com/chapters/chapter5/advanced_tuning_methods_and_black_box_optimization.html#sec-multi-metrics-tuning" class="external-link">multi-objective optimization</a>.</p></li>
-<li><p>Simultaneously optimize hyperparameters and use <a href="https://mlr3book.mlr-org.com/chapters/chapter15/predsets_valid_inttune.html" class="external-link">early stopping</a> with XGBoost.</p></li>
-<li><p><a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-autotuner" class="external-link">Automate</a> the tuning.</p></li>
-</ul><p>The <a href="https://mlr-org.com/gallery-all-optimization.html" class="external-link">gallery</a> features a collection of case studies and demos about optimization.</p><ul><li><p>Learn more advanced methods with the <a href="https://mlr-org.com/gallery/series/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/" class="external-link">Practical Tuning Series</a>.</p></li>
+<li><p>Simultaneously optimize hyperparameters and use
+<a href="https://mlr3book.mlr-org.com/chapters/chapter15/predsets_valid_inttune.html" class="external-link">early stopping</a> with XGBoost.</p></li>
+<li><p><a href="https://mlr3book.mlr-org.com/chapters/chapter4/hyperparameter_optimization.html#sec-autotuner" class="external-link">Automate</a>
+the tuning.</p></li>
+</ul><p>The <a href="https://mlr-org.com/gallery-all-optimization.html" class="external-link">gallery</a> features a collection of case studies and demos
+about optimization.</p><ul><li><p>Learn more advanced methods with the <a href="https://mlr-org.com/gallery/series/2021-03-09-practical-tuning-series-tune-a-support-vector-machine/" class="external-link">Practical Tuning Series</a>.</p></li>
 <li><p>Learn about <a href="https://mlr-org.com/gallery/optimization/2023-01-16-hotstart/" class="external-link">hotstarting</a> models.</p></li>
-<li><p>Run the <a href="https://mlr-org.com/gallery/optimization/2023-01-31-default-configuration/" class="external-link">default hyperparameter configuration</a> of learners as a baseline.</p></li>
-<li><p>Use the <a href="https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/" class="external-link">Hyperband</a> optimizer with different budget parameters.</p></li>
-</ul><p>The <a href="https://cheatsheets.mlr-org.com/mlr3tuning.pdf" class="external-link">cheatsheet</a> summarizes the most important functions of mlr3tuning.</p>
+<li><p>Run the
+<a href="https://mlr-org.com/gallery/optimization/2023-01-31-default-configuration/" class="external-link">default hyperparameter configuration</a>
+of learners as a baseline.</p></li>
+<li><p>Use the <a href="https://mlr-org.com/gallery/series/2023-01-15-hyperband-xgboost/" class="external-link">Hyperband</a> optimizer with different
+budget parameters.</p></li>
+</ul><p>The <a href="https://cheatsheets.mlr-org.com/mlr3tuning.pdf" class="external-link">cheatsheet</a> summarizes
+the most important functions of mlr3tuning.</p>
     </div>
     <div class="section level2">
     <h2 id="progress-bars">Progress Bars<a class="anchor" aria-label="anchor" href="#progress-bars"></a></h2>
@@ -163,36 +175,34 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
     </div>
     <div class="section level2">
     <h2 id="super-classes">Super classes<a class="anchor" aria-label="anchor" href="#super-classes"></a></h2>
-    <p><code><a href="Tuner.html">mlr3tuning::Tuner</a></code> -&gt; <code><a href="TunerBatch.html">mlr3tuning::TunerBatch</a></code> -&gt; <code><a href="TunerBatchFromOptimizerBatch.html">mlr3tuning::TunerBatchFromOptimizerBatch</a></code> -&gt; <code>TunerBatchNLoptr</code></p>
+    <p><code><a href="Tuner.html">Tuner</a></code> -&gt; <code><a href="TunerBatch.html">TunerBatch</a></code> -&gt; <code><a href="TunerBatchFromOptimizerBatch.html">TunerBatchFromOptimizerBatch</a></code> -&gt; <code>TunerBatchNLoptr</code></p>
     </div>
     <div class="section level2">
     <h2 id="methods">Methods<a class="anchor" aria-label="anchor" href="#methods"></a></h2>
 
 <div class="section">
 <h3 id="public-methods">Public methods<a class="anchor" aria-label="anchor" href="#public-methods"></a></h3>
-
-<ul><li><p><a href="#method-TunerBatchNLoptr-new"><code>TunerBatchNLoptr$new()</code></a></p></li>
+<p></p><ul><li><p><a href="#method-TunerBatchNLoptr-initialize"><code>TunerBatchNLoptr$new()</code></a></p></li>
 <li><p><a href="#method-TunerBatchNLoptr-clone"><code>TunerBatchNLoptr$clone()</code></a></p></li>
-</ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="format"><a href="Tuner.html#method-format"><code>mlr3tuning::Tuner$format()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="help"><a href="Tuner.html#method-help"><code>mlr3tuning::Tuner$help()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="print"><a href="Tuner.html#method-print"><code>mlr3tuning::Tuner$print()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="TunerBatchFromOptimizerBatch" data-id="optimize"><a href="TunerBatchFromOptimizerBatch.html#method-optimize"><code>mlr3tuning::TunerBatchFromOptimizerBatch$optimize()</code></a></span></li>
-</ul></details></p><hr><a id="method-TunerBatchNLoptr-new"></a><div class="section">
-<h3 id="method-new-">Method <code>new()</code><a class="anchor" aria-label="anchor" href="#method-new-"></a></h3>
+</ul></div><p><details open><summary>Inherited methods</summary><ul><li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="format"><a href="Tuner.html#method-format"><code>Tuner$format()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="help"><a href="Tuner.html#method-help"><code>Tuner$help()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="Tuner" data-id="print"><a href="Tuner.html#method-print"><code>Tuner$print()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="mlr3tuning" data-topic="TunerBatchFromOptimizerBatch" data-id="optimize"><a href="TunerBatchFromOptimizerBatch.html#method-optimize"><code>TunerBatchFromOptimizerBatch$optimize()</code></a></span></li>
+</ul></details></p><hr><a id="method-TunerBatchNLoptr-initialize"></a><div class="section">
+<h3 id="tunerbatchnloptr-new-"><code>TunerBatchNLoptr$new()</code><a class="anchor" aria-label="anchor" href="#tunerbatchnloptr-new-"></a></h3>
 <p>Creates a new instance of this <a href="https://r6.r-lib.org/reference/R6Class.html" class="external-link">R6</a> class.</p><div class="section">
 <h4 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va"><a href="../reference/mlr_tuners_nloptr.html">TunerBatchNLoptr</a></span><span class="op">$</span><span class="fu">new</span><span class="op">(</span><span class="op">)</span></span></code></pre></div><p></p></div>
 </div>
 
+</div>
 
-</div><p></p><hr><a id="method-TunerBatchNLoptr-clone"></a><div class="section">
-<h3 id="method-clone-">Method <code>clone()</code><a class="anchor" aria-label="anchor" href="#method-clone-"></a></h3>
+<p></p><hr><a id="method-TunerBatchNLoptr-clone"></a><div class="section">
+<h3 id="tunerbatchnloptr-clone-"><code>TunerBatchNLoptr$clone()</code><a class="anchor" aria-label="anchor" href="#tunerbatchnloptr-clone-"></a></h3>
 <p>The objects of this class are cloneable with this method.</p><div class="section">
 <h4 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a></h4>
 <p></p><div class="r"><div class="sourceCode"><pre><code><span><span class="va">TunerBatchNLoptr</span><span class="op">$</span><span class="fu">clone</span><span class="op">(</span>deep <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div><p></p></div>
-</div>
-
-<div class="section">
+</div><p></p><div class="section">
 <h4 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h4>
 <p></p><div class="arguments"><dl><dt><code>deep</code></dt>
 <dd><p>Whether to make a deep clone.</p></dd>
@@ -202,6 +212,7 @@ combined with a <a href="https://bbotk.mlr-org.com/reference/Terminator.html" cl
 </div>
 
 </div>
+
 
     </div>
 

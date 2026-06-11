@@ -107,14 +107,14 @@ summarizes the most important functions of mlr3tuning.
 
 ## Super class
 
-[`mlr3tuning::Tuner`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.md)
--\> `TunerBatch`
+[`Tuner`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.md) -\>
+`TunerBatch`
 
 ## Methods
 
 ### Public methods
 
-- [`TunerBatch$new()`](#method-TunerBatch-new)
+- [`TunerBatch$new()`](#method-TunerBatch-initialize)
 
 - [`TunerBatch$optimize()`](#method-TunerBatch-optimize)
 
@@ -122,13 +122,13 @@ summarizes the most important functions of mlr3tuning.
 
 Inherited methods
 
-- [`mlr3tuning::Tuner$format()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-format)
-- [`mlr3tuning::Tuner$help()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-help)
-- [`mlr3tuning::Tuner$print()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-print)
+- [`Tuner$format()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-format)
+- [`Tuner$help()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-help)
+- [`Tuner$print()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-print)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `TunerBatch$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class.
@@ -193,7 +193,7 @@ Creates a new instance of this
 
 ------------------------------------------------------------------------
 
-### Method [`optimize()`](https://rdrr.io/r/stats/optimize.html)
+### `TunerBatch$optimize()`
 
 Performs the tuning on a
 [TuningInstanceBatchSingleCrit](https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceBatchSingleCrit.md)
@@ -223,7 +223,7 @@ The result will be written into the instance object.
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `TunerBatch$clone()`
 
 The objects of this class are cloneable with this method.
 

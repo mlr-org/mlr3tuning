@@ -184,7 +184,7 @@ provides visualizations for tuning results.
 
 ### Public methods
 
-- [`TuningInstanceBatchSingleCrit$new()`](#method-TuningInstanceBatchSingleCrit-new)
+- [`TuningInstanceBatchSingleCrit$new()`](#method-TuningInstanceBatchSingleCrit-initialize)
 
 - [`TuningInstanceBatchSingleCrit$assign_result()`](#method-TuningInstanceBatchSingleCrit-assign_result)
 
@@ -200,7 +200,7 @@ Inherited methods
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `TuningInstanceBatchSingleCrit$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class.
@@ -296,7 +296,7 @@ Creates a new instance of this
 
 ------------------------------------------------------------------------
 
-### Method `assign_result()`
+### `TuningInstanceBatchSingleCrit$assign_result()`
 
 The [Tuner](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.md)
 object writes the best found point and estimated performance value here.
@@ -345,7 +345,7 @@ For internal use.
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `TuningInstanceBatchSingleCrit$clone()`
 
 The objects of this class are cloneable with this method.
 
@@ -398,10 +398,10 @@ learner$train(task)
 as.data.table(instance$archive)
 #>           cp classif.ce runtime_learners           timestamp warnings errors
 #>        <num>      <num>            <num>              <POSc>    <int>  <int>
-#> 1: -3.036646 0.06392067            0.019 2026-06-11 09:54:41        0      0
-#> 2: -5.238604 0.06392067            0.021 2026-06-11 09:54:41        0      0
-#> 3: -7.255326 0.06392067            0.018 2026-06-11 09:54:41        0      0
-#> 4: -6.314690 0.06392067            0.019 2026-06-11 09:54:41        0      0
+#> 1: -3.036646 0.06392067            0.020 2026-06-11 10:52:38        0      0
+#> 2: -5.238604 0.06392067            0.023 2026-06-11 10:52:38        0      0
+#> 3: -7.255326 0.06392067            0.020 2026-06-11 10:52:38        0      0
+#> 4: -6.314690 0.06392067            0.022 2026-06-11 10:52:38        0      0
 #>     x_domain batch_nr  resample_result
 #>       <list>    <int>           <list>
 #> 1: <list[1]>        1 <ResampleResult>

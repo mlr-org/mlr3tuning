@@ -25,31 +25,30 @@ Other TunerAsync:
 
 ## Super classes
 
-[`mlr3tuning::Tuner`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.md)
+[`Tuner`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.md) -\>
+[`TunerAsync`](https://mlr3tuning.mlr-org.com/dev/reference/TunerAsync.md)
 -\>
-[`mlr3tuning::TunerAsync`](https://mlr3tuning.mlr-org.com/dev/reference/TunerAsync.md)
--\>
-[`mlr3tuning::TunerAsyncFromOptimizerAsync`](https://mlr3tuning.mlr-org.com/dev/reference/TunerAsyncFromOptimizerAsync.md)
+[`TunerAsyncFromOptimizerAsync`](https://mlr3tuning.mlr-org.com/dev/reference/TunerAsyncFromOptimizerAsync.md)
 -\> `TunerAsyncDesignPoints`
 
 ## Methods
 
 ### Public methods
 
-- [`TunerAsyncDesignPoints$new()`](#method-TunerAsyncDesignPoints-new)
+- [`TunerAsyncDesignPoints$new()`](#method-TunerAsyncDesignPoints-initialize)
 
 - [`TunerAsyncDesignPoints$clone()`](#method-TunerAsyncDesignPoints-clone)
 
 Inherited methods
 
-- [`mlr3tuning::Tuner$format()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-format)
-- [`mlr3tuning::Tuner$help()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-help)
-- [`mlr3tuning::Tuner$print()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-print)
-- [`mlr3tuning::TunerAsyncFromOptimizerAsync$optimize()`](https://mlr3tuning.mlr-org.com/dev/reference/TunerAsyncFromOptimizerAsync.html#method-optimize)
+- [`Tuner$format()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-format)
+- [`Tuner$help()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-help)
+- [`Tuner$print()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-print)
+- [`TunerAsyncFromOptimizerAsync$optimize()`](https://mlr3tuning.mlr-org.com/dev/reference/TunerAsyncFromOptimizerAsync.html#method-optimize)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `TunerAsyncDesignPoints$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class.
@@ -60,7 +59,7 @@ Creates a new instance of this
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `TunerAsyncDesignPoints$clone()`
 
 The objects of this class are cloneable with this method.
 

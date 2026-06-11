@@ -133,7 +133,7 @@ Other Tuner:
 
 ### Public methods
 
-- [`Tuner$new()`](#method-Tuner-new)
+- [`Tuner$new()`](#method-Tuner-initialize)
 
 - [`Tuner$format()`](#method-Tuner-format)
 
@@ -145,7 +145,7 @@ Other Tuner:
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `Tuner$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class.
@@ -210,7 +210,7 @@ Creates a new instance of this
 
 ------------------------------------------------------------------------
 
-### Method [`format()`](https://rdrr.io/r/base/format.html)
+### `Tuner$format()`
 
 Helper for print outputs.
 
@@ -230,7 +230,7 @@ Helper for print outputs.
 
 ------------------------------------------------------------------------
 
-### Method [`print()`](https://rdrr.io/r/base/print.html)
+### `Tuner$print()`
 
 Print method.
 
@@ -244,7 +244,7 @@ Print method.
 
 ------------------------------------------------------------------------
 
-### Method [`help()`](https://rdrr.io/r/utils/help.html)
+### `Tuner$help()`
 
 Opens the corresponding help page referenced by field `$man`.
 
@@ -254,7 +254,7 @@ Opens the corresponding help page referenced by field `$man`.
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `Tuner$clone()`
 
 The objects of this class are cloneable with this method.
 

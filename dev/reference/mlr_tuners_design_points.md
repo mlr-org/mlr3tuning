@@ -135,31 +135,30 @@ Other Tuner:
 
 ## Super classes
 
-[`mlr3tuning::Tuner`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.md)
+[`Tuner`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.md) -\>
+[`TunerBatch`](https://mlr3tuning.mlr-org.com/dev/reference/TunerBatch.md)
 -\>
-[`mlr3tuning::TunerBatch`](https://mlr3tuning.mlr-org.com/dev/reference/TunerBatch.md)
--\>
-[`mlr3tuning::TunerBatchFromOptimizerBatch`](https://mlr3tuning.mlr-org.com/dev/reference/TunerBatchFromOptimizerBatch.md)
+[`TunerBatchFromOptimizerBatch`](https://mlr3tuning.mlr-org.com/dev/reference/TunerBatchFromOptimizerBatch.md)
 -\> `TunerBatchDesignPoints`
 
 ## Methods
 
 ### Public methods
 
-- [`TunerBatchDesignPoints$new()`](#method-TunerBatchDesignPoints-new)
+- [`TunerBatchDesignPoints$new()`](#method-TunerBatchDesignPoints-initialize)
 
 - [`TunerBatchDesignPoints$clone()`](#method-TunerBatchDesignPoints-clone)
 
 Inherited methods
 
-- [`mlr3tuning::Tuner$format()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-format)
-- [`mlr3tuning::Tuner$help()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-help)
-- [`mlr3tuning::Tuner$print()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-print)
-- [`mlr3tuning::TunerBatchFromOptimizerBatch$optimize()`](https://mlr3tuning.mlr-org.com/dev/reference/TunerBatchFromOptimizerBatch.html#method-optimize)
+- [`Tuner$format()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-format)
+- [`Tuner$help()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-help)
+- [`Tuner$print()`](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.html#method-print)
+- [`TunerBatchFromOptimizerBatch$optimize()`](https://mlr3tuning.mlr-org.com/dev/reference/TunerBatchFromOptimizerBatch.html#method-optimize)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `TunerBatchDesignPoints$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class.
@@ -170,7 +169,7 @@ Creates a new instance of this
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `TunerBatchDesignPoints$clone()`
 
 The objects of this class are cloneable with this method.
 
@@ -223,9 +222,9 @@ instance$result
 as.data.table(instance$archive)
 #>       cp minbucket minsplit classif.ce runtime_learners           timestamp
 #>    <num>     <num>    <num>      <num>            <num>              <POSc>
-#> 1: 0.100        64        2 0.09565217            0.007 2026-06-11 09:54:58
-#> 2: 0.010        32       64 0.07826087            0.006 2026-06-11 09:54:58
-#> 3: 0.001         1      128 0.07826087            0.006 2026-06-11 09:54:58
+#> 1: 0.100        64        2 0.09565217            0.008 2026-06-11 10:52:57
+#> 2: 0.010        32       64 0.07826087            0.007 2026-06-11 10:52:57
+#> 3: 0.001         1      128 0.07826087            0.007 2026-06-11 10:52:57
 #>    warnings errors  x_domain batch_nr  resample_result
 #>       <int>  <int>    <list>    <int>           <list>
 #> 1:        0      0 <list[3]>        1 <ResampleResult>
