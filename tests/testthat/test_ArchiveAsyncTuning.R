@@ -81,7 +81,7 @@ test_that("ArchiveAsyncTuning as.data.table function works", {
   expect_data_table(tab, min.rows = 20)
   expect_names(
     names(tab),
-    permutation.of = c(
+    subset.of = c(
       "state",
       "cp",
       "classif.ce",
@@ -93,7 +93,8 @@ test_that("ArchiveAsyncTuning as.data.table function works", {
       "timestamp_ys",
       "keys",
       "warnings",
-      "errors"
+      "errors",
+      "condition"
     )
   )
 
@@ -115,6 +116,7 @@ test_that("ArchiveAsyncTuning as.data.table function works", {
       "keys",
       "warnings",
       "errors",
+      "condition",
       "classif.acc"
     )
   )
@@ -137,6 +139,7 @@ test_that("ArchiveAsyncTuning as.data.table function works", {
       "keys",
       "warnings",
       "errors",
+      "condition",
       "classif.acc",
       "classif.mcc"
     )
@@ -158,7 +161,8 @@ test_that("ArchiveAsyncTuning as.data.table function works", {
       "timestamp_ys",
       "keys",
       "warnings",
-      "errors"
+      "errors",
+      "condition"
     )
   )
 
@@ -177,7 +181,8 @@ test_that("ArchiveAsyncTuning as.data.table function works", {
       "timestamp_ys",
       "keys",
       "warnings",
-      "errors"
+      "errors",
+      "condition"
     )
   )
 
@@ -198,7 +203,8 @@ test_that("ArchiveAsyncTuning as.data.table function works", {
       "timestamp_ys",
       "keys",
       "warnings",
-      "errors"
+      "errors",
+      "condition"
     )
   )
 
@@ -219,7 +225,8 @@ test_that("ArchiveAsyncTuning as.data.table function works", {
       "x_domain",
       "keys",
       "warnings",
-      "errors"
+      "errors",
+      "condition"
     )
   )
 })
@@ -258,7 +265,8 @@ test_that("ArchiveAsyncTuning as.data.table function works without resample resu
       "timestamp_ys",
       "keys",
       "warnings",
-      "errors"
+      "errors",
+      "condition"
     )
   )
 })
@@ -332,7 +340,8 @@ test_that("ArchiveAsyncTuning as.data.table function works with new ids in x_dom
       "timestamp_ys",
       "keys",
       "warnings",
-      "errors"
+      "errors",
+      "condition"
     )
   )
 })
@@ -389,7 +398,8 @@ test_that("ArchiveAsyncTuning as.data.table function works with switched new ids
       "timestamp_ys",
       "keys",
       "warnings",
-      "errors"
+      "errors",
+      "condition"
     )
   )
 })
