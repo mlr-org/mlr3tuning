@@ -164,7 +164,14 @@ as.data.table.ArchiveAsyncTuningFrozen = function(
   if (!is.null(measures) && !is.null(tab$resample_result)) {
     measures = assert_measures(as_measures(measures), learner = x$learners(1)[[1]], task = x$resample_result(1)$task)
     cols_y_extra = map_chr(measures, "id")
-    scores = map_dtr(x$data$resample_result, function(rr) as.data.table(as.list(rr$aggregate(measures))))
+    # queued, running, and failed points have no resample result
+    scores = map_dtr(tab$resample_result, function(rr) {
+      if (is.null(rr)) {
+        as.data.table(named_list(cols_y_extra, NA_real_))
+      } else {
+        as.data.table(as.list(rr$aggregate(measures)))
+      }
+    })
     tab = cbind(tab, scores)
   }
 

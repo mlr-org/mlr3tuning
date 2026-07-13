@@ -271,6 +271,33 @@ test_that("ArchiveAsyncTuning as.data.table function works without resample resu
   )
 })
 
+test_that("ArchiveAsyncTuning as.data.table function works with failed points", {
+  rush = start_rush()
+  on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
+
+  instance = ti_async(
+    task = tsk("pima"),
+    learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
+    resampling = rsmp("cv", folds = 3),
+    measures = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 5),
+    store_benchmark_result = TRUE,
+    rush = rush
+  )
+  tuner = tnr("async_random_search")
+  tuner$optimize(instance)
+
+  instance$archive$push_failed_point(list(cp = 0.01), condition = list(message = "error"))
+
+  tab = as.data.table(instance$archive, measures = msr("classif.acc"))
+  expect_data_table(tab, min.rows = 6)
+  expect_true(is.na(tab[state == "failed", classif.acc]))
+  expect_numeric(tab[state == "finished", classif.acc], any.missing = FALSE)
+})
+
 test_that("ArchiveAsyncTuning as.data.table function works with empty archive", {
   rush = start_rush()
   on.exit({
