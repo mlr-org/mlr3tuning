@@ -212,3 +212,21 @@ on new data.
 learner$param_set$values = instance$result_learner_param_vals
 learner$train(tsk("sonar"))
 ```
+
+## Citation
+
+If you use mlr3tuning in your work, please cite it.
+
+> Becker M, Lang M, Richter J, Bischl B (2026). *mlr3tuning:
+> Hyperparameter Optimization for mlr3*. <doi:10.5281/zenodo.15852621>,
+> <https://doi.org/10.5281/zenodo.15852621>.
+
+``` R
+@Manual{becker2026mlr3tuning,
+  title = {mlr3tuning: Hyperparameter Optimization for mlr3},
+  url = {https://doi.org/10.5281/zenodo.15852621},
+  author = {Marc Becker and Michel Lang and Jakob Richter and Bernd Bischl},
+  year = {2026},
+  doi = {10.5281/zenodo.15852621},
+}
+```

@@ -23,7 +23,7 @@ Hyperparameter Optimization for mlr3*.
 [doi:10.5281/zenodo.15852621](https://doi.org/10.5281/zenodo.15852621).
 <https://doi.org/10.5281/zenodo.15852621>.
 
-    @Manual{,
+    @Manual{becker2026mlr3tuning,
       title = {mlr3tuning: Hyperparameter Optimization for mlr3},
       url = {https://doi.org/10.5281/zenodo.15852621},
       author = {Marc Becker and Michel Lang and Jakob Richter and Bernd Bischl},
