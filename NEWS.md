@@ -1,7 +1,8 @@
 # mlr3tuning (development version)
 
 * Minimum required version of `rush` is now 1.0.0. Removed all compatibility workarounds for older versions.
-* fix: `as.data.table.ArchiveAsyncTuning()` and `as.data.table.ArchiveAsyncTuningFrozen()` no longer error when the `measures` argument is used on an archive that contains queued, running, or failed points. The extra measures are `NA` for these points.
+* fix: `as.data.table.ArchiveAsyncTuning()` and `as.data.table.ArchiveAsyncTuningFrozen()` no longer error when the `measures` argument is used on an archive that contains queued, running, or failed points.
+  The extra measures are `NA` for these points.
 
 # mlr3tuning 1.6.0
 
