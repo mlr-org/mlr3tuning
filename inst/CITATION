@@ -1,5 +1,6 @@
 bibentry(
   bibtype = "Manual",
+  key = "becker2026mlr3tuning",
   title = "mlr3tuning: Hyperparameter Optimization for mlr3",
   url = "https://doi.org/10.5281/zenodo.15852621",
   author = c(
@@ -11,4 +12,3 @@ bibentry(
   year = 2026,
   doi = "10.5281/zenodo.15852621"
 )
-
