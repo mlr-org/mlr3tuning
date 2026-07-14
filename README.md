@@ -7,6 +7,7 @@ Package website: [release](https://mlr3tuning.mlr-org.com/) \|
 <!-- badges: start -->
 
 [![r-cmd-check](https://github.com/mlr-org/mlr3tuning/actions/workflows/r-cmd-check.yml/badge.svg)](https://github.com/mlr-org/mlr3tuning/actions/workflows/r-cmd-check.yml)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15852621.svg)](https://doi.org/10.5281/zenodo.15852621)
 [![CRAN
 Status](https://www.r-pkg.org/badges/version-ago/mlr3tuning)](https://cran.r-project.org/package=mlr3tuning)
 [![Mattermost](https://img.shields.io/badge/chat-mattermost-orange.svg)](https://lmmisld-lmu-stats-slds.srv.mwn.de/mlr_invite/)
