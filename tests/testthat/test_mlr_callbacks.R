@@ -34,6 +34,22 @@ test_that("backup callback works with standalone tuner", {
   expect_benchmark_result(readRDS(file))
 })
 
+# batch measures callback ------------------------------------------------------
+
+test_that("batch measures callback works", {
+  instance = tune(
+    tuner = tnr("random_search", batch_size = 2),
+    task = tsk("pima"),
+    learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
+    resampling = rsmp("cv", folds = 3),
+    measures = msr("classif.ce"),
+    term_evals = 4,
+    callbacks = clbk("mlr3tuning.measures", measures = msr("classif.acc"))
+  )
+
+  expect_numeric(instance$archive$data$classif.acc)
+})
+
 # async measure callback ------------------------------------------------------
 
 test_that("async measures callback works", {
@@ -62,6 +78,31 @@ test_that("async measures callback works", {
   tuner$optimize(instance)
 
   expect_numeric(instance$archive$data$classif.ce_holdout)
+})
+
+test_that("async measures callback works with a single measure", {
+  skip_if_not_installed("rush")
+  skip_if_no_redis()
+  rush = start_rush()
+  on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
+
+  instance = ti_async(
+    task = tsk("pima"),
+    learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
+    resampling = rsmp("cv", folds = 3),
+    measures = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 3),
+    callbacks = clbk("mlr3tuning.async_measures", measures = msr("classif.acc", id = "classif.acc_extra")),
+    rush = rush
+  )
+
+  tuner = tnr("async_random_search")
+  tuner$optimize(instance)
+
+  expect_numeric(instance$archive$data$classif.acc_extra)
 })
 
 # async mlflow callback --------------------------------------------------------
