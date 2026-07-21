@@ -4,6 +4,7 @@
   Removed all compatibility workarounds for older versions.
 * fix: `as.data.table.ArchiveAsyncTuning()` and `as.data.table.ArchiveAsyncTuningFrozen()` no longer error when the `measures` argument is used on an archive that contains queued, running, or failed points.
   The extra measures are `NA` for these points.
+* fix: `assert_async_tuning_callbacks()` and `assert_batch_tuning_callbacks()` now check that each callback inherits from `CallbackAsyncTuning` and `CallbackBatchTuning`, respectively, so tuning instances reject callbacks of the wrong type at construction time.
 
 # mlr3tuning 1.6.0
 
