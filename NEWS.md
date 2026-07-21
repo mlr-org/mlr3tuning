@@ -4,6 +4,7 @@
   Removed all compatibility workarounds for older versions.
 * fix: `as.data.table.ArchiveAsyncTuning()` and `as.data.table.ArchiveAsyncTuningFrozen()` no longer error when the `measures` argument is used on an archive that contains queued, running, or failed points.
   The extra measures are `NA` for these points.
+* fix: `as.data.table.ArchiveAsyncTuning()`, `as.data.table.ArchiveAsyncTuningFrozen()`, and `as.data.table.ArchiveBatchTuning()` now warn instead of silently ignoring the `measures` argument when no benchmark result is stored.
 
 # mlr3tuning 1.6.0
 
