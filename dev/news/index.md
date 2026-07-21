@@ -4,11 +4,30 @@
 
 - Minimum required version of `rush` is now 1.2.0. Removed all
   compatibility workarounds for older versions.
+- fix: `ArchiveAsyncTuning$benchmark_result` now raises a clear error
+  when the tuning instance was created with
+  `store_benchmark_result = FALSE`. Previously, the first access
+  overwrote the cached benchmark result with `NULL` and every later
+  access failed with an unrelated error. Freezing such an archive with
+  `ArchiveAsyncTuningFrozen` works now and returns an empty benchmark
+  result.
 - fix: `as.data.table.ArchiveAsyncTuning()` and
   `as.data.table.ArchiveAsyncTuningFrozen()` no longer error when the
   `measures` argument is used on an archive that contains queued,
   running, or failed points. The extra measures are `NA` for these
   points.
+- fix:
+  [`extract_inner_tuning_results()`](https://mlr3tuning.mlr-org.com/dev/reference/extract_inner_tuning_results.md)
+  no longer modifies the result table of the stored tuning instances by
+  reference. Previously, the `iteration` and `tuning_instance` columns
+  were written into `instance$result`, and a stale `tuning_instance`
+  column could leak into the output of a second call with
+  `tuning_instance = FALSE`.
+- fix: `TuningInstanceBatchMultiCrit$assign_result()` and
+  `TuningInstanceAsyncMultiCrit$assign_result()` produced wrong
+  `result_learner_param_vals` when the search space was empty, because
+  the number of measures instead of the number of Pareto points was used
+  to recycle the parameter values.
 - fix: `AutoTuner$clone(deep = TRUE)` now deep clones the wrapped
   learner, resampling, measure, terminator, callbacks, and the trained
   model. Previously, the clone shared these objects with the original,
