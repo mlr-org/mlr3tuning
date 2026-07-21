@@ -2,6 +2,7 @@
 
 * Minimum required version of `rush` is now 1.2.0.
   Removed all compatibility workarounds for older versions.
+* fix: `ArchiveAsyncTuning$benchmark_result` now raises a clear error when the tuning instance was created with `store_benchmark_result = FALSE`. Previously, the first access overwrote the cached benchmark result with `NULL` and every later access failed with an unrelated error. Freezing such an archive with `ArchiveAsyncTuningFrozen` works now and returns an empty benchmark result.
 * fix: `as.data.table.ArchiveAsyncTuning()` and `as.data.table.ArchiveAsyncTuningFrozen()` no longer error when the `measures` argument is used on an archive that contains queued, running, or failed points.
   The extra measures are `NA` for these points.
 
