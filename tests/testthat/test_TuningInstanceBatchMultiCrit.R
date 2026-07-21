@@ -147,6 +147,15 @@ test_that("TuneToken and result_learner_param_vals works", {
   expect_equal(instance$result_learner_param_vals[[1]]$cp, 0.1)
 })
 
+test_that("assign_result checks learner_param_vals", {
+  inst = TEST_MAKE_INST1_2D()
+  xdt = data.table(cp = 0.1)
+  ydt = data.table(classif.ce = 0.1, classif.acc = 0.9)
+
+  expect_error(inst$assign_result(xdt, ydt, learner_param_vals = c("a", "b")), "list")
+  expect_error(inst$assign_result(xdt, ydt, learner_param_vals = list(list(), list())), "length 1")
+})
+
 test_that("TuningInstanceBatchMultiCrit and empty search space works", {
   # xval constant
   instance = tune(
