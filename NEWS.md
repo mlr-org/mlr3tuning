@@ -4,6 +4,7 @@
   Removed all compatibility workarounds for older versions.
 * fix: `as.data.table.ArchiveAsyncTuning()` and `as.data.table.ArchiveAsyncTuningFrozen()` no longer error when the `measures` argument is used on an archive that contains queued, running, or failed points.
   The extra measures are `NA` for these points.
+* fix: `as_tuner()` with `clone = TRUE` now performs a deep clone, so the returned tuner no longer shares its `ParamSet` with the input.
 
 # mlr3tuning 1.6.0
 
