@@ -378,7 +378,7 @@ load_callback_async_one_se_rule = function() {
 
     on_eval_before_archive = function(callback, context) {
       res = context$resample_result$aggregate(msr("selected_features"))
-      context$aggregated_performance$n_features = res
+      context$aggregated_performance$n_features = unname(res)
       if (!callback$state$store_models) {
         context$resample_result$discard(models = TRUE)
       }

@@ -4,6 +4,7 @@
   Removed all compatibility workarounds for older versions.
 * fix: `as.data.table.ArchiveAsyncTuning()` and `as.data.table.ArchiveAsyncTuningFrozen()` no longer error when the `measures` argument is used on an archive that contains queued, running, or failed points.
   The extra measures are `NA` for these points.
+* fix: `clbk("mlr3tuning.async_one_se_rule")` now stores an unnamed numeric in the `n_features` column of the archive, matching the batch callback.
 
 # mlr3tuning 1.6.0
 
