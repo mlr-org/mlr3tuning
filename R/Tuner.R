@@ -17,7 +17,6 @@
 #'  * [mlr3mbo](https://github.com/mlr-org/mlr3mbo) adds Bayesian optimization methods.
 #'
 #' @family Tuner
-#' @template field_id
 #'
 #' @template param_id
 #' @template param_param_set
@@ -31,8 +30,6 @@
 Tuner = R6Class(
   "Tuner",
   public = list(
-    id = NULL,
-
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
     initialize = function(
@@ -44,7 +41,7 @@ Tuner = R6Class(
       label = NA_character_,
       man = NA_character_
     ) {
-      self$id = assert_string(id, min.chars = 1L)
+      self$id = id
       private$.param_set = assert_param_set(param_set)
       private$.param_classes = assert_subset(
         param_classes,
@@ -98,6 +95,16 @@ Tuner = R6Class(
   ),
 
   active = list(
+    #' @field id (`character(1)`)\cr
+    #' Identifier of the object.
+    #' Used in tables, plot and text output.
+    id = function(rhs) {
+      if (missing(rhs)) {
+        return(private$.id)
+      }
+      private$.id = assert_string(rhs, min.chars = 1L)
+    },
+
     #' @field param_set ([paradox::ParamSet])\cr
     #' Set of control parameters.
     param_set = function(rhs) {
@@ -141,7 +148,7 @@ Tuner = R6Class(
     #' Label for this object.
     #' Can be used in tables, plot and text output instead of the ID.
     label = function(rhs) {
-      if (!missing(rhs) && !identical(rhs, private$.param_set)) {
+      if (!missing(rhs) && !identical(rhs, private$.label)) {
         stop("$label is read-only.")
       }
       private$.label
@@ -166,6 +173,7 @@ Tuner = R6Class(
       assign_result_default(inst)
     },
 
+    .id = NULL,
     .param_set = NULL,
     .param_classes = NULL,
     .properties = NULL,
