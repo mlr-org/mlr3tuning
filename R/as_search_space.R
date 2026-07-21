@@ -26,5 +26,5 @@ as_search_space.Learner = function(x, ...) {
 #' @rdname as_search_space
 as_search_space.ParamSet = function(x, ...) {
   # nolint
-  if (length(x$get_values(type = "only_token"))) x$search_space() else x
+  if (length(x$get_values(type = "only_token", check_required = FALSE))) x$search_space() else x
 }
