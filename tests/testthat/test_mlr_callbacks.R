@@ -509,6 +509,47 @@ test_that("one se rule callback works", {
   expect_numeric(instance$result$n_features)
 })
 
+test_that("one se rule callback works with a single evaluation", {
+  instance = tune(
+    tuner = tnr("random_search", batch_size = 1),
+    task = tsk("pima"),
+    learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
+    resampling = rsmp("holdout"),
+    measures = msr("classif.ce"),
+    term_evals = 1,
+    callbacks = clbk("mlr3tuning.one_se_rule")
+  )
+
+  expect_data_table(instance$result, nrows = 1)
+  expect_numeric(instance$result$n_features)
+})
+
+test_that("async one se rule callback works with a single evaluation", {
+  skip_if_not_installed("rush")
+  skip_if_no_redis()
+  rush = start_rush()
+  on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
+
+  instance = ti_async(
+    task = tsk("pima"),
+    learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
+    resampling = rsmp("holdout"),
+    measures = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 1),
+    callbacks = clbk("mlr3tuning.async_one_se_rule"),
+    rush = rush
+  )
+
+  tuner = tnr("async_random_search")
+  tuner$optimize(instance)
+
+  expect_data_table(instance$result, min.rows = 1)
+  expect_numeric(instance$result$n_features)
+})
+
 # async freeze archive callback ------------------------------------------------
 
 test_that("async freeze archive callback works", {
