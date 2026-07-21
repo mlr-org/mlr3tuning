@@ -441,7 +441,35 @@ AutoTuner = R6Class(
     .extract_internal_valid_scores = function() {
       self$model$learner$internal_valid_scores
     },
-    .store_tuning_instance = NULL
+    .store_tuning_instance = NULL,
+
+    deep_clone = function(name, value) {
+      if (name == "instance_args") {
+        # rush objects hold a data base connection and are shared between clones
+        map(value, function(x) {
+          if (inherits(x, "Rush")) {
+            x
+          } else if (inherits(x, "R6")) {
+            x$clone(deep = TRUE)
+          } else if (is.list(x)) {
+            map(x, function(element) if (inherits(element, "R6")) element$clone(deep = TRUE) else element)
+          } else {
+            x
+          }
+        })
+      } else if (name == "tuner") {
+        value$clone(deep = TRUE)
+      } else if (name == "state" && inherits(value$model, "auto_tuner_model")) {
+        value = super$deep_clone(name, value)
+        value$model$learner = value$model$learner$clone(deep = TRUE)
+        if (!is.null(value$model$tuning_instance)) {
+          value$model$tuning_instance = value$model$tuning_instance$clone(deep = TRUE)
+        }
+        value
+      } else {
+        super$deep_clone(name, value)
+      }
+    }
   )
 )
 
