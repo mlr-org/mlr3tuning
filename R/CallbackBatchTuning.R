@@ -252,6 +252,9 @@ callback_batch_tuning = function(
   )
 
   if ("on_result" %in% names(stages)) {
+    if ("on_result_end" %in% names(stages)) {
+      stopf("Both `on_result` and `on_result_end` are supplied. `on_result` is deprecated, use only `on_result_end`.")
+    }
     .Deprecated(old = "on_result", new = "on_result_end")
     stages$on_result_end = stages$on_result
     stages$on_result = NULL

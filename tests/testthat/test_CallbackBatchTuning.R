@@ -194,6 +194,24 @@ test_that("on_result in TuningInstanceSingleCrit works", {
   expect_equal(instance$result$classif.ce, 0.7)
 })
 
+test_that("supplying on_result and on_result_end errors", {
+  expect_error(
+    callback_batch_tuning(id = "test",
+      on_result = function(callback, context) NULL,
+      on_result_end = function(callback, context) NULL
+    ),
+    "use only `on_result_end`"
+  )
+
+  expect_warning(
+    {
+      callback = callback_batch_tuning(id = "test", on_result = function(callback, context) NULL)
+    },
+    "deprecated"
+  )
+  expect_function(callback$on_result_end)
+})
+
 # stages in $assign_result() in TuningInstanceBatchMultiCrit -------------------
 
 test_that("on_tuning_result_begin in TuningInstanceBatchMultiCrit works", {
