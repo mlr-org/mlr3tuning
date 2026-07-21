@@ -4,6 +4,7 @@
   Removed all compatibility workarounds for older versions.
 * fix: `as.data.table.ArchiveAsyncTuning()` and `as.data.table.ArchiveAsyncTuningFrozen()` no longer error when the `measures` argument is used on an archive that contains queued, running, or failed points.
   The extra measures are `NA` for these points.
+* fix: `ObjectiveTuningBatch` now errors when the number of custom resamplings does not match the number of hyperparameter configurations. Previously, the resamplings were silently recycled, pairing configurations with the wrong resamplings.
 
 # mlr3tuning 1.6.0
 
