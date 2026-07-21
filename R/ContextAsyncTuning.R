@@ -23,7 +23,7 @@ ContextAsyncTuning = R6Class(
       if (missing(rhs)) {
         get_private(self$instance$objective)$.xs
       } else {
-        self$instance$objective$.__enclos_env__$private$.xs = rhs
+        get_private(self$instance$objective, ".xs") = rhs
       }
     },
 
@@ -33,7 +33,7 @@ ContextAsyncTuning = R6Class(
       if (missing(rhs)) {
         get_private(self$instance$objective)$.resample_result
       } else {
-        self$instance$objective$.__enclos_env__$private$.resample_result = rhs
+        get_private(self$instance$objective, ".resample_result") = rhs
       }
     },
 
@@ -45,7 +45,7 @@ ContextAsyncTuning = R6Class(
       if (missing(rhs)) {
         get_private(self$instance$objective)$.aggregated_performance
       } else {
-        self$instance$objective$.__enclos_env__$private$.aggregated_performance = rhs
+        get_private(self$instance$objective, ".aggregated_performance") = rhs
       }
     },
 
@@ -55,7 +55,7 @@ ContextAsyncTuning = R6Class(
       if (missing(rhs)) {
         get_private(self$instance)$.result_learner_param_vals
       } else {
-        self$instance$.__enclos_env__$private$.result_learner_param_vals = rhs
+        get_private(self$instance, ".result_learner_param_vals") = rhs
       }
     }
   )
