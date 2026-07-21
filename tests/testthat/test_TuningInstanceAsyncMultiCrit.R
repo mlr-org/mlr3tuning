@@ -71,6 +71,30 @@ test_that("assigning a result to TuningInstanceAsyncSingleCrit works", {
   expect_names(names(result), must.include = c("cp", "learner_param_vals", "x_domain", "classif.ce", "classif.acc"))
 })
 
+test_that("assign_result works with empty search space and front size not divisible by number of measures", {
+  rush = start_rush()
+  on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
+
+  instance = ti_async(
+    task = tsk("pima"),
+    learner = lrn("classif.rpart"),
+    resampling = rsmp("holdout"),
+    measures = msrs(c("classif.ce", "classif.acc")),
+    terminator = trm("evals", n_evals = 10),
+    rush = rush
+  )
+
+  xdt = data.table(x_domain = list(list(), list(), list()))
+  ydt = data.table(classif.ce = c(0.3, 0.4, 0.5), classif.acc = c(0.7, 0.6, 0.5))
+  instance$assign_result(xdt, ydt)
+
+  expect_list(instance$result_learner_param_vals, len = 3)
+  expect_equal(instance$result_learner_param_vals[[1]], list(xval = 0))
+})
+
 test_that("saving the benchmark result with TuningInstanceRushSingleCrit works", {
   rush = start_rush()
   on.exit({
