@@ -4,6 +4,7 @@
   Removed all compatibility workarounds for older versions.
 * fix: `as.data.table.ArchiveAsyncTuning()` and `as.data.table.ArchiveAsyncTuningFrozen()` no longer error when the `measures` argument is used on an archive that contains queued, running, or failed points.
   The extra measures are `NA` for these points.
+* fix: `tnr("irace")` destroyed its own configuration during `$optimize()` by removing `n_instances` from and writing instantiated resamplings into its param set, which made a second run of the same tuner or `AutoTuner` impossible. The param set is now restored after the run.
 
 # mlr3tuning 1.6.0
 
