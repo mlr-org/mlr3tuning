@@ -4,6 +4,7 @@
   Removed all compatibility workarounds for older versions.
 * fix: `as.data.table.ArchiveAsyncTuning()` and `as.data.table.ArchiveAsyncTuningFrozen()` no longer error when the `measures` argument is used on an archive that contains queued, running, or failed points.
   The extra measures are `NA` for these points.
+* fix: `AutoTuner$clone(deep = TRUE)` now deep clones the wrapped learner, resampling, measure, terminator, callbacks, and the trained model. Previously, the clone shared these objects with the original, so for example setting the predict type on the clone also changed the original.
 
 # mlr3tuning 1.6.0
 
