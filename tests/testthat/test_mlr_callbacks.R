@@ -522,6 +522,7 @@ test_that("one se rule callback works", {
   tuner$optimize(instance)
 
   expect_numeric(instance$archive$data$n_features)
+  expect_null(names(instance$archive$data$n_features))
   expect_numeric(instance$result$n_features)
 })
 
