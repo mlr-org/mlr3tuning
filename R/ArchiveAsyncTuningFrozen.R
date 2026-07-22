@@ -23,7 +23,12 @@ ArchiveAsyncTuningFrozen = R6Class(
     #' @param archive ([ArchiveAsyncTuning])\cr
     #' The archive to freeze.
     initialize = function(archive) {
-      private$.benchmark_result = archive$benchmark_result
+      # accessing archive$benchmark_result errors when no benchmark result was stored
+      private$.benchmark_result = if ("resample_result" %in% names(archive$finished_data)) {
+        archive$benchmark_result
+      } else {
+        BenchmarkResult$new()
+      }
       private$.internal_search_space = archive$internal_search_space
       super$initialize(archive)
     },

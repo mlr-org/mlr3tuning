@@ -10,8 +10,7 @@ Subclass for grid search tuning.
 \details{
 The grid is constructed as a Cartesian product over discretized values per parameter,
 see \code{\link[paradox:generate_design_grid]{paradox::generate_design_grid()}}.
-If the learner supports hotstarting, the grid is sorted by the hotstart parameter (see also \link[mlr3:HotstartStack]{mlr3::HotstartStack}).
-If not, the points of the grid are evaluated in a random order.
+The points of the grid are evaluated in a random order.
 }
 \section{Dictionary}{
 

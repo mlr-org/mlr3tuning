@@ -118,16 +118,25 @@ TunerBatchIrace = R6Class(
       pv = self$param_set$values
       n_instances = pv$n_instances
 
+      # restore the shared param set after the run so a second optimize() works
+      on.exit(
+        {
+          private$.optimizer$param_set$values = pv
+        },
+        add = TRUE
+      )
+
       # Set resampling instances
       ri = replicate(n_instances, {
         r = inst$objective$resampling$clone()
         r$instantiate(inst$objective$task)
       })
 
-      pv$n_instances = NULL
-      pv$instances = ri
+      pv_run = pv
+      pv_run$n_instances = NULL
+      pv_run$instances = ri
 
-      private$.optimizer$param_set$values = pv
+      private$.optimizer$param_set$values = pv_run
 
       private$.optimizer$optimize(inst)
 
