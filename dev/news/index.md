@@ -16,6 +16,9 @@
   `measures` argument is used on an archive that contains queued,
   running, or failed points. The extra measures are `NA` for these
   points.
+- fix: `clbk("mlr3tuning.async_one_se_rule")` now stores an unnamed
+  numeric in the `n_features` column of the archive, matching the batch
+  callback.
 - fix: `clbk("mlr3tuning.async_measures")` now accepts a single measure
   in the `measures` argument like the batch version, instead of
   requiring a list of measures.
