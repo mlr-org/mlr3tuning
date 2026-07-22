@@ -38,6 +38,9 @@
   `result_learner_param_vals` when the search space was empty, because
   the number of measures instead of the number of Pareto points was used
   to recycle the parameter values.
+- fix: `assign_result()` of `TuningInstanceBatchMultiCrit` and
+  `TuningInstanceAsyncMultiCrit` now validates `learner_param_vals` like
+  the single-crit instances.
 - fix: `AutoTuner$clone(deep = TRUE)` now deep clones the wrapped
   learner, resampling, measure, terminator, callbacks, and the trained
   model. Previously, the clone shared these objects with the original,
