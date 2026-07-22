@@ -181,7 +181,11 @@ ArchiveAsyncTuning = R6Class(
     benchmark_result = function() {
       # cache benchmark result
       if (self$rush$n_finished_tasks > private$.benchmark_result$n_resample_results) {
-        bmrs = map(self$finished_data$resample_result, as_benchmark_result)
+        finished_data = self$finished_data
+        if ("resample_result" %nin% names(finished_data)) {
+          stopf("No benchmark result stored in the archive. Set `store_benchmark_result = TRUE`.")
+        }
+        bmrs = map(finished_data$resample_result, as_benchmark_result)
         private$.benchmark_result = Reduce(function(lhs, rhs) lhs$combine(rhs), bmrs)
       }
       private$.benchmark_result
