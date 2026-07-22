@@ -521,3 +521,25 @@ test_that("on_resample_end works", {
     expect_true(learner$state$state_success)
   })
 })
+
+# callback class validation ----------------------------------------------------
+
+test_that("passing a CallbackBatchTuning to an async tuning instance errors", {
+  rush = start_rush()
+  on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
+
+  callback = callback_batch_tuning(id = "test")
+
+  expect_error(ti_async(
+    task = tsk("pima"),
+    learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
+    resampling = rsmp("holdout"),
+    measures = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 2),
+    callbacks = callback,
+    rush = rush
+  ), "CallbackAsyncTuning")
+})

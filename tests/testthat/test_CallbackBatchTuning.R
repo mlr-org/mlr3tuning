@@ -369,3 +369,18 @@ test_that("on_resample_end works", {
     expect_true(data_extra$success)
   })
 })
+
+# callback class validation ----------------------------------------------------
+
+test_that("passing a CallbackAsyncTuning to a batch tuning instance errors", {
+  callback = callback_async_tuning(id = "test")
+
+  expect_error(ti(
+    task = tsk("pima"),
+    learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
+    resampling = rsmp("holdout"),
+    measures = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 2),
+    callbacks = callback
+  ), "CallbackBatchTuning")
+})

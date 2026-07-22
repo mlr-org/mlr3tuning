@@ -308,5 +308,5 @@ assert_async_tuning_callback = function(callback, null_ok = FALSE) {
 #' @param callbacks (list of [CallbackAsyncTuning]).
 #' @rdname assert_async_tuning_callback
 assert_async_tuning_callbacks = function(callbacks) {
-  invisible(lapply(callbacks, assert_callback))
+  invisible(lapply(callbacks, assert_async_tuning_callback))
 }
