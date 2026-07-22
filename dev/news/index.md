@@ -4,6 +4,8 @@
 
 - Minimum required version of `rush` is now 1.2.0. Removed all
   compatibility workarounds for older versions.
+- fix: `ArchiveBatchTuning$print()` no longer prints the archive table
+  twice.
 - fix: `ArchiveAsyncTuning$benchmark_result` now raises a clear error
   when the tuning instance was created with
   `store_benchmark_result = FALSE`. Previously, the first access
@@ -16,6 +18,9 @@
   `measures` argument is used on an archive that contains queued,
   running, or failed points. The extra measures are `NA` for these
   points.
+- fix: `Tuner$id` now validates new values on assignment, and
+  `Tuner$label` correctly rejects modification instead of silently
+  accepting some invalid assignments.
 - fix: `as.data.table.ArchiveAsyncTuning()`,
   `as.data.table.ArchiveAsyncTuningFrozen()`, and
   `as.data.table.ArchiveBatchTuning()` now warn instead of silently

@@ -81,14 +81,12 @@ Other Tuner:
 [`mlr_tuners_nloptr`](https://mlr3tuning.mlr-org.com/dev/reference/mlr_tuners_nloptr.md),
 [`mlr_tuners_random_search`](https://mlr3tuning.mlr-org.com/dev/reference/mlr_tuners_random_search.md)
 
-## Public fields
+## Active bindings
 
 - `id`:
 
   (`character(1)`)  
   Identifier of the object. Used in tables, plot and text output.
-
-## Active bindings
 
 - `param_set`:
 
