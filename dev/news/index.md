@@ -16,6 +16,10 @@
   `measures` argument is used on an archive that contains queued,
   running, or failed points. The extra measures are `NA` for these
   points.
+- fix: `as.data.table.ArchiveAsyncTuning()`,
+  `as.data.table.ArchiveAsyncTuningFrozen()`, and
+  `as.data.table.ArchiveBatchTuning()` now warn instead of silently
+  ignoring the `measures` argument when no benchmark result is stored.
 - fix: `tnr("irace")` destroyed its own configuration during
   `$optimize()` by removing `n_instances` from and writing instantiated
   resamplings into its param set, which made a second run of the same
