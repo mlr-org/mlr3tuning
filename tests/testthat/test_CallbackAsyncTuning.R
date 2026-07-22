@@ -260,55 +260,6 @@ test_that("on_result_end in TuningInstanceSingleCrit works", {
   expect_equal(instance$result$classif.ce, 0.7)
 })
 
-test_that("on_result in TuningInstanceSingleCrit works", {
-  rush = start_rush()
-  on.exit({
-    rush$reset()
-    mirai::daemons(0)
-  })
-
-  expect_warning(
-    {
-      callback = callback_async_tuning(id = "test", on_result = function(callback, context) {
-        context$result$classif.ce = 0.7
-      })
-    },
-    "deprecated"
-  )
-
-  instance = tune(
-    tuner = tnr("async_random_search"),
-    task = tsk("pima"),
-    learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp("holdout"),
-    measures = msr("classif.ce"),
-    term_evals = 2,
-    callbacks = callback,
-    rush = rush
-  )
-
-  expect_class(instance$objective$context, "ContextAsyncTuning")
-  expect_equal(instance$result$classif.ce, 0.7)
-})
-
-test_that("supplying on_result and on_result_end errors", {
-  expect_error(
-    callback_async_tuning(id = "test",
-      on_result = function(callback, context) NULL,
-      on_result_end = function(callback, context) NULL
-    ),
-    "use only `on_result_end`"
-  )
-
-  expect_warning(
-    {
-      callback = callback_async_tuning(id = "test", on_result = function(callback, context) NULL)
-    },
-    "deprecated"
-  )
-  expect_function(callback$on_result_end)
-})
-
 # stages in $assign_result() in TuningInstanceBatchMultiCrit -------------------
 
 test_that("on_tuning_result_begin in TuningInstanceBatchMultiCrit works", {
@@ -349,37 +300,6 @@ test_that("on_result_end in TuningInstanceBatchMultiCrit works", {
   callback = callback_async_tuning(id = "test", on_result_end = function(callback, context) {
     set(context$result, j = "classif.ce", value = 0.7)
   })
-
-  instance = tune(
-    tuner = tnr("async_random_search"),
-    task = tsk("pima"),
-    learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp("holdout"),
-    measures = msrs(c("classif.ce", "classif.acc")),
-    term_evals = 2,
-    callbacks = callback,
-    rush = rush
-  )
-
-  expect_class(instance$objective$context, "ContextAsyncTuning")
-  expect_equal(unique(instance$result$classif.ce), 0.7)
-})
-
-test_that("on_result in TuningInstanceBatchMultiCrit works", {
-  rush = start_rush()
-  on.exit({
-    rush$reset()
-    mirai::daemons(0)
-  })
-
-  expect_warning(
-    {
-      callback = callback_async_tuning(id = "test", on_result = function(callback, context) {
-        set(context$result, j = "classif.ce", value = 0.7)
-      })
-    },
-    "deprecated"
-  )
 
   instance = tune(
     tuner = tnr("async_random_search"),

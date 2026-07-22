@@ -190,11 +190,6 @@ CallbackAsyncTuning = R6Class(
 #'  Called in `OptimInstance$assign_result()`.
 #'  The functions must have two arguments named `callback` and `context`.
 #'  The final result `instance$result` is available in the `context`.
-#' @param on_result (`function()`)\cr
-#'  Deprecated.
-#'  Use `on_result_end` instead.
-#'  Stage called after the result is written.
-#'  Called in `OptimInstance$assign_result()`.
 #' @param on_optimization_end (`function()`)\cr
 #'   Stage called at the end of the optimization.
 #'   Called in `Optimizer$optimize()`.
@@ -221,7 +216,6 @@ callback_async_tuning = function(
   on_tuning_result_begin = NULL,
   on_result_begin = NULL,
   on_result_end = NULL,
-  on_result = NULL,
   on_optimization_end = NULL
 ) {
   stages = discard(
@@ -244,7 +238,6 @@ callback_async_tuning = function(
         on_tuning_result_begin,
         on_result_begin,
         on_result_end,
-        on_result,
         on_optimization_end
       ),
       c(
@@ -265,21 +258,11 @@ callback_async_tuning = function(
         "on_tuning_result_begin",
         "on_result_begin",
         "on_result_end",
-        "on_result",
         "on_optimization_end"
       )
     ),
     is.null
   )
-
-  if ("on_result" %in% names(stages)) {
-    if ("on_result_end" %in% names(stages)) {
-      stopf("Both `on_result` and `on_result_end` are supplied. `on_result` is deprecated, use only `on_result_end`.")
-    }
-    .Deprecated(old = "on_result", new = "on_result_end")
-    stages$on_result_end = stages$on_result
-    stages$on_result = NULL
-  }
 
   walk(stages, function(stage) assert_function(stage, args = c("callback", "context")))
   callback = CallbackAsyncTuning$new(id, label, man)
