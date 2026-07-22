@@ -34,6 +34,22 @@ test_that("backup callback works with standalone tuner", {
   expect_benchmark_result(readRDS(file))
 })
 
+# batch measures callback ------------------------------------------------------
+
+test_that("batch measures callback works", {
+  instance = tune(
+    tuner = tnr("random_search", batch_size = 2),
+    task = tsk("pima"),
+    learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
+    resampling = rsmp("cv", folds = 3),
+    measures = msr("classif.ce"),
+    term_evals = 4,
+    callbacks = clbk("mlr3tuning.measures", measures = msr("classif.acc"))
+  )
+
+  expect_numeric(instance$archive$data$classif.acc)
+})
+
 # async measure callback ------------------------------------------------------
 
 test_that("async measures callback works", {
