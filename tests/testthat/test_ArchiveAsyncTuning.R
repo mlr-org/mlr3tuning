@@ -269,6 +269,15 @@ test_that("ArchiveAsyncTuning as.data.table function works without resample resu
       "condition"
     )
   )
+
+  # measures are ignored without resample results
+  expect_warning(
+    {
+      tab = as.data.table(instance$archive, measures = msr("classif.acc"))
+    },
+    "store_benchmark_result"
+  )
+  expect_false("classif.acc" %in% names(tab))
 })
 
 test_that("ArchiveAsyncTuning benchmark_result errors without stored benchmark result", {

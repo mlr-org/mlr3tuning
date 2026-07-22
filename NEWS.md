@@ -5,6 +5,7 @@
 * fix: `ArchiveAsyncTuning$benchmark_result` now raises a clear error when the tuning instance was created with `store_benchmark_result = FALSE`. Previously, the first access overwrote the cached benchmark result with `NULL` and every later access failed with an unrelated error. Freezing such an archive with `ArchiveAsyncTuningFrozen` works now and returns an empty benchmark result.
 * fix: `as.data.table.ArchiveAsyncTuning()` and `as.data.table.ArchiveAsyncTuningFrozen()` no longer error when the `measures` argument is used on an archive that contains queued, running, or failed points.
   The extra measures are `NA` for these points.
+* fix: `as.data.table.ArchiveAsyncTuning()`, `as.data.table.ArchiveAsyncTuningFrozen()`, and `as.data.table.ArchiveBatchTuning()` now warn instead of silently ignoring the `measures` argument when no benchmark result is stored.
 * fix: `tnr("irace")` destroyed its own configuration during `$optimize()` by removing `n_instances` from and writing instantiated resamplings into its param set, which made a second run of the same tuner or `AutoTuner` impossible. The param set is now restored after the run.
 * fix: `clbk("mlr3tuning.async_one_se_rule")` now stores an unnamed numeric in the `n_features` column of the archive, matching the batch callback.
 * fix: `clbk("mlr3tuning.async_measures")` now accepts a single measure in the `measures` argument like the batch version, instead of requiring a list of measures.

@@ -215,6 +215,9 @@ as.data.table.ArchiveBatchTuning = function(
   tab = unnest(data, cols, prefix = "{col}_")
 
   cols_y_extra = NULL
+  if (!is.null(measures) && !x$benchmark_result$n_resample_results) {
+    warningf("Ignoring `measures` because no benchmark result is stored. Set `store_benchmark_result = TRUE`.")
+  }
   if (x$benchmark_result$n_resample_results) {
     # add extra measures
     if (!is.null(measures)) {
