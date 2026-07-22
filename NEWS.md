@@ -10,6 +10,7 @@
 * fix: `ObjectiveTuningBatch` now errors when the number of custom resamplings does not match the number of hyperparameter configurations. Previously, the resamplings were silently recycled, pairing configurations with the wrong resamplings.
 * fix: `extract_inner_tuning_results()` no longer modifies the result table of the stored tuning instances by reference. Previously, the `iteration` and `tuning_instance` columns were written into `instance$result`, and a stale `tuning_instance` column could leak into the output of a second call with `tuning_instance = FALSE`.
 * fix: `TuningInstanceBatchMultiCrit$assign_result()` and `TuningInstanceAsyncMultiCrit$assign_result()` produced wrong `result_learner_param_vals` when the search space was empty, because the number of measures instead of the number of Pareto points was used to recycle the parameter values.
+* fix: `assign_result()` of `TuningInstanceBatchMultiCrit` and `TuningInstanceAsyncMultiCrit` now validates `learner_param_vals` like the single-crit instances.
 * fix: `AutoTuner$clone(deep = TRUE)` now deep clones the wrapped learner, resampling, measure, terminator, callbacks, and the trained model. Previously, the clone shared these objects with the original, so for example setting the predict type on the clone also changed the original.
 
 # mlr3tuning 1.6.0
