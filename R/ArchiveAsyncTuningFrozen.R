@@ -23,7 +23,12 @@ ArchiveAsyncTuningFrozen = R6Class(
     #' @param archive ([ArchiveAsyncTuning])\cr
     #' The archive to freeze.
     initialize = function(archive) {
-      private$.benchmark_result = archive$benchmark_result
+      # accessing archive$benchmark_result errors when no benchmark result was stored
+      private$.benchmark_result = if ("resample_result" %in% names(archive$finished_data)) {
+        archive$benchmark_result
+      } else {
+        BenchmarkResult$new()
+      }
       private$.internal_search_space = archive$internal_search_space
       super$initialize(archive)
     },
@@ -161,6 +166,9 @@ as.data.table.ArchiveAsyncTuningFrozen = function(
 
   # add extra measures
   cols_y_extra = NULL
+  if (!is.null(measures) && is.null(tab$resample_result)) {
+    warningf("Ignoring `measures` because no resample results are stored. Set `store_benchmark_result = TRUE`.")
+  }
   if (!is.null(measures) && !is.null(tab$resample_result)) {
     measures = assert_measures(as_measures(measures), learner = x$learners(1)[[1]], task = x$resample_result(1)$task)
     cols_y_extra = map_chr(measures, "id")

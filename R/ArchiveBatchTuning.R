@@ -174,14 +174,6 @@ ArchiveBatchTuning = R6Class(
         ),
         digits = 2
       )
-      print(
-        as.data.table(
-          self,
-          unnest = "x_domain",
-          exclude_columns = c("uhash", "timestamp", "runtime_learners", "resample_result")
-        ),
-        digits = 2
-      )
     }
   ),
   active = list(
@@ -215,6 +207,9 @@ as.data.table.ArchiveBatchTuning = function(
   tab = unnest(data, cols, prefix = "{col}_")
 
   cols_y_extra = NULL
+  if (!is.null(measures) && !x$benchmark_result$n_resample_results) {
+    warningf("Ignoring `measures` because no benchmark result is stored. Set `store_benchmark_result = TRUE`.")
+  }
   if (x$benchmark_result$n_resample_results) {
     # add extra measures
     if (!is.null(measures)) {

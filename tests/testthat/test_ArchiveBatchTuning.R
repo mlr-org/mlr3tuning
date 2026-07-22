@@ -286,6 +286,15 @@ test_that("ArchiveTuning as.data.table function works", {
     )
   )
 
+  # measures are ignored without benchmark result
+  expect_warning(
+    {
+      tab = as.data.table(instance$archive, measures = msr("classif.acc"))
+    },
+    "store_benchmark_result"
+  )
+  expect_false("classif.acc" %in% names(tab))
+
   # empty archive
   instance = ti(
     task = tsk("pima"),

@@ -38,6 +38,37 @@ test_that("ArchiveAsyncTuningFrozen works", {
   expect_data_table(as.data.table(frozen_archive))
 })
 
+test_that("ArchiveAsyncTuningFrozen as.data.table function works without resample result", {
+  rush = start_rush()
+  on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
+
+  instance = ti_async(
+    task = tsk("pima"),
+    learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
+    resampling = rsmp("cv", folds = 3),
+    measures = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 20),
+    store_benchmark_result = FALSE,
+    rush = rush
+  )
+  tuner = tnr("async_random_search")
+  tuner$optimize(instance)
+
+  frozen_archive = ArchiveAsyncTuningFrozen$new(instance$archive)
+
+  # measures are ignored without resample results
+  expect_warning(
+    {
+      tab = as.data.table(frozen_archive, measures = msr("classif.acc"))
+    },
+    "store_benchmark_result"
+  )
+  expect_false("classif.acc" %in% names(tab))
+})
+
 test_that("ArchiveAsyncTuningFrozen as.data.table function works with failed points", {
   rush = start_rush()
   on.exit({
