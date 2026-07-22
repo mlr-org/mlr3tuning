@@ -115,6 +115,24 @@ test_that("tuner can modify resampling", {
   expect_equal(rr$resampling$id, "holdout")
 })
 
+test_that("mismatched number of configurations and resamplings errors", {
+  instance = TuningInstanceBatchSingleCrit$new(
+    task = tsk("iris"),
+    learner = lrn("classif.rpart", cp = to_tune(0.001, 0.1)),
+    resampling = rsmp("cv", folds = 3),
+    measure = msr("classif.ce"),
+    terminator = trm("none")
+  )
+
+  resamplings = replicate(2, rsmp("holdout")$instantiate(tsk("iris")))
+  instance$objective$constants$values$resampling = resamplings
+
+  expect_error(
+    instance$eval_batch(data.table(cp = c(0.001, 0.01, 0.05, 0.1))),
+    "must match the number of hyperparameter configurations"
+  )
+})
+
 test_that("benchmark clone works", {
   grid = benchmark_grid(
     tasks = tsk("iris"),
