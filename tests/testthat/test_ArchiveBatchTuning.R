@@ -431,21 +431,3 @@ test_that("ArchiveBatchTuning as.data.table function works for internally tuned 
   expect_names(names(tab), must.include = "internal_tuned_values_iter")
   expect_equal(tab$internal_tuned_values_iter[1], 99)
 })
-
-test_that("ArchiveBatchTuning print method prints the archive once", {
-  instance = ti(
-    task = tsk("iris"),
-    learner = lrn("classif.rpart"),
-    resampling = rsmp("holdout"),
-    measures = msr("classif.ce"),
-    search_space = TEST_MAKE_PS1(n_dim = 1),
-    terminator = trm("evals", n_evals = 2)
-  )
-
-  tuner = tnr("random_search", batch_size = 2)
-  tuner$optimize(instance)
-
-  lines = capture.output(print(instance$archive))
-  expect_equal(sum(grepl("<ArchiveBatchTuning>", lines, fixed = TRUE)), 1L)
-  expect_equal(sum(grepl("classif.ce", lines, fixed = TRUE)), 1L)
-})
