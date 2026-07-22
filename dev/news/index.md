@@ -16,6 +16,10 @@
   `measures` argument is used on an archive that contains queued,
   running, or failed points. The extra measures are `NA` for these
   points.
+- fix: `ObjectiveTuningBatch` now errors when the number of custom
+  resamplings does not match the number of hyperparameter
+  configurations. Previously, the resamplings were silently recycled,
+  pairing configurations with the wrong resamplings.
 - fix:
   [`extract_inner_tuning_results()`](https://mlr3tuning.mlr-org.com/dev/reference/extract_inner_tuning_results.md)
   no longer modifies the result table of the stored tuning instances by

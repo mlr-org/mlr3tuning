@@ -222,9 +222,9 @@ instance$result
 as.data.table(instance$archive)
 #>       cp minbucket minsplit classif.ce runtime_learners           timestamp
 #>    <num>     <num>    <num>      <num>            <num>              <POSc>
-#> 1: 0.100        64        2 0.09565217            0.006 2026-07-21 16:12:14
-#> 2: 0.010        32       64 0.07826087            0.007 2026-07-21 16:12:14
-#> 3: 0.001         1      128 0.07826087            0.006 2026-07-21 16:12:14
+#> 1: 0.100        64        2 0.09565217            0.006 2026-07-22 12:07:43
+#> 2: 0.010        32       64 0.07826087            0.007 2026-07-22 12:07:43
+#> 3: 0.001         1      128 0.07826087            0.007 2026-07-22 12:07:43
 #>    warnings errors  x_domain batch_nr  resample_result
 #>       <int>  <int>    <list>    <int>           <list>
 #> 1:        0      0 <list[3]>        1 <ResampleResult>
