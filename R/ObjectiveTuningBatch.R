@@ -65,6 +65,13 @@ ObjectiveTuningBatch = R6Class(
       private$.xss = xss
 
       private$.design = if (length(resampling) > 1) {
+        if (length(resampling) != length(xss)) {
+          stopf(
+            "Number of custom resamplings (%i) must match the number of hyperparameter configurations (%i).",
+            length(resampling),
+            length(xss)
+          )
+        }
         param_values = map(xss, function(xs) list(xs))
         data.table(
           task = list(self$task),
