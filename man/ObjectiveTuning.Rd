@@ -91,10 +91,9 @@ Measures to optimize.}
 If \code{TRUE} (default), store resample result of evaluated hyperparameter
 configurations in archive as \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}.}
       \item{\code{store_models}}{(\code{logical(1)})\cr
-If \code{TRUE}, fitted models are stored in the benchmark result
-(\code{archive$benchmark_result}). If \code{store_benchmark_result = FALSE}, models
-are only stored temporarily and not accessible after the tuning. This
-combination is needed for measures that require a model.}
+If \code{TRUE}, fitted models are stored in the benchmark result (\code{archive$benchmark_result}).
+Setting \code{store_models = TRUE} implies \code{store_benchmark_result = TRUE},
+i.e. an explicit \code{store_benchmark_result = FALSE} is overridden.}
       \item{\code{check_values}}{(\code{logical(1)})\cr
 If \code{TRUE}, hyperparameter values are checked before evaluation and
 performance scores after. If \code{FALSE} (default), values are unchecked but
