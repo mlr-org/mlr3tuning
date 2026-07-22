@@ -2,9 +2,17 @@
 
 * Minimum required version of `rush` is now 1.2.0.
   Removed all compatibility workarounds for older versions.
+* fix: `ArchiveAsyncTuning$benchmark_result` now raises a clear error when the tuning instance was created with `store_benchmark_result = FALSE`. Previously, the first access overwrote the cached benchmark result with `NULL` and every later access failed with an unrelated error. Freezing such an archive with `ArchiveAsyncTuningFrozen` works now and returns an empty benchmark result.
 * fix: `as.data.table.ArchiveAsyncTuning()` and `as.data.table.ArchiveAsyncTuningFrozen()` no longer error when the `measures` argument is used on an archive that contains queued, running, or failed points.
   The extra measures are `NA` for these points.
 * fix: `tnr("irace")` destroyed its own configuration during `$optimize()` by removing `n_instances` from and writing instantiated resamplings into its param set, which made a second run of the same tuner or `AutoTuner` impossible. The param set is now restored after the run.
+* fix: `clbk("mlr3tuning.async_one_se_rule")` now stores an unnamed numeric in the `n_features` column of the archive, matching the batch callback.
+* fix: `clbk("mlr3tuning.async_measures")` now accepts a single measure in the `measures` argument like the batch version, instead of requiring a list of measures.
+* fix: `ObjectiveTuningBatch` now errors when the number of custom resamplings does not match the number of hyperparameter configurations. Previously, the resamplings were silently recycled, pairing configurations with the wrong resamplings.
+* fix: `extract_inner_tuning_results()` no longer modifies the result table of the stored tuning instances by reference. Previously, the `iteration` and `tuning_instance` columns were written into `instance$result`, and a stale `tuning_instance` column could leak into the output of a second call with `tuning_instance = FALSE`.
+* fix: `TuningInstanceBatchMultiCrit$assign_result()` and `TuningInstanceAsyncMultiCrit$assign_result()` produced wrong `result_learner_param_vals` when the search space was empty, because the number of measures instead of the number of Pareto points was used to recycle the parameter values.
+* fix: `assign_result()` of `TuningInstanceBatchMultiCrit` and `TuningInstanceAsyncMultiCrit` now validates `learner_param_vals` like the single-crit instances.
+* fix: `AutoTuner$clone(deep = TRUE)` now deep clones the wrapped learner, resampling, measure, terminator, callbacks, and the trained model. Previously, the clone shared these objects with the original, so for example setting the predict type on the clone also changed the original.
 
 # mlr3tuning 1.6.0
 
