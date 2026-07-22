@@ -86,9 +86,9 @@ ti_async(
 
   (`logical(1)`)  
   If `TRUE`, fitted models are stored in the benchmark result
-  (`archive$benchmark_result`). If `store_benchmark_result = FALSE`,
-  models are only stored temporarily and not accessible after the
-  tuning. This combination is needed for measures that require a model.
+  (`archive$benchmark_result`). Setting `store_models = TRUE` implies
+  `store_benchmark_result = TRUE`, i.e. an explicit
+  `store_benchmark_result = FALSE` is overridden.
 
 - check_values:
 
@@ -214,10 +214,10 @@ learner$train(task)
 as.data.table(instance$archive)
 #>           cp classif.ce runtime_learners           timestamp warnings errors
 #>        <num>      <num>            <num>              <POSc>    <int>  <int>
-#> 1: -9.003000 0.06987033            0.019 2026-07-22 14:30:22        0      0
-#> 2: -5.354810 0.06987033            0.018 2026-07-22 14:30:22        0      0
-#> 3: -6.597273 0.06987033            0.018 2026-07-22 14:30:22        0      0
-#> 4: -7.171611 0.06987033            0.021 2026-07-22 14:30:22        0      0
+#> 1: -9.003000 0.06987033            0.016 2026-07-22 14:33:18        0      0
+#> 2: -5.354810 0.06987033            0.018 2026-07-22 14:33:18        0      0
+#> 3: -6.597273 0.06987033            0.019 2026-07-22 14:33:18        0      0
+#> 4: -7.171611 0.06987033            0.017 2026-07-22 14:33:18        0      0
 #>     x_domain batch_nr  resample_result
 #>       <list>    <int>           <list>
 #> 1: <list[1]>        1 <ResampleResult>

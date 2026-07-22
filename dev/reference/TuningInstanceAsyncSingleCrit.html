@@ -225,10 +225,9 @@ configurations in archive as <a href="https://mlr3.mlr-org.com/reference/Benchma
 
       <dt><code>store_models</code></dt>
 <dd><p>(<code>logical(1)</code>)<br>
-If <code>TRUE</code>, fitted models are stored in the benchmark result
-(<code>archive$benchmark_result</code>). If <code>store_benchmark_result = FALSE</code>, models
-are only stored temporarily and not accessible after the tuning. This
-combination is needed for measures that require a model.</p></dd>
+If <code>TRUE</code>, fitted models are stored in the benchmark result (<code>archive$benchmark_result</code>).
+Setting <code>store_models = TRUE</code> implies <code>store_benchmark_result = TRUE</code>,
+i.e. an explicit <code>store_benchmark_result = FALSE</code> is overridden.</p></dd>
 
       <dt><code>check_values</code></dt>
 <dd><p>(<code>logical(1)</code>)<br>

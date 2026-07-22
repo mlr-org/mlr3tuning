@@ -133,7 +133,9 @@ When using <code><a href="https://paradox.mlr-org.com/reference/to_tune.html" cl
 
 <dt id="arg-store-tuning-instance">store_tuning_instance<a class="anchor" aria-label="anchor" href="#arg-store-tuning-instance"></a></dt>
 <dd><p>(<code>logical(1)</code>)<br>
-If <code>TRUE</code> (default), stores the internally created <a href="TuningInstanceBatchSingleCrit.html">TuningInstanceBatchSingleCrit</a> with all intermediate results in slot <code>$tuning_instance</code>.</p></dd>
+If <code>TRUE</code> (default), stores the internally created <a href="TuningInstanceBatchSingleCrit.html">TuningInstanceBatchSingleCrit</a> with all intermediate results in slot <code>$tuning_instance</code>.
+Setting <code>store_benchmark_result = TRUE</code> implies <code>store_tuning_instance = TRUE</code>,
+i.e. an explicit <code>store_tuning_instance = FALSE</code> is overridden.</p></dd>
 
 
 <dt id="arg-store-benchmark-result">store_benchmark_result<a class="anchor" aria-label="anchor" href="#arg-store-benchmark-result"></a></dt>
@@ -144,10 +146,9 @@ configurations in archive as <a href="https://mlr3.mlr-org.com/reference/Benchma
 
 <dt id="arg-store-models">store_models<a class="anchor" aria-label="anchor" href="#arg-store-models"></a></dt>
 <dd><p>(<code>logical(1)</code>)<br>
-If <code>TRUE</code>, fitted models are stored in the benchmark result
-(<code>archive$benchmark_result</code>). If <code>store_benchmark_result = FALSE</code>, models
-are only stored temporarily and not accessible after the tuning. This
-combination is needed for measures that require a model.</p></dd>
+If <code>TRUE</code>, fitted models are stored in the benchmark result (<code>archive$benchmark_result</code>).
+Setting <code>store_models = TRUE</code> implies <code>store_benchmark_result = TRUE</code>,
+i.e. an explicit <code>store_benchmark_result = FALSE</code> is overridden.</p></dd>
 
 
 <dt id="arg-check-values">check_values<a class="anchor" aria-label="anchor" href="#arg-check-values"></a></dt>

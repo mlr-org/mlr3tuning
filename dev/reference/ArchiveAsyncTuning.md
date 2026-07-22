@@ -115,12 +115,21 @@ Inherited methods
 - [`bbotk::ArchiveAsync$best()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-best)
 - [`bbotk::ArchiveAsync$clear()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-clear)
 - [`bbotk::ArchiveAsync$data_with_state()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-data_with_state)
+- [`bbotk::ArchiveAsync$fail_point()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-fail_point)
+- [`bbotk::ArchiveAsync$fail_points()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-fail_points)
+- [`bbotk::ArchiveAsync$finish_point()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-finish_point)
+- [`bbotk::ArchiveAsync$finish_points()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-finish_points)
 - [`bbotk::ArchiveAsync$nds_selection()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-nds_selection)
 - [`bbotk::ArchiveAsync$pop_point()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-pop_point)
 - [`bbotk::ArchiveAsync$push_failed_point()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-push_failed_point)
+- [`bbotk::ArchiveAsync$push_failed_points()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-push_failed_points)
+- [`bbotk::ArchiveAsync$push_finished_point()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-push_finished_point)
+- [`bbotk::ArchiveAsync$push_finished_points()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-push_finished_points)
+- [`bbotk::ArchiveAsync$push_point()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-push_point)
 - [`bbotk::ArchiveAsync$push_points()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-push_points)
 - [`bbotk::ArchiveAsync$push_result()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-push_result)
 - [`bbotk::ArchiveAsync$push_running_point()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-push_running_point)
+- [`bbotk::ArchiveAsync$push_running_points()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-push_running_points)
 
 ------------------------------------------------------------------------
 
