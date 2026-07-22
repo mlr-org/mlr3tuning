@@ -16,6 +16,11 @@
   `measures` argument is used on an archive that contains queued,
   running, or failed points. The extra measures are `NA` for these
   points.
+- fix: `tnr("irace")` destroyed its own configuration during
+  `$optimize()` by removing `n_instances` from and writing instantiated
+  resamplings into its param set, which made a second run of the same
+  tuner or `AutoTuner` impossible. The param set is now restored after
+  the run.
 - fix: `clbk("mlr3tuning.async_one_se_rule")` now stores an unnamed
   numeric in the `n_features` column of the archive, matching the batch
   callback.
