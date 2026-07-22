@@ -784,3 +784,45 @@ test_that("AutoTuner works with set_validate function", {
   set_validate(at, validate = NULL)
   expect_true(is.null(at$learner$validate))
 })
+
+test_that("AutoTuner deep clone does not share instance args", {
+  at = auto_tuner(
+    tuner = tnr("random_search", batch_size = 2),
+    learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
+    resampling = rsmp("holdout"),
+    measure = msr("classif.ce"),
+    term_evals = 2
+  )
+
+  at2 = at$clone(deep = TRUE)
+
+  expect_different_address(at$instance_args$learner, at2$instance_args$learner)
+  expect_different_address(at$instance_args$resampling, at2$instance_args$resampling)
+  expect_different_address(at$instance_args$measure, at2$instance_args$measure)
+  expect_different_address(at$instance_args$terminator, at2$instance_args$terminator)
+  expect_different_address(at$tuner, at2$tuner)
+
+  at2$predict_type = "prob"
+  expect_equal(at$instance_args$learner$predict_type, "response")
+  expect_equal(at$predict_type, "response")
+})
+
+test_that("AutoTuner deep clone does not share the trained model", {
+  at = auto_tuner(
+    tuner = tnr("random_search", batch_size = 2),
+    learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
+    resampling = rsmp("holdout"),
+    measure = msr("classif.ce"),
+    term_evals = 2
+  )
+  at$train(tsk("pima"))
+
+  at2 = at$clone(deep = TRUE)
+
+  expect_different_address(at$model$learner, at2$model$learner)
+  expect_different_address(at$model$tuning_instance, at2$model$tuning_instance)
+
+  at2$predict_type = "prob"
+  expect_equal(at$model$learner$predict_type, "response")
+  expect_equal(at$predict_type, "response")
+})

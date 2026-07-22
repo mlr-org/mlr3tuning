@@ -169,7 +169,7 @@ TuningInstanceAsyncMultiCrit = R6Class(
 
       opt_x = transform_xdt_to_xss(private$.result_xdt, self$search_space)
       if (length(opt_x) == 0) {
-        opt_x = replicate(length(private$.result_ydt), list())
+        opt_x = replicate(nrow(private$.result_ydt), list())
       }
       private$.result_learner_param_vals = Map(insert_named, private$.result_learner_param_vals, opt_x)
 

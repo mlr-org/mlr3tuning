@@ -203,6 +203,23 @@ test_that("TuningInstanceBatchMultiCrit and empty search space works", {
   expect_equal(instance$result$x_domain[[1]], list())
 })
 
+test_that("assign_result works with empty search space and front size not divisible by number of measures", {
+  instance = TuningInstanceBatchMultiCrit$new(
+    task = tsk("pima"),
+    learner = lrn("classif.rpart"),
+    resampling = rsmp("holdout"),
+    measures = msrs(c("classif.ce", "classif.acc")),
+    terminator = trm("evals", n_evals = 10)
+  )
+
+  xdt = data.table(x_domain = list(list(), list(), list()))
+  ydt = data.table(classif.ce = c(0.3, 0.4, 0.5), classif.acc = c(0.7, 0.6, 0.5))
+  instance$assign_result(xdt, ydt)
+
+  expect_list(instance$result_learner_param_vals, len = 3)
+  expect_equal(instance$result_learner_param_vals[[1]], list(xval = 0))
+})
+
 # Internal Tuning --------------------------------------------------------------
 
 test_that("Batch multi-crit internal tuning works", {
