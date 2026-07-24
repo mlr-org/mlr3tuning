@@ -56,17 +56,18 @@ If \code{NULL} (default), the search space is constructed from the \link[paradox
 When using \code{to_tune()} tokens, dependencies for hierarchical search spaces are automatically handled.}
 
 \item{store_tuning_instance}{(\code{logical(1)})\cr
-If \code{TRUE} (default), stores the internally created \link{TuningInstanceBatchSingleCrit} with all intermediate results in slot \verb{$tuning_instance}.}
+If \code{TRUE} (default), stores the internally created \link{TuningInstanceBatchSingleCrit} with all intermediate results in slot \verb{$tuning_instance}.
+Setting \code{store_benchmark_result = TRUE} implies \code{store_tuning_instance = TRUE},
+i.e. an explicit \code{store_tuning_instance = FALSE} is overridden.}
 
 \item{store_benchmark_result}{(\code{logical(1)})\cr
 If \code{TRUE} (default), store resample result of evaluated hyperparameter
 configurations in archive as \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}.}
 
 \item{store_models}{(\code{logical(1)})\cr
-If \code{TRUE}, fitted models are stored in the benchmark result
-(\code{archive$benchmark_result}). If \code{store_benchmark_result = FALSE}, models
-are only stored temporarily and not accessible after the tuning. This
-combination is needed for measures that require a model.}
+If \code{TRUE}, fitted models are stored in the benchmark result (\code{archive$benchmark_result}).
+Setting \code{store_models = TRUE} implies \code{store_benchmark_result = TRUE},
+i.e. an explicit \code{store_benchmark_result = FALSE} is overridden.}
 
 \item{check_values}{(\code{logical(1)})\cr
 If \code{TRUE}, hyperparameter values are checked before evaluation and

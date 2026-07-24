@@ -174,14 +174,6 @@ ArchiveBatchTuning = R6Class(
         ),
         digits = 2
       )
-      print(
-        as.data.table(
-          self,
-          unnest = "x_domain",
-          exclude_columns = c("uhash", "timestamp", "runtime_learners", "resample_result")
-        ),
-        digits = 2
-      )
     }
   ),
   active = list(
