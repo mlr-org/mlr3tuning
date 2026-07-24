@@ -6,6 +6,7 @@
 * fix: `ArchiveAsyncTuning$benchmark_result` now raises a clear error when the tuning instance was created with `store_benchmark_result = FALSE`. Previously, the first access overwrote the cached benchmark result with `NULL` and every later access failed with an unrelated error. Freezing such an archive with `ArchiveAsyncTuningFrozen` works now and returns an empty benchmark result.
 * fix: `as.data.table.ArchiveAsyncTuning()` and `as.data.table.ArchiveAsyncTuningFrozen()` no longer error when the `measures` argument is used on an archive that contains queued, running, or failed points.
   The extra measures are `NA` for these points.
+* fix: `as_tuner()` with `clone = TRUE` now performs a deep clone, so the returned tuner no longer shares its `ParamSet` with the input.
 * fix: `as_search_space()` no longer errors when converting a `ParamSet` that contains an unset required parameter.
 * fix: `assert_async_tuning_callbacks()` and `assert_batch_tuning_callbacks()` now check that each callback inherits from `CallbackAsyncTuning` and `CallbackBatchTuning`, respectively, so tuning instances reject callbacks of the wrong type at construction time.
 * fix: `Tuner$id` now validates new values on assignment, and `Tuner$label` correctly rejects modification instead of silently accepting some invalid assignments.
