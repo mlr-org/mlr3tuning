@@ -22,7 +22,7 @@ TunerAsyncFromOptimizerAsync = R6Class(
       assert_string(man, na.ok = TRUE)
 
       super$initialize(
-        id = if ("id" %in% names(optimizer)) optimizer$id else "tuner",
+        id = optimizer$id,
         param_set = optimizer$param_set,
         param_classes = optimizer$param_classes,
         properties = optimizer$properties,
