@@ -4,6 +4,10 @@
 
 - Minimum required version of `rush` is now 1.2.0. Removed all
   compatibility workarounds for older versions.
+- fix: `AutoTuner$train()` now correctly checks that an instantiated
+  inner resampling only uses row ids present in the task for all
+  resampling types. Previously, the check read list-based instances and
+  silently did nothing for resamplings such as `cv` and `holdout`.
 - fix:
   [`auto_tuner()`](https://mlr3tuning.mlr-org.com/dev/reference/auto_tuner.md),
   `AutoTuner$new()`, and
