@@ -66,7 +66,6 @@ callback_async_tuning(
   on_tuning_result_begin = NULL,
   on_result_begin = NULL,
   on_result_end = NULL,
-  on_result = NULL,
   on_optimization_end = NULL
 )
 ```
@@ -222,12 +221,6 @@ callback_async_tuning(
   `OptimInstance$assign_result()`. The functions must have two arguments
   named `callback` and `context`. The final result `instance$result` is
   available in the `context`.
-
-- on_result:
-
-  (`function()`)  
-  Deprecated. Use `on_result_end` instead. Stage called after the result
-  is written. Called in `OptimInstance$assign_result()`.
 
 - on_optimization_end:
 

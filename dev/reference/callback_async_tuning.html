@@ -173,7 +173,6 @@ A tuning callback works with <a href="ContextAsyncTuning.html">ContextAsyncTunin
 <span>  on_tuning_result_begin <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  on_result_begin <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  on_result_end <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  on_result <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  on_optimization_end <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -327,14 +326,6 @@ Stage called after the result is written.
 Called in <code>OptimInstance$assign_result()</code>.
 The functions must have two arguments named <code>callback</code> and <code>context</code>.
 The final result <code>instance$result</code> is available in the <code>context</code>.</p></dd>
-
-
-<dt id="arg-on-result">on_result<a class="anchor" aria-label="anchor" href="#arg-on-result"></a></dt>
-<dd><p>(<code>function()</code>)<br>
-Deprecated.
-Use <code>on_result_end</code> instead.
-Stage called after the result is written.
-Called in <code>OptimInstance$assign_result()</code>.</p></dd>
 
 
 <dt id="arg-on-optimization-end">on_optimization_end<a class="anchor" aria-label="anchor" href="#arg-on-optimization-end"></a></dt>

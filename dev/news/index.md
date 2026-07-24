@@ -18,6 +18,10 @@
   `measures` argument is used on an archive that contains queued,
   running, or failed points. The extra measures are `NA` for these
   points.
+- [`callback_async_tuning()`](https://mlr3tuning.mlr-org.com/dev/reference/callback_async_tuning.md)
+  and
+  [`callback_batch_tuning()`](https://mlr3tuning.mlr-org.com/dev/reference/callback_batch_tuning.md)
+  remove the deprecated `on_result` stage. Use `on_result_end` instead.
 - fix:
   [`as_tuner()`](https://mlr3tuning.mlr-org.com/dev/reference/as_tuner.md)
   with `clone = TRUE` now performs a deep clone, so the returned tuner
