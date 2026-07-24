@@ -32,7 +32,7 @@ For the meaning of all other parameters, see
 Note that we have removed all control parameters which refer to the
 termination of the algorithm. Use
 [bbotk::TerminatorEvals](https://bbotk.mlr-org.com/reference/mlr_terminators_evals.html)
-instead. Other terminators do not work with `TunerIrace`.
+instead. Other terminators do not work with `TunerBatchIrace`.
 
 ## Archive
 

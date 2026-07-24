@@ -186,7 +186,7 @@ the most important functions of mlr3tuning.</p>
 <span class="r-in"><span><span class="co"># Internal hyperparameter tuning on the pima indians diabetes data set</span></span></span>
 <span class="r-in"><span><span class="va">instance</span> <span class="op">=</span> <span class="fu"><a href="tune.html">tune</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="tnr.html">tnr</a></span><span class="op">(</span><span class="st">"internal"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">tsk</a></span><span class="op">(</span><span class="st">"iris"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="va">task</span>,</span></span>
 <span class="r-in"><span>  <span class="va">learner</span>,</span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">rsmp</a></span><span class="op">(</span><span class="st">"cv"</span>, folds <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://mlr3.mlr-org.com/reference/mlr_sugar.html" class="external-link">msr</a></span><span class="op">(</span><span class="st">"internal_valid_score"</span>, minimize <span class="op">=</span> <span class="cn">TRUE</span>, select <span class="op">=</span> <span class="st">"merror"</span><span class="op">)</span></span></span>
@@ -197,7 +197,18 @@ the most important functions of mlr3tuning.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">instance</span><span class="op">$</span><span class="va">result_learner_param_vals</span><span class="op">$</span><span class="va">internal_tuned_values</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Caught simpleError. Canceling all iterations ...</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in xgb.iter.eval(bst = bst, evals = evals, iter = iteration - 1,     custom_metric = custom_metric):</span> [16:24:24] src/metric/multiclass_metric.cu:34: Check failed: label_error &gt;= 0 &amp;&amp; label_error &lt; static_cast&lt;int32_t&gt;(n_class): MultiClassEvaluation: label must be in [0, num_class), num_class=1 but found 1 in label</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> Stack trace:</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>   [bt] (0) /home/runner/work/_temp/Library/xgboost/libs/xgboost.so(+0x83e6d) [0x7f0ef6483e6d]</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>   [bt] (1) /home/runner/work/_temp/Library/xgboost/libs/xgboost.so(+0xafc2c) [0x7f0ef64afc2c]</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>   [bt] (2) /home/runner/work/_temp/Library/xgboost/libs/xgboost.so(+0x9b6af) [0x7f0ef649b6af]</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>   [bt] (3) /home/runner/work/_temp/Library/xgboost/libs/xgboost.so(+0x49fa7a) [0x7f0ef689fa7a]</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>   [bt] (4) /home/runner/work/_temp/Library/xgboost/libs/xgboost.so(XGBoosterEvalOneIter+0x1cb) [0x7f0ef69a03cb]</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>   [bt] (5) /home/runner/work/_temp/Library/xgboost/libs/xgboost.so(XGBoosterEvalOneIter_R+0x397) [0x7f0ef6480b07]</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>   [bt] (6) /opt/R/4.6.1/lib/R/lib/libR.so(+0x106742) [0x7f0f3ef06742]</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>   [bt] (7) /opt/R/4.6.1/lib/R/lib/libR.so(+0x14e145) [0x7f0f3ef4e145]</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span>   [bt] (8) /opt/R/4.6.1/lib/R</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

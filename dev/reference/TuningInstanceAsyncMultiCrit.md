@@ -30,7 +30,7 @@ exhausted, an exception is raised, and no further evaluations can be
 performed from this point on. The tuner is also supposed to store its
 final result, consisting of a selected hyperparameter configuration and
 associated estimated performance values, by calling the method
-`instance$.assign_result`.
+`instance$assign_result`.
 
 ## Search Space
 
@@ -288,7 +288,7 @@ writes the best found points and estimated performance values here
 
 - `ydt`:
 
-  (`numeric(1)`)  
+  ([`data.table::data.table()`](https://rdrr.io/pkg/data.table/man/data.table.html))  
   Optimal outcomes, e.g. the Pareto front.
 
 - `learner_param_vals`:

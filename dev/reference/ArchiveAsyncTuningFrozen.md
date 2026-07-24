@@ -16,7 +16,8 @@ to freeze the archive after the optimization has finished.
   ArchiveAsyncTuningFrozen -\>
   [`data.table::data.table()`](https://rdrr.io/pkg/data.table/man/data.table.html)  
   Returns a tabular view of all performed function calls of the
-  Objective. The `x_domain` column is unnested to separate columns.
+  Objective. The `internal_tuned_values` column is unnested to separate
+  columns.
 
 ## Super classes
 
@@ -124,7 +125,7 @@ are mutually exclusive. Learner does not contain a model. Use
 
 - `uhash`:
 
-  (`logical(1)`)  
+  (`character(1)`)  
   The `uhash` value to filter for.
 
 ------------------------------------------------------------------------
@@ -149,7 +150,7 @@ of the i-th evaluation, by position or by unique hash `uhash`. `i` and
 
 - `uhash`:
 
-  (`logical(1)`)  
+  (`character(1)`)  
   The `uhash` value to filter for.
 
 ------------------------------------------------------------------------
@@ -172,7 +173,7 @@ hash `uhash`. `i` and `uhash` are mutually exclusive.
 
 - `uhash`:
 
-  (`logical(1)`)  
+  (`character(1)`)  
   The `uhash` value to filter for.
 
 ------------------------------------------------------------------------
@@ -197,7 +198,7 @@ objects of the i-th evaluation, by position or by unique hash `uhash`.
 
 - `uhash`:
 
-  (`logical(1)`)  
+  (`character(1)`)  
   The `uhash` value to filter for.
 
 ------------------------------------------------------------------------
@@ -222,7 +223,7 @@ of the i-th evaluation, by position or by unique hash `uhash`. `i` and
 
 - `uhash`:
 
-  (`logical(1)`)  
+  (`character(1)`)  
   The `uhash` value to filter for.
 
 ------------------------------------------------------------------------

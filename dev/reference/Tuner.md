@@ -105,7 +105,7 @@ Other Tuner:
 
   ([`character()`](https://rdrr.io/r/base/character.html))  
   Set of properties of the tuner. Must be a subset of
-  [`mlr_reflections$tuner_properties`](https://mlr3.mlr-org.com/reference/mlr_reflections.html).
+  [`bbotk_reflections$optimizer_properties`](https://bbotk.mlr-org.com/reference/bbotk_reflections.html).
 
 - `packages`:
 
@@ -184,7 +184,7 @@ Creates a new instance of this
 
   ([`character()`](https://rdrr.io/r/base/character.html))  
   Set of properties of the tuner. Must be a subset of
-  [`mlr_reflections$tuner_properties`](https://mlr3.mlr-org.com/reference/mlr_reflections.html).
+  [`bbotk_reflections$optimizer_properties`](https://bbotk.mlr-org.com/reference/bbotk_reflections.html).
 
 - `packages`:
 

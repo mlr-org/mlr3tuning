@@ -9,10 +9,17 @@
   `$oob_error()`, `$loglik()`) now raise an informative error when the
   model is marshaled, instead of silently returning the untrained
   learner or `NULL`.
+- fix: `AutoTuner$marshaled` is now an active binding as in
+  [`mlr3::Learner`](https://mlr3.mlr-org.com/reference/Learner.html), so
+  `at$marshaled` returns a flag instead of a method and can be used in
+  conditions.
 - fix: `AutoTuner$train()` now correctly checks that an instantiated
   inner resampling only uses row ids present in the task for all
   resampling types. Previously, the check read list-based instances and
   silently did nothing for resamplings such as `cv` and `holdout`.
+- fix: Unmarshaling an `AutoTuner` model with `inplace = TRUE` after a
+  non-inplace marshal no longer drops the `auto_tuner_model` class,
+  which had caused a subsequent marshal to become a no-op.
 - fix:
   [`auto_tuner()`](https://mlr3tuning.mlr-org.com/dev/reference/auto_tuner.md),
   `AutoTuner$new()`, and
@@ -28,6 +35,9 @@
   access failed with an unrelated error. Freezing such an archive with
   `ArchiveAsyncTuningFrozen` works now and returns an empty benchmark
   result.
+- fix: `AutoTuner$hash` now also depends on the `predict_sets`,
+  `validate`, and `use_weights` settings so that autotuners differing
+  only in these fields no longer share a hash.
 - fix: `as.data.table.ArchiveAsyncTuning()` and
   `as.data.table.ArchiveAsyncTuningFrozen()` no longer error when the
   `measures` argument is used on an archive that contains queued,

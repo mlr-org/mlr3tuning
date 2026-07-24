@@ -71,7 +71,7 @@ Before a batch is evaluated, the <a href="https://bbotk.mlr-org.com/reference/Te
 If the available budget is exhausted, an exception is raised,
 and no further evaluations can be performed from this point on.
 The tuner is also supposed to store its final result, consisting of a selected hyperparameter configuration and
-associated estimated performance values, by calling the method <code>instance$.assign_result</code>.</p>
+associated estimated performance values, by calling the method <code>instance$assign_result</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="search-space">Search Space<a class="anchor" aria-label="anchor" href="#search-space"></a></h2>
@@ -255,7 +255,7 @@ configuration. Contains values in the search space. Can contain additional
 columns for extra information.</p></dd>
 
       <dt><code>ydt</code></dt>
-<dd><p>(<code>numeric(1)</code>)<br>
+<dd><p>(<code><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table::data.table()</a></code>)<br>
 Optimal outcomes, e.g. the Pareto front.</p></dd>
 
       <dt><code>learner_param_vals</code></dt>

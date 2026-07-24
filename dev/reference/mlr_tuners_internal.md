@@ -171,7 +171,7 @@ learner = lrn("classif.xgboost",
 # Internal hyperparameter tuning on the pima indians diabetes data set
 instance = tune(
   tnr("internal"),
-  tsk("iris"),
+  task,
   learner,
   rsmp("cv", folds = 3),
   msr("internal_valid_score", minimize = TRUE, select = "merror")
@@ -182,5 +182,16 @@ instance$result_learner_param_vals
 
 instance$result_learner_param_vals$internal_tuned_values
 }
-#> NULL
+#> Warning: Caught simpleError. Canceling all iterations ...
+#> Error in xgb.iter.eval(bst = bst, evals = evals, iter = iteration - 1,     custom_metric = custom_metric): [16:24:24] src/metric/multiclass_metric.cu:34: Check failed: label_error >= 0 && label_error < static_cast<int32_t>(n_class): MultiClassEvaluation: label must be in [0, num_class), num_class=1 but found 1 in label
+#> Stack trace:
+#>   [bt] (0) /home/runner/work/_temp/Library/xgboost/libs/xgboost.so(+0x83e6d) [0x7f0ef6483e6d]
+#>   [bt] (1) /home/runner/work/_temp/Library/xgboost/libs/xgboost.so(+0xafc2c) [0x7f0ef64afc2c]
+#>   [bt] (2) /home/runner/work/_temp/Library/xgboost/libs/xgboost.so(+0x9b6af) [0x7f0ef649b6af]
+#>   [bt] (3) /home/runner/work/_temp/Library/xgboost/libs/xgboost.so(+0x49fa7a) [0x7f0ef689fa7a]
+#>   [bt] (4) /home/runner/work/_temp/Library/xgboost/libs/xgboost.so(XGBoosterEvalOneIter+0x1cb) [0x7f0ef69a03cb]
+#>   [bt] (5) /home/runner/work/_temp/Library/xgboost/libs/xgboost.so(XGBoosterEvalOneIter_R+0x397) [0x7f0ef6480b07]
+#>   [bt] (6) /opt/R/4.6.1/lib/R/lib/libR.so(+0x106742) [0x7f0f3ef06742]
+#>   [bt] (7) /opt/R/4.6.1/lib/R/lib/libR.so(+0x14e145) [0x7f0f3ef4e145]
+#>   [bt] (8) /opt/R/4.6.1/lib/R
 ```

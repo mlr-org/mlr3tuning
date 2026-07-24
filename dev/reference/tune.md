@@ -281,7 +281,7 @@ provides visualizations for tuning results.
 ## Examples
 
 ``` r
-# Hyperparameter optimization on the Palmer Penguins data set
+# Hyperparameter optimization on the Pima Indians Diabetes data set
 task = tsk("pima")
 
 # Load learner and set search space
@@ -309,10 +309,10 @@ learner$train(task)
 as.data.table(instance$archive)
 #>           cp classif.ce runtime_learners           timestamp warnings errors
 #>        <num>      <num>            <num>              <POSc>    <int>  <int>
-#> 1: -3.464204  0.2187500            0.009 2026-07-24 16:19:44        0      0
-#> 2: -9.210164  0.2421875            0.009 2026-07-24 16:19:44        0      0
-#> 3: -7.001822  0.2421875            0.009 2026-07-24 16:19:45        0      0
-#> 4: -8.476411  0.2421875            0.009 2026-07-24 16:19:45        0      0
+#> 1: -2.579601  0.2968750            0.009 2026-07-24 16:24:33        0      0
+#> 2: -6.548396  0.2578125            0.009 2026-07-24 16:24:33        0      0
+#> 3: -6.400893  0.2578125            0.009 2026-07-24 16:24:33        0      0
+#> 4: -4.392908  0.2617188            0.010 2026-07-24 16:24:33        0      0
 #>     x_domain batch_nr  resample_result
 #>       <list>    <int>           <list>
 #> 1: <list[1]>        1 <ResampleResult>

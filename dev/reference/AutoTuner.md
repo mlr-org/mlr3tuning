@@ -153,6 +153,11 @@ summarizes the most important functions of mlr3tuning.
 
 ## Active bindings
 
+- `marshaled`:
+
+  (`logical(1)`)  
+  Whether the learner has been marshaled.
+
 - `archive`:
 
   [ArchiveBatchTuning](https://mlr3tuning.mlr-org.com/dev/reference/ArchiveBatchTuning.md)  
@@ -218,8 +223,6 @@ summarizes the most important functions of mlr3tuning.
 - [`AutoTuner$marshal()`](#method-AutoTuner-marshal)
 
 - [`AutoTuner$unmarshal()`](#method-AutoTuner-unmarshal)
-
-- [`AutoTuner$marshaled()`](#method-AutoTuner-marshaled)
 
 - [`AutoTuner$clone()`](#method-AutoTuner-clone)
 
@@ -482,16 +485,6 @@ Unmarshal the learner.
 #### Returns
 
 self
-
-------------------------------------------------------------------------
-
-### `AutoTuner$marshaled()`
-
-Whether the learner is marshaled.
-
-#### Usage
-
-    AutoTuner$marshaled()
 
 ------------------------------------------------------------------------
 

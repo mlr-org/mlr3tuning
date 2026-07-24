@@ -76,7 +76,7 @@ provides visualizations for tuning results.
 
 ## S3 Methods
 
-- `as.data.table.ArchiveTuning(x, unnest = "x_domain", exclude_columns = "uhash", measures = NULL)`  
+- `as.data.table.ArchiveBatchTuning(x, unnest = "internal_tuned_values", exclude_columns = "uhash", measures = NULL)`  
   Returns a tabular view of all evaluated hyperparameter
   configurations.  
   ArchiveBatchTuning -\>
@@ -187,8 +187,8 @@ Creates a new instance of this
 - `check_values`:
 
   (`logical(1)`)  
-  If `TRUE` (default), hyperparameter configurations are checked for
-  validity.
+  If `FALSE` (default), hyperparameter configurations are not checked
+  for validity.
 
 - `internal_search_space`:
 
@@ -219,7 +219,7 @@ are mutually exclusive. Learner does not contain a model. Use
 
 - `uhash`:
 
-  (`logical(1)`)  
+  (`character(1)`)  
   The `uhash` value to filter for.
 
 ------------------------------------------------------------------------
@@ -244,7 +244,7 @@ of the i-th evaluation, by position or by unique hash `uhash`. `i` and
 
 - `uhash`:
 
-  (`logical(1)`)  
+  (`character(1)`)  
   The `uhash` value to filter for.
 
 ------------------------------------------------------------------------
@@ -267,7 +267,7 @@ hash `uhash`. `i` and `uhash` are mutually exclusive.
 
 - `uhash`:
 
-  (`logical(1)`)  
+  (`character(1)`)  
   The `uhash` value to filter for.
 
 ------------------------------------------------------------------------
@@ -292,7 +292,7 @@ objects of the i-th evaluation, by position or by unique hash `uhash`.
 
 - `uhash`:
 
-  (`logical(1)`)  
+  (`character(1)`)  
   The `uhash` value to filter for.
 
 ------------------------------------------------------------------------
@@ -317,7 +317,7 @@ of the i-th evaluation, by position or by unique hash `uhash`. `i` and
 
 - `uhash`:
 
-  (`logical(1)`)  
+  (`character(1)`)  
   The `uhash` value to filter for.
 
 ------------------------------------------------------------------------

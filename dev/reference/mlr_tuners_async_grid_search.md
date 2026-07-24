@@ -8,7 +8,7 @@ This [Tuner](https://mlr3tuning.mlr-org.com/dev/reference/Tuner.md) can
 be instantiated with the associated sugar function
 [`tnr()`](https://mlr3tuning.mlr-org.com/dev/reference/tnr.md):
 
-    tnr("async_design_points")
+    tnr("async_grid_search")
 
 ## Parameters
 

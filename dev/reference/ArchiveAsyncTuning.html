@@ -73,11 +73,10 @@ Lists of (transformed) hyperparameter values that are passed to the learner.</p>
 <li><p><code>runtime_learners</code> (<code>numeric(1)</code>)<br>
 Sum of training and predict times logged in learners per <a href="https://mlr3.mlr-org.com/reference/ResampleResult.html" class="external-link">mlr3::ResampleResult</a> / evaluation.
 This does not include potential overhead time.</p></li>
-<li><p><code>timestamp</code> (<code>POSIXct</code>)<br>
-Time stamp when the evaluation was logged into the archive.</p></li>
-<li><p><code>batch_nr</code> (<code>integer(1)</code>)<br>
-Hyperparameters are evaluated in batches.
-Each batch has a unique batch number.</p></li>
+<li><p><code>timestamp_xs</code> (<code>POSIXct</code>)<br>
+Time stamp when the hyperparameter configuration was sent to a worker.</p></li>
+<li><p><code>timestamp_ys</code> (<code>POSIXct</code>)<br>
+Time stamp when the evaluation result was written to the archive.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="analysis">Analysis<a class="anchor" aria-label="anchor" href="#analysis"></a></h2>
@@ -90,7 +89,7 @@ The returned data table contains the <a href="https://mlr3.mlr-org.com/reference
     <h2 id="s-methods">S3 Methods<a class="anchor" aria-label="anchor" href="#s-methods"></a></h2>
 
 
-<ul><li><p><code>as.data.table.ArchiveTuning(x, unnest = "x_domain", exclude_columns = "uhash", measures = NULL)</code><br>
+<ul><li><p><code>as.data.table.ArchiveAsyncTuning(x, unnest = "internal_tuned_values", exclude_columns = NULL, measures = NULL)</code><br>
 Returns a tabular view of all evaluated hyperparameter configurations.<br>
 ArchiveAsyncTuning -&gt; <code><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table::data.table()</a></code><br></p><ul><li><p><code>x</code> (ArchiveAsyncTuning)</p></li>
 <li><p><code>unnest</code> (<code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code>)<br>
@@ -183,10 +182,6 @@ If a rush instance is supplied, the tuning runs without batches.</p></dd>
 <dd><p>(<a href="https://paradox.mlr-org.com/reference/ParamSet.html" class="external-link">paradox::ParamSet</a> or <code>NULL</code>)<br>
 The internal search space.</p></dd>
 
-      <dt><code>check_values</code></dt>
-<dd><p>(<code>logical(1)</code>)<br>
-If <code>TRUE</code> (default), hyperparameter configurations are checked for validity.</p></dd>
-
 
 </dl><p></p></div>
 </div>
@@ -207,7 +202,7 @@ Learner does not contain a model. Use <code>$learners()</code> to get learners w
 The iteration value to filter for.</p></dd>
 
       <dt><code>uhash</code></dt>
-<dd><p>(<code>logical(1)</code>)<br>
+<dd><p>(<code>character(1)</code>)<br>
 The <code>uhash</code> value to filter for.</p></dd>
 
 
@@ -229,7 +224,7 @@ The <code>uhash</code> value to filter for.</p></dd>
 The iteration value to filter for.</p></dd>
 
       <dt><code>uhash</code></dt>
-<dd><p>(<code>logical(1)</code>)<br>
+<dd><p>(<code>character(1)</code>)<br>
 The <code>uhash</code> value to filter for.</p></dd>
 
 
@@ -251,7 +246,7 @@ The <code>uhash</code> value to filter for.</p></dd>
 The iteration value to filter for.</p></dd>
 
       <dt><code>uhash</code></dt>
-<dd><p>(<code>logical(1)</code>)<br>
+<dd><p>(<code>character(1)</code>)<br>
 The <code>uhash</code> value to filter for.</p></dd>
 
 
@@ -273,7 +268,7 @@ The <code>uhash</code> value to filter for.</p></dd>
 The iteration value to filter for.</p></dd>
 
       <dt><code>uhash</code></dt>
-<dd><p>(<code>logical(1)</code>)<br>
+<dd><p>(<code>character(1)</code>)<br>
 The <code>uhash</code> value to filter for.</p></dd>
 
 
@@ -295,7 +290,7 @@ The <code>uhash</code> value to filter for.</p></dd>
 The iteration value to filter for.</p></dd>
 
       <dt><code>uhash</code></dt>
-<dd><p>(<code>logical(1)</code>)<br>
+<dd><p>(<code>character(1)</code>)<br>
 The <code>uhash</code> value to filter for.</p></dd>
 
 

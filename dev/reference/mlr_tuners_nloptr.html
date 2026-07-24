@@ -66,10 +66,9 @@ Calls <a href="https://astamm.github.io/nloptr/reference/nloptr.html" class="ext
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The termination conditions <code>stopval</code>, <code>maxtime</code> and <code>maxeval</code> of <code><a href="https://astamm.github.io/nloptr/reference/nloptr.html" class="external-link">nloptr::nloptr()</a></code> are deactivated
 and replaced by the <a href="https://bbotk.mlr-org.com/reference/Terminator.html" class="external-link">bbotk::Terminator</a> subclasses.
-The x and function value tolerance termination conditions (<code>xtol_rel = 10^-4</code>,
-<code>xtol_abs = rep(0.0, length(x0))</code>, <code>ftol_rel = 0.0</code> and <code>ftol_abs = 0.0</code>)
-are still available and implemented with their package defaults.
-To deactivate these conditions, set them to <code>-1</code>.</p>
+The x and function value tolerance termination conditions (<code>xtol_rel</code>, <code>xtol_abs</code>, <code>ftol_rel</code> and <code>ftol_abs</code>)
+are deactivated by default (initialized to <code>-1</code>).
+To activate a condition, set it to a positive value.</p>
     </div>
     <div class="section level2">
     <h2 id="dictionary">Dictionary<a class="anchor" aria-label="anchor" href="#dictionary"></a></h2>

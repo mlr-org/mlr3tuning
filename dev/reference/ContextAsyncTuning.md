@@ -30,7 +30,7 @@ workers are not reflected in the main process.
 
 - `resample_result`:
 
-  ([mlr3::BenchmarkResult](https://mlr3.mlr-org.com/reference/BenchmarkResult.html))  
+  ([mlr3::ResampleResult](https://mlr3.mlr-org.com/reference/ResampleResult.html))  
   The resample result of the hyperparameter configuration currently
   evaluated.
 

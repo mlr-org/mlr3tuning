@@ -63,14 +63,14 @@ Creates a new instance of this
 ### `TunerAsyncFromOptimizerAsync$optimize()`
 
 Performs the tuning on a
-[TuningInstanceBatchSingleCrit](https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceBatchSingleCrit.md)
+[TuningInstanceAsyncSingleCrit](https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceAsyncSingleCrit.md)
 /
-[TuningInstanceBatchMultiCrit](https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceBatchMultiCrit.md)
+[TuningInstanceAsyncMultiCrit](https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceAsyncMultiCrit.md)
 until termination. The single evaluations and the final results will be
 written into the
 [ArchiveAsyncTuning](https://mlr3tuning.mlr-org.com/dev/reference/ArchiveAsyncTuning.md)
 that resides in the
-[TuningInstanceBatchSingleCrit](https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceBatchSingleCrit.md)/[TuningInstanceBatchMultiCrit](https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceBatchMultiCrit.md).
+[TuningInstanceAsyncSingleCrit](https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceAsyncSingleCrit.md)/[TuningInstanceAsyncMultiCrit](https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceAsyncMultiCrit.md).
 The final result is returned.
 
 #### Usage
@@ -81,9 +81,9 @@ The final result is returned.
 
 - `inst`:
 
-  ([TuningInstanceBatchSingleCrit](https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceBatchSingleCrit.md)
+  ([TuningInstanceAsyncSingleCrit](https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceAsyncSingleCrit.md)
   \|
-  [TuningInstanceBatchMultiCrit](https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceBatchMultiCrit.md)).
+  [TuningInstanceAsyncMultiCrit](https://mlr3tuning.mlr-org.com/dev/reference/TuningInstanceAsyncMultiCrit.md)).
 
 #### Returns
 

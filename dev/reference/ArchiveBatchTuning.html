@@ -107,7 +107,7 @@ Alternatively, measures can be supplied to <code><a href="https://rdrr.io/pkg/da
     <h2 id="s-methods">S3 Methods<a class="anchor" aria-label="anchor" href="#s-methods"></a></h2>
 
 
-<ul><li><p><code>as.data.table.ArchiveTuning(x, unnest = "x_domain", exclude_columns = "uhash", measures = NULL)</code><br>
+<ul><li><p><code>as.data.table.ArchiveBatchTuning(x, unnest = "internal_tuned_values", exclude_columns = "uhash", measures = NULL)</code><br>
 Returns a tabular view of all evaluated hyperparameter configurations.<br>
 ArchiveBatchTuning -&gt; <code><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table::data.table()</a></code><br></p><ul><li><p><code>x</code> (ArchiveBatchTuning)</p></li>
 <li><p><code>unnest</code> (<code><a href="https://rdrr.io/r/base/character.html" class="external-link">character()</a></code>)<br>
@@ -184,7 +184,7 @@ Internally created from provided <a href="https://mlr3.mlr-org.com/reference/Mea
 
       <dt><code>check_values</code></dt>
 <dd><p>(<code>logical(1)</code>)<br>
-If <code>TRUE</code> (default), hyperparameter configurations are checked for validity.</p></dd>
+If <code>FALSE</code> (default), hyperparameter configurations are not checked for validity.</p></dd>
 
       <dt><code>internal_search_space</code></dt>
 <dd><p>(<a href="https://paradox.mlr-org.com/reference/ParamSet.html" class="external-link">paradox::ParamSet</a> or <code>NULL</code>)<br>
@@ -210,7 +210,7 @@ Learner does not contain a model. Use <code>$learners()</code> to get learners w
 The iteration value to filter for.</p></dd>
 
       <dt><code>uhash</code></dt>
-<dd><p>(<code>logical(1)</code>)<br>
+<dd><p>(<code>character(1)</code>)<br>
 The <code>uhash</code> value to filter for.</p></dd>
 
 
@@ -232,7 +232,7 @@ The <code>uhash</code> value to filter for.</p></dd>
 The iteration value to filter for.</p></dd>
 
       <dt><code>uhash</code></dt>
-<dd><p>(<code>logical(1)</code>)<br>
+<dd><p>(<code>character(1)</code>)<br>
 The <code>uhash</code> value to filter for.</p></dd>
 
 
@@ -254,7 +254,7 @@ The <code>uhash</code> value to filter for.</p></dd>
 The iteration value to filter for.</p></dd>
 
       <dt><code>uhash</code></dt>
-<dd><p>(<code>logical(1)</code>)<br>
+<dd><p>(<code>character(1)</code>)<br>
 The <code>uhash</code> value to filter for.</p></dd>
 
 
@@ -276,7 +276,7 @@ The <code>uhash</code> value to filter for.</p></dd>
 The iteration value to filter for.</p></dd>
 
       <dt><code>uhash</code></dt>
-<dd><p>(<code>logical(1)</code>)<br>
+<dd><p>(<code>character(1)</code>)<br>
 The <code>uhash</code> value to filter for.</p></dd>
 
 
@@ -298,7 +298,7 @@ The <code>uhash</code> value to filter for.</p></dd>
 The iteration value to filter for.</p></dd>
 
       <dt><code>uhash</code></dt>
-<dd><p>(<code>logical(1)</code>)<br>
+<dd><p>(<code>character(1)</code>)<br>
 The <code>uhash</code> value to filter for.</p></dd>
 
 
