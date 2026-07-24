@@ -59,7 +59,8 @@ Custom start values can be passed via the \code{x0} parameter.}
 \item{\code{approximate_eval_grad_f}}{\code{logical(1)}\cr
 Should gradients be numerically approximated via finite differences (\link[nloptr:nl.grad]{nloptr::nl.grad}).
 Only required for certain algorithms.
-Note that function evaluations required for the numerical gradient approximation will be logged as usual and are not treated differently than regular function evaluations by, e.g., \link[bbotk]{Terminator}s.}
+Note that function evaluations required for the numerical gradient approximation will be logged as usual
+and are not treated differently than regular function evaluations by, e.g., \link[bbotk]{Terminator}s.}
 }
 
 For the meaning of other control parameters, see \code{\link[nloptr:nloptr]{nloptr::nloptr()}} and \code{\link[nloptr:nloptr.print.options]{nloptr::nloptr.print.options()}}.

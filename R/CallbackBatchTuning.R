@@ -286,5 +286,5 @@ assert_batch_tuning_callback = function(callback, null_ok = FALSE) {
 #' @param callbacks (list of [CallbackBatchTuning]).
 #' @rdname assert_batch_tuning_callback
 assert_batch_tuning_callbacks = function(callbacks) {
-  invisible(lapply(callbacks, assert_callback))
+  invisible(lapply(callbacks, assert_batch_tuning_callback))
 }

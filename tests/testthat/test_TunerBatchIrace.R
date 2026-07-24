@@ -22,6 +22,32 @@ test_that("TunerIrace", {
   expect_equal(unname(instance$result_y), mean(archive[configuration == configuration_id, classif.ce]))
 })
 
+test_that("TunerIrace can be run twice", {
+  tuner = tnr("irace")
+
+  new_instance = function() {
+    ti(
+      task = tsk("mtcars"),
+      learner = lrn("regr.rpart", cp = to_tune(0.001, 0.1)),
+      resampling = rsmp("holdout"),
+      measures = msr("regr.mse"),
+      terminator = trm("evals", n_evals = 42)
+    )
+  }
+
+  instance = new_instance()
+  suppressMessages(capture.output(tuner$optimize(instance)))
+  expect_data_table(instance$result, nrows = 1)
+
+  # param set is restored after the run
+  expect_equal(tuner$param_set$values$n_instances, 10)
+  expect_null(tuner$param_set$values$instances)
+
+  instance = new_instance()
+  suppressMessages(capture.output(tuner$optimize(instance)))
+  expect_data_table(instance$result, nrows = 1)
+})
+
 test_that("TunerIrace works with dependencies", {
   search_space = ps(
     cp = p_dbl(lower = 0.001, upper = 0.1),
