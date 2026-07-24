@@ -19,6 +19,10 @@
   running, or failed points. The extra measures are `NA` for these
   points.
 - fix:
+  [`as_search_space()`](https://mlr3tuning.mlr-org.com/dev/reference/as_search_space.md)
+  no longer errors when converting a `ParamSet` that contains an unset
+  required parameter.
+- fix:
   [`assert_async_tuning_callbacks()`](https://mlr3tuning.mlr-org.com/dev/reference/assert_async_tuning_callback.md)
   and
   [`assert_batch_tuning_callbacks()`](https://mlr3tuning.mlr-org.com/dev/reference/assert_batch_tuning_callback.md)
