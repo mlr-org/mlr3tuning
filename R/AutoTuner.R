@@ -357,6 +357,10 @@ AutoTuner = R6Class(
         private$.predict_type,
         self$fallback$hash,
         self$parallel_predict,
+        get0("validate", self),
+        self$predict_sets,
+        private$.use_weights,
+        private$.predict_raw,
         self$tuner,
         self$instance_args,
         private$.store_tuning_instance
