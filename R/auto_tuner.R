@@ -33,7 +33,7 @@
 #'   measure = msr("classif.ce"),
 #'   term_evals = 4)
 #'
-#' at$train(tsk("pima"))
+#' at$train(tsk("sonar"))
 auto_tuner = function(
   tuner,
   learner,

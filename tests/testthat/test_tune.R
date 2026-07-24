@@ -2,7 +2,7 @@ test_that("tune function works with one measure", {
   learner = lrn("classif.rpart", minsplit = to_tune(1, 10))
   instance = tune(
     tuner = tnr("random_search", batch_size = 1),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = learner,
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
@@ -23,7 +23,7 @@ test_that("tune errors when rush is used with a batch tuner", {
   expect_error(
     tune(
       tuner = tnr("random_search", batch_size = 1),
-      task = tsk("pima"),
+      task = tsk("sonar"),
       learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
       resampling = rsmp("holdout"),
       measures = msr("classif.ce"),
@@ -38,7 +38,7 @@ test_that("tune function works with multiple measures", {
   learner = lrn("classif.rpart", minsplit = to_tune(1, 10))
   instance = tune(
     tuner = tnr("random_search", batch_size = 1),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = learner,
     resampling = rsmp("holdout"),
     measures = msrs(c("classif.ce", "classif.acc")),
@@ -54,7 +54,7 @@ test_that("tune function works without measure", {
   learner = lrn("classif.rpart", minsplit = to_tune(1, 10))
   instance = tune(
     tuner = tnr("random_search"),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = learner,
     resampling = rsmp("holdout"),
     term_evals = 2
