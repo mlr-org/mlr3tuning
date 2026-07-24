@@ -14,6 +14,26 @@ test_that("tune function works with one measure", {
   expect_class(instance$terminator, "TerminatorEvals")
 })
 
+test_that("tune errors when rush is used with a batch tuner", {
+  skip_if_not_installed("rush")
+  skip_if_no_redis()
+  rush = rush::rsh()
+  on.exit(rush$reset())
+
+  expect_error(
+    tune(
+      tuner = tnr("random_search", batch_size = 1),
+      task = tsk("pima"),
+      learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
+      resampling = rsmp("holdout"),
+      measures = msr("classif.ce"),
+      term_evals = 2,
+      rush = rush
+    ),
+    "asynchronous tuner"
+  )
+})
+
 test_that("tune function works with multiple measures", {
   learner = lrn("classif.rpart", minsplit = to_tune(1, 10))
   instance = tune(
