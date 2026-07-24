@@ -20,7 +20,8 @@ as_tuner = function(x, ...) {
 #' @rdname as_tuner
 as_tuner.Tuner = function(x, clone = FALSE, ...) {
   # nolint
-  if (isTRUE(clone)) x$clone() else x
+  assert_flag(clone)
+  if (clone) x$clone(deep = TRUE) else x
 }
 
 #' @export

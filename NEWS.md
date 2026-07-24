@@ -8,6 +8,9 @@
   The extra measures are `NA` for these points.
 * `callback_async_tuning()` and `callback_batch_tuning()` remove the deprecated `on_result` stage.
   Use `on_result_end` instead.
+* fix: `as_tuner()` with `clone = TRUE` now performs a deep clone, so the returned tuner no longer shares its `ParamSet` with the input.
+* fix: `as_search_space()` no longer errors when converting a `ParamSet` that contains an unset required parameter.
+* fix: `assert_async_tuning_callbacks()` and `assert_batch_tuning_callbacks()` now check that each callback inherits from `CallbackAsyncTuning` and `CallbackBatchTuning`, respectively, so tuning instances reject callbacks of the wrong type at construction time.
 * fix: `Tuner$id` now validates new values on assignment, and `Tuner$label` correctly rejects modification instead of silently accepting some invalid assignments.
 * fix: `as.data.table.ArchiveAsyncTuning()`, `as.data.table.ArchiveAsyncTuningFrozen()`, and `as.data.table.ArchiveBatchTuning()` now warn instead of silently ignoring the `measures` argument when no benchmark result is stored.
 * fix: `tnr("irace")` destroyed its own configuration during `$optimize()` by removing `n_instances` from and writing instantiated resamplings into its param set, which made a second run of the same tuner or `AutoTuner` impossible. The param set is now restored after the run.
