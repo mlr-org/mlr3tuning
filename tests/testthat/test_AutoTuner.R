@@ -725,6 +725,25 @@ test_that("AutoTuner works with async tuner", {
   expect_data_table(at$tuning_instance$archive$data, min.rows = 4)
 })
 
+test_that("AutoTuner errors when rush is used with a batch tuner", {
+  skip_if_not_installed("rush")
+  skip_if_no_redis()
+  rush = rush::rsh()
+  on.exit(rush$reset())
+
+  expect_error(
+    auto_tuner(
+      tuner = tnr("random_search"),
+      learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
+      resampling = rsmp("holdout"),
+      measure = msr("classif.ce"),
+      term_evals = 4,
+      rush = rush
+    ),
+    "asynchronous tuner"
+  )
+})
+
 # Internal Tuning --------------------------------------------------------------
 
 test_that("AutoTuner works with internal tuning and validation", {
