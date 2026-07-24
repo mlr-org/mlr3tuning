@@ -287,3 +287,24 @@ test_that("extract_inner_tuning_results returns tuning_instance", {
   )
   expect_equal(unique(tab$experiment), c(1, 2))
 })
+
+test_that("extract_inner_tuning_results does not modify the tuning instance by reference", {
+  at = AutoTuner$new(
+    lrn("classif.rpart"),
+    rsmp("holdout"),
+    msr("classif.ce"),
+    trm("evals", n_evals = 4),
+    tuner = tnr("random_search"),
+    TEST_MAKE_PS1(n_dim = 1)
+  )
+  rr = resample(tsk("iris"), at, rsmp("cv", folds = 2), store_models = TRUE)
+
+  irr = extract_inner_tuning_results(rr, tuning_instance = TRUE)
+  expect_names(names(irr), must.include = c("iteration", "tuning_instance"))
+  expect_names(names(rr$learners[[1]]$tuning_result), disjunct.from = c("iteration", "tuning_instance"))
+  expect_names(names(rr$learners[[1]]$tuning_instance$result), disjunct.from = c("iteration", "tuning_instance"))
+
+  # no stale columns leak into a second call
+  irr = extract_inner_tuning_results(rr, tuning_instance = FALSE)
+  expect_names(names(irr), disjunct.from = "tuning_instance")
+})
