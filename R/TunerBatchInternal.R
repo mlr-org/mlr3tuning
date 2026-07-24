@@ -76,25 +76,3 @@ TunerBatchInternal = R6Class(
 )
 
 mlr_tuners$add("internal", TunerBatchInternal)
-
-OptimizerBatchInternal = R6Class(
-  "OptimizerBatchInternal",
-  inherit = bbotk::OptimizerBatch,
-  public = list(
-    initialize = function() {
-      super$initialize(
-        id = "internal",
-        param_set = ps(),
-        param_classes = c("ParamLgl", "ParamInt", "ParamDbl", "ParamFct"),
-        properties = c("dependencies", "single-crit"),
-        label = "Internal Optimizer",
-        man = "bbotk::mlr_optimizers_internal"
-      )
-    }
-  ),
-  private = list(
-    .optimize = function(inst) {
-      inst$eval_batch(data.table())
-    }
-  )
-)
