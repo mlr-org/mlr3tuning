@@ -460,6 +460,27 @@ test_that("AutoTuner hash works #647 in mlr3", {
   )
 })
 
+test_that("AutoTuner hash reacts to predict_sets, validate and use_weights", {
+  new_at = function() {
+    AutoTuner$new(
+      learner = lrn("classif.rpart", minsplit = to_tune(1, 12)),
+      resampling = rsmp("holdout"),
+      measure = msr("classif.ce"),
+      terminator = trm("evals", n_evals = 4),
+      tuner = tnr("grid_search", resolution = 3)
+    )
+  }
+
+  at = new_at()
+  at_predict_sets = new_at()
+  at_predict_sets$predict_sets = c("train", "test")
+  expect_true(at$hash != at_predict_sets$hash)
+
+  at_use_weights = new_at()
+  at_use_weights$use_weights = "ignore"
+  expect_true(at$hash != at_use_weights$hash)
+})
+
 test_that("AutoTuner works with empty search space", {
   at = auto_tuner(
     tuner = tnr("random_search", batch_size = 5),
