@@ -4,6 +4,11 @@
 
 - Minimum required version of `rush` is now 1.2.0. Removed all
   compatibility workarounds for older versions.
+- fix: `AutoTuner` accessors (`$learner`, `$tuning_instance`,
+  `$tuning_result`, `$archive`, `$importance()`, `$selected_features()`,
+  `$oob_error()`, `$loglik()`) now raise an informative error when the
+  model is marshaled, instead of silently returning the untrained
+  learner or `NULL`.
 - fix: `AutoTuner$train()` now correctly checks that an instantiated
   inner resampling only uses row ids present in the task for all
   resampling types. Previously, the check read list-based instances and

@@ -50,6 +50,7 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="mlr3tuning-development-version">mlr3tuning (development version)<a class="anchor" aria-label="anchor" href="#mlr3tuning-development-version"></a></h2>
 <ul><li>Minimum required version of <code>rush</code> is now 1.2.0. Removed all compatibility workarounds for older versions.</li>
+<li>fix: <code>AutoTuner</code> accessors (<code>$learner</code>, <code>$tuning_instance</code>, <code>$tuning_result</code>, <code>$archive</code>, <code>$importance()</code>, <code>$selected_features()</code>, <code>$oob_error()</code>, <code>$loglik()</code>) now raise an informative error when the model is marshaled, instead of silently returning the untrained learner or <code>NULL</code>.</li>
 <li>fix: <code>AutoTuner$train()</code> now correctly checks that an instantiated inner resampling only uses row ids present in the task for all resampling types. Previously, the check read list-based instances and silently did nothing for resamplings such as <code>cv</code> and <code>holdout</code>.</li>
 <li>fix: <code><a href="../reference/auto_tuner.html">auto_tuner()</a></code>, <code>AutoTuner$new()</code>, and <code><a href="../reference/tune.html">tune()</a></code> now error at construction when a <code>rush</code> controller is supplied together with a batch tuner.</li>
 <li>fix: <code>ArchiveBatchTuning$print()</code> no longer prints the archive table twice.</li>
