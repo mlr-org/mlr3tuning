@@ -19,6 +19,10 @@
   running, or failed points. The extra measures are `NA` for these
   points.
 - fix:
+  [`as_tuner()`](https://mlr3tuning.mlr-org.com/dev/reference/as_tuner.md)
+  with `clone = TRUE` now performs a deep clone, so the returned tuner
+  no longer shares its `ParamSet` with the input.
+- fix:
   [`as_search_space()`](https://mlr3tuning.mlr-org.com/dev/reference/as_search_space.md)
   no longer errors when converting a `ParamSet` that contains an unset
   required parameter.
