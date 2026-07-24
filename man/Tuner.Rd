@@ -81,7 +81,7 @@ as given in the \link[paradox:ParamSet]{paradox::ParamSet} \verb{$class} field.}
 
     \item{\code{properties}}{(\code{character()})\cr
 Set of properties of the tuner.
-Must be a subset of \code{\link[mlr3:mlr_reflections]{mlr_reflections$tuner_properties}}.}
+Must be a subset of \code{\link[bbotk:bbotk_reflections]{bbotk_reflections$optimizer_properties}}.}
 
     \item{\code{packages}}{(\code{character()})\cr
 Set of required packages.
@@ -136,7 +136,7 @@ Set of control parameters.}
 Supported parameter classes for learner hyperparameters that the tuner can optimize, as given in the \link[paradox:ParamSet]{paradox::ParamSet} \verb{$class} field.}
       \item{\code{properties}}{(\code{character()})\cr
 Set of properties of the tuner.
-Must be a subset of \code{\link[mlr3:mlr_reflections]{mlr_reflections$tuner_properties}}.}
+Must be a subset of \code{\link[bbotk:bbotk_reflections]{bbotk_reflections$optimizer_properties}}.}
       \item{\code{packages}}{(\code{character()})\cr
 Set of required packages.
 Note that these packages will be loaded via \code{\link[=requireNamespace]{requireNamespace()}}, and are not attached.}

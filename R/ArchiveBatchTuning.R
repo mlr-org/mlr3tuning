@@ -50,7 +50,7 @@
 #' The \CRANpkg{mlr3viz} package provides visualizations for tuning results.
 #'
 #' @section S3 Methods:
-#' * `as.data.table.ArchiveTuning(x, unnest = "x_domain", exclude_columns = "uhash", measures = NULL)`\cr
+#' * `as.data.table.ArchiveBatchTuning(x, unnest = "internal_tuned_values", exclude_columns = "uhash", measures = NULL)`\cr
 #' Returns a tabular view of all evaluated hyperparameter configurations.\cr
 #' [ArchiveBatchTuning] -> [data.table::data.table()]\cr
 #'     * `x` ([ArchiveBatchTuning])
@@ -78,7 +78,7 @@ ArchiveBatchTuning = R6Class(
     #' Creates a new instance of this [R6][R6::R6Class] class.
     #'
     #' @param check_values (`logical(1)`)\cr
-    #'   If `TRUE` (default), hyperparameter configurations are checked for validity.
+    #'   If `FALSE` (default), hyperparameter configurations are not checked for validity.
     initialize = function(
       search_space,
       codomain,
@@ -102,7 +102,7 @@ ArchiveBatchTuning = R6Class(
     #' @param i (`integer(1)`)\cr
     #'   The iteration value to filter for.
     #'
-    #' @param uhash (`logical(1)`)\cr
+    #' @param uhash (`character(1)`)\cr
     #'   The `uhash` value to filter for.
     learner = function(i = NULL, uhash = NULL) {
       self$resample_result(i = i, uhash = uhash)$learner
@@ -115,7 +115,7 @@ ArchiveBatchTuning = R6Class(
     #' @param i (`integer(1)`)\cr
     #'   The iteration value to filter for.
     #'
-    #' @param uhash (`logical(1)`)\cr
+    #' @param uhash (`character(1)`)\cr
     #'   The `uhash` value to filter for.
     learners = function(i = NULL, uhash = NULL) {
       self$resample_result(i = i, uhash = uhash)$learners
@@ -128,7 +128,7 @@ ArchiveBatchTuning = R6Class(
     #' @param i (`integer(1)`)\cr
     #'   The iteration value to filter for.
     #'
-    #' @param uhash (`logical(1)`)\cr
+    #' @param uhash (`character(1)`)\cr
     #'   The `uhash` value to filter for.
     learner_param_vals = function(i = NULL, uhash = NULL) {
       self$learner(i = i, uhash = uhash)$param_set$values
@@ -141,7 +141,7 @@ ArchiveBatchTuning = R6Class(
     #' @param i (`integer(1)`)\cr
     #'   The iteration value to filter for.
     #'
-    #' @param uhash (`logical(1)`)\cr
+    #' @param uhash (`character(1)`)\cr
     #'   The `uhash` value to filter for.
     predictions = function(i = NULL, uhash = NULL) {
       self$resample_result(i = i, uhash = uhash)$predictions()
@@ -154,7 +154,7 @@ ArchiveBatchTuning = R6Class(
     #' @param i (`integer(1)`)\cr
     #'   The iteration value to filter for.
     #'
-    #' @param uhash (`logical(1)`)\cr
+    #' @param uhash (`character(1)`)\cr
     #'   The `uhash` value to filter for.
     resample_result = function(i = NULL, uhash = NULL) {
       self$benchmark_result$resample_result(i = i, uhash = uhash)

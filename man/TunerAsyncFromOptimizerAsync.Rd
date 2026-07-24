@@ -60,10 +60,10 @@ The referenced help package can be opened via method \verb{$help()}.}
 \if{html}{\out{<a id="method-TunerAsyncFromOptimizerAsync-optimize"></a>}}
 \if{latex}{\out{\hypertarget{method-TunerAsyncFromOptimizerAsync-optimize}{}}}
 \subsection{\code{TunerAsyncFromOptimizerAsync$optimize()}}{
-  Performs the tuning on a \link{TuningInstanceBatchSingleCrit} /
-\link{TuningInstanceBatchMultiCrit} until termination. The single evaluations and
+  Performs the tuning on a \link{TuningInstanceAsyncSingleCrit} /
+\link{TuningInstanceAsyncMultiCrit} until termination. The single evaluations and
 the final results will be written into the \link{ArchiveAsyncTuning} that
-resides in the \link{TuningInstanceBatchSingleCrit}/\link{TuningInstanceBatchMultiCrit}.
+resides in the \link{TuningInstanceAsyncSingleCrit}/\link{TuningInstanceAsyncMultiCrit}.
 The final result is returned.
   \subsection{Usage}{
     \if{html}{\out{<div class="r">}}
@@ -73,7 +73,7 @@ The final result is returned.
   \subsection{Arguments}{
     \if{html}{\out{<div class="arguments">}}
     \describe{
-      \item{\code{inst}}{(\link{TuningInstanceBatchSingleCrit} | \link{TuningInstanceBatchMultiCrit}).}
+      \item{\code{inst}}{(\link{TuningInstanceAsyncSingleCrit} | \link{TuningInstanceAsyncMultiCrit}).}
     }
     \if{html}{\out{</div>}}
   }

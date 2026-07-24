@@ -88,7 +88,7 @@ learner = lrn("classif.xgboost",
 # Internal hyperparameter tuning on the pima indians diabetes data set
 instance = tune(
   tnr("internal"),
-  tsk("iris"),
+  task,
   learner,
   rsmp("cv", folds = 3),
   msr("internal_valid_score", minimize = TRUE, select = "merror")

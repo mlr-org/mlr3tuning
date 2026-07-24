@@ -16,7 +16,7 @@
 #' If the available budget is exhausted, an exception is raised,
 #' and no further evaluations can be performed from this point on.
 #' The tuner is also supposed to store its final result, consisting of a selected hyperparameter configuration and
-#' associated estimated performance values, by calling the method `instance$.assign_result`.
+#' associated estimated performance values, by calling the method `instance$assign_result`.
 #'
 #' @inheritSection TuningInstanceBatchSingleCrit Default Measures
 #' @inheritSection TuningInstanceBatchSingleCrit Search Space

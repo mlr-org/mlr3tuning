@@ -19,7 +19,7 @@
 #' For the meaning of all other parameters, see [irace::defaultScenario()]. Note
 #' that we have removed all control parameters which refer to the termination of
 #' the algorithm. Use [bbotk::TerminatorEvals] instead. Other terminators do not work
-#' with `TunerIrace`.
+#' with `TunerBatchIrace`.
 #'
 #' @section Archive:
 #' The [ArchiveBatchTuning] holds the following additional columns:

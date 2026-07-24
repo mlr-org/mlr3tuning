@@ -47,7 +47,6 @@ Tuner = R6Class(
         param_classes,
         c("ParamLgl", "ParamInt", "ParamDbl", "ParamFct", "ParamUty")
       )
-      # has to have at least multi-crit or single-crit property
       private$.properties = assert_subset(properties, bbotk_reflections$optimizer_properties, empty.ok = FALSE)
       private$.packages = union("mlr3tuning", assert_character(packages, any.missing = FALSE, min.chars = 1L))
       private$.label = assert_string(label, na.ok = TRUE)
@@ -126,7 +125,7 @@ Tuner = R6Class(
 
     #' @field properties (`character()`)\cr
     #' Set of properties of the tuner.
-    #' Must be a subset of [`mlr_reflections$tuner_properties`][mlr3::mlr_reflections].
+    #' Must be a subset of [`bbotk_reflections$optimizer_properties`][bbotk::bbotk_reflections].
     properties = function(rhs) {
       if (!missing(rhs) && !identical(rhs, private$.properties)) {
         stop("$properties is read-only.")

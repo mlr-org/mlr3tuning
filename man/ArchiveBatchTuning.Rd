@@ -60,7 +60,7 @@ The \CRANpkg{mlr3viz} package provides visualizations for tuning results.
 \section{S3 Methods}{
 
 \itemize{
-\item \code{as.data.table.ArchiveTuning(x, unnest = "x_domain", exclude_columns = "uhash", measures = NULL)}\cr
+\item \code{as.data.table.ArchiveBatchTuning(x, unnest = "internal_tuned_values", exclude_columns = "uhash", measures = NULL)}\cr
 Returns a tabular view of all evaluated hyperparameter configurations.\cr
 \link{ArchiveBatchTuning} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
 \itemize{
@@ -143,7 +143,7 @@ When using \code{to_tune()} tokens, dependencies for hierarchical search spaces 
 Specifies codomain of objective function i.e. a set of performance measures.
 Internally created from provided \link[mlr3:Measure]{mlr3::Measure}s.}
       \item{\code{check_values}}{(\code{logical(1)})\cr
-If \code{TRUE} (default), hyperparameter configurations are checked for validity.}
+If \code{FALSE} (default), hyperparameter configurations are not checked for validity.}
       \item{\code{internal_search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet} or \code{NULL})\cr
 The internal search space.}
     }
@@ -168,7 +168,7 @@ Learner does not contain a model. Use \verb{$learners()} to get learners with mo
     \describe{
       \item{\code{i}}{(\code{integer(1)})\cr
 The iteration value to filter for.}
-      \item{\code{uhash}}{(\code{logical(1)})\cr
+      \item{\code{uhash}}{(\code{character(1)})\cr
 The \code{uhash} value to filter for.}
     }
     \if{html}{\out{</div>}}
@@ -191,7 +191,7 @@ The \code{uhash} value to filter for.}
     \describe{
       \item{\code{i}}{(\code{integer(1)})\cr
 The iteration value to filter for.}
-      \item{\code{uhash}}{(\code{logical(1)})\cr
+      \item{\code{uhash}}{(\code{character(1)})\cr
 The \code{uhash} value to filter for.}
     }
     \if{html}{\out{</div>}}
@@ -214,7 +214,7 @@ The \code{uhash} value to filter for.}
     \describe{
       \item{\code{i}}{(\code{integer(1)})\cr
 The iteration value to filter for.}
-      \item{\code{uhash}}{(\code{logical(1)})\cr
+      \item{\code{uhash}}{(\code{character(1)})\cr
 The \code{uhash} value to filter for.}
     }
     \if{html}{\out{</div>}}
@@ -237,7 +237,7 @@ The \code{uhash} value to filter for.}
     \describe{
       \item{\code{i}}{(\code{integer(1)})\cr
 The iteration value to filter for.}
-      \item{\code{uhash}}{(\code{logical(1)})\cr
+      \item{\code{uhash}}{(\code{character(1)})\cr
 The \code{uhash} value to filter for.}
     }
     \if{html}{\out{</div>}}
@@ -260,7 +260,7 @@ The \code{uhash} value to filter for.}
     \describe{
       \item{\code{i}}{(\code{integer(1)})\cr
 The iteration value to filter for.}
-      \item{\code{uhash}}{(\code{logical(1)})\cr
+      \item{\code{uhash}}{(\code{character(1)})\cr
 The \code{uhash} value to filter for.}
     }
     \if{html}{\out{</div>}}

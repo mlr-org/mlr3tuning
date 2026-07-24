@@ -25,10 +25,10 @@ instance = TuningInstanceAsyncSingleCrit$new(
   measure = msr("classif.ce"),
   terminator = trm("evals", n_evals = 20),
   store_benchmark_result = FALSE,
-  callbacks = clbk("mlr3tuning.rush_mlflow", tracking_uri = "http://localhost:8080")
+  callbacks = clbk("mlr3tuning.async_mlflow", tracking_uri = "http://localhost:8080")
 )
 
-tuner = tnr("random_search_v2")
+tuner = tnr("async_random_search")
 tuner$optimize(instance)
 }}
 }

@@ -16,10 +16,9 @@ Calls \link[nloptr:nloptr]{nloptr::nloptr} from package \CRANpkg{nloptr}.
 \details{
 The termination conditions \code{stopval}, \code{maxtime} and \code{maxeval} of \code{\link[nloptr:nloptr]{nloptr::nloptr()}} are deactivated
 and replaced by the \link[bbotk:Terminator]{bbotk::Terminator} subclasses.
-The x and function value tolerance termination conditions (\code{xtol_rel = 10^-4},
-\code{xtol_abs = rep(0.0, length(x0))}, \code{ftol_rel = 0.0} and \code{ftol_abs = 0.0})
-are still available and implemented with their package defaults.
-To deactivate these conditions, set them to \code{-1}.
+The x and function value tolerance termination conditions (\code{xtol_rel}, \code{xtol_abs}, \code{ftol_rel} and \code{ftol_abs})
+are deactivated by default (initialized to \code{-1}).
+To activate a condition, set it to a positive value.
 }
 \section{Dictionary}{
 

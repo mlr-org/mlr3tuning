@@ -10,7 +10,7 @@
 #' * `as.data.table(archive)`\cr
 #'   [ArchiveAsyncTuningFrozen] -> [data.table::data.table()]\cr
 #'   Returns a tabular view of all performed function calls of the Objective.
-#'   The `x_domain` column is unnested to separate columns.
+#'   The `internal_tuned_values` column is unnested to separate columns.
 #'
 #' @export
 ArchiveAsyncTuningFrozen = R6Class(
@@ -41,7 +41,7 @@ ArchiveAsyncTuningFrozen = R6Class(
     #' @param i (`integer(1)`)\cr
     #'   The iteration value to filter for.
     #'
-    #' @param uhash (`logical(1)`)\cr
+    #' @param uhash (`character(1)`)\cr
     #'   The `uhash` value to filter for.
     learner = function(i = NULL, uhash = NULL) {
       self$resample_result(i = i, uhash = uhash)$learner
@@ -54,7 +54,7 @@ ArchiveAsyncTuningFrozen = R6Class(
     #' @param i (`integer(1)`)\cr
     #'   The iteration value to filter for.
     #'
-    #' @param uhash (`logical(1)`)\cr
+    #' @param uhash (`character(1)`)\cr
     #'   The `uhash` value to filter for.
     learners = function(i = NULL, uhash = NULL) {
       self$resample_result(i = i, uhash = uhash)$learners
@@ -67,7 +67,7 @@ ArchiveAsyncTuningFrozen = R6Class(
     #' @param i (`integer(1)`)\cr
     #'   The iteration value to filter for.
     #'
-    #' @param uhash (`logical(1)`)\cr
+    #' @param uhash (`character(1)`)\cr
     #'   The `uhash` value to filter for.
     learner_param_vals = function(i = NULL, uhash = NULL) {
       self$learner(i = i, uhash = uhash)$param_set$values
@@ -80,7 +80,7 @@ ArchiveAsyncTuningFrozen = R6Class(
     #' @param i (`integer(1)`)\cr
     #'   The iteration value to filter for.
     #'
-    #' @param uhash (`logical(1)`)\cr
+    #' @param uhash (`character(1)`)\cr
     #'   The `uhash` value to filter for.
     predictions = function(i = NULL, uhash = NULL) {
       self$resample_result(i = i, uhash = uhash)$predictions()
@@ -93,7 +93,7 @@ ArchiveAsyncTuningFrozen = R6Class(
     #' @param i (`integer(1)`)\cr
     #'   The iteration value to filter for.
     #'
-    #' @param uhash (`logical(1)`)\cr
+    #' @param uhash (`character(1)`)\cr
     #'   The `uhash` value to filter for.
     resample_result = function(i = NULL, uhash = NULL) {
       self$benchmark_result$resample_result(i = i, uhash = uhash)

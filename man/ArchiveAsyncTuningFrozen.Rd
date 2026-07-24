@@ -15,7 +15,7 @@ Use the callback \link{mlr3tuning.async_freeze_archive} to freeze the archive af
 \item \code{as.data.table(archive)}\cr
 \link{ArchiveAsyncTuningFrozen} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
 Returns a tabular view of all performed function calls of the Objective.
-The \code{x_domain} column is unnested to separate columns.
+The \code{internal_tuned_values} column is unnested to separate columns.
 }
 }
 
@@ -107,7 +107,7 @@ Learner does not contain a model. Use \verb{$learners()} to get learners with mo
     \describe{
       \item{\code{i}}{(\code{integer(1)})\cr
 The iteration value to filter for.}
-      \item{\code{uhash}}{(\code{logical(1)})\cr
+      \item{\code{uhash}}{(\code{character(1)})\cr
 The \code{uhash} value to filter for.}
     }
     \if{html}{\out{</div>}}
@@ -130,7 +130,7 @@ The \code{uhash} value to filter for.}
     \describe{
       \item{\code{i}}{(\code{integer(1)})\cr
 The iteration value to filter for.}
-      \item{\code{uhash}}{(\code{logical(1)})\cr
+      \item{\code{uhash}}{(\code{character(1)})\cr
 The \code{uhash} value to filter for.}
     }
     \if{html}{\out{</div>}}
@@ -153,7 +153,7 @@ The \code{uhash} value to filter for.}
     \describe{
       \item{\code{i}}{(\code{integer(1)})\cr
 The iteration value to filter for.}
-      \item{\code{uhash}}{(\code{logical(1)})\cr
+      \item{\code{uhash}}{(\code{character(1)})\cr
 The \code{uhash} value to filter for.}
     }
     \if{html}{\out{</div>}}
@@ -176,7 +176,7 @@ The \code{uhash} value to filter for.}
     \describe{
       \item{\code{i}}{(\code{integer(1)})\cr
 The iteration value to filter for.}
-      \item{\code{uhash}}{(\code{logical(1)})\cr
+      \item{\code{uhash}}{(\code{character(1)})\cr
 The \code{uhash} value to filter for.}
     }
     \if{html}{\out{</div>}}
@@ -199,7 +199,7 @@ The \code{uhash} value to filter for.}
     \describe{
       \item{\code{i}}{(\code{integer(1)})\cr
 The iteration value to filter for.}
-      \item{\code{uhash}}{(\code{logical(1)})\cr
+      \item{\code{uhash}}{(\code{character(1)})\cr
 The \code{uhash} value to filter for.}
     }
     \if{html}{\out{</div>}}

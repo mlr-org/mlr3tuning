@@ -130,7 +130,7 @@ TuningInstanceAsyncMultiCrit = R6Class(
     #' (probably the Pareto set / front).
     #' For internal use.
     #'
-    #' @param ydt (`numeric(1)`)\cr
+    #' @param ydt (`data.table::data.table()`)\cr
     #' Optimal outcomes, e.g. the Pareto front.
     #' @param ... (`any`)\cr
     #' ignored.

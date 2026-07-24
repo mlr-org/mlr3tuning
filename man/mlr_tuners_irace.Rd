@@ -32,7 +32,7 @@ Number of resampling instances.}
 For the meaning of all other parameters, see \code{\link[irace:defaultScenario]{irace::defaultScenario()}}. Note
 that we have removed all control parameters which refer to the termination of
 the algorithm. Use \link[bbotk:TerminatorEvals]{bbotk::TerminatorEvals} instead. Other terminators do not work
-with \code{TunerIrace}.
+with \code{TunerBatchIrace}.
 }
 
 \section{Archive}{

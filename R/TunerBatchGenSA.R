@@ -15,7 +15,6 @@
 #' @inheritSection bbotk::OptimizerBatchGenSA Parameters
 #' @inheritSection Tuner Resources
 #' @inheritSection bbotk::OptimizerBatchGenSA Progress Bars
-#' @template section_parallelization
 #' @template section_logging
 #' @templateVar optimizer bbotk::OptimizerBatchGenSA
 #' @template section_optimizer

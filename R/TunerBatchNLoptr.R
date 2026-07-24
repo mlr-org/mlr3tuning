@@ -10,10 +10,9 @@
 #' @details
 #' The termination conditions `stopval`, `maxtime` and `maxeval` of [nloptr::nloptr()] are deactivated
 #' and replaced by the [bbotk::Terminator] subclasses.
-#' The x and function value tolerance termination conditions (`xtol_rel = 10^-4`,
-#' `xtol_abs = rep(0.0, length(x0))`, `ftol_rel = 0.0` and `ftol_abs = 0.0`)
-#' are still available and implemented with their package defaults.
-#' To deactivate these conditions, set them to `-1`.
+#' The x and function value tolerance termination conditions (`xtol_rel`, `xtol_abs`, `ftol_rel` and `ftol_abs`)
+#' are deactivated by default (initialized to `-1`).
+#' To activate a condition, set it to a positive value.
 #'
 #' @templateVar id nloptr
 #' @template section_dictionary_tuners

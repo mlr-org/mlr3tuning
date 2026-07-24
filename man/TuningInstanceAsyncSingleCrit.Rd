@@ -19,7 +19,7 @@ Before a batch is evaluated, the \link[bbotk:Terminator]{bbotk::Terminator} is q
 If the available budget is exhausted, an exception is raised,
 and no further evaluations can be performed from this point on.
 The tuner is also supposed to store its final result, consisting of a selected hyperparameter configuration and
-associated estimated performance values, by calling the method \code{instance$.assign_result}.
+associated estimated performance values, by calling the method \code{instance$assign_result}.
 }
 \section{Default Measures}{
 
