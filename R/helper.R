@@ -10,13 +10,6 @@ measures_to_codomain = function(measures) {
   Codomain$new(domains)
 }
 
-#nolint next
-extract_benchmark_result_learners = function(bmr) {
-  unlist(map(seq_len(bmr$n_resample_results), function(n) {
-    bmr$resample_result(n)$learners
-  }))
-}
-
 # errors if the learner's model is marshaled, so accessors do not silently return the untrained learner or NULL
 assert_unmarshaled = function(learner) {
   if (is_marshaled_model(learner$model)) {
