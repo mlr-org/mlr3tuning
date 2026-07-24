@@ -36,10 +36,8 @@
 #' @template param_callbacks
 #' @template param_rush
 #'
-#' @template param_internal_search_space
 #' @template param_xdt
 #' @template param_learner_param_vals
-#' @template param_internal_tuned_values
 #' @template param_extra
 #'
 #' @template field_internal_search_space
