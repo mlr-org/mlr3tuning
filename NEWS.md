@@ -2,6 +2,8 @@
 
 * Minimum required version of `rush` is now 1.2.0.
   Removed all compatibility workarounds for older versions.
+* fix: `AutoTuner$marshaled` is now an active binding as in `mlr3::Learner`, so `at$marshaled` returns a flag instead of a method and can be used in conditions.
+* fix: Unmarshaling an `AutoTuner` model with `inplace = TRUE` after a non-inplace marshal no longer drops the `auto_tuner_model` class, which had caused a subsequent marshal to become a no-op.
 * fix: `ArchiveBatchTuning$print()` no longer prints the archive table twice.
 * fix: `ArchiveAsyncTuning$benchmark_result` now raises a clear error when the tuning instance was created with `store_benchmark_result = FALSE`. Previously, the first access overwrote the cached benchmark result with `NULL` and every later access failed with an unrelated error. Freezing such an archive with `ArchiveAsyncTuningFrozen` works now and returns an empty benchmark result.
 * fix: `as.data.table.ArchiveAsyncTuning()` and `as.data.table.ArchiveAsyncTuningFrozen()` no longer error when the `measures` argument is used on an archive that contains queued, running, or failed points.
