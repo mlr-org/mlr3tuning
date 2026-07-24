@@ -2,6 +2,7 @@
 
 * Minimum required version of `rush` is now 1.2.0.
   Removed all compatibility workarounds for older versions.
+* fix: `AutoTuner$train()` now correctly checks that an instantiated inner resampling only uses row ids present in the task for all resampling types. Previously, the check read list-based instances and silently did nothing for resamplings such as `cv` and `holdout`.
 * fix: `auto_tuner()`, `AutoTuner$new()`, and `tune()` now error at construction when a `rush` controller is supplied together with a batch tuner.
 * fix: `ArchiveBatchTuning$print()` no longer prints the archive table twice.
 * fix: `ArchiveAsyncTuning$benchmark_result` now raises a clear error when the tuning instance was created with `store_benchmark_result = FALSE`. Previously, the first access overwrote the cached benchmark result with `NULL` and every later access failed with an unrelated error. Freezing such an archive with `ArchiveAsyncTuningFrozen` works now and returns an empty benchmark result.
