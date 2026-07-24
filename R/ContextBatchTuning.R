@@ -21,7 +21,7 @@ ContextBatchTuning = R6Class(
       if (missing(rhs)) {
         get_private(self$instance$objective)$.xss
       } else {
-        self$instance$objective$.__enclos_env__$private$.xss = rhs
+        get_private(self$instance$objective, ".xss") = rhs
       }
     },
 
@@ -31,7 +31,7 @@ ContextBatchTuning = R6Class(
       if (missing(rhs)) {
         get_private(self$instance$objective)$.design
       } else {
-        self$instance$objective$.__enclos_env__$private$.design = rhs
+        get_private(self$instance$objective, ".design") = rhs
       }
     },
 
@@ -41,7 +41,7 @@ ContextBatchTuning = R6Class(
       if (missing(rhs)) {
         get_private(self$instance$objective)$.benchmark_result
       } else {
-        self$instance$objective$.__enclos_env__$private$.benchmark_result = rhs
+        get_private(self$instance$objective, ".benchmark_result") = rhs
       }
     },
 
@@ -53,7 +53,7 @@ ContextBatchTuning = R6Class(
       if (missing(rhs)) {
         get_private(self$instance$objective)$.aggregated_performance
       } else {
-        self$instance$objective$.__enclos_env__$private$.aggregated_performance = rhs
+        get_private(self$instance$objective, ".aggregated_performance") = rhs
       }
     },
 
@@ -63,7 +63,7 @@ ContextBatchTuning = R6Class(
       if (missing(rhs)) {
         get_private(self$instance)$.result_learner_param_vals
       } else {
-        self$instance$.__enclos_env__$private$.result_learner_param_vals = rhs
+        get_private(self$instance, ".result_learner_param_vals") = rhs
       }
     }
   )

@@ -16,3 +16,11 @@ test_that("as_search_space on ParamSet works", {
   expect_r6(search_space, "ParamSet")
   expect_equal(search_space$ids(), "cp")
 })
+
+test_that("as_search_space on ParamSet with unset required param works", {
+  param_set = ps(cp = p_dbl(lower = 1e-4, upper = 1, tags = "required"), minsplit = p_int(1, 20))
+  param_set$values$minsplit = to_tune()
+  search_space = as_search_space(param_set)
+  expect_r6(search_space, "ParamSet")
+  expect_equal(search_space$ids(), "minsplit")
+})
