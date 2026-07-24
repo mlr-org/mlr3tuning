@@ -170,6 +170,9 @@ Optimization algorithm.}
 \section{Active bindings}{
   \if{html}{\out{<div class="r6-active-bindings">}}
   \describe{
+    \item{\code{marshaled}}{(\code{logical(1)})\cr
+Whether the learner has been marshaled.}
+
     \item{\code{archive}}{\link{ArchiveBatchTuning}\cr
 Archive of the \link{TuningInstanceBatchSingleCrit}.}
 
@@ -211,7 +214,6 @@ during tuning (parameter values) or feature selection (feature names).}
     \item \href{#method-AutoTuner-print}{\code{AutoTuner$print()}}
     \item \href{#method-AutoTuner-marshal}{\code{AutoTuner$marshal()}}
     \item \href{#method-AutoTuner-unmarshal}{\code{AutoTuner$unmarshal()}}
-    \item \href{#method-AutoTuner-marshaled}{\code{AutoTuner$marshaled()}}
     \item \href{#method-AutoTuner-clone}{\code{AutoTuner$clone()}}
   }
 }
@@ -437,18 +439,6 @@ Additional parameters.}
   }
   \subsection{Returns}{
     self
-  }
-}
-
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-AutoTuner-marshaled"></a>}}
-\if{latex}{\out{\hypertarget{method-AutoTuner-marshaled}{}}}
-\subsection{\code{AutoTuner$marshaled()}}{
-  Whether the learner is marshaled.
-  \subsection{Usage}{
-    \if{html}{\out{<div class="r">}}
-    \preformatted{AutoTuner$marshaled()}
-    \if{html}{\out{</div>}}
   }
 }
 

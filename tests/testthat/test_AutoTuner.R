@@ -739,6 +739,42 @@ test_that("marshal", {
   expect_class(model1, "marshaled")
 })
 
+test_that("marshaled is an active binding", {
+  at = auto_tuner(
+    tuner = tnr("random_search", batch_size = 2),
+    learner = lrn("classif.debug"),
+    resampling = rsmp("cv", folds = 3),
+    measure = msr("classif.ce"),
+    term_evals = 4
+  )
+  at$train(tsk("iris"))
+  # accessed as a field, not a method, and usable in a condition
+  expect_flag(at$marshaled)
+  expect_false(at$marshaled)
+  at$marshal()
+  expect_true(at$marshaled)
+  at$unmarshal()
+  expect_false(at$marshaled)
+})
+
+test_that("mixed-inplace marshal roundtrip keeps auto_tuner_model class", {
+  at = auto_tuner(
+    tuner = tnr("random_search", batch_size = 2),
+    learner = lrn("classif.debug"),
+    resampling = rsmp("cv", folds = 3),
+    measure = msr("classif.ce"),
+    term_evals = 4
+  )
+  at$train(tsk("iris"))
+  model = at$model
+
+  # non-inplace marshal followed by inplace unmarshal
+  roundtrip = unmarshal_model(marshal_model(model, inplace = FALSE), inplace = TRUE)
+  expect_class(roundtrip, "auto_tuner_model")
+  # a subsequent marshal still dispatches to the auto_tuner_model method
+  expect_class(marshal_model(roundtrip), "auto_tuner_model_marshaled")
+})
+
 test_that("marshaled AutoTuner errors on accessors instead of returning wrong objects", {
   at = auto_tuner(
     tuner = tnr("random_search", batch_size = 2),
