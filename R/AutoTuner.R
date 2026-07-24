@@ -173,6 +173,12 @@ AutoTuner = R6Class(
       ia$check_values = assert_flag(check_values)
       ia$callbacks = assert_callbacks(as_callbacks(callbacks))
       if (!is.null(rush)) {
+        if (!inherits(self$tuner, "TunerAsync")) {
+          stopf(
+            "A `rush` controller can only be used with an asynchronous tuner (`TunerAsync`), not with '%s'.",
+            class(self$tuner)[1L]
+          )
+        }
         ia$rush = assert_class(rush, "Rush")
       }
       self$instance_args = ia
