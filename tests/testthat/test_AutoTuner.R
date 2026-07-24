@@ -699,6 +699,28 @@ test_that("marshal", {
   expect_class(model1, "marshaled")
 })
 
+test_that("marshaled AutoTuner errors on accessors instead of returning wrong objects", {
+  at = auto_tuner(
+    tuner = tnr("random_search", batch_size = 2),
+    learner = lrn("classif.debug"),
+    resampling = rsmp("cv", folds = 3),
+    measure = msr("classif.ce"),
+    term_evals = 4,
+    store_tuning_instance = TRUE
+  )
+  at$train(tsk("iris"))
+  at$marshal()
+
+  expect_error(at$learner, "marshaled")
+  expect_error(at$tuning_instance, "marshaled")
+  expect_error(at$tuning_result, "marshaled")
+  expect_error(at$archive, "marshaled")
+
+  at$unmarshal()
+  expect_learner(at$learner)
+  expect_r6(at$tuning_instance, "TuningInstanceBatchSingleCrit")
+})
+
 # Async ------------------------------------------------------------------------
 
 test_that("AutoTuner works with async tuner", {

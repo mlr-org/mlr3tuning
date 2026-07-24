@@ -208,6 +208,7 @@ AutoTuner = R6Class(
     #'
     #' @return Named `numeric()`.
     importance = function() {
+      private$.assert_unmarshaled()
       if ("importance" %nin% self$instance_args$learner$properties) {
         stopf("Learner '%s' cannot calculate importance scores.", self$instance_args$learner$id)
       }
@@ -223,6 +224,7 @@ AutoTuner = R6Class(
     #'
     #' @return `character()`.
     selected_features = function() {
+      private$.assert_unmarshaled()
       if ("selected_features" %nin% self$instance_args$learner$properties) {
         stopf("Learner '%s' cannot select features.", self$instance_args$learner$id)
       }
@@ -238,6 +240,7 @@ AutoTuner = R6Class(
     #'
     #' @return `numeric(1)`.
     oob_error = function() {
+      private$.assert_unmarshaled()
       if ("oob_error" %nin% self$instance_args$learner$properties) {
         stopf("Learner '%s' cannot calculate the out-of-bag error.", self$instance_args$learner$id)
       }
@@ -253,6 +256,7 @@ AutoTuner = R6Class(
     #'
     #' @return `logLik`.
     loglik = function() {
+      private$.assert_unmarshaled()
       if ("loglik" %nin% self$instance_args$learner$properties) {
         stopf("Learner '%s' cannot calculate the log-likelihood.", self$instance_args$learner$id)
       }
@@ -307,6 +311,7 @@ AutoTuner = R6Class(
     #' @field learner ([mlr3::Learner])\cr
     #' Trained learner
     learner = function() {
+      private$.assert_unmarshaled()
       # if there is no trained learner, we return the one in instance args
       if (is.null(self$model$learner$model)) {
         self$instance_args$learner
@@ -317,7 +322,10 @@ AutoTuner = R6Class(
 
     #' @field tuning_instance ([TuningInstanceAsyncSingleCrit] | [TuningInstanceBatchSingleCrit])\cr
     #' Internally created tuning instance with all intermediate results.
-    tuning_instance = function() self$model$tuning_instance,
+    tuning_instance = function() {
+      private$.assert_unmarshaled()
+      self$model$tuning_instance
+    },
 
     #' @field tuning_result ([data.table::data.table])\cr
     #' Short-cut to `result` from  tuning instance.
@@ -374,6 +382,14 @@ AutoTuner = R6Class(
   ),
 
   private = list(
+    # errors if the model is marshaled, so accessors do not silently return the untrained learner or NULL
+    .assert_unmarshaled = function() {
+      if (is_marshaled_model(self$model)) {
+        # nolint next
+        msg = "Cannot access the trained learner or tuning instance of '%s' while the model is marshaled. Unmarshal it first with `$unmarshal()`."
+        stopf(msg, self$id)
+      }
+    },
     .train = function(task) {
       # construct instance from args; then tune
       ia = self$instance_args
