@@ -173,6 +173,12 @@ AutoTuner = R6Class(
       ia$check_values = assert_flag(check_values)
       ia$callbacks = assert_callbacks(as_callbacks(callbacks))
       if (!is.null(rush)) {
+        if (!inherits(self$tuner, "TunerAsync")) {
+          stopf(
+            "A `rush` controller can only be used with an asynchronous tuner (`TunerAsync`), not with '%s'.",
+            class(self$tuner)[1L]
+          )
+        }
         ia$rush = assert_class(rush, "Rush")
       }
       self$instance_args = ia
@@ -398,30 +404,35 @@ AutoTuner = R6Class(
       learner = ia$learner$clone(deep = TRUE)
 
       # check if task contains all row ids required for instantiated resampling
+      # we access the sets via train_set()/test_set() so the check also works for
+      # resamplings that do not store list-based instances (e.g. cv, holdout)
       if (ia$resampling$is_instantiated) {
-        imap(ia$resampling$instance$train, function(x, i) {
-          if (!test_subset(x, task$row_ids)) {
+        iters = seq_len(ia$resampling$iters)
+        for (i in iters) {
+          train_set = ia$resampling$train_set(i)
+          if (!test_subset(train_set, task$row_ids)) {
             stopf(
               "Train set %i of inner resampling '%s' contains row ids not present in task '%s': {%s}",
               i,
               ia$resampling$id,
               task$id,
-              paste(setdiff(x, task$row_ids), collapse = ", ")
+              paste(setdiff(train_set, task$row_ids), collapse = ", ")
             )
           }
-        })
+        }
 
-        imap(ia$resampling$instance$test, function(x, i) {
-          if (!test_subset(x, task$row_ids)) {
+        for (i in iters) {
+          test_set = ia$resampling$test_set(i)
+          if (!test_subset(test_set, task$row_ids)) {
             stopf(
               "Test set %i of inner resampling '%s' contains row ids not present in task '%s': {%s}",
               i,
               ia$resampling$id,
               task$id,
-              paste(setdiff(x, task$row_ids), collapse = ", ")
+              paste(setdiff(test_set, task$row_ids), collapse = ", ")
             )
           }
-        })
+        }
       }
 
       TuningInstance = if (inherits(self$tuner, "TunerBatch")) {
