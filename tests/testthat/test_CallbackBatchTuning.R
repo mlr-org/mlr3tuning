@@ -170,30 +170,6 @@ test_that("on_result_end in TuningInstanceSingleCrit works", {
   expect_equal(instance$result$classif.ce, 0.7)
 })
 
-test_that("on_result in TuningInstanceSingleCrit works", {
-  expect_warning(
-    {
-      callback = callback_batch_tuning(id = "test", on_result = function(callback, context) {
-        context$result$classif.ce = 0.7
-      })
-    },
-    "deprecated"
-  )
-
-  instance = tune(
-    tuner = tnr("random_search", batch_size = 1),
-    task = tsk("pima"),
-    learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp("holdout"),
-    measures = msr("classif.ce"),
-    term_evals = 2,
-    callbacks = callback
-  )
-
-  expect_class(instance$objective$context, "ContextBatchTuning")
-  expect_equal(instance$result$classif.ce, 0.7)
-})
-
 # stages in $assign_result() in TuningInstanceBatchMultiCrit -------------------
 
 test_that("on_tuning_result_begin in TuningInstanceBatchMultiCrit works", {
@@ -218,30 +194,6 @@ test_that("on_tuning_result_begin in TuningInstanceBatchMultiCrit works", {
 })
 
 test_that("on_result_end in TuningInstanceBatchMultiCrit works", {
-  expect_warning(
-    {
-      callback = callback_batch_tuning(id = "test", on_result = function(callback, context) {
-        set(context$result, j = "classif.ce", value = 0.7)
-      })
-    },
-    "deprecated"
-  )
-
-  instance = tune(
-    tuner = tnr("random_search", batch_size = 1),
-    task = tsk("pima"),
-    learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp("holdout"),
-    measures = msrs(c("classif.ce", "classif.acc")),
-    term_evals = 2,
-    callbacks = callback
-  )
-
-  expect_class(instance$objective$context, "ContextBatchTuning")
-  expect_equal(unique(instance$result$classif.ce), 0.7)
-})
-
-test_that("on_result in TuningInstanceBatchMultiCrit works", {
   callback = callback_batch_tuning(id = "test", on_result_end = function(callback, context) {
     set(context$result, j = "classif.ce", value = 0.7)
   })

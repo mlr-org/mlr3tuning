@@ -25,7 +25,6 @@ callback_async_tuning(
   on_tuning_result_begin = NULL,
   on_result_begin = NULL,
   on_result_end = NULL,
-  on_result = NULL,
   on_optimization_end = NULL
 )
 }
@@ -136,12 +135,6 @@ Stage called after the result is written.
 Called in \code{OptimInstance$assign_result()}.
 The functions must have two arguments named \code{callback} and \code{context}.
 The final result \code{instance$result} is available in the \code{context}.}
-
-\item{on_result}{(\verb{function()})\cr
-Deprecated.
-Use \code{on_result_end} instead.
-Stage called after the result is written.
-Called in \code{OptimInstance$assign_result()}.}
 
 \item{on_optimization_end}{(\verb{function()})\cr
 Stage called at the end of the optimization.
