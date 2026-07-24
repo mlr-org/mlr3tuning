@@ -460,6 +460,27 @@ test_that("AutoTuner hash works #647 in mlr3", {
   )
 })
 
+test_that("AutoTuner hash reacts to predict_sets, validate and use_weights", {
+  new_at = function() {
+    AutoTuner$new(
+      learner = lrn("classif.rpart", minsplit = to_tune(1, 12)),
+      resampling = rsmp("holdout"),
+      measure = msr("classif.ce"),
+      terminator = trm("evals", n_evals = 4),
+      tuner = tnr("grid_search", resolution = 3)
+    )
+  }
+
+  at = new_at()
+  at_predict_sets = new_at()
+  at_predict_sets$predict_sets = c("train", "test")
+  expect_true(at$hash != at_predict_sets$hash)
+
+  at_use_weights = new_at()
+  at_use_weights$use_weights = "ignore"
+  expect_true(at$hash != at_use_weights$hash)
+})
+
 test_that("AutoTuner works with empty search space", {
   at = auto_tuner(
     tuner = tnr("random_search", batch_size = 5),
@@ -564,6 +585,25 @@ test_that("AutoTuner works with instantiated resampling", {
 
   at$train(task)
   expect_data_table(at$tuning_instance$result, nrows = 1)
+})
+
+test_that("AutoTuner checks instantiated cv resampling row ids", {
+  learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
+  task = tsk("penguins")
+
+  resampling_inner = rsmp("cv", folds = 3)
+  resampling_inner$instantiate(task)
+
+  at = auto_tuner(
+    tuner = tnr("random_search"),
+    learner = learner,
+    resampling = resampling_inner,
+    measure = msr("classif.ce"),
+    term_evals = 2
+  )
+
+  # training on a strict subset leaves inner row ids outside the task
+  expect_error(at$train(task, row_ids = 1:50), "set [0-9]+ of inner resampling 'cv'")
 })
 
 test_that("AutoTuner errors when train set is not a subset of task ids", {
@@ -735,6 +775,28 @@ test_that("mixed-inplace marshal roundtrip keeps auto_tuner_model class", {
   expect_class(marshal_model(roundtrip), "auto_tuner_model_marshaled")
 })
 
+test_that("marshaled AutoTuner errors on accessors instead of returning wrong objects", {
+  at = auto_tuner(
+    tuner = tnr("random_search", batch_size = 2),
+    learner = lrn("classif.debug"),
+    resampling = rsmp("cv", folds = 3),
+    measure = msr("classif.ce"),
+    term_evals = 4,
+    store_tuning_instance = TRUE
+  )
+  at$train(tsk("iris"))
+  at$marshal()
+
+  expect_error(at$learner, "marshaled")
+  expect_error(at$tuning_instance, "marshaled")
+  expect_error(at$tuning_result, "marshaled")
+  expect_error(at$archive, "marshaled")
+
+  at$unmarshal()
+  expect_learner(at$learner)
+  expect_r6(at$tuning_instance, "TuningInstanceBatchSingleCrit")
+})
+
 # Async ------------------------------------------------------------------------
 
 test_that("AutoTuner works with async tuner", {
@@ -759,6 +821,25 @@ test_that("AutoTuner works with async tuner", {
 
   expect_data_table(at$tuning_instance$result, nrows = 1)
   expect_data_table(at$tuning_instance$archive$data, min.rows = 4)
+})
+
+test_that("AutoTuner errors when rush is used with a batch tuner", {
+  skip_if_not_installed("rush")
+  skip_if_no_redis()
+  rush = rush::rsh()
+  on.exit(rush$reset())
+
+  expect_error(
+    auto_tuner(
+      tuner = tnr("random_search"),
+      learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
+      resampling = rsmp("holdout"),
+      measure = msr("classif.ce"),
+      term_evals = 4,
+      rush = rush
+    ),
+    "asynchronous tuner"
+  )
 })
 
 # Internal Tuning --------------------------------------------------------------

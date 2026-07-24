@@ -2,10 +2,14 @@
 
 * Minimum required version of `rush` is now 1.2.0.
   Removed all compatibility workarounds for older versions.
+* fix: `AutoTuner` accessors (`$learner`, `$tuning_instance`, `$tuning_result`, `$archive`, `$importance()`, `$selected_features()`, `$oob_error()`, `$loglik()`) now raise an informative error when the model is marshaled, instead of silently returning the untrained learner or `NULL`.
 * fix: `AutoTuner$marshaled` is now an active binding as in `mlr3::Learner`, so `at$marshaled` returns a flag instead of a method and can be used in conditions.
+* fix: `AutoTuner$train()` now correctly checks that an instantiated inner resampling only uses row ids present in the task for all resampling types. Previously, the check read list-based instances and silently did nothing for resamplings such as `cv` and `holdout`.
 * fix: Unmarshaling an `AutoTuner` model with `inplace = TRUE` after a non-inplace marshal no longer drops the `auto_tuner_model` class, which had caused a subsequent marshal to become a no-op.
+* fix: `auto_tuner()`, `AutoTuner$new()`, and `tune()` now error at construction when a `rush` controller is supplied together with a batch tuner.
 * fix: `ArchiveBatchTuning$print()` no longer prints the archive table twice.
 * fix: `ArchiveAsyncTuning$benchmark_result` now raises a clear error when the tuning instance was created with `store_benchmark_result = FALSE`. Previously, the first access overwrote the cached benchmark result with `NULL` and every later access failed with an unrelated error. Freezing such an archive with `ArchiveAsyncTuningFrozen` works now and returns an empty benchmark result.
+* fix: `AutoTuner$hash` now also depends on the `predict_sets`, `validate`, and `use_weights` settings so that autotuners differing only in these fields no longer share a hash.
 * fix: `as.data.table.ArchiveAsyncTuning()` and `as.data.table.ArchiveAsyncTuningFrozen()` no longer error when the `measures` argument is used on an archive that contains queued, running, or failed points.
   The extra measures are `NA` for these points.
 * `callback_async_tuning()` and `callback_batch_tuning()` remove the deprecated `on_result` stage.

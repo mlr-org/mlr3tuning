@@ -173,6 +173,12 @@ AutoTuner = R6Class(
       ia$check_values = assert_flag(check_values)
       ia$callbacks = assert_callbacks(as_callbacks(callbacks))
       if (!is.null(rush)) {
+        if (!inherits(self$tuner, "TunerAsync")) {
+          stopf(
+            "A `rush` controller can only be used with an asynchronous tuner (`TunerAsync`), not with '%s'.",
+            class(self$tuner)[1L]
+          )
+        }
         ia$rush = assert_class(rush, "Rush")
       }
       self$instance_args = ia
@@ -208,6 +214,7 @@ AutoTuner = R6Class(
     #'
     #' @return Named `numeric()`.
     importance = function() {
+      assert_unmarshaled(self)
       if ("importance" %nin% self$instance_args$learner$properties) {
         stopf("Learner '%s' cannot calculate importance scores.", self$instance_args$learner$id)
       }
@@ -223,6 +230,7 @@ AutoTuner = R6Class(
     #'
     #' @return `character()`.
     selected_features = function() {
+      assert_unmarshaled(self)
       if ("selected_features" %nin% self$instance_args$learner$properties) {
         stopf("Learner '%s' cannot select features.", self$instance_args$learner$id)
       }
@@ -238,6 +246,7 @@ AutoTuner = R6Class(
     #'
     #' @return `numeric(1)`.
     oob_error = function() {
+      assert_unmarshaled(self)
       if ("oob_error" %nin% self$instance_args$learner$properties) {
         stopf("Learner '%s' cannot calculate the out-of-bag error.", self$instance_args$learner$id)
       }
@@ -253,6 +262,7 @@ AutoTuner = R6Class(
     #'
     #' @return `logLik`.
     loglik = function() {
+      assert_unmarshaled(self)
       if ("loglik" %nin% self$instance_args$learner$properties) {
         stopf("Learner '%s' cannot calculate the log-likelihood.", self$instance_args$learner$id)
       }
@@ -308,6 +318,7 @@ AutoTuner = R6Class(
     #' @field learner ([mlr3::Learner])\cr
     #' Trained learner
     learner = function() {
+      assert_unmarshaled(self)
       # if there is no trained learner, we return the one in instance args
       if (is.null(self$model$learner$model)) {
         self$instance_args$learner
@@ -318,7 +329,10 @@ AutoTuner = R6Class(
 
     #' @field tuning_instance ([TuningInstanceAsyncSingleCrit] | [TuningInstanceBatchSingleCrit])\cr
     #' Internally created tuning instance with all intermediate results.
-    tuning_instance = function() self$model$tuning_instance,
+    tuning_instance = function() {
+      assert_unmarshaled(self)
+      self$model$tuning_instance
+    },
 
     #' @field tuning_result ([data.table::data.table])\cr
     #' Short-cut to `result` from  tuning instance.
@@ -358,6 +372,10 @@ AutoTuner = R6Class(
         private$.predict_type,
         self$fallback$hash,
         self$parallel_predict,
+        get0("validate", self),
+        self$predict_sets,
+        private$.use_weights,
+        private$.predict_raw,
         self$tuner,
         self$instance_args,
         private$.store_tuning_instance
@@ -383,30 +401,35 @@ AutoTuner = R6Class(
       learner = ia$learner$clone(deep = TRUE)
 
       # check if task contains all row ids required for instantiated resampling
+      # we access the sets via train_set()/test_set() so the check also works for
+      # resamplings that do not store list-based instances (e.g. cv, holdout)
       if (ia$resampling$is_instantiated) {
-        imap(ia$resampling$instance$train, function(x, i) {
-          if (!test_subset(x, task$row_ids)) {
+        iters = seq_len(ia$resampling$iters)
+        for (i in iters) {
+          train_set = ia$resampling$train_set(i)
+          if (!test_subset(train_set, task$row_ids)) {
             stopf(
               "Train set %i of inner resampling '%s' contains row ids not present in task '%s': {%s}",
               i,
               ia$resampling$id,
               task$id,
-              paste(setdiff(x, task$row_ids), collapse = ", ")
+              paste(setdiff(train_set, task$row_ids), collapse = ", ")
             )
           }
-        })
+        }
 
-        imap(ia$resampling$instance$test, function(x, i) {
-          if (!test_subset(x, task$row_ids)) {
+        for (i in iters) {
+          test_set = ia$resampling$test_set(i)
+          if (!test_subset(test_set, task$row_ids)) {
             stopf(
               "Test set %i of inner resampling '%s' contains row ids not present in task '%s': {%s}",
               i,
               ia$resampling$id,
               task$id,
-              paste(setdiff(x, task$row_ids), collapse = ", ")
+              paste(setdiff(test_set, task$row_ids), collapse = ", ")
             )
           }
-        })
+        }
       }
 
       TuningInstance = if (inherits(self$tuner, "TunerBatch")) {

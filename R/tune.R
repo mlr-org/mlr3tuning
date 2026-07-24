@@ -97,6 +97,12 @@ tune = function(
   rush = NULL
 ) {
   assert_tuner(tuner)
+  if (!is.null(rush) && !inherits(tuner, "TunerAsync")) {
+    stopf(
+      "A `rush` controller can only be used with an asynchronous tuner (`TunerAsync`), not with '%s'.",
+      class(tuner)[1L]
+    )
+  }
   terminator = terminator %??% terminator_selection(term_evals, term_time)
 
   instance = if (inherits(tuner, "TunerAsync")) {
