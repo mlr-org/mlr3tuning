@@ -4,6 +4,12 @@
 
 - Minimum required version of `rush` is now 1.2.0. Removed all
   compatibility workarounds for older versions.
+- fix:
+  [`auto_tuner()`](https://mlr3tuning.mlr-org.com/dev/reference/auto_tuner.md),
+  `AutoTuner$new()`, and
+  [`tune()`](https://mlr3tuning.mlr-org.com/dev/reference/tune.md) now
+  error at construction when a `rush` controller is supplied together
+  with a batch tuner.
 - fix: `ArchiveBatchTuning$print()` no longer prints the archive table
   twice.
 - fix: `ArchiveAsyncTuning$benchmark_result` now raises a clear error

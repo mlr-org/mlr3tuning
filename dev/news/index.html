@@ -50,6 +50,7 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="mlr3tuning-development-version">mlr3tuning (development version)<a class="anchor" aria-label="anchor" href="#mlr3tuning-development-version"></a></h2>
 <ul><li>Minimum required version of <code>rush</code> is now 1.2.0. Removed all compatibility workarounds for older versions.</li>
+<li>fix: <code><a href="../reference/auto_tuner.html">auto_tuner()</a></code>, <code>AutoTuner$new()</code>, and <code><a href="../reference/tune.html">tune()</a></code> now error at construction when a <code>rush</code> controller is supplied together with a batch tuner.</li>
 <li>fix: <code>ArchiveBatchTuning$print()</code> no longer prints the archive table twice.</li>
 <li>fix: <code>ArchiveAsyncTuning$benchmark_result</code> now raises a clear error when the tuning instance was created with <code>store_benchmark_result = FALSE</code>. Previously, the first access overwrote the cached benchmark result with <code>NULL</code> and every later access failed with an unrelated error. Freezing such an archive with <code>ArchiveAsyncTuningFrozen</code> works now and returns an empty benchmark result.</li>
 <li>fix: <code>as.data.table.ArchiveAsyncTuning()</code> and <code>as.data.table.ArchiveAsyncTuningFrozen()</code> no longer error when the <code>measures</code> argument is used on an archive that contains queued, running, or failed points. The extra measures are <code>NA</code> for these points.</li>
