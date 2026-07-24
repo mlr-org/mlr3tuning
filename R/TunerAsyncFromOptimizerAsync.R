@@ -33,13 +33,13 @@ TunerAsyncFromOptimizerAsync = R6Class(
     },
 
     #' @description
-    #' Performs the tuning on a [TuningInstanceBatchSingleCrit] /
-    #' [TuningInstanceBatchMultiCrit] until termination. The single evaluations and
+    #' Performs the tuning on a [TuningInstanceAsyncSingleCrit] /
+    #' [TuningInstanceAsyncMultiCrit] until termination. The single evaluations and
     #' the final results will be written into the [ArchiveAsyncTuning] that
-    #' resides in the [TuningInstanceBatchSingleCrit]/[TuningInstanceBatchMultiCrit].
+    #' resides in the [TuningInstanceAsyncSingleCrit]/[TuningInstanceAsyncMultiCrit].
     #' The final result is returned.
     #'
-    #' @param inst ([TuningInstanceBatchSingleCrit] | [TuningInstanceBatchMultiCrit]).
+    #' @param inst ([TuningInstanceAsyncSingleCrit] | [TuningInstanceAsyncMultiCrit]).
     #'
     #' @return [data.table::data.table].
     optimize = function(inst) {

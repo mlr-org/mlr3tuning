@@ -54,7 +54,7 @@
 #'
 #' @export
 #' @examples
-#' # Hyperparameter optimization on the Palmer Penguins data set
+#' # Hyperparameter optimization on the Pima Indians Diabetes data set
 #' task = tsk("pima")
 #'
 #' # Load learner and set search space

@@ -21,7 +21,7 @@ Changes to \verb{$instance} and \verb{$optimizer} in the stages executed on the 
 The hyperparameter configuration currently evaluated.
 Contains the values on the learner scale i.e. transformations are applied.}
 
-    \item{\code{resample_result}}{(\link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult})\cr
+    \item{\code{resample_result}}{(\link[mlr3:ResampleResult]{mlr3::ResampleResult})\cr
 The resample result of the hyperparameter configuration currently evaluated.}
 
     \item{\code{aggregated_performance}}{(\code{list()})\cr

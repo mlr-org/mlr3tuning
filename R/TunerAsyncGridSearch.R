@@ -5,7 +5,7 @@
 #' @description
 #' Subclass for asynchronous grid search tuning.
 #'
-#' @templateVar id async_design_points
+#' @templateVar id async_grid_search
 #' @template section_dictionary_tuners
 #'
 #' @inheritSection bbotk::OptimizerAsyncGridSearch Parameters

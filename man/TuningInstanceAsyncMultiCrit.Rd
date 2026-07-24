@@ -19,7 +19,7 @@ Before a batch is evaluated, the \link[bbotk:Terminator]{bbotk::Terminator} is q
 If the available budget is exhausted, an exception is raised,
 and no further evaluations can be performed from this point on.
 The tuner is also supposed to store its final result, consisting of a selected hyperparameter configuration and
-associated estimated performance values, by calling the method \code{instance$.assign_result}.
+associated estimated performance values, by calling the method \code{instance$assign_result}.
 }
 \section{Search Space}{
 
@@ -198,7 +198,7 @@ For internal use.
 Hyperparameter values as \code{data.table::data.table()}. Each row is one
 configuration. Contains values in the search space. Can contain additional
 columns for extra information.}
-      \item{\code{ydt}}{(\code{numeric(1)})\cr
+      \item{\code{ydt}}{(\code{data.table::data.table()})\cr
 Optimal outcomes, e.g. the Pareto front.}
       \item{\code{learner_param_vals}}{(List of named \verb{list()s})\cr
 Fixed parameter values of the learner that are neither part of the

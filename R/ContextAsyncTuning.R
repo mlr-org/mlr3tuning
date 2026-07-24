@@ -27,7 +27,7 @@ ContextAsyncTuning = R6Class(
       }
     },
 
-    #' @field resample_result ([mlr3::BenchmarkResult])\cr
+    #' @field resample_result ([mlr3::ResampleResult])\cr
     #' The resample result of the hyperparameter configuration currently evaluated.
     resample_result = function(rhs) {
       if (missing(rhs)) {

@@ -182,7 +182,7 @@ The \CRANpkg{mlr3viz} package provides visualizations for tuning results.
 }
 
 \examples{
-# Hyperparameter optimization on the Palmer Penguins data set
+# Hyperparameter optimization on the Pima Indians Diabetes data set
 task = tsk("pima")
 
 # Load learner and set search space

@@ -150,10 +150,10 @@ load_callback_async_measures = function() {
 #'   measure = msr("classif.ce"),
 #'   terminator = trm("evals", n_evals = 20),
 #'   store_benchmark_result = FALSE,
-#'   callbacks = clbk("mlr3tuning.rush_mlflow", tracking_uri = "http://localhost:8080")
+#'   callbacks = clbk("mlr3tuning.async_mlflow", tracking_uri = "http://localhost:8080")
 #' )
 #'
-#' tuner = tnr("random_search_v2")
+#' tuner = tnr("async_random_search")
 #' tuner$optimize(instance)
 #' }}
 NULL
@@ -238,7 +238,7 @@ load_callback_async_default_configuration = function() {
   callback_async_tuning(
     "mlr3tuning.async_default_configuration",
     label = "Default Configuration",
-    man = "mlr3tuning::mlr3tuning.default_configuration",
+    man = "mlr3tuning::mlr3tuning.async_default_configuration",
 
     on_optimization_begin = function(callback, context) {
       instance = context$instance
@@ -272,7 +272,7 @@ load_callback_default_configuration = function() {
   callback_batch_tuning(
     "mlr3tuning.default_configuration",
     label = "Default Configuration",
-    man = "mlr3tuning::mlr3tuning.default_configuration",
+    man = "mlr3tuning::mlr3tuning.async_default_configuration",
 
     on_optimization_begin = function(callback, context) {
       instance = context$instance

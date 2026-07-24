@@ -11,7 +11,7 @@ Subclass for asynchronous grid search tuning.
 
 This \link{Tuner} can be instantiated with the associated sugar function \code{\link[=tnr]{tnr()}}:
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{tnr("async_design_points")
+\if{html}{\out{<div class="sourceCode">}}\preformatted{tnr("async_grid_search")
 }\if{html}{\out{</div>}}
 }
 
