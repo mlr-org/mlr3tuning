@@ -17,6 +17,14 @@ extract_benchmark_result_learners = function(bmr) {
   }))
 }
 
+# errors if the learner's model is marshaled, so accessors do not silently return the untrained learner or NULL
+assert_unmarshaled = function(learner) {
+  if (is_marshaled_model(learner$model)) {
+    # nolint next
+    stopf("Cannot access the trained learner or tuning instance of '%s' while the model is marshaled. Unmarshal it first with `$unmarshal()`.", learner$id)
+  }
+}
+
 extract_runtime = function(resample_result) {
   runtimes = map_dbl(
     get_private(resample_result)$.data$learner_states(get_private(resample_result)$.view),
