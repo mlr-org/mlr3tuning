@@ -18,6 +18,13 @@
   `measures` argument is used on an archive that contains queued,
   running, or failed points. The extra measures are `NA` for these
   points.
+- fix:
+  [`assert_async_tuning_callbacks()`](https://mlr3tuning.mlr-org.com/dev/reference/assert_async_tuning_callback.md)
+  and
+  [`assert_batch_tuning_callbacks()`](https://mlr3tuning.mlr-org.com/dev/reference/assert_batch_tuning_callback.md)
+  now check that each callback inherits from `CallbackAsyncTuning` and
+  `CallbackBatchTuning`, respectively, so tuning instances reject
+  callbacks of the wrong type at construction time.
 - fix: `Tuner$id` now validates new values on assignment, and
   `Tuner$label` correctly rejects modification instead of silently
   accepting some invalid assignments.
