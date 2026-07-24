@@ -214,6 +214,7 @@ AutoTuner = R6Class(
     #'
     #' @return Named `numeric()`.
     importance = function() {
+      assert_unmarshaled(self)
       if ("importance" %nin% self$instance_args$learner$properties) {
         stopf("Learner '%s' cannot calculate importance scores.", self$instance_args$learner$id)
       }
@@ -229,6 +230,7 @@ AutoTuner = R6Class(
     #'
     #' @return `character()`.
     selected_features = function() {
+      assert_unmarshaled(self)
       if ("selected_features" %nin% self$instance_args$learner$properties) {
         stopf("Learner '%s' cannot select features.", self$instance_args$learner$id)
       }
@@ -244,6 +246,7 @@ AutoTuner = R6Class(
     #'
     #' @return `numeric(1)`.
     oob_error = function() {
+      assert_unmarshaled(self)
       if ("oob_error" %nin% self$instance_args$learner$properties) {
         stopf("Learner '%s' cannot calculate the out-of-bag error.", self$instance_args$learner$id)
       }
@@ -259,6 +262,7 @@ AutoTuner = R6Class(
     #'
     #' @return `logLik`.
     loglik = function() {
+      assert_unmarshaled(self)
       if ("loglik" %nin% self$instance_args$learner$properties) {
         stopf("Learner '%s' cannot calculate the log-likelihood.", self$instance_args$learner$id)
       }
@@ -313,6 +317,7 @@ AutoTuner = R6Class(
     #' @field learner ([mlr3::Learner])\cr
     #' Trained learner
     learner = function() {
+      assert_unmarshaled(self)
       # if there is no trained learner, we return the one in instance args
       if (is.null(self$model$learner$model)) {
         self$instance_args$learner
@@ -323,7 +328,10 @@ AutoTuner = R6Class(
 
     #' @field tuning_instance ([TuningInstanceAsyncSingleCrit] | [TuningInstanceBatchSingleCrit])\cr
     #' Internally created tuning instance with all intermediate results.
-    tuning_instance = function() self$model$tuning_instance,
+    tuning_instance = function() {
+      assert_unmarshaled(self)
+      self$model$tuning_instance
+    },
 
     #' @field tuning_result ([data.table::data.table])\cr
     #' Short-cut to `result` from  tuning instance.
