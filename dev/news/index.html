@@ -74,6 +74,7 @@
 <li>fix: <code>TuningInstanceBatchMultiCrit$assign_result()</code> and <code>TuningInstanceAsyncMultiCrit$assign_result()</code> produced wrong <code>result_learner_param_vals</code> when the search space was empty, because the number of measures instead of the number of Pareto points was used to recycle the parameter values.</li>
 <li>fix: <code>assign_result()</code> of <code>TuningInstanceBatchMultiCrit</code> and <code>TuningInstanceAsyncMultiCrit</code> now validates <code>learner_param_vals</code> like the single-crit instances.</li>
 <li>fix: <code>AutoTuner$clone(deep = TRUE)</code> now deep clones the wrapped learner, resampling, measure, terminator, callbacks, and the trained model. Previously, the clone shared these objects with the original, so for example setting the predict type on the clone also changed the original.</li>
+<li>fix: <code>clbk("mlr3tuning.one_se_rule")</code> and <code>clbk("mlr3tuning.async_one_se_rule")</code> no longer crash at result assignment when the archive contains a single evaluation or points without a performance score (queued, running, or failed points). These points are now removed before the standard error is computed, so they no longer deflate the standard error.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.6.0" id="mlr3tuning-160">mlr3tuning 1.6.0<a class="anchor" aria-label="anchor" href="#mlr3tuning-160"></a></h2><p class="text-muted">CRAN release: 2026-03-16</p>

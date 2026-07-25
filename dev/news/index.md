@@ -104,6 +104,12 @@
   model. Previously, the clone shared these objects with the original,
   so for example setting the predict type on the clone also changed the
   original.
+- fix: `clbk("mlr3tuning.one_se_rule")` and
+  `clbk("mlr3tuning.async_one_se_rule")` no longer crash at result
+  assignment when the archive contains a single evaluation or points
+  without a performance score (queued, running, or failed points). These
+  points are now removed before the standard error is computed, so they
+  no longer deflate the standard error.
 
 ## mlr3tuning 1.6.0
 
