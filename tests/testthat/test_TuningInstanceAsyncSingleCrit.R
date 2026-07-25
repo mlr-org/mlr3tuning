@@ -9,7 +9,7 @@ test_that("initializing TuningInstanceAsyncSingleCrit works", {
   })
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -33,7 +33,7 @@ test_that("TuningInstanceAsyncSingleCrit can be passed to a tuner", {
   })
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -55,7 +55,7 @@ test_that("assigning a result to TuningInstanceAsyncSingleCrit works", {
   })
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -79,7 +79,7 @@ test_that("saving the benchmark result with TuningInstanceRushSingleCrit works",
   })
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -104,7 +104,7 @@ test_that("saving the models with TuningInstanceRushSingleCrit works", {
   })
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -130,7 +130,7 @@ test_that("saving the models with TuningInstanceRushSingleCrit works", {
 #   })
 
 #   instance = ti_async(
-#     task = tsk("pima"),
+#     task = tsk("sonar"),
 #     learner = lrn("classif.debug", segfault_train = 1, x = to_tune()),
 #     resampling = rsmp("cv", folds = 3),
 #     measures = msr("classif.ce"),
@@ -161,7 +161,7 @@ test_that("Async single-crit internal tuning works", {
   )
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -237,7 +237,7 @@ test_that("tiny logging works", {
   on.exit(options(old_opts), add = TRUE)
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -268,7 +268,7 @@ test_that("tiny logging work with internal tuning", {
   )
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),

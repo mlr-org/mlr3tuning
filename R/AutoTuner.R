@@ -301,15 +301,16 @@ AutoTuner = R6Class(
     #' @return self
     unmarshal = function(...) {
       learner_unmarshal(.learner = self, ...)
-    },
-    #' @description
-    #' Whether the learner is marshaled.
-    marshaled = function() {
-      learner_marshaled(self)
     }
   ),
 
   active = list(
+    #' @field marshaled (`logical(1)`)\cr
+    #' Whether the learner has been marshaled.
+    marshaled = function() {
+      learner_marshaled(self)
+    },
+
     #' @field archive [ArchiveBatchTuning]\cr
     #' Archive of the [TuningInstanceBatchSingleCrit].
     archive = function() self$tuning_instance$archive,
@@ -541,7 +542,7 @@ unmarshal_model.auto_tuner_model_marshaled = function(model, inplace = FALSE, ..
   if (inplace) {
     at_model = model$marshaled
     at_model$learner$model = unmarshal_model(at_model$learner$model, inplace = TRUE)
-    return(at_model)
+    return(structure(at_model, class = c("auto_tuner_model", "list")))
   }
 
   at_model = model$marshaled

@@ -7,7 +7,7 @@ test_that("on_optimization_begin works", {
 
   instance = tune(
     tuner = tnr("random_search", batch_size = 1),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
@@ -26,7 +26,7 @@ test_that("on_optimization_end works", {
 
   instance = tune(
     tuner = tnr("random_search", batch_size = 1),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
@@ -47,7 +47,7 @@ test_that("on_optimizer_after_eval works", {
 
   instance = tune(
     tuner = tnr("random_search", batch_size = 1),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
@@ -66,7 +66,7 @@ test_that("on_optimizer_after_eval works", {
 
   instance = tune(
     tuner = tnr("random_search", batch_size = 1),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
@@ -87,7 +87,7 @@ test_that("on_eval_after_design works", {
 
   instance = tune(
     tuner = tnr("random_search", batch_size = 1),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
@@ -116,7 +116,7 @@ test_that("on_eval_after_benchmark and on_eval_before_archive works", {
 
   instance = tune(
     tuner = tnr("random_search", batch_size = 1),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
@@ -138,7 +138,7 @@ test_that("on_tuning_result_begin in TuningInstanceSingleCrit works", {
 
   instance = tune(
     tuner = tnr("random_search", batch_size = 1),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
@@ -158,7 +158,7 @@ test_that("on_result_end in TuningInstanceSingleCrit works", {
 
   instance = tune(
     tuner = tnr("random_search", batch_size = 1),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
@@ -180,7 +180,7 @@ test_that("on_tuning_result_begin in TuningInstanceBatchMultiCrit works", {
 
   instance = tune(
     tuner = tnr("random_search", batch_size = 1),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
     resampling = rsmp("holdout"),
     measures = msrs(c("classif.ce", "classif.acc")),
@@ -200,7 +200,7 @@ test_that("on_result_end in TuningInstanceBatchMultiCrit works", {
 
   instance = tune(
     tuner = tnr("random_search", batch_size = 1),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
     resampling = rsmp("holdout"),
     measures = msrs(c("classif.ce", "classif.acc")),
@@ -227,7 +227,7 @@ test_that("on_resample_begin works", {
 
   instance = tune(
     tuner = tnr("random_search", batch_size = 1),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
     resampling = rsmp("holdout"),
     measures = msrs(c("classif.ce", "classif.acc")),
@@ -254,7 +254,7 @@ test_that("on_resample_before_train works", {
 
   instance = tune(
     tuner = tnr("random_search", batch_size = 1),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
     resampling = rsmp("holdout"),
     measures = msrs(c("classif.ce", "classif.acc")),
@@ -280,7 +280,7 @@ test_that("on_resample_before_predict works", {
 
   instance = tune(
     tuner = tnr("random_search", batch_size = 1),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
     resampling = rsmp("holdout"),
     measures = msrs(c("classif.ce", "classif.acc")),
@@ -307,7 +307,7 @@ test_that("on_resample_end works", {
 
   instance = tune(
     tuner = tnr("random_search", batch_size = 1),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
     resampling = rsmp("holdout"),
     measures = msrs(c("classif.ce", "classif.acc")),
@@ -328,7 +328,7 @@ test_that("passing a CallbackAsyncTuning to a batch tuning instance errors", {
   callback = callback_async_tuning(id = "test")
 
   expect_error(ti(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
