@@ -13,7 +13,7 @@
 #   # log level is inherited from root logger
 #   res = capture_output(tune(
 #     tuner = tnr("random_search"),
-#     task = tsk("pima"),
+#     task = tsk("sonar"),
 #     learner = lrn("classif.featureless"),
 #     resampling = rsmp("cv", folds = 3L),
 #     measures = msr("classif.acc"),
@@ -26,7 +26,7 @@
 #   lgr::get_logger("mlr3")$set_threshold("error")
 #   res = capture_output(tune(
 #     tuner = tnr("random_search"),
-#     task = tsk("pima"),
+#     task = tsk("sonar"),
 #     learner = lrn("classif.featureless"),
 #     resampling = rsmp("cv", folds = 3L),
 #     measures = msr("classif.acc"),
@@ -38,7 +38,7 @@
 #   lgr::get_logger("mlr3")$set_threshold("info")
 #   res = capture_output(tune(
 #     tuner = tnr("random_search"),
-#     task = tsk("pima"),
+#     task = tsk("sonar"),
 #     learner = lrn("classif.featureless"),
 #     resampling = rsmp("cv", folds = 3L),
 #     measures = msr("classif.acc"),
@@ -51,7 +51,7 @@
 #   lgr::get_logger("mlr3/bbotk")$set_threshold("error")
 #   res = capture_output(tune(
 #     tuner = tnr("random_search"),
-#     task = tsk("pima"),
+#     task = tsk("sonar"),
 #     learner = lrn("classif.featureless"),
 #     resampling = rsmp("cv", folds = 3L),
 #     measures = msr("classif.acc"),
@@ -65,7 +65,7 @@
 #   lgr::get_logger("mlr3/core")$set_threshold("error")
 #   res = capture_output(tune(
 #     tuner = tnr("random_search"),
-#     task = tsk("pima"),
+#     task = tsk("sonar"),
 #     learner = lrn("classif.featureless"),
 #     resampling = rsmp("cv", folds = 3L),
 #     measures = msr("classif.acc"),
@@ -81,7 +81,7 @@
 #   lgr::get_logger("mlr3/bbotk")$set_threshold("error")
 #   res = capture_output(tune(
 #     tuner = tnr("random_search"),
-#     task = tsk("pima"),
+#     task = tsk("sonar"),
 #     learner = lrn("classif.featureless"),
 #     resampling = rsmp("cv", folds = 3L),
 #     measures = msr("classif.acc"),
@@ -107,7 +107,7 @@
 #   res = capture_output(with_future(future::multisession, {
 #     tune(
 #       tuner = tnr("random_search"),
-#       task = tsk("pima"),
+#       task = tsk("sonar"),
 #       learner = lrn("classif.featureless"),
 #       resampling = rsmp("cv", folds = 3L),
 #       measures = msr("classif.acc"),
@@ -122,7 +122,7 @@
 #   res = capture_output(with_future(future::multisession, {
 #     tune(
 #       tuner = tnr("random_search"),
-#       task = tsk("pima"),
+#       task = tsk("sonar"),
 #       learner = lrn("classif.featureless"),
 #       resampling = rsmp("cv", folds = 3L),
 #       measures = msr("classif.acc"),
@@ -136,7 +136,7 @@
 #   res = capture_output(with_future(future::multisession, {
 #     tune(
 #       tuner = tnr("random_search"),
-#       task = tsk("pima"),
+#       task = tsk("sonar"),
 #       learner = lrn("classif.featureless"),
 #       resampling = rsmp("cv", folds = 3L),
 #       measures = msr("classif.acc"),
@@ -151,7 +151,7 @@
 #   res = capture_output(with_future(future::multisession, {
 #     tune(
 #       tuner = tnr("random_search"),
-#       task = tsk("pima"),
+#       task = tsk("sonar"),
 #       learner = lrn("classif.featureless"),
 #       resampling = rsmp("cv", folds = 3L),
 #       measures = msr("classif.acc"),
@@ -167,7 +167,7 @@
 #   res = capture_output(with_future(future::multisession, {
 #     tune(
 #       tuner = tnr("random_search"),
-#       task = tsk("pima"),
+#       task = tsk("sonar"),
 #       learner = lrn("classif.featureless"),
 #       resampling = rsmp("cv", folds = 3L),
 #       measures = msr("classif.acc"),
@@ -185,7 +185,7 @@
 #   res = capture_output(with_future(future::multisession, {
 #     tune(
 #       tuner = tnr("random_search"),
-#       task = tsk("pima"),
+#       task = tsk("sonar"),
 #       learner = lrn("classif.featureless"),
 #       resampling = rsmp("cv", folds = 3L),
 #       measures = msr("classif.acc"),

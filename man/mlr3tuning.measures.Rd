@@ -17,7 +17,7 @@ clbk("mlr3tuning.measures")
 # additionally score the configurations on the accuracy measure
 instance = tune(
   tuner = tnr("random_search", batch_size = 2),
-  task = tsk("pima"),
+  task = tsk("sonar"),
   learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
   resampling = rsmp("cv", folds = 3),
   measures = msr("classif.ce"),

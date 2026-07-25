@@ -1,7 +1,7 @@
 test_that("tuner internal works", {
   measure = msr("internal_valid_score", minimize = FALSE, select = "acc")
   instance = ti(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn(
       "classif.debug",
       validate = 0.2,

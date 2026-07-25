@@ -289,7 +289,7 @@ test_that("store_tuning_instance, store_benchmark_result and store_models flags 
 })
 
 test_that("predict_type works", {
-  task = tsk("pima")
+  task = tsk("sonar")
 
   # response predict type
   at = auto_tuner(
@@ -378,7 +378,7 @@ test_that("AutoTuner get_base_learner method works", {
     measure = msr("classif.ce"),
     term_evals = 1
   )
-  at$train(tsk("pima"))
+  at$train(tsk("sonar"))
 
   expect_learner(at$base_learner())
   expect_equal(at$base_learner()$id, "classif.rpart")
@@ -397,7 +397,7 @@ test_that("AutoTuner get_base_learner method works", {
     measure = msr("classif.ce"),
     term_evals = 1
   )
-  at$train(tsk("pima"))
+  at$train(tsk("sonar"))
 
   expect_learner(at$base_learner(recursive = 0))
   expect_equal(at$base_learner(recursive = 0)$id, "graphlearner.classif.rpart")
@@ -490,7 +490,7 @@ test_that("AutoTuner works with empty search space", {
     term_evals = 10
   )
 
-  at$train(tsk("pima"))
+  at$train(tsk("sonar"))
   expect_equal(at$tuning_instance$result$learner_param_vals[[1]], list(xval = 0))
   expect_equal(at$tuning_instance$result$x_domain, list(list()))
 
@@ -506,7 +506,7 @@ test_that("AutoTuner works with empty search space", {
     term_evals = 10
   )
 
-  at$train(tsk("pima"))
+  at$train(tsk("sonar"))
   expect_list(at$tuning_instance$result$learner_param_vals[[1]], len = 0)
   expect_equal(at$tuning_instance$result$x_domain, list(list()))
 })
@@ -739,6 +739,42 @@ test_that("marshal", {
   expect_class(model1, "marshaled")
 })
 
+test_that("marshaled is an active binding", {
+  at = auto_tuner(
+    tuner = tnr("random_search", batch_size = 2),
+    learner = lrn("classif.debug"),
+    resampling = rsmp("cv", folds = 3),
+    measure = msr("classif.ce"),
+    term_evals = 4
+  )
+  at$train(tsk("iris"))
+  # accessed as a field, not a method, and usable in a condition
+  expect_flag(at$marshaled)
+  expect_false(at$marshaled)
+  at$marshal()
+  expect_true(at$marshaled)
+  at$unmarshal()
+  expect_false(at$marshaled)
+})
+
+test_that("mixed-inplace marshal roundtrip keeps auto_tuner_model class", {
+  at = auto_tuner(
+    tuner = tnr("random_search", batch_size = 2),
+    learner = lrn("classif.debug"),
+    resampling = rsmp("cv", folds = 3),
+    measure = msr("classif.ce"),
+    term_evals = 4
+  )
+  at$train(tsk("iris"))
+  model = at$model
+
+  # non-inplace marshal followed by inplace unmarshal
+  roundtrip = unmarshal_model(marshal_model(model, inplace = FALSE), inplace = TRUE)
+  expect_class(roundtrip, "auto_tuner_model")
+  # a subsequent marshal still dispatches to the auto_tuner_model method
+  expect_class(marshal_model(roundtrip), "auto_tuner_model_marshaled")
+})
+
 test_that("marshaled AutoTuner errors on accessors instead of returning wrong objects", {
   at = auto_tuner(
     tuner = tnr("random_search", batch_size = 2),
@@ -781,7 +817,7 @@ test_that("AutoTuner works with async tuner", {
     rush = rush
   )
 
-  at$train(tsk("pima"))
+  at$train(tsk("sonar"))
 
   expect_data_table(at$tuning_instance$result, nrows = 1)
   expect_data_table(at$tuning_instance$archive$data, min.rows = 4)
@@ -896,7 +932,7 @@ test_that("AutoTuner deep clone does not share the trained model", {
     measure = msr("classif.ce"),
     term_evals = 2
   )
-  at$train(tsk("pima"))
+  at$train(tsk("sonar"))
 
   at2 = at$clone(deep = TRUE)
 

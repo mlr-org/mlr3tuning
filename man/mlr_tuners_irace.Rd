@@ -115,14 +115,14 @@ the most important functions of mlr3tuning.
 # example only runs if irace is available
 if (mlr3misc::require_namespaces("irace", quietly = TRUE)) {
 # retrieve task
-task = tsk("pima")
+task = tsk("sonar")
 
 # load learner and set search space
 learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
 
 # runtime of the example is too long
 \donttest{
-# hyperparameter tuning on the pima indians diabetes data set
+# hyperparameter tuning on the sonar data set
 instance = tune(
   tuner = tnr("irace"),
   task = task,

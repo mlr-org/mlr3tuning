@@ -56,7 +56,7 @@ test_that("async auto tuner works", {
   )
 
   expect_class(at, "AutoTuner")
-  at$train(tsk("pima"))
+  at$train(tsk("sonar"))
 
   expect_class(at$tuning_instance, "TuningInstanceAsyncSingleCrit")
 })
@@ -81,7 +81,7 @@ test_that("async auto tuner works with rush controller", {
 
   expect_class(at, "AutoTuner")
   expect_class(at$instance_args$rush, "Rush")
-  at$train(tsk("pima"))
+  at$train(tsk("sonar"))
 
   expect_class(at$tuning_instance, "TuningInstanceAsyncSingleCrit")
 })

@@ -12,7 +12,7 @@ test_that("TunerBatchCmaes", {
 
   instance = tune(
     tuner = tnr("cmaes"),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = learner,
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),

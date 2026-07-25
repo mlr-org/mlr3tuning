@@ -19,7 +19,7 @@ learner = lrn("classif.rpart",
   cp = to_tune(1e-04, 1e-1))
 
 instance = TuningInstanceAsyncSingleCrit$new(
-  task = tsk("pima"),
+  task = tsk("sonar"),
   learner = learner,
   resampling = rsmp("cv", folds = 3),
   measure = msr("classif.ce"),

@@ -1,6 +1,6 @@
 test_that("objective async works", {
   objective = ObjectiveTuningAsync$new(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -20,7 +20,7 @@ test_that("objective async works", {
 
 test_that("store benchmark result works", {
   objective = ObjectiveTuningAsync$new(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -42,7 +42,7 @@ test_that("store benchmark result works", {
 
 test_that("store models works", {
   objective = ObjectiveTuningAsync$new(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -64,7 +64,7 @@ test_that("store models works", {
 
 test_that("rush objective with multiple measures works", {
   objective = ObjectiveTuningAsync$new(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
     resampling = rsmp("cv", folds = 3),
     measures = msrs(c("classif.ce", "classif.acc")),
