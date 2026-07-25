@@ -9,7 +9,7 @@ test_that("ArchiveAsyncTuning access methods work", {
   })
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -65,7 +65,7 @@ test_that("ArchiveAsyncTuning as.data.table function works", {
   })
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -239,7 +239,7 @@ test_that("ArchiveAsyncTuning as.data.table function works without resample resu
   })
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -288,7 +288,7 @@ test_that("ArchiveAsyncTuning benchmark_result errors without stored benchmark r
   })
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -318,7 +318,7 @@ test_that("ArchiveAsyncTuning as.data.table function works with failed points", 
   })
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -345,7 +345,7 @@ test_that("ArchiveAsyncTuning as.data.table function works with empty archive", 
   })
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -377,7 +377,7 @@ test_that("ArchiveAsyncTuning as.data.table function works with new ids in x_dom
   )
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart"),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -435,7 +435,7 @@ test_that("ArchiveAsyncTuning as.data.table function works with switched new ids
   )
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart"),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -479,7 +479,7 @@ test_that("Saving ArchiveAsyncTuning works", {
   })
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -508,7 +508,7 @@ test_that("ArchiveAsyncTuning as.data.table function works internally tuned valu
   })
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn(
       "classif.debug",
       validate = 0.2,

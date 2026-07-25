@@ -9,10 +9,10 @@
 #' @examples
 #' clbk("mlr3tuning.backup", path = "backup.rds")
 #'
-#' # tune classification tree on the pima data set
+#' # tune classification tree on the sonar data set
 #' instance = tune(
 #'   tuner = tnr("random_search", batch_size = 2),
-#'   task = tsk("pima"),
+#'   task = tsk("sonar"),
 #'   learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
 #'   resampling = rsmp("cv", folds = 3),
 #'   measures = msr("classif.ce"),
@@ -61,7 +61,7 @@ load_callback_backup = function() {
 #' # additionally score the configurations on the accuracy measure
 #' instance = tune(
 #'   tuner = tnr("random_search", batch_size = 2),
-#'   task = tsk("pima"),
+#'   task = tsk("sonar"),
 #'   learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
 #'   resampling = rsmp("cv", folds = 3),
 #'   measures = msr("classif.ce"),
@@ -144,7 +144,7 @@ load_callback_async_measures = function() {
 #'   cp = to_tune(1e-04, 1e-1))
 #'
 #' instance = TuningInstanceAsyncSingleCrit$new(
-#'   task = tsk("pima"),
+#'   task = tsk("sonar"),
 #'   learner = learner,
 #'   resampling = rsmp("cv", folds = 3),
 #'   measure = msr("classif.ce"),
@@ -346,10 +346,10 @@ load_callback_async_save_logs = function() {
 #' @examples
 #' clbk("mlr3tuning.one_se_rule")
 #'
-#' # Run optimization on the pima data set with the callback
+#' # Run optimization on the sonar data set with the callback
 #' instance = tune(
 #'   tuner = tnr("random_search", batch_size = 15),
-#'   task = tsk("pima"),
+#'   task = tsk("sonar"),
 #'   learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
 #'   resampling = rsmp("cv", folds = 3),
 #'   measures = msr("classif.ce"),

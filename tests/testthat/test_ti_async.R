@@ -3,7 +3,7 @@ skip_if_no_redis()
 
 test_that("ti_async function creates a TuningInstanceAsyncSingleCrit", {
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune()),
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
@@ -14,7 +14,7 @@ test_that("ti_async function creates a TuningInstanceAsyncSingleCrit", {
 
 test_that("ti_async function creates a TuningInstanceAsyncMultiCrit", {
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune()),
     resampling = rsmp("holdout"),
     measures = msrs(c("classif.ce", "classif.acc")),

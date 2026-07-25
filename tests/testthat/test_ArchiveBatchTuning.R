@@ -116,7 +116,7 @@ test_that("ArchiveTuning access methods work", {
 
 test_that("ArchiveTuning as.data.table function works", {
   instance = ti(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart"),
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
@@ -258,7 +258,7 @@ test_that("ArchiveTuning as.data.table function works", {
 
   # without benchmark result
   instance = ti(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart"),
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
@@ -297,7 +297,7 @@ test_that("ArchiveTuning as.data.table function works", {
 
   # empty archive
   instance = ti(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart"),
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
@@ -321,7 +321,7 @@ test_that("ArchiveTuning as.data.table function works", {
   )
 
   instance = ti(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart"),
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
@@ -366,7 +366,7 @@ test_that("ArchiveTuning as.data.table function works", {
   )
 
   instance = ti(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart"),
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
@@ -397,7 +397,7 @@ test_that("ArchiveTuning as.data.table function works", {
 
   # row order
   instance = ti(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart"),
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
@@ -416,7 +416,7 @@ test_that("ArchiveTuning as.data.table function works", {
 
 test_that("ArchiveBatchTuning as.data.table function works for internally tuned values", {
   instance = ti(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn(
       "classif.debug",
       validate = 0.2,

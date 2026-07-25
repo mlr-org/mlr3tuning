@@ -1,5 +1,5 @@
 test_that("tuning with multiple objectives", {
-  task = tsk("pima")
+  task = tsk("sonar")
   resampling = rsmp("holdout")
   learner = lrn("classif.rpart")
 
@@ -160,7 +160,7 @@ test_that("TuningInstanceBatchMultiCrit and empty search space works", {
   # xval constant
   instance = tune(
     tuner = tnr("random_search", batch_size = 5),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart"),
     resampling = rsmp("cv", folds = 3),
     measures = msrs(c("classif.ce", "classif.acc")),
@@ -174,7 +174,7 @@ test_that("TuningInstanceBatchMultiCrit and empty search space works", {
   # xval and cp constant
   instance = tune(
     tuner = tnr("random_search", batch_size = 5),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", xval = 0, cp = 0.1),
     resampling = rsmp("cv", folds = 3),
     measures = msrs(c("classif.ce", "classif.acc")),
@@ -191,7 +191,7 @@ test_that("TuningInstanceBatchMultiCrit and empty search space works", {
 
   instance = tune(
     tuner = tnr("random_search", batch_size = 5),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
     measures = msrs(c("classif.ce", "classif.acc")),
@@ -205,7 +205,7 @@ test_that("TuningInstanceBatchMultiCrit and empty search space works", {
 
 test_that("assign_result works with empty search space and front size not divisible by number of measures", {
   instance = TuningInstanceBatchMultiCrit$new(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart"),
     resampling = rsmp("holdout"),
     measures = msrs(c("classif.ce", "classif.acc")),
@@ -232,7 +232,7 @@ test_that("Batch multi-crit internal tuning works", {
   )
 
   instance = ti(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
     measures = msrs(c("classif.ce", "classif.acc")),

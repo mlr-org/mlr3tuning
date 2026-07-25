@@ -4,7 +4,7 @@ test_that("tune_nested function works", {
 
   rr = tune_nested(
     tuner = tnr("random_search", batch_size = 1),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = learner,
     inner_resampling = rsmp("holdout"),
     outer_resampling = rsmp("cv", folds = 3),
