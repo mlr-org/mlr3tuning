@@ -1,4 +1,4 @@
-# mlr3tuning (development version)
+# mlr3tuning 1.6.1
 
 * compatibility: mlr3 1.7.2
 * chore: Minimum required version of `rush` is now 1.2.0.
