@@ -26,6 +26,10 @@
   [`tune()`](https://mlr3tuning.mlr-org.com/dev/reference/tune.md) now
   error at construction when a `rush` controller is supplied together
   with a batch tuner.
+- fix: The `mlr3tuning.backup` callback now errors at the start of the
+  run when `store_benchmark_result = FALSE` instead of silently writing
+  an empty benchmark result, and it no longer errors when the target
+  file already exists.
 - fix: `ArchiveBatchTuning$print()` no longer prints the archive table
   twice.
 - fix: `ArchiveAsyncTuning$benchmark_result` now raises a clear error
