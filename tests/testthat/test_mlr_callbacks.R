@@ -529,7 +529,7 @@ test_that("one se rule callback works", {
 test_that("one se rule callback works with a single evaluation", {
   instance = tune(
     tuner = tnr("random_search", batch_size = 1),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
@@ -551,7 +551,7 @@ test_that("async one se rule callback works with a single evaluation", {
   })
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
