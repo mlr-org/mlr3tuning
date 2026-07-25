@@ -7,6 +7,7 @@
 * fix: `AutoTuner$train()` now correctly checks that an instantiated inner resampling only uses row ids present in the task for all resampling types. Previously, the check read list-based instances and silently did nothing for resamplings such as `cv` and `holdout`.
 * fix: Unmarshaling an `AutoTuner` model with `inplace = TRUE` after a non-inplace marshal no longer drops the `auto_tuner_model` class, which had caused a subsequent marshal to become a no-op.
 * fix: `auto_tuner()`, `AutoTuner$new()`, and `tune()` now error at construction when a `rush` controller is supplied together with a batch tuner.
+* fix: The `mlr3tuning.backup` callback now errors at the start of the run when `store_benchmark_result = FALSE` instead of silently writing an empty benchmark result, and it no longer errors when the target file already exists.
 * fix: `ArchiveBatchTuning$print()` no longer prints the archive table twice.
 * fix: `ArchiveAsyncTuning$benchmark_result` now raises a clear error when the tuning instance was created with `store_benchmark_result = FALSE`. Previously, the first access overwrote the cached benchmark result with `NULL` and every later access failed with an unrelated error. Freezing such an archive with `ArchiveAsyncTuningFrozen` works now and returns an empty benchmark result.
 * fix: `AutoTuner$hash` now also depends on the `predict_sets`, `validate`, and `use_weights` settings so that autotuners differing only in these fields no longer share a hash.
