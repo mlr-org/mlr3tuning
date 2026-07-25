@@ -71,7 +71,8 @@ extract_inner_tuning_results.ResampleResult = function(x, tuning_instance = FALS
     return(data.table())
   }
   tab = imap_dtr(rr$learners, function(learner, i) {
-    data = setalloccol(learner$tuning_result)
+    # copy to avoid modifying the result table of the tuning instance by reference
+    data = copy(learner$tuning_result)
     set(data, j = "iteration", value = i)
     if (tuning_instance) {
       set(data, j = "tuning_instance", value = list(learner$tuning_instance))

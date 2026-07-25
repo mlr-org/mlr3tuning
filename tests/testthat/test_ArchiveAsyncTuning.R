@@ -9,7 +9,7 @@ test_that("ArchiveAsyncTuning access methods work", {
   })
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -65,7 +65,7 @@ test_that("ArchiveAsyncTuning as.data.table function works", {
   })
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -239,7 +239,7 @@ test_that("ArchiveAsyncTuning as.data.table function works without resample resu
   })
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -269,6 +269,45 @@ test_that("ArchiveAsyncTuning as.data.table function works without resample resu
       "condition"
     )
   )
+
+  # measures are ignored without resample results
+  expect_warning(
+    {
+      tab = as.data.table(instance$archive, measures = msr("classif.acc"))
+    },
+    "store_benchmark_result"
+  )
+  expect_false("classif.acc" %in% names(tab))
+})
+
+test_that("ArchiveAsyncTuning benchmark_result errors without stored benchmark result", {
+  rush = start_rush()
+  on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
+
+  instance = ti_async(
+    task = tsk("sonar"),
+    learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
+    resampling = rsmp("cv", folds = 3),
+    measures = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 5),
+    store_benchmark_result = FALSE,
+    rush = rush
+  )
+  tuner = tnr("async_random_search")
+  tuner$optimize(instance)
+
+  expect_error(instance$archive$benchmark_result, "store_benchmark_result")
+  # repeated access raises the same error instead of corrupting the cache
+  expect_error(instance$archive$benchmark_result, "store_benchmark_result")
+  expect_error(instance$archive$resample_result(1), "store_benchmark_result")
+
+  # freezing still works and returns an empty benchmark result
+  frozen = ArchiveAsyncTuningFrozen$new(instance$archive)
+  expect_benchmark_result(frozen$benchmark_result)
+  expect_equal(frozen$benchmark_result$n_resample_results, 0)
 })
 
 test_that("ArchiveAsyncTuning as.data.table function works with failed points", {
@@ -279,7 +318,7 @@ test_that("ArchiveAsyncTuning as.data.table function works with failed points", 
   })
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -306,7 +345,7 @@ test_that("ArchiveAsyncTuning as.data.table function works with empty archive", 
   })
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -338,7 +377,7 @@ test_that("ArchiveAsyncTuning as.data.table function works with new ids in x_dom
   )
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart"),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -396,7 +435,7 @@ test_that("ArchiveAsyncTuning as.data.table function works with switched new ids
   )
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart"),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -440,7 +479,7 @@ test_that("Saving ArchiveAsyncTuning works", {
   })
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -469,7 +508,7 @@ test_that("ArchiveAsyncTuning as.data.table function works internally tuned valu
   })
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn(
       "classif.debug",
       validate = 0.2,

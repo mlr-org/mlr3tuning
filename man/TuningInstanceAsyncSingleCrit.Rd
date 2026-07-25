@@ -19,7 +19,7 @@ Before a batch is evaluated, the \link[bbotk:Terminator]{bbotk::Terminator} is q
 If the available budget is exhausted, an exception is raised,
 and no further evaluations can be performed from this point on.
 The tuner is also supposed to store its final result, consisting of a selected hyperparameter configuration and
-associated estimated performance values, by calling the method \code{instance$.assign_result}.
+associated estimated performance values, by calling the method \code{instance$assign_result}.
 }
 \section{Default Measures}{
 
@@ -184,10 +184,9 @@ When using \code{to_tune()} tokens, dependencies for hierarchical search spaces 
 If \code{TRUE} (default), store resample result of evaluated hyperparameter
 configurations in archive as \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}.}
       \item{\code{store_models}}{(\code{logical(1)})\cr
-If \code{TRUE}, fitted models are stored in the benchmark result
-(\code{archive$benchmark_result}). If \code{store_benchmark_result = FALSE}, models
-are only stored temporarily and not accessible after the tuning. This
-combination is needed for measures that require a model.}
+If \code{TRUE}, fitted models are stored in the benchmark result (\code{archive$benchmark_result}).
+Setting \code{store_models = TRUE} implies \code{store_benchmark_result = TRUE},
+i.e. an explicit \code{store_benchmark_result = FALSE} is overridden.}
       \item{\code{check_values}}{(\code{logical(1)})\cr
 If \code{TRUE}, hyperparameter values are checked before evaluation and
 performance scores after. If \code{FALSE} (default), values are unchecked but

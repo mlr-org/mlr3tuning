@@ -32,7 +32,7 @@ Number of resampling instances.}
 For the meaning of all other parameters, see \code{\link[irace:defaultScenario]{irace::defaultScenario()}}. Note
 that we have removed all control parameters which refer to the termination of
 the algorithm. Use \link[bbotk:TerminatorEvals]{bbotk::TerminatorEvals} instead. Other terminators do not work
-with \code{TunerIrace}.
+with \code{TunerBatchIrace}.
 }
 
 \section{Archive}{
@@ -115,14 +115,14 @@ the most important functions of mlr3tuning.
 # example only runs if irace is available
 if (mlr3misc::require_namespaces("irace", quietly = TRUE)) {
 # retrieve task
-task = tsk("pima")
+task = tsk("sonar")
 
 # load learner and set search space
 learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
 
 # runtime of the example is too long
 \donttest{
-# hyperparameter tuning on the pima indians diabetes data set
+# hyperparameter tuning on the sonar data set
 instance = tune(
   tuner = tnr("irace"),
   task = task,

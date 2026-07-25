@@ -188,6 +188,27 @@ test_that("Tuner active bindings work", {
     regexp = "$packages is read-only",
     fixed = TRUE
   )
+
+  expect_equal(tuner$id, "tuner")
+  tuner$id = "new_id"
+  expect_equal(tuner$id, "new_id")
+  expect_error(
+    {
+      tuner$id = 123
+    },
+    regexp = "string"
+  )
+
+  expect_silent({
+    tuner$label = tuner$label
+  })
+  expect_error(
+    {
+      tuner$label = "something else"
+    },
+    regexp = "$label is read-only",
+    fixed = TRUE
+  )
 })
 
 test_that("internal single crit", {
@@ -280,7 +301,7 @@ test_that("internal multi crit", {
 
 test_that("proper error when primary search space is empty", {
   instance = ti(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn(
       "classif.debug",
       validate = 0.2,
@@ -327,7 +348,7 @@ test_that("internal tuning: branching", {
   )
 
   instance = ti(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = learner,
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),

@@ -16,7 +16,7 @@ test_that("on_optimization_begin works", {
 
   instance = tune(
     tuner = tnr("async_random_search"),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
@@ -42,7 +42,7 @@ test_that("on_optimization_end works", {
 
   instance = tune(
     tuner = tnr("async_random_search"),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
@@ -71,7 +71,7 @@ test_that("on_worker_begin works", {
 
   instance = tune(
     tuner = tnr("async_random_search"),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
@@ -97,7 +97,7 @@ test_that("on_worker_end works", {
 
   instance = tune(
     tuner = tnr("async_random_search"),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
@@ -132,7 +132,7 @@ test_that("on_optimizer_before_eval and on_optimizer_after_eval works", {
 
   instance = tune(
     tuner = tnr("async_random_search"),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
@@ -160,7 +160,7 @@ test_that("on_eval_after_xs works", {
 
   instance = tune(
     tuner = tnr("async_random_search"),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
@@ -192,7 +192,7 @@ test_that("on_eval_after_resample works", {
 
   instance = tune(
     tuner = tnr("async_random_search"),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
@@ -220,7 +220,7 @@ test_that("on_tuning_result_begin in TuningInstanceSingleCrit works", {
 
   instance = tune(
     tuner = tnr("async_random_search"),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
@@ -247,38 +247,7 @@ test_that("on_result_end in TuningInstanceSingleCrit works", {
 
   instance = tune(
     tuner = tnr("async_random_search"),
-    task = tsk("pima"),
-    learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp("holdout"),
-    measures = msr("classif.ce"),
-    term_evals = 2,
-    callbacks = callback,
-    rush = rush
-  )
-
-  expect_class(instance$objective$context, "ContextAsyncTuning")
-  expect_equal(instance$result$classif.ce, 0.7)
-})
-
-test_that("on_result in TuningInstanceSingleCrit works", {
-  rush = start_rush()
-  on.exit({
-    rush$reset()
-    mirai::daemons(0)
-  })
-
-  expect_warning(
-    {
-      callback = callback_async_tuning(id = "test", on_result = function(callback, context) {
-        context$result$classif.ce = 0.7
-      })
-    },
-    "deprecated"
-  )
-
-  instance = tune(
-    tuner = tnr("async_random_search"),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
@@ -307,7 +276,7 @@ test_that("on_tuning_result_begin in TuningInstanceBatchMultiCrit works", {
 
   instance = tune(
     tuner = tnr("async_random_search"),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
     resampling = rsmp("holdout"),
     measures = msrs(c("classif.ce", "classif.acc")),
@@ -334,38 +303,7 @@ test_that("on_result_end in TuningInstanceBatchMultiCrit works", {
 
   instance = tune(
     tuner = tnr("async_random_search"),
-    task = tsk("pima"),
-    learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
-    resampling = rsmp("holdout"),
-    measures = msrs(c("classif.ce", "classif.acc")),
-    term_evals = 2,
-    callbacks = callback,
-    rush = rush
-  )
-
-  expect_class(instance$objective$context, "ContextAsyncTuning")
-  expect_equal(unique(instance$result$classif.ce), 0.7)
-})
-
-test_that("on_result in TuningInstanceBatchMultiCrit works", {
-  rush = start_rush()
-  on.exit({
-    rush$reset()
-    mirai::daemons(0)
-  })
-
-  expect_warning(
-    {
-      callback = callback_async_tuning(id = "test", on_result = function(callback, context) {
-        set(context$result, j = "classif.ce", value = 0.7)
-      })
-    },
-    "deprecated"
-  )
-
-  instance = tune(
-    tuner = tnr("async_random_search"),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
     resampling = rsmp("holdout"),
     measures = msrs(c("classif.ce", "classif.acc")),
@@ -399,7 +337,7 @@ test_that("on_resample_begin works", {
 
   instance = tune(
     tuner = tnr("async_random_search"),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
@@ -433,7 +371,7 @@ test_that("on_resample_before_train works", {
 
   instance = tune(
     tuner = tnr("async_random_search"),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
@@ -466,7 +404,7 @@ test_that("on_resample_before_predict works", {
 
   instance = tune(
     tuner = tnr("async_random_search"),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
@@ -502,7 +440,7 @@ test_that("on_resample_end works", {
 
   instance = tune(
     tuner = tnr("async_random_search"),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),
@@ -520,4 +458,26 @@ test_that("on_resample_end works", {
   walk(instance$archive$benchmark_result$score()$learner, function(learner, ...) {
     expect_true(learner$state$state_success)
   })
+})
+
+# callback class validation ----------------------------------------------------
+
+test_that("passing a CallbackBatchTuning to an async tuning instance errors", {
+  rush = start_rush()
+  on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
+
+  callback = callback_batch_tuning(id = "test")
+
+  expect_error(ti_async(
+    task = tsk("sonar"),
+    learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
+    resampling = rsmp("holdout"),
+    measures = msr("classif.ce"),
+    terminator = trm("evals", n_evals = 2),
+    callbacks = callback,
+    rush = rush
+  ), "CallbackAsyncTuning")
 })

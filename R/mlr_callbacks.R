@@ -9,10 +9,10 @@
 #' @examples
 #' clbk("mlr3tuning.backup", path = "backup.rds")
 #'
-#' # tune classification tree on the pima data set
+#' # tune classification tree on the sonar data set
 #' instance = tune(
 #'   tuner = tnr("random_search", batch_size = 2),
-#'   task = tsk("pima"),
+#'   task = tsk("sonar"),
 #'   learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
 #'   resampling = rsmp("cv", folds = 3),
 #'   measures = msr("classif.ce"),
@@ -61,7 +61,7 @@ load_callback_backup = function() {
 #' # additionally score the configurations on the accuracy measure
 #' instance = tune(
 #'   tuner = tnr("random_search", batch_size = 2),
-#'   task = tsk("pima"),
+#'   task = tsk("sonar"),
 #'   learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
 #'   resampling = rsmp("cv", folds = 3),
 #'   measures = msr("classif.ce"),
@@ -105,13 +105,13 @@ load_callback_async_measures = function() {
     man = "mlr3tuning::mlr3tuning.measures",
 
     on_optimization_begin = function(callback, context) {
-      assert_measures(callback$state$measures)
-      ids = map_chr(callback$state$measures, "id")
-      assert_names(ids, type = "unique", .var.name = "measures")
-      if (any(ids %in% map_chr(context$instance$objective$measures, "id"))) {
+      callback$state$measures = assert_measures(as_measures(callback$state$measures, clone = TRUE))
+      callback$state$ids = map_chr(callback$state$measures, "id")
+      assert_names(callback$state$ids, type = "unique", .var.name = "measures")
+      if (any(callback$state$ids %in% map_chr(context$instance$objective$measures, "id"))) {
         stopf(
           "The measure id(s) '%s' are already used by the instance. Please pass the measures with a different id.",
-          as_short_string(ids)
+          as_short_string(callback$state$ids)
         )
       }
     },
@@ -144,16 +144,16 @@ load_callback_async_measures = function() {
 #'   cp = to_tune(1e-04, 1e-1))
 #'
 #' instance = TuningInstanceAsyncSingleCrit$new(
-#'   task = tsk("pima"),
+#'   task = tsk("sonar"),
 #'   learner = learner,
 #'   resampling = rsmp("cv", folds = 3),
 #'   measure = msr("classif.ce"),
 #'   terminator = trm("evals", n_evals = 20),
 #'   store_benchmark_result = FALSE,
-#'   callbacks = clbk("mlr3tuning.rush_mlflow", tracking_uri = "http://localhost:8080")
+#'   callbacks = clbk("mlr3tuning.async_mlflow", tracking_uri = "http://localhost:8080")
 #' )
 #'
-#' tuner = tnr("random_search_v2")
+#' tuner = tnr("async_random_search")
 #' tuner$optimize(instance)
 #' }}
 NULL
@@ -238,7 +238,7 @@ load_callback_async_default_configuration = function() {
   callback_async_tuning(
     "mlr3tuning.async_default_configuration",
     label = "Default Configuration",
-    man = "mlr3tuning::mlr3tuning.default_configuration",
+    man = "mlr3tuning::mlr3tuning.async_default_configuration",
 
     on_optimization_begin = function(callback, context) {
       instance = context$instance
@@ -272,7 +272,7 @@ load_callback_default_configuration = function() {
   callback_batch_tuning(
     "mlr3tuning.default_configuration",
     label = "Default Configuration",
-    man = "mlr3tuning::mlr3tuning.default_configuration",
+    man = "mlr3tuning::mlr3tuning.async_default_configuration",
 
     on_optimization_begin = function(callback, context) {
       instance = context$instance
@@ -346,10 +346,10 @@ load_callback_async_save_logs = function() {
 #' @examples
 #' clbk("mlr3tuning.one_se_rule")
 #'
-#' # Run optimization on the pima data set with the callback
+#' # Run optimization on the sonar data set with the callback
 #' instance = tune(
 #'   tuner = tnr("random_search", batch_size = 15),
-#'   task = tsk("pima"),
+#'   task = tsk("sonar"),
 #'   learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
 #'   resampling = rsmp("cv", folds = 3),
 #'   measures = msr("classif.ce"),
@@ -378,7 +378,7 @@ load_callback_async_one_se_rule = function() {
 
     on_eval_before_archive = function(callback, context) {
       res = context$resample_result$aggregate(msr("selected_features"))
-      context$aggregated_performance$n_features = res
+      context$aggregated_performance$n_features = unname(res)
       if (!callback$state$store_models) {
         context$resample_result$discard(models = TRUE)
       }

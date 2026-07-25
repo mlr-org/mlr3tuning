@@ -1,6 +1,6 @@
 test_that("TunerBatchFromOptimizerBatch parameter set works after cloning", {
   instance = ti(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),

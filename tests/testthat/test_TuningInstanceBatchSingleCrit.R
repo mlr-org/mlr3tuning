@@ -85,10 +85,10 @@ test_that("the same experiment can be added twice", {
 
 
 test_that("tuning with custom resampling", {
-  task = tsk("pima")
+  task = tsk("sonar")
   resampling = rsmp("custom")
-  train_sets = list(1:300, 332:632)
-  test_sets = list(301:331, 633:663)
+  train_sets = list(c(1:40, 98:137), c(41:80, 138:177))
+  test_sets = list(c(81:90, 178:187), c(91:97, 188:197))
   resampling$instantiate(task, train_sets, test_sets)
 
   learner = lrn("classif.rpart")
@@ -289,7 +289,7 @@ test_that("TuningInstanceBatchSingleCrit and empty search space works", {
   # xval constant
   instance = tune(
     tuner = tnr("random_search", batch_size = 5),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart"),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -306,7 +306,7 @@ test_that("TuningInstanceBatchSingleCrit and empty search space works", {
 
   instance = tune(
     tuner = tnr("random_search", batch_size = 5),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -321,7 +321,7 @@ test_that("TuningInstanceBatchSingleCrit and empty search space works", {
 test_that("assign_result works with one hyperparameter", {
   learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1))
   learner$param_set$values$xval = NULL
-  task = tsk("pima")
+  task = tsk("sonar")
   resampling = rsmp("holdout")
   measure = msr("classif.ce")
   terminator = trm("evals", n_evals = 10)
@@ -342,7 +342,7 @@ test_that("assign_result works with one hyperparameter", {
 test_that("assign_result works with two hyperparameters", {
   learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1), minbucket = to_tune(1, 12))
   learner$param_set$values$xval = NULL
-  task = tsk("pima")
+  task = tsk("sonar")
   resampling = rsmp("holdout")
   measure = msr("classif.ce")
   terminator = trm("evals", n_evals = 10)
@@ -363,7 +363,7 @@ test_that("assign_result works with two hyperparameters", {
 
 test_that("assign_result works with two hyperparameters and one constant", {
   learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1), minbucket = to_tune(1, 12), xval = 1)
-  task = tsk("pima")
+  task = tsk("sonar")
   resampling = rsmp("holdout")
   measure = msr("classif.ce")
   terminator = trm("evals", n_evals = 10)
@@ -384,7 +384,7 @@ test_that("assign_result works with two hyperparameters and one constant", {
 
 test_that("assign_result works with no hyperparameters and one constant", {
   learner = lrn("classif.rpart", xval = 1)
-  task = tsk("pima")
+  task = tsk("sonar")
   resampling = rsmp("holdout")
   measure = msr("classif.ce")
   terminator = trm("evals", n_evals = 10)
@@ -404,7 +404,7 @@ test_that("assign_result works with no hyperparameters and one constant", {
 
 test_that("assign_result works with no hyperparameters and two constant", {
   learner = lrn("classif.rpart", xval = 1, cp = 1)
-  task = tsk("pima")
+  task = tsk("sonar")
   resampling = rsmp("holdout")
   measure = msr("classif.ce")
   terminator = trm("evals", n_evals = 10)
@@ -423,7 +423,7 @@ test_that("assign_result works with no hyperparameters and two constant", {
 
 test_that("assign_result works with one hyperparameters and one constant", {
   learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1), xval = 1)
-  task = tsk("pima")
+  task = tsk("sonar")
   resampling = rsmp("holdout")
   measure = msr("classif.ce")
   terminator = trm("evals", n_evals = 10)
@@ -444,7 +444,7 @@ test_that("assign_result works with one hyperparameters and one constant", {
 test_that("assign_result works with no hyperparameter and constant", {
   learner = lrn("classif.rpart")
   learner$param_set$values$xval = NULL
-  task = tsk("pima")
+  task = tsk("sonar")
   resampling = rsmp("holdout")
   measure = msr("classif.ce")
   terminator = trm("evals", n_evals = 10)
@@ -462,7 +462,7 @@ test_that("assign_result works with no hyperparameter and constant", {
 })
 
 test_that("objective contains no benchmark results", {
-  task = tsk("pima")
+  task = tsk("sonar")
   learner = lrn("classif.rpart")
   resampling = rsmp("holdout")
   measure = msr("classif.ce")
@@ -482,7 +482,7 @@ test_that("dependencies in defaults work", {
   expect_class(
     tune(
       tuner = tnr("random_search", batch_size = 5),
-      task = tsk("pima"),
+      task = tsk("sonar"),
       learner = learner,
       resampling = rsmp("cv", folds = 3),
       measures = msr("classif.ce"),
@@ -494,7 +494,7 @@ test_that("dependencies in defaults work", {
   expect_error(
     tune(
       tuner = tnr("random_search", batch_size = 5),
-      task = tsk("pima"),
+      task = tsk("sonar"),
       learner = learner,
       resampling = rsmp("cv", folds = 3),
       measures = msr("classif.ce"),
@@ -517,7 +517,7 @@ test_that("Batch single-crit internal tuning works", {
   )
 
   instance = ti(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),

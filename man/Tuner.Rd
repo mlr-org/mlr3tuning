@@ -65,18 +65,13 @@ Other Tuner:
 \code{\link{mlr_tuners_random_search}}
 }
 \concept{Tuner}
-\section{Public fields}{
-  \if{html}{\out{<div class="r6-fields">}}
+\section{Active bindings}{
+  \if{html}{\out{<div class="r6-active-bindings">}}
   \describe{
     \item{\code{id}}{(\code{character(1)})\cr
 Identifier of the object.
 Used in tables, plot and text output.}
-  }
-  \if{html}{\out{</div>}}
-}
-\section{Active bindings}{
-  \if{html}{\out{<div class="r6-active-bindings">}}
-  \describe{
+
     \item{\code{param_set}}{(\link[paradox:ParamSet]{paradox::ParamSet})\cr
 Set of control parameters.}
 
@@ -86,7 +81,7 @@ as given in the \link[paradox:ParamSet]{paradox::ParamSet} \verb{$class} field.}
 
     \item{\code{properties}}{(\code{character()})\cr
 Set of properties of the tuner.
-Must be a subset of \code{\link[mlr3:mlr_reflections]{mlr_reflections$tuner_properties}}.}
+Must be a subset of \code{\link[bbotk:bbotk_reflections]{bbotk_reflections$optimizer_properties}}.}
 
     \item{\code{packages}}{(\code{character()})\cr
 Set of required packages.
@@ -141,7 +136,7 @@ Set of control parameters.}
 Supported parameter classes for learner hyperparameters that the tuner can optimize, as given in the \link[paradox:ParamSet]{paradox::ParamSet} \verb{$class} field.}
       \item{\code{properties}}{(\code{character()})\cr
 Set of properties of the tuner.
-Must be a subset of \code{\link[mlr3:mlr_reflections]{mlr_reflections$tuner_properties}}.}
+Must be a subset of \code{\link[bbotk:bbotk_reflections]{bbotk_reflections$optimizer_properties}}.}
       \item{\code{packages}}{(\code{character()})\cr
 Set of required packages.
 Note that these packages will be loaded via \code{\link[=requireNamespace]{requireNamespace()}}, and are not attached.}

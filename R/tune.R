@@ -54,8 +54,8 @@
 #'
 #' @export
 #' @examples
-#' # Hyperparameter optimization on the Palmer Penguins data set
-#' task = tsk("pima")
+#' # Hyperparameter optimization on the sonar data set
+#' task = tsk("sonar")
 #'
 #' # Load learner and set search space
 #' learner = lrn("classif.rpart",
@@ -65,7 +65,7 @@
 #' # Run tuning
 #' instance = tune(
 #'   tuner = tnr("random_search", batch_size = 2),
-#'   task = tsk("pima"),
+#'   task = tsk("sonar"),
 #'   learner = learner,
 #'   resampling = rsmp ("holdout"),
 #'   measures = msr("classif.ce"),
@@ -97,6 +97,12 @@ tune = function(
   rush = NULL
 ) {
   assert_tuner(tuner)
+  if (!is.null(rush) && !inherits(tuner, "TunerAsync")) {
+    stopf(
+      "A `rush` controller can only be used with an asynchronous tuner (`TunerAsync`), not with '%s'.",
+      class(tuner)[1L]
+    )
+  }
   terminator = terminator %??% terminator_selection(term_evals, term_time)
 
   instance = if (inherits(tuner, "TunerAsync")) {

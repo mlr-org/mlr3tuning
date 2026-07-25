@@ -5,7 +5,7 @@ test_that("backup callback works", {
 
   instance = tune(
     tuner = tnr("random_search", batch_size = 2),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -22,7 +22,7 @@ test_that("backup callback works with standalone tuner", {
 
   instance = tune(
     tuner = tnr("grid_search", batch_size = 2),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -32,6 +32,22 @@ test_that("backup callback works with standalone tuner", {
 
   expect_file_exists(file)
   expect_benchmark_result(readRDS(file))
+})
+
+# batch measures callback ------------------------------------------------------
+
+test_that("batch measures callback works", {
+  instance = tune(
+    tuner = tnr("random_search", batch_size = 2),
+    task = tsk("sonar"),
+    learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
+    resampling = rsmp("cv", folds = 3),
+    measures = msr("classif.ce"),
+    term_evals = 4,
+    callbacks = clbk("mlr3tuning.measures", measures = msr("classif.acc"))
+  )
+
+  expect_numeric(instance$archive$data$classif.acc)
 })
 
 # async measure callback ------------------------------------------------------
@@ -46,7 +62,7 @@ test_that("async measures callback works", {
   })
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1), predict_sets = "test"),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -81,7 +97,7 @@ test_that("async measures callback works", {
 #     cp        = to_tune(1e-04, 1e-1))
 
 #   instance = ti_async(
-#     task = tsk("pima"),
+#     task = tsk("sonar"),
 #     learner = learner,
 #     resampling = rsmp("cv", folds = 3),
 #     measures = msr("classif.ce"),
@@ -107,7 +123,7 @@ test_that("default configuration callback works", {
   })
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -133,7 +149,7 @@ test_that("default configuration callback works with logscale", {
   })
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -159,7 +175,7 @@ test_that("default configuration callback errors with trafo", {
   })
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(p_dbl(-10, 0, trafo = function(x) 10^x))),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -184,7 +200,7 @@ test_that("default configuration callback works without transformation and with 
   learner = lrn("classif.rpart", cp = to_tune(1e-3, 1, logscale = TRUE), minbucket = to_tune(1, 20))
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -219,7 +235,7 @@ test_that("default configuration callback errors without transformation and with
   )
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -253,7 +269,7 @@ test_that("default configuration callback errors with extra trafo", {
   )
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -282,7 +298,7 @@ test_that("default configuration callback errors with old parameter set api", {
   )
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -450,7 +466,7 @@ test_that("async save logs callback works", {
   })
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.debug", message_train = 1, x = to_tune()),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -471,7 +487,7 @@ test_that("async save logs callback works", {
 test_that("one se rule callback works", {
   instance = tune(
     tuner = tnr("random_search", batch_size = 15),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -493,7 +509,7 @@ test_that("one se rule callback works", {
   })
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -506,6 +522,7 @@ test_that("one se rule callback works", {
   tuner$optimize(instance)
 
   expect_numeric(instance$archive$data$n_features)
+  expect_null(names(instance$archive$data$n_features))
   expect_numeric(instance$result$n_features)
 })
 
@@ -562,7 +579,7 @@ test_that("async freeze archive callback works", {
   })
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),

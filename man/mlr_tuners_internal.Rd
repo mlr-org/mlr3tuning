@@ -75,23 +75,23 @@ if (mlr3misc::require_namespaces(c("mlr3learners", "xgboost"), quietly = TRUE)) 
 library(mlr3learners)
 
 # Retrieve task
-task = tsk("pima")
+task = tsk("sonar")
 
 # Load learner and set search space
 learner = lrn("classif.xgboost",
   nrounds = to_tune(upper = 1000, internal = TRUE),
   early_stopping_rounds = 10,
   validate = "test",
-  eval_metric = "merror"
+  eval_metric = "logloss"
 )
 
-# Internal hyperparameter tuning on the pima indians diabetes data set
+# Internal hyperparameter tuning on the sonar data set
 instance = tune(
   tnr("internal"),
-  tsk("iris"),
+  task,
   learner,
   rsmp("cv", folds = 3),
-  msr("internal_valid_score", minimize = TRUE, select = "merror")
+  msr("internal_valid_score", minimize = TRUE, select = "logloss")
 )
 
 # best performing hyperparameter configuration

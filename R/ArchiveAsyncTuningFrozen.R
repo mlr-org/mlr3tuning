@@ -10,7 +10,7 @@
 #' * `as.data.table(archive)`\cr
 #'   [ArchiveAsyncTuningFrozen] -> [data.table::data.table()]\cr
 #'   Returns a tabular view of all performed function calls of the Objective.
-#'   The `x_domain` column is unnested to separate columns.
+#'   The `internal_tuned_values` column is unnested to separate columns.
 #'
 #' @export
 ArchiveAsyncTuningFrozen = R6Class(
@@ -23,7 +23,12 @@ ArchiveAsyncTuningFrozen = R6Class(
     #' @param archive ([ArchiveAsyncTuning])\cr
     #' The archive to freeze.
     initialize = function(archive) {
-      private$.benchmark_result = archive$benchmark_result
+      # accessing archive$benchmark_result errors when no benchmark result was stored
+      private$.benchmark_result = if ("resample_result" %in% names(archive$finished_data)) {
+        archive$benchmark_result
+      } else {
+        BenchmarkResult$new()
+      }
       private$.internal_search_space = archive$internal_search_space
       super$initialize(archive)
     },
@@ -36,7 +41,7 @@ ArchiveAsyncTuningFrozen = R6Class(
     #' @param i (`integer(1)`)\cr
     #'   The iteration value to filter for.
     #'
-    #' @param uhash (`logical(1)`)\cr
+    #' @param uhash (`character(1)`)\cr
     #'   The `uhash` value to filter for.
     learner = function(i = NULL, uhash = NULL) {
       self$resample_result(i = i, uhash = uhash)$learner
@@ -49,7 +54,7 @@ ArchiveAsyncTuningFrozen = R6Class(
     #' @param i (`integer(1)`)\cr
     #'   The iteration value to filter for.
     #'
-    #' @param uhash (`logical(1)`)\cr
+    #' @param uhash (`character(1)`)\cr
     #'   The `uhash` value to filter for.
     learners = function(i = NULL, uhash = NULL) {
       self$resample_result(i = i, uhash = uhash)$learners
@@ -62,7 +67,7 @@ ArchiveAsyncTuningFrozen = R6Class(
     #' @param i (`integer(1)`)\cr
     #'   The iteration value to filter for.
     #'
-    #' @param uhash (`logical(1)`)\cr
+    #' @param uhash (`character(1)`)\cr
     #'   The `uhash` value to filter for.
     learner_param_vals = function(i = NULL, uhash = NULL) {
       self$learner(i = i, uhash = uhash)$param_set$values
@@ -75,7 +80,7 @@ ArchiveAsyncTuningFrozen = R6Class(
     #' @param i (`integer(1)`)\cr
     #'   The iteration value to filter for.
     #'
-    #' @param uhash (`logical(1)`)\cr
+    #' @param uhash (`character(1)`)\cr
     #'   The `uhash` value to filter for.
     predictions = function(i = NULL, uhash = NULL) {
       self$resample_result(i = i, uhash = uhash)$predictions()
@@ -88,7 +93,7 @@ ArchiveAsyncTuningFrozen = R6Class(
     #' @param i (`integer(1)`)\cr
     #'   The iteration value to filter for.
     #'
-    #' @param uhash (`logical(1)`)\cr
+    #' @param uhash (`character(1)`)\cr
     #'   The `uhash` value to filter for.
     resample_result = function(i = NULL, uhash = NULL) {
       self$benchmark_result$resample_result(i = i, uhash = uhash)
@@ -161,6 +166,9 @@ as.data.table.ArchiveAsyncTuningFrozen = function(
 
   # add extra measures
   cols_y_extra = NULL
+  if (!is.null(measures) && is.null(tab$resample_result)) {
+    warningf("Ignoring `measures` because no resample results are stored. Set `store_benchmark_result = TRUE`.")
+  }
   if (!is.null(measures) && !is.null(tab$resample_result)) {
     measures = assert_measures(as_measures(measures), learner = x$learners(1)[[1]], task = x$resample_result(1)$task)
     cols_y_extra = map_chr(measures, "id")

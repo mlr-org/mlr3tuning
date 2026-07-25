@@ -23,11 +23,10 @@ Lists of (transformed) hyperparameter values that are passed to the learner.
 \item \code{runtime_learners} (\code{numeric(1)})\cr
 Sum of training and predict times logged in learners per \link[mlr3:ResampleResult]{mlr3::ResampleResult} / evaluation.
 This does not include potential overhead time.
-\item \code{timestamp} (\code{POSIXct})\cr
-Time stamp when the evaluation was logged into the archive.
-\item \code{batch_nr} (\code{integer(1)})\cr
-Hyperparameters are evaluated in batches.
-Each batch has a unique batch number.
+\item \code{timestamp_xs} (\code{POSIXct})\cr
+Time stamp when the hyperparameter configuration was sent to a worker.
+\item \code{timestamp_ys} (\code{POSIXct})\cr
+Time stamp when the evaluation result was written to the archive.
 }
 }
 
@@ -40,7 +39,7 @@ The returned data table contains the \link[mlr3:ResampleResult]{mlr3::ResampleRe
 \section{S3 Methods}{
 
 \itemize{
-\item \code{as.data.table.ArchiveTuning(x, unnest = "x_domain", exclude_columns = "uhash", measures = NULL)}\cr
+\item \code{as.data.table.ArchiveAsyncTuning(x, unnest = "internal_tuned_values", exclude_columns = NULL, measures = NULL)}\cr
 Returns a tabular view of all evaluated hyperparameter configurations.\cr
 \link{ArchiveAsyncTuning} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
 \itemize{
@@ -89,12 +88,21 @@ Benchmark result.}
   <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsync" data-id="best"><a href='../../bbotk/html/ArchiveAsync.html#method-ArchiveAsync-best'><code>bbotk::ArchiveAsync$best()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsync" data-id="clear"><a href='../../bbotk/html/ArchiveAsync.html#method-ArchiveAsync-clear'><code>bbotk::ArchiveAsync$clear()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsync" data-id="data_with_state"><a href='../../bbotk/html/ArchiveAsync.html#method-ArchiveAsync-data_with_state'><code>bbotk::ArchiveAsync$data_with_state()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsync" data-id="fail_point"><a href='../../bbotk/html/ArchiveAsync.html#method-ArchiveAsync-fail_point'><code>bbotk::ArchiveAsync$fail_point()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsync" data-id="fail_points"><a href='../../bbotk/html/ArchiveAsync.html#method-ArchiveAsync-fail_points'><code>bbotk::ArchiveAsync$fail_points()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsync" data-id="finish_point"><a href='../../bbotk/html/ArchiveAsync.html#method-ArchiveAsync-finish_point'><code>bbotk::ArchiveAsync$finish_point()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsync" data-id="finish_points"><a href='../../bbotk/html/ArchiveAsync.html#method-ArchiveAsync-finish_points'><code>bbotk::ArchiveAsync$finish_points()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsync" data-id="nds_selection"><a href='../../bbotk/html/ArchiveAsync.html#method-ArchiveAsync-nds_selection'><code>bbotk::ArchiveAsync$nds_selection()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsync" data-id="pop_point"><a href='../../bbotk/html/ArchiveAsync.html#method-ArchiveAsync-pop_point'><code>bbotk::ArchiveAsync$pop_point()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsync" data-id="push_failed_point"><a href='../../bbotk/html/ArchiveAsync.html#method-ArchiveAsync-push_failed_point'><code>bbotk::ArchiveAsync$push_failed_point()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsync" data-id="push_failed_points"><a href='../../bbotk/html/ArchiveAsync.html#method-ArchiveAsync-push_failed_points'><code>bbotk::ArchiveAsync$push_failed_points()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsync" data-id="push_finished_point"><a href='../../bbotk/html/ArchiveAsync.html#method-ArchiveAsync-push_finished_point'><code>bbotk::ArchiveAsync$push_finished_point()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsync" data-id="push_finished_points"><a href='../../bbotk/html/ArchiveAsync.html#method-ArchiveAsync-push_finished_points'><code>bbotk::ArchiveAsync$push_finished_points()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsync" data-id="push_point"><a href='../../bbotk/html/ArchiveAsync.html#method-ArchiveAsync-push_point'><code>bbotk::ArchiveAsync$push_point()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsync" data-id="push_points"><a href='../../bbotk/html/ArchiveAsync.html#method-ArchiveAsync-push_points'><code>bbotk::ArchiveAsync$push_points()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsync" data-id="push_result"><a href='../../bbotk/html/ArchiveAsync.html#method-ArchiveAsync-push_result'><code>bbotk::ArchiveAsync$push_result()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsync" data-id="push_running_point"><a href='../../bbotk/html/ArchiveAsync.html#method-ArchiveAsync-push_running_point'><code>bbotk::ArchiveAsync$push_running_point()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsync" data-id="push_running_points"><a href='../../bbotk/html/ArchiveAsync.html#method-ArchiveAsync-push_running_points'><code>bbotk::ArchiveAsync$push_running_points()</code></a></span></li>
 </ul>
 </details>}}
 \if{html}{\out{<hr>}}
@@ -126,8 +134,6 @@ Internally created from provided \link[mlr3:Measure]{mlr3::Measure}s.}
 If a rush instance is supplied, the tuning runs without batches.}
       \item{\code{internal_search_space}}{(\link[paradox:ParamSet]{paradox::ParamSet} or \code{NULL})\cr
 The internal search space.}
-      \item{\code{check_values}}{(\code{logical(1)})\cr
-If \code{TRUE} (default), hyperparameter configurations are checked for validity.}
     }
     \if{html}{\out{</div>}}
   }
@@ -150,7 +156,7 @@ Learner does not contain a model. Use \verb{$learners()} to get learners with mo
     \describe{
       \item{\code{i}}{(\code{integer(1)})\cr
 The iteration value to filter for.}
-      \item{\code{uhash}}{(\code{logical(1)})\cr
+      \item{\code{uhash}}{(\code{character(1)})\cr
 The \code{uhash} value to filter for.}
     }
     \if{html}{\out{</div>}}
@@ -173,7 +179,7 @@ The \code{uhash} value to filter for.}
     \describe{
       \item{\code{i}}{(\code{integer(1)})\cr
 The iteration value to filter for.}
-      \item{\code{uhash}}{(\code{logical(1)})\cr
+      \item{\code{uhash}}{(\code{character(1)})\cr
 The \code{uhash} value to filter for.}
     }
     \if{html}{\out{</div>}}
@@ -196,7 +202,7 @@ The \code{uhash} value to filter for.}
     \describe{
       \item{\code{i}}{(\code{integer(1)})\cr
 The iteration value to filter for.}
-      \item{\code{uhash}}{(\code{logical(1)})\cr
+      \item{\code{uhash}}{(\code{character(1)})\cr
 The \code{uhash} value to filter for.}
     }
     \if{html}{\out{</div>}}
@@ -219,7 +225,7 @@ The \code{uhash} value to filter for.}
     \describe{
       \item{\code{i}}{(\code{integer(1)})\cr
 The iteration value to filter for.}
-      \item{\code{uhash}}{(\code{logical(1)})\cr
+      \item{\code{uhash}}{(\code{character(1)})\cr
 The \code{uhash} value to filter for.}
     }
     \if{html}{\out{</div>}}
@@ -242,7 +248,7 @@ The \code{uhash} value to filter for.}
     \describe{
       \item{\code{i}}{(\code{integer(1)})\cr
 The iteration value to filter for.}
-      \item{\code{uhash}}{(\code{logical(1)})\cr
+      \item{\code{uhash}}{(\code{character(1)})\cr
 The \code{uhash} value to filter for.}
     }
     \if{html}{\out{</div>}}

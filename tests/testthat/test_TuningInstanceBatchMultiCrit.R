@@ -1,5 +1,5 @@
 test_that("tuning with multiple objectives", {
-  task = tsk("pima")
+  task = tsk("sonar")
   resampling = rsmp("holdout")
   learner = lrn("classif.rpart")
 
@@ -147,11 +147,20 @@ test_that("TuneToken and result_learner_param_vals works", {
   expect_equal(instance$result_learner_param_vals[[1]]$cp, 0.1)
 })
 
+test_that("assign_result checks learner_param_vals", {
+  inst = TEST_MAKE_INST1_2D()
+  xdt = data.table(cp = 0.1)
+  ydt = data.table(classif.ce = 0.1, classif.acc = 0.9)
+
+  expect_error(inst$assign_result(xdt, ydt, learner_param_vals = c("a", "b")), "list")
+  expect_error(inst$assign_result(xdt, ydt, learner_param_vals = list(list(), list())), "length 1")
+})
+
 test_that("TuningInstanceBatchMultiCrit and empty search space works", {
   # xval constant
   instance = tune(
     tuner = tnr("random_search", batch_size = 5),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart"),
     resampling = rsmp("cv", folds = 3),
     measures = msrs(c("classif.ce", "classif.acc")),
@@ -165,7 +174,7 @@ test_that("TuningInstanceBatchMultiCrit and empty search space works", {
   # xval and cp constant
   instance = tune(
     tuner = tnr("random_search", batch_size = 5),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", xval = 0, cp = 0.1),
     resampling = rsmp("cv", folds = 3),
     measures = msrs(c("classif.ce", "classif.acc")),
@@ -182,7 +191,7 @@ test_that("TuningInstanceBatchMultiCrit and empty search space works", {
 
   instance = tune(
     tuner = tnr("random_search", batch_size = 5),
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
     measures = msrs(c("classif.ce", "classif.acc")),
@@ -192,6 +201,23 @@ test_that("TuningInstanceBatchMultiCrit and empty search space works", {
   expect_data_table(instance$result)
   expect_equal(instance$result$learner_param_vals[[1]], list())
   expect_equal(instance$result$x_domain[[1]], list())
+})
+
+test_that("assign_result works with empty search space and front size not divisible by number of measures", {
+  instance = TuningInstanceBatchMultiCrit$new(
+    task = tsk("sonar"),
+    learner = lrn("classif.rpart"),
+    resampling = rsmp("holdout"),
+    measures = msrs(c("classif.ce", "classif.acc")),
+    terminator = trm("evals", n_evals = 10)
+  )
+
+  xdt = data.table(x_domain = list(list(), list(), list()))
+  ydt = data.table(classif.ce = c(0.3, 0.4, 0.5), classif.acc = c(0.7, 0.6, 0.5))
+  instance$assign_result(xdt, ydt)
+
+  expect_list(instance$result_learner_param_vals, len = 3)
+  expect_equal(instance$result_learner_param_vals[[1]], list(xval = 0))
 })
 
 # Internal Tuning --------------------------------------------------------------
@@ -206,7 +232,7 @@ test_that("Batch multi-crit internal tuning works", {
   )
 
   instance = ti(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
     measures = msrs(c("classif.ce", "classif.acc")),

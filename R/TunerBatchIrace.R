@@ -19,7 +19,7 @@
 #' For the meaning of all other parameters, see [irace::defaultScenario()]. Note
 #' that we have removed all control parameters which refer to the termination of
 #' the algorithm. Use [bbotk::TerminatorEvals] instead. Other terminators do not work
-#' with `TunerIrace`.
+#' with `TunerBatchIrace`.
 #'
 #' @section Archive:
 #' The [ArchiveBatchTuning] holds the following additional columns:
@@ -51,14 +51,14 @@
 #' # example only runs if irace is available
 #' if (mlr3misc::require_namespaces("irace", quietly = TRUE)) {
 #' # retrieve task
-#' task = tsk("pima")
+#' task = tsk("sonar")
 #'
 #' # load learner and set search space
 #' learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE))
 #'
 #' # runtime of the example is too long
 #' \donttest{
-#' # hyperparameter tuning on the pima indians diabetes data set
+#' # hyperparameter tuning on the sonar data set
 #' instance = tune(
 #'   tuner = tnr("irace"),
 #'   task = task,
@@ -118,16 +118,25 @@ TunerBatchIrace = R6Class(
       pv = self$param_set$values
       n_instances = pv$n_instances
 
+      # restore the shared param set after the run so a second optimize() works
+      on.exit(
+        {
+          private$.optimizer$param_set$values = pv
+        },
+        add = TRUE
+      )
+
       # Set resampling instances
       ri = replicate(n_instances, {
         r = inst$objective$resampling$clone()
         r$instantiate(inst$objective$task)
       })
 
-      pv$n_instances = NULL
-      pv$instances = ri
+      pv_run = pv
+      pv_run$n_instances = NULL
+      pv_run$instances = ri
 
-      private$.optimizer$param_set$values = pv
+      private$.optimizer$param_set$values = pv_run
 
       private$.optimizer$optimize(inst)
 

@@ -63,10 +63,9 @@ If \code{TRUE} (default), store resample result of evaluated hyperparameter
 configurations in archive as \link[mlr3:BenchmarkResult]{mlr3::BenchmarkResult}.}
 
 \item{store_models}{(\code{logical(1)})\cr
-If \code{TRUE}, fitted models are stored in the benchmark result
-(\code{archive$benchmark_result}). If \code{store_benchmark_result = FALSE}, models
-are only stored temporarily and not accessible after the tuning. This
-combination is needed for measures that require a model.}
+If \code{TRUE}, fitted models are stored in the benchmark result (\code{archive$benchmark_result}).
+Setting \code{store_models = TRUE} implies \code{store_benchmark_result = TRUE},
+i.e. an explicit \code{store_benchmark_result = FALSE} is overridden.}
 
 \item{check_values}{(\code{logical(1)})\cr
 If \code{TRUE}, hyperparameter values are checked before evaluation and
@@ -183,8 +182,8 @@ The \CRANpkg{mlr3viz} package provides visualizations for tuning results.
 }
 
 \examples{
-# Hyperparameter optimization on the Palmer Penguins data set
-task = tsk("pima")
+# Hyperparameter optimization on the sonar data set
+task = tsk("sonar")
 
 # Load learner and set search space
 learner = lrn("classif.rpart",
@@ -194,7 +193,7 @@ learner = lrn("classif.rpart",
 # Run tuning
 instance = tune(
   tuner = tnr("random_search", batch_size = 2),
-  task = tsk("pima"),
+  task = tsk("sonar"),
   learner = learner,
   resampling = rsmp ("holdout"),
   measures = msr("classif.ce"),

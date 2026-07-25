@@ -130,7 +130,7 @@ TuningInstanceAsyncMultiCrit = R6Class(
     #' (probably the Pareto set / front).
     #' For internal use.
     #'
-    #' @param ydt (`numeric(1)`)\cr
+    #' @param ydt (`data.table::data.table()`)\cr
     #' Optimal outcomes, e.g. the Pareto front.
     #' @param ... (`any`)\cr
     #' ignored.
@@ -142,6 +142,9 @@ TuningInstanceAsyncMultiCrit = R6Class(
       private$.result_extra = extra
 
       call_back("on_tuning_result_begin", self$objective$callbacks, self$objective$context)
+
+      # check learner param_vals, one named list per point
+      assert_list(private$.result_learner_param_vals, types = "list", len = nrow(private$.result_ydt), null.ok = TRUE)
 
       # extract internal tuned values
       if ("internal_tuned_values" %in% names(private$.result_extra)) {
@@ -166,7 +169,7 @@ TuningInstanceAsyncMultiCrit = R6Class(
 
       opt_x = transform_xdt_to_xss(private$.result_xdt, self$search_space)
       if (length(opt_x) == 0) {
-        opt_x = replicate(length(private$.result_ydt), list())
+        opt_x = replicate(nrow(private$.result_ydt), list())
       }
       private$.result_learner_param_vals = Map(insert_named, private$.result_learner_param_vals, opt_x)
 

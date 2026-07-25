@@ -19,18 +19,17 @@
 #' * `runtime_learners` (`numeric(1)`)\cr
 #'     Sum of training and predict times logged in learners per [mlr3::ResampleResult] / evaluation.
 #'     This does not include potential overhead time.
-#' * `timestamp` (`POSIXct`)\cr
-#'     Time stamp when the evaluation was logged into the archive.
-#' * `batch_nr` (`integer(1)`)\cr
-#'     Hyperparameters are evaluated in batches.
-#'     Each batch has a unique batch number.
+#' * `timestamp_xs` (`POSIXct`)\cr
+#'     Time stamp when the hyperparameter configuration was sent to a worker.
+#' * `timestamp_ys` (`POSIXct`)\cr
+#'     Time stamp when the evaluation result was written to the archive.
 #'
 #' @section Analysis:
 #' For analyzing the tuning results, it is recommended to pass the [ArchiveAsyncTuning] to `as.data.table()`.
 #' The returned data table contains the [mlr3::ResampleResult] for each hyperparameter evaluation.
 #'
 #' @section S3 Methods:
-#' * `as.data.table.ArchiveTuning(x, unnest = "x_domain", exclude_columns = "uhash", measures = NULL)`\cr
+#' * `as.data.table.ArchiveAsyncTuning(x, unnest = "internal_tuned_values", exclude_columns = NULL, measures = NULL)`\cr
 #' Returns a tabular view of all evaluated hyperparameter configurations.\cr
 #' [ArchiveAsyncTuning] -> [data.table::data.table()]\cr
 #'     * `x` ([ArchiveAsyncTuning])
@@ -53,9 +52,6 @@ ArchiveAsyncTuning = R6Class(
   public = list(
     #' @description
     #' Creates a new instance of this [R6][R6::R6Class] class.
-    #'
-    #' @param check_values (`logical(1)`)\cr
-    #'   If `TRUE` (default), hyperparameter configurations are checked for validity.
     initialize = function(
       search_space,
       codomain,
@@ -83,7 +79,7 @@ ArchiveAsyncTuning = R6Class(
     #' @param i (`integer(1)`)\cr
     #'   The iteration value to filter for.
     #'
-    #' @param uhash (`logical(1)`)\cr
+    #' @param uhash (`character(1)`)\cr
     #'   The `uhash` value to filter for.
     learner = function(i = NULL, uhash = NULL) {
       self$resample_result(i = i, uhash = uhash)$learner
@@ -96,7 +92,7 @@ ArchiveAsyncTuning = R6Class(
     #' @param i (`integer(1)`)\cr
     #'   The iteration value to filter for.
     #'
-    #' @param uhash (`logical(1)`)\cr
+    #' @param uhash (`character(1)`)\cr
     #'   The `uhash` value to filter for.
     learners = function(i = NULL, uhash = NULL) {
       self$resample_result(i = i, uhash = uhash)$learners
@@ -109,7 +105,7 @@ ArchiveAsyncTuning = R6Class(
     #' @param i (`integer(1)`)\cr
     #'   The iteration value to filter for.
     #'
-    #' @param uhash (`logical(1)`)\cr
+    #' @param uhash (`character(1)`)\cr
     #'   The `uhash` value to filter for.
     learner_param_vals = function(i = NULL, uhash = NULL) {
       self$learner(i = i, uhash = uhash)$param_set$values
@@ -122,7 +118,7 @@ ArchiveAsyncTuning = R6Class(
     #' @param i (`integer(1)`)\cr
     #'   The iteration value to filter for.
     #'
-    #' @param uhash (`logical(1)`)\cr
+    #' @param uhash (`character(1)`)\cr
     #'   The `uhash` value to filter for.
     predictions = function(i = NULL, uhash = NULL) {
       self$resample_result(i = i, uhash = uhash)$predictions()
@@ -135,7 +131,7 @@ ArchiveAsyncTuning = R6Class(
     #' @param i (`integer(1)`)\cr
     #'   The iteration value to filter for.
     #'
-    #' @param uhash (`logical(1)`)\cr
+    #' @param uhash (`character(1)`)\cr
     #'   The `uhash` value to filter for.
     resample_result = function(i = NULL, uhash = NULL) {
       self$benchmark_result$resample_result(i = i, uhash = uhash)
@@ -181,7 +177,11 @@ ArchiveAsyncTuning = R6Class(
     benchmark_result = function() {
       # cache benchmark result
       if (self$rush$n_finished_tasks > private$.benchmark_result$n_resample_results) {
-        bmrs = map(self$finished_data$resample_result, as_benchmark_result)
+        finished_data = self$finished_data
+        if ("resample_result" %nin% names(finished_data)) {
+          stopf("No benchmark result stored in the archive. Set `store_benchmark_result = TRUE`.")
+        }
+        bmrs = map(finished_data$resample_result, as_benchmark_result)
         private$.benchmark_result = Reduce(function(lhs, rhs) lhs$combine(rhs), bmrs)
       }
       private$.benchmark_result
@@ -213,6 +213,9 @@ as.data.table.ArchiveAsyncTuning = function(
 
   # add extra measures
   cols_y_extra = NULL
+  if (!is.null(measures) && is.null(tab$resample_result)) {
+    warningf("Ignoring `measures` because no resample results are stored. Set `store_benchmark_result = TRUE`.")
+  }
   if (!is.null(measures) && !is.null(tab$resample_result)) {
     measures = assert_measures(as_measures(measures), learner = x$learners(1)[[1]], task = x$resample_result(1)$task)
     cols_y_extra = map_chr(measures, "id")

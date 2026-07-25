@@ -15,7 +15,7 @@ Use the callback \link{mlr3tuning.async_freeze_archive} to freeze the archive af
 \item \code{as.data.table(archive)}\cr
 \link{ArchiveAsyncTuningFrozen} -> \code{\link[data.table:data.table]{data.table::data.table()}}\cr
 Returns a tabular view of all performed function calls of the Objective.
-The \code{x_domain} column is unnested to separate columns.
+The \code{internal_tuned_values} column is unnested to separate columns.
 }
 }
 
@@ -54,11 +54,20 @@ Benchmark result.}
   <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsync" data-id="nds_selection"><a href='../../bbotk/html/ArchiveAsync.html#method-ArchiveAsync-nds_selection'><code>bbotk::ArchiveAsync$nds_selection()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsyncFrozen" data-id="clear"><a href='../../bbotk/html/ArchiveAsyncFrozen.html#method-ArchiveAsyncFrozen-clear'><code>bbotk::ArchiveAsyncFrozen$clear()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsyncFrozen" data-id="data_with_state"><a href='../../bbotk/html/ArchiveAsyncFrozen.html#method-ArchiveAsyncFrozen-data_with_state'><code>bbotk::ArchiveAsyncFrozen$data_with_state()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsyncFrozen" data-id="fail_point"><a href='../../bbotk/html/ArchiveAsyncFrozen.html#method-ArchiveAsyncFrozen-fail_point'><code>bbotk::ArchiveAsyncFrozen$fail_point()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsyncFrozen" data-id="fail_points"><a href='../../bbotk/html/ArchiveAsyncFrozen.html#method-ArchiveAsyncFrozen-fail_points'><code>bbotk::ArchiveAsyncFrozen$fail_points()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsyncFrozen" data-id="finish_point"><a href='../../bbotk/html/ArchiveAsyncFrozen.html#method-ArchiveAsyncFrozen-finish_point'><code>bbotk::ArchiveAsyncFrozen$finish_point()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsyncFrozen" data-id="finish_points"><a href='../../bbotk/html/ArchiveAsyncFrozen.html#method-ArchiveAsyncFrozen-finish_points'><code>bbotk::ArchiveAsyncFrozen$finish_points()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsyncFrozen" data-id="pop_point"><a href='../../bbotk/html/ArchiveAsyncFrozen.html#method-ArchiveAsyncFrozen-pop_point'><code>bbotk::ArchiveAsyncFrozen$pop_point()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsyncFrozen" data-id="push_failed_point"><a href='../../bbotk/html/ArchiveAsyncFrozen.html#method-ArchiveAsyncFrozen-push_failed_point'><code>bbotk::ArchiveAsyncFrozen$push_failed_point()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsyncFrozen" data-id="push_failed_points"><a href='../../bbotk/html/ArchiveAsyncFrozen.html#method-ArchiveAsyncFrozen-push_failed_points'><code>bbotk::ArchiveAsyncFrozen$push_failed_points()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsyncFrozen" data-id="push_finished_point"><a href='../../bbotk/html/ArchiveAsyncFrozen.html#method-ArchiveAsyncFrozen-push_finished_point'><code>bbotk::ArchiveAsyncFrozen$push_finished_point()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsyncFrozen" data-id="push_finished_points"><a href='../../bbotk/html/ArchiveAsyncFrozen.html#method-ArchiveAsyncFrozen-push_finished_points'><code>bbotk::ArchiveAsyncFrozen$push_finished_points()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsyncFrozen" data-id="push_point"><a href='../../bbotk/html/ArchiveAsyncFrozen.html#method-ArchiveAsyncFrozen-push_point'><code>bbotk::ArchiveAsyncFrozen$push_point()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsyncFrozen" data-id="push_points"><a href='../../bbotk/html/ArchiveAsyncFrozen.html#method-ArchiveAsyncFrozen-push_points'><code>bbotk::ArchiveAsyncFrozen$push_points()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsyncFrozen" data-id="push_result"><a href='../../bbotk/html/ArchiveAsyncFrozen.html#method-ArchiveAsyncFrozen-push_result'><code>bbotk::ArchiveAsyncFrozen$push_result()</code></a></span></li>
   <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsyncFrozen" data-id="push_running_point"><a href='../../bbotk/html/ArchiveAsyncFrozen.html#method-ArchiveAsyncFrozen-push_running_point'><code>bbotk::ArchiveAsyncFrozen$push_running_point()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="bbotk" data-topic="ArchiveAsyncFrozen" data-id="push_running_points"><a href='../../bbotk/html/ArchiveAsyncFrozen.html#method-ArchiveAsyncFrozen-push_running_points'><code>bbotk::ArchiveAsyncFrozen$push_running_points()</code></a></span></li>
 </ul>
 </details>}}
 \if{html}{\out{<hr>}}
@@ -98,7 +107,7 @@ Learner does not contain a model. Use \verb{$learners()} to get learners with mo
     \describe{
       \item{\code{i}}{(\code{integer(1)})\cr
 The iteration value to filter for.}
-      \item{\code{uhash}}{(\code{logical(1)})\cr
+      \item{\code{uhash}}{(\code{character(1)})\cr
 The \code{uhash} value to filter for.}
     }
     \if{html}{\out{</div>}}
@@ -121,7 +130,7 @@ The \code{uhash} value to filter for.}
     \describe{
       \item{\code{i}}{(\code{integer(1)})\cr
 The iteration value to filter for.}
-      \item{\code{uhash}}{(\code{logical(1)})\cr
+      \item{\code{uhash}}{(\code{character(1)})\cr
 The \code{uhash} value to filter for.}
     }
     \if{html}{\out{</div>}}
@@ -144,7 +153,7 @@ The \code{uhash} value to filter for.}
     \describe{
       \item{\code{i}}{(\code{integer(1)})\cr
 The iteration value to filter for.}
-      \item{\code{uhash}}{(\code{logical(1)})\cr
+      \item{\code{uhash}}{(\code{character(1)})\cr
 The \code{uhash} value to filter for.}
     }
     \if{html}{\out{</div>}}
@@ -167,7 +176,7 @@ The \code{uhash} value to filter for.}
     \describe{
       \item{\code{i}}{(\code{integer(1)})\cr
 The iteration value to filter for.}
-      \item{\code{uhash}}{(\code{logical(1)})\cr
+      \item{\code{uhash}}{(\code{character(1)})\cr
 The \code{uhash} value to filter for.}
     }
     \if{html}{\out{</div>}}
@@ -190,7 +199,7 @@ The \code{uhash} value to filter for.}
     \describe{
       \item{\code{i}}{(\code{integer(1)})\cr
 The iteration value to filter for.}
-      \item{\code{uhash}}{(\code{logical(1)})\cr
+      \item{\code{uhash}}{(\code{character(1)})\cr
 The \code{uhash} value to filter for.}
     }
     \if{html}{\out{</div>}}
