@@ -388,6 +388,9 @@ load_callback_async_one_se_rule = function() {
       archive = context$instance$archive
       data = as.data.table(archive)
 
+      # remove queued, running, and failed points which have no performance score
+      data = data[!is.na(data[[archive$cols_y]])]
+
       # standard error
       if (!nrow(data)) {
         stopf("No data in archive")
@@ -396,7 +399,7 @@ load_callback_async_one_se_rule = function() {
       y = data[[archive$cols_y]]
       se = sd(y) / sqrt(length(y))
 
-      if (se == 0) {
+      if (is.na(se) || se == 0) {
         # select smallest feature set when all scores are the same
         best = data[which.min(get("n_features"))]
       } else {
@@ -444,11 +447,18 @@ load_callback_one_se_rule = function() {
       archive = context$instance$archive
       data = as.data.table(archive)
 
+      # remove failed points which have no performance score
+      data = data[!is.na(data[[archive$cols_y]])]
+
       # standard error
+      if (!nrow(data)) {
+        stopf("No data in archive")
+      }
+
       y = data[[archive$cols_y]]
       se = sd(y) / sqrt(length(y))
 
-      if (se == 0) {
+      if (is.na(se) || se == 0) {
         # select smallest feature set when all scores are the same
         best = data[which.min(get("n_features"))]
       } else {
