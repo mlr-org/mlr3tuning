@@ -289,7 +289,7 @@ test_that("store_tuning_instance, store_benchmark_result and store_models flags 
 })
 
 test_that("predict_type works", {
-  task = tsk("pima")
+  task = tsk("sonar")
 
   # response predict type
   at = auto_tuner(
@@ -378,7 +378,7 @@ test_that("AutoTuner get_base_learner method works", {
     measure = msr("classif.ce"),
     term_evals = 1
   )
-  at$train(tsk("pima"))
+  at$train(tsk("sonar"))
 
   expect_learner(at$base_learner())
   expect_equal(at$base_learner()$id, "classif.rpart")
@@ -397,7 +397,7 @@ test_that("AutoTuner get_base_learner method works", {
     measure = msr("classif.ce"),
     term_evals = 1
   )
-  at$train(tsk("pima"))
+  at$train(tsk("sonar"))
 
   expect_learner(at$base_learner(recursive = 0))
   expect_equal(at$base_learner(recursive = 0)$id, "graphlearner.classif.rpart")
@@ -490,7 +490,7 @@ test_that("AutoTuner works with empty search space", {
     term_evals = 10
   )
 
-  at$train(tsk("pima"))
+  at$train(tsk("sonar"))
   expect_equal(at$tuning_instance$result$learner_param_vals[[1]], list(xval = 0))
   expect_equal(at$tuning_instance$result$x_domain, list(list()))
 
@@ -506,7 +506,7 @@ test_that("AutoTuner works with empty search space", {
     term_evals = 10
   )
 
-  at$train(tsk("pima"))
+  at$train(tsk("sonar"))
   expect_list(at$tuning_instance$result$learner_param_vals[[1]], len = 0)
   expect_equal(at$tuning_instance$result$x_domain, list(list()))
 })
@@ -817,7 +817,7 @@ test_that("AutoTuner works with async tuner", {
     rush = rush
   )
 
-  at$train(tsk("pima"))
+  at$train(tsk("sonar"))
 
   expect_data_table(at$tuning_instance$result, nrows = 1)
   expect_data_table(at$tuning_instance$archive$data, min.rows = 4)
@@ -932,7 +932,7 @@ test_that("AutoTuner deep clone does not share the trained model", {
     measure = msr("classif.ce"),
     term_evals = 2
   )
-  at$train(tsk("pima"))
+  at$train(tsk("sonar"))
 
   at2 = at$clone(deep = TRUE)
 

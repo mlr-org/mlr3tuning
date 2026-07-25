@@ -301,7 +301,7 @@ test_that("internal multi crit", {
 
 test_that("proper error when primary search space is empty", {
   instance = ti(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn(
       "classif.debug",
       validate = 0.2,
@@ -348,7 +348,7 @@ test_that("internal tuning: branching", {
   )
 
   instance = ti(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = learner,
     resampling = rsmp("holdout"),
     measures = msr("classif.ce"),

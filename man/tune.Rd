@@ -182,8 +182,8 @@ The \CRANpkg{mlr3viz} package provides visualizations for tuning results.
 }
 
 \examples{
-# Hyperparameter optimization on the Pima Indians Diabetes data set
-task = tsk("pima")
+# Hyperparameter optimization on the sonar data set
+task = tsk("sonar")
 
 # Load learner and set search space
 learner = lrn("classif.rpart",
@@ -193,7 +193,7 @@ learner = lrn("classif.rpart",
 # Run tuning
 instance = tune(
   tuner = tnr("random_search", batch_size = 2),
-  task = tsk("pima"),
+  task = tsk("sonar"),
   learner = learner,
   resampling = rsmp ("holdout"),
   measures = msr("classif.ce"),

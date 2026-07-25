@@ -11,7 +11,7 @@ test_that("TunerAsyncDesignPoints works", {
   learner = lrn("classif.rpart", minsplit = to_tune(2, 128), cp = to_tune(1e-04, 1e-1))
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = learner,
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),

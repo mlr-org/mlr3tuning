@@ -9,7 +9,7 @@ test_that("ArchiveAsyncTuningFrozen works", {
   })
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -46,7 +46,7 @@ test_that("ArchiveAsyncTuningFrozen as.data.table function works without resampl
   })
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
@@ -77,7 +77,7 @@ test_that("ArchiveAsyncTuningFrozen as.data.table function works with failed poi
   })
 
   instance = ti_async(
-    task = tsk("pima"),
+    task = tsk("sonar"),
     learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1)),
     resampling = rsmp("cv", folds = 3),
     measures = msr("classif.ce"),
