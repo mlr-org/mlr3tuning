@@ -82,7 +82,7 @@ learner = lrn("classif.xgboost",
   nrounds = to_tune(upper = 1000, internal = TRUE),
   early_stopping_rounds = 10,
   validate = "test",
-  eval_metric = "merror"
+  eval_metric = "logloss"
 )
 
 # Internal hyperparameter tuning on the sonar data set
@@ -91,7 +91,7 @@ instance = tune(
   task,
   learner,
   rsmp("cv", folds = 3),
-  msr("internal_valid_score", minimize = TRUE, select = "merror")
+  msr("internal_valid_score", minimize = TRUE, select = "logloss")
 )
 
 # best performing hyperparameter configuration
