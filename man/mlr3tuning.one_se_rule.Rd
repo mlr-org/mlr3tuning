@@ -21,10 +21,10 @@ If there are multiple such hyperparameter configurations with the same number of
 \examples{
 clbk("mlr3tuning.one_se_rule")
 
-# Run optimization on the pima data set with the callback
+# Run optimization on the sonar data set with the callback
 instance = tune(
   tuner = tnr("random_search", batch_size = 15),
-  task = tsk("pima"),
+  task = tsk("sonar"),
   learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
   resampling = rsmp("cv", folds = 3),
   measures = msr("classif.ce"),

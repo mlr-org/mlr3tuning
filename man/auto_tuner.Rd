@@ -177,5 +177,5 @@ at = auto_tuner(
   measure = msr("classif.ce"),
   term_evals = 4)
 
-at$train(tsk("pima"))
+at$train(tsk("sonar"))
 }
