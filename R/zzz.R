@@ -10,10 +10,23 @@
 #' @importFrom stats sd
 "_PACKAGE"
 
+mlr3tuning_callbacks = c(
+  "mlr3tuning.async_default_configuration",
+  "mlr3tuning.async_measures",
+  "mlr3tuning.async_mlflow",
+  "mlr3tuning.async_save_logs",
+  "mlr3tuning.async_one_se_rule",
+  "mlr3tuning.async_freeze_archive",
+  "mlr3tuning.backup",
+  "mlr3tuning.default_configuration",
+  "mlr3tuning.measures",
+  "mlr3tuning.one_se_rule"
+)
+
 .onLoad = function(libname, pkgname) {
   # nocov start
   x = utils::getFromNamespace("mlr_reflections", ns = "mlr3")
-  x$tuner_properties = "dependencies"
+  x$tuner_properties = union(x$tuner_properties, "dependencies")
 
   # callbacks
   x = utils::getFromNamespace("mlr_callbacks", ns = "mlr3misc")
@@ -32,6 +45,15 @@
   if (Sys.getenv("IN_PKGDOWN") == "true") {
     lg$set_threshold("warn")
   }
+} # nocov end
+
+.onUnload = function(libpath) {
+  # nocov start
+  x = utils::getFromNamespace("mlr_reflections", ns = "mlr3")
+  x$tuner_properties = setdiff(x$tuner_properties, "dependencies")
+
+  x = utils::getFromNamespace("mlr_callbacks", ns = "mlr3misc")
+  walk(mlr3tuning_callbacks, function(key) x$remove(key))
 } # nocov end
 
 leanify_package()
