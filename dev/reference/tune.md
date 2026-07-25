@@ -281,8 +281,8 @@ provides visualizations for tuning results.
 ## Examples
 
 ``` r
-# Hyperparameter optimization on the Pima Indians Diabetes data set
-task = tsk("pima")
+# Hyperparameter optimization on the sonar data set
+task = tsk("sonar")
 
 # Load learner and set search space
 learner = lrn("classif.rpart",
@@ -292,7 +292,7 @@ learner = lrn("classif.rpart",
 # Run tuning
 instance = tune(
   tuner = tnr("random_search", batch_size = 2),
-  task = tsk("pima"),
+  task = tsk("sonar"),
   learner = learner,
   resampling = rsmp ("holdout"),
   measures = msr("classif.ce"),
@@ -309,10 +309,10 @@ learner$train(task)
 as.data.table(instance$archive)
 #>           cp classif.ce runtime_learners           timestamp warnings errors
 #>        <num>      <num>            <num>              <POSc>    <int>  <int>
-#> 1: -2.579601  0.2968750            0.009 2026-07-24 16:24:33        0      0
-#> 2: -6.548396  0.2578125            0.009 2026-07-24 16:24:33        0      0
-#> 3: -6.400893  0.2578125            0.009 2026-07-24 16:24:33        0      0
-#> 4: -4.392908  0.2617188            0.010 2026-07-24 16:24:33        0      0
+#> 1: -3.425276  0.3188406            0.012 2026-07-25 09:48:46        0      0
+#> 2: -5.826947  0.3043478            0.013 2026-07-25 09:48:46        0      0
+#> 3: -5.052872  0.3043478            0.013 2026-07-25 09:48:46        0      0
+#> 4: -2.510132  0.3188406            0.014 2026-07-25 09:48:46        0      0
 #>     x_domain batch_nr  resample_result
 #>       <list>    <int>           <list>
 #> 1: <list[1]>        1 <ResampleResult>
