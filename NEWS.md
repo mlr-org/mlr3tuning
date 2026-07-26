@@ -1,7 +1,9 @@
-# mlr3tuning (development version)
+# mlr3tuning 1.6.1
 
-* Minimum required version of `rush` is now 1.2.0.
+* compatibility: mlr3 1.7.2
+* chore: Minimum required version of `rush` is now 1.2.0.
   Removed all compatibility workarounds for older versions.
+* fix: The package now unions `mlr_reflections$tuner_properties` on load instead of overwriting it, so a property registered by another extension package is no longer dropped, and it removes its registered callbacks and tuner property on unload.
 * fix: `AutoTuner` accessors (`$learner`, `$tuning_instance`, `$tuning_result`, `$archive`, `$importance()`, `$selected_features()`, `$oob_error()`, `$loglik()`) now raise an informative error when the model is marshaled, instead of silently returning the untrained learner or `NULL`.
 * fix: `AutoTuner$marshaled` is now an active binding as in `mlr3::Learner`, so `at$marshaled` returns a flag instead of a method and can be used in conditions.
 * fix: `AutoTuner$train()` now correctly checks that an instantiated inner resampling only uses row ids present in the task for all resampling types. Previously, the check read list-based instances and silently did nothing for resamplings such as `cv` and `holdout`.
