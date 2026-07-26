@@ -13,10 +13,10 @@ clbk("mlr3tuning.backup", path = "backup.rds")
 #> <CallbackBatchTuning:mlr3tuning.backup>: Backup Benchmark Result Callback
 #> * Active Stages: on_optimizer_after_eval, on_optimization_begin
 
-# tune classification tree on the pima data set
+# tune classification tree on the sonar data set
 instance = tune(
   tuner = tnr("random_search", batch_size = 2),
-  task = tsk("pima"),
+  task = tsk("sonar"),
   learner = lrn("classif.rpart", cp = to_tune(1e-04, 1e-1, logscale = TRUE)),
   resampling = rsmp("cv", folds = 3),
   measures = msr("classif.ce"),

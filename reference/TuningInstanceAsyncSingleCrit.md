@@ -29,23 +29,23 @@ exhausted, an exception is raised, and no further evaluations can be
 performed from this point on. The tuner is also supposed to store its
 final result, consisting of a selected hyperparameter configuration and
 associated estimated performance values, by calling the method
-`instance$.assign_result`.
+`instance$assign_result`.
 
 ## Default Measures
 
 If no measure is passed, the default measure is used. The default
 measure depends on the task type.
 
-|                |                  |                                                               |
-|----------------|------------------|---------------------------------------------------------------|
-| Task           | Default Measure  | Package                                                       |
-| `"classif"`    | `"classif.ce"`   | [mlr3](https://CRAN.R-project.org/package=mlr3)               |
-| `"regr"`       | `"regr.mse"`     | [mlr3](https://CRAN.R-project.org/package=mlr3)               |
-| `"surv"`       | `"surv.cindex"`  | [mlr3proba](https://CRAN.R-project.org/package=mlr3proba)     |
-| `"dens"`       | `"dens.logloss"` | [mlr3proba](https://CRAN.R-project.org/package=mlr3proba)     |
-| `"classif_st"` | `"classif.ce"`   | [mlr3spatial](https://CRAN.R-project.org/package=mlr3spatial) |
-| `"regr_st"`    | `"regr.mse"`     | [mlr3spatial](https://CRAN.R-project.org/package=mlr3spatial) |
-| `"clust"`      | `"clust.dunn"`   | [mlr3cluster](https://CRAN.R-project.org/package=mlr3cluster) |
+|  |  |  |
+|----|----|----|
+| Task | Default Measure | Package |
+| `"classif"` | `"classif.ce"` | [mlr3](https://CRAN.R-project.org/package=mlr3) |
+| `"regr"` | `"regr.mse"` | [mlr3](https://CRAN.R-project.org/package=mlr3) |
+| `"surv"` | `"surv.cindex"` | [mlr3proba](https://CRAN.R-project.org/package=mlr3proba) |
+| `"dens"` | `"dens.logloss"` | [mlr3proba](https://CRAN.R-project.org/package=mlr3proba) |
+| `"classif_st"` | `"classif.ce"` | [mlr3spatial](https://CRAN.R-project.org/package=mlr3spatial) |
+| `"regr_st"` | `"regr.mse"` | [mlr3spatial](https://CRAN.R-project.org/package=mlr3spatial) |
+| `"clust"` | `"clust.dunn"` | [mlr3cluster](https://CRAN.R-project.org/package=mlr3cluster) |
 
 ## Search Space
 
@@ -141,6 +141,8 @@ mlr3tuning is extended by the following packages.
 
 ## Super classes
 
+[`bbotk::EvalInstance`](https://bbotk.mlr-org.com/reference/EvalInstance.html)
+-\>
 [`bbotk::OptimInstance`](https://bbotk.mlr-org.com/reference/OptimInstance.html)
 -\>
 [`bbotk::OptimInstanceAsync`](https://bbotk.mlr-org.com/reference/OptimInstanceAsync.html)
@@ -168,7 +170,7 @@ mlr3tuning is extended by the following packages.
 
 ### Public methods
 
-- [`TuningInstanceAsyncSingleCrit$new()`](#method-TuningInstanceAsyncSingleCrit-new)
+- [`TuningInstanceAsyncSingleCrit$new()`](#method-TuningInstanceAsyncSingleCrit-initialize)
 
 - [`TuningInstanceAsyncSingleCrit$assign_result()`](#method-TuningInstanceAsyncSingleCrit-assign_result)
 
@@ -176,14 +178,14 @@ mlr3tuning is extended by the following packages.
 
 Inherited methods
 
-- [`bbotk::OptimInstance$format()`](https://bbotk.mlr-org.com/reference/OptimInstance.html#method-format)
+- [`bbotk::EvalInstance$format()`](https://bbotk.mlr-org.com/reference/EvalInstance.html#method-format)
 - [`bbotk::OptimInstanceAsync$clear()`](https://bbotk.mlr-org.com/reference/OptimInstanceAsync.html#method-clear)
 - [`bbotk::OptimInstanceAsync$print()`](https://bbotk.mlr-org.com/reference/OptimInstanceAsync.html#method-print)
 - [`bbotk::OptimInstanceAsync$reconnect()`](https://bbotk.mlr-org.com/reference/OptimInstanceAsync.html#method-reconnect)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `TuningInstanceAsyncSingleCrit$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class.
@@ -261,9 +263,9 @@ Creates a new instance of this
 
   (`logical(1)`)  
   If `TRUE`, fitted models are stored in the benchmark result
-  (`archive$benchmark_result`). If `store_benchmark_result = FALSE`,
-  models are only stored temporarily and not accessible after the
-  tuning. This combination is needed for measures that require a model.
+  (`archive$benchmark_result`). Setting `store_models = TRUE` implies
+  `store_benchmark_result = TRUE`, i.e. an explicit
+  `store_benchmark_result = FALSE` is overridden.
 
 - `check_values`:
 
@@ -285,7 +287,7 @@ Creates a new instance of this
 
 ------------------------------------------------------------------------
 
-### Method `assign_result()`
+### `TuningInstanceAsyncSingleCrit$assign_result()`
 
 The [TunerAsync](https://mlr3tuning.mlr-org.com/reference/TunerAsync.md)
 object writes the best found point and estimated performance value here.
@@ -334,7 +336,7 @@ For internal use.
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `TuningInstanceAsyncSingleCrit$clone()`
 
 The objects of this class are cloneable with this method.
 

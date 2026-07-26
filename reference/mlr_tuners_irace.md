@@ -32,7 +32,7 @@ For the meaning of all other parameters, see
 Note that we have removed all control parameters which refer to the
 termination of the algorithm. Use
 [bbotk::TerminatorEvals](https://bbotk.mlr-org.com/reference/mlr_terminators_evals.html)
-instead. Other terminators do not work with `TunerIrace`.
+instead. Other terminators do not work with `TunerBatchIrace`.
 
 ## Archive
 
@@ -150,18 +150,17 @@ Other Tuner:
 
 ## Super classes
 
-[`mlr3tuning::Tuner`](https://mlr3tuning.mlr-org.com/reference/Tuner.md)
+[`Tuner`](https://mlr3tuning.mlr-org.com/reference/Tuner.md) -\>
+[`TunerBatch`](https://mlr3tuning.mlr-org.com/reference/TunerBatch.md)
 -\>
-[`mlr3tuning::TunerBatch`](https://mlr3tuning.mlr-org.com/reference/TunerBatch.md)
--\>
-[`mlr3tuning::TunerBatchFromOptimizerBatch`](https://mlr3tuning.mlr-org.com/reference/TunerBatchFromOptimizerBatch.md)
+[`TunerBatchFromOptimizerBatch`](https://mlr3tuning.mlr-org.com/reference/TunerBatchFromOptimizerBatch.md)
 -\> `TunerBatchIrace`
 
 ## Methods
 
 ### Public methods
 
-- [`TunerBatchIrace$new()`](#method-TunerBatchIrace-new)
+- [`TunerBatchIrace$new()`](#method-TunerBatchIrace-initialize)
 
 - [`TunerBatchIrace$optimize()`](#method-TunerBatchIrace-optimize)
 
@@ -169,13 +168,13 @@ Other Tuner:
 
 Inherited methods
 
-- [`mlr3tuning::Tuner$format()`](https://mlr3tuning.mlr-org.com/reference/Tuner.html#method-format)
-- [`mlr3tuning::Tuner$help()`](https://mlr3tuning.mlr-org.com/reference/Tuner.html#method-help)
-- [`mlr3tuning::Tuner$print()`](https://mlr3tuning.mlr-org.com/reference/Tuner.html#method-print)
+- [`Tuner$format()`](https://mlr3tuning.mlr-org.com/reference/Tuner.html#method-format)
+- [`Tuner$help()`](https://mlr3tuning.mlr-org.com/reference/Tuner.html#method-help)
+- [`Tuner$print()`](https://mlr3tuning.mlr-org.com/reference/Tuner.html#method-print)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `TunerBatchIrace$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class.
@@ -186,7 +185,7 @@ Creates a new instance of this
 
 ------------------------------------------------------------------------
 
-### Method [`optimize()`](https://rdrr.io/r/stats/optimize.html)
+### `TunerBatchIrace$optimize()`
 
 Performs the tuning on a
 [TuningInstanceBatchSingleCrit](https://mlr3tuning.mlr-org.com/reference/TuningInstanceBatchSingleCrit.md)
@@ -213,7 +212,7 @@ The final result is returned.
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `TunerBatchIrace$clone()`
 
 The objects of this class are cloneable with this method.
 

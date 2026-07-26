@@ -87,7 +87,10 @@ tune_nested(
   (`logical(1)`)  
   If `TRUE` (default), stores the internally created
   [TuningInstanceBatchSingleCrit](https://mlr3tuning.mlr-org.com/reference/TuningInstanceBatchSingleCrit.md)
-  with all intermediate results in slot `$tuning_instance`.
+  with all intermediate results in slot `$tuning_instance`. Setting
+  `store_benchmark_result = TRUE` implies
+  `store_tuning_instance = TRUE`, i.e. an explicit
+  `store_tuning_instance = FALSE` is overridden.
 
 - store_benchmark_result:
 
@@ -100,9 +103,9 @@ tune_nested(
 
   (`logical(1)`)  
   If `TRUE`, fitted models are stored in the benchmark result
-  (`archive$benchmark_result`). If `store_benchmark_result = FALSE`,
-  models are only stored temporarily and not accessible after the
-  tuning. This combination is needed for measures that require a model.
+  (`archive$benchmark_result`). Setting `store_models = TRUE` implies
+  `store_benchmark_result = TRUE`, i.e. an explicit
+  `store_benchmark_result = FALSE` is overridden.
 
 - check_values:
 
@@ -138,12 +141,12 @@ rr = tune_nested(
 rr$score()
 #>     task_id          learner_id resampling_id iteration classif.ce
 #>      <char>              <char>        <char>     <int>      <num>
-#> 1: penguins classif.rpart.tuned            cv         1 0.09883721
-#> 2: penguins classif.rpart.tuned            cv         2 0.06395349
+#> 1: penguins classif.rpart.tuned            cv         1 0.04651163
+#> 2: penguins classif.rpart.tuned            cv         2 0.05813953
 #> Hidden columns: task, learner, resampling, prediction_test
 
 # Unbiased performance of the final model trained on the full data set
 rr$aggregate()
 #> classif.ce 
-#> 0.08139535 
+#> 0.05232558 
 ```

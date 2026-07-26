@@ -46,6 +46,8 @@
   `invoke()`, `calculate_hash()`, `str_collapse()`, `%nin%`, `%??%`.
 - Before implementing something, read similar existing files first to
   match the established patterns.
+- Always use `# nolint next` to disable linters for the next line
+  instead of `# nolint` on the same line.
 
 ## File structure and naming
 
@@ -64,7 +66,7 @@
 
 - Use `checkmate` for arg-checks
 - Use `data.table` for efficient table structures
-- For OOP-stype use `R6`
+- For OOP-style use `R6`
 - Use `cli` to format messages, warnings, errors and prints
 
 ## Testing
@@ -83,14 +85,30 @@
   documentation.
 - Wrap roxygen comments at 120 characters.
 - Write one sentence per line.
-- If a sentence exceeds the limit, break at a comma or other appropriate
-  point.
+- If a sentence exceeds the limit, break at a comma, “and”, “or”, “but”,
+  or other appropriate point.
 - Internal functions should not have roxygen documentation.
 - Always re-document the package after changing a roxygen2 comment.
 - Don’t hand-edit generated artifacts: `man/`, or `NAMESPACE`.
-- Roxygen templates live in `man-roxygen/`
+- Never edit `README.md` directly – it is generated from `README.Rmd`.
+  Always edit `README.Rmd` and then run `devtools::build_readme()` to
+  regenerate `README.md`.
+- When adding a new S3 method (such as `print.<ClassName>`), always run
+  `devtools::document()` afterwards to re-generate the NAMESPACE.
+- Environment variables and options are documented in package-level
+  documentation (typically `R/package.R`).
+- Roxygen templates live in `man-roxygen/`. Use `@template` to avoid
+  duplicating common parameter descriptions. Only create new templates
+  for sections that will likely be re-used.
+- For functions, always document the return value (section
+  `#' @return`).
 - Bibliographic references go in `R/bibentries.R` and are cited with
   `` `r format_bib("key")` ``.
+
+## Pkgdown
+
+- When adding a new exported function, ensure it’s in the `_pkgdown.yml`
+  file.
 
 ## `NEWS.md`
 
@@ -112,8 +130,8 @@
 
 ## Natural Language
 
-- The following applies to all natural language text, so docs,
-  commments, NEWS, etc, but not code
+- The following applies to all natural language text, so docs, comments,
+  NEWS, etc, but not code
 - Use American english
 - Use the Oxford comma
 - Do not capitalize normal nouns or method names. “Bayesian” is
@@ -123,4 +141,5 @@
 
 ## Further agents files
 
-- Read and respect all files in the `.agents` folder
+@extra-rules/commit-messages.md @extra-rules/mlr3.md
+@extra-rules/bbotk.md @extra-rules/rush.md @extra-rules/yolobox.md

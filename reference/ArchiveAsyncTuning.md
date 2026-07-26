@@ -29,12 +29,11 @@ The table (`$data`) has the following columns:
   [mlr3::ResampleResult](https://mlr3.mlr-org.com/reference/ResampleResult.html)
   / evaluation. This does not include potential overhead time.
 
-- `timestamp` (`POSIXct`)  
-  Time stamp when the evaluation was logged into the archive.
+- `timestamp_xs` (`POSIXct`)  
+  Time stamp when the hyperparameter configuration was sent to a worker.
 
-- `batch_nr` (`integer(1)`)  
-  Hyperparameters are evaluated in batches. Each batch has a unique
-  batch number.
+- `timestamp_ys` (`POSIXct`)  
+  Time stamp when the evaluation result was written to the archive.
 
 ## Analysis
 
@@ -47,7 +46,7 @@ for each hyperparameter evaluation.
 
 ## S3 Methods
 
-- `as.data.table.ArchiveTuning(x, unnest = "x_domain", exclude_columns = "uhash", measures = NULL)`  
+- `as.data.table.ArchiveAsyncTuning(x, unnest = "internal_tuned_values", exclude_columns = NULL, measures = NULL)`  
   Returns a tabular view of all evaluated hyperparameter
   configurations.  
   ArchiveAsyncTuning -\>
@@ -92,7 +91,7 @@ for each hyperparameter evaluation.
 
 ### Public methods
 
-- [`ArchiveAsyncTuning$new()`](#method-ArchiveAsyncTuning-new)
+- [`ArchiveAsyncTuning$new()`](#method-ArchiveAsyncTuning-initialize)
 
 - [`ArchiveAsyncTuning$learner()`](#method-ArchiveAsyncTuning-learner)
 
@@ -115,16 +114,25 @@ Inherited methods
 - [`bbotk::ArchiveAsync$best()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-best)
 - [`bbotk::ArchiveAsync$clear()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-clear)
 - [`bbotk::ArchiveAsync$data_with_state()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-data_with_state)
+- [`bbotk::ArchiveAsync$fail_point()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-fail_point)
+- [`bbotk::ArchiveAsync$fail_points()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-fail_points)
+- [`bbotk::ArchiveAsync$finish_point()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-finish_point)
+- [`bbotk::ArchiveAsync$finish_points()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-finish_points)
 - [`bbotk::ArchiveAsync$nds_selection()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-nds_selection)
 - [`bbotk::ArchiveAsync$pop_point()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-pop_point)
 - [`bbotk::ArchiveAsync$push_failed_point()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-push_failed_point)
+- [`bbotk::ArchiveAsync$push_failed_points()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-push_failed_points)
+- [`bbotk::ArchiveAsync$push_finished_point()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-push_finished_point)
+- [`bbotk::ArchiveAsync$push_finished_points()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-push_finished_points)
+- [`bbotk::ArchiveAsync$push_point()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-push_point)
 - [`bbotk::ArchiveAsync$push_points()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-push_points)
 - [`bbotk::ArchiveAsync$push_result()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-push_result)
 - [`bbotk::ArchiveAsync$push_running_point()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-push_running_point)
+- [`bbotk::ArchiveAsync$push_running_points()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-push_running_points)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `ArchiveAsyncTuning$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class.
@@ -169,15 +177,9 @@ Creates a new instance of this
   or `NULL`)  
   The internal search space.
 
-- `check_values`:
-
-  (`logical(1)`)  
-  If `TRUE` (default), hyperparameter configurations are checked for
-  validity.
-
 ------------------------------------------------------------------------
 
-### Method `learner()`
+### `ArchiveAsyncTuning$learner()`
 
 Retrieve
 [mlr3::Learner](https://mlr3.mlr-org.com/reference/Learner.html) of the
@@ -198,12 +200,12 @@ are mutually exclusive. Learner does not contain a model. Use
 
 - `uhash`:
 
-  (`logical(1)`)  
+  (`character(1)`)  
   The `uhash` value to filter for.
 
 ------------------------------------------------------------------------
 
-### Method `learners()`
+### `ArchiveAsyncTuning$learners()`
 
 Retrieve list of trained
 [mlr3::Learner](https://mlr3.mlr-org.com/reference/Learner.html) objects
@@ -223,12 +225,12 @@ of the i-th evaluation, by position or by unique hash `uhash`. `i` and
 
 - `uhash`:
 
-  (`logical(1)`)  
+  (`character(1)`)  
   The `uhash` value to filter for.
 
 ------------------------------------------------------------------------
 
-### Method `learner_param_vals()`
+### `ArchiveAsyncTuning$learner_param_vals()`
 
 Retrieve param values of the i-th evaluation, by position or by unique
 hash `uhash`. `i` and `uhash` are mutually exclusive.
@@ -246,12 +248,12 @@ hash `uhash`. `i` and `uhash` are mutually exclusive.
 
 - `uhash`:
 
-  (`logical(1)`)  
+  (`character(1)`)  
   The `uhash` value to filter for.
 
 ------------------------------------------------------------------------
 
-### Method `predictions()`
+### `ArchiveAsyncTuning$predictions()`
 
 Retrieve list of
 [mlr3::Prediction](https://mlr3.mlr-org.com/reference/Prediction.html)
@@ -271,12 +273,12 @@ objects of the i-th evaluation, by position or by unique hash `uhash`.
 
 - `uhash`:
 
-  (`logical(1)`)  
+  (`character(1)`)  
   The `uhash` value to filter for.
 
 ------------------------------------------------------------------------
 
-### Method `resample_result()`
+### `ArchiveAsyncTuning$resample_result()`
 
 Retrieve
 [mlr3::ResampleResult](https://mlr3.mlr-org.com/reference/ResampleResult.html)
@@ -296,12 +298,12 @@ of the i-th evaluation, by position or by unique hash `uhash`. `i` and
 
 - `uhash`:
 
-  (`logical(1)`)  
+  (`character(1)`)  
   The `uhash` value to filter for.
 
 ------------------------------------------------------------------------
 
-### Method [`print()`](https://rdrr.io/r/base/print.html)
+### `ArchiveAsyncTuning$print()`
 
 Printer.
 
@@ -309,15 +311,9 @@ Printer.
 
     ArchiveAsyncTuning$print()
 
-#### Arguments
-
-- `...`:
-
-  (ignored).
-
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `ArchiveAsyncTuning$clone()`
 
 The objects of this class are cloneable with this method.
 

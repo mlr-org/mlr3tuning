@@ -90,7 +90,10 @@ auto_tuner(
   (`logical(1)`)  
   If `TRUE` (default), stores the internally created
   [TuningInstanceBatchSingleCrit](https://mlr3tuning.mlr-org.com/reference/TuningInstanceBatchSingleCrit.md)
-  with all intermediate results in slot `$tuning_instance`.
+  with all intermediate results in slot `$tuning_instance`. Setting
+  `store_benchmark_result = TRUE` implies
+  `store_tuning_instance = TRUE`, i.e. an explicit
+  `store_tuning_instance = FALSE` is overridden.
 
 - store_benchmark_result:
 
@@ -103,9 +106,9 @@ auto_tuner(
 
   (`logical(1)`)  
   If `TRUE`, fitted models are stored in the benchmark result
-  (`archive$benchmark_result`). If `store_benchmark_result = FALSE`,
-  models are only stored temporarily and not accessible after the
-  tuning. This combination is needed for measures that require a model.
+  (`archive$benchmark_result`). Setting `store_models = TRUE` implies
+  `store_benchmark_result = TRUE`, i.e. an explicit
+  `store_benchmark_result = FALSE` is overridden.
 
 - check_values:
 
@@ -172,16 +175,16 @@ final model.
 If no measure is passed, the default measure is used. The default
 measure depends on the task type.
 
-|                |                  |                                                               |
-|----------------|------------------|---------------------------------------------------------------|
-| Task           | Default Measure  | Package                                                       |
-| `"classif"`    | `"classif.ce"`   | [mlr3](https://CRAN.R-project.org/package=mlr3)               |
-| `"regr"`       | `"regr.mse"`     | [mlr3](https://CRAN.R-project.org/package=mlr3)               |
-| `"surv"`       | `"surv.cindex"`  | [mlr3proba](https://CRAN.R-project.org/package=mlr3proba)     |
-| `"dens"`       | `"dens.logloss"` | [mlr3proba](https://CRAN.R-project.org/package=mlr3proba)     |
-| `"classif_st"` | `"classif.ce"`   | [mlr3spatial](https://CRAN.R-project.org/package=mlr3spatial) |
-| `"regr_st"`    | `"regr.mse"`     | [mlr3spatial](https://CRAN.R-project.org/package=mlr3spatial) |
-| `"clust"`      | `"clust.dunn"`   | [mlr3cluster](https://CRAN.R-project.org/package=mlr3cluster) |
+|  |  |  |
+|----|----|----|
+| Task | Default Measure | Package |
+| `"classif"` | `"classif.ce"` | [mlr3](https://CRAN.R-project.org/package=mlr3) |
+| `"regr"` | `"regr.mse"` | [mlr3](https://CRAN.R-project.org/package=mlr3) |
+| `"surv"` | `"surv.cindex"` | [mlr3proba](https://CRAN.R-project.org/package=mlr3proba) |
+| `"dens"` | `"dens.logloss"` | [mlr3proba](https://CRAN.R-project.org/package=mlr3proba) |
+| `"classif_st"` | `"classif.ce"` | [mlr3spatial](https://CRAN.R-project.org/package=mlr3spatial) |
+| `"regr_st"` | `"regr.mse"` | [mlr3spatial](https://CRAN.R-project.org/package=mlr3spatial) |
+| `"clust"` | `"clust.dunn"` | [mlr3cluster](https://CRAN.R-project.org/package=mlr3cluster) |
 
 ## Resources
 
@@ -267,5 +270,5 @@ at = auto_tuner(
   measure = msr("classif.ce"),
   term_evals = 4)
 
-at$train(tsk("pima"))
+at$train(tsk("sonar"))
 ```

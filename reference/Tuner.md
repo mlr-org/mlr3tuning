@@ -81,14 +81,12 @@ Other Tuner:
 [`mlr_tuners_nloptr`](https://mlr3tuning.mlr-org.com/reference/mlr_tuners_nloptr.md),
 [`mlr_tuners_random_search`](https://mlr3tuning.mlr-org.com/reference/mlr_tuners_random_search.md)
 
-## Public fields
+## Active bindings
 
 - `id`:
 
   (`character(1)`)  
   Identifier of the object. Used in tables, plot and text output.
-
-## Active bindings
 
 - `param_set`:
 
@@ -107,7 +105,7 @@ Other Tuner:
 
   ([`character()`](https://rdrr.io/r/base/character.html))  
   Set of properties of the tuner. Must be a subset of
-  [`mlr_reflections$tuner_properties`](https://mlr3.mlr-org.com/reference/mlr_reflections.html).
+  [`bbotk_reflections$optimizer_properties`](https://bbotk.mlr-org.com/reference/bbotk_reflections.html).
 
 - `packages`:
 
@@ -133,7 +131,7 @@ Other Tuner:
 
 ### Public methods
 
-- [`Tuner$new()`](#method-Tuner-new)
+- [`Tuner$new()`](#method-Tuner-initialize)
 
 - [`Tuner$format()`](#method-Tuner-format)
 
@@ -145,7 +143,7 @@ Other Tuner:
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `Tuner$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class.
@@ -186,7 +184,7 @@ Creates a new instance of this
 
   ([`character()`](https://rdrr.io/r/base/character.html))  
   Set of properties of the tuner. Must be a subset of
-  [`mlr_reflections$tuner_properties`](https://mlr3.mlr-org.com/reference/mlr_reflections.html).
+  [`bbotk_reflections$optimizer_properties`](https://bbotk.mlr-org.com/reference/bbotk_reflections.html).
 
 - `packages`:
 
@@ -210,7 +208,7 @@ Creates a new instance of this
 
 ------------------------------------------------------------------------
 
-### Method [`format()`](https://rdrr.io/r/base/format.html)
+### `Tuner$format()`
 
 Helper for print outputs.
 
@@ -230,7 +228,7 @@ Helper for print outputs.
 
 ------------------------------------------------------------------------
 
-### Method [`print()`](https://rdrr.io/r/base/print.html)
+### `Tuner$print()`
 
 Print method.
 
@@ -244,7 +242,7 @@ Print method.
 
 ------------------------------------------------------------------------
 
-### Method [`help()`](https://rdrr.io/r/utils/help.html)
+### `Tuner$help()`
 
 Opens the corresponding help page referenced by field `$man`.
 
@@ -254,7 +252,7 @@ Opens the corresponding help page referenced by field `$man`.
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `Tuner$clone()`
 
 The objects of this class are cloneable with this method.
 

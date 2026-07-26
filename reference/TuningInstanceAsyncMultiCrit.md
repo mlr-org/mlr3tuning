@@ -28,7 +28,7 @@ exhausted, an exception is raised, and no further evaluations can be
 performed from this point on. The tuner is also supposed to store its
 final result, consisting of a selected hyperparameter configuration and
 associated estimated performance values, by calling the method
-`instance$.assign_result`.
+`instance$assign_result`.
 
 ## Search Space
 
@@ -110,6 +110,8 @@ for each hyperparameter evaluation.
 
 ## Super classes
 
+[`bbotk::EvalInstance`](https://bbotk.mlr-org.com/reference/EvalInstance.html)
+-\>
 [`bbotk::OptimInstance`](https://bbotk.mlr-org.com/reference/OptimInstance.html)
 -\>
 [`bbotk::OptimInstanceAsync`](https://bbotk.mlr-org.com/reference/OptimInstanceAsync.html)
@@ -137,7 +139,7 @@ for each hyperparameter evaluation.
 
 ### Public methods
 
-- [`TuningInstanceAsyncMultiCrit$new()`](#method-TuningInstanceAsyncMultiCrit-new)
+- [`TuningInstanceAsyncMultiCrit$new()`](#method-TuningInstanceAsyncMultiCrit-initialize)
 
 - [`TuningInstanceAsyncMultiCrit$assign_result()`](#method-TuningInstanceAsyncMultiCrit-assign_result)
 
@@ -145,14 +147,14 @@ for each hyperparameter evaluation.
 
 Inherited methods
 
-- [`bbotk::OptimInstance$format()`](https://bbotk.mlr-org.com/reference/OptimInstance.html#method-format)
+- [`bbotk::EvalInstance$format()`](https://bbotk.mlr-org.com/reference/EvalInstance.html#method-format)
 - [`bbotk::OptimInstanceAsync$clear()`](https://bbotk.mlr-org.com/reference/OptimInstanceAsync.html#method-clear)
 - [`bbotk::OptimInstanceAsync$print()`](https://bbotk.mlr-org.com/reference/OptimInstanceAsync.html#method-print)
 - [`bbotk::OptimInstanceAsync$reconnect()`](https://bbotk.mlr-org.com/reference/OptimInstanceAsync.html#method-reconnect)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `TuningInstanceAsyncMultiCrit$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class.
@@ -231,9 +233,9 @@ Creates a new instance of this
 
   (`logical(1)`)  
   If `TRUE`, fitted models are stored in the benchmark result
-  (`archive$benchmark_result`). If `store_benchmark_result = FALSE`,
-  models are only stored temporarily and not accessible after the
-  tuning. This combination is needed for measures that require a model.
+  (`archive$benchmark_result`). Setting `store_models = TRUE` implies
+  `store_benchmark_result = TRUE`, i.e. an explicit
+  `store_benchmark_result = FALSE` is overridden.
 
 - `check_values`:
 
@@ -255,7 +257,7 @@ Creates a new instance of this
 
 ------------------------------------------------------------------------
 
-### Method `assign_result()`
+### `TuningInstanceAsyncMultiCrit$assign_result()`
 
 The [TunerAsync](https://mlr3tuning.mlr-org.com/reference/TunerAsync.md)
 writes the best found points and estimated performance values here
@@ -283,7 +285,7 @@ writes the best found points and estimated performance values here
 
 - `ydt`:
 
-  (`numeric(1)`)  
+  ([`data.table::data.table()`](https://rdrr.io/pkg/data.table/man/data.table.html))  
   Optimal outcomes, e.g. the Pareto front.
 
 - `learner_param_vals`:
@@ -304,7 +306,7 @@ writes the best found points and estimated performance values here
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `TuningInstanceAsyncMultiCrit$clone()`
 
 The objects of this class are cloneable with this method.
 

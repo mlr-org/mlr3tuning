@@ -16,7 +16,8 @@ to freeze the archive after the optimization has finished.
   ArchiveAsyncTuningFrozen -\>
   [`data.table::data.table()`](https://rdrr.io/pkg/data.table/man/data.table.html)  
   Returns a tabular view of all performed function calls of the
-  Objective. The `x_domain` column is unnested to separate columns.
+  Objective. The `internal_tuned_values` column is unnested to separate
+  columns.
 
 ## Super classes
 
@@ -44,7 +45,7 @@ to freeze the archive after the optimization has finished.
 
 ### Public methods
 
-- [`ArchiveAsyncTuningFrozen$new()`](#method-ArchiveAsyncTuningFrozen-new)
+- [`ArchiveAsyncTuningFrozen$new()`](#method-ArchiveAsyncTuningFrozen-initialize)
 
 - [`ArchiveAsyncTuningFrozen$learner()`](#method-ArchiveAsyncTuningFrozen-learner)
 
@@ -68,15 +69,24 @@ Inherited methods
 - [`bbotk::ArchiveAsync$nds_selection()`](https://bbotk.mlr-org.com/reference/ArchiveAsync.html#method-nds_selection)
 - [`bbotk::ArchiveAsyncFrozen$clear()`](https://bbotk.mlr-org.com/reference/ArchiveAsyncFrozen.html#method-clear)
 - [`bbotk::ArchiveAsyncFrozen$data_with_state()`](https://bbotk.mlr-org.com/reference/ArchiveAsyncFrozen.html#method-data_with_state)
+- [`bbotk::ArchiveAsyncFrozen$fail_point()`](https://bbotk.mlr-org.com/reference/ArchiveAsyncFrozen.html#method-fail_point)
+- [`bbotk::ArchiveAsyncFrozen$fail_points()`](https://bbotk.mlr-org.com/reference/ArchiveAsyncFrozen.html#method-fail_points)
+- [`bbotk::ArchiveAsyncFrozen$finish_point()`](https://bbotk.mlr-org.com/reference/ArchiveAsyncFrozen.html#method-finish_point)
+- [`bbotk::ArchiveAsyncFrozen$finish_points()`](https://bbotk.mlr-org.com/reference/ArchiveAsyncFrozen.html#method-finish_points)
 - [`bbotk::ArchiveAsyncFrozen$pop_point()`](https://bbotk.mlr-org.com/reference/ArchiveAsyncFrozen.html#method-pop_point)
 - [`bbotk::ArchiveAsyncFrozen$push_failed_point()`](https://bbotk.mlr-org.com/reference/ArchiveAsyncFrozen.html#method-push_failed_point)
+- [`bbotk::ArchiveAsyncFrozen$push_failed_points()`](https://bbotk.mlr-org.com/reference/ArchiveAsyncFrozen.html#method-push_failed_points)
+- [`bbotk::ArchiveAsyncFrozen$push_finished_point()`](https://bbotk.mlr-org.com/reference/ArchiveAsyncFrozen.html#method-push_finished_point)
+- [`bbotk::ArchiveAsyncFrozen$push_finished_points()`](https://bbotk.mlr-org.com/reference/ArchiveAsyncFrozen.html#method-push_finished_points)
+- [`bbotk::ArchiveAsyncFrozen$push_point()`](https://bbotk.mlr-org.com/reference/ArchiveAsyncFrozen.html#method-push_point)
 - [`bbotk::ArchiveAsyncFrozen$push_points()`](https://bbotk.mlr-org.com/reference/ArchiveAsyncFrozen.html#method-push_points)
 - [`bbotk::ArchiveAsyncFrozen$push_result()`](https://bbotk.mlr-org.com/reference/ArchiveAsyncFrozen.html#method-push_result)
 - [`bbotk::ArchiveAsyncFrozen$push_running_point()`](https://bbotk.mlr-org.com/reference/ArchiveAsyncFrozen.html#method-push_running_point)
+- [`bbotk::ArchiveAsyncFrozen$push_running_points()`](https://bbotk.mlr-org.com/reference/ArchiveAsyncFrozen.html#method-push_running_points)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `ArchiveAsyncTuningFrozen$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class.
@@ -94,7 +104,7 @@ Creates a new instance of this
 
 ------------------------------------------------------------------------
 
-### Method `learner()`
+### `ArchiveAsyncTuningFrozen$learner()`
 
 Retrieve
 [mlr3::Learner](https://mlr3.mlr-org.com/reference/Learner.html) of the
@@ -115,12 +125,12 @@ are mutually exclusive. Learner does not contain a model. Use
 
 - `uhash`:
 
-  (`logical(1)`)  
+  (`character(1)`)  
   The `uhash` value to filter for.
 
 ------------------------------------------------------------------------
 
-### Method `learners()`
+### `ArchiveAsyncTuningFrozen$learners()`
 
 Retrieve list of trained
 [mlr3::Learner](https://mlr3.mlr-org.com/reference/Learner.html) objects
@@ -140,12 +150,12 @@ of the i-th evaluation, by position or by unique hash `uhash`. `i` and
 
 - `uhash`:
 
-  (`logical(1)`)  
+  (`character(1)`)  
   The `uhash` value to filter for.
 
 ------------------------------------------------------------------------
 
-### Method `learner_param_vals()`
+### `ArchiveAsyncTuningFrozen$learner_param_vals()`
 
 Retrieve param values of the i-th evaluation, by position or by unique
 hash `uhash`. `i` and `uhash` are mutually exclusive.
@@ -163,12 +173,12 @@ hash `uhash`. `i` and `uhash` are mutually exclusive.
 
 - `uhash`:
 
-  (`logical(1)`)  
+  (`character(1)`)  
   The `uhash` value to filter for.
 
 ------------------------------------------------------------------------
 
-### Method `predictions()`
+### `ArchiveAsyncTuningFrozen$predictions()`
 
 Retrieve list of
 [mlr3::Prediction](https://mlr3.mlr-org.com/reference/Prediction.html)
@@ -188,12 +198,12 @@ objects of the i-th evaluation, by position or by unique hash `uhash`.
 
 - `uhash`:
 
-  (`logical(1)`)  
+  (`character(1)`)  
   The `uhash` value to filter for.
 
 ------------------------------------------------------------------------
 
-### Method `resample_result()`
+### `ArchiveAsyncTuningFrozen$resample_result()`
 
 Retrieve
 [mlr3::ResampleResult](https://mlr3.mlr-org.com/reference/ResampleResult.html)
@@ -213,12 +223,12 @@ of the i-th evaluation, by position or by unique hash `uhash`. `i` and
 
 - `uhash`:
 
-  (`logical(1)`)  
+  (`character(1)`)  
   The `uhash` value to filter for.
 
 ------------------------------------------------------------------------
 
-### Method [`print()`](https://rdrr.io/r/base/print.html)
+### `ArchiveAsyncTuningFrozen$print()`
 
 Printer.
 
@@ -226,15 +236,9 @@ Printer.
 
     ArchiveAsyncTuningFrozen$print()
 
-#### Arguments
-
-- `...`:
-
-  (ignored).
-
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `ArchiveAsyncTuningFrozen$clone()`
 
 The objects of this class are cloneable with this method.
 

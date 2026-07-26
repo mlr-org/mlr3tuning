@@ -103,29 +103,28 @@ Other Tuner:
 
 ## Super classes
 
-[`mlr3tuning::Tuner`](https://mlr3tuning.mlr-org.com/reference/Tuner.md)
--\>
-[`mlr3tuning::TunerBatch`](https://mlr3tuning.mlr-org.com/reference/TunerBatch.md)
+[`Tuner`](https://mlr3tuning.mlr-org.com/reference/Tuner.md) -\>
+[`TunerBatch`](https://mlr3tuning.mlr-org.com/reference/TunerBatch.md)
 -\> `TunerBatchInternal`
 
 ## Methods
 
 ### Public methods
 
-- [`TunerBatchInternal$new()`](#method-TunerBatchInternal-new)
+- [`TunerBatchInternal$new()`](#method-TunerBatchInternal-initialize)
 
 - [`TunerBatchInternal$clone()`](#method-TunerBatchInternal-clone)
 
 Inherited methods
 
-- [`mlr3tuning::Tuner$format()`](https://mlr3tuning.mlr-org.com/reference/Tuner.html#method-format)
-- [`mlr3tuning::Tuner$help()`](https://mlr3tuning.mlr-org.com/reference/Tuner.html#method-help)
-- [`mlr3tuning::Tuner$print()`](https://mlr3tuning.mlr-org.com/reference/Tuner.html#method-print)
-- [`mlr3tuning::TunerBatch$optimize()`](https://mlr3tuning.mlr-org.com/reference/TunerBatch.html#method-optimize)
+- [`Tuner$format()`](https://mlr3tuning.mlr-org.com/reference/Tuner.html#method-format)
+- [`Tuner$help()`](https://mlr3tuning.mlr-org.com/reference/Tuner.html#method-help)
+- [`Tuner$print()`](https://mlr3tuning.mlr-org.com/reference/Tuner.html#method-print)
+- [`TunerBatch$optimize()`](https://mlr3tuning.mlr-org.com/reference/TunerBatch.html#method-optimize)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `TunerBatchInternal$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class.
@@ -136,7 +135,7 @@ Creates a new instance of this
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `TunerBatchInternal$clone()`
 
 The objects of this class are cloneable with this method.
 
@@ -158,23 +157,23 @@ if (mlr3misc::require_namespaces(c("mlr3learners", "xgboost"), quietly = TRUE)) 
 library(mlr3learners)
 
 # Retrieve task
-task = tsk("pima")
+task = tsk("sonar")
 
 # Load learner and set search space
 learner = lrn("classif.xgboost",
   nrounds = to_tune(upper = 1000, internal = TRUE),
   early_stopping_rounds = 10,
   validate = "test",
-  eval_metric = "merror"
+  eval_metric = "logloss"
 )
 
-# Internal hyperparameter tuning on the pima indians diabetes data set
+# Internal hyperparameter tuning on the sonar data set
 instance = tune(
   tnr("internal"),
-  tsk("iris"),
+  task,
   learner,
   rsmp("cv", folds = 3),
-  msr("internal_valid_score", minimize = TRUE, select = "merror")
+  msr("internal_valid_score", minimize = TRUE, select = "logloss")
 )
 
 # best performing hyperparameter configuration

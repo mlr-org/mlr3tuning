@@ -57,7 +57,7 @@ or
 
 ### Public methods
 
-- [`ObjectiveTuning$new()`](#method-ObjectiveTuning-new)
+- [`ObjectiveTuning$new()`](#method-ObjectiveTuning-initialize)
 
 - [`ObjectiveTuning$clone()`](#method-ObjectiveTuning-clone)
 
@@ -72,7 +72,7 @@ Inherited methods
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `ObjectiveTuning$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class.
@@ -133,9 +133,9 @@ Creates a new instance of this
 
   (`logical(1)`)  
   If `TRUE`, fitted models are stored in the benchmark result
-  (`archive$benchmark_result`). If `store_benchmark_result = FALSE`,
-  models are only stored temporarily and not accessible after the
-  tuning. This combination is needed for measures that require a model.
+  (`archive$benchmark_result`). Setting `store_models = TRUE` implies
+  `store_benchmark_result = TRUE`, i.e. an explicit
+  `store_benchmark_result = FALSE` is overridden.
 
 - `check_values`:
 
@@ -158,7 +158,7 @@ Creates a new instance of this
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `ObjectiveTuning$clone()`
 
 The objects of this class are cloneable with this method.
 

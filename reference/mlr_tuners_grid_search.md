@@ -7,10 +7,7 @@ Subclass for grid search tuning.
 The grid is constructed as a Cartesian product over discretized values
 per parameter, see
 [`paradox::generate_design_grid()`](https://paradox.mlr-org.com/reference/generate_design_grid.html).
-If the learner supports hotstarting, the grid is sorted by the hotstart
-parameter (see also
-[mlr3::HotstartStack](https://mlr3.mlr-org.com/reference/HotstartStack.html)).
-If not, the points of the grid are evaluated in a random order.
+The points of the grid are evaluated in a random order.
 
 ## Dictionary
 
@@ -145,31 +142,30 @@ Other Tuner:
 
 ## Super classes
 
-[`mlr3tuning::Tuner`](https://mlr3tuning.mlr-org.com/reference/Tuner.md)
+[`Tuner`](https://mlr3tuning.mlr-org.com/reference/Tuner.md) -\>
+[`TunerBatch`](https://mlr3tuning.mlr-org.com/reference/TunerBatch.md)
 -\>
-[`mlr3tuning::TunerBatch`](https://mlr3tuning.mlr-org.com/reference/TunerBatch.md)
--\>
-[`mlr3tuning::TunerBatchFromOptimizerBatch`](https://mlr3tuning.mlr-org.com/reference/TunerBatchFromOptimizerBatch.md)
+[`TunerBatchFromOptimizerBatch`](https://mlr3tuning.mlr-org.com/reference/TunerBatchFromOptimizerBatch.md)
 -\> `TunerBatchGridSearch`
 
 ## Methods
 
 ### Public methods
 
-- [`TunerBatchGridSearch$new()`](#method-TunerBatchGridSearch-new)
+- [`TunerBatchGridSearch$new()`](#method-TunerBatchGridSearch-initialize)
 
 - [`TunerBatchGridSearch$clone()`](#method-TunerBatchGridSearch-clone)
 
 Inherited methods
 
-- [`mlr3tuning::Tuner$format()`](https://mlr3tuning.mlr-org.com/reference/Tuner.html#method-format)
-- [`mlr3tuning::Tuner$help()`](https://mlr3tuning.mlr-org.com/reference/Tuner.html#method-help)
-- [`mlr3tuning::Tuner$print()`](https://mlr3tuning.mlr-org.com/reference/Tuner.html#method-print)
-- [`mlr3tuning::TunerBatchFromOptimizerBatch$optimize()`](https://mlr3tuning.mlr-org.com/reference/TunerBatchFromOptimizerBatch.html#method-optimize)
+- [`Tuner$format()`](https://mlr3tuning.mlr-org.com/reference/Tuner.html#method-format)
+- [`Tuner$help()`](https://mlr3tuning.mlr-org.com/reference/Tuner.html#method-help)
+- [`Tuner$print()`](https://mlr3tuning.mlr-org.com/reference/Tuner.html#method-print)
+- [`TunerBatchFromOptimizerBatch$optimize()`](https://mlr3tuning.mlr-org.com/reference/TunerBatchFromOptimizerBatch.html#method-optimize)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `TunerBatchGridSearch$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class.
@@ -180,7 +176,7 @@ Creates a new instance of this
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `TunerBatchGridSearch$clone()`
 
 The objects of this class are cloneable with this method.
 
@@ -218,22 +214,22 @@ instance = tune(
 instance$result
 #>           cp learner_param_vals  x_domain classif.ce
 #>        <num>             <list>    <list>      <num>
-#> 1: -2.302585          <list[2]> <list[1]> 0.05217391
+#> 1: -6.907755          <list[2]> <list[1]> 0.06956522
 
 # all evaluated hyperparameter configuration
 as.data.table(instance$archive)
 #>            cp classif.ce runtime_learners           timestamp warnings errors
 #>         <num>      <num>            <num>              <POSc>    <int>  <int>
-#>  1: -5.372699 0.06086957            0.006 2026-03-17 07:30:28        0      0
-#>  2: -2.302585 0.05217391            0.007 2026-03-17 07:30:28        0      0
-#>  3: -6.907755 0.06086957            0.007 2026-03-17 07:30:28        0      0
-#>  4: -8.442812 0.06086957            0.006 2026-03-17 07:30:28        0      0
-#>  5: -3.070113 0.05217391            0.006 2026-03-17 07:30:28        0      0
-#>  6: -4.605170 0.06086957            0.009 2026-03-17 07:30:28        0      0
-#>  7: -6.140227 0.06086957            0.006 2026-03-17 07:30:28        0      0
-#>  8: -7.675284 0.06086957            0.007 2026-03-17 07:30:28        0      0
-#>  9: -9.210340 0.06086957            0.005 2026-03-17 07:30:28        0      0
-#> 10: -3.837642 0.06086957            0.005 2026-03-17 07:30:28        0      0
+#>  1: -2.302585 0.09565217            0.007 2026-07-26 08:45:46        0      0
+#>  2: -6.907755 0.06956522            0.007 2026-07-26 08:45:46        0      0
+#>  3: -6.140227 0.06956522            0.007 2026-07-26 08:45:47        0      0
+#>  4: -3.837642 0.09565217            0.007 2026-07-26 08:45:47        0      0
+#>  5: -8.442812 0.06956522            0.007 2026-07-26 08:45:47        0      0
+#>  6: -7.675284 0.06956522            0.009 2026-07-26 08:45:47        0      0
+#>  7: -9.210340 0.06956522            0.007 2026-07-26 08:45:47        0      0
+#>  8: -4.605170 0.09565217            0.007 2026-07-26 08:45:47        0      0
+#>  9: -3.070113 0.09565217            0.007 2026-07-26 08:45:47        0      0
+#> 10: -5.372699 0.06956522            0.007 2026-07-26 08:45:47        0      0
 #>      x_domain batch_nr  resample_result
 #>        <list>    <int>           <list>
 #>  1: <list[1]>        1 <ResampleResult>

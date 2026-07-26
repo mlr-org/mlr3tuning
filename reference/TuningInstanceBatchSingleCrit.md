@@ -36,16 +36,16 @@ associated estimated performance values, by calling the method
 If no measure is passed, the default measure is used. The default
 measure depends on the task type.
 
-|                |                  |                                                               |
-|----------------|------------------|---------------------------------------------------------------|
-| Task           | Default Measure  | Package                                                       |
-| `"classif"`    | `"classif.ce"`   | [mlr3](https://CRAN.R-project.org/package=mlr3)               |
-| `"regr"`       | `"regr.mse"`     | [mlr3](https://CRAN.R-project.org/package=mlr3)               |
-| `"surv"`       | `"surv.cindex"`  | [mlr3proba](https://CRAN.R-project.org/package=mlr3proba)     |
-| `"dens"`       | `"dens.logloss"` | [mlr3proba](https://CRAN.R-project.org/package=mlr3proba)     |
-| `"classif_st"` | `"classif.ce"`   | [mlr3spatial](https://CRAN.R-project.org/package=mlr3spatial) |
-| `"regr_st"`    | `"regr.mse"`     | [mlr3spatial](https://CRAN.R-project.org/package=mlr3spatial) |
-| `"clust"`      | `"clust.dunn"`   | [mlr3cluster](https://CRAN.R-project.org/package=mlr3cluster) |
+|  |  |  |
+|----|----|----|
+| Task | Default Measure | Package |
+| `"classif"` | `"classif.ce"` | [mlr3](https://CRAN.R-project.org/package=mlr3) |
+| `"regr"` | `"regr.mse"` | [mlr3](https://CRAN.R-project.org/package=mlr3) |
+| `"surv"` | `"surv.cindex"` | [mlr3proba](https://CRAN.R-project.org/package=mlr3proba) |
+| `"dens"` | `"dens.logloss"` | [mlr3proba](https://CRAN.R-project.org/package=mlr3proba) |
+| `"classif_st"` | `"classif.ce"` | [mlr3spatial](https://CRAN.R-project.org/package=mlr3spatial) |
+| `"regr_st"` | `"regr.mse"` | [mlr3spatial](https://CRAN.R-project.org/package=mlr3spatial) |
+| `"clust"` | `"clust.dunn"` | [mlr3cluster](https://CRAN.R-project.org/package=mlr3cluster) |
 
 ## Resources
 
@@ -154,6 +154,8 @@ provides visualizations for tuning results.
 
 ## Super classes
 
+[`bbotk::EvalInstance`](https://bbotk.mlr-org.com/reference/EvalInstance.html)
+-\>
 [`bbotk::OptimInstance`](https://bbotk.mlr-org.com/reference/OptimInstance.html)
 -\>
 [`bbotk::OptimInstanceBatch`](https://bbotk.mlr-org.com/reference/OptimInstanceBatch.html)
@@ -181,7 +183,7 @@ provides visualizations for tuning results.
 
 ### Public methods
 
-- [`TuningInstanceBatchSingleCrit$new()`](#method-TuningInstanceBatchSingleCrit-new)
+- [`TuningInstanceBatchSingleCrit$new()`](#method-TuningInstanceBatchSingleCrit-initialize)
 
 - [`TuningInstanceBatchSingleCrit$assign_result()`](#method-TuningInstanceBatchSingleCrit-assign_result)
 
@@ -189,15 +191,15 @@ provides visualizations for tuning results.
 
 Inherited methods
 
+- [`bbotk::EvalInstance$format()`](https://bbotk.mlr-org.com/reference/EvalInstance.html#method-format)
 - [`bbotk::OptimInstance$clear()`](https://bbotk.mlr-org.com/reference/OptimInstance.html#method-clear)
-- [`bbotk::OptimInstance$format()`](https://bbotk.mlr-org.com/reference/OptimInstance.html#method-format)
 - [`bbotk::OptimInstance$print()`](https://bbotk.mlr-org.com/reference/OptimInstance.html#method-print)
 - [`bbotk::OptimInstanceBatch$eval_batch()`](https://bbotk.mlr-org.com/reference/OptimInstanceBatch.html#method-eval_batch)
 - [`bbotk::OptimInstanceBatch$objective_function()`](https://bbotk.mlr-org.com/reference/OptimInstanceBatch.html#method-objective_function)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `TuningInstanceBatchSingleCrit$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class.
@@ -274,9 +276,9 @@ Creates a new instance of this
 
   (`logical(1)`)  
   If `TRUE`, fitted models are stored in the benchmark result
-  (`archive$benchmark_result`). If `store_benchmark_result = FALSE`,
-  models are only stored temporarily and not accessible after the
-  tuning. This combination is needed for measures that require a model.
+  (`archive$benchmark_result`). Setting `store_models = TRUE` implies
+  `store_benchmark_result = TRUE`, i.e. an explicit
+  `store_benchmark_result = FALSE` is overridden.
 
 - `check_values`:
 
@@ -293,7 +295,7 @@ Creates a new instance of this
 
 ------------------------------------------------------------------------
 
-### Method `assign_result()`
+### `TuningInstanceBatchSingleCrit$assign_result()`
 
 The [Tuner](https://mlr3tuning.mlr-org.com/reference/Tuner.md) object
 writes the best found point and estimated performance value here. For
@@ -342,7 +344,7 @@ internal use.
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `TuningInstanceBatchSingleCrit$clone()`
 
 The objects of this class are cloneable with this method.
 
@@ -395,10 +397,10 @@ learner$train(task)
 as.data.table(instance$archive)
 #>           cp classif.ce runtime_learners           timestamp warnings errors
 #>        <num>      <num>            <num>              <POSc>    <int>  <int>
-#> 1: -3.036646 0.06392067            0.036 2026-03-17 07:30:07        0      0
-#> 2: -5.238604 0.06392067            0.019 2026-03-17 07:30:07        0      0
-#> 3: -7.255326 0.06392067            0.017 2026-03-17 07:30:07        0      0
-#> 4: -6.314690 0.06392067            0.021 2026-03-17 07:30:07        0      0
+#> 1: -3.036646 0.06392067            0.020 2026-07-26 08:45:24        0      0
+#> 2: -5.238604 0.06392067            0.023 2026-07-26 08:45:24        0      0
+#> 3: -7.255326 0.06392067            0.022 2026-07-26 08:45:24        0      0
+#> 4: -6.314690 0.06392067            0.019 2026-07-26 08:45:24        0      0
 #>     x_domain batch_nr  resample_result
 #>       <list>    <int>           <list>
 #> 1: <list[1]>        1 <ResampleResult>

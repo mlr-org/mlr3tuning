@@ -5,7 +5,7 @@
       fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
     }
   };
-</script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Roboto-0.4.10/font.css" rel="stylesheet"><link href="../deps/JetBrains_Mono-0.4.10/font.css" rel="stylesheet"><link href="../deps/Roboto_Slab-0.4.10/font.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Function for Nested Resampling — tune_nested"><meta name="description" content="Function to conduct nested resampling."><meta property="og:description" content="Function to conduct nested resampling."><meta property="og:image" content="https://mlr3tuning.mlr-org.com/logo.png"></head><body>
+</script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/Roboto-0.4.10/font.css" rel="stylesheet"><link href="../deps/JetBrains_Mono-0.4.10/font.css" rel="stylesheet"><link href="../deps/Roboto_Slab-0.4.10/font.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Function for Nested Resampling — tune_nested"><meta name="description" content="Function to conduct nested resampling."><meta property="og:description" content="Function to conduct nested resampling."><meta property="og:image" content="https://mlr3tuning.mlr-org.com/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">mlr3tuning</a>
 
-    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.6.0</small>
+    <small class="nav-text text-default me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">1.6.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -133,7 +133,9 @@ When using <code><a href="https://paradox.mlr-org.com/reference/to_tune.html" cl
 
 <dt id="arg-store-tuning-instance">store_tuning_instance<a class="anchor" aria-label="anchor" href="#arg-store-tuning-instance"></a></dt>
 <dd><p>(<code>logical(1)</code>)<br>
-If <code>TRUE</code> (default), stores the internally created <a href="TuningInstanceBatchSingleCrit.html">TuningInstanceBatchSingleCrit</a> with all intermediate results in slot <code>$tuning_instance</code>.</p></dd>
+If <code>TRUE</code> (default), stores the internally created <a href="TuningInstanceBatchSingleCrit.html">TuningInstanceBatchSingleCrit</a> with all intermediate results in slot <code>$tuning_instance</code>.
+Setting <code>store_benchmark_result = TRUE</code> implies <code>store_tuning_instance = TRUE</code>,
+i.e. an explicit <code>store_tuning_instance = FALSE</code> is overridden.</p></dd>
 
 
 <dt id="arg-store-benchmark-result">store_benchmark_result<a class="anchor" aria-label="anchor" href="#arg-store-benchmark-result"></a></dt>
@@ -144,10 +146,9 @@ configurations in archive as <a href="https://mlr3.mlr-org.com/reference/Benchma
 
 <dt id="arg-store-models">store_models<a class="anchor" aria-label="anchor" href="#arg-store-models"></a></dt>
 <dd><p>(<code>logical(1)</code>)<br>
-If <code>TRUE</code>, fitted models are stored in the benchmark result
-(<code>archive$benchmark_result</code>). If <code>store_benchmark_result = FALSE</code>, models
-are only stored temporarily and not accessible after the tuning. This
-combination is needed for measures that require a model.</p></dd>
+If <code>TRUE</code>, fitted models are stored in the benchmark result (<code>archive$benchmark_result</code>).
+Setting <code>store_models = TRUE</code> implies <code>store_benchmark_result = TRUE</code>,
+i.e. an explicit <code>store_benchmark_result = FALSE</code> is overridden.</p></dd>
 
 
 <dt id="arg-check-values">check_values<a class="anchor" aria-label="anchor" href="#arg-check-values"></a></dt>
@@ -183,14 +184,14 @@ List of callbacks.</p></dd>
 <span class="r-in"><span><span class="va">rr</span><span class="op">$</span><span class="fu">score</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     task_id          learner_id resampling_id iteration classif.ce</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      &lt;char&gt;              &lt;char&gt;        &lt;char&gt;     &lt;int&gt;      &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1: penguins classif.rpart.tuned            cv         1 0.09883721</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2: penguins classif.rpart.tuned            cv         2 0.06395349</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1: penguins classif.rpart.tuned            cv         1 0.04651163</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2: penguins classif.rpart.tuned            cv         2 0.05813953</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Hidden columns: task, learner, resampling, prediction_test</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Unbiased performance of the final model trained on the full data set</span></span></span>
 <span class="r-in"><span><span class="va">rr</span><span class="op">$</span><span class="fu">aggregate</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> classif.ce </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.08139535 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.05232558 </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -202,7 +203,7 @@ List of callbacks.</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

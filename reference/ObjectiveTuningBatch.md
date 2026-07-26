@@ -11,7 +11,7 @@ or
 
 [`bbotk::Objective`](https://bbotk.mlr-org.com/reference/Objective.html)
 -\>
-[`mlr3tuning::ObjectiveTuning`](https://mlr3tuning.mlr-org.com/reference/ObjectiveTuning.md)
+[`ObjectiveTuning`](https://mlr3tuning.mlr-org.com/reference/ObjectiveTuning.md)
 -\> `ObjectiveTuningBatch`
 
 ## Public fields
@@ -24,7 +24,7 @@ or
 
 ### Public methods
 
-- [`ObjectiveTuningBatch$new()`](#method-ObjectiveTuningBatch-new)
+- [`ObjectiveTuningBatch$new()`](#method-ObjectiveTuningBatch-initialize)
 
 - [`ObjectiveTuningBatch$clone()`](#method-ObjectiveTuningBatch-clone)
 
@@ -39,7 +39,7 @@ Inherited methods
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `ObjectiveTuningBatch$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class.
@@ -101,9 +101,9 @@ Creates a new instance of this
 
   (`logical(1)`)  
   If `TRUE`, fitted models are stored in the benchmark result
-  (`archive$benchmark_result`). If `store_benchmark_result = FALSE`,
-  models are only stored temporarily and not accessible after the
-  tuning. This combination is needed for measures that require a model.
+  (`archive$benchmark_result`). Setting `store_models = TRUE` implies
+  `store_benchmark_result = TRUE`, i.e. an explicit
+  `store_benchmark_result = FALSE` is overridden.
 
 - `check_values`:
 
@@ -135,7 +135,7 @@ Creates a new instance of this
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `ObjectiveTuningBatch$clone()`
 
 The objects of this class are cloneable with this method.
 

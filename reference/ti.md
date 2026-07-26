@@ -85,9 +85,9 @@ ti(
 
   (`logical(1)`)  
   If `TRUE`, fitted models are stored in the benchmark result
-  (`archive$benchmark_result`). If `store_benchmark_result = FALSE`,
-  models are only stored temporarily and not accessible after the
-  tuning. This combination is needed for measures that require a model.
+  (`archive$benchmark_result`). Setting `store_models = TRUE` implies
+  `store_benchmark_result = TRUE`, i.e. an explicit
+  `store_benchmark_result = FALSE` is overridden.
 
 - check_values:
 
@@ -158,16 +158,16 @@ summarizes the most important functions of mlr3tuning.
 If no measure is passed, the default measure is used. The default
 measure depends on the task type.
 
-|                |                  |                                                               |
-|----------------|------------------|---------------------------------------------------------------|
-| Task           | Default Measure  | Package                                                       |
-| `"classif"`    | `"classif.ce"`   | [mlr3](https://CRAN.R-project.org/package=mlr3)               |
-| `"regr"`       | `"regr.mse"`     | [mlr3](https://CRAN.R-project.org/package=mlr3)               |
-| `"surv"`       | `"surv.cindex"`  | [mlr3proba](https://CRAN.R-project.org/package=mlr3proba)     |
-| `"dens"`       | `"dens.logloss"` | [mlr3proba](https://CRAN.R-project.org/package=mlr3proba)     |
-| `"classif_st"` | `"classif.ce"`   | [mlr3spatial](https://CRAN.R-project.org/package=mlr3spatial) |
-| `"regr_st"`    | `"regr.mse"`     | [mlr3spatial](https://CRAN.R-project.org/package=mlr3spatial) |
-| `"clust"`      | `"clust.dunn"`   | [mlr3cluster](https://CRAN.R-project.org/package=mlr3cluster) |
+|  |  |  |
+|----|----|----|
+| Task | Default Measure | Package |
+| `"classif"` | `"classif.ce"` | [mlr3](https://CRAN.R-project.org/package=mlr3) |
+| `"regr"` | `"regr.mse"` | [mlr3](https://CRAN.R-project.org/package=mlr3) |
+| `"surv"` | `"surv.cindex"` | [mlr3proba](https://CRAN.R-project.org/package=mlr3proba) |
+| `"dens"` | `"dens.logloss"` | [mlr3proba](https://CRAN.R-project.org/package=mlr3proba) |
+| `"classif_st"` | `"classif.ce"` | [mlr3spatial](https://CRAN.R-project.org/package=mlr3spatial) |
+| `"regr_st"` | `"regr.mse"` | [mlr3spatial](https://CRAN.R-project.org/package=mlr3spatial) |
+| `"clust"` | `"clust.dunn"` | [mlr3cluster](https://CRAN.R-project.org/package=mlr3cluster) |
 
 ## Examples
 
@@ -194,9 +194,9 @@ tuner = tnr("random_search", batch_size = 2)
 
 # Run tuning
 tuner$optimize(instance)
-#>          cp learner_param_vals  x_domain classif.ce
-#>       <num>             <list>    <list>      <num>
-#> 1: -7.66021          <list[2]> <list[1]> 0.06389525
+#>           cp learner_param_vals  x_domain classif.ce
+#>        <num>             <list>    <list>      <num>
+#> 1: -8.923994          <list[2]> <list[1]> 0.06687007
 
 # Set optimal hyperparameter configuration to learner
 learner$param_set$values = instance$result_learner_param_vals
@@ -208,10 +208,10 @@ learner$train(task)
 as.data.table(instance$archive)
 #>           cp classif.ce runtime_learners           timestamp warnings errors
 #>        <num>      <num>            <num>              <POSc>    <int>  <int>
-#> 1: -2.604407 0.06684465            0.020 2026-03-17 07:30:35        0      0
-#> 2: -7.660210 0.06389525            0.020 2026-03-17 07:30:35        0      0
-#> 3: -7.939846 0.06389525            0.017 2026-03-17 07:30:35        0      0
-#> 4: -7.255071 0.06389525            0.017 2026-03-17 07:30:35        0      0
+#> 1: -8.923994 0.06687007            0.020 2026-07-26 08:45:54        0      0
+#> 2: -6.941519 0.06687007            0.021 2026-07-26 08:45:54        0      0
+#> 3: -6.356805 0.06687007            0.022 2026-07-26 08:45:55        0      0
+#> 4: -4.108574 0.06687007            0.021 2026-07-26 08:45:55        0      0
 #>     x_domain batch_nr  resample_result
 #>       <list>    <int>           <list>
 #> 1: <list[1]>        1 <ResampleResult>

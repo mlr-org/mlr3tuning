@@ -76,7 +76,7 @@ provides visualizations for tuning results.
 
 ## S3 Methods
 
-- `as.data.table.ArchiveTuning(x, unnest = "x_domain", exclude_columns = "uhash", measures = NULL)`  
+- `as.data.table.ArchiveBatchTuning(x, unnest = "internal_tuned_values", exclude_columns = "uhash", measures = NULL)`  
   Returns a tabular view of all evaluated hyperparameter
   configurations.  
   ArchiveBatchTuning -\>
@@ -123,7 +123,7 @@ provides visualizations for tuning results.
 
 ### Public methods
 
-- [`ArchiveBatchTuning$new()`](#method-ArchiveBatchTuning-new)
+- [`ArchiveBatchTuning$new()`](#method-ArchiveBatchTuning-initialize)
 
 - [`ArchiveBatchTuning$learner()`](#method-ArchiveBatchTuning-learner)
 
@@ -150,7 +150,7 @@ Inherited methods
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `ArchiveBatchTuning$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class.
@@ -187,8 +187,8 @@ Creates a new instance of this
 - `check_values`:
 
   (`logical(1)`)  
-  If `TRUE` (default), hyperparameter configurations are checked for
-  validity.
+  If `FALSE` (default), hyperparameter configurations are not checked
+  for validity.
 
 - `internal_search_space`:
 
@@ -198,7 +198,7 @@ Creates a new instance of this
 
 ------------------------------------------------------------------------
 
-### Method `learner()`
+### `ArchiveBatchTuning$learner()`
 
 Retrieve
 [mlr3::Learner](https://mlr3.mlr-org.com/reference/Learner.html) of the
@@ -219,12 +219,12 @@ are mutually exclusive. Learner does not contain a model. Use
 
 - `uhash`:
 
-  (`logical(1)`)  
+  (`character(1)`)  
   The `uhash` value to filter for.
 
 ------------------------------------------------------------------------
 
-### Method `learners()`
+### `ArchiveBatchTuning$learners()`
 
 Retrieve list of trained
 [mlr3::Learner](https://mlr3.mlr-org.com/reference/Learner.html) objects
@@ -244,12 +244,12 @@ of the i-th evaluation, by position or by unique hash `uhash`. `i` and
 
 - `uhash`:
 
-  (`logical(1)`)  
+  (`character(1)`)  
   The `uhash` value to filter for.
 
 ------------------------------------------------------------------------
 
-### Method `learner_param_vals()`
+### `ArchiveBatchTuning$learner_param_vals()`
 
 Retrieve param values of the i-th evaluation, by position or by unique
 hash `uhash`. `i` and `uhash` are mutually exclusive.
@@ -267,12 +267,12 @@ hash `uhash`. `i` and `uhash` are mutually exclusive.
 
 - `uhash`:
 
-  (`logical(1)`)  
+  (`character(1)`)  
   The `uhash` value to filter for.
 
 ------------------------------------------------------------------------
 
-### Method `predictions()`
+### `ArchiveBatchTuning$predictions()`
 
 Retrieve list of
 [mlr3::Prediction](https://mlr3.mlr-org.com/reference/Prediction.html)
@@ -292,12 +292,12 @@ objects of the i-th evaluation, by position or by unique hash `uhash`.
 
 - `uhash`:
 
-  (`logical(1)`)  
+  (`character(1)`)  
   The `uhash` value to filter for.
 
 ------------------------------------------------------------------------
 
-### Method `resample_result()`
+### `ArchiveBatchTuning$resample_result()`
 
 Retrieve
 [mlr3::ResampleResult](https://mlr3.mlr-org.com/reference/ResampleResult.html)
@@ -317,12 +317,12 @@ of the i-th evaluation, by position or by unique hash `uhash`. `i` and
 
 - `uhash`:
 
-  (`logical(1)`)  
+  (`character(1)`)  
   The `uhash` value to filter for.
 
 ------------------------------------------------------------------------
 
-### Method [`print()`](https://rdrr.io/r/base/print.html)
+### `ArchiveBatchTuning$print()`
 
 Printer.
 
@@ -330,15 +330,9 @@ Printer.
 
     ArchiveBatchTuning$print()
 
-#### Arguments
-
-- `...`:
-
-  (ignored).
-
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `ArchiveBatchTuning$clone()`
 
 The objects of this class are cloneable with this method.
 

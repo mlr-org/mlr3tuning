@@ -71,16 +71,16 @@ resampling is not present in the training set of the outer resampling.
 If no measure is passed, the default measure is used. The default
 measure depends on the task type.
 
-|                |                  |                                                               |
-|----------------|------------------|---------------------------------------------------------------|
-| Task           | Default Measure  | Package                                                       |
-| `"classif"`    | `"classif.ce"`   | [mlr3](https://CRAN.R-project.org/package=mlr3)               |
-| `"regr"`       | `"regr.mse"`     | [mlr3](https://CRAN.R-project.org/package=mlr3)               |
-| `"surv"`       | `"surv.cindex"`  | [mlr3proba](https://CRAN.R-project.org/package=mlr3proba)     |
-| `"dens"`       | `"dens.logloss"` | [mlr3proba](https://CRAN.R-project.org/package=mlr3proba)     |
-| `"classif_st"` | `"classif.ce"`   | [mlr3spatial](https://CRAN.R-project.org/package=mlr3spatial) |
-| `"regr_st"`    | `"regr.mse"`     | [mlr3spatial](https://CRAN.R-project.org/package=mlr3spatial) |
-| `"clust"`      | `"clust.dunn"`   | [mlr3cluster](https://CRAN.R-project.org/package=mlr3cluster) |
+|  |  |  |
+|----|----|----|
+| Task | Default Measure | Package |
+| `"classif"` | `"classif.ce"` | [mlr3](https://CRAN.R-project.org/package=mlr3) |
+| `"regr"` | `"regr.mse"` | [mlr3](https://CRAN.R-project.org/package=mlr3) |
+| `"surv"` | `"surv.cindex"` | [mlr3proba](https://CRAN.R-project.org/package=mlr3proba) |
+| `"dens"` | `"dens.logloss"` | [mlr3proba](https://CRAN.R-project.org/package=mlr3proba) |
+| `"classif_st"` | `"classif.ce"` | [mlr3spatial](https://CRAN.R-project.org/package=mlr3spatial) |
+| `"regr_st"` | `"regr.mse"` | [mlr3spatial](https://CRAN.R-project.org/package=mlr3spatial) |
+| `"clust"` | `"clust.dunn"` | [mlr3cluster](https://CRAN.R-project.org/package=mlr3cluster) |
 
 ## Resources
 
@@ -153,6 +153,11 @@ summarizes the most important functions of mlr3tuning.
 
 ## Active bindings
 
+- `marshaled`:
+
+  (`logical(1)`)  
+  Whether the learner has been marshaled.
+
 - `archive`:
 
   [ArchiveBatchTuning](https://mlr3tuning.mlr-org.com/reference/ArchiveBatchTuning.md)  
@@ -201,7 +206,7 @@ summarizes the most important functions of mlr3tuning.
 
 ### Public methods
 
-- [`AutoTuner$new()`](#method-AutoTuner-new)
+- [`AutoTuner$new()`](#method-AutoTuner-initialize)
 
 - [`AutoTuner$base_learner()`](#method-AutoTuner-base_learner)
 
@@ -219,8 +224,6 @@ summarizes the most important functions of mlr3tuning.
 
 - [`AutoTuner$unmarshal()`](#method-AutoTuner-unmarshal)
 
-- [`AutoTuner$marshaled()`](#method-AutoTuner-marshaled)
-
 - [`AutoTuner$clone()`](#method-AutoTuner-clone)
 
 Inherited methods
@@ -236,7 +239,7 @@ Inherited methods
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `AutoTuner$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class.
@@ -310,7 +313,10 @@ Creates a new instance of this
   (`logical(1)`)  
   If `TRUE` (default), stores the internally created
   [TuningInstanceBatchSingleCrit](https://mlr3tuning.mlr-org.com/reference/TuningInstanceBatchSingleCrit.md)
-  with all intermediate results in slot `$tuning_instance`.
+  with all intermediate results in slot `$tuning_instance`. Setting
+  `store_benchmark_result = TRUE` implies
+  `store_tuning_instance = TRUE`, i.e. an explicit
+  `store_tuning_instance = FALSE` is overridden.
 
 - `store_benchmark_result`:
 
@@ -323,9 +329,9 @@ Creates a new instance of this
 
   (`logical(1)`)  
   If `TRUE`, fitted models are stored in the benchmark result
-  (`archive$benchmark_result`). If `store_benchmark_result = FALSE`,
-  models are only stored temporarily and not accessible after the
-  tuning. This combination is needed for measures that require a model.
+  (`archive$benchmark_result`). Setting `store_models = TRUE` implies
+  `store_benchmark_result = TRUE`, i.e. an explicit
+  `store_benchmark_result = FALSE` is overridden.
 
 - `check_values`:
 
@@ -352,7 +358,7 @@ Creates a new instance of this
 
 ------------------------------------------------------------------------
 
-### Method `base_learner()`
+### `AutoTuner$base_learner()`
 
 Extracts the base learner from nested learner objects like
 `GraphLearner` in
@@ -376,7 +382,7 @@ Extracts the base learner from nested learner objects like
 
 ------------------------------------------------------------------------
 
-### Method `importance()`
+### `AutoTuner$importance()`
 
 The importance scores of the final model.
 
@@ -390,7 +396,7 @@ Named [`numeric()`](https://rdrr.io/r/base/numeric.html).
 
 ------------------------------------------------------------------------
 
-### Method `selected_features()`
+### `AutoTuner$selected_features()`
 
 The selected features of the final model.
 
@@ -404,7 +410,7 @@ The selected features of the final model.
 
 ------------------------------------------------------------------------
 
-### Method `oob_error()`
+### `AutoTuner$oob_error()`
 
 The out-of-bag error of the final model.
 
@@ -418,7 +424,7 @@ The out-of-bag error of the final model.
 
 ------------------------------------------------------------------------
 
-### Method `loglik()`
+### `AutoTuner$loglik()`
 
 The log-likelihood of the final model.
 
@@ -432,21 +438,15 @@ The log-likelihood of the final model.
 
 ------------------------------------------------------------------------
 
-### Method [`print()`](https://rdrr.io/r/base/print.html)
+### `AutoTuner$print()`
 
 #### Usage
 
     AutoTuner$print()
 
-#### Arguments
-
-- `...`:
-
-  (ignored).
-
 ------------------------------------------------------------------------
 
-### Method `marshal()`
+### `AutoTuner$marshal()`
 
 Marshal the learner.
 
@@ -467,7 +467,7 @@ self
 
 ------------------------------------------------------------------------
 
-### Method `unmarshal()`
+### `AutoTuner$unmarshal()`
 
 Unmarshal the learner.
 
@@ -488,17 +488,7 @@ self
 
 ------------------------------------------------------------------------
 
-### Method `marshaled()`
-
-Whether the learner is marshaled.
-
-#### Usage
-
-    AutoTuner$marshaled()
-
-------------------------------------------------------------------------
-
-### Method `clone()`
+### `AutoTuner$clone()`
 
 The objects of this class are cloneable with this method.
 
@@ -569,7 +559,7 @@ at$model
 #> • Encapsulation: none (fallback: -)
 #> • Properties: importance, missings, multiclass, selected_features, twoclass,
 #> and weights
-#> • Other settings: use_weights = 'use'
+#> • Other settings: use_weights = 'use', predict_raw = 'FALSE'
 #> 
 #> $tuning_instance
 #> 
@@ -608,7 +598,7 @@ at$learner
 #> • Encapsulation: none (fallback: -)
 #> • Properties: importance, missings, multiclass, selected_features, twoclass,
 #> and weights
-#> • Other settings: use_weights = 'use'
+#> • Other settings: use_weights = 'use', predict_raw = 'FALSE'
 
 # shortcut tuning instance
 at$tuning_instance

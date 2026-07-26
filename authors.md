@@ -18,15 +18,15 @@
 Source:
 [`inst/CITATION`](https://github.com/mlr-org/mlr3tuning/blob/main/inst/CITATION)
 
-Becker M, Lang M, Richter J, Bischl B (2025). *mlr3tuning:
+Becker M, Lang M, Richter J, Bischl B (2026). *mlr3tuning:
 Hyperparameter Optimization for mlr3*.
-[doi:10.5281/zenodo.15852621](https://doi.org/10.5281/zenodo.15852621),
+[doi:10.5281/zenodo.15852621](https://doi.org/10.5281/zenodo.15852621).
 <https://doi.org/10.5281/zenodo.15852621>.
 
-    @Manual{,
+    @Manual{becker2026mlr3tuning,
       title = {mlr3tuning: Hyperparameter Optimization for mlr3},
       url = {https://doi.org/10.5281/zenodo.15852621},
       author = {Marc Becker and Michel Lang and Jakob Richter and Bernd Bischl},
-      year = {2025},
+      year = {2026},
       doi = {10.5281/zenodo.15852621},
     }

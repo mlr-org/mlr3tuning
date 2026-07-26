@@ -6,35 +6,37 @@ around
 
 ## Super classes
 
+[`bbotk::EvalInstance`](https://bbotk.mlr-org.com/reference/EvalInstance.html)
+-\>
 [`bbotk::OptimInstance`](https://bbotk.mlr-org.com/reference/OptimInstance.html)
 -\>
 [`bbotk::OptimInstanceBatch`](https://bbotk.mlr-org.com/reference/OptimInstanceBatch.html)
 -\>
 [`bbotk::OptimInstanceBatchMultiCrit`](https://bbotk.mlr-org.com/reference/OptimInstanceBatchMultiCrit.html)
 -\>
-[`mlr3tuning::TuningInstanceBatchMultiCrit`](https://mlr3tuning.mlr-org.com/reference/TuningInstanceBatchMultiCrit.md)
+[`TuningInstanceBatchMultiCrit`](https://mlr3tuning.mlr-org.com/reference/TuningInstanceBatchMultiCrit.md)
 -\> `TuningInstanceMultiCrit`
 
 ## Methods
 
 ### Public methods
 
-- [`TuningInstanceMultiCrit$new()`](#method-TuningInstanceMultiCrit-new)
+- [`TuningInstanceMultiCrit$new()`](#method-TuningInstanceMultiCrit-initialize)
 
 - [`TuningInstanceMultiCrit$clone()`](#method-TuningInstanceMultiCrit-clone)
 
 Inherited methods
 
+- [`bbotk::EvalInstance$format()`](https://bbotk.mlr-org.com/reference/EvalInstance.html#method-format)
 - [`bbotk::OptimInstance$clear()`](https://bbotk.mlr-org.com/reference/OptimInstance.html#method-clear)
-- [`bbotk::OptimInstance$format()`](https://bbotk.mlr-org.com/reference/OptimInstance.html#method-format)
 - [`bbotk::OptimInstance$print()`](https://bbotk.mlr-org.com/reference/OptimInstance.html#method-print)
 - [`bbotk::OptimInstanceBatch$eval_batch()`](https://bbotk.mlr-org.com/reference/OptimInstanceBatch.html#method-eval_batch)
 - [`bbotk::OptimInstanceBatch$objective_function()`](https://bbotk.mlr-org.com/reference/OptimInstanceBatch.html#method-objective_function)
-- [`mlr3tuning::TuningInstanceBatchMultiCrit$assign_result()`](https://mlr3tuning.mlr-org.com/reference/TuningInstanceBatchMultiCrit.html#method-assign_result)
+- [`TuningInstanceBatchMultiCrit$assign_result()`](https://mlr3tuning.mlr-org.com/reference/TuningInstanceBatchMultiCrit.html#method-assign_result)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `TuningInstanceMultiCrit$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class.
@@ -112,9 +114,9 @@ Creates a new instance of this
 
   (`logical(1)`)  
   If `TRUE`, fitted models are stored in the benchmark result
-  (`archive$benchmark_result`). If `store_benchmark_result = FALSE`,
-  models are only stored temporarily and not accessible after the
-  tuning. This combination is needed for measures that require a model.
+  (`archive$benchmark_result`). Setting `store_models = TRUE` implies
+  `store_benchmark_result = TRUE`, i.e. an explicit
+  `store_benchmark_result = FALSE` is overridden.
 
 - `check_values`:
 
@@ -131,7 +133,7 @@ Creates a new instance of this
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `TuningInstanceMultiCrit$clone()`
 
 The objects of this class are cloneable with this method.
 

@@ -31,20 +31,6 @@ instantiated with the associated sugar function
 
     tnr("gensa")
 
-## Parallelization
-
-In order to support general termination criteria and parallelization, we
-evaluate points in a batch-fashion of size `batch_size`. Larger batches
-mean we can parallelize more, smaller batches imply a more fine-grained
-checking of termination criteria. A batch consists of `batch_size` times
-`resampling$iters` jobs. E.g., if you set a batch size of 10 points and
-do a 5-fold cross validation, you can utilize up to 50 cores.
-
-Parallelization is supported via package
-[future](https://CRAN.R-project.org/package=future) (see
-[`mlr3::benchmark()`](https://mlr3.mlr-org.com/reference/benchmark.html)'s
-section on parallelization for more details).
-
 ## Logging
 
 All [Tuner](https://mlr3tuning.mlr-org.com/reference/Tuner.md)s use a
@@ -159,31 +145,30 @@ Other Tuner:
 
 ## Super classes
 
-[`mlr3tuning::Tuner`](https://mlr3tuning.mlr-org.com/reference/Tuner.md)
+[`Tuner`](https://mlr3tuning.mlr-org.com/reference/Tuner.md) -\>
+[`TunerBatch`](https://mlr3tuning.mlr-org.com/reference/TunerBatch.md)
 -\>
-[`mlr3tuning::TunerBatch`](https://mlr3tuning.mlr-org.com/reference/TunerBatch.md)
--\>
-[`mlr3tuning::TunerBatchFromOptimizerBatch`](https://mlr3tuning.mlr-org.com/reference/TunerBatchFromOptimizerBatch.md)
+[`TunerBatchFromOptimizerBatch`](https://mlr3tuning.mlr-org.com/reference/TunerBatchFromOptimizerBatch.md)
 -\> `TunerBatchGenSA`
 
 ## Methods
 
 ### Public methods
 
-- [`TunerBatchGenSA$new()`](#method-TunerBatchGenSA-new)
+- [`TunerBatchGenSA$new()`](#method-TunerBatchGenSA-initialize)
 
 - [`TunerBatchGenSA$clone()`](#method-TunerBatchGenSA-clone)
 
 Inherited methods
 
-- [`mlr3tuning::Tuner$format()`](https://mlr3tuning.mlr-org.com/reference/Tuner.html#method-format)
-- [`mlr3tuning::Tuner$help()`](https://mlr3tuning.mlr-org.com/reference/Tuner.html#method-help)
-- [`mlr3tuning::Tuner$print()`](https://mlr3tuning.mlr-org.com/reference/Tuner.html#method-print)
-- [`mlr3tuning::TunerBatchFromOptimizerBatch$optimize()`](https://mlr3tuning.mlr-org.com/reference/TunerBatchFromOptimizerBatch.html#method-optimize)
+- [`Tuner$format()`](https://mlr3tuning.mlr-org.com/reference/Tuner.html#method-format)
+- [`Tuner$help()`](https://mlr3tuning.mlr-org.com/reference/Tuner.html#method-help)
+- [`Tuner$print()`](https://mlr3tuning.mlr-org.com/reference/Tuner.html#method-print)
+- [`TunerBatchFromOptimizerBatch$optimize()`](https://mlr3tuning.mlr-org.com/reference/TunerBatchFromOptimizerBatch.html#method-optimize)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `TunerBatchGenSA$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class.
@@ -194,7 +179,7 @@ Creates a new instance of this
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `TunerBatchGenSA$clone()`
 
 The objects of this class are cloneable with this method.
 

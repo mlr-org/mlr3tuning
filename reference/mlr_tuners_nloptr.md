@@ -16,9 +16,9 @@ The termination conditions `stopval`, `maxtime` and `maxeval` of
 are deactivated and replaced by the
 [bbotk::Terminator](https://bbotk.mlr-org.com/reference/Terminator.html)
 subclasses. The x and function value tolerance termination conditions
-(`xtol_rel = 10^-4`, `xtol_abs = rep(0.0, length(x0))`, `ftol_rel = 0.0`
-and `ftol_abs = 0.0`) are still available and implemented with their
-package defaults. To deactivate these conditions, set them to `-1`.
+(`xtol_rel`, `xtol_abs`, `ftol_rel` and `ftol_abs`) are deactivated by
+default (initialized to `-1`). To activate a condition, set it to a
+positive value.
 
 ## Dictionary
 
@@ -157,31 +157,30 @@ Other Tuner:
 
 ## Super classes
 
-[`mlr3tuning::Tuner`](https://mlr3tuning.mlr-org.com/reference/Tuner.md)
+[`Tuner`](https://mlr3tuning.mlr-org.com/reference/Tuner.md) -\>
+[`TunerBatch`](https://mlr3tuning.mlr-org.com/reference/TunerBatch.md)
 -\>
-[`mlr3tuning::TunerBatch`](https://mlr3tuning.mlr-org.com/reference/TunerBatch.md)
--\>
-[`mlr3tuning::TunerBatchFromOptimizerBatch`](https://mlr3tuning.mlr-org.com/reference/TunerBatchFromOptimizerBatch.md)
+[`TunerBatchFromOptimizerBatch`](https://mlr3tuning.mlr-org.com/reference/TunerBatchFromOptimizerBatch.md)
 -\> `TunerBatchNLoptr`
 
 ## Methods
 
 ### Public methods
 
-- [`TunerBatchNLoptr$new()`](#method-TunerBatchNLoptr-new)
+- [`TunerBatchNLoptr$new()`](#method-TunerBatchNLoptr-initialize)
 
 - [`TunerBatchNLoptr$clone()`](#method-TunerBatchNLoptr-clone)
 
 Inherited methods
 
-- [`mlr3tuning::Tuner$format()`](https://mlr3tuning.mlr-org.com/reference/Tuner.html#method-format)
-- [`mlr3tuning::Tuner$help()`](https://mlr3tuning.mlr-org.com/reference/Tuner.html#method-help)
-- [`mlr3tuning::Tuner$print()`](https://mlr3tuning.mlr-org.com/reference/Tuner.html#method-print)
-- [`mlr3tuning::TunerBatchFromOptimizerBatch$optimize()`](https://mlr3tuning.mlr-org.com/reference/TunerBatchFromOptimizerBatch.html#method-optimize)
+- [`Tuner$format()`](https://mlr3tuning.mlr-org.com/reference/Tuner.html#method-format)
+- [`Tuner$help()`](https://mlr3tuning.mlr-org.com/reference/Tuner.html#method-help)
+- [`Tuner$print()`](https://mlr3tuning.mlr-org.com/reference/Tuner.html#method-print)
+- [`TunerBatchFromOptimizerBatch$optimize()`](https://mlr3tuning.mlr-org.com/reference/TunerBatchFromOptimizerBatch.html#method-optimize)
 
 ------------------------------------------------------------------------
 
-### Method `new()`
+### `TunerBatchNLoptr$new()`
 
 Creates a new instance of this
 [R6](https://r6.r-lib.org/reference/R6Class.html) class.
@@ -192,7 +191,7 @@ Creates a new instance of this
 
 ------------------------------------------------------------------------
 
-### Method `clone()`
+### `TunerBatchNLoptr$clone()`
 
 The objects of this class are cloneable with this method.
 
