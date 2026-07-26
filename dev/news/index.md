@@ -2,8 +2,17 @@
 
 ## mlr3tuning (development version)
 
-- Minimum required version of `rush` is now 1.2.0. Removed all
+## mlr3tuning 1.6.1
+
+CRAN release: 2026-07-26
+
+- compatibility: mlr3 1.7.2
+- chore: Minimum required version of `rush` is now 1.2.0. Removed all
   compatibility workarounds for older versions.
+- fix: The package now unions `mlr_reflections$tuner_properties` on load
+  instead of overwriting it, so a property registered by another
+  extension package is no longer dropped, and it removes its registered
+  callbacks and tuner property on unload.
 - fix: `AutoTuner` accessors (`$learner`, `$tuning_instance`,
   `$tuning_result`, `$archive`, `$importance()`, `$selected_features()`,
   `$oob_error()`, `$loglik()`) now raise an informative error when the
