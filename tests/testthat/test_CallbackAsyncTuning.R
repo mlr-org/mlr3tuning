@@ -141,8 +141,8 @@ test_that("on_optimizer_before_eval and on_optimizer_after_eval works", {
     rush = rush
   )
 
-  expect_equal(unique(instance$archive$data$minsplit), 1)
-  expect_equal(unique(instance$archive$data$classif.ce), 0)
+  expect_equal(unique(instance$archive$finished_data$minsplit), 1)
+  expect_equal(unique(instance$archive$finished_data$classif.ce), 0)
 })
 
 # stages in $eval() ------------------------------------------------------------
