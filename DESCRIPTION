@@ -49,11 +49,13 @@ Suggests:
     nloptr,
     processx,
     redux,
-    rush (>= 1.2.0),
+    rush (>= 1.2.1.9000),
     rmarkdown,
     rpart,
     testthat (>= 3.0.0),
     xgboost (>= 3.1.2.1)
+Remotes:
+    mlr-org/rush
 VignetteBuilder:
     knitr
 Config/testthat/edition: 3
