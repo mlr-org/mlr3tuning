@@ -40,6 +40,18 @@ tuning callback works with
 and
 [mlr3::ContextResample](https://mlr3.mlr-org.com/reference/ContextResample.html).
 
+A
+[bbotk::CallbackBatch](https://bbotk.mlr-org.com/reference/CallbackBatch.html)
+can be passed to a tuning instance as well. It only implements the bbotk
+stages, which are all called during tuning, and it receives a
+[ContextBatchTuning](https://mlr3tuning.mlr-org.com/dev/reference/ContextBatchTuning.md)
+which inherits from
+[bbotk::ContextBatch](https://bbotk.mlr-org.com/reference/ContextBatch.html).
+The tuning specific stages are skipped for such a callback. Prefer the
+tuning specific callback when one exists, since a generic bbotk callback
+only sees the archive and not the benchmark result, e.g.
+`clbk("mlr3tuning.backup")` over `clbk("bbotk.backup")`.
+
 ## Usage
 
 ``` r

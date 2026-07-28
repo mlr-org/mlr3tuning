@@ -49,7 +49,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="mlr3tuning-development-version">mlr3tuning (development version)<a class="anchor" aria-label="anchor" href="#mlr3tuning-development-version"></a></h2>
-</div>
+<ul><li>feat: Tuning instances now accept plain <code><a href="https://bbotk.mlr-org.com/reference/CallbackBatch.html" class="external-link">bbotk::CallbackBatch</a></code> and <code><a href="https://bbotk.mlr-org.com/reference/CallbackAsync.html" class="external-link">bbotk::CallbackAsync</a></code> objects as <code>callbacks</code>. Tuning specific stages such as <code>on_eval_after_design</code> are skipped for these callbacks, while all bbotk stages are called with a <code>ContextBatchTuning</code> or <code>ContextAsyncTuning</code>.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.6.1" id="mlr3tuning-161">mlr3tuning 1.6.1<a class="anchor" aria-label="anchor" href="#mlr3tuning-161"></a></h2><p class="text-muted">CRAN release: 2026-07-26</p>
 <ul><li>compatibility: mlr3 1.7.2</li>
