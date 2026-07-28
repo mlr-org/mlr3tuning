@@ -140,7 +140,7 @@ TuningInstanceAsyncMultiCrit = R6Class(
       private$.result_learner_param_vals = learner_param_vals
       private$.result_extra = extra
 
-      call_back("on_tuning_result_begin", self$objective$callbacks, self$objective$context)
+      call_back_tuning("on_tuning_result_begin", self$objective$callbacks, self$objective$context)
 
       # check learner param_vals, one named list per point
       assert_list(private$.result_learner_param_vals, types = "list", len = nrow(private$.result_ydt), null.ok = TRUE)

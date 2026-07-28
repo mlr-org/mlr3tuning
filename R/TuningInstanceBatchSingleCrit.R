@@ -241,7 +241,7 @@ TuningInstanceBatchSingleCrit = R6Class(
       private$.result_learner_param_vals = learner_param_vals
       private$.result_extra = extra
 
-      call_back("on_tuning_result_begin", self$objective$callbacks, self$objective$context)
+      call_back_tuning("on_tuning_result_begin", self$objective$callbacks, self$objective$context)
 
       # set the column with the learner param_vals that were not optimized over but set implicitly
       assert_list(private$.result_learner_param_vals, null.ok = TRUE, names = "named")

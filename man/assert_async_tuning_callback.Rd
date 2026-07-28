@@ -10,16 +10,17 @@ assert_async_tuning_callback(callback, null_ok = FALSE)
 assert_async_tuning_callbacks(callbacks)
 }
 \arguments{
-\item{callback}{(\link{CallbackAsyncTuning}).}
+\item{callback}{(\link[bbotk:CallbackAsync]{bbotk::CallbackAsync} | \link{CallbackAsyncTuning}).}
 
 \item{null_ok}{(\code{logical(1)})\cr
 If \code{TRUE}, \code{NULL} is allowed.}
 
-\item{callbacks}{(list of \link{CallbackAsyncTuning}).}
+\item{callbacks}{(list of \link[bbotk:CallbackAsync]{bbotk::CallbackAsync} | list of \link{CallbackAsyncTuning}).}
 }
 \value{
-[CallbackAsyncTuning | List of \link{CallbackAsyncTuning}s.
+\link[bbotk:CallbackAsync]{bbotk::CallbackAsync} | \link{CallbackAsyncTuning} | List of them.
 }
 \description{
 Assertions for \link{CallbackAsyncTuning} class.
+\link[bbotk:CallbackAsync]{bbotk::CallbackAsync} objects are accepted as well since they work in asynchronous tuning too.
 }

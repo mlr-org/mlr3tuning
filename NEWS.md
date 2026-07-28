@@ -1,5 +1,8 @@
 # mlr3tuning (development version)
 
+* feat: Tuning instances now accept plain `bbotk::CallbackBatch` and `bbotk::CallbackAsync` objects as `callbacks`.
+  Tuning specific stages such as `on_eval_after_design` are skipped for these callbacks, while all bbotk stages are called with a `ContextBatchTuning` or `ContextAsyncTuning`.
+
 # mlr3tuning 1.6.1
 
 * compatibility: mlr3 1.7.2

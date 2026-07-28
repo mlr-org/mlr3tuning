@@ -1,3 +1,15 @@
+# calls a tuning specific stage only on the callbacks that define it
+# plain bbotk callbacks are silently skipped since they only define the bbotk stages
+call_back_tuning = function(stage, callbacks, context) {
+  callbacks = keep(callbacks, function(callback) exists(stage, envir = callback, inherits = FALSE))
+  call_back(stage, callbacks, context)
+}
+
+# only callbacks with resample stages have to be passed to resample() and benchmark()
+resample_callbacks = function(callbacks) {
+  keep(callbacks, function(callback) exists("on_resample_begin", envir = callback, inherits = FALSE))
+}
+
 measures_to_codomain = function(measures) {
   measures = as_measures(measures)
   domains = map(measures, function(s) {

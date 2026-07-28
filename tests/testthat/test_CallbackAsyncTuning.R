@@ -479,5 +479,30 @@ test_that("passing a CallbackBatchTuning to an async tuning instance errors", {
     terminator = trm("evals", n_evals = 2),
     callbacks = callback,
     rush = rush
-  ), "CallbackAsyncTuning")
+  ), "CallbackAsync")
+})
+
+test_that("a bbotk CallbackAsync works in an async tuning instance", {
+  rush = start_rush()
+  on.exit({
+    rush$reset()
+    mirai::daemons(0)
+  })
+
+  callback = bbotk::callback_async(id = "test", on_optimization_begin = function(callback, context) {
+    context$instance$terminator$param_set$values$n_evals = 20
+  })
+
+  instance = tune(
+    tuner = tnr("async_random_search"),
+    task = tsk("sonar"),
+    learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
+    resampling = rsmp("holdout"),
+    measures = msr("classif.ce"),
+    term_evals = 2,
+    callbacks = callback,
+    rush = rush
+  )
+
+  expect_equal(instance$terminator$param_set$values$n_evals, 20)
 })

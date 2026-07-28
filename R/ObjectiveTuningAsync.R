@@ -26,7 +26,7 @@ ObjectiveTuningAsync = R6Class(
       private$.xs = insert_named(self$default_values, xs)
 
       # set hyperparameter values
-      call_back("on_eval_after_xs", self$callbacks, self$context)
+      call_back_tuning("on_eval_after_xs", self$callbacks, self$context)
       self$learner$param_set$set_values(.values = private$.xs, .insert = FALSE)
 
       lg$debug("Resampling hyperparameter configuration")
@@ -39,9 +39,9 @@ ObjectiveTuningAsync = R6Class(
         store_models = self$store_models,
         allow_hotstart = TRUE,
         clone = character(0),
-        callbacks = self$callbacks
+        callbacks = resample_callbacks(self$callbacks)
       )
-      call_back("on_eval_after_resample", self$callbacks, self$context)
+      call_back_tuning("on_eval_after_resample", self$callbacks, self$context)
 
       lg$debug("Aggregating performance")
 
@@ -83,7 +83,7 @@ ObjectiveTuningAsync = R6Class(
         )
       }
 
-      call_back("on_eval_before_archive", self$callbacks, self$context)
+      call_back_tuning("on_eval_before_archive", self$callbacks, self$context)
       private$.aggregated_performance
     },
 
