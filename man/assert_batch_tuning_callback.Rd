@@ -10,16 +10,17 @@ assert_batch_tuning_callback(callback, null_ok = FALSE)
 assert_batch_tuning_callbacks(callbacks)
 }
 \arguments{
-\item{callback}{(\link{CallbackBatchTuning}).}
+\item{callback}{(\link[bbotk:CallbackBatch]{bbotk::CallbackBatch} | \link{CallbackBatchTuning}).}
 
 \item{null_ok}{(\code{logical(1)})\cr
 If \code{TRUE}, \code{NULL} is allowed.}
 
-\item{callbacks}{(list of \link{CallbackBatchTuning}).}
+\item{callbacks}{(list of \link[bbotk:CallbackBatch]{bbotk::CallbackBatch} | list of \link{CallbackBatchTuning}).}
 }
 \value{
-[CallbackBatchTuning | List of \link{CallbackBatchTuning}s.
+\link[bbotk:CallbackBatch]{bbotk::CallbackBatch} | \link{CallbackBatchTuning} | List of them.
 }
 \description{
 Assertions for \link{CallbackBatchTuning} class.
+\link[bbotk:CallbackBatch]{bbotk::CallbackBatch} objects are accepted as well since they work in batch tuning too.
 }

@@ -97,6 +97,14 @@ CallbackAsyncTuning = R6Class(
 #' See also the section on parameters for more information on the stages.
 #' A tuning callback works with [ContextAsyncTuning].
 #'
+#' A [bbotk::CallbackAsync] can be passed to a tuning instance as well.
+#' It only implements the bbotk stages, which are all called during tuning, and it receives a [ContextAsyncTuning] which
+#' inherits from [bbotk::ContextAsync].
+#' The tuning specific stages are skipped for such a callback.
+#' Prefer the tuning specific callback when one exists, e.g. `clbk("mlr3tuning.async_freeze_archive")` over
+#' `clbk("bbotk.async_freeze_archive")`, since the latter replaces the [ArchiveAsyncTuning] with a plain
+#' [bbotk::ArchiveAsyncFrozen] and thereby drops the benchmark result.
+#'
 #' @details
 #' When implementing a callback, each function must have two arguments named `callback` and `context`.
 #' A callback can write data to the state (`$state`), e.g. settings that affect the callback itself.
@@ -275,23 +283,24 @@ callback_async_tuning = function(
 #'
 #' @description
 #' Assertions for [CallbackAsyncTuning] class.
+#' [bbotk::CallbackAsync] objects are accepted as well since they work in asynchronous tuning too.
 #'
-#' @param callback ([CallbackAsyncTuning]).
+#' @param callback ([bbotk::CallbackAsync] | [CallbackAsyncTuning]).
 #' @param null_ok (`logical(1)`)\cr
 #'   If `TRUE`, `NULL` is allowed.
 #'
-#' @return [CallbackAsyncTuning | List of [CallbackAsyncTuning]s.
+#' @return [bbotk::CallbackAsync] | [CallbackAsyncTuning] | List of them.
 #' @export
 assert_async_tuning_callback = function(callback, null_ok = FALSE) {
   if (null_ok && is.null(callback)) {
     return(invisible(NULL))
   }
-  assert_class(callback, "CallbackAsyncTuning")
+  assert_class(callback, "CallbackAsync")
   invisible(callback)
 }
 
 #' @export
-#' @param callbacks (list of [CallbackAsyncTuning]).
+#' @param callbacks (list of [bbotk::CallbackAsync] | list of [CallbackAsyncTuning]).
 #' @rdname assert_async_tuning_callback
 assert_async_tuning_callbacks = function(callbacks) {
   invisible(lapply(callbacks, assert_async_tuning_callback))

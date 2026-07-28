@@ -100,6 +100,13 @@ CallbackBatchTuning = R6Class(
 #' See also the section on parameters for more information on the stages.
 #' A tuning callback works with [ContextBatchTuning] and [mlr3::ContextResample].
 #'
+#' A [bbotk::CallbackBatch] can be passed to a tuning instance as well.
+#' It only implements the bbotk stages, which are all called during tuning, and it receives a [ContextBatchTuning] which
+#' inherits from [bbotk::ContextBatch].
+#' The tuning specific stages are skipped for such a callback.
+#' Prefer the tuning specific callback when one exists, since a generic bbotk callback only sees the archive and not
+#' the benchmark result, e.g. `clbk("mlr3tuning.backup")` over `clbk("bbotk.backup")`.
+#'
 #' @details
 #' When implementing a callback, each function must have two arguments named `callback` and `context`.
 #' A callback can write data to the state (`$state`), e.g. settings that affect the callback itself.
@@ -252,23 +259,24 @@ callback_batch_tuning = function(
 #'
 #' @description
 #' Assertions for [CallbackBatchTuning] class.
+#' [bbotk::CallbackBatch] objects are accepted as well since they work in batch tuning too.
 #'
-#' @param callback ([CallbackBatchTuning]).
+#' @param callback ([bbotk::CallbackBatch] | [CallbackBatchTuning]).
 #' @param null_ok (`logical(1)`)\cr
 #'   If `TRUE`, `NULL` is allowed.
 #'
-#' @return [CallbackBatchTuning | List of [CallbackBatchTuning]s.
+#' @return [bbotk::CallbackBatch] | [CallbackBatchTuning] | List of them.
 #' @export
 assert_batch_tuning_callback = function(callback, null_ok = FALSE) {
   if (null_ok && is.null(callback)) {
     return(invisible(NULL))
   }
-  assert_class(callback, "CallbackBatchTuning")
+  assert_class(callback, "CallbackBatch")
   invisible(callback)
 }
 
 #' @export
-#' @param callbacks (list of [CallbackBatchTuning]).
+#' @param callbacks (list of [bbotk::CallbackBatch] | list of [CallbackBatchTuning]).
 #' @rdname assert_batch_tuning_callback
 assert_batch_tuning_callbacks = function(callbacks) {
   invisible(lapply(callbacks, assert_batch_tuning_callback))

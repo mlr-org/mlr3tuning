@@ -334,5 +334,23 @@ test_that("passing a CallbackAsyncTuning to a batch tuning instance errors", {
     measures = msr("classif.ce"),
     terminator = trm("evals", n_evals = 2),
     callbacks = callback
-  ), "CallbackBatchTuning")
+  ), "CallbackBatch")
+})
+
+test_that("a bbotk CallbackBatch works in a batch tuning instance", {
+  callback = bbotk::callback_batch(id = "test", on_optimization_begin = function(callback, context) {
+    context$instance$terminator$param_set$values$n_evals = 20
+  })
+
+  instance = tune(
+    tuner = tnr("random_search", batch_size = 1),
+    task = tsk("sonar"),
+    learner = lrn("classif.rpart", minsplit = to_tune(1, 10)),
+    resampling = rsmp("holdout"),
+    measures = msr("classif.ce"),
+    term_evals = 2,
+    callbacks = callback
+  )
+
+  expect_equal(instance$terminator$param_set$values$n_evals, 20)
 })

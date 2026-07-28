@@ -152,6 +152,13 @@ End Tuning
 
 See also the section on parameters for more information on the stages.
 A tuning callback works with \link{ContextBatchTuning} and \link[mlr3:ContextResample]{mlr3::ContextResample}.
+
+A \link[bbotk:CallbackBatch]{bbotk::CallbackBatch} can be passed to a tuning instance as well.
+It only implements the bbotk stages, which are all called during tuning, and it receives a \link{ContextBatchTuning} which
+inherits from \link[bbotk:ContextBatch]{bbotk::ContextBatch}.
+The tuning specific stages are skipped for such a callback.
+Prefer the tuning specific callback when one exists, since a generic bbotk callback only sees the archive and not
+the benchmark result, e.g. \code{clbk("mlr3tuning.backup")} over \code{clbk("bbotk.backup")}.
 }
 \details{
 When implementing a callback, each function must have two arguments named \code{callback} and \code{context}.

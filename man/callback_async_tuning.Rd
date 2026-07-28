@@ -178,6 +178,14 @@ End Tuning
 
 See also the section on parameters for more information on the stages.
 A tuning callback works with \link{ContextAsyncTuning}.
+
+A \link[bbotk:CallbackAsync]{bbotk::CallbackAsync} can be passed to a tuning instance as well.
+It only implements the bbotk stages, which are all called during tuning, and it receives a \link{ContextAsyncTuning} which
+inherits from \link[bbotk:ContextAsync]{bbotk::ContextAsync}.
+The tuning specific stages are skipped for such a callback.
+Prefer the tuning specific callback when one exists, e.g. \code{clbk("mlr3tuning.async_freeze_archive")} over
+\code{clbk("bbotk.async_freeze_archive")}, since the latter replaces the \link{ArchiveAsyncTuning} with a plain
+\link[bbotk:ArchiveAsyncFrozen]{bbotk::ArchiveAsyncFrozen} and thereby drops the benchmark result.
 }
 \details{
 When implementing a callback, each function must have two arguments named \code{callback} and \code{context}.

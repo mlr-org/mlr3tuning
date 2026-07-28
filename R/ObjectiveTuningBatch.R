@@ -83,16 +83,16 @@ ObjectiveTuningBatch = R6Class(
         benchmark_grid(self$task, self$learner, resampling, param_values = list(xss))
       }
 
-      call_back("on_eval_after_design", self$callbacks, self$context)
+      call_back_tuning("on_eval_after_design", self$callbacks, self$context)
 
       # learner is already cloned, task and resampling are not changed
       private$.benchmark_result = benchmark(
         design = private$.design,
         store_models = self$store_models,
         clone = character(0),
-        callbacks = self$callbacks
+        callbacks = resample_callbacks(self$callbacks)
       )
-      call_back("on_eval_after_benchmark", self$callbacks, self$context)
+      call_back_tuning("on_eval_after_benchmark", self$callbacks, self$context)
 
       # aggregate performance scores
       private$.aggregated_performance = private$.benchmark_result$aggregate(self$measures, conditions = TRUE)[,
@@ -119,7 +119,7 @@ ObjectiveTuningBatch = R6Class(
         set(private$.aggregated_performance, j = "internal_tuned_values", value = list(internal_tuned_values))
       }
 
-      call_back("on_eval_before_archive", self$callbacks, self$context)
+      call_back_tuning("on_eval_before_archive", self$callbacks, self$context)
 
       # store benchmark result in archive
       if (self$store_benchmark_result) {
