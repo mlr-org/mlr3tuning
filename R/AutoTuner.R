@@ -317,14 +317,17 @@ AutoTuner = R6Class(
 
     #' @field internal_valid_scores (named `list()` or `NULL`)\cr
     #' The internal validation scores of the final model of the tuned learner.
-    #' Returns `NULL` if the learner is not trained yet or does not support internal validation.
+    #' Note that the final model is deliberately refitted on the full task with validation disabled,
+    #' so in practice this is `NULL`.
+    #' To obtain validation scores from the tuning itself, inspect `$archive`.
     internal_valid_scores = function() {
       self$state$internal_valid_scores
     },
 
     #' @field best_valid_scores (named `list()` or `NULL`)\cr
     #' The best internal validation scores observed while training the tuned learner.
-    #' Returns `NULL` if the learner is not trained yet or does not track them.
+    #' As for `$internal_valid_scores`, this is `NULL` in practice because the final model is
+    #' refitted without validation.
     best_valid_scores = function() {
       self$state$best_valid_scores
     },
