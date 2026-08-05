@@ -1,5 +1,7 @@
 # mlr3tuning (development version)
 
+* feat: `AutoTuner` now forwards the `which` argument of `$.extract_internal_valid_scores()` to the tuned learner, so it reports the best validation scores for learners that track them, and gained the standard `$internal_valid_scores` and `$best_valid_scores` reader fields.
+
 * feat: Tuning instances now accept plain `bbotk::CallbackBatch` and `bbotk::CallbackAsync` objects as `callbacks`.
   Tuning specific stages such as `on_eval_after_design` are skipped for these callbacks, while all bbotk stages are called with a `ContextBatchTuning` or `ContextAsyncTuning`.
 
