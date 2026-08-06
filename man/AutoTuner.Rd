@@ -176,6 +176,17 @@ Whether the learner has been marshaled.}
     \item{\code{archive}}{\link{ArchiveBatchTuning}\cr
 Archive of the \link{TuningInstanceBatchSingleCrit}.}
 
+    \item{\code{internal_valid_scores}}{(named \code{list()} or \code{NULL})\cr
+The internal validation scores of the final model of the tuned learner.
+Note that the final model is deliberately refitted on the full task with validation disabled,
+so in practice this is \code{NULL}.
+To obtain validation scores from the tuning itself, inspect \verb{$archive}.}
+
+    \item{\code{best_valid_scores}}{(named \code{list()} or \code{NULL})\cr
+The best internal validation scores observed while training the tuned learner.
+As for \verb{$internal_valid_scores}, this is \code{NULL} in practice because the final model is
+refitted without validation.}
+
     \item{\code{learner}}{(\link[mlr3:Learner]{mlr3::Learner})\cr
 Trained learner}
 

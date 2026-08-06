@@ -315,6 +315,23 @@ AutoTuner = R6Class(
     #' Archive of the [TuningInstanceBatchSingleCrit].
     archive = function() self$tuning_instance$archive,
 
+    #' @field internal_valid_scores (named `list()` or `NULL`)\cr
+    #' The internal validation scores of the final model of the tuned learner.
+    #' Note that the final model is deliberately refitted on the full task with validation disabled,
+    #' so in practice this is `NULL`.
+    #' To obtain validation scores from the tuning itself, inspect `$archive`.
+    internal_valid_scores = function() {
+      self$state$internal_valid_scores
+    },
+
+    #' @field best_valid_scores (named `list()` or `NULL`)\cr
+    #' The best internal validation scores observed while training the tuned learner.
+    #' As for `$internal_valid_scores`, this is `NULL` in practice because the final model is
+    #' refitted without validation.
+    best_valid_scores = function() {
+      self$state$best_valid_scores
+    },
+
     #' @field learner ([mlr3::Learner])\cr
     #' Trained learner
     learner = function() {
@@ -464,6 +481,9 @@ AutoTuner = R6Class(
     },
     .extract_internal_valid_scores = function() {
       self$model$learner$internal_valid_scores
+    },
+    .extract_best_valid_scores = function() {
+      self$model$learner$best_valid_scores
     },
     .store_tuning_instance = NULL,
 
