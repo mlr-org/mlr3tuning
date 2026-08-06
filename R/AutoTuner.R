@@ -479,12 +479,11 @@ AutoTuner = R6Class(
     .predict = function(task) {
       self$model$learner$predict(task)
     },
-    .extract_internal_valid_scores = function(which = "last") {
-      if (which == "best") {
-        self$model$learner$best_valid_scores
-      } else {
-        self$model$learner$internal_valid_scores
-      }
+    .extract_internal_valid_scores = function() {
+      self$model$learner$internal_valid_scores
+    },
+    .extract_best_valid_scores = function() {
+      self$model$learner$best_valid_scores
     },
     .store_tuning_instance = NULL,
 

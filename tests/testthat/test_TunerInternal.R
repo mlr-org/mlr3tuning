@@ -42,9 +42,9 @@ test_that("tuning on the best valid score works", {
   expect_true(all(!is.na(instance$archive$data$acc)))
 })
 
-test_that("AutoTuner's valid score extractor dispatches on `which`", {
+test_that("AutoTuner's valid score extractors forward to the tuned learner", {
   # The AutoTuner disables validation for the final model fit, so in practice it reports no scores.
-  # This checks that the extractor forwards to the correct field of the tuned learner.
+  # This checks that each extractor forwards to the correct field of the tuned learner.
   task = tsk("sonar")
   learner = lrn("classif.debug", validate = 0.2, early_stopping = TRUE, iter = 10)$train(task)
 
@@ -57,10 +57,8 @@ test_that("AutoTuner's valid score extractor dispatches on `which`", {
   )
   at$state = list(model = list(learner = learner))
 
-  extractor = get_private(at)$.extract_internal_valid_scores
-  expect_equal(extractor(which = "last"), learner$internal_valid_scores)
-  expect_equal(extractor(which = "best"), learner$best_valid_scores)
-  expect_true(extractor(which = "best")$acc >= extractor(which = "last")$acc)
-  # the default is the score of the final model
-  expect_equal(extractor(), learner$internal_valid_scores)
+  private_at = get_private(at)
+  expect_equal(private_at$.extract_internal_valid_scores(), learner$internal_valid_scores)
+  expect_equal(private_at$.extract_best_valid_scores(), learner$best_valid_scores)
+  expect_true(private_at$.extract_best_valid_scores()$acc >= private_at$.extract_internal_valid_scores()$acc)
 })
