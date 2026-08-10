@@ -29,7 +29,7 @@ Depends:
     paradox (>= 1.0.1),
     R (>= 3.3.0)
 Imports:
-    bbotk (>= 1.12.0.9000),
+    bbotk (>= 1.12.0),
     checkmate (>= 2.0.0),
     cli,
     data.table,
@@ -49,14 +49,13 @@ Suggests:
     nloptr,
     processx,
     redux,
-    rush (>= 1.2.1.9000),
+    rush (>= 1.2.1),
     rmarkdown,
     rpart,
     testthat (>= 3.0.0),
     xgboost (>= 3.1.2.1)
 Remotes:
     mlr-org/bbotk,
-    mlr-org/libcmaesr,
     mlr-org/rush
 VignetteBuilder:
     knitr
