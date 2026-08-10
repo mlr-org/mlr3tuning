@@ -6,8 +6,8 @@
     }
   };
 </script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/Roboto-0.4.10/font.css" rel="stylesheet"><link href="../deps/JetBrains_Mono-0.4.10/font.css" rel="stylesheet"><link href="../deps/Roboto_Slab-0.4.10/font.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Hyperparameter Tuning with Covariance Matrix Adaptation Evolution Strategy — mlr_tuners_cmaes"><meta name="description" content="Subclass for Covariance Matrix Adaptation Evolution Strategy (CMA-ES).
-Calls adagio::pureCMAES() from package adagio."><meta property="og:description" content="Subclass for Covariance Matrix Adaptation Evolution Strategy (CMA-ES).
-Calls adagio::pureCMAES() from package adagio."><meta property="og:image" content="https://mlr3tuning.mlr-org.com/logo.png"><meta name="robots" content="noindex"></head><body>
+Calls libcmaesr::cmaes() from package libcmaesr."><meta property="og:description" content="Subclass for Covariance Matrix Adaptation Evolution Strategy (CMA-ES).
+Calls libcmaesr::cmaes() from package libcmaesr."><meta property="og:image" content="https://mlr3tuning.mlr-org.com/logo.png"><meta name="robots" content="noindex"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -52,7 +52,7 @@ Calls adagio::pureCMAES() from package adagio."><meta property="og:image" conten
 
     <div class="ref-description section level2">
     <p>Subclass for Covariance Matrix Adaptation Evolution Strategy (CMA-ES).
-Calls <code><a href="https://rdrr.io/pkg/adagio/man/cmaes.html" class="external-link">adagio::pureCMAES()</a></code> from package <a href="https://CRAN.R-project.org/package=adagio" class="external-link"><span class="pkg">adagio</span></a>.</p>
+Calls <code><a href="https://libcmaesr.mlr-org.com/reference/cmaes.html" class="external-link">libcmaesr::cmaes()</a></code> from package <a href="https://CRAN.R-project.org/package=libcmaesr" class="external-link"><span class="pkg">libcmaesr</span></a>.</p>
     </div>
 
 
@@ -68,20 +68,6 @@ Calls <code><a href="https://rdrr.io/pkg/adagio/man/cmaes.html" class="external-
 
 <p>This <a href="Tuner.html">Tuner</a> can be instantiated with the associated sugar function <code><a href="tnr.html">tnr()</a></code>:</p>
 <p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">tnr</span>(<span class="st">"cmaes"</span>)</span></code></pre><p></p></div>
-    </div>
-    <div class="section level2">
-    <h2 id="control-parameters">Control Parameters<a class="anchor" aria-label="anchor" href="#control-parameters"></a></h2>
-
-
-<dl><dt><code>start_values</code></dt>
-<dd><p><code>character(1)</code><br>
-Create <code>random</code> start values or based on <code>center</code> of search space?
-In the latter case, it is the center of the parameters before a trafo is applied.</p></dd>
-
-
-</dl><p>For the meaning of the control parameters, see <code><a href="https://rdrr.io/pkg/adagio/man/cmaes.html" class="external-link">adagio::pureCMAES()</a></code>.
-Note that we have removed all control parameters which refer to the termination of the algorithm and where our
-terminators allow to obtain the same behavior.</p>
     </div>
     <div class="section level2">
     <h2 id="progress-bars">Progress Bars<a class="anchor" aria-label="anchor" href="#progress-bars"></a></h2>
@@ -106,6 +92,43 @@ Use <code>lgr::get_logger("bbotk")</code> to access and control the logger.</p>
 
 <p>This <a href="Tuner.html">Tuner</a> is based on <a href="https://bbotk.mlr-org.com/reference/mlr_optimizers_cmaes.html" class="external-link">bbotk::OptimizerBatchCmaes</a> which can be applied on any black box optimization problem.
 See also the documentation of <a href="https://bbotk.mlr-org.com/" class="external-link">bbotk</a>.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="parameters">Parameters<a class="anchor" aria-label="anchor" href="#parameters"></a></h2>
+
+
+
+<dl><dt><code>start_values</code></dt>
+<dd><p><code>character(1)</code><br>
+Create <code>"random"</code> start values or based on <code>"center"</code> of search space?
+In the latter case, it is the center of the parameters before a trafo is applied.
+If set to <code>"custom"</code>, the start values can be passed via the <code>start</code> parameter.</p></dd>
+
+<dt><code>start</code></dt>
+<dd><p><code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric()</a></code><br>
+Custom start values. Only applicable if <code>start_values</code> parameter is set to <code>"custom"</code>.</p></dd>
+
+<dt><code>seed</code></dt>
+<dd><p><code>integer(1)</code><br>
+Seed of the random number generator of <code>libcmaes</code>.
+Unset by default, in which case the generator is seeded from R and the optimization is reproducible with
+<code><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed()</a></code>.</p></dd>
+
+
+</dl><p>All remaining parameters are passed to <code><a href="https://libcmaesr.mlr-org.com/reference/cmaes_control.html" class="external-link">libcmaesr::cmaes_control()</a></code>, see there for their meaning.
+Note that we have removed all control parameters which refer to the termination of the algorithm and where our
+terminators allow to obtain the same behavior, i.e. <code>max_fevals</code>, <code>max_iter</code>, and <code>ftarget</code>.
+The internal convergence criteria of the algorithm still apply, so the optimization can stop before the
+<a href="https://bbotk.mlr-org.com/reference/Terminator.html" class="external-link">Terminator</a> is triggered.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="batch-evaluation">Batch evaluation<a class="anchor" aria-label="anchor" href="#batch-evaluation"></a></h2>
+
+
+
+<p>The optimizer evaluates a whole generation of <code>lambda</code> points in one batch.
+The <a href="https://bbotk.mlr-org.com/reference/Terminator.html" class="external-link">Terminator</a> is only checked between generations, so the number of evaluations can exceed the budget of
+<a href="https://bbotk.mlr-org.com/reference/mlr_terminators_evals.html" class="external-link">TerminatorEvals</a> by up to <code>lambda - 1</code> points.</p>
     </div>
     <div class="section level2">
     <h2 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a></h2>
@@ -192,8 +215,8 @@ the most important functions of mlr3tuning.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># example only runs if adagio is available</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu">mlr3misc</span><span class="fu">::</span><span class="fu"><a href="https://mlr3misc.mlr-org.com/reference/require_namespaces.html" class="external-link">require_namespaces</a></span><span class="op">(</span><span class="st">"adagio"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># example only runs if libcmaesr is available</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu">mlr3misc</span><span class="fu">::</span><span class="fu"><a href="https://mlr3misc.mlr-org.com/reference/require_namespaces.html" class="external-link">require_namespaces</a></span><span class="op">(</span><span class="st">"libcmaesr"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="co"># Hyperparameter Optimization</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># load learner and set search space</span></span></span>

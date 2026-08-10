@@ -196,7 +196,7 @@ tuner = tnr("random_search", batch_size = 2)
 tuner$optimize(instance)
 #>           cp learner_param_vals  x_domain classif.ce
 #>        <num>             <list>    <list>      <num>
-#> 1: -8.923994          <list[2]> <list[1]> 0.06687007
+#> 1: -6.961515          <list[2]> <list[1]>   0.058149
 
 # Set optimal hyperparameter configuration to learner
 learner$param_set$values = instance$result_learner_param_vals
@@ -208,10 +208,10 @@ learner$train(task)
 as.data.table(instance$archive)
 #>           cp classif.ce runtime_learners           timestamp warnings errors
 #>        <num>      <num>            <num>              <POSc>    <int>  <int>
-#> 1: -8.923994 0.06687007            0.017 2026-07-28 15:11:45        0      0
-#> 2: -6.941519 0.06687007            0.015 2026-07-28 15:11:45        0      0
-#> 3: -6.356805 0.06687007            0.021 2026-07-28 15:11:45        0      0
-#> 4: -4.108574 0.06687007            0.019 2026-07-28 15:11:45        0      0
+#> 1: -6.961515 0.05814900            0.019 2026-08-10 14:40:12        0      0
+#> 2: -8.059329 0.05814900            0.019 2026-08-10 14:40:12        0      0
+#> 3: -8.571008 0.05814900            0.045 2026-08-10 14:40:12        0      0
+#> 4: -4.547647 0.06104755            0.019 2026-08-10 14:40:12        0      0
 #>     x_domain batch_nr  resample_result
 #>       <list>    <int>           <list>
 #> 1: <list[1]>        1 <ResampleResult>
