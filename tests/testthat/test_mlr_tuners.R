@@ -1,5 +1,5 @@
 test_that("mlr_tuners", {
-  skip_if_not_installed(c("rush", "adagio", "GenSA", "irace", "nloptr"))
+  skip_if_not_installed(c("rush", "libcmaesr", "GenSA", "irace", "nloptr"))
 
   expect_dictionary(mlr_tuners, min_items = 1L)
   keys = mlr_tuners$keys()
@@ -16,7 +16,7 @@ test_that("mlr_tuners sugar", {
 })
 
 test_that("as.data.table objects parameter", {
-  skip_if_not_installed(c("rush", "adagio", "GenSA", "irace", "nloptr"))
+  skip_if_not_installed(c("rush", "libcmaesr", "GenSA", "irace", "nloptr"))
 
   tab = as.data.table(mlr_tuners, objects = TRUE)
   expect_data_table(tab)

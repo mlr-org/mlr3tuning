@@ -11,7 +11,7 @@ Hansen N (2016).
 }
 \description{
 Subclass for Covariance Matrix Adaptation Evolution Strategy (CMA-ES).
-Calls \code{\link[adagio:pureCMAES]{adagio::pureCMAES()}} from package \CRANpkg{adagio}.
+Calls \code{\link[libcmaesr:cmaes]{libcmaesr::cmaes()}} from package \CRANpkg{libcmaesr}.
 }
 \section{Dictionary}{
 
@@ -19,19 +19,6 @@ This \link{Tuner} can be instantiated with the associated sugar function \code{\
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{tnr("cmaes")
 }\if{html}{\out{</div>}}
-}
-
-\section{Control Parameters}{
-
-\describe{
-\item{\code{start_values}}{\code{character(1)}\cr
-Create \code{random} start values or based on \code{center} of search space?
-In the latter case, it is the center of the parameters before a trafo is applied.}
-}
-
-For the meaning of the control parameters, see \code{\link[adagio:pureCMAES]{adagio::pureCMAES()}}.
-Note that we have removed all control parameters which refer to the termination of the algorithm and where our
-terminators allow to obtain the same behavior.
 }
 
 \section{Progress Bars}{
@@ -53,6 +40,39 @@ Use \code{lgr::get_logger("bbotk")} to access and control the logger.
 
 This \link{Tuner} is based on \link[bbotk:OptimizerBatchCmaes]{bbotk::OptimizerBatchCmaes} which can be applied on any black box optimization problem.
 See also the documentation of \href{https://bbotk.mlr-org.com/}{bbotk}.
+}
+
+\section{Parameters}{
+
+
+\describe{
+\item{\code{start_values}}{\code{character(1)}\cr
+Create \code{"random"} start values or based on \code{"center"} of search space?
+In the latter case, it is the center of the parameters before a trafo is applied.
+If set to \code{"custom"}, the start values can be passed via the \code{start} parameter.}
+\item{\code{start}}{\code{numeric()}\cr
+Custom start values. Only applicable if \code{start_values} parameter is set to \code{"custom"}.}
+\item{\code{seed}}{\code{integer(1)}\cr
+Seed of the random number generator of \code{libcmaes}.
+Unset by default, in which case the generator is seeded from R and the optimization is reproducible with
+\code{\link[=set.seed]{set.seed()}}.}
+}
+
+All remaining parameters are passed to \code{\link[libcmaesr:cmaes_control]{libcmaesr::cmaes_control()}}, see there for their meaning.
+Note that we have removed all control parameters which refer to the termination of the algorithm and where our
+terminators allow to obtain the same behavior, i.e. \code{max_fevals}, \code{max_iter}, and \code{ftarget}.
+The internal convergence criteria of the algorithm still apply, so the optimization can stop before the
+\link[bbotk]{Terminator} is triggered.
+
+}
+
+\section{Batch evaluation}{
+
+
+The optimizer evaluates a whole generation of \code{lambda} points in one batch.
+The \link[bbotk]{Terminator} is only checked between generations, so the number of evaluations can exceed the budget of
+\link[bbotk]{TerminatorEvals} by up to \code{lambda - 1} points.
+
 }
 
 \section{Resources}{
@@ -90,8 +110,8 @@ the most important functions of mlr3tuning.
 }
 
 \examples{
-# example only runs if adagio is available
-if (mlr3misc::require_namespaces("adagio", quietly = TRUE)) {
+# example only runs if libcmaesr is available
+if (mlr3misc::require_namespaces("libcmaesr", quietly = TRUE)) {
 # Hyperparameter Optimization
 
 # load learner and set search space

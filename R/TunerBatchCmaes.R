@@ -4,22 +4,13 @@
 #'
 #' @description
 #' Subclass for Covariance Matrix Adaptation Evolution Strategy (CMA-ES).
-#' Calls [adagio::pureCMAES()] from package \CRANpkg{adagio}.
+#' Calls [libcmaesr::cmaes()] from package \CRANpkg{libcmaesr}.
 #'
 #' @templateVar id cmaes
 #' @template section_dictionary_tuners
 #'
-#' @section Control Parameters:
-#' \describe{
-#' \item{`start_values`}{`character(1)`\cr
-#'   Create `random` start values or based on `center` of search space?
-#'   In the latter case, it is the center of the parameters before a trafo is applied.}
-#' }
-#'
-#' For the meaning of the control parameters, see [adagio::pureCMAES()].
-#' Note that we have removed all control parameters which refer to the termination of the algorithm and where our
-#' terminators allow to obtain the same behavior.
-#'
+#' @inheritSection bbotk::OptimizerBatchCmaes Parameters
+#' @inheritSection bbotk::OptimizerBatchCmaes Batch evaluation
 #' @inheritSection Tuner Resources
 #' @template section_progress_bars
 #' @template section_logging
@@ -32,8 +23,8 @@
 #' @family Tuner
 #' @export
 #' @examples
-#' # example only runs if adagio is available
-#' if (mlr3misc::require_namespaces("adagio", quietly = TRUE)) {
+#' # example only runs if libcmaesr is available
+#' if (mlr3misc::require_namespaces("libcmaesr", quietly = TRUE)) {
 #' # Hyperparameter Optimization
 #'
 #' # load learner and set search space

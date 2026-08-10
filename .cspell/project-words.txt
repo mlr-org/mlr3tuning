@@ -26,6 +26,7 @@ cran
 datatable
 dontrun
 donttest
+dsigma
 evals
 ftol
 gensa
@@ -43,6 +44,7 @@ irace
 Jakob
 knitr
 Lacoste
+libcmaesr
 lightswitch
 lockfiles
 logicals
