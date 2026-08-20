@@ -94,12 +94,18 @@ import(mlr3)
 import(mlr3misc)
 import(paradox)
 importFrom(R6,R6Class)
-importFrom(bbotk,mlr_terminators)
-importFrom(bbotk,trm)
-importFrom(bbotk,trms)
-importFrom(mlr3misc,clbk)
-importFrom(mlr3misc,clbks)
-importFrom(mlr3misc,mlr_callbacks)
+importFrom(bbotk,
+  mlr_terminators,
+  trm,
+  trms
+)
+importFrom(mlr3misc,
+  clbk,
+  clbks,
+  mlr_callbacks
+)
 importFrom(stats,sd)
-importFrom(utils,bibentry)
-importFrom(utils,tail)
+importFrom(utils,
+  bibentry,
+  tail
+)
