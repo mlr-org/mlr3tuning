@@ -1,4 +1,4 @@
-# mlr3tuning (development version)
+# mlr3tuning 1.7.0
 
 * refactor: `TunerBatchCmaes` now calls `libcmaesr::cmaes()` instead of `adagio::pureCMAES()`.
 * feat: Tuning instances now accept plain `bbotk::CallbackBatch` and `bbotk::CallbackAsync` objects as `callbacks`.
