@@ -479,19 +479,7 @@ test_that("dependencies in defaults work", {
   learner = lrn("classif.rpart", cp = to_tune(0.01, 0.1))
   learner$param_set$add_dep("cp", "keep_model", CondEqual$new("keep_model" == TRUE))
 
-  expect_class(
-    tune(
-      tuner = tnr("random_search", batch_size = 5),
-      task = tsk("sonar"),
-      learner = learner,
-      resampling = rsmp("cv", folds = 3),
-      measures = msr("classif.ce"),
-      terminator = trm("evals", n_evals = 20)
-    ),
-    "TuningInstanceBatchSingleCrit"
-  )
-
-  expect_error(
+  tune_instance = function(check_values = FALSE) {
     tune(
       tuner = tnr("random_search", batch_size = 5),
       task = tsk("sonar"),
@@ -499,10 +487,21 @@ test_that("dependencies in defaults work", {
       resampling = rsmp("cv", folds = 3),
       measures = msr("classif.ce"),
       terminator = trm("evals", n_evals = 20),
-      check_values = TRUE
-    ),
-    regexp = "Assertion on"
-  )
+      check_values = check_values
+    )
+  }
+
+  expect_r6(tune_instance(), "TuningInstanceBatchSingleCrit")
+
+  if (packageVersion("paradox") < "2.0.0") {
+    expect_error(tune_instance(check_values = TRUE), regexp = "Assertion on")
+  } else {
+    instance = tune_instance(check_values = TRUE)
+    expect_r6(instance, "TuningInstanceBatchSingleCrit")
+    expect_equal(instance$search_space$ids(), "cp")
+    expect_data_table(instance$archive$data, nrows = 20L)
+    expect_number(instance$result_learner_param_vals$cp, lower = 0.01, upper = 0.1)
+  }
 })
 
 # Internal Tuning --------------------------------------------------------------
