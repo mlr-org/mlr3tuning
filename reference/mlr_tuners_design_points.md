@@ -215,15 +215,15 @@ instance = tune(
 instance$result
 #>       cp minbucket minsplit learner_param_vals  x_domain classif.ce
 #>    <num>     <num>    <num>             <list>    <list>      <num>
-#> 1:  0.01        32       64          <list[4]> <list[3]> 0.04347826
+#> 1:  0.01        32       64          <list[4]> <list[3]> 0.06956522
 
 # all evaluated hyperparameter configuration
 as.data.table(instance$archive)
 #>       cp minbucket minsplit classif.ce runtime_learners           timestamp
 #>    <num>     <num>    <num>      <num>            <num>              <POSc>
-#> 1: 0.100        64        2 0.12173913            0.007 2026-07-26 08:45:43
-#> 2: 0.010        32       64 0.04347826            0.007 2026-07-26 08:45:43
-#> 3: 0.001         1      128 0.04347826            0.007 2026-07-26 08:45:44
+#> 1: 0.100        64        2 0.12173913            0.009 2026-09-02 16:25:10
+#> 2: 0.010        32       64 0.06956522            0.006 2026-09-02 16:25:10
+#> 3: 0.001         1      128 0.06956522            0.007 2026-09-02 16:25:11
 #>    warnings errors  x_domain batch_nr  resample_result
 #>       <int>  <int>    <list>    <int>           <list>
 #> 1:        0      0 <list[3]>        1 <ResampleResult>

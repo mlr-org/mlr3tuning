@@ -1,8 +1,9 @@
 # Hyperparameter Tuning with Covariance Matrix Adaptation Evolution Strategy
 
 Subclass for Covariance Matrix Adaptation Evolution Strategy (CMA-ES).
-Calls [`adagio::pureCMAES()`](https://rdrr.io/pkg/adagio/man/cmaes.html)
-from package [adagio](https://CRAN.R-project.org/package=adagio).
+Calls
+[`libcmaesr::cmaes()`](https://libcmaesr.mlr-org.com/reference/cmaes.html)
+from package [libcmaesr](https://CRAN.R-project.org/package=libcmaesr).
 
 ## Source
 
@@ -15,21 +16,6 @@ instantiated with the associated sugar function
 [`tnr()`](https://mlr3tuning.mlr-org.com/reference/tnr.md):
 
     tnr("cmaes")
-
-## Control Parameters
-
-- `start_values`:
-
-  `character(1)`  
-  Create `random` start values or based on `center` of search space? In
-  the latter case, it is the center of the parameters before a trafo is
-  applied.
-
-For the meaning of the control parameters, see
-[`adagio::pureCMAES()`](https://rdrr.io/pkg/adagio/man/cmaes.html). Note
-that we have removed all control parameters which refer to the
-termination of the algorithm and where our terminators allow to obtain
-the same behavior.
 
 ## Progress Bars
 
@@ -56,6 +42,49 @@ on
 [bbotk::OptimizerBatchCmaes](https://bbotk.mlr-org.com/reference/mlr_optimizers_cmaes.html)
 which can be applied on any black box optimization problem. See also the
 documentation of [bbotk](https://bbotk.mlr-org.com/).
+
+## Parameters
+
+- `start_values`:
+
+  `character(1)`  
+  Create `"random"` start values or based on `"center"` of search space?
+  In the latter case, it is the center of the parameters before a trafo
+  is applied. If set to `"custom"`, the start values can be passed via
+  the `start` parameter.
+
+- `start`:
+
+  [`numeric()`](https://rdrr.io/r/base/numeric.html)  
+  Custom start values. Only applicable if `start_values` parameter is
+  set to `"custom"`.
+
+- `seed`:
+
+  `integer(1)`  
+  Seed of the random number generator of `libcmaes`. Unset by default,
+  in which case the generator is seeded from R and the optimization is
+  reproducible with [`set.seed()`](https://rdrr.io/r/base/Random.html).
+
+All remaining parameters are passed to
+[`libcmaesr::cmaes_control()`](https://libcmaesr.mlr-org.com/reference/cmaes_control.html),
+see there for their meaning. Note that we have removed all control
+parameters which refer to the termination of the algorithm and where our
+terminators allow to obtain the same behavior, i.e. `max_fevals`,
+`max_iter`, and `ftarget`. The internal convergence criteria of the
+algorithm still apply, so the optimization can stop before the
+[Terminator](https://bbotk.mlr-org.com/reference/Terminator.html) is
+triggered.
+
+## Batch evaluation
+
+The optimizer evaluates a whole generation of `lambda` points in one
+batch. The
+[Terminator](https://bbotk.mlr-org.com/reference/Terminator.html) is
+only checked between generations, so the number of evaluations can
+exceed the budget of
+[TerminatorEvals](https://bbotk.mlr-org.com/reference/mlr_terminators_evals.html)
+by up to `lambda - 1` points.
 
 ## Resources
 
@@ -174,8 +203,8 @@ The objects of this class are cloneable with this method.
 ## Examples
 
 ``` r
-# example only runs if adagio is available
-if (mlr3misc::require_namespaces("adagio", quietly = TRUE)) {
+# example only runs if libcmaesr is available
+if (mlr3misc::require_namespaces("libcmaesr", quietly = TRUE)) {
 # Hyperparameter Optimization
 
 # load learner and set search space

@@ -42,6 +42,22 @@ See also the section on parameters for more information on the stages. A
 tuning callback works with
 [ContextAsyncTuning](https://mlr3tuning.mlr-org.com/reference/ContextAsyncTuning.md).
 
+A
+[bbotk::CallbackAsync](https://bbotk.mlr-org.com/reference/CallbackAsync.html)
+can be passed to a tuning instance as well. It only implements the bbotk
+stages, which are all called during tuning, and it receives a
+[ContextAsyncTuning](https://mlr3tuning.mlr-org.com/reference/ContextAsyncTuning.md)
+which inherits from
+[bbotk::ContextAsync](https://bbotk.mlr-org.com/reference/ContextAsync.html).
+The tuning specific stages are skipped for such a callback. Prefer the
+tuning specific callback when one exists, e.g.
+`clbk("mlr3tuning.async_freeze_archive")` over
+`clbk("bbotk.async_freeze_archive")`, since the latter replaces the
+[ArchiveAsyncTuning](https://mlr3tuning.mlr-org.com/reference/ArchiveAsyncTuning.md)
+with a plain
+[bbotk::ArchiveAsyncFrozen](https://bbotk.mlr-org.com/reference/ArchiveAsyncFrozen.html)
+and thereby drops the benchmark result.
+
 ## Usage
 
 ``` r

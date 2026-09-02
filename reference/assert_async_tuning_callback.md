@@ -3,6 +3,8 @@
 Assertions for
 [CallbackAsyncTuning](https://mlr3tuning.mlr-org.com/reference/CallbackAsyncTuning.md)
 class.
+[bbotk::CallbackAsync](https://bbotk.mlr-org.com/reference/CallbackAsync.html)
+objects are accepted as well since they work in asynchronous tuning too.
 
 ## Usage
 
@@ -16,7 +18,9 @@ assert_async_tuning_callbacks(callbacks)
 
 - callback:
 
-  ([CallbackAsyncTuning](https://mlr3tuning.mlr-org.com/reference/CallbackAsyncTuning.md)).
+  ([bbotk::CallbackAsync](https://bbotk.mlr-org.com/reference/CallbackAsync.html)
+  \|
+  [CallbackAsyncTuning](https://mlr3tuning.mlr-org.com/reference/CallbackAsyncTuning.md)).
 
 - null_ok:
 
@@ -26,9 +30,13 @@ assert_async_tuning_callbacks(callbacks)
 - callbacks:
 
   (list of
+  [bbotk::CallbackAsync](https://bbotk.mlr-org.com/reference/CallbackAsync.html)
+  \| list of
   [CallbackAsyncTuning](https://mlr3tuning.mlr-org.com/reference/CallbackAsyncTuning.md)).
 
 ## Value
 
-\[CallbackAsyncTuning \| List of
-[CallbackAsyncTuning](https://mlr3tuning.mlr-org.com/reference/CallbackAsyncTuning.md)s.
+[bbotk::CallbackAsync](https://bbotk.mlr-org.com/reference/CallbackAsync.html)
+\|
+[CallbackAsyncTuning](https://mlr3tuning.mlr-org.com/reference/CallbackAsyncTuning.md)
+\| List of them.

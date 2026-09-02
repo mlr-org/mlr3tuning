@@ -83,19 +83,19 @@ as.data.table(mlr_tuners)
 #>  9:          ParamDbl,ParamInt,ParamFct,ParamLgl
 #> 10:                                     ParamDbl
 #> 11:          ParamLgl,ParamInt,ParamDbl,ParamFct
-#>                                    properties                packages
-#>                                        <list>                  <list>
-#>  1: dependencies,single-crit,multi-crit,async   mlr3tuning,bbotk,rush
-#>  2: dependencies,single-crit,multi-crit,async   mlr3tuning,bbotk,rush
-#>  3: dependencies,single-crit,multi-crit,async   mlr3tuning,bbotk,rush
-#>  4:                               single-crit mlr3tuning,bbotk,adagio
-#>  5:       dependencies,single-crit,multi-crit        mlr3tuning,bbotk
-#>  6:                               single-crit  mlr3tuning,bbotk,GenSA
-#>  7:       dependencies,single-crit,multi-crit        mlr3tuning,bbotk
-#>  8:                  dependencies,single-crit              mlr3tuning
-#>  9:                  dependencies,single-crit  mlr3tuning,bbotk,irace
-#> 10:                               single-crit mlr3tuning,bbotk,nloptr
-#> 11:       dependencies,single-crit,multi-crit        mlr3tuning,bbotk
+#>                                    properties                   packages
+#>                                        <list>                     <list>
+#>  1: dependencies,single-crit,multi-crit,async      mlr3tuning,bbotk,rush
+#>  2: dependencies,single-crit,multi-crit,async      mlr3tuning,bbotk,rush
+#>  3: dependencies,single-crit,multi-crit,async      mlr3tuning,bbotk,rush
+#>  4:                               single-crit mlr3tuning,bbotk,libcmaesr
+#>  5:       dependencies,single-crit,multi-crit           mlr3tuning,bbotk
+#>  6:                               single-crit     mlr3tuning,bbotk,GenSA
+#>  7:       dependencies,single-crit,multi-crit           mlr3tuning,bbotk
+#>  8:                  dependencies,single-crit                 mlr3tuning
+#>  9:                  dependencies,single-crit     mlr3tuning,bbotk,irace
+#> 10:                               single-crit    mlr3tuning,bbotk,nloptr
+#> 11:       dependencies,single-crit,multi-crit           mlr3tuning,bbotk
 mlr_tuners$get("random_search")
 #> 
 #> ── <TunerBatchRandomSearch>: Random Search ─────────────────────────────────────

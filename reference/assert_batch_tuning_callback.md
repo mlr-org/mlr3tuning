@@ -3,6 +3,8 @@
 Assertions for
 [CallbackBatchTuning](https://mlr3tuning.mlr-org.com/reference/CallbackBatchTuning.md)
 class.
+[bbotk::CallbackBatch](https://bbotk.mlr-org.com/reference/CallbackBatch.html)
+objects are accepted as well since they work in batch tuning too.
 
 ## Usage
 
@@ -16,7 +18,9 @@ assert_batch_tuning_callbacks(callbacks)
 
 - callback:
 
-  ([CallbackBatchTuning](https://mlr3tuning.mlr-org.com/reference/CallbackBatchTuning.md)).
+  ([bbotk::CallbackBatch](https://bbotk.mlr-org.com/reference/CallbackBatch.html)
+  \|
+  [CallbackBatchTuning](https://mlr3tuning.mlr-org.com/reference/CallbackBatchTuning.md)).
 
 - null_ok:
 
@@ -26,9 +30,13 @@ assert_batch_tuning_callbacks(callbacks)
 - callbacks:
 
   (list of
+  [bbotk::CallbackBatch](https://bbotk.mlr-org.com/reference/CallbackBatch.html)
+  \| list of
   [CallbackBatchTuning](https://mlr3tuning.mlr-org.com/reference/CallbackBatchTuning.md)).
 
 ## Value
 
-\[CallbackBatchTuning \| List of
-[CallbackBatchTuning](https://mlr3tuning.mlr-org.com/reference/CallbackBatchTuning.md)s.
+[bbotk::CallbackBatch](https://bbotk.mlr-org.com/reference/CallbackBatch.html)
+\|
+[CallbackBatchTuning](https://mlr3tuning.mlr-org.com/reference/CallbackBatchTuning.md)
+\| List of them.
