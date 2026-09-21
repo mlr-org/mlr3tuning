@@ -4,6 +4,8 @@
 
 ## mlr3tuning 1.7.0
 
+CRAN release: 2026-09-02
+
 - refactor: `TunerBatchCmaes` now calls
   [`libcmaesr::cmaes()`](https://libcmaesr.mlr-org.com/reference/cmaes.html)
   instead of `adagio::pureCMAES()`.
