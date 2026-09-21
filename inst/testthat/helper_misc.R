@@ -45,7 +45,7 @@ TEST_MAKE_INST1_2D = function(
 # create inst object with dependencies
 TEST_MAKE_PS2 = function() {
   ps = ps(
-    xx = p_fct(levels = c("a", "b"), default = "a"),
+    xx = p_fct(levels = c("a", "b")),
     yy = p_dbl(lower = 0, upper = 1),
     cp = p_dbl(lower = 0, upper = 1)
   )
